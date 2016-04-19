@@ -1,2 +1,2 @@
 # houbb.github.io
-blog
+This is a echo blog edit by Binbin.Hou
