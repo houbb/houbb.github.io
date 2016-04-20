@@ -1,4 +1,3 @@
-$site-height: 40px;
 /**
  * Site header
  */
@@ -108,6 +107,12 @@ $site-height: 40px;
     margin-bottom: $spacing-unit / 2;
 }
 
+.footer-row {
+    height: $site-height;
+    line-height: $site-height;
+    text-align: center;
+}
+
 .contact-list,
 .social-media-list {
     list-style: none;
@@ -170,6 +175,7 @@ $site-height: 40px;
  */
 .page-content {
     padding: $spacing-unit 0;
+    min-height: $page-content-min-height;
 }
 
 .page-heading {
