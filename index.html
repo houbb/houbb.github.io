@@ -2,10 +2,12 @@
 layout: default
 ---
 
-<div class="home">
-
-  <ul class="post-list">
+<div class="home col-xs-12" >
+  <div class="index-warp col-xs-2">
+  </div>
+  <ul class="post-list col-xs-10">
     {% for post in site.posts %}
+
       <li>
         <h2>
           <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
