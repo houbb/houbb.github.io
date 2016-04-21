@@ -19,6 +19,11 @@ me: Hou Binbin
 # 摘要
 excerpt_separator: ""
 
+# 分页
+gems: [jekyll-paginate]
+paginate: 5
+paginate_path: "page:num"
+
 # 博客名称
 blogName: Echo
 
