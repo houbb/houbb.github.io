@@ -34,7 +34,7 @@ You need know how to use Git.
 
 
 ## Quote
-[How to build github blog](http://www.jianshu.com/p/609e1197754c "jekyll+github")
+> [How to build github blog](http://www.jianshu.com/p/609e1197754c "jekyll+github")
 
 
 
