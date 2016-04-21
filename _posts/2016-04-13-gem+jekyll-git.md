@@ -24,7 +24,7 @@ You may need use **Proxy Software** in China. Then, wait and learn how to use it
 
 Or you can use **rails** instead jekyll.
 
-> [install rails](http://blog.csdn.net/ryo1060732496/article/details/51145715 "rails")
+> [rails](https://ruby.taobao.org/)
 
 ## 3.Git
 You need know how to use Git.
