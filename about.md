@@ -8,6 +8,8 @@ permalink: /about/
 <i class="fa fa-fw fa-pencil text-muted" title="Name"></i>&nbsp; 侯宾宾
 <br/>
 <i class="fa fa-fw fa-birthday-cake text-muted" title="Birthday"></i>&nbsp; 1994-01-10
+<br/>
+<i class="fa fa-fw fa-intersex text-muted" title="Sex"></i>&nbsp; Heimlichkeit
 
 ## Address ##
 <i class="fa fa-fw fa-map-marker text-muted" title="Location"></i>&nbsp;Shanghai China
