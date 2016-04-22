@@ -18,6 +18,12 @@ Util.getValPX = function(val) {
 $(document).ready(function() {
     initContentHeight();
     initScrollBar();
+
+    //select2
+    $("select#index").select2();
+    $("select#multi-index").select2();
+    $("select#multi-index1").select2({});
+    $("select#multi-index1").val(["home", "about"]).trigger("change");
 });
 
 
