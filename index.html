@@ -6,8 +6,7 @@ layout: default
   <div class="index-warp col-xs-2">
   </div>
   <ul class="post-list col-xs-10">
-    {% for post in site.posts %}
-
+    {% for post in paginator.posts %}
       <li>
         <h2>
           <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
