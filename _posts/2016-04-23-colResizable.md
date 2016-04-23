@@ -2,8 +2,8 @@
 layout: post
 title: colResizable
 date:  2016-4-23 17:18:27 +0800
-categories: [html]
-tags: [jQuery, colResizable]
+categories: [jQuery]
+tags: [colResizable]
 ---
 
 ## colResizable
