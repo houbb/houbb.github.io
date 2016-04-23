@@ -7,6 +7,13 @@
 $(document).ready(function() {
     Base.initContentHeight();
     Base.select2Demo();
+
+    //
+    $('#colResizable').colResizable({
+        liveDrag:true,
+        gripInnerHtml:"<div class='grip'></div>",
+        draggingClass:"dragging"
+    });
 });
 
 var Base = new Base();
