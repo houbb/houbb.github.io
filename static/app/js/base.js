@@ -6,14 +6,11 @@
 
 $(document).ready(function() {
     Base.initContentHeight();
-    Base.select2Demo();
+    Base.initBodyScrollBar();
 
-    //
-    $('#colResizable').colResizable({
-        liveDrag:true,
-        gripInnerHtml:"<div class='grip'></div>",
-        draggingClass:"dragging"
-    });
+    //demo
+    Base.select2Demo();
+    Base.colResizable();
 });
 
 var Base = new Base();
@@ -27,6 +24,18 @@ function Base(){
         var wh = Util.windowHeight();
         content.css('min-height', wh-headHeight);
     };
+    /**
+     * init body scroll bar
+     */
+    this.initBodyScrollBar = function() {
+        $("body").mCustomScrollbar({
+            //autoHideScrollbar:true,
+            theme:"light-thick"
+        });
+        $("#back-to-top").on('click', function() {
+            $("body").mCustomScrollbar("scrollTo", "top");
+        });
+    };
 
     /**
      * select2 init
@@ -37,11 +46,15 @@ function Base(){
         $("select#multi-index1").select2({});
         $("select#multi-index1").val(["home", "about"]).trigger("change");
     };
-
     /**
-     * colResizable
+     * colResizable init
      */
-    $('#colResizable').colResizable({
-        minWidth: 100
-    });
+    this.colResizable = function() {
+        $('#colResizable').colResizable({
+            liveDrag:true,
+            gripInnerHtml:"<div class='grip'></div>",
+            draggingClass:"dragging",
+            minWidth: 100
+        });
+    };
 };

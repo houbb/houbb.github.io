@@ -257,3 +257,27 @@
 tr th, tr td {
     text-align: center;
 }
+
+
+/*
+*   mCSB_1_scrollbar style
+*/
+#mCSB_1_scrollbar_vertical {
+}
+#mCSB_1_container {
+    margin-right: 0;
+}
+#mCSB_1_dragger_vertical  .mCSB_dragger_bar{
+    opacity: 0.7;
+    filter: alpha(opacity = 70);
+    background-color: #aaa;
+    -o-transition: background-color .2s linear;
+    -webkit-transition: background-color.2s linear;
+    -moz-transition: background-color .2s linear;
+    transition: background-color .2s linear;
+}
+.mCSB_draggerRail {
+    background-color: #eee;
+    opacity: 0.5;
+    filter: alpha(opacity = 50);
+}
