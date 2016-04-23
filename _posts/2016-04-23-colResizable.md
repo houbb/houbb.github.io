@@ -6,6 +6,7 @@ categories: [jQuery]
 tags: [colResizable]
 ---
 
+
 ## colResizable
 Here is the address;
 
