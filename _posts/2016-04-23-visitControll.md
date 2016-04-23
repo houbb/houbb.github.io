@@ -5,17 +5,11 @@ date:  2016-4-23 17:18:27 +0800
 categories: [Java]
 tags: [visit privilege]
 ---
-<style>
-    tr th, tr td {
-        text-align: center;
-    }
-</style>
-
 
 ## Visit privilege
 > Just as following
 
-<table id="visit-privilege" class="table table-bordered">
+<table  class="table table-bordered">
     <tr>
         <th></th>
         <th>one class</th>

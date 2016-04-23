@@ -37,16 +37,11 @@ function Base(){
         $("select#multi-index1").select2({});
         $("select#multi-index1").val(["home", "about"]).trigger("change");
     };
+
+    /**
+     * colResizable
+     */
+    $('#colResizable').colResizable({
+        minWidth: 100
+    });
 };
-
-
-//function initScrollBar() {
-//    //var headHeight = $('.site-header').height();
-//    var footHeight = $('.site-footer').height();
-//    var contentMinHeight = $('.page-content').css('min-height');
-//    var pageContentWarp = $('.page-body-warp');
-//    pageContentWarp.css('height', footHeight+Util.getValPX(contentMinHeight)).css('overflow-y', 'auto');
-//    pageContentWarp.perfectScrollbar({
-//        swipePropagation: false
-//    });
-//}
