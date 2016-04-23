@@ -1,7 +1,7 @@
 /**
  * !
  * Created by houbb, All rights reserved.
- * @type {Util|*|{}}
+ * @type {Base|*|{}}
  */
 
 $(document).ready(function() {
