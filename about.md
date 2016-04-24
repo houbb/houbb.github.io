@@ -11,6 +11,10 @@ permalink: /about/
 <br/>
 <i class="fa fa-fw fa-intersex text-muted" title="Sex"></i>&nbsp; Heimlichkeit
 
+## Github ##
+<span class="icon icon--github">{% include icon-github.svg %}</span>&nbsp;
+[binbin.Hou](https://github.com/houbb)
+
 ## Address ##
 <i class="fa fa-fw fa-map-marker text-muted" title="Location"></i>&nbsp;Shanghai China
 
