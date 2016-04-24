@@ -6,10 +6,9 @@ categories: [jQuery]
 tags: [colResizable]
 ---
 
-If you want to resize the width of table, try this
-
 ## Intro
-Here is the address;
+
+If you want to resize the width of table, try this
 
 > [colresizable](http://www.bacubacu.com/colresizable/)
 
