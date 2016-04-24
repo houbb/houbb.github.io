@@ -1,7 +1,7 @@
 ---
 layout: post
 title: colResizable
-date:  2016-4-23 17:18:27 +0800
+date:  2016-4-23 20:18:27 +0800
 categories: [jQuery]
 tags: [colResizable]
 ---
