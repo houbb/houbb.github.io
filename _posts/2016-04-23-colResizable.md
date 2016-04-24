@@ -8,14 +8,14 @@ tags: [colResizable]
 
 If you want to resize the width of table, try this
 
-## colResizable
+## Intro
 Here is the address;
 
 > [colresizable](http://www.bacubacu.com/colresizable/)
 
 
 
-## demo
+## Demo
 
 <table  id="colResizable" class="table table-bordered">
     <tr>
