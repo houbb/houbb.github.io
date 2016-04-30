@@ -285,3 +285,28 @@ tr th, tr td {
     opacity: 0.5;
     filter: alpha(opacity = 50);
 }
+
+
+/*
+*   otc
+*/
+ul#markdown-toc {
+    list-style: none;
+    position: fixed;
+    left: 5px;
+    bottom: 60px;
+    border-radius: 0.3em;
+    box-shadow: rgba(0,0,0,0.15) 0 1px 4px;
+    box-sizing: border-box;
+    background-color: white;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.5) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/
+    filter: Alpha(opacity=50); background:#fff;/*实现IE背景透明*/
+}
+
+ul#markdown-toc  > li > a {
+    display: block;
+    max-width: 120px;
+    overflow: hidden;
+    white-space: nowrap;
+}

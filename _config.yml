@@ -30,6 +30,10 @@ blogName: Echo
 # 生成路径
 permalink: /:year/:month/:day/:title
 
+# 目录
+markdown: kramdown
+toc_levels: 1..3
+
 # 路径
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site

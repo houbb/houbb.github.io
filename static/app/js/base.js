@@ -7,7 +7,7 @@
 $(document).ready(function() {
     Base.initContentHeight();
     if(!Util.isMobile()) {  //use scroll bar when is PC;
-        Base.initBodyScrollBar();
+        //Base.initBodyScrollBar();
     }
 
     //demo
