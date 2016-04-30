@@ -37,10 +37,10 @@
         UP_ARROW: 38,
         RIGHT_ARROW: 39,
         DOWN_ARROW: 40,
-        W: 119,
-        S: 115,
-        A: 97,
-        D: 100
+        W: 87,
+        S: 83,
+        A: 65,
+        D: 68
     };
 
     //the default options;
@@ -82,7 +82,7 @@
     };
 
     var initKeyPress = function() {
-        $(document).on('keypress', function(event) {
+        $(document).on('keydown', function(event) {
             var typecode = enterCode(event);
 
             if(KEYCODE.LEFT_ARROW == typecode || KEYCODE.A == typecode) {
