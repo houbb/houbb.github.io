@@ -13,6 +13,9 @@ $(document).ready(function() {
     //demo
     Base.select2Demo();
     Base.colResizable();
+
+    //2048
+    $('#2048').my2048();
 });
 
 var Base = new Base();

@@ -86,3 +86,13 @@ Util.isMobile = function() {
 Util.cancelBubble = function(event) {
     if (event && event.stopPropagation) {event.stopPropagation(); } else { window.event.cancelBubble = true;}
 };
+
+/**
+ * Get enter code
+ * @param event
+ * @returns {Number|Object|string}
+ */
+Util.enterCode = function(event) {
+    var theEvent = event || window.event;
+    return theEvent.keyCode || theEvent.which || theEvent.charCode;
+};

@@ -1,0 +1,36 @@
+.my2048-table {
+    height: 404px !important;
+    width:  404px !important;
+    margin: 0 auto;
+}
+
+.my2048-table-td {
+    width:99px !important;
+    height:99px !important;
+    line-height:99px !important;
+    text-align:center;
+    font-size:40px;
+    color: #828282;
+}
+
+
+.my2048-info-warp {
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+.my2048-info-warp .my2048-restart {
+    margin-right: 40px;
+}
+
+.my2048-info-warp .my2048-score {
+    min-width: 80px;
+    height: 36px;
+    line-height: 36px;
+    color: #ffffff;
+}
+
+.my2048-info-warp .my2048-score .value {
+    margin-left: 10px;
+    color: #0099FF;
+}
