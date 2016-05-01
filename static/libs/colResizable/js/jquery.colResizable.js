@@ -1,5 +1,6 @@
 /**
  * !colResizable 1.5 - a jQuery plugin by Alvaro Prieto Lauroba http://www.bacubacu.com/colresizable/
+ * @time
  */
 ;(function($) {
     var d = $(document),
