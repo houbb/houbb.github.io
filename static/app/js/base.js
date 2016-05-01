@@ -16,6 +16,9 @@ $(document).ready(function() {
 
     //2048
     $('#2048').my2048();
+
+    //UML
+    $("UML, uml, .UML, .uml, #UML, #uml").sequenceDiagram({theme: 'hand'});
 });
 
 var Base = new Base();
