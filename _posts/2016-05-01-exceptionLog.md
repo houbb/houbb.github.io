@@ -245,3 +245,151 @@ Do not use return statement in finally block and catch block, use it after try c
 > [log4j](http://logging.apache.org/log4j)
 
 
+- add log in student class
+
+```java
+public class Student {
+    public static final String message = "Name's length must be more than 1!";
+    private String name;
+
+    public Student(String name) {
+        if(name.length() < 2) { //"name length can't less than 2."
+            log(message);
+            throw new StudentNameFormatException(message);
+        }
+        this.name = name;
+    }
+
+    private void log(String message) {
+        Logger logger = Logger.getLogger(getClass().getName());
+        logger.info(message);
+    }
+}
+```
+
+result
+
+```java
+五月 01, 2016 6:02:03 下午 com.ryo.exception.Student log
+信息: Name's length must be more than 1!
+
+Process finished with exit code 0
+```
+
+### Log and Level UML
+
+<uml>
+    ConsoleHandler->StreamHandler:
+    FileHandler->StreamHandler:
+    SocketHandler->StreamHandler:
+    Handler->LogRecord: publishes
+    StreamHandler->Handler:
+    MemoryHandler->Handler:
+    Logger->Handler:
+    Logger->Level:
+</uml>
+
+### Log Test
+
+- TestHandler class
+
+```java
+public class TestHandler extends Handler {
+    private LogRecord logRecord;
+
+    @Override
+    public void publish(LogRecord record) {
+        this.logRecord = record;
+    }
+
+    @Override
+    public void flush() {
+
+    }
+
+    @Override
+    public void close() throws SecurityException {
+
+    }
+
+    String getMessage() {
+        return logRecord.getMessage();
+    }
+}
+```
+
+- junit test
+
+```java
+@Test
+public void testExceptionWithMessage() {
+    Logger logger = Logger.getLogger(Student.class.getName());
+    Handler testHandler = new TestHandler();
+    logger.addHandler(testHandler);
+
+    try{
+        Student student = new Student("h");
+    } catch (StudentNameFormatException e) {
+        assertEquals(Student.message, e.getMessage());
+        assertEquals(true, isLogged(Student.message, (TestHandler) testHandler));
+    }
+}
+```
+
+What is isLogged() ? As following...
+
+```java
+private boolean isLogged(String message, TestHandler handler) {
+    return message.equals(handler.getMessage());
+}
+```
+
+result
+
+```java
+五月 01, 2016 9:55:01 下午 com.ryo.exception.Student log
+信息: Name's length must be more than 1!
+
+Process finished with exit code 0
+```
+
+> Refactoring
+
+Test above can be better, because it test another method isLogged()...
+
+Now, we change student class like this.
+
+```java
+public class Student {
+    public static final String message = "Name's length must be more than 1!";
+    private String name;
+    final static Logger logger = Logger.getLogger(Student.class.getName());
+
+    public Student(String name) {
+        if(name.length() < 2) {
+            Student.logger.info(Student.message);
+            throw new StudentNameFormatException(message);
+        }
+        this.name = name;
+    }
+}
+```
+
+and change the test class
+
+```java
+@Test
+public void testExceptionWithMessage() {
+    Handler testHandler = new TestHandler();
+    Student.logger.addHandler(testHandler);
+
+    try{
+        Student student = new Student("h");
+    } catch (StudentNameFormatException e) {
+        assertEquals(Student.message, e.getMessage());
+        assertEquals(Student.message, ((TestHandler) testHandler).getMessage());
+    }
+}
+```
+
+

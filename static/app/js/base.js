@@ -10,18 +10,18 @@ $(document).ready(function() {
         //Base.initBodyScrollBar();
     }
 
+    //toc
+    Base.initTOC();
+
     //demo
     Base.select2Demo();
     Base.colResizable();
-
     //2048
     $('#2048').my2048();
 
     //UML
     $("UML, uml, .UML, .uml, #UML, #uml").sequenceDiagram({theme: 'hand'});
 
-    //toc
-    Base.initTOC();
 });
 
 var Base = new Base();
