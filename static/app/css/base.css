@@ -390,8 +390,9 @@ a:hover {
 }
 .label {
     font-size: 12px;
-    height: 20px;
-    line-height: 1.15;
+    height: 25px;
+    line-height: 25px;
+    border-radius: 2px;
 }
 .label.arrowed {
     margin-left: 5px;

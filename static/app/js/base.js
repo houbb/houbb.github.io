@@ -18,7 +18,10 @@ $(document).ready(function() {
     $('#2048').my2048();
 
     //UML
-    $(".UML, .uml, #UML, #uml").sequenceDiagram({theme: 'hand'});
+    $("UML, uml, .UML, .uml, #UML, #uml").sequenceDiagram({theme: 'hand'});
+
+    //toc
+    Base.initTOC();
 });
 
 var Base = new Base();
@@ -31,6 +34,34 @@ function Base(){
         var headHeight = $('.site-header').height();
         var wh = Util.windowHeight();
         content.css('min-height', wh-headHeight);
+    };
+
+    /**
+     * init the style of toc
+     */
+    this.initTOC = function() {
+        var CLASS = {
+            left: 'fa-chevron-circle-left',
+            right: 'fa-chevron-circle-right'
+        };
+        var toc = $('#markdown-toc');
+        var lastLi = toc.children('li:last');
+        var iconHTML = '<i class="fa fa-fw fa-lg"></i>';
+        var $icon = $(iconHTML);
+        $icon.addClass(CLASS.left).addClass('text-muted').addClass('pull-right');
+        lastLi.after($icon);
+
+        $('#markdown-toc .fa').on('click', function () {
+            var icon = $(this);
+
+            if(icon.hasClass(CLASS.left)) {
+                toc.children('li').hide();
+                icon.removeClass(CLASS.left).addClass(CLASS.right);
+            } else {
+                toc.children('li').show();
+                icon.removeClass(CLASS.right).addClass(CLASS.left);
+            }
+        });
     };
     /**
      * init body scroll bar
