@@ -16,7 +16,7 @@ If you want to resize the width of table, try this
 
 ## Demo
 
-<table  id="colResizable" class="table table-bordered">
+<table  id="colResizable" class="table table-bordered table-hover">
     <tr>
         <th></th>
         <th>one class</th>

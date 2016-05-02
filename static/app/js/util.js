@@ -4,36 +4,27 @@
  * This is a util js.
  * @type {Util|*|{}}
  */
-var Util = Util || {};
 
+/**
+ * add console
+ */
+if (!window.console || !console.log){
+    try{
+        var names = ["log", "debug", "info", "warn", "error", "assert", "dir", "dirxml", "group", "groupEnd", "time", "timeEnd", "count", "trace", "profile", "profileEnd"];
+        window.console = {};
+        for (var i = 0; i < names.length; ++i){
+            window.console[names[i]] = function() {}
+        }
+    }catch(e){}
+}
+
+var Util = Util || {};
 /**
  * get thw window height dynamic.
  * @returns {Number|number}
  */
 Util.windowHeight = function() {
     return window.innerHeight || document.documentElement.clientHeight;
-};
-
-Util.getInfo = function () {
-    var s = "";
-    s += " 网页可见区域宽："+ document.body.clientWidth;
-    s += " 网页可见区域高："+ document.body.clientHeight;
-    s += " 网页可见区域宽："+ document.body.offsetWidth + " (包括边线和滚动条的宽)";
-    s += " 网页可见区域高："+ document.body.offsetHeight + " (包括边线的宽)";
-    s += " 网页正文全文宽："+ document.body.scrollWidth;
-    s += " 网页正文全文高："+ document.body.scrollHeight;
-    s += " 网页被卷去的高(ff)："+ document.body.scrollTop;
-    s += " 网页被卷去的高(ie)："+ document.documentElement.scrollTop;
-    s += " 网页被卷去的左："+ document.body.scrollLeft;
-    s += " 网页正文部分上："+ window.screenTop;
-    s += " 网页正文部分左："+ window.screenLeft;
-    s += " 屏幕分辨率的高："+ window.screen.height;
-    s += " 屏幕分辨率的宽："+ window.screen.width;
-    s += " 屏幕可用工作区高度："+ window.screen.availHeight;
-    s += " 屏幕可用工作区宽度："+ window.screen.availWidth;
-    s += " 你的屏幕设置是 "+ window.screen.colorDepth +" 位彩色";
-    s += " 你的屏幕设置 "+ window.screen.deviceXDPI +" 像素/英寸";
-    return s;
 };
 
 /**
@@ -50,7 +41,7 @@ Util.getValPX = function(val) {
 };
 
 /**
- * browser
+ *  adjust the browser
  */
 Util.isMobile = function() {
     var browser={
@@ -96,3 +87,96 @@ Util.enterCode = function(event) {
     var theEvent = event || window.event;
     return theEvent.keyCode || theEvent.which || theEvent.charCode;
 };
+
+
+/* 显示layer遮罩层提示框，需要引入layer的js文件
+ * msgText: 提示文字
+ * msgType: 三种类型，分别是info、warning、error
+ * showSeconds: 显示时长，多少秒
+ * showShade: 是否显示遮罩背景 */
+Util.showMsg = function(msgText, msgType, showSeconds, showShade) {
+    var mType = 1; // info
+    mType = (msgType === "warning") ? 0 : mType;
+    mType = (msgType === "error") ? 3 : mType;
+    var mSeconds = showSeconds || 2;
+    var mShade = showShade || false;
+    $.layer({
+        shade: (mShade === false) ? [0] : [0.5, '#000'],
+        shadeClose: false,
+        title: false,
+        closeBtn: false,
+        time: mSeconds,
+        dialog: {
+            type: mType,
+            msg: msgText
+        }
+    });
+};
+
+
+/**
+ * Regex util
+ * @type {{_Date: RegExp, _Url: RegExp, _Mail: RegExp, _Digit: RegExp, _Number: RegExp, _Mobile: RegExp, _TelDigit: RegExp, _Text: RegExp, _ImageFile: RegExp, isDate: Function, isUrl: Function, isMail: Function, isDigit: Function, isNumber: Function, isNotBlank: Function, isMobile: Function, isTelDigit: Function, isValidText: Function, isImageFile: Function}}
+ */
+Util.Regex = {
+    _Date:/^((((1[6-9]|[2-9]\d)\d{2})-(0?[13578]|1[02])-(0?[1-9]|[12]\d|3[01]))|(((1[6-9]|[2-9]\d)\d{2})-(0?[13456789]|1[012])-(0?[1-9]|[12]\d|30))|(((1[6-9]|[2-9]\d)\d{2})-0?2-(0?[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))-0?2-29-))$/,
+    _Url:/^(http|https|ftp|mailto)\:\/\/[a-z0-9\-\.]+\.[a-z]{2,3}(:[a-z0-9]*)?\/?([a-z0-9\-\._\?\,\'\/\\\+&amp;%\$#\=~!])*$/i,
+    _Mail:/^[a-z0-9._%-]+@[a-z0-9.-]+\.[a-z]{2,4}$/i,
+    _Digit:/^[-+]?[0-9]+$/,  // 数字
+    _Number:/^[-+]?\d*\.?\d+$/,  // 包括小数点的数字
+    _Mobile:/^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$/,
+    _TelDigit:/^[-]?[0-9-]+$/,
+    _Text:/^[a-z\d\u4E00-\u9FA5]+$/i,
+    _ImageFile:/(\.|\/)(gif|jpe?g|png)$/i,
+    _Int: /^-?[1-9]\d*$|0/, //匹配整数
+    _IntPositive: /^[1-9]\d*$/, //匹配正整数
+    _IntNegative: /^-[1-9]\d*$/,//匹配负整数
+    _IntNotNegative: /^[1-9]\d*|0$/,//匹配非负整数（正整数 + 0）,
+    _IntNotPositive: /^-[1-9]\d*|0$/,//匹配非正整数（负整数 + 0）
+    isInt: function(val) {
+        return this._Int.test(val);
+    },
+    isIntPositive: function(val) {
+        return this._IntPositive.test(val);
+    },
+    isIntNegative: function (val) {
+        return this._IntNegative.test(val);
+    },
+    isIntNotNegative: function (val) {
+        return this._IntNotNegative.test(val);
+    },
+    isIntNotPositive: function () {
+        return this._IntNotPositive.test(val);
+    },
+    isDate:function(val){
+        return this._Date.test(val);
+    },
+    isUrl:function(val){
+        return this._Url.test(val);
+    },
+    isMail:function(val){
+        return this._Mail.test(val);
+    },
+    isDigit:function(val){
+        return this._Digit.test(val);
+    },
+    isNumber:function(val){
+        return this._Number.test(val);
+    },
+    isNotBlank:function(val){
+        return !val || $.trim(val).length == 0;
+    },
+    isMobile:function(val){
+        return this._Mobile.test(val);
+    },
+    isTelDigit:function(val){
+        return this._TelDigit.test(val);
+    },
+    isValidText:function(val){
+        return this._Text.test(val);
+    },
+    isImageFile:function(val){
+        return this._ImageFile.test(val);
+    }
+};
+$regex = Util.Regex;  //you can use $regex

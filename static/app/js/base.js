@@ -22,10 +22,60 @@ $(document).ready(function() {
     //UML
     $("UML, uml, .UML, .uml, #UML, #uml").sequenceDiagram({theme: 'hand'});
 
+    //
+    Base.validateTest($('#validate-form'));
 });
 
 var Base = new Base();
 function Base(){
+    /**
+     * test form
+     * @param $form
+     */
+    this.validateTest = function ($form) {
+        $.validator.setDefaults( {
+            submitHandler: function (form) {
+                form.submit();
+            }
+        } );
+        var max = 999;
+        $form.validate({
+            rules:{
+                "gold-value": {
+                    required: true,
+                    digits: true,
+                    min: 1,
+                    max: max
+                }
+            },
+            messages: {
+                "gold-value": {
+                    required: "金币值不可为空",
+                    digits: "金币值必须为整数",
+                    min: "金币值不可小于1",
+                    max: "金币值余额不足"
+                }
+            },
+            errorElement: "span",
+            errorPlacement: function ( error, element ) {
+                // Add the `help-block` class to the error element
+                error.addClass( "validate-help");
+
+                if ( element.prop( "type" ) === "checkbox" ) {
+                    error.insertAfter( element.parent( "label" ) );
+                } else {
+                    error.insertAfter( element );
+                }
+            },
+            highlight: function ( element, errorClass, validClass ) {
+                $( element ).addClass( "has-error" ).removeClass( "has-success" );
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $( element ).addClass( "has-success" ).removeClass( "has-error" );
+            }
+        });
+
+    };
     /**
      * init the content height
      */

@@ -9,7 +9,7 @@ tags: [visit privilege]
 ## Visit privilege
 > Just as following
 
-<table  class="table table-bordered">
+<table  class="table table-bordered table-hover">
     <tr>
         <th></th>
         <th>one class</th>

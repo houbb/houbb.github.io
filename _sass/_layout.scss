@@ -104,7 +104,7 @@
 .site-footer {
     border-top: 1px solid $grey-color-light;
     padding: $spacing-unit 0;
-//    background: #eeeeee;
+    //    background: #eeeeee;
 }
 
 .footer-heading {
@@ -254,14 +254,44 @@
 }
 
 
+//----------------------------------------------------------------------------------------------------------------------
+
+/**
+ * a no decoration
+ * @use need define the width;
+ */
+
 /*
 *   table
 */
-
 tr th, tr td {
     text-align: center;
 }
+/*
+*   ul
+*/
+ul {
+    list-style: none;
+}
 
+/**
+ * define the opacity of elem, default is 0.5;
+ * @use input a value of decimal number, such as: 0.7
+ */
+@mixin  opacity($value: 0.5){
+    opacity: $value;
+    filter: alpha(opacity = $value * 100);
+}
+/**
+ * define the opacity of background;
+ * @param $color    default color is white;
+ * @param #value    default opacity is 0.5;
+ * @use opacityBg(0.7)
+ */
+@mixin  opacityBg($value: 0.5){
+    background: rgba(255, 255, 255, $value) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/
+    filter: Alpha(opacity=$value*100); background:#fff;/*实现IE背景透明*/
+}
 
 /*
 *   mCSB_1_scrollbar style
@@ -272,26 +302,22 @@ tr th, tr td {
     margin-right: 0;
 }
 #mCSB_1_dragger_vertical  .mCSB_dragger_bar{
-    opacity: 0.7;
-    filter: alpha(opacity = 70);
     background-color: #aaa;
     -o-transition: background-color .2s linear;
     -webkit-transition: background-color.2s linear;
     -moz-transition: background-color .2s linear;
     transition: background-color .2s linear;
+    @include opacity(0.7);
 }
 .mCSB_draggerRail {
     background-color: #eee;
-    opacity: 0.5;
-    filter: alpha(opacity = 50);
+    @include opacity(0.5);
 }
-
 
 /*
 *   otc
 */
-ul#markdown-toc {
-    list-style: none;
+#markdown-toc {
     position: fixed;
     left: 5px;
     bottom: 90px;
@@ -300,9 +326,8 @@ ul#markdown-toc {
     box-sizing: border-box;
     background-color: white;
     padding: 15px;
-    background: rgba(255, 255, 255, 0.7) none repeat scroll 0 0 !important;/*实现FF背景透明，文字不透明*/
-    filter: Alpha(opacity=70); background:#fff;/*实现IE背景透明*/
     z-index: 999;
+    @include opacityBg(0.6);
 }
 
 ul#markdown-toc  > li > a {
@@ -311,9 +336,75 @@ ul#markdown-toc  > li > a {
     overflow: hidden;
     white-space: nowrap;
 }
+
 //left
 ul#markdown-toc .fa {
     cursor: pointer;
     margin-top: 5px;
 }
 
+//validate help
+.validate-help {
+    display: inline-block;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    color: #a94442;
+}
+
+/*override input style*/
+input {
+    display: inline-block;
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857143;
+    color: #555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+    -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+input:focus {
+    border-color: #66afe9;
+    outline: 0;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+/**
+ * define input that has-status
+ * @param $border border color
+ */
+@mixin input-status($border) {
+    border-color: $border;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+/**
+ * define input that has-status focus
+ * @param $border border color
+ * @param $shadow shadow color
+ */
+@mixin input-status-focus($border, $shadow) {
+    border-color: $border;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px $shadow;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px $shadow;
+}
+input.has-error {
+    @include input-status(#a94442);
+}
+input.has-error:focus {
+    @include input-status-focus(#843534, #ce8483);
+}
+input.has-success {
+    @include input-status(#3c763d);
+}
+input.has-success:focus {
+    @include input-status-focus(#2b542c, #67b168);
+}
