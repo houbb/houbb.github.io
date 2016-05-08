@@ -421,7 +421,87 @@ echo@other.com
 echo@other.com
 ```
 
+## Extends
+
+Now, we extends freemarker, add three directive :
+```
+@extends,@block,@override
+```
+
+<label class="label label-info">purpose</label>
+
+Parent template define the layout, child template can **override** the content of layout.
 
 
+- +add base.ftl
 
+```html
+<html>
+<head>
+    <@block name="head">base_head_content</@block>
+</head>
+<body>
+    <@block name="body">base_body_content</@block>
+</body>
+</html>
+```
 
+- change demo.ftl
+
+```html
+<@override name="body">
+
+<div class='content'>
+    Powered By rapid-framework
+</div>
+</@override>
+
+<@extends name="base.ftl"/>
+```
+
+- output
+
+```html
+<html>
+<head>
+base_head_content
+</head>
+<body>
+
+<div class='content'>
+    Powered By rapid-framework
+</div>
+
+</body>
+</html>
+```
+
+- Before use these extends directive, you should add them into config.
+
+```java
+/**
+ * define Configuration
+ * @return
+ * @throws Exception
+ */
+public static Configuration getConfiguration() throws Exception {
+    if(configuration == null) {
+        configuration = new Configuration();
+        configuration.setDirectoryForTemplateLoading(new File(PathHelper.getWebPath()));    //path
+        configuration.setObjectWrapper(new DefaultObjectWrapper());
+        configuration.setSharedVariable("block", new BlockDirective());
+        configuration.setSharedVariable("override", new OverrideDirective());
+        configuration.setSharedVariable("extends", new ExtendsDirective());
+    }
+
+    return configuration;
+}
+```
+
+these directives belong to **rapid-framework**.
+
+> [rapid-framework zh_CN](http://www.oschina.net/p/rapid-framework/)
+
+Or, you can also just following files into your project.In fact, it's part of rapid-framework.jar
+
+> <a title="directives" href="{{ site.url }}/static/download/freemarker.zip"><i class="fa fa-fw fa-download"></i>&nbsp;freemarker.zip</a>

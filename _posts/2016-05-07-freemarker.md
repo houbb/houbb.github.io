@@ -109,8 +109,31 @@ public class PathHelper {
 
 - get freemarker template
 
+<label class="label label-warning">Warning</label>
+
+Do not needlessly re-create Configuration instances; it's expensive, among others because you lose the template cache.
+Configuration instances meant to be application-level **singletons**.
+
 ```java
 public class FreemarkerHelper {
+    private FreemarkerHelper() {}
+    private static Configuration configuration = null;
+
+    /**
+     * define Configuration
+     * @return
+     * @throws Exception
+     */
+    public static Configuration getConfiguration() throws Exception {
+        if(configuration == null) {
+            configuration = new Configuration();
+            configuration.setDirectoryForTemplateLoading(new File(PathHelper.getWebPath()));    //path
+            configuration.setObjectWrapper(new DefaultObjectWrapper());
+        }
+
+        return configuration;
+    }
+
     /**
      * Get template by ftl name under web;
      * @param ftlName
@@ -118,10 +141,8 @@ public class FreemarkerHelper {
      * @throws Exception
      */
     public static Template getTemplate(String ftlName) throws Exception {
-        Configuration config = new Configuration();
-        config.setDirectoryForTemplateLoading(new File(PathHelper.getWebPath()));
-        config.setObjectWrapper(new DefaultObjectWrapper());
-        Template template = config.getTemplate(ftlName, "UTF-8");
+        Configuration configuration1 = getConfiguration();
+        Template template = configuration1.getTemplate(ftlName, "UTF-8");       //default charset UTF-8
 
         return template;
     }
