@@ -407,3 +407,14 @@ input.has-success {
 input.has-success:focus {
     @include input-status-focus(#2b542c, #67b168);
 }
+
+/**
+ * define the gold border for img;
+ */
+.gold-img-border {
+    border: 3px solid gold;
+}
+
+.blue-img-border {
+    border: 3px solid $blue-color;
+}
