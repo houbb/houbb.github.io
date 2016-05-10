@@ -1,6 +1,6 @@
 ---
 layout: post
-title: data-*
+title: attr('data-*') and data()
 date:  2016-5-9 21:53:28 +0800
 categories: [jQuery]
 tags: [data]
