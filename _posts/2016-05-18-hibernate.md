@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Hibernate
-date:  2016-05-18 23:56:52 +0800
+date:  2016-05-19 23:56:52 +0800
 categories: [redhat]
 tags: [hibernate]
 ---
@@ -227,3 +227,136 @@ Event{id=4, title='create Event', date=2016-05-20 00:04:40.0}
 
 Process finished with exit code 0
 ```
+
+# Annotation
+
+Now, let's use **annotation** way to achieve code above.
+
+- Student.java
+
+```java
+/**
+ * Created by houbinbin on 16/5/20.
+ */
+@Entity
+public class Student {
+    private Long id;
+    private String name;
+    private int score;
+
+
+    @Id
+    @GeneratedValue
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    //getter and setter...
+
+    //default constructor and with members' constructor
+
+    //toString()
+
+}
+
+```
+
+- StudentService.java
+
+```java
+public class StudentService extends BaseService<Student> {
+    public String getEntityName() {
+        return "Student";
+    }
+}
+```
+
+- BaseService.java
+
+```java
+/**
+ * Created by houbinbin on 16/5/20.
+ */
+public abstract class BaseService<T> {
+    /**
+     * get current entity's name;
+     * @return
+     */
+    public abstract String getEntityName();
+
+    /**
+     * save the entity.
+     * @param entity
+     * @return
+     */
+    public Serializable save(T entity) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        Serializable result = session.save(entity);
+        session.getTransaction().commit();
+
+        return result;
+    }
+
+    /**
+     * list all data of entity;
+     * @return
+     */
+    public List<T> list() {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        session.beginTransaction();
+
+        List<T> result = session.createQuery("FROM " + getEntityName()).list();
+        session.getTransaction().commit();
+        return result;
+    }
+
+    /**
+     * show the list
+     * - you need write the correct toString() of entity;
+     */
+    public void show() {
+        List<T> result = list();
+
+        for(T entity : result) {
+            System.out.println(entity);
+        }
+    }
+}
+```
+
+- StudentTest.java
+
+```java
+public class StudentTest extends TestCase {
+    private StudentService studentService;
+
+    @Before
+    public void setUp() {
+        studentService = new StudentService();
+    }
+
+    @Test
+    public void testCreate() {
+        Student student = new Student("xiaoming", 70);
+
+        studentService.save(student);
+    }
+
+    @Test
+    public void testShow() {
+        studentService.show();
+    }
+
+    @After
+    public void tearDown() {
+        HibernateUtil.getSessionFactory().close();
+    }
+}
+```
+
