@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Hibernate
-date:  2016-05-19 23:56:52 +0800
+date:  2016-05-21 18:35:52 +0800
 categories: [redhat]
 tags: [hibernate]
 ---
@@ -359,4 +359,138 @@ public class StudentTest extends TestCase {
     }
 }
 ```
+
+# Mapping
+
+- @Table
+
+The identifier uniquely identifies each row in that table. By default the name of the table is assumed to be the
+same as the name of the entity. To explicitly give the name of the table or to specify other information about the table,
+we would use the javax.persistence.Table annotation.
+
+```java
+@Entity
+@Table(name="t_simple")
+public class Simple {
+    private int id;
+
+    @Id
+    @GeneratedValue
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+}
+```
+
+the created table named t_simple.
+
+- @Basic
+
+Strictly speaking, a basic type is denoted with the javax.persistence.Basic annotation.
+Generally speaking the @Basic annotation can be ignored. Both of the following examples are ultimately the same.
+
+so, the code above is the same as...
+
+```java
+@Entity
+@Table(name="t_simple")
+public class Simple {
+    private int id;
+
+    @Id
+    @GeneratedValue
+    @Basic
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+}
+```
+
+- @Column
+
+For basic type attributes, the implicit naming rule is that the column name is the same as the attribute name.
+If that implicit naming rule does not meet your requirements, you can explicitly tell Hibernate (and other providers) the column name to use.
+
+```java
+@Entity
+public class Simple {
+    private int id;
+
+    @Id
+    @GeneratedValue
+    @Column(name="t_id")
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+}
+```
+
+the created table column will be "t_id".
+
+- @Enumerated
+
+> ORDINAL - stored according to the enum value's ordinal position within the enum class, as indicated by java.lang.Enum#ordinal
+
+> STRING - stored according to the enum value's name, as indicated by java.lang.Enum#name
+
+```java
+@Entity
+public class Simple {
+    private int id;
+    private Gender gender;
+
+    @Id
+    @GeneratedValue
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Enumerated(STRING)
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
+    }
+
+    public static enum Gender {
+        MALE, FEMALE
+    }
+}
+```
+
+result is MALE;
+
+change into
+
+```java
+@Enumerated
+public Gender getGender() {
+    return gender;
+}
+```
+
+result is 0;
+
+
+
+
+
 

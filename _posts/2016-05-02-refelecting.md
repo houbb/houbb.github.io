@@ -206,6 +206,29 @@ Process finished with exit code 0
 ```
 
 
+# lombok
+
+> [lombok](https://projectlombok.org/)
+
+> [lombok doc](https://projectlombok.org/features/index.html)
+
+- add jar
+
+```xml
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.16.8</version>
+</dependency>
+```
+
+- install plugin in idea.
+
+```
+IntelliJ IDEA->Prefercence->plugins
+```
+
+search for <label>lombok</label>, install and restart.
 
 
 
