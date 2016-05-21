@@ -228,7 +228,7 @@ Process finished with exit code 0
 IntelliJ IDEA->Prefercence->plugins
 ```
 
-search for <label>lombok</label>, install and restart.
+search for <label class="label label-success">lombok</label>, install and restart.
 
 
 
