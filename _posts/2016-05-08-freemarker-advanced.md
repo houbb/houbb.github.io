@@ -504,4 +504,6 @@ these directives belong to **rapid-framework**.
 
 Or, you can also just following files into your project.In fact, it's part of rapid-framework.jar
 
-> <a title="directives" href="{{ site.url }}/static/download/freemarker.zip"><i class="fa fa-fw fa-download"></i>&nbsp;freemarker.zip</a>
+> <a title="directives" href="{{ site.url }}/static/download/freemarker/freemarker.zip"><i class="fa fa-fw fa-download"></i>&nbsp;freemarker.zip</a>
+
+> <a title="directives" href="{{ site.url }}/static/download/freemarker/FreeMarker_2.3.23_Manual_zh_CN.zip"><i class="fa fa-fw fa-download"></i>&nbsp;freemarker_manual_zh_CN.zip</a>
