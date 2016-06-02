@@ -1,6 +1,6 @@
 ---
 layout: post
-title: if else
+title: Refactoring
 date:  2016-6-2 13:21:08 +0800
 categories: [Java]
 tags: [refactoring]
@@ -9,16 +9,13 @@ published: true
 * any list
 {:toc}
 
-## why
+## If else
 
 You may think too many if else is not elegant, want to solve it. But what is elegant?
 
 It's not necessary to replace if else just for refactoring. Do when it's necessary.
 
-
-## skills
-
-Here are some skills to instead of if else.
+> Here are some skills to instead of if else.
 
 ### two branches
 
