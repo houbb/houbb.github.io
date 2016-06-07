@@ -16,6 +16,25 @@ Subversion is an open source version control system.
 > [subversion](https://subversion.apache.org/)
 
 
+## Lock mode
+
+- strict locking
+
+    One file can edit by only one person.
+    
+- optimistic locking (recommend)
+    
+    One file can edit by different person, sometimes, we need to handle the conflict.
+    
+
+## Command
+
+- svn --version
+
+
+
+## Problem
+
 <label class="label label-danger">Cannot run program "svn"</label>
 
 ```
