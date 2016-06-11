@@ -538,6 +538,14 @@ So, the <kbd>*</kbd> in ```com.ryo.model.*``` is stand for package name. If your
 
 You need write ```com.ryo.*```
 
+Or, you can write like this...
+
+```xml
+<list>
+    <value>com.ryo.model</value>
+</list>
+```
+
 
 
 
