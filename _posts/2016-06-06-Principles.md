@@ -45,6 +45,7 @@ What is wanted here is something like the following substitution property: If fo
 <footer>BarbaraLiskov, Data Abstraction and Hierarchy, SIGPLAN Notices, 23,5 (May, 1988).</footer>
 
 
+
 ## ISP
 
 > The InterfaceSegregationPrinciple

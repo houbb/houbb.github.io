@@ -489,6 +489,63 @@ public Gender getGender() {
 
 result is 0;
 
+# Spring
+
+When hibernate meets spring, things will be interesting...What I want to say, is hibernate's model define.
+
+- hbm.xml
+
+```xml
+<bean id="mySessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+    <property name="mappingResources">
+        <list>
+            <value>user.hbm.xml</value>
+        </list>
+    </property>
+</bean>
+```
+
+- class
+
+```xml
+<property name="annotatedClasses">
+    <list>
+        <value>com.ryo.model.User</value>
+    </list>
+</property>
+```
+
+- auto scan
+
+```xml
+<property name="packagesToScan">
+    <list>
+        <value>com.ryo.model.*</value>
+    </list>
+</property>
+```
+
+<label class="label label-warning">Notice</label>
+
+> packagesToScan specify **packages** to search for autodetection of your entity classes in the classpath.
+
+So, the <kbd>*</kbd> in ```com.ryo.model.*``` is stand for package name. If your model classes are like this...
+
+```xml
+/com/ryo/model/
+    - User.java
+```
+
+You need write ```com.ryo.*```
+
+Or, you can write like this...
+
+```xml
+<list>
+    <value>com.ryo.model</value>
+</list>
+```
+
 
 
 
