@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Exceptions
-date:  2016-6-6 16:19:50 +0800
+date:  2016-06-21 21:33:46 +0800
 categories: [Util]
 tags: [exception]
 published: true
@@ -94,5 +94,32 @@ public class MessageDAOImpl implements MessageDAO {
 }
 ```
 
+> org.springframework.web.servlet.PageNotFound noHandlerFound
+
+<label class="label label-danger">Error</label>
+
+```
+No mapping found for HTTP request with URI [/views/index.jsp] in DispatcherServlet with name 'springmvc'
+```
+
+<label class="label label-success">Solve</label>
+
+- change the web.xml
+
+```xml
+<servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <url-pattern>/*</url-pattern>
+</servlet-mapping>
+```
+
+into
+
+```xml
+<servlet-mapping>
+    <servlet-name>springmvc</servlet-name>
+    <url-pattern>/</url-pattern>
+</servlet-mapping>
+```
 
 
