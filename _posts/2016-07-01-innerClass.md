@@ -174,7 +174,7 @@ public class Student extends Person {
 }
 ```
 
-## Use Anonymous Inner Class
+## extends class
 
 If the *Student* only use once, we can achieve it like this
 
@@ -192,7 +192,7 @@ public void testAnonymous() {
 }
 ```
 
-## Use Anonymous in interfaces
+## implements interface
 
 - Sayable.java
 
