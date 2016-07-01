@@ -9,6 +9,12 @@ tags: [Exception,Log]
 * any list
 {:toc}
 
+## Throwable
+
+It's uml may like this.
+
+![throwable]({{ site.url }}/static/app/img/2016-07-01-Throwable.png)
+
 ## Exception
 
 - student class
@@ -240,6 +246,32 @@ Process finished with exit code 0
 
 Do not use return statement in finally block and catch block, use it after try catch block;
 
+- finally will finally called, so this result is 2.
+
+```
+public static int getReturnVal() {
+    try {
+        return 1;
+    } finally {
+        return 2;
+    }
+}
+```
+
+- return statement in try is before finally, so result is 1.
+
+```
+public static int demo() {
+    int x = 1;
+    try {
+        return x;
+    } finally {
+        x = 2;
+    }
+}
+```
+
+
 ## Log
 
 > [log4j](http://logging.apache.org/log4j)
@@ -391,5 +423,7 @@ public void testExceptionWithMessage() {
     }
 }
 ```
+
+
 
 
