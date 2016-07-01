@@ -242,4 +242,109 @@ http://localhost:8080/hello
 hello world
 ```
 
+# Controller log
 
+[web](http://logging.apache.org/log4j/2.x/manual/webapp.html)
+
+
+- pom.xml
+
+```xml
+<!--log4j-->
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+    <version>${log4j.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>${log4j.version}</version>
+</dependency>
+<dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-web</artifactId>
+    <version>${log4j.version}</version>
+</dependency>
+```
+
+- define controller call interceptor.
+
+```java
+package com.ryo.interceptor;
+
+import com.alibaba.fastjson.JSON;
+import com.ryo.constants.SessionKeys;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.*;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Created by houbinbin on 16/6/30.
+ * - Controller 访问日志
+ */
+@Component
+@Aspect
+public class ControllerLogInterceptor {
+    static Logger logger = LogManager.getLogger();
+
+    private String requestPath = null; // 请求地址
+    private String userName = null; // 用户名
+    private Map<?, ?> inputParamMap = null; // 传入参数
+    private Map<String, Object> outputParamMap = null; // 存放输出结果
+
+
+    @Pointcut("execution(public * com.ryo.controller..*.*(..))")
+    public void myPointcut() {
+    }
+
+    @Before("myPointcut()")
+    public void start() {
+    }
+
+    @After("myPointcut()")
+    public void end() {
+        printLog();
+    }
+
+    @Around("myPointcut()")
+    public Object around(ProceedingJoinPoint point) throws Throwable {
+        /**
+         * 1.获取request信息
+         * 2.根据request获取session
+         * 3.从session中取出登录用户信息
+         */
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+        // 从session中获取用户信息
+        userName = (String) request.getSession().getAttribute(SessionKeys.SESSION_USERNAME);
+
+        // 获取输入参数
+        inputParamMap = request.getParameterMap();
+
+        // 获取请求地址
+        requestPath = request.getRequestURI();
+
+        // 执行完方法的返回值：调用proceed()方法，就会触发切入点方法执行
+        outputParamMap = new HashMap<String, Object>();
+        Object result = point.proceed();    // result的值就是被拦截方法的返回值
+        outputParamMap.put("result", result);
+
+        return result;
+    }
+
+    private void printLog() {
+        logger.info("USER：" + userName
+                + "  URL：" + requestPath + "\n"
+                + "Param：" + JSON.toJSON(inputParamMap) + "\n" + "Result：" + JSON.toJSON(outputParamMap)+"\n");
+    }
+}
+```
