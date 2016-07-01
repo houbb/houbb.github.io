@@ -11,7 +11,7 @@ tags: [Exception,Log]
 
 ## Throwable
 
-It's uml may like this.
+It's UML may like this.
 
 ![throwable]({{ site.url }}/static/app/img/2016-07-01-Throwable.png)
 
