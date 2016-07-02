@@ -4,7 +4,7 @@ title: Thread Advanced
 date:  2016-07-02 16:57:06 +0800
 categories: [Java]
 tags: [thread]
-published: true
+published: false
 ---
 
 * any list
@@ -273,6 +273,155 @@ public class ImmutableRGB {
                 "Inverse of " + name);
     }
 }
+```
+
+# High Level Concurrency Objects
+
+In this section we'll look at some of the high-level concurrency features introduced with version 5.0 of the Java platform.
+Most of these features are implemented in the new ```java.util.concurrent``` packages.
+
+## Lock Objects
+
+More sophisticated locking idioms are supported by the ```java.util.concurrent.locks``` package.
+We won't examine this package in detail, but instead will focus on its most basic interface, ```Lock```.
+
+- SafeLock.java
+
+```java
+public class SafeLock {
+    static class Friend {
+        private final String name;
+        private final Lock lock = new ReentrantLock();
+
+        public Friend(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return this.name;
+        }
+
+        public boolean impendingBow(Friend bower) {
+            Boolean myLock = false;
+            Boolean yourLock = false;
+            try {
+                myLock = lock.tryLock();
+                yourLock = bower.lock.tryLock();
+            } finally {
+                if (!(myLock && yourLock)) {
+                    if (myLock) {
+                        lock.unlock();
+                    }
+                    if (yourLock) {
+                        bower.lock.unlock();
+                    }
+                }
+            }
+            return myLock && yourLock;
+        }
+
+        public void bow(Friend bower) {
+            if (impendingBow(bower)) {
+                try {
+                    System.out.format("%s: %s has"
+                                    + " bowed to me!%n",
+                            this.name, bower.getName());
+                    bower.bowBack(this);
+                } finally {
+                    lock.unlock();
+                    bower.lock.unlock();
+                }
+            } else {
+                System.out.format("%s: %s started"
+                                + " to bow to me, but saw that"
+                                + " I was already bowing to"
+                                + " him.%n",
+                        this.name, bower.getName());
+            }
+        }
+
+        public void bowBack(Friend bower) {
+            System.out.format("%s: %s has" +
+                            " bowed back to me!%n",
+                    this.name, bower.getName());
+        }
+    }
+
+    static class BowLoop implements Runnable {
+        private Friend bower;
+        private Friend bowee;
+
+        public BowLoop(Friend bower, Friend bowee) {
+            this.bower = bower;
+            this.bowee = bowee;
+        }
+
+        public void run() {
+            Random random = new Random();
+            for (int i = 0; i < 10; i++) {
+                try {
+                    Thread.sleep(random.nextInt(100));
+                } catch (InterruptedException e) {}
+                bowee.bow(bower);
+            }
+        }
+    }
+
+
+    public static void main(String[] args) {
+        final Friend alphonse =
+                new Friend("Alphonse");
+        final Friend gaston =
+                new Friend("Gaston");
+        new Thread(new BowLoop(alphonse, gaston)).start();
+        new Thread(new BowLoop(gaston, alphonse)).start();
+    }
+}
+```
+
+- result
+
+```
+Gaston: Alphonse has bowed to me!
+Alphonse: Gaston has bowed back to me!
+Alphonse: Gaston has bowed to me!
+Gaston: Alphonse has bowed back to me!
+Alphonse: Gaston has bowed to me!
+Gaston: Alphonse has bowed back to me!
+Alphonse: Gaston has bowed to me!
+Gaston: Alphonse has bowed back to me!
+Gaston: Alphonse has bowed to me!
+Alphonse: Gaston has bowed back to me!
+Alphonse: Gaston has bowed to me!
+Gaston: Alphonse has bowed back to me!
+Alphonse: Gaston has bowed to me!
+Gaston: Alphonse has bowed back to me!
+Alphonse: Gaston has bowed to me!
+Gaston: Alphonse has bowed back to me!
+Gaston: Alphonse has bowed to me!
+Alphonse: Gaston has bowed back to me!
+Alphonse: Gaston has bowed to me!
+Gaston: Alphonse has bowed back to me!
+Alphonse: Gaston has bowed to me!
+Gaston: Alphonse has bowed back to me!
+Gaston: Alphonse has bowed to me!
+Alphonse: Gaston has bowed back to me!
+Alphonse: Gaston has bowed to me!
+Gaston: Alphonse has bowed back to me!
+Gaston: Alphonse started to bow to me, but saw that I was already bowing to him.
+Alphonse: Gaston started to bow to me, but saw that I was already bowing to him.
+Gaston: Alphonse has bowed to me!
+Alphonse: Gaston has bowed back to me!
+Gaston: Alphonse has bowed to me!
+Alphonse: Gaston has bowed back to me!
+Gaston: Alphonse has bowed to me!
+Alphonse: Gaston has bowed back to me!
+Gaston: Alphonse has bowed to me!
+Alphonse: Gaston has bowed back to me!
+Gaston: Alphonse has bowed to me!
+Alphonse: Gaston has bowed back to me!
+
+Process finished with exit code 0
 ```
 
 
