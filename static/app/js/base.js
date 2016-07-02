@@ -24,10 +24,27 @@ $(document).ready(function() {
 
     //
     Base.validateTest($('#validate-form'));
+
+    Base.musicPlay();
 });
 
 var Base = new Base();
 function Base(){
+    this.musicPlay = function () {
+        $("#bg-music-btn").on('click', function () {
+            var icon = $(this).find("i");
+            var audio = document.getElementById("bg-music");; //背景音乐
+
+            if(icon.hasClass("fa-play")) {
+                icon.removeClass("fa-play").addClass("fa-pause");
+                audio.play();
+            } else if(icon.hasClass("fa-pause")) {
+                icon.removeClass("fa-pause").addClass("fa-play");
+                audio.pause();
+            }
+        });
+    };
+
     /**
      * test form
      * @param $form
