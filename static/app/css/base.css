@@ -60,3 +60,16 @@
     background-color: #fff;
 }
 
+#scroll-top {
+    background: #74B3FB;
+    color: #ffffff;
+    bottom: 100px;
+    right: 20px;
+    height: 38px;
+    line-height: 38px;
+    width: 38px;
+    position: fixed;
+    z-index: 9999;
+
+    display: none;
+}

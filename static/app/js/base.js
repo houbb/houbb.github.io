@@ -26,10 +26,29 @@ $(document).ready(function() {
     Base.validateTest($('#validate-form'));
 
     Base.musicPlay();
+    Base.scrollTop();
 });
 
 var Base = new Base();
 function Base(){
+    this.scrollTop = function () {
+        var scrollTimeout;
+        $(window).scroll(function() {
+            clearTimeout(scrollTimeout);
+            if ($(window).scrollTop() > 400) {
+                scrollTimeout = setTimeout(function() {
+                    $('#scroll-top:hidden').fadeIn()
+                }, 100);
+            } else {
+                scrollTimeout = setTimeout(function() {
+                    $('#scroll-top:visible').fadeOut()
+                }, 100);
+            }
+        });
+
+        
+    };
+
     this.musicPlay = function () {
         $("#bg-music-btn").on('click', function () {
             var icon = $(this).find("i");
