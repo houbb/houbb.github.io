@@ -1,15 +1,15 @@
 ---
 layout: post
-title: Subversion
+title: Subversion & Git
 date:  2016-5-16 22:54:52 +0800
-categories: [apache]
-tags: [Subversion]
+categories: [Version Control]
+tags: [subversion, git]
 ---
 
 * any list
 {:toc}
 
-## Subversion
+# Subversion
 
 Subversion is an open source version control system.
 
@@ -32,7 +32,6 @@ Subversion is an open source version control system.
 - svn --version
 
 
-
 ## Problem
 
 <label class="label label-danger">Cannot run program "svn"</label>
@@ -48,6 +47,19 @@ Cannot load supported formats: Cannot run program "svn": CreateProcess error=2
 - Set the idea, use <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>s</kbd> , choose Version Control -> Subversion -> General.
 
 ![subversion]({{ site.url }}/static/app/img/2016-05-17-subversion.jpg)
+
+
+# Git
+
+Git is a *free and open source* distributed version control system designed to handle everything from small to very large projects with speed and efficiency.
+
+> [git](https://git-scm.com)
+
+> [git zh_CN](http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
+
+
+
+
 
 
 
