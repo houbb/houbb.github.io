@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Log4j2
-date:  2016-5-21 10:00:13 +0800
+title: JS Exception
+date:  2016-7-6 11:45:40 +0800
 categories: [Exception]
 tags: [js]
 published: true
