@@ -16,10 +16,10 @@ published: true
 </uml>
 
 
-## spring
+# spring
 
 
-> HibernateException
+## HibernateException
 
 <label class="label label-danger">Error</label>
 
@@ -60,7 +60,7 @@ public class MessageServiceImpl implements MessageService {
 ```
 
 
-> TransactionSystemException
+## TransactionSystemException
 
 <label class="label label-danger">Error</label>
 
@@ -120,6 +120,80 @@ into
     <servlet-name>springmvc</servlet-name>
     <url-pattern>/</url-pattern>
 </servlet-mapping>
+```
+
+# Java
+
+## getResource
+
+It's no to use ```ClassLoader.getResource()```, you can use ```class.getResource()``` directly.
+
+- file tree, the *build* package is compile after the *src*.
+
+```
+|--project
+    |--src
+        |--javaapplication
+            |--Test.java
+            |--file1.txt
+        |--file2.txt
+    |--build
+        |--javaapplication
+            |--Test.class
+            |--file3.txt
+        |--file4.txt
+```
+
+- get file3.txt
+
+```java
+File file3 = new File(Test.class.getResource("file3.txt").getFile());
+File file3 = new File(Test.class.getResource("/javaapplication/file3.txt").getFile());
+File file3 = new File(Test.class.getClassLoader().getResource("javaapplication/file3.txt").getFile());
+```
+
+- get file4.txt
+
+```java
+File file4 = new File(Test.class.getResource("/file4.txt").getFile());
+File file4 = new File(Test.class.getClassLoader().getResource("file4.txt").getFile());
+```
+
+- The *getResourceAsStream()* is just like
+
+```java
+new FileInputStream(Test.class.getResource(filePath).getFile());
+```
+
+<label class="label label-danger">Error</label>
+
+But following code above, I always got ```NullPointer``` error in **Idea maven project**.
+
+<label class="label label-info">Why</label>
+
+**getResource()** is depend on the files after compile, but there is no files in *src* package after compile except *.class* files.
+
+<label class="label label-success">Solve</label>
+
+So, we need put properties files in **resources** package.
+
+```
+|--project
+    |--src
+        |--java
+            |--Test.java
+        |--resources
+            |--file3.txt
+    |--target
+        |--classes
+            |--Test.class
+            |--file3.txt
+```
+
+and read them like this, use <kbd>/</kbd> location to the root path.
+
+```
+Test.class.getResourceAsStream("/file3.txt");
 ```
 
 
