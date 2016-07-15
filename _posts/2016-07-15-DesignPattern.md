@@ -18,21 +18,13 @@ to that problem, in such a way that you can use this solution a million times ov
 
 In general, a pattern has four essential elements:
 
-- pattern name
+The **pattern name** is a handle we can use to describe a design problem, its solutions, and consequences in a word or two.
 
-The pattern name is a handle we can use to describe a design problem, its solutions, and consequences in a word or two.
+The **problem** describes when to apply the pattern.
 
-- problem
+The **solution** describes the elements that make up the design, their relationships, responsibilities, and collaborations.
 
-The problem describes when to apply the pattern.
-
-- solution
-
-The solution describes the elements that make up the design, their relationships, responsibilities, and collaborations.
-
-- consequences
-
-The consequences are the results and trade-offs of applying the pattern.
+The **consequences** are the results and trade-offs of applying the pattern.
 
 # Singleton
 
