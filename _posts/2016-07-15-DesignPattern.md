@@ -149,5 +149,244 @@ public class Starve {
 }
 ```
 
+# Prototype
+
+Specify the kinds of objects to create using a prototypical instance, and create new objects by **copying this prototype**.
+
+[zh_CN prototype](http://www.52ij.com/jishu/104.html)
+
+> Applicability
+
+Use the Prototype pattern when a system should be *independent of* how its products are created, composed, and represented; and
+
+- when the classes to instantiate are specified at run-time, for example, by dynamic loading
+
+- to avoid building a class hierarchy of factories that parallels the class hierarchy of products
+
+- when instances of a class can have one of only a few different combinations of state.
+It may be more convenient to install a corresponding number of prototypes and clone them rather than instantiating the class manually, each time with the appropriate state.
+
+> Consequences
+
+It hides the concrete product classes from the client, thereby reducing the number of names clients know about.
+Moreover, these patterns let a client work with application-specific classes without modification.
+
+
+> Implementation
+
+- Prototype.java
+
+```java
+package com.ryo.prototype;
+
+/**
+ * Created by 侯彬彬 on 2016/7/15.
+ */
+public class Prototype implements Cloneable {
+    private String name;
+
+    public Prototype(String name) {
+        this.name = name;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "Prototype{" +
+                "name='" + name + '\'' +
+                '}';
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+- PrototypeTest.java
+
+```java
+public class PrototypeTest extends TestCase {
+    @Test
+    public void testClone() throws Exception {
+        Prototype prototype = new Prototype("ryo");
+        final String json = "Prototype{name='ryo'}";
+
+        assertEquals(json, prototype.toString());
+
+        Prototype clone = (Prototype) prototype.clone();
+        assertEquals(json, clone.toString());
+    }
+}
+```
+
+## shallow copy
+
+![shallowCopy]({{site.url}}/static/app/img/2016-07-15-shallowCopy.png)
+
+Java object's ```clone()``` is shallow copy. See the flowing demo.
+
+- Person.java
+
+```java
+public class Person {
+    private String name;
+    private int age;
+
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+}
+```
+
+- Prototype.java
+
+```java
+public class Prototype implements Cloneable {
+    private Person person;
+
+    public Prototype(Person person) {
+        this.person = person;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "Prototype{" +
+                "person=" + person +
+                '}';
+    }
+}
+```
+
+- test
+
+```java
+public class PrototypeTest extends TestCase {
+    @Test
+    public void testClone() throws Exception {
+        Person person = new Person("ryo", 23);
+        Prototype prototype = new Prototype(person);
+
+        Prototype clone = (Prototype) prototype.clone();
+        Person person1 = clone.getPerson();
+        person1.setName("jack");
+
+        assertEquals("Prototype{person=Person{name='jack', age=23}}", prototype.toString());
+    }
+}
+```
+
+## deep copy
+
+![shallowCopy]({{site.url}}/static/app/img/2016-07-15-deepCopy.png)
+
+- add ```Serializable``` for Person
+
+```java
+public class Person implements Serializable {
+    //...
+}
+```
+
+- DeepCopy.java
+
+```java
+package com.ryo.prototype;
+
+import java.io.*;
+
+/**
+ * Created by 侯彬彬 on 2016/7/15.
+ */
+public class DeepCopy implements Cloneable, Serializable {
+    private Person person;
+
+    public DeepCopy(Person person) {
+        this.person = person;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    @Override
+    public String toString() {
+        return "DeepCopy{" +
+                "person=" + person +
+                '}';
+    }
+
+    public Object deepClone() {
+        ByteArrayOutputStream bo = new ByteArrayOutputStream();
+        Object object = null;
+        try {
+            ObjectOutputStream oo = new ObjectOutputStream(bo);
+            oo.writeObject(this);
+            ByteArrayInputStream bi = new ByteArrayInputStream(bo.toByteArray());
+            ObjectInputStream oi = new ObjectInputStream(bi);
+            object = oi.readObject();
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+
+        return object;
+    }
+}
+```
+
+- DeepCopyTest.java
+
+```java
+public class DeepCopyTest extends TestCase {
+
+    @Test
+    public void testDeepClone() throws Exception {
+        Person person = new Person("ryo", 23);
+        DeepCopy deepCopy = new DeepCopy(person);
+
+        DeepCopy clone = (DeepCopy) deepCopy.deepClone();
+        Person person1 = clone.getPerson();
+        person1.setName("jack");
+
+        assertEquals("DeepCopy{person=Person{name='jack', age=23}}", clone.toString());
+        assertEquals("DeepCopy{person=Person{name='ryo', age=23}}", deepCopy.toString());
+    }
+}
+```
+
+
+
+
+
 
 
