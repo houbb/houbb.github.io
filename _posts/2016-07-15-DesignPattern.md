@@ -384,6 +384,293 @@ public class DeepCopyTest extends TestCase {
 }
 ```
 
+# Factory
+
+## simple factory
+
+![simpleFactory]({{site.url}}/static/app/img/2016-07-15-simple-factory.png)
+
+
+- interface
+
+```java
+public interface Car {
+    String info();
+}
+```
+
+- class1
+
+```java
+public class BaomaCar implements Car {
+    public static final String BAO_MA = "Baoma";
+
+    @Override
+    public String info() {
+        return BAO_MA;
+    }
+}
+```
+
+- class2
+
+```java
+public class AodiCar implements Car {
+    public static final String AO_DI = "Ao di";
+
+    @Override
+    public String info() {
+        return AO_DI;
+    }
+}
+```
+
+- factory
+
+```java
+public class SimpleFactory {
+    private SimpleFactory(){}
+
+    public static Car factory(String type) {
+        Car car = null;
+
+        if (type.equals(BaomaCar.BAO_MA)) {
+            car = new BaomaCar();
+        } else if (type.equals(AodiCar.AO_DI)) {
+            car = new AodiCar();
+        }
+
+        return car;
+    }
+}
+```
+
+- test
+
+```java
+@Test
+public void testFactory() {
+    Car car = SimpleFactory.factory(BaomaCar.BAO_MA);
+    assertEquals(BaomaCar.BAO_MA, car.info());
+
+    Car car1 = SimpleFactory.factory(AodiCar.AO_DI);
+    assertEquals(AodiCar.AO_DI, car1.info());
+}
+```
+
+## factory method
+
+![simpleFactory]({{site.url}}/static/app/img/2016-07-15-factory-method.png)
+
+- Interface
+
+```java
+public interface Movable {
+    void run();
+}
+```
+
+- class1
+
+```java
+public class AirMovable implements Movable {
+    @Override
+    public void run() {
+        System.out.println("air running...");
+    }
+}
+```
+
+- class2
+
+```java
+public class SeaMovable implements Movable {
+    @Override
+    public void run() {
+        System.out.println("Sea running...");
+    }
+}
+```
+
+- InterfaceFactory
+
+```java
+public abstract class AbstractMoveFactory {
+    abstract Movable getInstance();
+}
+```
+
+- class1Factory
+
+```java
+public class SeaMoveFactory extends AbstractMoveFactory {
+    @Override
+    Movable getInstance() {
+        return new SeaMovable();
+    }
+}
+```
+
+- class2Factory
+
+```java
+public class AirMoveFactory extends AbstractMoveFactory {
+    @Override
+    Movable getInstance() {
+        return new AirMovable();
+    }
+}
+```
+
+- test
+
+```java
+public class FactoryMethodTest extends TestCase {
+    @Test
+    public void testGetInstance() {
+        AbstractMoveFactory abstractMoveFactory = new AirMoveFactory();
+        Movable movable = abstractMoveFactory.getInstance();
+        movable.run();
+    }
+
+    @Test
+    public void testGetInstance2() {
+        AbstractMoveFactory abstractMoveFactory = new SeaMoveFactory();
+        Movable movable = abstractMoveFactory.getInstance();
+        movable.run();
+    }
+}
+```
+
+- result
+
+```
+Sea running...
+air running...
+
+Process finished with exit code 0
+```
+
+## abstract factory
+
+> Intent
+
+Provide an interface for creating families of related or dependent objects without specifying their concrete classes.
+
+> Applicability
+
+- a system should be independent of how its products are created, composed, and represented.
+
+- a system should be configured with one of multiple families of products.
+
+- a family of related product objects is designed to be used together, and you need to enforce this constraint.
+
+- you want to provide a class library of products, and you want to reveal just their interfaces, not their implementations.
+
+
+> Structure
+
+![abstractFactory]({{site.url}}/static/app/img/2016-07-16-abstract-factory.png)
+
+
+> Consequences
+
+- It isolates concrete classes.
+
+- It makes exchanging product families easy.
+
+- It promotes consistency among products.
+
+- **Supporting new kinds of products is difficult**.
+
+
+> Implementation
+
+- AbstractFactory.java
+
+```java
+public abstract class AbstractFactory {
+    public abstract Vehicle createVehicle();
+    public abstract Fruit createFruit();
+}
+```
+
+- DefaultFactory.java
+
+```java
+public class DefaultFactory extends AbstractFactory {
+    @Override
+    public Vehicle createVehicle() {
+        return new Boat();
+    }
+
+    @Override
+    public Fruit createFruit() {
+        return new Apple();
+    }
+}
+```
+
+- Vehicle and Boat
+
+```java
+public interface Vehicle {
+    void info();
+}
+
+public class Boat implements Vehicle {
+    @Override
+    public void info() {
+        System.out.println("Vehicle boat...");
+    }
+}
+```
+
+- Fruit & Apple
+
+```java
+public interface Fruit {
+    void info();
+}
+
+public class Apple implements Fruit {
+    @Override
+    public void info() {
+        System.out.println("Fruit Apple...");
+    }
+}
+```
+
+- test
+
+```java
+public class AbstractFactoryTest extends TestCase {
+    @Test
+    public void testCreateVehicle() throws Exception {
+        DefaultFactory defaultFactory = new DefaultFactory();
+        Vehicle vehicle = defaultFactory.createVehicle();
+        vehicle.info();
+    }
+
+
+    @Test
+    public void testCreateFruit() throws Exception {
+        DefaultFactory defaultFactory = new DefaultFactory();
+        Fruit fruit = defaultFactory.createFruit();
+        fruit.info();
+    }
+}
+```
+
+- result
+
+```java
+Fruit Apple...
+Vehicle boat...
+
+Process finished with exit code 0
+```
+
 
 
 
