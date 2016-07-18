@@ -36,7 +36,7 @@ Provide a surrogate or placeholder for another object to control access to it.
 
 ## static proxy
 
-> strut
+> struct
 
 ![static proxy]({{site.url}}/static/app/img/2016-07-18-static-proxy.png)
 
@@ -108,7 +108,7 @@ Process finished with exit code 0
 
 Why we use dynamic proxy ? If there are many methods, it's hard to use static proxy to solve it.
 
-> strut
+> struct
 
 ![static proxy]({{site.url}}/static/app/img/2016-07-18-dynamic-proxy.png)
 
