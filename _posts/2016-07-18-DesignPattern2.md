@@ -207,4 +207,167 @@ Process finished with exit code 0
 Tips: As you can see, the dynamic proxy of java is depends on ```interface```, if there is no interface, we can use [aspectj](http://www.eclipse.org/aspectj/) to solve it.
 
 
+# Strategy
+
+> Intent
+
+Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.
+
+> Applicability
+
+- many related classes differ only in their behavior. Strategy is provide a way to configure a class with one of many behaviors.
+
+- you need different variants of an algorithm. For example, you might define algorithms reflecting different space/time trade-offs.
+
+Strategies can be used when these variants are implemented as a classhierarchy of algorithms [HO87].
+
+- an algorithm uses data that clients shouldn't know about. Use the Strategy pattern to avoid exposing complex, algorithm-specific data structures.
+
+- a class defines many behaviors, and these appear as multiple conditional statements in its operations.
+Instead of many conditionals, move related conditional branches into their own Strategy class.
+
+> Struct
+
+![Strategy]({{site.url}}/static/app/img/2016-07-19-strategy.png)
+
+
+> Consequences
+
+- Inheritance can help **factor out common functionality** of the algorithms.
+
+- Encapsulating the algorithm in separate Strategy classes lets you vary the algorithm independently of its context, making it easier to switch, understand, and extend.
+
+- Strategies eliminate conditional statements.
+
+- Strategies can provide different implementations of the same behavior. The client can choose among strategies with different time and space trade-offs.
+
+*shortcoming*
+
+- Clients must be aware of different Strategies.
+
+- Communication overhead between Strategy and Context.
+
+- Increased number of objects.
+
+
+> Implementation
+
+Suppose we has different count for different level customers.
+
+- common member: no count
+
+- advanced member: 0.9
+
+- VIP: 0.7
+
+
+Here is the code:
+
+- PriceStrategy.java
+
+```java
+public interface PriceStrategy {
+    double calcPrice(double price);
+}
+```
+
+- CommonMemberStrategy.java
+
+```java
+public class CommonMemberStrategy implements PriceStrategy {
+    @Override
+    public double calcPrice(double price) {
+        System.out.println("Common member has no count...");
+
+        return price;
+    }
+}
+```
+
+- AdvancedMemberStrategy.java
+
+```java
+public class AdvancedMemberStrategy implements PriceStrategy {
+    private static final double COUNT = 0.9;
+
+    @Override
+    public double calcPrice(double price) {
+        System.out.println("Advanced member has the count of " + COUNT);
+
+        return price * COUNT;
+    }
+}
+```
+
+- VIPStrategy.java
+
+```java
+public class VIPStrategy implements PriceStrategy {
+    private static final double COUNT = 0.7;
+
+    @Override
+    public double calcPrice(double price) {
+        System.out.println("VIP has the count of " + COUNT);
+
+        return price * COUNT;
+    }
+}
+```
+
+- Price.java
+
+```java
+public class Price {
+    private PriceStrategy priceStrategy;
+
+    public Price(PriceStrategy priceStrategy) {
+        this.priceStrategy = priceStrategy;
+    }
+
+    public double getPrice(double price) {
+        return priceStrategy.calcPrice(price);
+    }
+}
+```
+
+- test
+
+```java
+public class PriceTest extends TestCase {
+    public void testGetPrice() {
+        final double PRICE  = 10.0;
+
+        Price price = new Price(new CommonMemberStrategy());
+        price.getPrice(PRICE);
+
+        Price price1 = new Price(new AdvancedMemberStrategy());
+        price1.getPrice(PRICE);
+
+        Price price2 = new Price(new VIPStrategy());
+        price2.getPrice(PRICE);
+    }
+}
+```
+
+- result
+
+```
+Common member has no count...
+Advanced member has the count of 0.9
+VIP has the count of 0.7
+
+Process finished with exit code 0
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
