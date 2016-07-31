@@ -4,7 +4,7 @@ title: Inner Class
 date:  2016-7-1 14:13:31 +0800
 categories: [Java]
 tags: [inner class]
-published: true
+published: false
 ---
 
 * any list
