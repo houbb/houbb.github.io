@@ -69,7 +69,7 @@ The Singleton pattern has several benefits:
 [singleton zh_CN](http://cantellow.iteye.com/blog/838473)
 [singleton2 zh_CN](http://blog.csdn.net/jason0539/article/details/23297037/)
 
-## Lazy loading
+## lazy loading
 
 - thread not safe
 
@@ -132,7 +132,7 @@ public class Singleton {
 }
 ```
 
-## Starve
+## starve
 
 Thread safe, not lazy loading. Usually, we can use this...
 
@@ -148,6 +148,13 @@ public class Starve {
     }
 }
 ```
+
+## enum
+
+The best way to realize singleton is to use **enum**
+
+> [enum](http://837062099.iteye.com/blog/1454934)
+
 
 # Prototype
 
