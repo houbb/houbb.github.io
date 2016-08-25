@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Mybatis Generator
-date:  2016-05-29 21:22:19 +0800
+date:  2016-08-25 22:59:31 +0800
 categories: [SQL]
 tags: [mybatis]
 published: true
