@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Subversion & Git
-date:  2016-5-16 22:54:52 +0800
+date:  2016-8-30 11:13:55 +0800
 categories: [Version Control]
 tags: [subversion, git]
 ---
@@ -62,6 +62,8 @@ Git is a *free and open source* distributed version control system designed to h
 > [wiki](https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches)
 
 > [usage](http://blog.csdn.net/wfdtxz/article/details/7973608)
+
+> [merge](http://blog.csdn.net/syc434432458/article/details/51861483)
 
 ```
 D:\CODE\blog>git branch blog_0930
