@@ -61,6 +61,8 @@ Git is a *free and open source* distributed version control system designed to h
 
 > [wiki](https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches)
 
+> [usage](http://blog.csdn.net/wfdtxz/article/details/7973608)
+
 ```
 D:\CODE\blog>git branch blog_0930
 
