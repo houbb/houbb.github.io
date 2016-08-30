@@ -65,6 +65,8 @@ Git is a *free and open source* distributed version control system designed to h
 
 > [merge](http://blog.csdn.net/syc434432458/article/details/51861483)
 
+- create branch
+
 ```
 D:\CODE\blog>git branch blog_0930
 
@@ -79,6 +81,26 @@ Switched to branch 'blog_0930'
 D:\CODE\blog>git branch
 * blog_0930
   master
+```
+
+- merge branch
+
+```
+
+$ git checkout master
+
+$ git pull
+
+$ git checkout branch
+
+$ git rebase master     (用rebase合并主干的修改，如果有冲突在此时解决)
+
+$ git checkout master
+
+$ git merge branch
+
+$ git push
+
 ```
 
 
