@@ -57,6 +57,28 @@ Git is a *free and open source* distributed version control system designed to h
 
 > [git zh_CN](http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
 
+## branch
+
+> [wiki](https://github.com/Kunena/Kunena-Forum/wiki/Create-a-new-branch-with-git-and-manage-branches)
+
+```
+D:\CODE\blog>git branch blog_0930
+
+D:\CODE\blog>git push origin blog_0930
+Total 0 (delta 0), reused 0 (delta 0)
+To https://github.com/houbb/blog.git
+ * [new branch]      blog_0930 -> blog_0930
+
+D:\CODE\blog>git checkout blog_0930
+Switched to branch 'blog_0930'
+
+D:\CODE\blog>git branch
+* blog_0930
+  master
+```
+
+
+
 
 
 
