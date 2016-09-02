@@ -89,6 +89,8 @@ target/
 
 > [merge](http://blog.csdn.net/syc434432458/article/details/51861483)
 
+![idea]({{site.url}}/app/img/2016-09-02-git-merge.png)
+
 - create branch
 
 ```
