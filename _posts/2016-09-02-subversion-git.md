@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Subversion & Git
-date:  2016-8-30 11:13:55 +0800
+date:  2016-9-2 09:22:48 +0800
 categories: [Version Control]
 tags: [subversion, git]
 ---
@@ -56,6 +56,30 @@ Git is a *free and open source* distributed version control system designed to h
 > [git](https://git-scm.com)
 
 > [git zh_CN](http://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
+
+
+## git ignore
+
+```
+# maven ignore
+target/
+*.jar
+*.war
+*.zip
+*.tar
+*.tar.gz
+
+# eclipse ignore
+.settings/
+.project
+.classpath
+
+# idea ignore
+.idea/
+*.ipr
+*.iml
+*.iws
+```
 
 ## branch
 
