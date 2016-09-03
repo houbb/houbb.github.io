@@ -91,6 +91,21 @@ target/
 
 ![idea]({{site.url}}/static/app/img/git/2016-09-02-git-merge.png)
 
+
+- view branch
+
+> remote
+
+```
+git branch -a
+```
+
+> local
+
+```
+git branch
+```
+
 - create branch
 
 ```
@@ -129,6 +144,11 @@ $ git push
 
 ```
 
+- remove local branch
+
+```
+$   git branch -d xxxxx
+```
 
 
 
