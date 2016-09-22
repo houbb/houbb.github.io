@@ -4,6 +4,7 @@ title: Phabricator
 date:  2016-09-21 22:28:40 +0800
 categories: [Tools]
 tags: [phabricator]
+published: true
 ---
 
 * any list
@@ -281,6 +282,72 @@ http://127.0.0.1:1234/
 ```
 
 ![phabricator]({{site.url}}/static/app/img/2016-09-22-phabricator-visit.png)
+
+
+# Arcanist
+
+The primary use of arc is to send changes for review in [Differential](https://secure.phabricator.com/book/phabricator/article/differential/)
+
+> [arc](https://secure.phabricator.com/book/phabricator/article/arcanist_diff/)
+
+## Install in Windows
+
+- install git
+
+> [git](https://git-scm.com/)
+
+- install php
+
+1. Download [php](http://www.php.net/) zip
+
+2. Unzip in package, like: ```c:\php```
+
+3. Copy ```c:\phh\php.ini-production```, and renamed to **php.ini**
+
+4. Edit php.ini, remove the ```;``` of following lines
+
+```
+; extension_dir = "ext"
+;extension=php_mbstring.dll
+;extension=php_curl.dll
+```
+
+- install components
+
+1. install
+
+```
+$   some_install_path/ $ git clone https://github.com/phacility/libphutil.git
+$   some_install_path/ $ git clone https://github.com/phacility/arcanist.git
+```
+
+2. config
+
+```
+Path：export PATH="$PATH:/somewhere/arcanist/bin/"
+Edit：（mac建议用vi）：arc set-config editor "/usr/bin/vi"
+Addr：arc set-config default http://www.XXX.com/
+Cred：yourproject/ $ arc install-certificate
+```
+
+- test
+
+```
+$   arc help
+```
+
+
+## Relative commands
+
+```
+arc diff：发送代码差异（review request）到Differental功能
+arc list：限时未提交的代码信息
+arc branch [branch name]：创建并checkout分支
+arc land [branch name]：代码审核通过后，合并主分支
+arc tasks：展示当前任务
+```
+
+
 
 
 
