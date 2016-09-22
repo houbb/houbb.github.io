@@ -300,9 +300,9 @@ The primary use of arc is to send changes for review in [Differential](https://s
 
 1. Download [php](http://www.php.net/) zip
 
-2. Unzip in package, like: ```c:\php```
+2. Unzip in package, like: ```C:\php```
 
-3. Copy ```c:\phh\php.ini-production```, and renamed to **php.ini**
+3. Copy ```C:\php\php.ini-production```, and renamed to ```php.ini```
 
 4. Edit php.ini, remove the ```;``` of following lines
 
@@ -314,14 +314,14 @@ The primary use of arc is to send changes for review in [Differential](https://s
 
 - install components
 
-1. install
+> install
 
 ```
 $   some_install_path/ $ git clone https://github.com/phacility/libphutil.git
 $   some_install_path/ $ git clone https://github.com/phacility/arcanist.git
 ```
 
-2. config
+> config
 
 ```
 Path：export PATH="$PATH:/somewhere/arcanist/bin/"
