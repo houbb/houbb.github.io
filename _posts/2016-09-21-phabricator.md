@@ -547,6 +547,12 @@ post_max_size = 32M
 
 6、Set Mail
 
+- install send mail
+
+```
+$   apt-get install sendmail
+```
+
 - mail
 
 ```
@@ -593,6 +599,21 @@ $   /var/www/phabricator/bin/config set phpmailer.smtp-password
 
 ```
 
+> send fail
+
+You can find the mail send info in
+
+```
+/var/mail/root
+```
+
+the error may:
+
+```
+550 Ip frequency limited. http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=20022&&no=1000725
+554 5.0.0 Service unavailable
+```
+
 > [tips](http://wenku.baidu.com/view/b2fd127b312b3169a451a44a.html)
 
 
@@ -601,7 +622,7 @@ $   /var/www/phabricator/bin/config set phpmailer.smtp-password
 
 
 
-
+> [send](http://blog.csdn.net/xylander23/article/details/50999646)
 
 
 
