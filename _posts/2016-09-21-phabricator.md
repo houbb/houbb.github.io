@@ -491,6 +491,122 @@ arc tasks：展示当前任务
 
 
 
+# Issues
+
+1、Base URI Not Configured
+
+```
+$    /var/www/phabricator/bin/config set phabricator.base-uri 'http://139.196.28.125:1234/'
+```
+
+2、Phabricator Daemons Are Not Running
+
+```
+$   /var/www/phabricator/bin/phd start
+
+Freeing active task leases...
+Freed 0 task lease(s).
+Launching daemons:
+(Logs will appear in "/var/tmp/phd/log/daemons.log".)
+
+    PhabricatorRepositoryPullLocalDaemon (Static)
+    PhabricatorTriggerDaemon (Static)
+    PhabricatorTaskmasterDaemon (Autoscaling: group=task, pool=4, reserve=0)
+
+Done.
+```
+
+3、Server Timezone Not Configured
+
+```
+$   vim /etc/php5/apache2/php.ini
+
+date.timezone = Asia/Shanghai
+```
+
+4、Disable PHP always_populate_raw_post_data
+
+The "always_populate_raw_post_data" key is set to some value other than "-1" in your PHP configuration.
+This can cause PHP to raise deprecation warnings during process startup. Set this option to "-1" to prevent these warnings from appearing.
+
+```
+$   vi /etc/php5/apache2/php.ini
+
+always_populate_raw_post_data = -1
+
+$   /etc/init.d/apache2 restart
+```
+
+5、PHP post_max_size Not Configured
+
+Adjust ```post_max_size``` in your PHP configuration to at least *32MB*. When set to smaller value, large file uploads may not work properly.
+
+```
+post_max_size = 32M
+```
+
+6、Set Mail
+
+- mail
+
+```
+URL:    http://139.196.28.125:1234/config/group/metamta/
+
+
+metamta.default-address = 13062666053@qq.com
+
+metamta.domain = anybuy.com     //as you like
+
+metamta.mail-adapter = PhabricatorMailImplementationPHPMailerLiteAdapter
+
+```
+
+ <property name="host" value="smtp.qq.com"/>
+        <!--576 is tls try 465 for ssl-->
+        <property name="port" value="465"/>
+        <property name="defaultEncoding" value="UTF-8"/>
+        <property name="javaMailProperties" >
+            <props>
+                <!--<prop key="mail.transport.protocol">smtp</prop>-->
+                <prop key="mail.smtp.auth">true</prop>
+                <prop key="mail.smtp.timeout">25000</prop>
+                <!-- true for Gamil -->
+                <prop key="mail.smtp.starttls.enable">true</prop>
+                <prop key="mail.debug">true</prop>
+            </props>
+        </property>
+
+
+- PHPMailer
+
+```
+URL:    http://139.196.28.125:1234/config/group/phpmailer/
+
+
+$   /var/www/phabricator/bin/config set phpmailer.smtp-host smtp.qq.com
+
+$   /var/www/phabricator/bin/config set phpmailer.smtp-port 465
+
+$   /var/www/phabricator/bin/config set phpmailer.smtp-user 13062666053@qq.com
+
+$   /var/www/phabricator/bin/config set phpmailer.smtp-password
+
+```
+
+> [tips](http://wenku.baidu.com/view/b2fd127b312b3169a451a44a.html)
+
+
+如果邮件配置的是SSL协议，端口是465，则需要开启相应端口。我开始配置的SSL没有成功，换回25端口，邮件就能发送了。
+如果发送没有成功，通过页面上的```Daemons```的console日志来查找原因。
+
+
+
+
+
+
+
+
+
 
 
 
