@@ -18,7 +18,7 @@ Phabricator is an integrated set of powerful tools to help companies build highe
 > [Phabricator](https://www.phacility.com/)
 
 
-# Install
+# Install in Mac
 
 > [Guide](https://secure.phabricator.com/book/phabricator/article/installation_guide/)
 
@@ -283,6 +283,148 @@ http://127.0.0.1:1234/
 
 ![phabricator]({{site.url}}/static/app/img/2016-09-22-phabricator-visit.png)
 
+
+# Install in Ubuntu
+
+If you are installing on Ubuntu, there are install scripts available which should handle most of the things discussed in this document for you:
+
+> [install_ubuntu.sh](https://secure.phabricator.com/diffusion/P/browse/master/scripts/install/install_ubuntu.sh)
+
+> [install zh_CN](https://my.oschina.net/yoyoko/blog/126325)
+
+> [install zh_CN](http://www.linuxdiyf.com/linux/16060.html)
+
+## install_ubuntu.sh
+
+- Visit the [install_ubuntu.sh](https://secure.phabricator.com/diffusion/P/browse/master/scripts/install/install_ubuntu.sh)
+
+- Create file ```install_ubuntu.sh```
+
+```
+$   vi install_ubuntu.sh
+```
+
+- Copy the shell content of [install_ubuntu.sh](https://secure.phabricator.com/diffusion/P/browse/master/scripts/install/install_ubuntu.sh) into ```install_ubuntu.sh```;
+
+- Run
+
+```
+$   sudo chmod 755 install_ubuntu.sh
+$   sudo ./install_ubuntu.sh
+
+PHABRICATOR UBUNTU INSTALL SCRIPT
+This script will install Phabricator and all of its core dependencies.
+Run it from the directory you want to install into.
+
+Phabricator will be installed to: /root/code.
+Press RETURN to continue, or ^C to cancel.
+```
+
+## Config Apache
+
+
+- some commands
+
+```
+$   /etc/init.d/apache2 start
+$   /etc/init.d/apache2 restart
+$   /etc/init.d/apache2 stop
+```
+
+> [config apache](http://www.oschina.net/question/191440_125562)
+
+> [ubuntu apache ch_ZN](http://www.cnblogs.com/ylan2009/archive/2012/02/25/2368028.html)
+
+
+- add
+
+```
+LoadModule rewrite_module libexec/apache2/mod_rewrite.so
+LoadModule php5_module libexec/apache2/libphp5.so
+```
+
+- edit ```apache2.conf```
+
+```
+$   vi /etc/apache2/apache2.conf
+```
+
+add this :
+
+```
+ServerName 139.196.28.125
+
+<Directory "/root/code/phabricator/webroot">
+    Require all granted
+</Directory>
+
+
+```
+
+- edit ```000-default.conf```
+
+```
+$   vim /etc/apache2/sites-enabled/000-default.conf
+```
+
+change the path of *DocumentRoot* to:
+
+```
+/root/code/phabricator/webroot
+```
+
+add these:
+
+```
+RewriteEngine on
+RewriteRule ^/rsrc/(.*)     -                       [L,QSA]
+RewriteRule ^/favicon.ico   -                       [L,QSA]
+RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
+```
+
+- restart apache
+
+```
+$    /etc/init.d/apache2 restart
+```
+
+## 403
+
+```
+Forbidden
+
+You don't have permission to access / on this server.
+
+Apache/2.4.7 (Ubuntu) Server at 139.196.28.125 Port 1234
+```
+
+I think If you had add this, it's still 403. May be you should change the permission of your project package.
+
+For easy, I move the ```phabricator``` relative package to ```var/www/```, Finally, it's worked~~~T_T
+
+```
+<Directory "/root/code/phabricator/webroot">
+    Require all granted
+</Directory>
+```
+
+
+## Config mysql
+
+- set config
+
+```
+/root/code/phabricator/bin/config set mysql.host localhost
+/root/code/phabricator/bin/config set mysql.port 3306
+/root/code/phabricator/bin/config set mysql.user root
+/root/code/phabricator/bin/config set mysql.pass ****
+```
+
+- update config
+
+```
+/root/code/phabricator/bin/storage upgrade
+```
 
 # Arcanist
 
