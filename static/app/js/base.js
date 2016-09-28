@@ -27,6 +27,9 @@ $(document).ready(function() {
 
     Base.musicPlay();
     Base.scrollTop();
+
+    //初始化表格
+    $("table").addClass("table").addClass("table-bordered").addClass("table-hover");
 });
 
 var Base = new Base();
