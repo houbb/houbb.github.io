@@ -4,6 +4,7 @@ title: Hibernate
 date:  2016-05-21 18:35:52 +0800
 categories: [redhat]
 tags: [hibernate]
+published: false
 ---
 
 * any list

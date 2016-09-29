@@ -4,6 +4,7 @@ title: Subversion & Git
 date:  2016-9-2 09:22:48 +0800
 categories: [Version Control]
 tags: [subversion, git]
+published: true
 ---
 
 * any list

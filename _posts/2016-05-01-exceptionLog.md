@@ -4,6 +4,7 @@ title: Exception and Log
 date:  2016-5-1 15:01:51 +0800
 categories: [Java]
 tags: [Exception,Log]
+published: true
 ---
 
 * any list
