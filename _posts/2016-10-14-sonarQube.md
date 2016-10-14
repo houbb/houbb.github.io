@@ -14,7 +14,7 @@ published: true
 
 SonarQube is an open platform to manage code quality. As such, it covers the 7 axes of code quality:
 
-![sonarQube]({{site.url}}/static/app/img/2017-10-14-sonar-qube-7axes.png)
+![sonarQube]({{site.url}}/static/app/img/code-review/2017-10-14-sonar-qube-7axes.png)
 
 > [sonar](http://www.sonarqube.org/)
 
