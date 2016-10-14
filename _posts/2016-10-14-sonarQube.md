@@ -320,6 +320,21 @@ Visit ```http://localhost:9000/dashboard/index/com.ryo:git-demo```, you can see
 
 ![sonar analyse]({{site/url}}/static/app/img/code-review/2016-10-14-sonar-analyse.png)
 
+# Narrowing the Focus
+
+- use ```//NOSAONAR``` to ignore one line
+
+- use this to ignore all **js** files.
+
+```
+</properties>
+    <!--sonar-->
+    <sonar.exclusions>**/*.js</sonar.exclusions>
+</properties>
+```
+
+
+
 
 
 
