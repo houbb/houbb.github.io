@@ -87,11 +87,11 @@ jvm 1    | 2016.10.14 11:51:38 INFO  app[][o.s.p.m.Monitor] Process[ce] is up
 localhost:9000
 ```
 
-![index]({{site.url}}/static/app/img/2016-10-14-sonar-index.png)
+![index]({{site.url}}/static/app/img/code-review/2016-10-14-sonar-index.png)
 
 > Shut down
 
-Use ```Ctrl+c` in bat command.
+Use ```Ctrl+c``` in bat command.
 
 
 
