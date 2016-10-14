@@ -89,6 +89,10 @@ localhost:9000
 
 ![index]({{site.url}}/static/app/img/2016-10-14-sonar-index.png)
 
+> Shut down
+
+Use ```Ctrl+c` in bat command.
+
 
 
 
