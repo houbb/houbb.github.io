@@ -4,7 +4,7 @@ title: Exceptions Collection
 date:  2016-06-21 21:33:46 +0800
 categories: [Util]
 tags: [exception]
-published: true
+published: false
 ---
 
 * any list
