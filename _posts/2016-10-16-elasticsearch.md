@@ -18,6 +18,9 @@ Elasticsearch is a distributed, open source search and analytics engine, designe
 
 > [Elasticsearch](https://www.elastic.co/products/elasticsearch)
 
+> [User Guide](https://www.elastic.co/guide/index.html)
+
+
 # Install in Mac
 
 <uml>
@@ -92,6 +95,4 @@ houbinbindeMacBook-Pro:~ houbinbin$ curl localhost:9200
 }
 ```
 
-# User Guide
 
-> [Doc](https://www.elastic.co/guide/index.html)
