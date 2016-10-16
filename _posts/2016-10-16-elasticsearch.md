@@ -96,3 +96,75 @@ houbinbindeMacBook-Pro:~ houbinbin$ curl localhost:9200
 ```
 
 
+# Lucene Search
+
+> [search zh_CN](https://segmentfault.com/a/1190000002972420)
+
+- FULLTEXT
+
+Input a word in search input, like ```hello```, use ```"hello world"``` to search a phrase.
+
+
+- Field
+
+Finite field search:    ```field:value```
+
+Accurate search:    ```field:"value"```
+
+```http.code:404``` doc that *http status code is 404*
+
+```_exists_:http```：result contains *http* field
+
+```_missing_:http```：result not contains *http* field
+
+- Wildcard
+
+```?``` one char
+
+```*``` zero or more char
+
+The two wildcard should't the first char.
+
+
+- Fuzzy Search
+
+```word~``` matches word
+
+```cromm~0.3``` matches *from* & *chrome*
+
+- Similar Search
+
+```"select where"~3``` means *select* and *where* divide by 3 or less words.
+
+- Range
+
+```length:[100 TO 200]```
+```date:{"now-6h" TO "now"}```
+
+````[ ]``` includes endpoint，```{ }``` not includes.
+
+- Logic
+
+```+``` must has this
+
+```-``` must not has this
+
+```+apache -jakarta test``` means must has *apache*, not has *jakarta*
+
+- Special
+
+```
++ - && || ! () {} [] ^" ~ * ? : \
+```
+
+
+
+
+
+
+
+
+
+
+
+
