@@ -29,7 +29,7 @@ Elasticsearch is a distributed, open source search and analytics engine, designe
 
 - Download
 
-[Download](https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/2.4.1/elasticsearch-2.4.1.tar.gz) and unzip
+[Download](https://www.elastic.co/downloads/elasticsearch) and unzip
 
 ```
 $   tar -zxf elasticsearch-2.4.1.tar.gz
@@ -44,7 +44,7 @@ $   mv elasticsearch-2.4.1 ~/it/tools/elasticsearch
 
 - Run
 
-Run ```bin/elasticsearch``` on Unix
+Run ```bin/elasticsearch``` on Unix, or use ```bin/elasticsearch &``` run background processes.
 
 ```
 houbinbindeMacBook-Pro:Downloads houbinbin$ cd ~/it/tools/elasticsearch/
