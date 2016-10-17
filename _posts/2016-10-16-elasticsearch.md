@@ -141,7 +141,7 @@ The two wildcard should't the first char.
 ```length:[100 TO 200]```
 ```date:{"now-6h" TO "now"}```
 
-````[ ]``` includes endpoint，```{ }``` not includes.
+```[ ]``` includes endpoint，```{ }``` not includes.
 
 - Logic
 
