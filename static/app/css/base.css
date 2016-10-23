@@ -73,3 +73,13 @@
 
     display: none;
 }
+
+
+
+
+/**
+ ** 语法高亮
+ */
+.syntaxhighlighter.collapsed .toolbar {
+    border: 1px solid #0099FF !important;
+}

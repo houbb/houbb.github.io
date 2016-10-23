@@ -17,7 +17,7 @@ $(document).ready(function() {
     Base.select2Demo();
     Base.colResizable();
     //2048
-    $('#2048').my2048();
+    // $('#2048').my2048();
 
     //UML
     $("UML, uml, .UML, .uml, #UML, #uml").sequenceDiagram({theme: 'hand'});
@@ -30,10 +30,78 @@ $(document).ready(function() {
 
     //初始化表格
     $("table").addClass("table").addClass("table-bordered").addClass("table-hover");
+
+    //初始化代码块
+    Base.sh();
+
+    // var $highlighterRouge = $("pre").parent(".highlighter-rouge");
+    // if($highlighterRouge.hasClass("language-xml")) {
+    //     $("pre").addClass("xml");
+    // } else if($highlighterRouge.hasClass("language-java")) {
+    //     $("pre").addClass("java");
+    // }
+    //
+
 });
 
 var Base = new Base();
 function Base(){
+    /**
+     * 设置语法高亮
+     */
+    this.sh = function () {
+        //默认样式
+        var DEFAULT_STYLE = {
+            "java": "brush: java;",
+            "bash": "brush: bash;",
+            "shell": "brush: shell;",
+            "c": "brush: c;",
+            "C": "brush: c;",
+            "c++": "brush: cpp;",
+            "C++": "brush: cpp;",
+            "js": "brush: js;",
+            "javascript": "brush: js;",
+            "css": "brush: css;",
+            "xml": "brush: xml;",
+            "html": "brush: html;",
+            "sql": "brush: sql;",
+            "php": "brush: php;",
+            "py": "brush: python;",
+            "python": "brush: python;",
+            "ruby": "brush: ruby;"
+        };
+
+        SyntaxHighlighter.config.bloggerMode = true;
+        SyntaxHighlighter.config.tagName = "sh";
+        SyntaxHighlighter.defaults["collapse"] = true;  //代码折叠
+        // SyntaxHighlighter.defaults["html-script"] = true;  //HTML/XML标签着色,引入 shBrushXml.js -->会导致失去色彩
+        SyntaxHighlighter.defaults["title"] = "[default]";
+
+
+        var $codes = $("sh");
+        $codes.each(function (i, e) {
+            var $e = $(e);
+            var className = $e.attr("class") || "default";
+            SyntaxHighlighter.defaults["title"] = "["+className+"]";
+            var styleClass = DEFAULT_STYLE[className];
+            if(!!styleClass) {
+                $e.addClass(styleClass);
+            } else {
+                $e.addClass("brush: xml;");
+            }
+
+            SyntaxHighlighter.defaults["collapse"] = true;  //代码折叠
+            SyntaxHighlighter.highlight($e);
+        });
+
+
+        // 自动加载对应js
+        // SyntaxHighlighter.autoloader(
+        //     ['java','/static/libs/syntaxhighlighter_3.0.83/scripts/shBrushJava.js']
+        // );
+        // SyntaxHighlighter.all();
+    };
+
     this.scrollTop = function () {
         var scrollTimeout;
         $(window).scroll(function() {
