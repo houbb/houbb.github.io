@@ -76,10 +76,17 @@
 
 
 
-
 /**
  ** 语法高亮
  */
 .syntaxhighlighter.collapsed .toolbar {
     border: 1px solid #0099FF !important;
+}
+
+/**
+ ** bootstrap & svg 冲突
+ ** 这样会导致部分SVG覆盖到其他元素
+ */
+svg:not(:root) {
+    overflow: inherit;
 }
