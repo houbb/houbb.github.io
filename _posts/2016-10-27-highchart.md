@@ -74,4 +74,11 @@ and then, you can see:
 <div id="highchart-container" style="min-width:800px;height:400px"></div>
 
 
+# Base
+
+The composition of charset.
+
+![highcharts compostion]({{site.url}}/static/app/img/highcharts/2016-10-27-highcharts-compostion.jpg)
+
+
 
