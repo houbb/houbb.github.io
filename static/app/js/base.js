@@ -20,7 +20,7 @@ $(document).ready(function() {
     // $('#2048').my2048();
 
     //UML
-    $("UML, uml, .UML, .uml, #UML, #uml").sequenceDiagram({theme: 'hand'});
+    $("UML, uml").sequenceDiagram({theme: 'hand'});
 
     //
     Base.validateTest($('#validate-form'));
