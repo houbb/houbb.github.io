@@ -10,13 +10,14 @@ published: true
 * any list
 {:toc}
 
-## Freemarker
+# Freemarker
 
-> [freemarker](http://freemarker.org/)
+[Apache FreeMarker](http://freemarker.org/) is a template engine: a Java library to generate text output
+(HTML web pages, e-mails, configuration files, source code, etc.) based on templates and changing data.
 
 > [freemarker zh_CN](http://swiftlet.net/archives/category/freemarker)
 
-## Getting Started
+# Getting Started
 
 <label class="label label-info">Template</label> + <label class="label label-primary">data-model</label> = <label class="label label-success">output</label>
 
@@ -110,7 +111,7 @@ public class PathHelper {
 
 - get freemarker template
 
-<label class="label label-warning">Warning</label>
+<label class="label label-warning">WARN</label>
 
 Do not needlessly re-create Configuration instances; it's expensive, among others because you lose the template cache.
 Configuration instances meant to be application-level **singletons**.
@@ -197,7 +198,7 @@ public class FileHelper {
 </html>
 ```
 
-## Base directives
+# Base directives
 
 > if
 
@@ -375,13 +376,13 @@ With the include directive you can insert the content of another file into the t
 </html>
 ```
 
-## Using built-ins
+# Using built-ins
 
 > [builtins](http://freemarker.org/docs/ref_builtins.html)
 
-## Missing variables
+# Missing variables
 
-<label class="label label-warning">missing</label>
+<label class="label label-warning">MISS</label>
 
 A non-existent variable and a variable with null value is the same for FreeMarker, so the "missing" term used here covers both cases.
 
