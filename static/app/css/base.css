@@ -1,68 +1,52 @@
-/**
- * define text overflow
- * @use need define the width;
- */
-.my-ellipsis{
+.my-ellipsis {
     white-space: nowrap;
     text-overflow: ellipsis;
-    display: inline-block;
+    display: inline-block
 }
-/**
- * 	define: hr
- *  @use need define the width;	<div class="col-xs-12 my-hr"></div>
- */
+
 .my-hr {
     height: 1px;
     background-color: #ccc;
-    margin: 12px auto;
+    margin: 12px auto
 }
 
-/**
- * label-define
- * @use the same as bootstrap btn
- */
 .label {
-    /*background-color: #abbac3 !important;*/
     border-radius: 0;
     display: inline-block;
     font-weight: 400;
-    text-shadow: none;
+    text-shadow: none
 }
 
-
-/**
- * btn-define
- * @use the same as bootstrap btn
- */
 .btn-define {
     color: #fff;
-    background-color: #0099FF;
-    border-color: #0086E6;
-    border-radius: 3px;
+    background-color: #09f;
+    border-color: #0086e6;
+    border-radius: 3px
 }
-.btn-define:hover,.btn-define:focus,.btn-define:active,.btn-define.active,.open .dropdown-toggle.btn-define
-{
+
+.btn-define:hover, .btn-define:focus, .btn-define:active, .btn-define.active, .open .dropdown-toggle.btn-define {
     color: #fff;
-    background-color: #0089EE;
-    border-color: #357ebd;
+    background-color: #0089ee;
+    border-color: #357ebd
 }
-.btn-define:active,.btn-define.active,.open .dropdown-toggle.btn-define
-{
-    background-image: none;
+
+.btn-define:active, .btn-define.active, .open .dropdown-toggle.btn-define {
+    background-image: none
 }
-.btn-define.disabled,.btn-define[disabled],fieldset[disabled] .btn-define,.btn-define.disabled:hover,.btn-define[disabled]:hover,fieldset[disabled] .btn-define:hover,.btn-define.disabled:focus,.btn-define[disabled]:focus,fieldset[disabled] .btn-define:focus,.btn-define.disabled:active,.btn-define[disabled]:active,fieldset[disabled] .btn-define:active,.btn-define.disabled.active,.btn-define[disabled].active,fieldset[disabled] .btn-define.active
-{
-    background-color: #0099FF;
-    border-color: #0086E6;
+
+.btn-define.disabled, .btn-define[disabled], fieldset[disabled] .btn-define, .btn-define.disabled:hover, .btn-define[disabled]:hover, fieldset[disabled] .btn-define:hover, .btn-define.disabled:focus, .btn-define[disabled]:focus, fieldset[disabled] .btn-define:focus, .btn-define.disabled:active, .btn-define[disabled]:active, fieldset[disabled] .btn-define:active, .btn-define.disabled.active, .btn-define[disabled].active, fieldset[disabled] .btn-define.active {
+    background-color: #09f;
+    border-color: #0086e6
 }
+
 .btn-define .badge {
-    color: #0099FF;
-    background-color: #fff;
+    color: #09f;
+    background-color: #fff
 }
 
 #scroll-top {
-    background: #74B3FB;
-    color: #ffffff;
+    background: #74b3fb;
+    color: #fff;
     bottom: 100px;
     right: 20px;
     height: 38px;
@@ -70,23 +54,21 @@
     width: 38px;
     position: fixed;
     z-index: 9999;
-
-    display: none;
+    display: none
 }
 
-
-
-/**
- ** 语法高亮
- */
 .syntaxhighlighter.collapsed .toolbar {
-    border: 1px solid #0099FF !important;
+    border: 1px solid #09f !important
 }
 
-/**
- ** bootstrap & svg 冲突
- ** 这样会导致部分SVG覆盖到其他元素
- */
 svg:not(:root) {
-    overflow: inherit;
+    overflow: inherit
 }
+
+
+
+
+
+
+
+

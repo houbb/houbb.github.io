@@ -1,3 +1,24 @@
+<style type="text/css">
+    #header-right-more {
+        width: 100px;
+        display: inline-block;
+        text-align: left;
+        position: relative;
+    }
+
+    #header-more-list {
+        list-style: none;
+        display: none;
+        position: absolute;
+    }
+    #header-right-more:hover #header-more-list{
+        display: inline-block;
+    }
+    #header-right-more #header-more-list:hover {
+        display: inline-block;
+    }
+</style>
+
 <header class="site-header container well col-xs-12">
 
     <div class="site-title col-lg-3 pull-left">
@@ -23,8 +44,15 @@
 
       <div class="trigger pull-right">
         <a class="page-link" id="bg-music-btn" href="javascript:;"><i class="fa fa-fw fa-play"></i>&nbsp;Music</a>
-        <a class="page-link" href="{{ site.url }}/"><i class="fa fa-fw fa-home"></i>&nbsp;Home</a>
-        <a class="page-link" href="{{ site.utl }}/about/"><i class="fa fa-fw fa-info"></i>&nbsp;About</a>
+
+        <span id="header-right-more">
+            <i class="fa fa-fw fa-angle-down"></i>
+            <ul id="header-more-list">
+                <li><a class="page-link" href="{{ site.url }}/">Home</a></li>
+                <li><a class="page-link" href="{{ site.utl }}/about/">About</a></li>
+            </ul>
+        </span>
+
       </div>
     </nav>
 
