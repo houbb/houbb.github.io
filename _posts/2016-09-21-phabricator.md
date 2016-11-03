@@ -465,12 +465,27 @@ $   some_install_path/ $ git clone https://github.com/phacility/arcanist.git
 
 > config
 
+edit ```~/.bash_profile``` file
+
 ```
-Path：export PATH="$PATH:/somewhere/arcanist/bin/"
+M3_HOME=/usr/local/maven/maven3.3.9
+ARC_HOME=/Users/houbinbin/it/code/arcanist
+
+PATH=$ARC_HOME/bin:$M3_HOME/bin:$PATH
+```
+
+
+
+```
+Path：export PATH="/Users/houbinbin/it/code/arcanist/bin"
 Edit：（mac建议用vi）：arc set-config editor "/usr/bin/vi"
 Addr：arc set-config default http://www.XXX.com/
 Cred：yourproject/ $ arc install-certificate
 ```
+
+refresh config file:
+
+```source .bash_profile```
 
 - test
 
