@@ -21,6 +21,12 @@ Apache ZooKeeper is an effort to develop and maintain an open-source server whic
 
 [Download](http://apache.fayea.com/zookeeper) the zookeeper, unzip it.
 
+or
+
+```
+$   wget http://apache.fayea.com/zookeeper/zookeeper-3.4.9/zookeeper-3.4.9.tar.gz
+```
+
 ## Add Server1
 
 - Add ```server1``` package
