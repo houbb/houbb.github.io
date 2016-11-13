@@ -12,11 +12,9 @@ published: true
 
 # SonarQube
 
-SonarQube is an open platform to manage code quality. As such, it covers the 7 axes of code quality:
+[SonarQube](http://www.sonarqube.org/) is an open platform to manage code quality. As such, it covers the 7 axes of code quality:
 
 ![sonarQube]({{site.url}}/static/app/img/code-review/2016-10-14-sonar-qube-7axes.png)
-
-> [sonar](http://www.sonarqube.org/)
 
 > [sonar zh_CN](http://www.ibm.com/developerworks/cn/java/j-lo-sonar/)
 
@@ -318,7 +316,7 @@ We can know it's no need set in these ```sonar.properties```
 
 Visit ```http://localhost:9000/dashboard/index/com.ryo:git-demo```, you can see
 
-![sonar analyse]({{site/url}}/static/app/img/code-review/2016-10-14-sonar-analyse.png)
+![sonar analyse]({{site.url}}/static/app/img/code-review/2016-10-14-sonar-analyse.png)
 
 # Narrowing the Focus
 
@@ -333,6 +331,11 @@ Visit ```http://localhost:9000/dashboard/index/com.ryo:git-demo```, you can see
 </properties>
 ```
 
+# Use
+
+- Chinese pack
+
+![chinese pack]({{site.url}}/static/app/img/tools/sonar/2016-11-13-sonar-chinese-pack.png)
 
 
 
