@@ -4,7 +4,7 @@ title: Spring Framework
 date:  2016-11-28 23:37:26 +0800
 categories: [Spring]
 tags: [spring framework]
-published: true
+published: false
 ---
 
 * any list
@@ -31,5 +31,7 @@ is a lightweight solution and a potential one-stop-shop for building your enterp
 |PROPAGATION_NEVER                  |以非事务方式执行，如果当前存在事务，则抛出异常   |
 |PROPAGATION_PROPAGATION_NESTED     |如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则执行与PROPAGATION_REQUIRED类 似的操作   |
 
+
+# Isolation
 
 
