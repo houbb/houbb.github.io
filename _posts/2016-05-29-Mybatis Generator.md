@@ -148,10 +148,16 @@ PRIMARY KEY (`id`)
 
 # Bugs
 
-> <label class="label label-danger">Error</label>
-
 - [properties bug](http://mybatis-user.963551.n3.nabble.com/lt-properties-resource-quot-database-properties-quot-gt-is-not-working-for-me-td3230072.html)
 
 - [properties bug](http://openwares.net/database/mybatis_generator_properties_subelement.html)
 
+<label class="label label-danger">AbstractMethodError</label>
 
+When use the version of  ```mybatis-generator-maven-plugin``` is **1.3.5**, meet this:
+
+```
+Failed to execute goal org.mybatis.generator:mybatis-generator-maven-plugin:1.3.5:generate (default-cli) on project app-demo-dal: Execution default-cli of goal org.mybatis.generator:mybatis-generator-maven-plugin:1.3.5:generate failed: An API incompatibility was encountered while executing org.mybatis.generator:mybatis-generator-maven-plugin:1.3.5:generate: java.lang.AbstractMethodError: tk.mybatis.mapper.generator.MapperCommentGenerator.addModelClassComment(Lorg/mybatis/generator/api/dom/java/TopLevelClass;Lorg/mybatis/generator/api/IntrospectedTable;)V
+```
+
+Change the version into **1.3.2** will be okay.
