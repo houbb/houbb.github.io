@@ -640,6 +640,58 @@ the error may:
 > [send](http://blog.csdn.net/xylander23/article/details/50999646)
 
 
+7、Edit Option: ```phabricator.timezone```
+
+> [Asia available](http://php.net/manual/zh/timezones.asia.php)
+
+Set the value into ```Asia/Shanghai```
+
+```
+http://127.0.0.1:1234/config/edit/phabricator.timezone/?issue=config.timezone
+```
+
+8、Base URI Not Configured
+
+```
+houbinbindeMacBook-Pro:phabricator houbinbin$ bin/config set phabricator.base-uri 'http://127.0.0.1:1234/'
+Set 'phabricator.base-uri' in local configuration.
+houbinbindeMacBook-Pro:phabricator houbinbin$ pwd
+/Users/houbinbin/IT/anybuy/phabricator/phabricator
+```
+
+9、Disable PHP ```always_populate_raw_post_data```
+
+
+
+10、Small MySQL "max_allowed_packet"
+
+Default, MAC has no ```my.cnf```, copy and move it:
+
+```
+houbinbindeMacBook-Pro:support-files houbinbin$ pwd
+/usr/local/mysql/support-files
+houbinbindeMacBook-Pro:support-files houbinbin$ ls
+binary-configure	magic			my-default.cnf		mysql-log-rotate	mysql.server		mysqld_multi.server
+houbinbindeMacBook-Pro:support-files houbinbin$ sudo cp my-default.cnf my.cnf
+houbinbindeMacBook-Pro:support-files houbinbin$ sudo mv my.cnf /etc/my.cnf
+houbinbindeMacBook-Pro:etc houbinbin$ pwd
+/etc
+houbinbindeMacBook-Pro:etc houbinbin$ vi my.cnf
+```
+
+to change the ```max_allowed_packet``` value:
+
+```
+max_allowed_packet=41943040
+```
+
+and then, restart your mysql
+
+```
+sudo /usr/local/mysql/support-files/mysql.server restart
+```
+
+
 
 
 
