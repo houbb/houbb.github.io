@@ -691,6 +691,13 @@ and then, restart your mysql
 sudo /usr/local/mysql/support-files/mysql.server restart
 ```
 
+11、Missing Repository Local Path
+
+```
+$   sudo mkdir '/var/repo/'
+```
+
+12、Install Pygments to Improve Syntax Highlighting
 
 
 
