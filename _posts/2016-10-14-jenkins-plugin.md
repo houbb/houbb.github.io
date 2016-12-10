@@ -230,6 +230,18 @@ target/site/apidocs/
 - ```<additionalparam>-Xdoclint:none</additionalparam>``` JDK8 对文档要求特别严格,使用这个偷懒。
 
 
+# BlueOcean
+
+Blue Ocean is a new project that rethinks the user experience of Jenkins. Designed from the ground up for Jenkins Pipeline
+and compatible with Freestyle jobs, Blue Ocean reduces clutter and increases clarity for every member of your team.
+
+> [blueocean](https://jenkins.io/projects/blueocean/)
+
+1. Install ```BlueOcean beta```
+
+2. Click ```Open Blue Ocean``` to have a travel~~~
+
+
 
 
 
