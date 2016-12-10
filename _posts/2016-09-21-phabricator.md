@@ -62,6 +62,7 @@ Zend Engine v2.5.0, Copyright (c) 1998-2015 Zend Technologies
 > [MySQL](https://www.mysql.com)
 
 
+下载以下项目
 
 ```
 $ git clone https://github.com/phacility/libphutil.git
@@ -70,6 +71,8 @@ $ git clone https://github.com/phacility/phabricator.git
 ```
 
 then
+
+这个为实践路径。
 
 ```
 houbinbindeMacBook-Pro:phabricator houbinbin$ pwd
@@ -183,6 +186,13 @@ Listen 1234
   RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
 </VirtualHost>
 ```
+
+
+注意:
+
+1. Listen 1234 指定端口号为 1234
+2. ServerName ```www.anybuy.com``` 后者为项目域名,本地可使用```127.0.0.1```
+3. ```/Users/houbinbin/IT/anybuy/phabricator/phabricator/webroot``` 2处路径请替换成自己的实际路径。
 
 - restart the Apache and you can see
 
