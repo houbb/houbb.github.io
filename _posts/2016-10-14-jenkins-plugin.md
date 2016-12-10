@@ -10,25 +10,34 @@ published: true
 * any list
 {:toc}
 
-# Jenkins Plugin
-
-> [zh_CN](http://www.yiibai.com/jenkins/jenkins_unit_testing.html)
-
-> [blog](http://m.blog.csdn.net/article/details?id=9949309)
-
-
-
 # JUnit Plugin
 
-代码测试检测
+单元测试检测
 
 > [JUnit Plugin](https://wiki.jenkins-ci.org/display/JENKINS/JUnit+Plugin)
 
+> [JUnit blog](http://m.blog.csdn.net/article/details?id=9949309)
 
-> [Unit Test Build](http://www.myexception.cn/cvs-svn/1508681.html)
+> [JUnit Test Build](http://www.myexception.cn/cvs-svn/1508681.html)
 
+1. Install ```junit plugin```
+
+2. Not skip the test
+
+3. Edit ```pom.xml``` in your project
+
+```xml
+<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>${junit.version}</version>
+    <scope>test</scope>
+</dependency>
+```
 
 # Sonar Plugin
+
+单元质量检测
 
 > [sonar integration](http://blog.csdn.net/xinluke/article/details/53035583)
 
@@ -38,22 +47,20 @@ published: true
 
 1. Install ```SonarQube```
 
-2. Install ```	SonarQube Plugin```
+2. Install ```SonarQube Plugin``` in Jenkins
 
 
 > 配置sonar server
 
 Jenkins–》系统设置–》SonarQube servers
 
-1. Server Version **5.2** or before:
-
-Sonar default is ```admin/admin```
+1. Server Version **5.2** or before: usr/pwd Default is ```admin/admin```
 
 2. Server authentication token
 
 - 生成 token
 
-配置->权限->用户->ToKens
+配置->权限->用户->Tokens
 
 Enter a name, and generate one:
 
@@ -91,7 +98,144 @@ sonar.language=java
 ![scanner]({{ site.url}}/static/app/img/jenkins/2016-12-10-jenkins-sonar-executor.png)
 
 
+- Edit the ```pom.xml``` in your project:
 
-# 覆盖率
+```xml
+<plugin>
+ <groupId>org.sonarsource.scanner.maven</groupId>
+ <artifactId>sonar-maven-plugin</artifactId>
+ <version>3.1.1</version>
+</plugin>
+```
 
-[代码覆盖率](http://blog.csdn.net/wangmuming/article/details/23455947)
+<label class="label label-danger">Error</label>
+
+一直卡在这个问题
+
+> Unpacking https://repo1.maven.org/maven2/org/sonarsource/scanner/cli/sonar-scanner-cli/2.8/sonar-scanner-cli-2.8.zip to /Users/houbinbin/.jenkins/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarQube_Scanner on Jenkins
+
+
+也就是要将这个文件下载下来,并解压在目标路径。手动操作,解决。
+
+
+
+# cobertura
+
+单元测试覆盖率
+
+> [Cobertura+Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Cobertura+Plugin)
+
+> [cobertura](http://blog.csdn.net/yaominhua/article/details/40684647)
+
+> [代码覆盖率](http://blog.csdn.net/wangmuming/article/details/23455947)
+
+1. Install ```Cobertura plugin``` plugin
+
+2. 构建时添加目标(Goals)如下:
+
+```
+clean cobertura:cobertura package
+```
+
+3. 构建后操作-》Publish Cobertura Coverage Report
+
+Set **Cobertura xml report pattern** as following:
+
+```
+**/target/site/cobertura/coverage.xml
+```
+
+4. Edit the ```pom.xml``` in your project
+
+```xml
+<plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>findbugs-maven-plugin</artifactId>
+    <version>3.0.1</version>
+    <configuration>
+        <threshold>High</threshold>
+        <effort>Default</effort>
+        <findbugsXmlOutput>true</findbugsXmlOutput>
+        <findbugsXmlWithMessages>true</findbugsXmlWithMessages>
+        <xmlOutput>true</xmlOutput>
+        <!--<findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>-->
+    </configuration>
+</plugin>
+```
+
+# findbugs
+
+找寻代码中的BUG
+
+> [FindBugs+Plugin](https://wiki.jenkins-ci.org/display/JENKINS/FindBugs+Plugin)
+
+> [findbugs_zh_CN](http://blog.csdn.net/fighterandknight/article/details/51424257)
+
+1. Install ```FindBugs plugin``` plugin in jenkins
+
+2. 构建时添加目标(Goals)如下:
+
+```
+findbugs:findbugs
+```
+
+注意: 使用findbugs务必保证文件已被解析为```.class```, 即已经被 ```maven compile```
+
+3. 构建后操作-》Publish FindBugs analysis results
+
+**FindBugs results** 保持默认即可。
+
+
+# javadoc
+
+> [Javadoc+Plugin](https://wiki.jenkins-ci.org/display/JENKINS/Javadoc+Plugin)
+
+
+1. Install ```javadoc plugin``` plugin in jenkins
+
+
+2. Configure Jenkins job:
+
+In Build section, Goals and options line add:
+
+```
+javadoc:javadoc
+```
+
+3. publish javadoc
+
+Define the **Javadoc directory**
+
+```
+target/site/apidocs/
+```
+
+
+4. Edit the ```pom.xml``` in your project
+
+```
+<plugin>
+    <groupId>org.apache.maven.plugins</groupId>
+    <artifactId>maven-javadoc-plugin</artifactId>
+    <version>2.10.2</version>
+    <configuration>
+        <aggregate>true</aggregate>
+        <additionalparam>-Xdoclint:none</additionalparam>
+    </configuration>
+</plugin>
+````
+
+- ```<aggregate>true</aggregate>``` 多模块
+
+- ```<additionalparam>-Xdoclint:none</additionalparam>``` JDK8 对文档要求特别严格,使用这个偷懒。
+
+
+
+
+
+
+
+
+
+
+
