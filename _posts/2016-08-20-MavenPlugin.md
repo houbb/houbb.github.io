@@ -133,6 +133,28 @@ Run an Apache Tomcat container for rapid webapp development.
 ```
 
 
+# Versions
+
+> [versions-plugin zh_CN](http://www.dexcoder.com/selfly/article/4002)
+
+```
+mvn versions:set -DnewVersion=1.0.1-SNAPSHOT
+```
+
+
+- commit
+
+```
+mvn versions:commit
+```
+
+- revert
+
+```
+mvn versions:revert
+```
+
+
 
 
 
