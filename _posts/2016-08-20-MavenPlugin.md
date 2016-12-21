@@ -154,7 +154,9 @@ mvn versions:commit
 mvn versions:revert
 ```
 
+# Auto-Config
 
+> [](http://openwebx.org/docs/autoconfig.html)
 
 
 
