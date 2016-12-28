@@ -40,7 +40,7 @@ data		logs		zookeeper-3.4.9
 
 - Add file ```myid```
 
-add file ```myid``` in data package, and it's content is
+add file ```myid``` in **data** package, and it's content is
 
 ```
 1
