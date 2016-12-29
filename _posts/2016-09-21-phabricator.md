@@ -348,6 +348,18 @@ However the following packages replace it:
 $ sudo apt-get -y update
 ```
 
+可能系统需要安装 ```apache2```
+
+```
+$   sudo apt-get install apache2
+```
+
+- php
+
+```
+sudo apt install php7.0-cli
+```
+
 ## Config Apache
 
 
@@ -388,6 +400,8 @@ ServerName 139.196.28.125
 
 
 ```
+
+
 
 - edit ```000-default.conf```
 
