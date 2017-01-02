@@ -79,4 +79,13 @@ svg:not(:root) {
 
 
 
+.post-list > li {
+    border-bottom: 1px dashed #888888;
+}
+
+.post-list .post-item-time {
+    height: 24px;
+    display: inline-block;
+}
+
 
