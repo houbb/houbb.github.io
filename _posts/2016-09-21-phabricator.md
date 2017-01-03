@@ -828,27 +828,49 @@ sudo apt install php7.0-cli
 > [config zh_CN](www.cnblogs.com/zhangqingsh/archive/2013/04/15/3021300.html)
 
 
+管理员账号浏览器后端添加```/config/```进入配置界面。
+
+
+> Mail
+
 ```/config/group/metamta/``` to config mail
 
-1. metamta.default-address
+- metamta.default-address
 
-设置一个默认邮箱即可。
+设置一个默认邮箱即可。  如: ```13062666053@sina.cn```,应保持与**phpmailer**中设置一致。
 
-2. metamta.mail-adapter 
+- metamta.domain
 
-设置邮件适配器  "PhabricatorMailImplementationPHPMailerAdapter"
+这个无所谓,使用默认配置即可。
 
-3. phpmailer 
+
+- metamta.mail-adapter
+
+使用SMTP邮箱,请设置邮件适配器```PhabricatorMailImplementationPHPMailerAdapter```
+
+
+
+> phpmailer
 
 in the URL of: ```/config/group/phpmailer/```, you can use command to config:
 
 ```
-bin/config set phpmailer.smtp-host smtp.163.com
-bin/config set phpmailer.smtp-port  465
+bin/config set phpmailer.smtp-host smtp.sina.cn
+bin/config set phpmailer.smtp-port  25
 bin/config set phpmailer.smtp-protocol  TLS
-bin/config set phpmailer.smtp-user 13062666053@163.com
+bin/config set phpmailer.smtp-user 13062666053@sina.cn
 bin/config set phpmailer.smtp-password  XXXX
 ```
+
+```smtp-port``` 默认可以使用**25**, 如果配置SSL,则需要使用**465**。
+
+
+```
+cat  conf/local/local.json
+```
+
+可以查看本地设置数据。
+
 
 测试是否发送:
 
