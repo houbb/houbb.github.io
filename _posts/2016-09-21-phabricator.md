@@ -756,6 +756,7 @@ $   sudo mkdir -p '/var/repo/'
 
 12、Install Pygments to Improve Syntax Highlighting
 
+Click 【Edit "pygments.enabled"】, then select **Use Pygments**, finally click 【Save Config Entry】
 
 13、MySQL STRICT_ALL_TABLES Mode Not Set
 
@@ -770,7 +771,7 @@ add this under the ```[mysqld]```
 sql_mode=STRICT_ALL_TABLES
 ```
 
-then restart mysql
+then restart mysql make it effect.
 
 ```
 /etc/init.d/mysql restart
