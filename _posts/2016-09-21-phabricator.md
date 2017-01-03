@@ -777,6 +777,11 @@ then restart mysql make it effect.
 /etc/init.d/mysql restart
 ```
 
+14、No Sendmail Binary Found
+
+Click 【Edit "metamta.mail-adapter"】 
+
+Select: "PhabricatorMailImplementationPHPMailerAdapter"
 
 
 ## Ubuntu install warn
@@ -811,6 +816,55 @@ $   sudo apt-get install apache2
 sudo apt install php7.0-cli
 ```
 
+# Mail Config
+
+> [jianshu](http://www.jianshu.com/p/a0592a2f2afb)
+
+> [install](http://wenku.baidu.com/view/b2fd127b312b3169a451a44a.html)
+
+> [blog zh_CN](http://blog.sina.com.cn/s/blog_6311af050102wteg.html)
+
+
+> [config zh_CN](www.cnblogs.com/zhangqingsh/archive/2013/04/15/3021300.html)
+
+
+```/config/group/metamta/``` to config mail
+
+1. metamta.default-address
+
+设置一个默认邮箱即可。
+
+2. metamta.mail-adapter 
+
+设置邮件适配器  "PhabricatorMailImplementationPHPMailerAdapter"
+
+3. phpmailer 
+
+in the URL of: ```/config/group/phpmailer/```, you can use command to config:
+
+```
+bin/config set phpmailer.smtp-host smtp.163.com
+bin/config set phpmailer.smtp-port  465
+bin/config set phpmailer.smtp-protocol  TLS
+bin/config set phpmailer.smtp-user 13062666053@163.com
+bin/config set phpmailer.smtp-password  XXXX
+```
+
+测试是否发送:
+
+```
+bin/mail list-outbound
+```
+
+```
+apt-get install sendmail
+```
+
+一切配好之后，重启 守护线程
+
+```
+bin/phd restart
+```
 
 
 
