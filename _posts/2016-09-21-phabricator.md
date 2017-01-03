@@ -571,6 +571,8 @@ $   vim /etc/php5/apache2/php.ini
 date.timezone = Asia/Shanghai
 ```
 
+You need to restart apache2 to make if effect.
+
 4、Disable PHP always_populate_raw_post_data
 
 The "always_populate_raw_post_data" key is set to some value other than "-1" in your PHP configuration.
@@ -588,9 +590,13 @@ $   /etc/init.d/apache2 restart
 
 Adjust ```post_max_size``` in your PHP configuration to at least *32MB*. When set to smaller value, large file uploads may not work properly.
 
+In this file: ```/etc/php5/apache2/php.ini```
+
 ```
 post_max_size = 32M
 ```
+
+restart apache to make it work.
 
 6、Set Mail
 
@@ -697,6 +703,8 @@ houbinbindeMacBook-Pro:phabricator houbinbin$ pwd
 
 10、Small MySQL "max_allowed_packet"
 
+(1) In Mac
+
 Default, MAC has no ```my.cnf```, copy and move it:
 
 ```
@@ -723,13 +731,50 @@ and then, restart your mysql
 sudo /usr/local/mysql/support-files/mysql.server restart
 ```
 
+(2) In Ubuntu 14.04
+
+The recommended minimum value for this setting is "33554432".
+
+```
+vi /etc/mysql/my.cnf 
+```
+
+edit the content
+
+```
+max_allowed_packet = 32M
+```
+
+restart mysql
+
+
 11、Missing Repository Local Path
 
 ```
-$   sudo mkdir '/var/repo/'
+$   sudo mkdir -p '/var/repo/'
 ```
 
 12、Install Pygments to Improve Syntax Highlighting
+
+
+13、MySQL STRICT_ALL_TABLES Mode Not Set
+
+```
+vi /etc/mysql/my.cnf
+```
+
+add this under the ```[mysqld]``` 
+
+```
+# add sql mode
+sql_mode=STRICT_ALL_TABLES
+```
+
+then restart mysql
+
+```
+/etc/init.d/mysql restart
+```
 
 
 
