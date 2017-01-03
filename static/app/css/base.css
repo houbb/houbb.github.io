@@ -66,9 +66,26 @@ svg:not(:root) {
 }
 
 
+/*font size*/
+.f12 {
+    font-size: 12px;
+}
+
+.f14 {
+    font-size: 14px;
+}
 
 
 
 
+
+.post-list > li {
+    border-bottom: 1px dashed #888888;
+}
+
+.post-list .post-item-time {
+    height: 24px;
+    display: inline-block;
+}
 
 

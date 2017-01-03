@@ -12,6 +12,11 @@ published: true
 
 # SonarQube
 
+注意:
+
+- 新版要求jdk8+
+- 新版要求mysql5.6+
+
 [SonarQube](http://www.sonarqube.org/) is an open platform to manage code quality. As such, it covers the 7 axes of code quality:
 
 ![sonarQube]({{site.url}}/static/app/img/code-review/2016-10-14-sonar-qube-7axes.png)

@@ -14,14 +14,14 @@ blogName: Echo Blog
 title: Echo Blog
 
 # 作者
-me: Hou Binbin
+me: HouBinbin
 
 # 摘要
 excerpt_separator: ""
 
 # 分页
 gems: [jekyll-paginate]
-paginate: 5
+paginate: 8
 paginate_path: "page:num"
 
 # 博客名称

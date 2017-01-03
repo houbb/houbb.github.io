@@ -330,6 +330,7 @@ Phabricator will be installed to: /root/code.
 Press RETURN to continue, or ^C to cancel.
 ```
 
+
 ## Config Apache
 
 
@@ -346,14 +347,14 @@ $   /etc/init.d/apache2 stop
 > [ubuntu apache ch_ZN](http://www.cnblogs.com/ylan2009/archive/2012/02/25/2368028.html)
 
 
-- add
+- add in ```/etc/apache2/httpd.conf```
 
 ```
 LoadModule rewrite_module libexec/apache2/mod_rewrite.so
 LoadModule php5_module libexec/apache2/libphp5.so
 ```
 
-- edit ```apache2.conf```
+- edit ```/etc/apache2/apache2.conf```
 
 ```
 $   vi /etc/apache2/apache2.conf
@@ -370,6 +371,8 @@ ServerName 139.196.28.125
 
 
 ```
+
+
 
 - edit ```000-default.conf```
 
@@ -727,6 +730,40 @@ $   sudo mkdir '/var/repo/'
 ```
 
 12、Install Pygments to Improve Syntax Highlighting
+
+
+
+## Ubuntu install warn
+
+运行时警告信息如下:
+
+```
+Package php5-cli is not available, but is referred to by another package.
+This may mean that the package is missing, has been obsoleted, or
+is only available from another source
+However the following packages replace it:
+  php7.0-cli:i386 php7.0-cli
+```
+
+原因:
+
+```
+这个问题的原因是ubuntu的/etc/apt/source.list中的源比较旧了，需要更新一下，更新方法：
+
+$ sudo apt-get -y update
+```
+
+可能系统需要安装 ```apache2```
+
+```
+$   sudo apt-get install apache2
+```
+
+- php
+
+```
+sudo apt install php7.0-cli
+```
 
 
 
