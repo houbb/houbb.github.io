@@ -518,6 +518,25 @@ arc tasks：展示当前任务
 
 # Issues
 
+0、No Authentication Providers Configured
+
+这个如果不设置，在其他电脑登陆，将失去验证方式。
+
+```
+http://XXX.XXX.XX.XXX/auth/
+```
+
+地址替换成自己对应的IP，点击【Add Provider】
+
+可选择最常规的一个:
+
+```
+Provider
+	Username/Password
+Allow users to login or register using a username and password.
+```
+后面默认，保存点击【Add Provider】
+
 1、Base URI Not Configured
 
 ```
