@@ -154,6 +154,21 @@ mvn versions:commit
 mvn versions:revert
 ```
 
+
+正确修改方法:
+
+(1) 修改父类
+
+```
+mvn versions:set -DgroupId=com.framework -DartifactId=framework* -DoldVersion=* -DnewVersion=1.0.2-SNAPSHOT
+```
+
+(2) 修改子类
+
+```
+mvn -N versions:update-child-modules
+```
+
 # Auto-Config
 
 > [Auto-Config](http://openwebx.org/docs/autoconfig.html)
