@@ -23,7 +23,7 @@ Phabricator is an integrated set of powerful tools to help companies build highe
 > [Guide](https://secure.phabricator.com/book/phabricator/article/installation_guide/)
 
 
-## Installing Required Components
+一、Installing Required Components
 
 
 
@@ -84,7 +84,7 @@ remote: Compressing objects: 100% (104/104), done.
 ```
 
 
-##  Configuring Apache
+二、  Configuring Apache
 
 > [apache in mac](http://www.cnblogs.com/surge/p/4168220.html)
 
@@ -304,7 +304,7 @@ If you are installing on Ubuntu, there are install scripts available which shoul
 
 > [install zh_CN](http://www.linuxdiyf.com/linux/16060.html)
 
-## install_ubuntu.sh
+一、 install_ubuntu.sh
 
 - Visit the [install_ubuntu.sh](https://secure.phabricator.com/diffusion/P/browse/master/scripts/install/install_ubuntu.sh)
 
@@ -331,7 +331,7 @@ Press RETURN to continue, or ^C to cancel.
 ```
 
 
-## Config Apache
+二、 Config Apache
 
 
 - some commands
@@ -401,7 +401,7 @@ RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
 $    /etc/init.d/apache2 restart
 ```
 
-## 403
+三、 403
 
 ```
 Forbidden
@@ -422,7 +422,7 @@ For easy, I move the ```phabricator``` relative package to ```var/www/```, Final
 ```
 
 
-## Config mysql
+四、 Config mysql
 
 - set config
 
@@ -441,11 +441,15 @@ For easy, I move the ```phabricator``` relative package to ```var/www/```, Final
 
 # Arcanist
 
+
 The primary use of arc is to send changes for review in [Differential](https://secure.phabricator.com/book/phabricator/article/differential/)
 
 > [arc](https://secure.phabricator.com/book/phabricator/article/arcanist_diff/)
 
-## Install in Windows
+> [code review zh_CN](http://www.jianshu.com/p/b1a75a14638c)
+
+
+一、 Install in Windows
 
 - install git
 
@@ -507,7 +511,7 @@ $   arc help
 ```
 
 
-## Relative commands
+二、 Relative commands
 
 ```
 arc diff：发送代码差异（review request）到Differental功能
@@ -539,6 +543,8 @@ Provider
 Allow users to login or register using a username and password.
 ```
 后面默认，保存点击【Add Provider】
+
+```http://XXX.XXX.XX.XXX/config/edit/auth.require-approval/``` 选择 **Require Administrators to Approve Accounts** 则用户注册需要管理员审核。
 
 1、Base URI Not Configured
 
@@ -887,6 +893,146 @@ apt-get install sendmail
 ```
 bin/phd restart
 ```
+
+# SSH
+
+> [repository](https://secure.phabricator.com/book/phabricator/article/diffusion_hosting/)
+
+如果代码仓库想使用git管理项目。需要配置SSH。
+
+Phabricator需要三个用户账号（三种用户身份）：两个用于基本运行，一个用于配置SSH访问。
+三个账号分别是：
+www-user：Phabricator Web服务器运行身份。
+daemon-user：daemons （守护进程）运行身份。这个账号是唯一直接与代码仓库交互的账号，其它账号需要切换到这个账号身份（sudo）才能操作代码仓库。
+vcs-user：我们需要以这个账号SSH连接Phabricator。
+
+
+如果你的服务器系统中现在没有这三个账号，需要创建：
+www-user：大部分情况下，这个账号已经存在了，我们不需要理这个账号。
+daemon-user ：一般情况下，我们直接使用 root 账号，因为会需要很多权限（当然这可能不安全）。
+vcs-user：可以使用系统中现有的一个用户账号，直接创建一个就叫 vcsuser。当用户克隆仓库的时候，需要使用类似 vcsuser@pha.example.com 的URI。
+
+- 验证账户是否存在:
+
+```
+cat /etc/passwd | grep www-user
+cat /etc/passwd | grep daemon-user
+cat /etc/passwd | grep vcs-user
+```
+
+查询用户组: ```cat /etc/group```
+
+很不幸。几个账户都不存在。
+
+- [创建用户](http://blog.csdn.net/lincyang/article/details/20922749)
+
+```
+useradd www-user -m -s /bin/bash
+useradd vcs-user -m -s /bin/bash
+```
+
+set password for create user:
+
+```
+sudo passwd www-user
+sudo passwd vcs-user
+```
+
+一、Configuring Phabricator
+
+以下所有操作,都换成**root**模式。
+
+First, set ```phd.user``` to the ```daemon-user```(root):
+
+```
+$pwd
+/var/www/phabricator
+
+$ sudo bin/config set phd.user root
+
+Set 'phd.user' in local configuration.
+```
+
+Restart the daemons to make sure this configuration works properly.
+
+```
+$   bin/phd restart
+
+There are no running Phabricator daemons.
+Freeing active task leases...
+Freed 0 task lease(s).
+Launching daemons:
+(Logs will appear in "/var/tmp/phd/log/daemons.log".)
+
+    PhabricatorRepositoryPullLocalDaemon (Static)
+    PhabricatorTriggerDaemon (Static)
+    PhabricatorTaskmasterDaemon (Autoscaling: group=task, pool=4, reserve=0)
+
+Done.
+```
+
+
+If you're using a ```vcs-user``` for SSH, you should also configure that:
+
+```
+$ sudo bin/config set diffusion.ssh-user vcs-user
+Set 'diffusion.ssh-user' in local configuration
+```
+
+Next, you'll set up sudo permissions so these users can interact with one another.
+
+
+二、Configuring Sudo
+
+默认情况下。添加的用户是没有```sudo```权限的。
+
+
+www-user 和 vcs-user 需要能够使用 **sudo** 切换到 daemon-user 用户身份才能与仓库交互，所以我们需要配置更改系统的 sudo 配置。
+直接编辑 ```/etc/sudoers``` 或者在 ```/etc/sudoers.d``` 下创建一个新文件，然后把这些内容写到文件内容中
+
+
+此处直接 ```vi /etc/sudoers```, 添加内容如下:
+
+```
+# add sudo for www-user and vcs-user
+www-user ALL=(root) SETENV: NOPASSWD: /usr/lib/git-core/git, /usr/bin/git, /var/lib/git, /usr/lib/git-core/git-http-backend, /usr/bin/ssh, /etc/ssh, /etc/default/ssh, /etc/init.d/ssh
+vcs-user ALL=(root) SETENV: NOPASSWD: /bin/sh, /usr/bin/git-upload-pack, /usr/bin/git-receive-pack
+```
+
+如果文件中有```Defaults requiretty```, 注释掉。
+
+三、其它SSH配置
+
+- ```/etc/shadow``` 中找到**vcs-user**的哪一行。修改第二列(密码列)为空,或者**NP**。
+
+- ```/etc/passwd``` 中找到**vcs-user**的哪一行。修改```/bin/false```为```/bin/sh```。
+
+四、配置SSHD端口
+
+> [ssh](http://www.cnblogs.com/CGDeveloper/archive/2011/07/27/2118533.html)
+
+- ssh version
+
+```
+$ ssh -V
+OpenSSH_6.6.1p1 Ubuntu-2ubuntu2.8, OpenSSL 1.0.1f 6 Jan 2014
+```
+
+Phabricator运行的服务器系统中 sshd 的版本 必须高于 **6.2**
+
+- port
+
+默认为**22**
+
+
+-- TBC  太长了。。。暂时到这里。
+
+
+# 持续集成
+
+> [Git + Jenkins + Pha](http://www.mutouxiaogui.cn/blog/?p=386)
+
+
 
 
 
