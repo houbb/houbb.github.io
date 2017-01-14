@@ -1024,8 +1024,130 @@ Phabricator运行的服务器系统中 sshd 的版本 必须高于 **6.2**
 
 默认为**22**
 
+1) create ```phabricator-ssh-hook.sh``` in **/usr/libexec/phabricator-ssh-hook.sh**
 
--- TBC  太长了。。。暂时到这里。
+我选择放在 **/etc/ssh/shell** 中
+
+```
+#!/bin/sh
+
+# NOTE: Replace this with the username that you expect users to connect with.
+VCSUSER="vcs-user"
+
+# NOTE: Replace this with the path to your Phabricator directory.
+ROOT="/var/www/phabricator"
+
+if [ "$1" != "$VCSUSER" ];
+then
+  exit 1
+fi
+
+exec "$ROOT/bin/ssh-auth" $@
+```
+创建完脚本后，需要把脚本和它的父文件夹所有者改为 **root**，并且赋予脚本 **755** 权限
+
+```
+sudo chown root /etc/ssh/shell
+sudo chown root /etc/ssh/shell/phabricator-ssh-hook.sh
+sudo chmod 755 /etc/ssh/shell/phabricator-ssh-hook.sh
+```
+
+2) Create ```sshd_config```
+
+在 **/etc/ssh** 中创建文件名类似 ```sshd_config.phabricator``` 的文件
+
+```
+$ pwd
+/etc/ssh
+$ sudo vi sshd_config.phabricator
+```
+
+文件内容如下, 此处配置端口号为 ```2222```
+
+If you plan to connect to a port other than 22, you should set this port as diffusion.ssh-port in your Phabricator config:
+
+```
+$ bin/config set diffusion.ssh-port 2222
+```
+
+
+```
+# NOTE: You must have OpenSSHD 6.2 or newer; support for AuthorizedKeysCommand
+# was added in this version.
+
+# NOTE: Edit these to the correct values for your setup.
+
+AuthorizedKeysCommand /etc/ssh/shell/phabricator-ssh-hook.sh
+AuthorizedKeysCommandUser vcs-user
+AllowUsers vcs-user
+
+# You may need to tweak these options, but mostly they just turn off everything
+# dangerous.
+
+Port 2222
+Protocol 2
+PermitRootLogin no
+AllowAgentForwarding no
+AllowTcpForwarding no
+PrintMotd no
+PrintLastLog no
+PasswordAuthentication no
+AuthorizedKeysFile none
+
+PidFile /var/run/sshd-phabricator.pid
+```
+
+3) 启动 ssh 服务
+
+```
+sudo /usr/sbin/sshd -f /etc/ssh/sshd_config.phabricator
+```
+
+使用 ```sudo netstat -atlunp | grep ssh``` 可查看端口运行情况。
+
+4) 上传公钥
+
+点击你的头像 ---> 左侧菜单面板 Manage ---> 右侧菜单面板 Edit Settings ---> 左侧菜单面板 SSH Public Keys ---> 右上角 SSH Key Actions ---> Upload Public Key
+
+上传后,执行
+
+```
+echo {} | ssh vcs-user@127.0.0.1 conduit conduit.ping
+```
+
+5) 创建项目
+
+```http://139.196.28.125/diffusion/``` 下创建项目:
+
+- callsign 必须大写
+
+```
+This newly created repository is not active yet. Configure policies, options, and URIs. When ready, Activate the repository.
+If activated now, this repository will become a new hosted repository. To observe an existing repository instead, configure it in the URIs panel.
+```
+
+6) clone
+
+```
+git clone ssh://vcs-user@139.196.28.125:2222/source/rd.git
+```
+
+发现需要使用的是端口转发,但是要登录的还是```139.196.28.125```服务器。所以需要为其创建```vcs-user```。后来发现这是个问题。可能是因为转发问题,导致不存在。以后研究。
+
+此处需要开启端口号2222。并启动转发。
+
+
+```
+useradd vcs-user -m -s /bin/bash
+```
+
+
+明天研究下怎么样不设置密码。
+
+
+
+
+
 
 
 # 持续集成
