@@ -196,7 +196,7 @@ Listen 1234
 
 - restart the Apache and you can see
 
-![phabricator]({{site.url}}/static/app/img/2016-09-22-phabricator.png)
+![phabricator index]({{site.url}}/static/app/img/phabricator/2016-09-22-phabricator-index.png)
 
 
 - config mysql
@@ -291,7 +291,7 @@ Completed applying all schema adjustments.
 http://127.0.0.1:1234/
 ```
 
-![phabricator]({{site.url}}/static/app/img/2016-09-22-phabricator-visit.png)
+![phabricator]({{site.url}}/static/app/img/phabricator/2016-09-22-phabricator-visit.png)
 
 
 # Install in Ubuntu
@@ -1141,22 +1141,44 @@ git clone ssh://vcs-user@139.196.28.125:2222/source/rd.git
 useradd vcs-user -m -s /bin/bash
 ```
 
-
-明天研究下怎么样不设置密码。
-
-
-
-
-
-
-
 # 持续集成
 
 > [Git + Jenkins + Pha](http://www.mutouxiaogui.cn/blog/?p=386)
 
 
+- 创建用户
+
+```
+http://139.196.28.125/people/create/
+```
+
+选择 **Create Bot User**-》填入用户信息-》**Create User**。
+
+- 编辑用户信息
+
+```
+http://139.196.28.125/p/jenkins/
+```
+
+点击左侧【Manage】-》右侧【Edit Settings】-》左侧【Conduit API Tokens】-》右侧【Generate API Token】-》【Generate Token】
+
+复制其中的 token。
 
 
+
+- 添加**token**到Jenkins
+
+1) 安装 phabricator 插件 ```Phabricator Differential Plugin```
+
+2) copy token
+
+```
+http://139.196.28.125:8080/configure
+```
+
+找到**Phabricator**, Credentials, 添加信息如下:
+
+![phabricator-jenkins]({{ site.url }}/static/app/img/phabricator/2017-01-15-phabricator-jenkins.png)
 
 
 
