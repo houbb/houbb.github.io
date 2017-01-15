@@ -1176,7 +1176,7 @@ http://139.196.28.125/p/jenkins/
 http://139.196.28.125:8080/configure
 ```
 
-找到**Phabricator**, Credentials, 添加信息如下:
+找到**Phabricator** -》**Credentials**, 添加信息如下:
 
 ![phabricator-jenkins]({{ site.url }}/static/app/img/phabricator/2017-01-15-phabricator-jenkins.png)
 
