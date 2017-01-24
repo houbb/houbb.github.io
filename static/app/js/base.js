@@ -7,9 +7,16 @@ $(document).ready(function () {
     $("table").addClass("table").addClass("table-bordered").addClass("table-hover");
     Base.sh();
     Base.highchartsDemo()
+    Base.initNo();
 });
 var Base = new Base();
 function Base() {
+    /**
+     * 初始化编号标签。
+     */
+    this.initNo = function () {
+       $("NO, no").addClass("label").addClass("label-info");
+    };
     this.highchartsDemo = function () {
         $("#highchart-container").highcharts({
             chart: {type: "bar"},
