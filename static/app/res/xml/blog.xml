@@ -5,6 +5,69 @@
     <link>http://houbb.github.io/</link>
     <docs>http://backend.userland.com/rss092</docs>
     <item>
+      <title>&quot;gem+jekyll+git&quot;</title>
+      <link>/Users/houbinbin/IT/code/houbb.github.io/_posts/2016-04-13-jekyll.md</link>
+      <description>&lt;h1&gt;&lt;a href=&quot;#gem&quot; name=&quot;gem&quot;&gt;&lt;/a&gt;Gem&lt;/h1&gt;
+&lt;p&gt;Install ruby, here is the &lt;a href=&quot;http://rubyinstaller.org/downloads&quot;&gt;download&lt;/a&gt; address.&lt;/p&gt;
+&lt;h1&gt;&lt;a href=&quot;#jekyll&quot; name=&quot;jekyll&quot;&gt;&lt;/a&gt;Jekyll&lt;/h1&gt;
+&lt;p&gt;&lt;a href=&quot;https://jekyllrb.com/docs/home/&quot;&gt;Jekyll&lt;/a&gt; is a simple, blog-aware, static site generator.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://jekyllcn.com&quot;&gt;jekyll doc zh_CN&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Use command to install jekyll as following.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ gem install jekyll
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;You may need use &lt;strong&gt;Proxy Software&lt;/strong&gt; in China. Then, wait and learn how to use it.&lt;/p&gt;
+&lt;p&gt;Or you can use &lt;a href=&quot;https://ruby.taobao.org/&quot;&gt;rails&lt;/a&gt; instead of jekyll.&lt;/p&gt;
+&lt;p&gt;If you are use mac, use this.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ sudo gem install jekyll
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1&gt;&lt;a href=&quot;#git&quot; name=&quot;git&quot;&gt;&lt;/a&gt;Git&lt;/h1&gt;
+&lt;p&gt;You need know how to use Git.&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://www.runoob.com/git/git-tutorial.html&quot; title=&quot;Git&quot;&gt;Git doc&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h1&gt;&lt;a href=&quot;#problem&quot; name=&quot;problem&quot;&gt;&lt;/a&gt;Problem&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;Error: Permission denied - bind(2) for 127.0.0.1:4000&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://www.cnblogs.com/lxconan/archive/2016/01/11/5119972.html&quot;&gt;bind localhost:4000 failed&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;use&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;    $ netstat -ano
+    $ tasklist /svc /FI &amp;quot;PID eq ${pid}&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;pid is the result of thread who occupy localhost:4000; Use task manager to kill this thread;&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;Please add the following to your Gemfile to avoid polling for changes:&lt;br/&gt; gem &amp;lsquo;wdm&amp;rsquo;, &amp;lsquo;&amp;gt;= 0.1.0&amp;rsquo; if Gem.win_platform?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://stackoverflow.com/questions/30720797/jekyll-install-on-windows-error-message&quot;&gt;gem &amp;lsquo;wdm&amp;rsquo;, &amp;lsquo;&amp;gt;= 0.1.0&amp;rsquo; if Gem.win_platform?&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I have tried times, but also failed. Luckily, jekyll is still work well.&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;jekyll-paginate&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;Configuration file: /Users/houbinbin/blog/houbb.github.io/_config.yml
+  Dependency Error: Yikes! It looks like you don&amp;#39;t have jekyll-paginate or one of its dependencies installed. In order to use Jekyll as currently configured, you&amp;#39;ll need to install this gem. The full error message from Ruby is: &amp;#39;cannot load such file -- jekyll-paginate&amp;#39; If you run into trouble, you can find helpful resources at http://jekyllrb.com/help/!
+jekyll 3.1.3 | Error:  jekyll-paginate
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;solve method.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$ sudo gem install jekyll-paginate
+
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h1&gt;&lt;a href=&quot;#toc&quot; name=&quot;toc&quot;&gt;&lt;/a&gt;TOC&lt;/h1&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;a href=&quot;http://loudou.info/blog/2014/08/01/wei-octopress-tian-jia-toc/&quot;&gt;TOC&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;add these code in your file.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;* any list
+{:toc}
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    <item>
       <title>JUnit</title>
       <link>/Users/houbinbin/IT/code/houbb.github.io/_posts/2016-04-26-JUnit.md</link>
       <description>&lt;h1&gt;&lt;a href=&quot;#junit&quot; name=&quot;junit&quot;&gt;&lt;/a&gt;JUnit&lt;/h1&gt;
@@ -76,7 +139,7 @@
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;when we run StudentTest.&lt;/p&gt;
-&lt;p&gt;![success]({{ site.url }}/static/app/img/2016-04-27-success-junit.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-04-27-success-junit.png&quot; alt=&quot;success&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;then, we change the test code.&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;java&quot;&gt;public class StudentTest extends TestCase {
     public void testCreate() {
@@ -88,7 +151,7 @@
 }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;result&lt;/p&gt;
-&lt;p&gt;![failed]({{ site.url }}/static/app/img/2016-04-27-failed-junit.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-04-27-failed-junit.png&quot; alt=&quot;failed&quot; /&gt;&lt;/p&gt;
 &lt;h1&gt;&lt;a href=&quot;#usage&quot; name=&quot;usage&quot;&gt;&lt;/a&gt;Usage&lt;/h1&gt;
 &lt;ul&gt;
   &lt;li&gt;Add jars in IDEA&lt;/li&gt;
@@ -419,31 +482,31 @@ public void testMock() {
 &lt;ul&gt;
   &lt;li&gt;UseCase&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![usecase]({{ site.url }}/static/app/uml/2016-11-12-usecase.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/uml/2016-11-12-usecase.png&quot; alt=&quot;usecase&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Class Relationship&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![class relationship]({{ site.url }}/static/app/uml/2016-11-12-class-relationship.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/uml/2016-11-12-class-relationship.png&quot; alt=&quot;class relationship&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Activity&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![activity]({{ site.url }}/static/app/uml/2016-11-12-ActivityDiagram.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/uml/2016-11-12-ActivityDiagram.png&quot; alt=&quot;activity&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Sequence&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![Sequence]({{ site.url }}/static/app/uml/2016-11-12-sequence.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/uml/2016-11-12-sequence.png&quot; alt=&quot;Sequence&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;State chart&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![state chart]({{ site.url }}/static/app/uml/2016-11-12-statechart.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/uml/2016-11-12-statechart.png&quot; alt=&quot;state chart&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Component&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![component]({{ site.url }}/static/app/uml/2016-11-12-ComponentDiagram.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/uml/2016-11-12-ComponentDiagram.png&quot; alt=&quot;component&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Deployment&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![deployment]({{ site.url }}/static/app/uml/2016-11-12-DeploymentDiagram.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/uml/2016-11-12-DeploymentDiagram.png&quot; alt=&quot;deployment&quot; /&gt;&lt;/p&gt;
 &lt;h1&gt;&lt;a href=&quot;#sequence&quot; name=&quot;sequence&quot;&gt;&lt;/a&gt;Sequence&lt;/h1&gt;
 &lt;p&gt;&lt;br/&gt; Download-&amp;gt;Define:&lt;br/&gt; Define-&amp;gt;Usage:&lt;br/&gt;&lt;/p&gt;
 &lt;p&gt;The &lt;a href=&quot;http://bramp.github.io/js-sequence-diagrams/&quot;&gt;js-sequence-diagrams&lt;/a&gt; helps you turns text into UML sequence diagrams.&lt;/p&gt;
@@ -781,11 +844,11 @@ Error:java: Compilation failed: internal java compiler error
 &lt;ul&gt;
   &lt;li&gt;open setting (ctrl+alt+s)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![setting]({{ site.url }}/static/app/img/2016-06-07-idea-jdk.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-06-07-idea-jdk.png&quot; alt=&quot;setting&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;open struts setting (ctrl+alt+s)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![setting]({{ site.url }}/static/app/img/2016-06-07-idea-struts-setting.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-06-07-idea-struts-setting.png&quot; alt=&quot;setting&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Or you can use the maven plugin in maven project:&lt;/p&gt;
 &lt;pre&gt;&lt;code class=&quot;xml&quot;&gt;&amp;lt;plugin&amp;gt;
     &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
@@ -2409,7 +2472,7 @@ public class Application {
 &lt;blockquote&gt;
   &lt;p&gt;&lt;a href=&quot;http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#mvc&quot;&gt;Web MVC&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;![mvc]({{ site.url }}/static/app/img/2016-06-19-spring-mvc.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-06-19-spring-mvc.png&quot; alt=&quot;mvc&quot; /&gt;&lt;/p&gt;
 &lt;h1&gt;&lt;a href=&quot;#hello-world&quot; name=&quot;hello-world&quot;&gt;&lt;/a&gt;Hello World&lt;/h1&gt;
 &lt;p&gt;The src files tree.&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;|____main
@@ -2833,7 +2896,7 @@ Next, Next ... [How zh_CN](http://www.cygwin.cn/site/install/)
 
 Util you meet this.
 
-![setting]({{ site.url }}/static/app/img/2016-06-22-Cygwin.png)
+![setting](http://houbb.github.io/static/app/img/2016-06-22-Cygwin.png)
 
 We need **gcc** and **make** under the Devel, click the **Skip** and choose the right version to install.
 
@@ -4823,7 +4886,7 @@ public class ApplicationConfig extends JFinalConfig {
 &lt;blockquote&gt;
   &lt;p&gt;Structure&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;![singleton]({{ site.url }}/static/app/img/2016-07-15-singleton.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-07-15-singleton.png&quot; alt=&quot;singleton&quot; /&gt;&lt;/p&gt;
 &lt;blockquote&gt;
   &lt;p&gt;Consequences&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -6719,15 +6782,15 @@ OS name: &amp;quot;mac os x&amp;quot;, version: &amp;quot;10.11.3&amp;quot;, arc
 &lt;ul&gt;
   &lt;li&gt;STEP 1: select one from archetype&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![maven]({{ site.url }}/static/app/img/2016-05-07-maven-create.jpg)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-05-07-maven-create.jpg&quot; alt=&quot;maven&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;STEP 2: add GroupId,ArtifactId,Version&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![GroupId]({{ site.url }}/static/app/img/2016-05-07-maven-groupId.jpg)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-05-07-maven-groupId.jpg&quot; alt=&quot;GroupId&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;STEP 3: set Properties&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![Properties]({{ site.url }}/static/app/img/2016-05-07-maven-properties.jpg)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-05-07-maven-properties.jpg&quot; alt=&quot;Properties&quot; /&gt;&lt;/p&gt;
 &lt;blockquote&gt;
   &lt;p&gt;you can add code as following if maven build is very slow.&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -6751,7 +6814,7 @@ mvn tomcat7:run
 &lt;p&gt;You can config the maven setting use&lt;/p&gt;
 &lt;p&gt;crtl+alt+s&lt;/p&gt;
 &lt;p&gt;then search &lt;strong&gt;maven&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;![maven setting]({{ site.url }}/static/app/img/2016-05-07-maven-setting.jpg)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-05-07-maven-setting.jpg&quot; alt=&quot;maven setting&quot; /&gt;&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;-Dmaven.multiModuleProjectDirectory system propery is not set
 &lt;/code&gt;&lt;/pre&gt;
 &lt;ol&gt;
@@ -6764,7 +6827,7 @@ mvn tomcat7:run
 
 M2_HOME D:\Maven\apache-maven-3.3.9
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;![M2_HOME]({{ site.url }}/static/app/img/2016-05-07-maven-error.jpg)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-05-07-maven-error.jpg&quot; alt=&quot;M2_HOME&quot; /&gt;&lt;/p&gt;
 &lt;h2&gt;&lt;a href=&quot;#pom-xml&quot; name=&quot;pom-xml&quot;&gt;&lt;/a&gt;pom.xml&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;the default content of pox.xml may like this:&lt;/li&gt;
@@ -7074,7 +7137,7 @@ package: com.ryo
 [INFO] ------------------------------------------------------------------------
 &lt;/code&gt;&lt;/pre&gt;
 &lt;h3&gt;&lt;a href=&quot;#add-archetype&quot; name=&quot;add-archetype&quot;&gt;&lt;/a&gt;Add archetype&lt;/h3&gt;
-&lt;p&gt;![add archetype]({{ site.url }}/static/app/img/2016-06-11-maven-archetype-add.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/2016-06-11-maven-archetype-add.png&quot; alt=&quot;add archetype&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;Input the location of your archetype project, then you can use it just like other maven archetype.&lt;/p&gt;
 &lt;h3&gt;&lt;a href=&quot;#remove-archetype&quot; name=&quot;remove-archetype&quot;&gt;&lt;/a&gt;Remove archetype&lt;/h3&gt;
 &lt;pre&gt;&lt;code&gt;~/Library/Caches/IntelliJIdea&amp;lt;version&amp;gt;/Maven/Indices/UserArchetypes.xml
@@ -7539,7 +7602,7 @@ pwd:    admin123
 &lt;ul&gt;
   &lt;li&gt;上传三方jar到&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;![third jar]({{ site.url }}/static/app/img/nexus/2017-01-18-nexus-third-jar.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/nexus/2017-01-18-nexus-third-jar.png&quot; alt=&quot;third jar&quot; /&gt;&lt;/p&gt;
 &lt;p&gt;点击【Add Artifact】-》点击【Upload Artifact(s)】&lt;/p&gt;</description>
     </item>
     <item>
@@ -9664,7 +9727,7 @@ PidFile /var/run/sshd-phabricator.pid
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;&lt;a href=&quot;http://139.196.28.125:8080/configure&quot;&gt;http://139.196.28.125:8080/configure&lt;/a&gt;&lt;br/&gt;```&lt;/p&gt;
 &lt;p&gt;找到**Phabricator** -》**Credentials**, 添加信息如下:&lt;/p&gt;
-&lt;p&gt;![phabricator-jenkins]({{ site.url }}/static/app/img/phabricator/2017-01-15-phabricator-jenkins.png)&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/phabricator/2017-01-15-phabricator-jenkins.png&quot; alt=&quot;phabricator-jenkins&quot; /&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Ubuntu</title>
@@ -13047,7 +13110,7 @@ Jenkins has been uninstalled.
   &lt;p&gt;Create user&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;after this you can see:&lt;/p&gt;
-&lt;p&gt;![jenkines]({{ site.url }}/static/app/img/jenkins/2016-10-15-jenkins.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/jenkins/2016-10-15-jenkins.png&quot; alt=&quot;jenkines&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Default user config place:&lt;/li&gt;
 &lt;/ul&gt;
@@ -14682,7 +14745,7 @@ Starting FitNesse on port: 7979
 &lt;/ul&gt;
 &lt;pre&gt;&lt;code&gt;localhost:7979
 &lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;![index]({{ site.url }}/static/app/img/tools/fitnesse/2016-11-10-fitnesse-index.png)&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/tools/fitnesse/2016-11-10-fitnesse-index.png&quot; alt=&quot;index&quot; /&gt;&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;Edit page&lt;/li&gt;
 &lt;/ul&gt;
@@ -15696,7 +15759,7 @@ public class MySwaggerConfig {
 &amp;lt;/web-app&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;4、Start and visit&lt;/p&gt;
-&lt;p&gt;![swagger2-springmvc]({{ site.url }}/static/app/img/doc/2016-12-25-swagger2-springmvc.png)&lt;/p&gt;</description>
+&lt;p&gt;&lt;img src=&quot;http://houbb.github.io/static/app/img/doc/2016-12-25-swagger2-springmvc.png&quot; alt=&quot;swagger2-springmvc&quot; /&gt;&lt;/p&gt;</description>
     </item>
     <item>
       <title>Nginx</title>
@@ -16300,8 +16363,7 @@ git push -u origin master
       &lt;td align=&quot;left&quot;&gt;必需的。定义此项目的标题。&lt;/td&gt;
     &lt;/tr&gt;
   &lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;a href=&quot;http://houbb.github.io/static/app/res/xml/blog.xml&quot;&gt;rss3&lt;/a&gt;&lt;/p&gt;</description>
+&lt;/table&gt;</description>
     </item>
   </channel>
 </rss>
