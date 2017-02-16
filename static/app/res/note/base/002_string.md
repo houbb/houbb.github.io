@@ -35,3 +35,9 @@ public static String uppperString(String s){
 声明String为final一劳永逸。
 
 
+
+# String 跟多细致的内容
+
+
+
+
