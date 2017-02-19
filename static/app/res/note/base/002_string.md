@@ -124,6 +124,18 @@ System.out.println(s== "abcd");
 
 
 
+> 能不能自己写个类,也叫 java.lang.String?
+
+可以,但在应用的时候,需要用自己的类加载器去加载,否则,系统的类加载器永远只是去 加载 jre.jar 包中的那个 java.lang.String。
+由于在 tomcat 的 web 应用程序中,都是由 webapp 自己的类加载器先自己加载 WEB-INF/classess 目录中的类,然后才委托上级的类加载器加 载,
+如果我们在 tomcat 的 web 应用程序中写一个 java.lang.String,这时候 Servlet 程序加 载的就是我们自己写的 java.lang.String,但是这么干就会出很多潜在的问题,原来所有用 了 java.lang.String 类的都将出现问题。
+虽然 java  供了 endorsed 技术,可以覆盖 jdk 中的某些类,具体做法是....。但是,能够 被覆盖的类是有限制范围,反正不包括 java.lang 这样的包中的类。
+
+
+
+
+
+
 
 
 
