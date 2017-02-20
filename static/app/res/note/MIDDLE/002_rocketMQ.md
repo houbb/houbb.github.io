@@ -6,7 +6,7 @@
 
 # 横向对比
 
-activeMQ  rabbitMQ
+activeMQ  rabbitMQ  kafka
 
 
 # 思想
