@@ -23,7 +23,7 @@ Redis的高并发和快速原因很多，总结一下几点：
 
 
 
-TAG:COMMENT(谈谈NIO)
+TAG:COMMENT(谈谈NIO)    参见JDK7
 
 
 > Redis简介
