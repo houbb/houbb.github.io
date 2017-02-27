@@ -210,7 +210,10 @@ OmniGraffle 中的表格其实是多个形状的智能群组，基于选中的�
 
 > [基础绘图和模具](http://www.jianshu.com/p/a422e2e2ea8b)
 
+> [YED jianshu](http://www.jianshu.com/p/be4a2e7f60af)
+
 如果你绘制的是流程图, 建议使用[YED](http://www.yworks.com/en/products_yed_about.html)。
+
 
 一、页面的设定
 
