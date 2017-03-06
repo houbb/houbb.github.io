@@ -19,6 +19,11 @@ me: HouBinbin
 # 摘要
 excerpt_separator: ""
 
+
+# 根目录
+
+baseurl: https://houbb.github.io/
+
 # 分页
 gems: [jekyll-paginate]
 paginate: 8
