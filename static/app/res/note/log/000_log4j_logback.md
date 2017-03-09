@@ -1,3 +1,0 @@
-# log4j
-
-# logback
