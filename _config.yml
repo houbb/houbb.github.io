@@ -26,7 +26,7 @@ baseurl: https://houbb.github.io/
 
 # 分页
 gems: [jekyll-paginate]
-paginate: 8
+paginate: 10
 paginate_path: "page:num"
 
 # 博客名称

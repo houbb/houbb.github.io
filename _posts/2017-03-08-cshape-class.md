@@ -1,6 +1,6 @@
 ---
 layout: post
-title: CShape-02 
+title: CShape-02-class 
 date:  2017-03-08 19:25:36 +0800
 categories: [Programming Language]
 tags: [cshape]
@@ -520,6 +520,7 @@ static void Main(string[] args)
 您也可以把一个成员函数声明为 static。这样的函数只能访问静态变量。静态函数在对象被创建之前就已经存在。
 
 (和 Java 类似)
+
 
 
 
