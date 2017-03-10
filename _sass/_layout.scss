@@ -329,6 +329,10 @@ ul {
     @include opacityBg(0.6);
 }
 
+#markdown-toc:hover {
+    box-shadow: rgba(0,0,0,0.15) 0 6px 8px;
+}
+
 ul#markdown-toc  > li > a {
     display: block;
     max-width: 150px;
