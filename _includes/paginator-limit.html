@@ -4,10 +4,12 @@
         <li><a href="/"><i class="fa fa-fw fa-backward"></i></a></li>
 
         {% if paginator.page >= 2 %}
+        <li>
         <a href="{% if paginator.previous_page == 1 %}/{% else %}{{ paginator.previous_page_path }}{% endif %}"
            aria-label="Previous">
             &laquo;
         </a>
+        </li>
         {% endif %}
 
         {% assign pageSize = 5 %}
