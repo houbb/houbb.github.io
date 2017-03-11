@@ -69,7 +69,6 @@ permalink: /:year/:month/:day/:title
 
 
 # 路径
-baseurl: "" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site
 detach:  false
 port:    4000
