@@ -1,9 +1,23 @@
-<h4>Category</h4>
-<ul>
+<style type="text/css">
+
+    #category-sidebar .category-title {
+        color: black;
+    }
+
+    #category-sidebar .category-size {
+        color: #666666;
+        font-size: 85%;
+    }
+</style>
+
+<h4 id="category-head">Category</h4>
+<ul id="category-sidebar">
     {% for category in site.categories %}
-    <li class="list-unstyled">
-        <a href="/categories/{{ category | first }}/" title="view allposts">{{ category | first }} {{ category |
-            last | size }}</a>
+    <li class="list-unstyled category-list">
+        <a href="/categories/{{ category | first }}/" title="view allposts">
+            <span class="category-title">{{ category | first }}</span>
+            <span class="category-size">({{ category | last | size }})</span>
+        </a>
     </li>
     {% endfor %}
 </ul>
