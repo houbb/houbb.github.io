@@ -8,6 +8,7 @@
         <p class="text-muted">{{ site.description }}</p>
   </div>
 
+  <!--站内搜索相关 START-->
   <div class="cb-search-tool" style="position: fixed; top: 0px ; bottom: 0px; left: 0px; right:  0px;
       opacity: 0.95; background-color: #111111; z-index: 9999; display: none;">
     <input type="text" class="form-control cb-search-content" id="cb-search-content" style="position: fixed; top: 60px" placeholder="文章标题 日期 标签" >
@@ -16,11 +17,10 @@
       <img src="/search/img/cb-close.png"  id="cb-close-btn"/>
     </div>
   </div>
-
   <div style="position: fixed; right: 16px; bottom: 20px;">
     <img src="/search/img/cb-search.png"  id="cb-search-btn"  title="双击ctrl试一下"/>
   </div>
-
+  <!--站内搜索相关 END-->
 
   <!--[if lt IE 9]>
   <script src="{{ site.url }}/static/libs/ie/html5shiv.js"></script>
@@ -50,8 +50,9 @@
   <script src="{{ site.url }}/static/app/js/base.js"></script>
 
 
-  <link rel="stylesheet" href="{{ "/search/css/cb-search.css" | prepend: site.baseurl }}">
-  <script src="{{ "/search/js/bootstrap3-typeahead.min.js" | prepend: site.baseurl }}"></script>
-  <script src="{{ "/search/js/cb-search.js" | prepend: site.baseurl }}"></script>
+  <!--站内搜索相关-->
+  <link rel="stylesheet" href="{{ "/static/libs/search/css/cb-search.css" | prepend: site.baseurl }}">
+  <script src="{{ "/static/libs/search/js/bootstrap3-typeahead.min.js" | prepend: site.baseurl }}"></script>
+  <script src="{{ "/static/libs/search/js/cb-search.js" | prepend: site.baseurl }}"></script>
 
 </footer>
