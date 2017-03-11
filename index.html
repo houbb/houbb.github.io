@@ -3,9 +3,8 @@ layout: default
 ---
 
 <div class="home col-xs-12" >
-  <div class="index-warp col-xs-2">
-  </div>
-  <ul class="post-list col-xs-10">
+
+  <ul class="post-list col-xs-9">
     {% for post in paginator.posts %}
       <li>
           <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
@@ -38,4 +37,11 @@ layout: default
     </nav>
     {% endif %}
   </ul>
+
+  <div class="index-warp col-xs-3">
+
+    {% include category-sidebar.html %}
+
+  </div>
+
 </div>

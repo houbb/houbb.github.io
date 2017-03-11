@@ -20,6 +20,11 @@ me: HouBinbin
 excerpt_separator: ""
 
 
+# 保证插件可用
+plugins: ./plugins_dir
+safe: false
+
+
 # 根目录
 
 baseurl: https://houbb.github.io/

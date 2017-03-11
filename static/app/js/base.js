@@ -8,9 +8,33 @@ $(document).ready(function () {
     Base.sh();
     Base.highchartsDemo()
     Base.initNo();
+
+    // var url = window.location.href;
+    // Base.categoryOrTagAndRightBar(url)
 });
 var Base = new Base();
 function Base() {
+
+    /**
+     * 栏目/标签文章筛选, 并且侧栏导航选中效果
+     *
+     * @param url
+     */
+    // this.categoryOrTagAndRightBar = function(url) {
+    //     var name = url.substring(url.lastIndexOf("name=") + 5);
+    //     var isCategory = url.indexOf("category") != -1;
+    //     var isTag = url.indexOf("tag") != -1;
+    //     if (isCategory) {
+    //         $(".category:not('#" + name + "')").addClass("hide");
+    //         $("#nav-" + name).addClass("active");
+    //         $("#head-title").text("Lazy · " + name);
+    //     } else if (isTag) {
+    //         $(".tag:not('#" + name + "')").addClass("hide");
+    //         $("#nav-" + name).addClass("active");
+    //         $("#head-title").text("Lazy · " + name);
+    //     }
+    // };
+
     /**
      * 初始化编号标签。
      */

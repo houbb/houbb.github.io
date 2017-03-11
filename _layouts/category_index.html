@@ -1,0 +1,30 @@
+---
+layout: default
+---
+
+<div class="home col-xs-12">
+
+
+    <ul class="post-list col-xs-9">
+
+        {% for post in site.categories.[page.category] %}
+        <li>
+            <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
+            <span class="post-item-time text-muted f12">
+            {{ post.date | date: "%Y-%m-%d %H:%M:%S" }}  |  {{ post.categories }}
+      </span>
+        </li>
+        {% endfor %}
+
+    </ul>
+
+
+    <div class="index-warp col-xs-3">
+
+        {% include category-sidebar.html %}
+
+    </div>
+
+</div>
+
+
