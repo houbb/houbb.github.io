@@ -752,6 +752,114 @@ class DelegateDemoExe
 }
 ```
 
+# Event
+
+事件（Event） 基本上说是一个用户操作，如按键、点击、鼠标移动等等，或者是一些出现，如系统生成的通知。应用程序需要在事件发生时响应事件。例如，中断。事件是用于进程间通信。
+
+一、通过事件使用委托
+
+事件在类中声明且生成，且通过使用同一个类或其他类中的委托与事件处理程序关联。包含事件的类用于发布事件。这被称为 发布器（publisher） 类。其他接受该事件的类被称为 订阅器（subscriber） 类。
+事件使用 发布-订阅（publisher-subscriber） 模型。
+
+**发布器（publisher）** 是一个包含事件和委托定义的对象。事件和委托之间的联系也定义在这个对象中。发布器（publisher）类的对象调用这个事件，并通知其他的对象。
+
+**订阅器（subscriber）** 是一个接受事件并提供事件处理程序的对象。在发布器（publisher）类中的委托调用订阅器（subscriber）类中的方法（事件处理程序）。
+
+
+> [delegate and event](http://www.cnblogs.com/chengxingliang/archive/2013/05/21/3051912.html)
+
+二、声明事件（Event）
+
+在类的内部声明事件，首先必须声明该事件的委托类型。
+
+例如：
+
+```c#
+public delegate void BoilerLogHandler(string status);
+```
+
+然后，声明事件本身，使用 `event` 关键字：
+
+```c#
+// 基于上面的委托定义事件
+public event BoilerLogHandler BoilerEventLog;
+```
+
+上面的代码定义了一个名为 BoilerLogHandler 的委托和一个名为 BoilerEventLog 的事件，该事件在生成的时候会调用委托。
+
+
+- SimpleEvent.cs
+
+```c#
+using System;
+namespace cshape_test
+{
+	public class SimpleEvent
+	{
+		private int num;
+
+		public SimpleEvent(int num)
+		{
+			this.num = num;
+		}
+
+		/// <summary>
+		/// Define the delegate.
+		/// </summary>
+		public delegate void NumChangeHandler();
+
+		/// <summary>
+		/// Define the event for num-change handler;
+		/// </summary>
+		public event NumChangeHandler ChangeNumEvent;
+
+		/// <summary>
+		/// Ons the change number.
+		/// </summary>
+		public void OnChangeNum()
+		{
+			Console.WriteLine("(ChangeNumEvent != null):{0}", ChangeNumEvent != null);
+			if (ChangeNumEvent != null)
+			{
+				ChangeNumEvent();	//总觉得此处怪怪的，过会重新看下
+			}
+			else
+			{
+				Console.WriteLine("The num has changed!");
+			}
+		}
+
+		public void ChangeNum(int newNum)
+		{
+			Console.WriteLine("Change num is:{0}", newNum);
+			if (num != newNum)
+			{
+				num = newNum;
+				OnChangeNum();
+			}
+		}
+	}
+
+	class SimpleEventExe
+	{
+	    //Change num is:10
+        //Change num is:20
+        //(ChangeNumEvent != null):False
+        //The num has changed!
+        //Change num is:40
+        //(ChangeNumEvent != null):False
+        //The num has changed!
+		static void Main(string[] args)
+		{
+			SimpleEvent simpleEvent = new SimpleEvent(10);
+			simpleEvent.ChangeNum(10);
+			simpleEvent.ChangeNum(20);
+			simpleEvent.ChangeNum(40);
+		}
+	}
+}
+```
+
 
 
 
