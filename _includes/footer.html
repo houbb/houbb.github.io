@@ -18,7 +18,10 @@
     </div>
   </div>
   <div style="position: fixed; right: 16px; bottom: 20px;">
-    <img src="/search/img/cb-search.png"  id="cb-search-btn"  title="双击ctrl试一下"/>
+    <a id="cb-search-btn" title="双击ctrl试一下" style="color: #0099ff; opacity: 0.5;">
+      <i class="fa fa-fw fa-search fa-2x"></i>
+    </a>
+    <!--<img src="/search/img/cb-search.png"  id="cb-search-btn"  title="双击ctrl试一下"/>-->
   </div>
   <!--站内搜索相关 END-->
 
@@ -51,8 +54,8 @@
 
 
   <!--站内搜索相关-->
-  <link rel="stylesheet" href="{{ "/static/libs/search/css/cb-search.css" | prepend: site.baseurl }}">
-  <script src="{{ "/static/libs/search/js/bootstrap3-typeahead.min.js" | prepend: site.baseurl }}"></script>
-  <script src="{{ "/static/libs/search/js/cb-search.js" | prepend: site.baseurl }}"></script>
+  <link rel="stylesheet" href="{{ "/search/css/cb-search.css" | prepend: site.baseurl }}">
+  <script src="{{ "/search/js/bootstrap3-typeahead.min.js" | prepend: site.baseurl }}"></script>
+  <script src="{{ "/search/js/cb-search.js" | prepend: site.baseurl }}"></script>
 
 </footer>
