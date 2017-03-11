@@ -4,7 +4,10 @@
         <li><a href="/"><i class="fa fa-fw fa-backward"></i></a></li>
 
         {% if paginator.page >= 2 %}
-        <li><a href="/page{{paginator.previous_page}}/">&laquo;</a></li>
+        <a href="{% if paginator.previous_page == 1 %}/{% else %}{{ paginator.previous_page_path }}{% endif %}"
+           aria-label="Previous">
+            &laquo;
+        </a>
         {% endif %}
 
         {% assign pageSize = 5 %}
@@ -22,19 +25,19 @@
 
         {% for count in (startPage..endPage) %}
 
-            {% if count != 1 %}
-                {% if count == paginator.page %}
-                <li class="active"><a href="/page{{ count }}">{{count}}</a></li>
-                {% else %}
-                <li><a href="/page{{ count }}">{{count}}</a></li>
-                {% endif %}
-            {% else %}
-                {% if count == paginator.page %}
-                <li class="active"><a href="/">{{count}}</a></li>
-                {% else %}
-                <li><a href="/">{{count}}</a></li>
-                {% endif %}
-            {% endif %}
+        {% if count != 1 %}
+        {% if count == paginator.page %}
+        <li class="active"><a href="/page{{ count }}">{{count}}</a></li>
+        {% else %}
+        <li><a href="/page{{ count }}">{{count}}</a></li>
+        {% endif %}
+        {% else %}
+        {% if count == paginator.page %}
+        <li class="active"><a href="/">{{count}}</a></li>
+        {% else %}
+        <li><a href="/">{{count}}</a></li>
+        {% endif %}
+        {% endif %}
 
         {% endfor %}
 
