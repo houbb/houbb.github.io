@@ -29,9 +29,9 @@
 
         {% if count != 1 %}
         {% if count == paginator.page %}
-        <li class="active"><a href="/page{{ count }}">{{count}}</a></li>
+        <li class="active"><a href="/page{{ count }}/">{{count}}</a></li>
         {% else %}
-        <li><a href="/page{{ count }}">{{count}}</a></li>
+        <li><a href="/page{{ count }}/">{{count}}</a></li>
         {% endif %}
         {% else %}
         {% if count == paginator.page %}
