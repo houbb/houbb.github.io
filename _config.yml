@@ -61,7 +61,7 @@ toc_levels: 1..3    # 页面内快速度导航级别
 
 # 分页
 gems: [jekyll-paginate]
-paginate: 10
+paginate: 8         # 每一页的数量
 paginate_path: "page:num"
 
 

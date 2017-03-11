@@ -1,0 +1,54 @@
+<nav>
+    <ul class="pagination">
+
+        <li><a href="/"><i class="fa fa-fw fa-backward"></i></a></li>
+
+        {% if paginator.page >= 2 %}
+        <li><a href="/page{{paginator.previous_page}}/">&laquo;</a></li>
+        {% endif %}
+
+        {% assign pageSize = 5 %}
+
+        {% assign startPage = paginator.page | minus:pageSize %}
+        {% if 1 > startPage %}
+        {% assign startPage = 1 %}
+        {% endif %}
+
+        {% assign endPage = startPage | plus:pageSize %}
+        {% if endPage > paginator.total_pages %}
+        {% assign endPage = paginator.total_pages %}
+        {% endif %}
+
+
+        {% for count in (startPage..endPage) %}
+
+            {% if count != 1 %}
+                {% if count == paginator.page %}
+                <li class="active"><a href="/page{{ count }}">{{count}}</a></li>
+                {% else %}
+                <li><a href="/page{{ count }}">{{count}}</a></li>
+                {% endif %}
+            {% else %}
+                {% if count == paginator.page %}
+                <li class="active"><a href="/">{{count}}</a></li>
+                {% else %}
+                <li><a href="/">{{count}}</a></li>
+                {% endif %}
+            {% endif %}
+
+        {% endfor %}
+
+        {% if paginator.next_page %}
+        <li><a href="/page{{paginator.next_page}}/">&raquo;</a></li>
+        {% endif %}
+
+        <li><a href="/page{{paginator.total_pages}}/"><i class="fa fa-fw fa-forward"></i></a></li>
+        <li class="disabled"><a>{{paginator.total_pages}}</a></li>
+
+    </ul>
+
+</nav>
+
+
+
+
