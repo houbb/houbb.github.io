@@ -20,24 +20,6 @@
 
     #RSS {
         color: orange;
-
-        -webkit-transition:-webkit-transform 1s,opacity 1s,background 1s,width 1s,height 1s,font-size 1s;
-        -webkit-border-radius:5px;
-        -o-transition-property:width,height,-o-transform,background,font-size,opacity;
-        -o-transition-duration:1s,1s,1s,1s,1s,1s;
-        -moz-transition-property:width,height,-o-transform,background,font-size,opacity;
-        -moz-transition-duration:1s,1s,1s,1s,1s,1s;
-        transition-property:width,height,transform,background,font-size,opacity;
-        transition-duration:1s,1s,1s,1s,1s,1s;
-    }
-
-    #RSS:hover {
-        -moz-transform: rotate(360deg);
-        -webkit-transform: rotate(360deg);
-        -o-transform: rotate(360deg);
-        transform: rotate(360deg);
-        opacity:1;
-        font-size:150%;
     }
 
     #bg-music-btn:hover {
@@ -69,9 +51,16 @@
       </a>
 
       <div class="trigger pull-right">
-        <a href="{{ site.url }}/feed.xml"><i id="RSS" class="fa fa-fw fa-rss"></i></a>
+        <a href="{{ site.url }}/categories/"><i class="rotate-360 fa fa-fw fa-folder"></i></a>
+          &nbsp;
+
+        <a href="{{ site.url }}/tags/"><i class="rotate-360 fa fa-fw fa-tag"></i></a>
+          &nbsp;
+
+        <a href="{{ site.url }}/feed.xml"><i id="RSS" class="rotate-360 fa fa-fw fa-rss"></i></a>
           &nbsp;
         <a class="page-link" id="bg-music-btn" href="javascript:;"><i class="fa fa-fw fa-play"></i></a>
+
 
         <span id="header-right-more">
             <i class="fa fa-fw fa-angle-down"></i>

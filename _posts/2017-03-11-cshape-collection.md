@@ -7,8 +7,6 @@ tags: [cshape]
 published: true
 ---
 
-* any list
-{:toc}
 
 # Collection
  
@@ -333,6 +331,9 @@ namespace RYO.Collection
 	}
 }
 ```
+
+* any list
+{:toc}
 
 
 

@@ -1,0 +1,151 @@
+/**
+    cloud tag style
+ */
+.tags {
+    margin-bottom: -5px
+}
+
+.tags a, .tags .tag {
+    display: inline-block;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 999em;
+    padding: 0 10px;
+    color: #fff;
+    line-height: 24px;
+    font-size: 12px;
+    text-decoration: none;
+    margin: 0 1px;
+    margin-bottom: 6px
+}
+
+.tags a:hover, .tags .tag:hover, .tags a:active, .tags .tag:active {
+    color: white;
+    border-color: white;
+    background-color: rgba(255, 255, 255, 0.4);
+    text-decoration: none
+}
+
+@media only screen and (min-width: 768px) {
+    .tags a, .tags .tag {
+        margin-right: 5px
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    #tag-heading {
+        padding: 50px 0
+    }
+}
+
+#tag_cloud {
+    margin: 20px 0 15px 0
+}
+#dir_cloud {
+    margin: 20px 0 15px 0
+}
+
+#tag_cloud a, #tag_cloud .tag {
+    font-size: 14px;
+    border: 0;
+    line-height: 28px;
+    margin: 0 2px;
+    margin-bottom: 8px
+}
+#dir_cloud a, #dir_cloud .tag {
+    font-size: 14px;
+    border: 0;
+    line-height: 28px;
+    margin: 0 2px;
+    margin-bottom: 8px
+}
+
+#tag_cloud a:hover, #tag_cloud .tag:hover, #tag_cloud a:active, #tag_cloud .tag:active {
+    background-color: #0085a1 !important
+}
+#dir_cloud a:hover, #dir_cloud .tag:hover, #dir_cloud a:active, #dir_cloud .tag:active {
+    background-color: #0085a1 !important
+}
+
+@media only screen and (min-width: 768px) {
+    #tag_cloud {
+        margin-bottom: 25px
+    }
+}
+@media only screen and (min-width: 768px) {
+    #dir_cloud {
+        margin-bottom: 25px
+    }
+}
+
+
+
+/**
+
+ */
+
+/*post list css*/
+.one-tag-list:first-child {
+    margin-top: 0
+}
+
+.listing-seperator {
+    color: #0085a1;
+    font-size: 17px !important
+}
+
+.listing-seperator::before {
+    margin-right: 5px
+}
+
+@media only screen and (min-width: 768px) {
+    .listing-seperator {
+        font-size: 20px !important;
+        line-height: 1.5 !important;
+        margin-top: 5px
+    }
+}
+
+.one-tag-list .post-preview {
+    position: relative
+}
+
+.one-tag-list .post-preview > a .post-title {
+    font-size: 15px;
+    margin-top: 20px;
+    color: gray;
+}
+.one-tag-list .post-preview > a .post-title:hover {
+    color: #333;
+}
+
+.one-tag-list .post-preview > a .post-subtitle {
+    font-size: 12px
+}
+
+.one-tag-list .post-preview > .post-meta {
+    position: absolute;
+    right: 5px;
+    bottom: 0;
+    margin: 0;
+    font-size: 12px;
+    line-height: 12px
+}
+
+@media only screen and (min-width: 768px) {
+    .one-tag-list .post-preview {
+        margin-left: 20px
+    }
+
+    .one-tag-list .post-preview > a > .post-title {
+        font-size: 18px;
+        line-height: 1.3
+    }
+
+    .one-tag-list .post-preview > a > .post-subtitle {
+        font-size: 14px
+    }
+
+    .one-tag-list .post-preview .post-meta {
+        font-size: 12px
+    }
+}

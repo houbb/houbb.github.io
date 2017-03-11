@@ -2,13 +2,34 @@
 layout: default
 ---
 
+<style type="text/css">
+    .index-post-title {
+        color: black !important;
+        font-size: 30px;
+    }
+
+    .index-post-title:hover {
+        color: #2a7ae2 !important;
+        text-decoration: none !important;
+    }
+
+    .post-content-preview {
+        font-size: 14px !important;
+    }
+</style>
+
 <div class="home col-xs-12" >
 
-  <ul class="post-list col-xs-9">
+  <ul class="post-list col-xs-12">
     {% for post in paginator.posts %}
       <li>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-          <span class="post-item-time text-muted f12">
+          <a class="index-post-title post-link" href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
+
+          <div class="post-content-preview text-muted">
+              {{ post.content | strip_html | truncate:200 }}
+          </div>
+
+          <span class="post-item-time f12">
             {{ post.date | date: "%Y-%m-%d %H:%M:%S" }}  |  {{ post.categories }}
           </span>
       </li>
