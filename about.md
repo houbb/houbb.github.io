@@ -4,6 +4,28 @@ title: About
 permalink: /about/
 ---
 
+<style>
+    #about-us-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: -1;
+    }
+    #about-us-bg > img {
+        height: 100%;
+        width: 100%;
+        border: 0;
+        opacity: 0.25;
+        filter: alpha(opacity=25);
+    }
+</style>
+
+<div id="about-us-bg">
+    <img src="/static/app/res/img/about_bg.jpeg"/>
+</div>
+
 ## Author ##
 <i class="fa fa-fw fa-pencil text-muted" title="Name"></i>&nbsp; 侯宾宾
 <br/>
@@ -13,7 +35,7 @@ permalink: /about/
 
 ## Github ##
 <span class="icon icon--github">{% include icon-github.svg %}</span>&nbsp;
-[binbin.Hou](https://github.com/houbb)
+<a class="my-a" href="https://github.com/houbb">binbin.Hou</a>
 
 ## Address ##
 <i class="fa fa-fw fa-map-marker text-muted" title="Location"></i>&nbsp;Shanghai China
