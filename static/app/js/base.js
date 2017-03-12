@@ -85,12 +85,12 @@ function Base() {
         $("#bg-music-btn").on("click", function () {
             var icon = $(this).find("i");
             var audio = document.getElementById("bg-music");
-            if (icon.hasClass("fa-play")) {
-                icon.removeClass("fa-play").addClass("fa-pause");
+            if (icon.hasClass("fa-music")) {
+                icon.removeClass("fa-music").addClass("fa-volume-up");
                 audio.play()
             } else {
-                if (icon.hasClass("fa-pause")) {
-                    icon.removeClass("fa-pause").addClass("fa-play");
+                if (icon.hasClass("fa-volume-up")) {
+                    icon.removeClass("fa-volume-up").addClass("fa-music");
                     audio.pause()
                 }
             }
@@ -110,8 +110,17 @@ function Base() {
         var $icon = $(iconHTML);
         $icon.addClass(CLASS.left).addClass("text-muted").addClass("pull-right");
         lastLi.after($icon);
-        $("#markdown-toc .fa").on("click", function () {
-            var icon = $(this);
+
+        //开始隐藏文章导航
+        var icon = $("#markdown-toc .fa");
+        if (icon.hasClass(CLASS.left)) {
+            toc.children("li").hide();
+            icon.removeClass(CLASS.left).addClass(CLASS.right)
+        }
+
+        //文章导航点击事件
+        icon.on("click", function () {
+            // var icon = $(this);
             if (icon.hasClass(CLASS.left)) {
                 toc.children("li").hide();
                 icon.removeClass(CLASS.left).addClass(CLASS.right)
@@ -120,5 +129,6 @@ function Base() {
                 icon.removeClass(CLASS.right).addClass(CLASS.left)
             }
         })
+
     }
 };

@@ -1,0 +1,101 @@
+---
+layout: default
+title: About
+permalink: /about/
+---
+
+<style>
+    #about-us-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        z-index: -1;
+    }
+    #about-us-bg > img {
+        height: 100%;
+        width: 100%;
+        border: 0;
+        opacity: 0.45;
+        filter: alpha(opacity=45);
+    }
+
+    #about-warp {
+        /*background: red;*/
+        margin-top: 150px;
+        min-height: 600px;
+    }
+
+    ul {
+        list-style: none;
+        margin-bottom: 30px;
+    }
+</style>
+
+
+<div class="clearfix"></div>
+
+<div id="about-us-bg">
+    <img src="/static/app/res/img/about_bg.jpeg"/>
+</div>
+
+
+<article>
+
+    <!--<div style="height: 200"></div>-->
+    <div class="container" id="about-warp">
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
+
+                <h2>Author</h2>
+                <ul>
+                    <li>
+                        <i class="fa fa-fw fa-pencil text-muted" title="Name"></i>&nbsp; 侯宾宾
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-birthday-cake text-muted" title="Birthday"></i>&nbsp; 1994-01-10
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-intersex text-muted" title="Sex"></i>&nbsp; Heimlichkeit
+                    </li>
+                </ul>
+
+                <h2>Contact</h2>
+                <ul>
+                    <li>
+                        <span class="icon icon--github">{% include icon-github.svg %}</span>&nbsp;
+                        <a class="my-a" href="https://github.com/houbb">binbin.Hou</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-phone text-muted" title="Phone"></i>&nbsp;13062666053
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-envelope text-muted" title="E-mail"></i>&nbsp;houbinbin.echo@gmail.com
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-wechat text-muted" title="wechat"></i>&nbsp;houbinbinEcho
+                    </li>
+                    <li>
+                        <i class="fa fa-fw fa-qq text-muted" title="QQ"></i>&nbsp;1060732496
+                    </li>
+                </ul>
+
+
+                <h2>Address</h2>
+
+                <ul>
+                    <li>
+                        <i class="fa fa-fw fa-map-marker text-muted" title="Location"></i>&nbsp;Shanghai China
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+</article>
+
+
+
+

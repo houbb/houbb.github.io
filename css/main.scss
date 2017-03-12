@@ -35,9 +35,15 @@ $on-palm:          600px;
 $on-laptop:        800px;
 
 //site head
+$site-header-height: 320px;
 $site-height: 32px;
+
 //page content
 $page-content-min-height: 465px;
+
+//artilce min-height
+$article-min-height: 300px;
+
 // Use media queries like this:
 // @include media-query($on-palm) {
 //     .wrapper {

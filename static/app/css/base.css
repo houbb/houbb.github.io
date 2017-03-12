@@ -12,7 +12,7 @@
  */
 .my-hr {
     height: 1px;
-    background-color: #ccc;
+    background-color: #eeeeee;
     margin: 12px auto
 }
 
@@ -24,6 +24,17 @@
 }
 .my-a:hover {
     color: #2a7ae2 !important;
+    text-decoration: none !important;
+}
+
+/**
+    自定义超链接
+ */
+.my-aw {
+    color: white !important;
+}
+.my-aw:hover {
+    color: rgba(255,255,255,0.9) !important;
     text-decoration: none !important;
 }
 
@@ -94,12 +105,9 @@ svg:not(:root) {
 }
 
 
-
-
-
-.post-list > li {
-    border-bottom: 1px dashed #888888;
-}
+/*.post-list > li {*/
+    /*border-bottom: 1px dashed #888888;*/
+/*}*/
 
 .post-list .post-item-time {
     height: 24px;
@@ -124,4 +132,17 @@ svg:not(:root) {
     transform: rotate(360deg);
     opacity:1;
     font-size:130%;
+}
+
+.cursor:hover {
+    cursor: pointer;
+}
+
+
+
+/**
+    颜色定义
+**/
+.white {
+    color: white;
 }

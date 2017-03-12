@@ -1,23 +1,14 @@
 ---
-layout: default
+layout: page
+description: "笔尖世界 梦里浮生"
 ---
-
-<style type="text/css">
-    .index-post-title {
-        font-size: 30px;
-    }
-
-    .post-content-preview {
-        font-size: 14px !important;
-    }
-</style>
 
 <div class="home col-xs-12" >
 
   <ul class="post-list col-xs-12">
     {% for post in paginator.posts %}
       <li>
-          <a class="index-post-title post-link my-a" href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
+          <a class="index-post-title post-link my-a cursor" href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
 
           <div class="post-content-preview text-muted">
               {{ post.content | strip_html | truncate:200 }}
@@ -27,6 +18,7 @@ layout: default
             {{ post.date | date: "%Y-%m-%d %H:%M:%S" }}  |  {{ post.categories }}
           </span>
       </li>
+      <div class="my-hr"></div>
     {% endfor %}
 
     {% include paginator-limit.html %}

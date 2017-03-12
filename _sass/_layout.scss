@@ -4,7 +4,8 @@
 .site-header {
     border-top: 5px solid $grey-color-dark;
     border-bottom: 1px solid $grey-color-light;
-    min-height: $site-height;
+    min-height: $site-header-height;
+    margin-bottom: 30px;
 
     // Positioning context for the mobile navigation icon
     position: relative;
@@ -421,4 +422,12 @@ input.has-success:focus {
 
 .blue-img-border {
     border: 3px solid $blue-color;
+}
+
+
+/**
+    min height for article
+ */
+article {
+    min-height: $article-min-height;
 }

@@ -1,49 +1,94 @@
 ---
 layout: default
 ---
+
+
+<!-- Post Header -->
+<header class="intro-header" style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')" >
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1">
+        <div class="post-heading">
+          <div class="tags">
+            {% for tag in page.tags %}
+            <a class="tag" href="/tags/#{{ tag }}" title="{{ tag }}">{{ tag }}</a>
+            {% endfor %}
+          </div>
+          <h1>{{ page.title }}</h1>
+          {% comment %}
+          always create a h2 for keeping the margin
+          {% endcomment %}
+          {% comment %} if page.subtitle {% endcomment %}
+          <h2 class="subheading">{{ page.subtitle }}</h2>
+          {% comment %} endif {% endcomment %}
+          <span class="meta">
+            Posted by
+                    <a class="my-aw" href="{{ site.url }}/about/">{{ page.author }}</a>
+            on {{ page.date | date: "%B %-d, %Y" }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <header class="post-header">
-    <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
-    <div>
-      <i class="fa fa-fw fa-paint-brush"></i>
-      <a class="my-a" id="article-author" href="{{ site.url }}/about/">{{ page.author }}</a>
+  <!--<header class="post-header">-->
+    <!--<h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>-->
+    <!--<div>-->
+      <!--<i class="fa fa-fw fa-paint-brush"></i>-->
+      <!--<a class="my-a" id="article-author" href="{{ site.url }}/about/">{{ page.author }}</a>-->
 
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="my-a" href="/tags/"><i class="fa fa-fw fa-tags"></i></a>
-      {% for tag in page.tags %}
-        {{ tag }}
-      {% endfor %}
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <a class="my-a" href="/categories/"><i class="fa fa-fw fa-folder"></i></a>
-      {% for category in page.categories %}
-        {{ category }}
-      {% endfor %}
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <i class="fa fa-fw fa-clock-o fa-spin" ></i> <span id="article-time">{{ page.date | date: "%Y-%m-%d" }}</span>
+      <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+      <!--<a class="my-a" href="/tags/"><i class="fa fa-fw fa-tags"></i></a>-->
+      <!--{% for tag in page.tags %}-->
+        <!--{{ tag }}-->
+      <!--{% endfor %}-->
+      <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+      <!--<a class="my-a" href="/categories/"><i class="fa fa-fw fa-folder"></i></a>-->
+      <!--{% for category in page.categories %}-->
+        <!--{{ category }}-->
+      <!--{% endfor %}-->
+      <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
+      <!--<i class="fa fa-fw fa-clock-o fa-spin" ></i> <span id="article-time">{{ page.date | date: "%Y-%m-%d" }}</span>-->
+    <!--</div>-->
+
+  <!--</header>-->
+
+
+
+  <div class="container" style="overflow-y:hidden;">
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
+
+        <div class="post-content" itemprop="articleBody">
+          {{ content }}
+        </div>
+
+
+        <!--文章上下篇 START-->
+        <nav class="article-page-warp" style="margin-top: 20px;">
+          <div class="pagination-list">
+            {% if page.previous %}
+            <a class="prev pull-left" href="{{ page.previous.url }}" rel="bookmark">
+              <i class="fa fa-chevron-circle-left"></i> &nbsp; {{ page.previous.title | truncatewords:5 }}
+            </a>
+            {% endif %}
+
+            {% if page.next %}
+            <a class="next pull-right" href="{{ page.next.url }}" rel="bookmark">
+              {{ page.next.title | truncatewords:5 }} &nbsp; <i class="fa fa-chevron-circle-right"></i>
+            </a>
+            {% endif %}
+          </div>
+        </nav>
+        <!--文章上下篇 END-->
+
+      </div>
     </div>
-
-  </header>
-
-  <div class="post-content" itemprop="articleBody">
-    {{ content }}
   </div>
 
-  <!--文章上下篇-->
-  <nav class="article-page-warp" style="margin-top: 20px;">
-    <div class="pagination-list">
-      {% if page.previous %}
-      <a class="prev pull-left" href="{{ page.previous.url }}" rel="bookmark">
-        <i class="fa fa-chevron-circle-left"></i> &nbsp; {{ page.previous.title | truncatewords:5 }}
-      </a>
-      {% endif %}
-
-      {% if page.next %}
-      <a class="next pull-right" href="{{ page.next.url }}" rel="bookmark">
-        {{ page.next.title | truncatewords:5 }} &nbsp; <i class="fa fa-chevron-circle-right"></i>
-      </a>
-      {% endif %}
-    </div>
-  </nav>
 
 </article>

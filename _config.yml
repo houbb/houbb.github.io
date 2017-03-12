@@ -23,7 +23,9 @@ description: "Endless Miss, Once Echo"
 excerpt_separator: "\n\n"
 # 根目录
 baseurl: ""
-#baseurl: https://houbb.github.io/
+
+# header背景图片
+header-img: static/app/res/img/home-bg.jpg
 ###################### END 站点全局信息 #########################
 
 
