@@ -230,7 +230,7 @@
     margin-bottom: $spacing-unit;
 
     h2 {
-        font-size: 32px;
+        font-size: 30px;
 
         @include media-query($on-laptop) {
             font-size: 28px;
@@ -429,5 +429,9 @@ input.has-success:focus {
     min height for article
  */
 article {
+    min-height: $article-min-height;
+}
+
+.post-content {
     min-height: $article-min-height;
 }
