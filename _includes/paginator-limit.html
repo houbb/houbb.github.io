@@ -12,7 +12,7 @@
         </li>
         {% endif %}
 
-        {% assign pageSize = 5 %}
+        {% assign pageSize = 9 %}
 
         {% assign startPage = paginator.page | minus:pageSize %}
         {% if 1 > startPage %}
@@ -48,7 +48,7 @@
         {% endif %}
 
         <li><a href="/page{{paginator.total_pages}}/"><i class="fa fa-fw fa-forward"></i></a></li>
-        <li class="disabled"><a>{{paginator.total_pages}}</a></li>
+        <!--<li class="disabled"><a>{{paginator.total_pages}}</a></li>-->
 
     </ul>
 

@@ -4,13 +4,7 @@ layout: default
 
 <style type="text/css">
     .index-post-title {
-        color: black !important;
         font-size: 30px;
-    }
-
-    .index-post-title:hover {
-        color: #2a7ae2 !important;
-        text-decoration: none !important;
     }
 
     .post-content-preview {
@@ -23,7 +17,7 @@ layout: default
   <ul class="post-list col-xs-12">
     {% for post in paginator.posts %}
       <li>
-          <a class="index-post-title post-link" href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
+          <a class="index-post-title post-link my-a" href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
 
           <div class="post-content-preview text-muted">
               {{ post.content | strip_html | truncate:200 }}
@@ -37,11 +31,5 @@ layout: default
 
     {% include paginator-limit.html %}
   </ul>
-
-  <div class="index-warp col-xs-3">
-
-    <!--{% include category-sidebar.html %}-->
-
-  </div>
 
 </div>

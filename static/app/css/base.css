@@ -1,14 +1,32 @@
+/**
+    自定义文字过长处理
+ */
 .my-ellipsis {
     white-space: nowrap;
     text-overflow: ellipsis;
     display: inline-block
 }
 
+/**
+    自定义分割线
+ */
 .my-hr {
     height: 1px;
     background-color: #ccc;
     margin: 12px auto
 }
+
+/**
+    自定义超链接
+ */
+.my-a {
+    color: black !important;
+}
+.my-a:hover {
+    color: #2a7ae2 !important;
+    text-decoration: none !important;
+}
+
 
 .label {
     border-radius: 0;
