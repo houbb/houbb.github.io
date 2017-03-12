@@ -25,7 +25,7 @@ excerpt_separator: "\n\n"
 baseurl: ""
 
 # header背景图片
-header-img: static/app/res/img/home-bg.jpg
+header-img: static/app/res/img/home-bg.jpeg
 ###################### END 站点全局信息 #########################
 
 
