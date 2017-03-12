@@ -1,20 +1,16 @@
 ---
 layout: post
-title: Python
-date:  2016-9-2 09:22:48 +0800
+title: Python-01 base
+date:  2017-03-12 22:58:32 +0800
 categories: [Programming Language]
-tags: [python]
+tags: [python, base]
+header-img: "static/app/res/img/python-bg.jpg"
 published: true
 ---
 
-* any list
-{:toc}
-
 # Python
 
-Python is powerful... and fast; plays well with others; runs everywhere; is friendly & easy to learn; is Open.
-
-> [python](https://www.python.org/)
+[Python](https://www.python.org/) is powerful... and fast; plays well with others; runs everywhere; is friendly & easy to learn; is Open.
 
 > [python zh_CN](http://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000)
 
@@ -162,3 +158,6 @@ the result is:
 ```
 小明成绩提高了18.1%
 ```
+
+* any list
+{:toc}
