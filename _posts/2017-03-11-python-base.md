@@ -5,7 +5,7 @@ date:  2017-03-12 22:58:32 +0800
 categories: [Programming Language]
 tags: [python, base]
 header-img: "static/app/res/img/python-bg.jpg"
-published: true
+published: false
 ---
 
 # Python

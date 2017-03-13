@@ -23,7 +23,8 @@ description: "笔尖世界 梦里浮生"
           </div>
 
           <span class="post-item-time f12">
-            {{ post.date | date: "%Y-%m-%d %H:%M:%S" }}  |  {{ post.categories }}
+            {{ post.date | date: "%Y-%m-%d %H:%M:%S" }}  |
+              <a class="my-a" href="/categories/#{{ post.categories }}">{{ post.categories }}</a>
           </span>
       </li>
       <div class="my-hr"></div>
