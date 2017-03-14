@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Design Pattern2
+title: Design Pattern-02
 date:  2016-7-18 12:26:11 +0800
 categories: [Design Pattern]
 tags: [design pattern]
