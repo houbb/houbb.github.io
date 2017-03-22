@@ -149,7 +149,17 @@ comment on table Person is
 ?useUnicode=true&characterEncoding=GB2312
 ```
  
-# Data Item
+<label class="label label-danger">生成的SQL带有collate_chinese_*</label>
+
+collate 是排序之用。
+
+1、方式一
+
+直接使用Notepad++等工具全文替换，简单，但是治标不治本。
+
+2、治本
+
+> [blog zh_CN](http://www.cnblogs.com/lukun/archive/2013/04/20/3032881.html)
 
 
 
