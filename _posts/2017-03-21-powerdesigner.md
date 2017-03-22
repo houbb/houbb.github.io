@@ -161,6 +161,20 @@ collate 是排序之用。
 
 > [blog zh_CN](http://www.cnblogs.com/lukun/archive/2013/04/20/3032881.html)
 
+1.点击：工具栏-》database-》edit current DBMS
+
+2.选择数据源(以SqlServer2005为例)
+
+Microsoft SQLServer2005ScriptObjectsColumnAdd
+
+修改为：
+
+```
+%20:COLUMN% [%COMPUTE%?AS (%COMPUTE%):[%.L:DATATYPE%=xml?xml[%XMLSchemaCollection%?([%ContentType% ]%XMLSchemaCollection.GeneratedName%):                 ]:%20:DATATYPE%][%ExtRowGuidCol%? RowGuidCol][%IDENTITY%? %IDENTITY%[[(%ExtIdentitySeedInc%)][%ExtIdtNotForReplication%? not for replication]]:[%ExtNullConstName%? constraint %ExtNullConstName%][ %NULL%][ %NOTNULL%]][[%ExtDeftConstName%? constraint %ExtDeftConstName%] default %DEFAULT%]  
+   [%CONSTDEFN%]]  
+```
+
+修改的内容就是去掉:`[.Z:[ collate %ExtCollation%]`以及最后一个`]`
 
 
 # CodeSmith
