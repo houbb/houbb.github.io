@@ -2,7 +2,7 @@
 layout: post
 title: Freemarker
 date:  2016-5-7 17:21:21 +0800
-categories: [HTML]
+categories: [UI]
 tags: [Freemarker]
 published: true
 ---
