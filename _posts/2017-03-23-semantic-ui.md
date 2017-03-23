@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Semantic Ui-01 acquaintance
+title: Semantic UI-01 acquaintance
 date:  2017-03-23 20:57:40 +0800
 categories: [UI]
 tags: [ui, semantic]
