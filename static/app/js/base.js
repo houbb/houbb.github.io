@@ -8,9 +8,40 @@ $(document).ready(function () {
     Base.sh();
     Base.highchartsDemo()
     Base.initNo();
+
+
+    Base.scrollSpy();
 });
 var Base = new Base();
 function Base() {
+
+    /**
+     * 滚动监听
+     */
+    this.scrollSpy = function()
+    {
+        var header = $("h1, h2, h3, h4, h5, h6");   //标题
+        header.scrollSpy();
+
+        var firstNav = $("#markdown-toc a").first();    //导航栏第一个
+        firstNav.addClass("active");    //初始默认为第一个高亮
+
+        header.on('scrollSpy:enter', function() {
+            $("#markdown-toc a").removeClass("active");
+            var id = $(this).attr("id");
+            $("#markdown-toc a[href='#"+id+"']").addClass("active");
+
+            //滚动到页面的最上方 或者是存在其他没有ID的header信息
+            //1.由此可见对于HEADER的定义应该更加具有区分性。
+            if(!id)
+            {
+                firstNav.addClass("active");
+            }
+        });
+
+        header.on('scrollSpy:exit', function() {
+        });
+    };
 
     /**
      * 初始化编号标签。

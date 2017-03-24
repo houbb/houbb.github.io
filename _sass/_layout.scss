@@ -341,6 +341,10 @@ ul#markdown-toc  > li > a {
     white-space: nowrap;
 }
 
+ul#markdown-toc  > li > a.active {
+    color: #ff9900;
+}
+
 //left
 ul#markdown-toc .fa {
     cursor: pointer;
