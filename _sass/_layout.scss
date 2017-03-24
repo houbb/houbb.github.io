@@ -334,14 +334,16 @@ ul {
     box-shadow: rgba(0,0,0,0.15) 0 6px 8px;
 }
 
-ul#markdown-toc  > li > a {
+//此处a不要使用 >a 因为存在嵌套
+
+ul#markdown-toc  > li a {
     display: block;
     max-width: 150px;
     overflow: hidden;
     white-space: nowrap;
 }
 
-ul#markdown-toc  > li > a.active {
+ul#markdown-toc  > li  a.active {
     color: #ff9900;
 }
 
