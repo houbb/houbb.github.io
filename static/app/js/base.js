@@ -9,11 +9,44 @@ $(document).ready(function () {
     Base.highchartsDemo()
     Base.initNo();
 
-
     Base.scrollSpy();
+
+
+    Base.semanticCheckBox();
 });
 var Base = new Base();
 function Base() {
+
+    /**
+     * semantic-ui checkbox
+     */
+    this.semanticCheckBox = function()
+    {
+        $('.ui.checkbox')
+            .checkbox()
+        ;
+
+        $('.ui.radio.checkbox')
+            .checkbox()
+        ;
+
+        $('.selection.dropdown')
+            .dropdown()
+        ;
+
+        $('select.dropdown')
+            .dropdown()
+        ;
+
+        $('.message .close')
+            .on('click', function() {
+                $(this)
+                    .closest('.message')
+                    .transition('fade')
+                ;
+            })
+        ;
+    };
 
     /**
      * 滚动监听
