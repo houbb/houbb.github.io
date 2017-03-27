@@ -13,9 +13,17 @@ $(document).ready(function () {
 
 
     Base.semanticCheckBox();
+    Base.initDataTables();
 });
 var Base = new Base();
 function Base() {
+
+    /**
+     * 初始化数据表格
+     */
+    this.initDataTables = function () {
+        $("#datatbles-zero-table").DataTable();
+    };
 
     /**
      * semantic-ui checkbox
