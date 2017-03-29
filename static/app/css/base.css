@@ -166,3 +166,10 @@ svg:not(:root) {
     filter: blur(2px);
 }
 
+
+.site-footer {
+    margin-top: 25px;
+}
+.bdsharebuttonbox {
+    display: inline-block;
+}
