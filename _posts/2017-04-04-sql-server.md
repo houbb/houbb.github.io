@@ -59,3 +59,7 @@ published: true
 备份还原法比较安全，但是相对速度较慢。比如数据库有200G及其以上，可能要耗费较多的时间和空间。
 
 > [分离附加](http://blog.csdn.net/ycl295644/article/details/48783525)
+
+<label class="label label-info">Tips</label>
+
+- 分离之后，在【附加】时可以指定附加成为目标数据库的名称。
