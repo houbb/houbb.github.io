@@ -53,5 +53,9 @@ published: true
 2. [sql System.Data.SqlClient.SqlError: 无法覆盖文件 'C:\Program Files\Microsoft SQL Server\MSSQL\data\itsm_Data.MDF'。数据库 'my1' 正在使用该文件的解决方案](http://www.bubuko.com/infodetail-580829.html)
 
 
+## 分离附加法
 
+你可能会问。既然备份还原已经有了。为什么还有这个？
+备份还原法比较安全，但是相对速度较慢。比如数据库有200G及其以上，可能要耗费较多的时间和空间。
 
+> [分离附加](http://blog.csdn.net/ycl295644/article/details/48783525)
