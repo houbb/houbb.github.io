@@ -63,3 +63,8 @@ published: true
 <label class="label label-info">Tips</label>
 
 - 分离之后，在【附加】时可以指定附加成为目标数据库的名称。
+
+
+## 表之间的复制
+
+> [sql server单表导入、导出](http://zhanjianhua.iteye.com/blog/1011131)
