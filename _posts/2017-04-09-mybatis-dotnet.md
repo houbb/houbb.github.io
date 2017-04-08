@@ -129,6 +129,9 @@ CREATE TABLE `mybatis` (
 
 在c#中  要将 `provider.config`、`sqlmap.config`  的属性设置为始终上传和内容，将`xxx.xml`设置为 始终上传和嵌入的资源。
 
+换言之，比如保证编译后的文件里包含这些文件。
+
+MONO里，文件上右键->【生成操作】->【EmbeddedResource】; 文件上右键->【快捷属性】->【复制到输出目录】.
 
 
 1、 First thing you need for the datamapper work is data map definition file (SqlMap.config).
