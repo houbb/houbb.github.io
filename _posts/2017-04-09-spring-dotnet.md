@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Spring.NET
+title:  Spring.NET-01-hello world
 date:  2017-04-08 20:52:59 +0800
 categories: [Spring]
 tags: [spring, dotnet]
@@ -195,6 +195,21 @@ public static void Main(string[] args)
     Console.WriteLine("User :{0}", user);
 }
 ```
+
+
+# 主要使用目录
+
+- IOC
+
+- AOP
+
+- Transaction
+
+- Validation
+
+- Quartz  
+
+- Test
 
 
 
