@@ -197,20 +197,6 @@ public static void Main(string[] args)
 ```
 
 
-# 主要使用目录
-
-- IOC
-
-- AOP
-
-- Transaction
-
-- Validation
-
-- Quartz  
-
-- Test
-
 
 
 
