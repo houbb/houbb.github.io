@@ -464,6 +464,15 @@ namespace mybatisNet
 如果你知道 java 版本的，肯定不会去手写这里的 model,mapper。C# 可以借助[codesmithtools](http://www.codesmithtools.com/)，Mac上安装不了，此刻跳过。
 
 
+# 动态SQL
+
+也就是说，此时的mybatisNet(V1.6.4.0) 和 以前的 Java版本 ibatis 保持一致。==
+
+> [IBatis.net动态SQL语句](http://www.cnblogs.com/kissdodog/archive/2013/11/21/3436587.html)
+
+# 打印SQL的LOG
+
+> [mybatisNet with log4net](http://www.cnblogs.com/Dunk/p/3714689.html)
 
 # Download & BLOG
 
