@@ -492,6 +492,214 @@ namespace mybatisNet
 
 
 
+# 神奇的BUG
+
+情景说明：
+
+当涉及到2张表时：且二者的字段不完全相同。
+
+```xml
+<sqlMaps>
+    <sqlMap resource="mappers/Mybatis.xml"/>
+    <sqlMap resource="mappers/MethodInfo.xml"/>
+</sqlMaps>
+```
+
+当后者查询时，而且查询的是自己的表。就会莫名其妙的出现第一张的字段。(name 这个字段在 mybatis这张表中)报错如下：
+
+
+（初步猜测，会将所有的 statement 执行一遍。）但是这个问题又是不可能出现的，因为这么多人用。不知道我什么地方配置出错了。
+
+```
+ex:System.IndexOutOfRangeException: Could not find specified column in results: name
+  at MySql.Data.MySqlClient.ResultSet.GetOrdinal (System.String name) [0x0002f] in <0a135c8e4d604d948724bf6960583b7f>:0 
+  at MySql.Data.MySqlClient.MySqlDataReader.GetOrdinal (System.String name) [0x00020] in <0a135c8e4d604d948724bf6960583b7f>:0 
+  at IBatisNet.DataMapper.Commands.DataReaderDecorator.System.Data.IDataRecord.GetOrdinal (System.String name) [0x00000] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.TypeHandlers.StringTypeHandler.GetValueByName (IBatisNet.DataMapper.Configuration.ResultMapping.ResultProperty mapping, System.Data.IDataReader dataReader) [0x00007] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.Configuration.ResultMapping.ResultProperty.GetDataBaseValue (System.Data.IDataReader dataReader) [0x00015] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.MappedStatements.PropertyStrategy.DefaultStrategy.Get (IBatisNet.DataMapper.Scope.RequestScope request, IBatisNet.DataMapper.Configuration.ResultMapping.IResultMap resultMap, IBatisNet.DataMapper.Configuration.ResultMapping.ResultProperty mapping, System.Object& target, System.Data.IDataReader reader) [0x0008a] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.MappedStatements.PropertyStrategy.DefaultStrategy.Set (IBatisNet.DataMapper.Scope.RequestScope request, IBatisNet.DataMapper.Configuration.ResultMapping.IResultMap resultMap, IBatisNet.DataMapper.Configuration.ResultMapping.ResultProperty mapping, System.Object& target, System.Data.IDataReader reader, System.Object keys) [0x00000] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.MappedStatements.ResultStrategy.ResultMapStrategy.Process (IBatisNet.DataMapper.Scope.RequestScope request, System.Data.IDataReader& reader, System.Object resultObject) [0x0008f] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.MappedStatements.ResultStrategy.MapStrategy.Process (IBatisNet.DataMapper.Scope.RequestScope request, System.Data.IDataReader& reader, System.Object resultObject) [0x0002a] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.MappedStatements.MappedStatement.RunQueryForObject[T] (IBatisNet.DataMapper.Scope.RequestScope request, IBatisNet.DataMapper.ISqlMapSession session, System.Object parameterObject, T resultObject) [0x00013] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+result: 
+
+Press any key to continue...
+```
+
+
+原因如下：
+
+这里的 `resultMap.id` 也请务必保持唯一。
+
+```xml
+<resultMaps>
+    <resultMap id="BaseResultMapMybatis" class="mybatisNet.doamin.Mybatis">
+		<id property="id" column="id" dbType="BIGINT" />
+      <result property="name" column="name" dbType="VARCHAR"/>
+    </resultMap>
+</resultMaps>
+```
+
+
+
+- 执行
+
+```c#
+Console.WriteLine("result: {0}", new MethodInfoDao().QueryMethodInfo(1));
+```
+
+- 查询方法如下
+
+```c#
+public MethodInfo QueryMethodInfo(int id)
+{
+    try
+    {
+        ISqlMapper mapper = Mapper.Instance();
+        MethodInfo result = mapper.QueryForObject<MethodInfo>("QueryMethodInfo", id);
+        return result;
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine("ex:{0}", ex);
+        return null;
+    }
+}
+```
+
+- MethodInfo.xml
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+<sqlMap namespace="mybatisNet.mappers"
+    xmlns="http://ibatis.apache.org/mapping"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <resultMaps>
+    <resultMap id="BaseResultMap" class="mybatisNet.doman.MethodInfo">
+	  <result property="Id" column="id" dbType="BIGINT"/>
+      <result property="MethodName" column="methodName" dbType="VARCHAR"/>
+    </resultMap>
+  </resultMaps>
+
+  <statements>
+
+	<select id="QueryMethodInfo" resultMap="BaseResultMap" parameterClass="System.Int32">
+		SELECT id, methodName
+			FROM `methodInfo` 
+			WHERE (id = #value#)
+	</select>	
+		
+  </statements>
+</sqlMap>
+```
+
+猜想的验证
+
+- 配置 log4net for mybatisNet
+
+修改 app.config
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+
+  <configSections>
+    <sectionGroup name="iBATIS">
+      <section name="logging" type="IBatisNet.Common.Logging.ConfigurationSectionHandler, IBatisNet.Common" />
+    </sectionGroup>
+    <section name="log4net" type="log4net.Config.Log4NetConfigurationSectionHandler, log4net" />
+  </configSections>
+	
+  <!--日志输出到命令行 上面的节点是三种方式都要的--> 
+  <iBATIS>
+    <logging>
+      <logFactoryAdapter type="IBatisNet.Common.Logging.Impl.ConsoleOutLoggerFA, IBatisNet.Common">
+        <arg key="showLogName" value="true" />
+        <arg key="showDataTime" value="true" />
+        <arg key="level" value="ALL" />
+        <arg key="dateTimeFormat" value="yyyy/MM/dd HH:mm:ss:SSS" />
+      </logFactoryAdapter>
+    </logging>
+  </iBATIS>
+	
+</configuration>
+```
+
+
+日志如下：
+
+```
+2017/04/12 22:33:38:SSS [DEBUG] IBatisNet.Common.Utilities.ConfigWatcherHandler - Adding file [SqlMap.config] to list of watched files.
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.Common.Utilities.ConfigWatcherHandler - Adding file [Mybatis.xml] to list of watched files.
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Configuration.Statements.PreparedStatementFactory - Statement Id: [QueryMybatis] Prepared SQL: [SELECT id, name    FROM `mybatis`     WHERE (id =  @param0 )]
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Configuration.Statements.PreparedStatementFactory - Statement Id: [InsertMybatis] Prepared SQL: [INSERT INTO `mybatis` (id, name) VALUES (      @param0 ,  @param1    );]
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Configuration.Statements.PreparedStatementFactory - Statement Id: [UpdateMybatis] Prepared SQL: [UPDATE `mybatis`     SET       name =  @param0        WHERE       (id =  @param1 )]
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Configuration.Statements.PreparedStatementFactory - Statement Id: [DeleteMybatis] Prepared SQL: [DELETE FROM `mybatis`       WHERE       (id =  @param0 )]
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.Common.Utilities.ConfigWatcherHandler - Adding file [MethodInfo.xml] to list of watched files.
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Configuration.Statements.PreparedStatementFactory - Statement Id: [QueryMethodInfo] Prepared SQL: [SELECT id, methodName    FROM `methodInfo`     WHERE (id =  @param0 )]
+
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Commands.DefaultPreparedCommand - Statement Id: [QueryMethodInfo] PreparedStatement : [SELECT id, methodName    FROM `methodInfo`     WHERE (id =  @param0 )]
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Commands.DefaultPreparedCommand - Statement Id: [QueryMethodInfo] Parameters: [@param0=[value,1]]
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Commands.DefaultPreparedCommand - Statement Id: [QueryMethodInfo] Types: [@param0=[Int32, System.Int32]]
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.SqlMapSession - Open Connection "21023919" to "MySQL, MySQL provider V6.9.9.0".
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.SqlMapSession - Close Connection "21023919" to "MySQL, MySQL provider V6.9.9.0".
+
+ex:System.IndexOutOfRangeException: Could not find specified column in results: name
+  at MySql.Data.MySqlClient.ResultSet.GetOrdinal (System.String name) [0x0002f] in <0a135c8e4d604d948724bf6960583b7f>:0 
+  at MySql.Data.MySqlClient.MySqlDataReader.GetOrdinal (System.String name) [0x00020] in <0a135c8e4d604d948724bf6960583b7f>:0 
+  at IBatisNet.DataMapper.Commands.DataReaderDecorator.System.Data.IDataRecord.GetOrdinal (System.String name) [0x00000] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.TypeHandlers.StringTypeHandler.GetValueByName (IBatisNet.DataMapper.Configuration.ResultMapping.ResultProperty mapping, System.Data.IDataReader dataReader) [0x00007] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.Configuration.ResultMapping.ResultProperty.GetDataBaseValue (System.Data.IDataReader dataReader) [0x00015] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.MappedStatements.PropertyStrategy.DefaultStrategy.Get (IBatisNet.DataMapper.Scope.RequestScope request, IBatisNet.DataMapper.Configuration.ResultMapping.IResultMap resultMap, IBatisNet.DataMapper.Configuration.ResultMapping.ResultProperty mapping, System.Object& target, System.Data.IDataReader reader) [0x0008a] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.MappedStatements.PropertyStrategy.DefaultStrategy.Set (IBatisNet.DataMapper.Scope.RequestScope request, IBatisNet.DataMapper.Configuration.ResultMapping.IResultMap resultMap, IBatisNet.DataMapper.Configuration.ResultMapping.ResultProperty mapping, System.Object& target, System.Data.IDataReader reader, System.Object keys) [0x00000] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.MappedStatements.ResultStrategy.ResultMapStrategy.Process (IBatisNet.DataMapper.Scope.RequestScope request, System.Data.IDataReader& reader, System.Object resultObject) [0x0008f] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.MappedStatements.ResultStrategy.MapStrategy.Process (IBatisNet.DataMapper.Scope.RequestScope request, System.Data.IDataReader& reader, System.Object resultObject) [0x0002a] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+  at IBatisNet.DataMapper.MappedStatements.MappedStatement.RunQueryForObject[T] (IBatisNet.DataMapper.Scope.RequestScope request, IBatisNet.DataMapper.ISqlMapSession session, System.Object parameterObject, T resultObject) [0x00013] in <ed90c8d30e2d4724a3bee124edf80dbd>:0 
+result: 
+```
+
+
+本来我应该执行的只有一句 `[SELECT id, methodName    FROM methodInfo  WHERE (id =  @param0 )]`， 可是前面另一张表的各种SQL也被预打印了一遍？？？
+
+如果只是将查询改成这样
+ 
+```c#
+public MethodInfo QueryMethodInfo(int id)
+{
+ try
+ {
+     ISqlMapper mapper = Mapper.Instance();
+     //MethodInfo result = mapper.QueryForObject<MethodInfo>("QueryMethodInfo", id);
+     //return result;
+     return null;
+ }
+ catch (Exception ex)
+ {
+     Console.WriteLine("ex:{0}", ex);
+     return null;
+ }
+}
+```
+
+LOG如下，且不会报错。
+
+```
+2017/04/12 22:33:38:SSS [DEBUG] IBatisNet.Common.Utilities.ConfigWatcherHandler - Adding file [SqlMap.config] to list of watched files.
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.Common.Utilities.ConfigWatcherHandler - Adding file [Mybatis.xml] to list of watched files.
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Configuration.Statements.PreparedStatementFactory - Statement Id: [QueryMybatis] Prepared SQL: [SELECT id, name    FROM `mybatis`     WHERE (id =  @param0 )]
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Configuration.Statements.PreparedStatementFactory - Statement Id: [InsertMybatis] Prepared SQL: [INSERT INTO `mybatis` (id, name) VALUES (      @param0 ,  @param1    );]
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Configuration.Statements.PreparedStatementFactory - Statement Id: [UpdateMybatis] Prepared SQL: [UPDATE `mybatis`     SET       name =  @param0        WHERE       (id =  @param1 )]
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Configuration.Statements.PreparedStatementFactory - Statement Id: [DeleteMybatis] Prepared SQL: [DELETE FROM `mybatis`       WHERE       (id =  @param0 )]
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.Common.Utilities.ConfigWatcherHandler - Adding file [MethodInfo.xml] to list of watched files.
+2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Configuration.Statements.PreparedStatementFactory - Statement Id: [QueryMethodInfo] Prepared SQL: [SELECT id, methodName    FROM `methodInfo`     WHERE (id =  @param0 )]
+```
+
+
+
+
+
 * any list
 {:toc}
 
