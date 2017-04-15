@@ -4,7 +4,7 @@ title:  Ruby-03-class
 date:  2017-04-15 15:27:37 +0800
 categories: [Programming Language]
 tags: [ruby]
-header-img: "static/app/res/img/kon-bg.jpeg"
+header-img: "static/app/res/img/article-bg.jpeg"
 published: true
 ---
 
