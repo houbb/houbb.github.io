@@ -1,0 +1,259 @@
+---
+layout: post
+title:  DL4j-02-MNIST
+date:  2017-04-16 17:32:46 +0800
+categories: [Deep Learning]
+tags: [AI, DL]
+header-img: "static/app/res/img/kon-bg.jpeg"
+published: true
+---
+
+# Introduction
+
+
+MNIST包含手写数字的图像是一个数据库,与每一个图像标记的整数。它用于基准测试的机器学习算法的性能。
+深度学习MNIST上执行的很好,实现超过99.7%的准确率。我们将使用MNIST训练一个神经网络来看看每个图像和预测数字。
+
+
+![minst]({{ site.url }}/static/app/img/DL/MINST/2017-04-16-MINST.png)
+
+# The MNIST Dataset
+
+[MNIST数据集](http://yann.lecun.com/exdb/mnist/)包含一个培训组60000例,和测试组10000例。训练集用于教算法来预测正确的标签,整数,而测试集是用来检查准确经过训练的网络可以猜测。
+
+在机器学习世界,这就是所谓的[监督学习](https://en.wikipedia.org/wiki/Supervised_learning),因为我们有正确答案的图像我们凭空猜测。因此训练集可以作为一个主管,或老师,纠正神经网络猜测错了。
+
+
+# 配置MNIST示例
+
+在 [dl4j-examples](https://houbb.github.io/2017/04/16/DL-helloworld#dl4j-examples) 文件夹下，打开 `MLPMnistSingleLayerExample.java` 的文件。
+
+
+
+一、设置变量
+
+```java
+final int numRows = 28; // 矩阵的行数。
+final int numColumns = 28; // 矩阵的列数。
+int outputNum = 10; // 潜在结果（比如0到9的整数标签）的数量。
+int batchSize = 128; // 每一步抓取的样例数量。
+int rngSeed = 123; // 这个随机数生成器用一个随机种子来确保定型时使用的初始权重维持一致。下文将会说明这一点的重要性。
+int numEpochs = 15; // 一个epoch指将给定数据集全部处理一遍的周期。
+```
+
+在我们的示例中，每一幅MNIST图像的大小是28x28像素，这意味着输入数据是28 numRows x 28 numColumns 的矩阵（矩阵是深度学习的基本数据结构）。
+
+其次，MNIST包含10种可能出现的结果（0到9的数字标签），即outputNum。
+
+batchSize 和 numEpochs必须根据经验选择，而经验则需要通过实验来积累。每批次处理的数据越多，定型速度越快；epoch的数量越多，遍历数据集的次数越多，准确率就越高。
+
+但是，epoch的数量达到一定的大小之后，增益会开始减少，所以要在准确率与定型速度之间进行权衡。总的来说，需要进行实验才能发现最优的数值。本示例中设定了合理的默认值。
+
+
+二、抓取MNIST数据
+
+```java
+DataSetIterator mnistTrain = new MnistDataSetIterator(batchSize, true, rngSeed);
+DataSetIterator mnistTest = new MnistDataSetIterator(batchSize, false, rngSeed);
+```
+
+我们用名为DataSetIterator的类来抓取MNIST中的数据，创建一个用于模型定型的数据集mnistTrain，和另一个用于在定型后评估模型准确率的数据集mnistTest。
+
+顺便一提，此处的模型是指神经网络的各种参数。这些参数是用来处理输入数据的系数，神经网络在学习过程中不断调整参数，直至能准确预测出每一幅图像的标签――此时就得到了一个比较准确的模型。
+
+
+
+# 搭建神经网络
+
+> [Understanding the difficulty of training deep feedforward neural networks](http://proceedings.mlr.press/v9/glorot10a/glorot10a.pdf)
+
+
+我们将按上面的论文中的描述来建立一个前馈神经网络。
+
+在这个基础示例中，我们先搭建一个只有单一隐藏层的神经网络。基本的原则是，深度更深（层数更多）的网络能处理更复杂的数据，捕捉更多细节，进而得出更准确的结果。
+
+![one layer]({{ site.url}}/static/app/img/DL/MINST/2017-04-16-one-layer.png)
+
+
+一、设置超参数
+
+不论用Deeplearning4j搭建何种神经网络，其基础都是 [NeuralNetConfiguration](http://deeplearning4j.org/cn/neuralnet-configuration.html) 类。
+
+我们用这个类来配置各项超参数，其数值决定了网络的架构和算法的学习方式。
+
+直观而言，每一项超参数就如同一道菜里的一种食材：取决于食材好坏，这道菜也许非常可口，也可能十分难吃……所幸在深度学习中，如果结果不正确，超参数还可以进行调整。
+
+```java
+MultiLayerConfiguration conf = new NeuralNetConfiguration.Builder()
+            .seed(rngSeed)
+            .optimizationAlgo(OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
+            .iterations(1)
+            .learningRate(0.006)
+            .updater(Updater.NESTEROVS).momentum(0.9)
+            .regularization(true).l2(1e-4)
+            .list()
+```
+
+
+- .seed(rngSeed)
+
+该参数将一组随机生成的权重确定为初始权重。如果一个示例运行很多次，而每次开始时都生成一组新的随机权重，那么神经网络的表现（准确率和F1值）有可能会出现很大的差异，
+因为不同的初始权重可能会将算法导向误差曲面上不同的局部最小值。在其他条件不变的情况下，保持相同的随机权重可以使调整其他超参数所产生的效果表现得更加清晰。
+
+
+- .optimizationAlgo (OptimizationAlgorithm.STOCHASTIC_GRADIENT_DESCENT)
+
+随机梯度下降（Stochastic Gradient Descent，SGD）是一种用于优化代价函数的常见方法。要了解SGD和其他帮助实现误差最小化的优化算法，可参考Andrew Ng的机器学习课程以及本网站术语表中对SGD的定义。
+
+
+- .iterations(1)
+
+对一个神经网络而言，一次迭代（iteration）指的是一个学习步骤，亦即模型权重的一次更新。神经网络读取数据并对其进行预测，然后根据预测的错误程度来修正自己的参数。
+因此迭代次数越多，网络的学习步骤和学习量也越多，让误差更接近最小值。
+
+
+- .learningRate(0.006)
+
+本行用于设定学习速率（learning rate），即每次迭代时对于权重的调整幅度，亦称步幅。学习速率越高，神经网络“翻越”整个误差曲面的速度就越快，但也更容易错过误差最小点。
+学习速率较低时，网络更有可能找到最小值，但速度会变得非常慢，因为每次权重调整的幅度都比较小。
+
+
+- .updater(Updater.NESTEROVS).momentum(0.9)
+
+动量（momentum）是另一项决定优化算法向最优值收敛的速度的因素。动量影响权重调整的方向，所以在代码中，我们将其视为一种权重的更新器（updater）。
+
+
+- .regularization(true).l2(1e-4)
+
+正则化（regularization）是用来防止过拟合的一种方法。过拟合是指模型对定型数据的拟合非常好，然而一旦在实际应用中遇到从未出现过的数据，运行效果就变得很不理想。
+
+我们用L2正则化来防止个别权重对总体结果产生过大的影响。
+
+
+- .list()
+
+函数可指定网络中层的数量；它会将您的配置复制n次，建立分层的网络结构。
+
+再次提醒：如果对以上任何内容感到困惑，建议您参考[机器学习](https://www.coursera.org/learn/machine-learning)课程。
+
+
+二、搭建层
+
+```java
+.layer(0, new DenseLayer.Builder()
+            .nIn(numRows * numColumns) // Number of input datapoints.
+            .nOut(1000) // Number of output datapoints.
+            .activation("relu") // Activation function.
+            .weightInit(WeightInit.XAVIER) // Weight initialization.
+            .build())
+    .layer(1, new OutputLayer.Builder(LossFunction.NEGATIVELOGLIKELIHOOD)
+            .nIn(1000)
+            .nOut(outputNum)
+            .activation("softmax")
+            .weightInit(WeightInit.XAVIER)
+            .build())
+    .pretrain(false).backprop(true)
+    .build();
+```
+
+隐藏层究竟是什么？
+
+
+隐藏层中的每个节点（上图中的圆圈）表示MNIST数据集中一个手写数字的一项特征。例如，假设现在处理的数字是6，那么一个节点可能表示圆形的边缘，另一个节点可能表示曲线的交叉点，等等。
+模型的系数按照重要性大小为这些特征赋予权重，随后在每个隐藏层中重新相加，帮助预测当前的手写数字是否确实为6。节点的层数更多，网络就能处理更复杂的因素，捕捉更多细节，进而做出更准确的预测。
+
+之所以将中间的层称为“隐藏”层，是因为人们可以看到数据输入神经网络、判定结果输出，但网络内部的数据处理方式和原理并非一目了然。神经网络模型的参数其实就是包含许多数字、计算机可以读取的长向量。
+
+
+# 模型定型
+
+运行案例
+
+```
+o.d.e.f.m.MLPMnistSingleLayerExample - Build model....
+o.n.l.f.Nd4jBackend - Loaded [CpuBackend] backend
+o.n.n.NativeOpsHolder - Number of threads used for NativeOps: 4
+o.n.n.Nd4jBlas - Number of threads used for BLAS: 4
+o.n.l.a.o.e.DefaultOpExecutioner - Backend used: [CPU]; OS: [Mac OS X]
+o.n.l.a.o.e.DefaultOpExecutioner - Cores: [8]; Memory: [3.6GB];
+o.n.l.a.o.e.DefaultOpExecutioner - Blas vendor: [OPENBLAS]
+o.d.e.f.m.MLPMnistSingleLayerExample - Train model....
+o.d.o.l.ScoreIterationListener - Score at iteration 0 is 2.3464891972563633
+....
+o.d.o.l.ScoreIterationListener - Score at iteration 7034 is 0.05303145587089969
+o.d.e.f.m.MLPMnistSingleLayerExample - Evaluate model....
+o.d.e.f.m.MLPMnistSingleLayerExample - 
+Examples labeled as 0 classified by model as 0: 965 times
+....
+Examples labeled as 9 classified by model as 9: 972 times
+```
+
+
+上面的学习进行了7034次，还是比较消耗时间的。几分钟左右。
+
+
+<label class="label label-danger">Error</label>
+
+原来运行的时候一直报错。就简单的看了下源代码
+
+```java
+if(train) {
+    images = MNIST_ROOT + "train-images-idx3-ubyte";
+    labels = MNIST_ROOT + "train-labels-idx1-ubyte";
+    this.totalExamples = '\uea60';
+} else {
+    images = MNIST_ROOT + "t10k-images-idx3-ubyte";
+    labels = MNIST_ROOT + "t10k-labels-idx1-ubyte";
+    this.totalExamples = 10000;
+}
+```
+
+- MNIST
+
+```java
+static {
+    MNIST_ROOT = TEMP_ROOT + File.separator + "MNIST" + File.separator;
+}
+```
+
+- TEMP_ROOT
+
+```java
+protected static final String TEMP_ROOT = System.getProperty("user.home");
+```
+
+然后我[下载](http://yann.lecun.com/exdb/mnist/)需要的4个文件，放在指定的路径下面。本机是 **/Users/houbinbin/MNIST**
+
+
+# 结果评估
+
+```
+==========================Scores========================================
+ Accuracy:        0.9729
+ Precision:       0.9729
+ Recall:          0.9726
+ F1 Score:        0.9727
+========================================================================
+```
+
+
+| 指示符	| 描述 |
+|:----|:----|
+| Accuracy	    | 准确率：模型准确识别出的MNIST图像数量占总数的百分比 |
+| Precision	    | 精确率：真正例的数量除以真正例与假正例数之和 |
+| Recall	    | 召回率：真正例的数量除以真正例与假负例数之和 |
+| F1 Score	    | F1值：精确率和召回率的加权平均值 |
+
+
+精确率、召回率和F1值衡量的是模型的相关性。
+
+举例来说，“癌症不会复发”这样的预测结果（即假负例/假阴性）就有风险，因为病人会不再寻求进一步治疗。
+
+所以，比较明智的做法是选择一种可以避免假负例的模型（即精确率、召回率和F1值较高），尽管总体上的准确率可能会相对较低一些。
+
+
+
+
+* any list
+{:toc}
+

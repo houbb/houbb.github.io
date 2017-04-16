@@ -104,6 +104,21 @@ $ mvn clean install
 
 发现命令行安装比较慢。就直接[下载](https://github.com/deeplearning4j/dl4j-examples)。
 
+- pom.xml
+
+To run DL4J in your own projects, we highly recommend using Maven for Java users, or a tool such as SBT for Scala. 
+The basic set of dependencies and their versions are shown below. This includes:
+
+1. deeplearning4j-core, which contains the neural network implementations
+
+2. nd4j-native-platform, the CPU version of the ND4J library that powers DL4J
+
+3. datavec-api - Datavec is our library vectorizing and loading data
+
+
+这些Demo里面已经有了，无需再次引入。
+
+
 - Install
 
 ```
