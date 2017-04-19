@@ -15,9 +15,6 @@ published: true
 
 > [.net 分布式架构之任务调度平台](http://www.cnblogs.com/chejiangyi/p/4934991.html)
 
-希望可以博采众家之长，做个简化版的系统。
-
-
 # .NET 分布式架构之任务调度平台 
 
 用于.net dll,exe的任务的挂载，任务的隔离，调度执行，访问权限控制，监控，管理，日志，错误预警，性能分析等。
@@ -45,17 +42,17 @@ git下载源码后部分开发人员无法编译的问题（挺诡异的问题�
 
 至于BSF源码请点[这里](http://git.oschina.net/chejiangyi/XXF)，编译之后将 `BSF.DLL` 替换掉 **引用** 原来的文件即可。
 
-# 使用详解
+# 简单使用
 
 安装说明参见 **安装文档**、**文档**。
 
-## 执行数据库安装脚本，安装数据库；
+一、执行数据库安装脚本，安装数据库；
 
 - 执行数据库数据初始化脚本。
 
 本地创建 `dyd_bs_task` 数据库(SQL Server)。然后执行**安装文档**中脚本即可。 
   
-## 部署web站点,并配置好 web.config 
+二、部署web站点,并配置好 web.config 
 
 - 数据库配置连接
 
@@ -76,7 +73,7 @@ git下载源码后部分开发人员无法编译的问题（挺诡异的问题�
   </appSettings>
 ```
   
-## 打开web站点,新建服务节点 
+三、打开web站点,新建服务节点 
 
 - 默认数据库初始化脚本会初始化一个测试用的node节点，有其他需要可以自己再建一个。
 
@@ -93,7 +90,7 @@ git下载源码后部分开发人员无法编译的问题（挺诡异的问题�
   
 (默认数据库初始化的时候已经有一NODE了。暂时可以不设置。)
 
-## 部署node winserver服务，并配置好config文件
+四、部署node winserver服务，并配置好config文件
 
 部署服务节点（建议使用 单机多个节点安装.bat，建议部署两个以上节点）
 
@@ -145,13 +142,13 @@ NodeID 就是新建 node 时需要记住的ID。当然你可以指定任意一�
 
 如果你发现，你指定的NODE在网页上变为**运行**，说明成功了。
 
-- 测试
+五、测试
 
 此处使用子项目【TaskManager.Demo】进行测试。
 
 web页面上【任务管理】->【任务列表】新建任务如下：
 
-![new task]({{ site.url }}/static/app/img/schedular/dotnet/2017-04-19-Scheduler-nodes.png)
+![new task]({{ site.url }}/static/app/img/scheduler/dotnet/2017-04-19-Scheduler-task.png)
 
 注意：
 
@@ -161,7 +158,7 @@ web页面上【任务管理】->【任务列表】新建任务如下：
 
 
 
-- 系统级任务
+六、 系统级任务
 
 打开web站点,发布两个系统级任务(错误邮件发送的任务和长时间运行的任务检测任务) 
 
@@ -170,11 +167,10 @@ web页面上【任务管理】->【任务列表】新建任务如下：
 若成功大概界面如下：
 
 
-![task list]({{ site.url }}/static/app/img/schedular/dotnet/22017-04-19-Scheduler-task-list.png)
-
+![task list]({{ site.url }}/static/app/img/scheduler/dotnet/2017-04-19-Scheduler-task-list.png)
 
   
-- 安装redis。（redis做即时通知使用，如果没有redis，进行任务开启，卸载等操作时界面反应速度较慢,【系统必须】Redis内部实时通讯专用,密码为空）
+七、 安装redis。（redis做即时通知使用，如果没有redis，进行任务开启，卸载等操作时界面反应速度较慢,【系统必须】Redis内部实时通讯专用,密码为空）
 
   6.1 安装redis。（可以是windows版本的安装包，建议不设置用户名密码。）
   6.2 “配置管理”中配置“RedisServer”。如"192.168.1.209:6379"
