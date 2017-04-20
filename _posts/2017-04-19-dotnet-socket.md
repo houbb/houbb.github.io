@@ -2,9 +2,9 @@
 layout: post
 title:  .Net Socket
 date:  2017-04-19 22:28:23 +0800
-categories: [.Net]
+categories: [Network]
 tags: [dotnet, socket]
-header-img: "static/app/res/img/kon-bg.jpeg"
+header-img: "static/app/res/img/nightsky-bg.jpeg"
 published: true
 ---
 
@@ -231,5 +231,8 @@ server console
 
 
 
+
+* any list
+{:toc}
 
 
