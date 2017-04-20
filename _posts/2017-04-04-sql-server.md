@@ -81,4 +81,23 @@ published: true
 
 > [sql server单表导入、导出](http://zhanjianhua.iteye.com/blog/1011131)
 
+- 跨数据的更新
+
+如下两种方式都行，推荐dierzhong
+
+```sql
+update [blog].[dbo].[user] set name=(
+select [blog_dev].[dbo].[user].name FROM [blog_dev].[dbo].[user]
+where [blog].[dbo].[user].id=[blog_dev].[dbo].[user].id );
+```
+
+
+```sql
+UPDATE b
+SET b.name = a.name,
+b.age = a.age
+FROM [blog_dev].[dbo].[user] as a, [blog].[dbo].[user] as b 
+WHERE a.id = b.id;
+```
+
 
