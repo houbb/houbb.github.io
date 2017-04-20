@@ -1,1 +1,259 @@
-body,div,p,span,ul,li,h1,h2,h3,form,table,tr,td,img{margin:0;border:0;padding:0;}a:focus{outline:0;}input:focus{outline:0;}textarea{resize:none;}.hidden{display:none;}.invisible{visibility:hidden;}.clear:after{content:"";display:block;clear:both;}.has-layout{overflow:auto;zoom:1;}.no-scroll{overflow:hidden;}.no-x-scroll{overflow-x:hidden;overflow-y:auto;}.left{float:left;}.right{float:right;}.no-select{user-select:none;-webkit-user-select:none;-moz-user-select:none;}html{overflow:hidden;}body{font-size:12px;font-family:arial,sans-serif;}input,textarea{margin:0;border:0;padding:0;}.bg-sprite{background:url(bg.png) no-repeat 0 0;}.sprite{background:url(dicter.png) no-repeat 0 0;}#youdaoDictBg{width:320px;height:240px;}#youdaoDictBg #bgTop{background-position:left top;height:120px;}#youdaoDictBg #bgTopRight{background-position:right top;float:right;width:160px;height:120px;}#youdaoDictBg #bgBottom{background-position:left bottom;height:120px;}#youdaoDictBg #bgBottomRight{background-position:right bottom;float:right;width:160px;height:120px;}#youdaoDictMain{position:absolute;left:0;top:0;height:240px;}#youdaoDictTop{padding-left:4px;height:20px;text-align:left;color:#61859A;font-weight:bold;}#dictIcon{background-position:0 0;float:left;margin-top:4px;width:16px;height:16px;}#dictTitle{float:left;margin:4px 0 0 5px;height:16px;line-height:16px;}#youdaoDictCenter{padding:0 3px;height:220px;}#youdaoDictCenter #inputLine{height:28px;}#inputLine form{height:28px;}#inputLine #youdaoDictQueryText{float:left;margin:3px 0 2px;border:1px #8CA5C5 solid;padding-left:5px;height:21px;line-height:21px;}#inputLine #youdaoDictQueryButton{background-color:#EEE;float:left;margin:3px 0 2px 2px;border:1px #8CA5C5 solid;width:64px;height:23px;}#youdaoDictCenter #result{background-color:#FFF;margin-bottom:3px;border:1px #8CA5C5 solid;padding:0 5px;height:187px;line-height:18px;color:#313131;}#result a:link,#result a:visited{text-decoration:none;color:#2779B6;}#result p{margin:3px 0;}#result #translation{margin-top:3px;}#noResult #noResultTip li{margin-left:20px;}#result #title{margin:3px 0 3px;font-size:14px;}#title #phonetic{margin-left:10px;color:#666;font-size:12px;font-weight:normal;font-family:"lucida sans unicode",arial,sans-serif;}#title #more{margin-left:10px;font-size:12px;font-weight:normal;font-family:"瀹嬩綋";}#result .sub-item{overflow:hidden;white-space:nowrap;_white-space:normal;margin-right:15px;height:18px;line-height:18px;color:#959595;font-size:12px;font-weight:normal;}#result .sub-item span{color:#CECECE;font-family:"瀹嬩綋";}#result span.split{background-color:#959595;display:inline-block;margin:0 8px;width:1px;height:8px;line-height:8px;font-size:0;}#youdaoDictCenter{padding-top:3px;}#result #copyright{margin:3px 15px 0 0;}#result .bottom-link{float:right;margin:0 5px;}
+body, div, p, span, ul, li, h1, h2, h3, form, table, tr, td, img {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+a:focus {
+    outline: 0;
+}
+
+input:focus {
+    outline: 0;
+}
+
+textarea {
+    resize: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.clear:after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.has-layout {
+    overflow: auto;
+    zoom: 1;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+.no-x-scroll {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+.no-select {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+html {
+    overflow: hidden;
+}
+
+body {
+    font-size: 12px;
+    font-family: arial, sans-serif;
+}
+
+input, textarea {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+.bg-sprite {
+    background: url(bg.png) no-repeat 0 0;
+}
+
+.sprite {
+    background: url(dicter.png) no-repeat 0 0;
+}
+
+#youdaoDictBg {
+    width: 320px;
+    height: 240px;
+}
+
+#youdaoDictBg #bgTop {
+    background-position: left top;
+    height: 120px;
+}
+
+#youdaoDictBg #bgTopRight {
+    background-position: right top;
+    float: right;
+    width: 160px;
+    height: 120px;
+}
+
+#youdaoDictBg #bgBottom {
+    background-position: left bottom;
+    height: 120px;
+}
+
+#youdaoDictBg #bgBottomRight {
+    background-position: right bottom;
+    float: right;
+    width: 160px;
+    height: 120px;
+}
+
+#youdaoDictMain {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 240px;
+}
+
+#youdaoDictTop {
+    padding-left: 4px;
+    height: 20px;
+    text-align: left;
+    color: #61859A;
+    font-weight: bold;
+}
+
+#dictIcon {
+    background-position: 0 0;
+    float: left;
+    margin-top: 4px;
+    width: 16px;
+    height: 16px;
+}
+
+#dictTitle {
+    float: left;
+    margin: 4px 0 0 5px;
+    height: 16px;
+    line-height: 16px;
+}
+
+#youdaoDictCenter {
+    padding: 0 3px;
+    height: 220px;
+}
+
+#youdaoDictCenter #inputLine {
+    height: 28px;
+}
+
+#inputLine form {
+    height: 28px;
+}
+
+#inputLine #youdaoDictQueryText {
+    float: left;
+    margin: 3px 0 2px;
+    border: 1px #8CA5C5 solid;
+    padding-left: 5px;
+    height: 21px;
+    line-height: 21px;
+}
+
+#inputLine #youdaoDictQueryButton {
+    background-color: #EEE;
+    float: left;
+    margin: 3px 0 2px 2px;
+    border: 1px #8CA5C5 solid;
+    width: 64px;
+    height: 23px;
+}
+
+#youdaoDictCenter #result {
+    background-color: #FFF;
+    margin-bottom: 3px;
+    border: 1px #8CA5C5 solid;
+    padding: 0 5px;
+    height: 187px;
+    line-height: 18px;
+    color: #313131;
+}
+
+#result a:link, #result a:visited {
+    text-decoration: none;
+    color: #2779B6;
+}
+
+#result p {
+    margin: 3px 0;
+}
+
+#result #translation {
+    margin-top: 3px;
+}
+
+#noResult #noResultTip li {
+    margin-left: 20px;
+}
+
+#result #title {
+    margin: 3px 0 3px;
+    font-size: 14px;
+}
+
+#title #phonetic {
+    margin-left: 10px;
+    color: #666;
+    font-size: 12px;
+    font-weight: normal;
+    font-family: "lucida sans unicode", arial, sans-serif;
+}
+
+#title #more {
+    margin-left: 10px;
+    font-size: 12px;
+    font-weight: normal;
+    font-family: "瀹嬩綋";
+}
+
+#result .sub-item {
+    overflow: hidden;
+    white-space: nowrap;
+    _white-space: normal;
+    margin-right: 15px;
+    height: 18px;
+    line-height: 18px;
+    color: #959595;
+    font-size: 12px;
+    font-weight: normal;
+}
+
+#result .sub-item span {
+    color: #CECECE;
+    font-family: "瀹嬩綋";
+}
+
+#result span.split {
+    background-color: #959595;
+    display: inline-block;
+    margin: 0 8px;
+    width: 1px;
+    height: 8px;
+    line-height: 8px;
+    font-size: 0;
+}
+
+#youdaoDictCenter {
+    padding-top: 3px;
+}
+
+#result #copyright {
+    margin: 3px 15px 0 0;
+}
+
+#result .bottom-link {
+    float: right;
+    margin: 0 5px;
+}
