@@ -83,7 +83,9 @@ published: true
 
 - 跨数据的更新
 
-如下两种方式都行，推荐dierzhong
+如下两种方式都行，推荐第二种方式
+
+1、两种嵌套
 
 ```sql
 update [blog].[dbo].[user] set name=(
@@ -91,6 +93,7 @@ select [blog_dev].[dbo].[user].name FROM [blog_dev].[dbo].[user]
 where [blog].[dbo].[user].id=[blog_dev].[dbo].[user].id );
 ```
 
+2、条件或者外联也行
 
 ```sql
 UPDATE b
