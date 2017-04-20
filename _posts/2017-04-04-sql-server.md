@@ -65,6 +65,20 @@ published: true
 - 分离之后，在【附加】时可以指定附加成为目标数据库的名称。
 
 
+## 导入导出法
+
+这个使用起来也比较简单。
+
+> [百度经验](http://jingyan.baidu.com/article/d169e186a6d024436611d826.html)
+
+
+- 插入只读列报错 
+
+> [无法在只读列XXX中插入数据](http://www.mzwu.com/article.asp?id=3619)
+
+
 ## 表之间的复制
 
 > [sql server单表导入、导出](http://zhanjianhua.iteye.com/blog/1011131)
+
+
