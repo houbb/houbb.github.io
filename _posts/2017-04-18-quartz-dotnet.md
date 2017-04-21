@@ -5,7 +5,7 @@ date:  2017-04-18 23:45:19 +0800
 categories: [.Net]
 tags: [dotnet, scheduler]
 header-img: "static/app/res/img/kon-bg.jpeg"
-published: true
+published: false
 ---
 
 # Quartz.NET
