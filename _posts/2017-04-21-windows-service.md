@@ -14,13 +14,6 @@ published: true
 
 Windows服务程序虽然是可执行的，但是它不像一般的可执行文件通过双击就能开始运行了，它必须有特定的启动方式。这些启动方式包括了**自动启动**和**手动启动**两种。
 
-只要你将相应的Windows服务程序注册到服务控制管理器（Service Control Manager）中，并将其启动类别设为自动启动就行了。
-
-而对于手动启动的Windows服务程序，你可以通过命令行工具的NET START 命令来启动它，或是通过控制面板中管理工具下的服务一项来启动相应的Windows服务程序。
-
-同样，一个Windows服务程序也不能像一般的应用程序那样被终止。因为Windows服务程序一般是没有用户界面的，所以你也要通过命令行工具或是下面图中的工具来停止它，或是在系统关闭时使得Windows服务程序自动停止。
-
-
 # Hello World
 
 ## 创建Windows Service项目
@@ -28,7 +21,7 @@ Windows服务程序虽然是可执行的，但是它不像一般的可执行文�
 
 - Create
 
-【Visual C#】-》【Windows】-》【Windows 服务】
+【Visual C#】->【Windows】->【Windows 服务】
 
 - Edit
 
@@ -81,7 +74,7 @@ namespace WindowsServiceTest
 
 - 添加安装程序
 
-双击`Service1.cs`，右键-》【添加安装程序】。自动生成如下
+双击`Service1.cs`，右键->【添加安装程序】。自动生成如下
 
 ![windows-service-installer]({{ site.url }}/static/app/img/network/windows-service/2017-04-21-windows-service-installer.png)
 
@@ -114,11 +107,13 @@ pause
 ```
 其中:
 
-`%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\installutil.exe`为.Net工具地址。`E:\LEARN\Socket\NetSocket\WindowsServiceTest\bin\Release\WindowsServiceTest.exe`是项目**编译后**的运行程序地址
+%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\installutil.exe 为.Net工具地址。
 
-`Net Start ServiceTest` 为启动服务。
+E:\LEARN\Socket\NetSocket\WindowsServiceTest\bin\Release\WindowsServiceTest.exe 是项目**编译后**的运行程序地址
 
-`sc config ServiceTest start= auto ` 为设置服务为自动运行。
+Net Start ServiceTest 为启动服务。
+
+sc config ServiceTest start= auto  为设置服务为自动运行。
 
 最后一行用于调试，暂停的。
 
@@ -133,7 +128,7 @@ pause
 
 ## 运行尝试
 
-直接以**管理员身份**运行 `Install.bat`, Log 如下
+直接以**管理员身份**运行 `Install.bat`, Console 日志如下
 
 ```
 正在运行事务处理安装。
@@ -185,7 +180,7 @@ C:\Windows\system32>pause
 请按任意键继续. . .
 ```
 
-可以在【计算机】-》【管理】-》【服务】里看到对应的服务。此处为 **ServiceTest**.
+可以在【计算机】->【管理】->【服务】里看到对应的服务。此处为 **ServiceTest**.
 
 此时D盘对应日志文件内容为
 
