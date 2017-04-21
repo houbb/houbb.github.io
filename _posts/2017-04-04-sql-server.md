@@ -11,6 +11,23 @@ published: true
 
 # SQL Server
 
+# 常用查询
+
+- 所有数据库名称
+
+```sql
+SELECT Name FROM Master..SysDatabases ORDER BY Name
+```
+
+- 某库所有表名称
+
+```sql
+SELECT Name FROM SysObjects Where XType='U' ORDER BY Name
+```
+
+
+
+
 
 # 数据库的复制
 
