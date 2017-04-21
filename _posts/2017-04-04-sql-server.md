@@ -11,7 +11,7 @@ published: true
 
 # SQL Server
 
-# 常用查询
+## 常用查询
 
 - 所有数据库名称
 
@@ -25,9 +25,31 @@ SELECT Name FROM Master..SysDatabases ORDER BY Name
 SELECT Name FROM SysObjects Where XType='U' ORDER BY Name
 ```
 
+- 某库所有的视图
+
+```sql
+SELECT Name FROM sysobjects Where xtype='V' ORDER BY Name;
+```
+
+- 查询所有存储过程
+
+```sql
+select Name from sys.procedures ORDER BY Name;
+```
 
 
+## 字段简介
 
+主要字段：
+ 
+1. Name：对象名
+2. Object_id：对象标识号，在数据中是唯一的
+3. Principal_id ：架构所有者ID
+4. Parent_object_id：此对象所属对象的ID，0 = 不是子对象
+5. Type：对象类型，常用的类型有, AF = 聚合函数 P = SQL 存储过程  V = 视图  TT = 表类型   U = 表（用户定义类型）
+6. Type_desc：对象类型的说明
+7. Create_date / Modify_date ：创建日期 / 修改日期
+8. is_ms_shipped：是否为 内部 SQL Server 组建所创建的对象，常用来判断 是否是 系统内置或用户自定义 的对象
 
 # 数据库的复制
 
