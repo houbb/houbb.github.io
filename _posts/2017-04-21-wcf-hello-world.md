@@ -15,9 +15,6 @@ published: true
 
 （友情提示：可以跳过。）
 
-> [WCF 难学否](http://blog.csdn.net/tcjiaan/article/details/7792726)
-
-
 
 一、创建 Server
 
@@ -140,17 +137,11 @@ namespace Client
 
 # 拓展
 
+> [WCF 难学否](http://blog.csdn.net/tcjiaan/article/details/7792726)
+
 > [三种Binding让你KO80%的业务](http://www.cnblogs.com/huangxincheng/p/4558747.html)
 
 > [config配置](http://www.cnblogs.com/huangxincheng/p/4562239.html)
-
-
-
-# WSDL
-
-[WSDL](http://www.cnblogs.com/huangxincheng/p/4567822.html)我觉得这个原理知道即可。没有必要过于深究。
-
-
 
 
 * any list
