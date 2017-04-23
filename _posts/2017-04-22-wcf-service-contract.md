@@ -104,12 +104,142 @@ public sealed class ServiceContractAttribute : Attribute
 上文提及的WSDL，你也可以[浏览器](http://localhost:8008/Service?wsdl)中自己查看。
 
 
-# 拓展
+# Extension
 
 > [WSDL](http://www.w3school.com.cn/wsdl/index.asp)
 
 
 > [client如何知道server提供的功能清单](http://www.cnblogs.com/huangxincheng/p/4567822.html)
+
+
+
+# Multi Contract
+
+WCF服务端是先定义服务协定，其实就是一个接口，然后通过实现接口来定义服务类。那么，有一个问题，如果一个服务类同时实现N个接口（也就是有N个协定）呢？结果会如何？
+
+（此处不讨论多个服务。多个服务就是独立的服务引用。互不干涉）
+
+
+一、 Server Define contracts
+
+
+```c#
+[ServiceContract]
+public interface IServiceOne
+{
+    [OperationContract]
+    void sayOne();
+}
+
+[ServiceContract]
+public interface IServiceTwo
+{
+    [OperationContract]
+    void sayTwo();
+}
+
+[ServiceContract]
+public interface IServiceThree
+{
+    [OperationContract]
+    void sayThree();
+}
+```
+
+二、 Server Implements contracts
+
+
+```c#
+public class MultiService : IServiceOne, IServiceTwo, IServiceThree
+{
+    public void sayOne()
+    {
+        Console.WriteLine("say one");
+    }
+
+    public void sayTwo()
+    {
+        Console.WriteLine("say two");
+    }
+
+    public void sayThree()
+    {
+        Console.WriteLine("say three");
+    }
+}
+```
+
+
+
+三、 Server Main() 
+
+我们仅仅让服务类实现多个协定的接口是不够的，还要把希望对客户端公开的协定添加为终结点，对，一个协定一个终结点，不添加终结点的协定就不公开。
+
+```c#
+static void Main(string[] args)
+{
+    // 基址URI，必须，HTTP方案  
+    Uri baseURI = new Uri("http://localhost:8008/Service");
+
+    using (ServiceHost host = new ServiceHost(typeof(MultiService), baseURI))
+    {
+        // 向服务器添终结点  
+        WSHttpBinding binding = new WSHttpBinding();
+        
+        // 这里不需要安全验证  
+        binding.Security.Mode = SecurityMode.None;
+
+        // 添加对应的协议。需要添加多个！
+        host.AddServiceEndpoint(typeof(IServiceOne), binding, "my1");
+        host.AddServiceEndpoint(typeof(IServiceTwo), binding, "my2");
+        host.AddServiceEndpoint(typeof(IServiceThree), binding, "my3");
+
+
+        // 为了能让VS生成客户端代码，即WSDL文档，故要添加以下行为  
+        ServiceMetadataBehavior mdBehavior = new ServiceMetadataBehavior()
+        {
+            HttpGetEnabled = true
+        };
+        host.Description.Behaviors.Add(mdBehavior);
+
+        //如果服务顺利启动，则提示，处理Opened事件  
+        host.Opened += (sender, e) => Console.WriteLine("服务已启动。");
+        // 启动服务器  
+        try
+        {
+            host.Open();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+
+        // 为了让程序不往下执行而结束，故加上这句  
+        Console.ReadKey();
+        // 关闭服务器  
+        host.Close();
+    }  
+}
+```
+
+四、Client
+ 
+每一个协议都会生成一个对应的client。所以客户端调用代码如下:
+
+```c#
+static void Main(string[] args)
+{
+    MultiService.ServiceOneClient oneClient = new MultiService.ServiceOneClient();
+    oneClient.sayOne();
+
+    MultiService.ServiceTwoClient twoClient = new MultiService.ServiceTwoClient();
+    twoClient.sayTwo();
+
+    MultiService.ServiceThreeClient threeClient = new MultiService.ServiceThreeClient();
+    threeClient.sayThree();
+}
+```
+
 
 
 * any list
