@@ -401,7 +401,7 @@ static void Main(string[] args)
 
 报错如下：
 
-```c#
+```
 未经处理的异常:  System.ServiceModel.CommunicationException: 接收对 http://127.0
 .0.1:18080/services/test 的 HTTP 响应时发生错误。这可能是由于服务终结点绑定未使
 用 HTTP 协议造成的。这还可能是由于服务器中止了 HTTP 请求上下文(可能由于服务关闭)
@@ -425,8 +425,8 @@ static void Main(string[] args)
 [KnownType("GetKnowTypes")]  
 public class User
 {
-   //...
-   
+    //...
+    
     /// <summary>
     /// 成绩
     /// </summary>
@@ -447,7 +447,7 @@ public class User
 在一些比较复杂的类型无法反序列化（不能识别类型）的时候，就得考虑使用 `KnownTypeAttribute` 来标注可能涉及到的外部类型，但如果遇到像泛型这些较为复杂的类型，
 就要考虑在带数据协定的类中添加一个静态方法，该方法返回 Type 的 IEnumerable，一般是 Type[] 就可以了，而在 KnownTypeAttribute 的构造函数中使用这个方法的名字。
 
-(建议不要使用object这种类型。真的会存在不知道结构的类型吗？换言之你非要这么写的时候就是时候思考一下，是不是什么地方设计的有问题。)
+(此处是为了学习。建议尽量不使用object这种类型。真的会存在不知道结构的类型吗？换言之你非要这么写的时候就是时候思考一下，是不是什么地方设计的有问题。)
 
 
 * any list
