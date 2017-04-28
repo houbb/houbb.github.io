@@ -104,6 +104,12 @@ select Name from sys.procedures ORDER BY Name;
 - 分离之后，在【附加】时可以指定附加成为目标数据库的名称。
 
 
+> [显示只读的解决办法](http://www.cnblogs.com/xueyonglanguan/archive/2012/03/15/2397722.html)
+
+使用sa登录SQL Server2008附加数据库，附加之后数据库为只读的，然后点数据库-->“属性”-->“选项”-->“状态”，发现“数据库为只读”这一项为True，改为false，
+如果能够修改的话，那么恭喜你，你的人品不错哦！
+
+
 ## 导入导出法
 
 这个使用起来也比较简单。
