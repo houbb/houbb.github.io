@@ -37,6 +37,13 @@ SELECT Name FROM sysobjects Where xtype='V' ORDER BY Name;
 select Name from sys.procedures ORDER BY Name;
 ```
 
+## 常用操作
+
+- 重置数据库表
+
+```
+truncate table ${tableName}
+```
 
 ## 字段简介
 
