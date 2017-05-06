@@ -24,16 +24,32 @@ published: true
 
 **IB** 即 Introducing Broker（介绍经纪商）为期货提供中间介绍业务的机构或个人
 
+
 二、IBOR
 
 [同业拆放利率](http://wiki.mbalib.com/wiki/IBOR)是指银行同业之间的短期资金借贷利率。
 
 
-三、计息基准
+三、重要概念
 
-DayCounter
+- DayCounter(计息基准)
 
 > [量化BLOG](https://uqer.io/community/share/55361dc2f9f06c392662104e)
+
+- Index (基准利率)
+
+- Calendar(日历)
+
+
+四、特殊条款
+
+- Prepay (提前还本)
+
+- EmbededRate (复合利率)
+
+- Put (回售)
+
+- Call (赎回)
 
 ## 定价与估值
 

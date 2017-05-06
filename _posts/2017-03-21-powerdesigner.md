@@ -177,6 +177,19 @@ Microsoft SQLServer2005ScriptObjectsColumnAdd
 修改的内容就是去掉:`[.Z:[ collate %ExtCollation%]`以及最后一个`]`
 
 
+# 使用技巧
+
+- 查看所有的列
+
+有时候对所有的列同时编辑比较方便。选中一个模型右键-》【list of columns】即可。
+
+
+- 报告
+
+PD可以对当前文档输出对应的信息。
+
+直接 【Reports】-》【Dictionary】-》【Title-模型物理对象】-》【Title-表集合】-》【Table - %item%】-》【Table Column - 列】
+
 # CodeSmith
 
 [Codesmith](http://www.codesmithtools.com/) is the best developer tools to get your job done faster and avoid repetitive work.
