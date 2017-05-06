@@ -3,7 +3,7 @@ layout: post
 title: HighCharts
 date:  2016-10-27 12:35:01 +0800
 categories: [Js]
-tags: [highCharts]
+tags: [highCharts, chart]
 published: false
 ---
 
