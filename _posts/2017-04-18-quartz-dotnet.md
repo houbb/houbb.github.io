@@ -15,5 +15,7 @@ published: false
 This project owes very much to original Java project, it’s father James House and the project contributors. 
 
 
+# Hello World
 
+> [Quartz.NET 入门](http://www.cnblogs.com/jys509/p/4628926.html)
 
