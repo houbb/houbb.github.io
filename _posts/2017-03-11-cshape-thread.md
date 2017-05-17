@@ -153,7 +153,9 @@ public class AbortThreadDemo
 }
 ```
 
+# 线程细说
 
+> [线程细说](http://www.cnblogs.com/leslies2/archive/2012/02/07/2310495.html)
 
 * any list
 {:toc}
