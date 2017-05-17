@@ -4,7 +4,7 @@ title:  Bat and C#
 date:  2017-5-17 15:14:03 +0800
 categories: [C#]
 tags: [dotnet, bat]
-published: false
+published: true
 ---
 
 # 前言
