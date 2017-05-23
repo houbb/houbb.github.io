@@ -98,5 +98,159 @@ ftp://192.168.1.120/
 可以使用这个，操作更方便一些。
 
 
+# C# Code
+
+```c#
+ /// <summary>  
+/// 上传文件  
+/// </summary>  
+/// <param name="fileinfo">需要上传的文件</param>  
+/// <param name="targetDir">目标路径</param>  
+/// <returns></returns>  
+public Boolean UploadFile(System.IO.FileInfo fileInfo, string targetDir)
+{
+    string hostname = ftpURI;
+    string username = ftpUserID; 
+    string password = ftpPassword;
+
+    FtpCheckDirectoryExist(targetDir);
+    string strExtension = System.IO.Path.GetExtension(fileInfo.FullName);
+    string strFileName = "";
+
+    strFileName = fileInfo.Name;    //获取文件的文件名  
+    string URI = hostname + targetDir + "/" + strFileName;
+
+    //获取ftp对象  
+    System.Net.FtpWebRequest ftp = GetRequest(URI, username, password);
+
+    //设置ftp方法为上传  
+    ftp.Method = System.Net.WebRequestMethods.Ftp.UploadFile;
+
+    //制定文件传输的数据类型  
+    ftp.UseBinary = true;
+    ftp.UsePassive = true;
+
+
+    //文件大小  
+    ftp.ContentLength = fileInfo.Length;
+    //缓冲大小设置为2kb  
+    const int BufferSize = 2048;
+
+    byte[] content = new byte[BufferSize - 1 + 1];
+    int dataRead;
+
+    //打开一个文件流（System.IO.FileStream)去读上传的文件  
+    using (System.IO.FileStream fs = fileInfo.OpenRead())
+    {
+        try
+        {
+            //把上传的文件写入流  
+            using (System.IO.Stream rs = ftp.GetRequestStream())
+            {
+                do
+                {
+                    //每次读文件流的2KB  
+                    dataRead = fs.Read(content, 0, BufferSize);
+                    rs.Write(content, 0, dataRead);
+                } while (!(dataRead < BufferSize));
+                rs.Close();
+                return true;
+            }
+        }
+        catch (Exception ex)
+        {
+            ftp = null;
+            ftp = GetRequest(URI, username, password);
+            ftp.Method = System.Net.WebRequestMethods.Ftp.DeleteFile;//删除  
+            ftp.GetResponse();
+
+            string msg = string.Format("UploadFile meet ex:{0} for upload {1} into {2}", ex, fileInfo.FullName, targetDir);
+            LogService.LogError(msg);
+
+            return false;
+        }
+        finally
+        {
+            fs.Close();
+        }
+    }
+}
+
+
+//判断文件的目录是否存,不存则创建  
+/// <summary>
+/// 判断文件夹是否存在
+/// </summary>
+/// <param name="targetDir"></param>
+private void FtpCheckDirectoryExist(string targetDir)
+{
+    string[] dirs = targetDir.Split('/');
+    string curDir = ""; //host name 包含最后的分隔符/；所以从cur 开始即可
+    for (int i = 0; i < dirs.Length; i++)
+    {
+        string dir = dirs[i];
+        //如果是以/开始的路径,第一个为空    
+        if (dir != null && dir.Length > 0)
+        {
+            try
+            {
+                curDir += dir + "/";
+                string ftpDirFullPath = ftpURI+curDir;
+                FtpMakeDir(ftpDirFullPath);
+            }
+            catch (Exception ex)
+            {
+                LogService.LogError(String.Format("FtpMakeDir error:{0}", ex));
+            }
+        }
+    }
+}
+
+/// <summary>
+/// 创建文件夹
+/// </summary>
+/// <param name="ftpDirFullPath">ftp 上对应文件夹的全路径</param>
+/// <returns></returns>
+private Boolean FtpMakeDir(string ftpDirFullPath)
+{
+    //获取ftp对象  
+    System.Net.FtpWebRequest req = GetRequest(ftpDirFullPath, ftpUserID, ftpPassword);
+
+    req.Method = WebRequestMethods.Ftp.MakeDirectory;
+    try
+    {
+        FtpWebResponse response = (FtpWebResponse)req.GetResponse();
+        response.Close();
+    }
+    catch (Exception)
+    {
+        req.Abort();
+        return false;
+    }
+    req.Abort();
+    return true;
+}  
+
+
+/// <summary>  
+/// 得到ftp对象  
+/// </summary>  
+/// <param name="URI">ftp地址</param>  
+/// <param name="username">ftp用户名</param>  
+/// <param name="password">ftp密码</param>  
+/// <returns>返回ftp对象</returns>  
+private System.Net.FtpWebRequest GetRequest(string URI, string username, string password)
+{
+    //根据服务器信息FtpWebRequest创建类的对象  
+    FtpWebRequest result = (FtpWebRequest)FtpWebRequest.Create(URI);
+    //提供身份验证信息  
+    result.Credentials = new System.Net.NetworkCredential(username, password);
+    //result.Credentials = new System.Net.NetworkCredential();  
+    //设置请求完成之后是否保持到FTP服务器的控制连接，默认值为true  
+    result.KeepAlive = false;
+    return result;
+}  
+```
+
 * any list
 {:toc}
