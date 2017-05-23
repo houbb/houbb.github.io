@@ -119,4 +119,142 @@ private static void RunCmd(string cmd, out string output)
 
 后面会有拓展内容，如：想在程序中拿到执行的结果，或者是想传入参数等应该如何处理。
 
-TBC。。。
+
+# Bat 阻塞问题
+
+这个问题很奇怪。执行 bat 时会导致线程进入假死状态。
+
+具体原因如下：[C#使用Process调用批处理阻塞问题](http://www.cnblogs.com/lowcoders-Blog/archive/2016/05/30/5541516.html)
+
+
+解决方案：
+
+一、[讨论贴](http://bbs.csdn.net/topics/380135166)
+
+二、[C# Process运行cmd命令的异步回显](http://blog.csdn.net/cuoban/article/details/50739020)
+
+
+## 情景复现
+
+一、执行 cmd 如下。
+
+```c#
+public void ExecuteHelpCmd(string command="help")
+{
+    Process p = new Process();
+    p.StartInfo.FileName = "cmd.exe";
+    p.StartInfo.UseShellExecute = false;
+    p.StartInfo.CreateNoWindow = true;
+
+    p.StartInfo.RedirectStandardInput = true;
+    p.StartInfo.RedirectStandardOutput = true;
+    
+    p.Start();
+    p.StandardInput.WriteLine(command);
+    p.StandardInput.WriteLine("exit");
+
+    p.WaitForExit();
+    
+    FileUtil.WriteLine(p.StandardOutput.ReadToEnd());
+    
+    p.Close();
+}
+```
+
+其中 FileUtil 内容如下，只是简单的文件输出：
+
+```c#
+public class FileUtil
+{
+    /// <summary>
+    /// 将文件内容写死到固定的文件中。
+    /// </summary>
+    /// <param name="content"></param>
+    public static void WriteLine(string content)
+    {
+       string currentDate = DateTime.Now.ToString("yyyyMMddHHmmss"); 
+       string path = @"E:\1.txt";
+       File.AppendAllText(path, currentDate + content);
+    }
+}
+```
+
+调用此方法，程序会卡死。
+
+<label class="label label-info">解决方案</label>
+
+
+一、简单粗暴
+
+```c#
+p.WaitForExit();
+```
+
+这段代码修改为 
+
+```c#
+p.WaitForExit(5000);
+```
+
+其中等待时间单位为毫秒，到时间后会自动kill进程。(这个会不会影响比较长时间的执行，未验证。)
+
+
+二、异步回显(个人推荐)
+
+
+```c#
+public void ExecuteHelpCmd(string command="help")
+{
+    Process p = new Process();
+    p.StartInfo.FileName = "cmd.exe";
+    p.StartInfo.UseShellExecute = false;
+    p.StartInfo.CreateNoWindow = true;
+
+    p.StartInfo.RedirectStandardInput = true;  // 重定向输入
+    p.StartInfo.RedirectStandardOutput = true; // 重定向标准输出
+    p.StartInfo.RedirectStandardError = true;  // 重定向错误输出 
+
+    p.OutputDataReceived += new DataReceivedEventHandler(CmdOutputDataReceived);
+    p.ErrorDataReceived += new DataReceivedEventHandler(CmdErrorDataReceived);  
+
+    p.Start();
+    p.BeginOutputReadLine();
+    p.BeginErrorReadLine();  
+
+    p.StandardInput.WriteLine(command);
+    p.StandardInput.WriteLine("exit");
+    p.Close();
+}
+
+/// <summary>
+/// 输出回显
+/// </summary>
+/// <param name="sendingProcess"></param>
+/// <param name="outLine"></param>
+private void CmdOutputDataReceived(object sendingProcess,
+    DataReceivedEventArgs outLine)
+{
+    // Collect the sort command output.
+    if (!String.IsNullOrEmpty(outLine.Data))
+    {
+        //output 
+        FileUtil.WriteLine(outLine.Data);
+    }
+}
+
+/// <summary>
+/// 错误回显
+/// </summary>
+/// <param name="sendingProcess"></param>
+/// <param name="outLine"></param>
+private void CmdErrorDataReceived(object sendingProcess,
+    DataReceivedEventArgs outLine)
+{
+    // Collect the sort command output.
+    if (!String.IsNullOrEmpty(outLine.Data))
+    {
+        //output 
+        FileUtil.WriteLine(outLine.Data);
+    }
+}
+```
