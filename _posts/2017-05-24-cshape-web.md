@@ -12,6 +12,10 @@ published: true
 [Autofac](https://autofac.org/) is an addictive Inversion of Control container for .NET Core, ASP.NET Core, .NET 4.5.1+, Universal Windows apps, and more.
 
 
+# 如何最快更新DLL
+
+对 WEB 项目发布。在发布目标文件夹中，bin 文件夹中，根据时间排序。可以看到最近更新的DLL。直接替换掉就行。
+
 # 疑难杂症
 
 
