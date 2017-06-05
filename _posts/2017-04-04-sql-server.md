@@ -128,10 +128,19 @@ truncate table ${tableName}
 
 > [无法在只读列XXX中插入数据](http://www.mzwu.com/article.asp?id=3619)
 
+- 导入的时候指定查询条件
+
+> [提供源查询（SQL Server 导入和导出向导）](https://msdn.microsoft.com/zh-cn/library/ms189024(v=sql.130))
+
+1. 不支持多条语句同时执行。
+
+2. 执行的时候不需要带数据库的名称。
+
 
 ## 表之间的复制
 
 > [sql server单表导入、导出](http://zhanjianhua.iteye.com/blog/1011131)
+
 
 - 跨数据的更新
 
