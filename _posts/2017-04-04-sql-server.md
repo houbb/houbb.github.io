@@ -58,6 +58,36 @@ truncate table ${tableName}
 7. Create_date / Modify_date ：创建日期 / 修改日期
 8. is_ms_shipped：是否为 内部 SQL Server 组建所创建的对象，常用来判断 是否是 系统内置或用户自定义 的对象
 
+## 脏读
+
+> [SQL Server with(nolock)详解](http://www.cnblogs.com/running-mydream/p/4059286.html)
+
+> [SQL Server中的事务与锁](http://www.cnblogs.com/knowledgesea/p/3714417.html)
+
+开启读取死锁演示：
+
+1. 窗口一
+
+```sql
+BEGIN TRANSACTION
+SELECT top 10 * from table with(xlock); 
+```
+
+2. 窗口二
+
+```sql
+ SELECT top 10 * from table
+```
+
+此时因为上一个查询拥有锁，且事务没有提交。这里就会一直卡住。无法查询到结果。[sqlserver withlock的使用](http://www.cnblogs.com/jskingli/archive/2008/07/23/1249340.html)
+
+解决方式:
+
+```sql
+ SELECT top 10 * from table with(nolock)
+```
+
+
 # 数据库的复制
 
 > [SQLServer：怎么复制一个已有的数据库成为另一个不同名字的数据库？](https://zhidao.baidu.com/question/71923759.html)
