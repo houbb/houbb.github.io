@@ -255,7 +255,17 @@ WHERE a.id = b.id;
 直接 【安全性】=》【架构】=》右键【新建架构】=》输入对应架构名称。所有者为dbo即可。
 
 
+# Xml 
 
+> [SQLServer 读取XML类型的节点数据](http://blog.csdn.net/kk185800961/article/details/42277035)
+
+
+```sql
+SELECT * FROM table_name
+where MsgBody.exist('/Task/Parameters/key[@value="file_name"]')=1
+```
+
+xPath 语法。
 
 * any list
 {:toc}
