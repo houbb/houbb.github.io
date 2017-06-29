@@ -74,8 +74,11 @@ button.addActionListener(new ActionListener() {
 
 - 无法对控制流进行抽象
 
-## 函数式接口
 
+
+
+* any list
+{:toc}
 
 
 
