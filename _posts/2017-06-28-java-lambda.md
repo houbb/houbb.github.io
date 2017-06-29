@@ -24,19 +24,11 @@ Anonymous functions are ubiquitous in functional programming languages and other
 where they fulfill the same role for the function type as literals do for other data types.
 
 
-> 参考内容
+<label class="label success">引用</label>
 
 [Lambda Expressions](http://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html)
 
 [深入理解Java 8 Lambda](http://zh.lucida.me/blog/java-8-lambdas-insideout-language-features/)
-
-[Brian Goetz](http://www.oracle.com/us/technologies/java/briangoetzchief-188795.html) 关于 lambda 的文章:
-
-- [lambda-state](http://cr.openjdk.java.net/~briangoetz/lambda/lambda-state-final.html)
-
-- [State of the Lambda: Libraries Edition](http://cr.openjdk.java.net/~briangoetz/lambda/lambda-libraries-final.html)
-
-- [Translation of Lambda Expressions](http://cr.openjdk.java.net/~briangoetz/lambda/lambda-translation.html)
 
 
 二、基础需求
