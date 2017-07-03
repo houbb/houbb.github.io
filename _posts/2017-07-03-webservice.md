@@ -1,0 +1,213 @@
+---
+layout: post
+title:  WebService
+date:  2017-7-3 18:13:57 +0800
+categories: [HTTP]
+tags: [web service]
+published: true
+---
+
+# Web Service
+
+一、是什么？
+
+[Web Services](http://www.w3school.com.cn/webservices/index.asp)是由企业发布的完成其特定商务需求的在线应用服务,其他公司或应用软件能够通过Internet来访问并使用这项在线服务。
+用简单点的话说，就是系统对外的接口。
+
+- Web Services 是应用程序组件
+
+- Web Services 使用开放协议进行通信
+
+- Web Services 是独立的（self-contained）并可自我描述
+
+- Web Services 可通过使用UDDI来发现
+
+- Web Services 可被其他应用程序使用
+
+- XML 是 Web Services 的基础
+
+二、 如何工作？
+
+基础的 Web Services 平台是 XML + HTTP。
+
+HTTP 协议是最常用的因特网协议。
+
+XML 提供了一种可用于不同的平台和编程语言之间的语言。
+
+Web services 平台的元素：
+
+- [SOAP](http://www.w3school.com.cn/soap/index.asp) (简易对象访问协议)
+
+- UDDI (通用描述、发现及整合)
+
+- [WSDL](http://www.runoob.com/wsdl/wsdl-tutorial.html) (Web services 描述语言)
+
+
+> [系列教程](http://blog.csdn.net/csh624366188/article/details/8221430)
+
+# Hello world
+
+[简单实例](http://blog.csdn.net/hanxuemin12345/article/details/40163757)
+
+
+本例子语言为 java，依赖于JDK1.6及以上。(本机为1.8)
+
+
+一、创建服务类
+
+- HelloWorldService.java
+
+```java
+import javax.jws.WebMethod;
+import javax.jws.WebService;
+import javax.xml.ws.Endpoint;
+
+/**
+ * Created by bbhou on 2017/7/3.
+ * @since 1.6
+ */
+@WebService
+public class HelloWorldService {
+
+    public String helloWorld(String name) {
+        return "hello" + name;
+    }
+
+    /**
+     * 此方法不会被发布
+     * @param name
+     * @return
+     */
+    @WebMethod(exclude = true)
+    public String helloWorldTwo(String name) {
+        return "hello" + name;
+    }
+
+    public static void main(String[] args) {
+        System.out.println("WebService Start...");
+        Endpoint.publish("http://127.0.0.1:12345/helloworld", new HelloWorldService());
+    }
+
+}
+```
+
+启动本服务，当命令行打印出`WebService Start...` 之后，在浏览器中输入：
+
+```
+http://127.0.0.1:12345/helloworld?wsdl
+```
+
+你可以看到网页内容如下：
+
+```xml
+<definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://core.webservice.ryo.com/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://core.webservice.ryo.com/" name="HelloWorldServiceService">
+<types>
+<xsd:schema>
+<xsd:import namespace="http://core.webservice.ryo.com/" schemaLocation="http://127.0.0.1:12345/helloworld?xsd=1"/>
+</xsd:schema>
+</types>
+<message name="helloWorld">
+<part name="parameters" element="tns:helloWorld"/>
+</message>
+<message name="helloWorldResponse">
+<part name="parameters" element="tns:helloWorldResponse"/>
+</message>
+<portType name="HelloWorldService">
+<operation name="helloWorld">
+<input wsam:Action="http://core.webservice.ryo.com/HelloWorldService/helloWorldRequest" message="tns:helloWorld"/>
+<output wsam:Action="http://core.webservice.ryo.com/HelloWorldService/helloWorldResponse" message="tns:helloWorldResponse"/>
+</operation>
+</portType>
+<binding name="HelloWorldServicePortBinding" type="tns:HelloWorldService">
+<soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+<operation name="helloWorld">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+</binding>
+<service name="HelloWorldServiceService">
+<port name="HelloWorldServicePort" binding="tns:HelloWorldServicePortBinding">
+<soap:address location="http://127.0.0.1:12346/helloworld"/>
+</port>
+</service>
+</definitions>
+```
+
+二、服务的发布
+
+wsimport 是 JDK 自带的，可以根据 WSDL 文档生成客户端调用代码的工具。
+
+`wsimport.exe` 命令参数：
+
+```
+-d: 生成class文件。默认参数。
+-s：生成Java文件
+-p：自定义包结构
+```
+
+在文件夹 `/Users/houbinbin/IT/fork/webService/temp` 中执行以下命令：
+
+```
+wsimport -s . -p com.ryo.webservice.core http://127.0.0.1:12346/helloworld?wsdl
+```
+
+则在文件夹 `/Users/houbinbin/IT/fork/webService/temp/com/ryo/webservice/core` 下可见如下文件：
+
+```
+houbinbindeMacBook-Pro:core houbinbin$ ls
+HelloWorld.class                HelloWorldResponse.class        HelloWorldService.class         HelloWorldServiceService.class  ObjectFactory.class             package-info.class
+HelloWorld.java                 HelloWorldResponse.java         HelloWorldService.java          HelloWorldServiceService.java   ObjectFactory.java              package-info.java
+```
+
+三、客户端调用
+
+
+新建项目 `webservice-client`, 将上述java文件复制到源文件目录下。
+
+创建客户端类：
+
+- WebServiceClient.java
+
+```java
+public class WebServiceClient {
+
+    public static void main(String[] args) {
+        HelloWorldServiceService helloWorldServiceService = new HelloWorldServiceService();
+        HelloWorldService helloWorldService = helloWorldServiceService.getHelloWorldServicePort();
+        String result = helloWorldService.helloWorld("ryo");
+        System.out.println(result);
+    }
+
+}
+```
+
+运行内容如下：
+
+```
+helloryo
+```
+
+文件目结构如下：
+
+```
+houbinbindeMacBook-Pro:client houbinbin$ ls
+HelloWorld.java                 HelloWorldService.java          ObjectFactory.java              package-info.java
+HelloWorldResponse.java         HelloWorldServiceService.java   WebServiceClient.java
+```
+
+* any list
+{:toc}
+
+
+
+ 
+ 
+
+
+
+
