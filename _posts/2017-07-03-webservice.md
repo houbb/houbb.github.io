@@ -200,6 +200,18 @@ HelloWorld.java                 HelloWorldService.java          ObjectFactory.ja
 HelloWorldResponse.java         HelloWorldServiceService.java   WebServiceClient.java
 ```
 
+# 如何发布到服务器
+
+有2个办法，
+
+一是：在本机上通过myeclipse自带的直接deploy，然后到tomcat安装目录下把编译后的项目文件夹拷到服务器上的tomcat webApps。再启动tomcat
+
+二是：打包部署，myeclipse中右击项目，有个导出功能，选择war包。先把服务器上的tomcat停止，然后把前面导出的war包拷到服务器上tomcat webApps目录下，启动tomcat服务，就会自动部署了。
+
+
+其实第二个方法打包部署昨天就试过了不行，估计是那时tomcat没停止再启动吧。 至于拷整个目录，我之前也都是拷错了，一直拷编译前的webroot目录， 所以有很多问题。
+
+
 * any list
 {:toc}
 
