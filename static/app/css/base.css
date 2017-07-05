@@ -176,3 +176,10 @@ svg:not(:root) {
 .site-footer {
     margin-top: 25px;
 }
+
+
+#travel-chinese-map {
+    width: 100%;
+    height: 600px;
+    background-color: #eeeeee;
+}

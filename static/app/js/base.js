@@ -14,9 +14,46 @@ $(document).ready(function () {
 
     Base.semanticCheckBox();
     Base.initDataTables();
+
+    Base.initTravelMap();
 });
 var Base = new Base();
 function Base() {
+
+    /**
+     * 初始化旅游地图
+     */
+    this.initTravelMap = function () {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('travel-chinese-map'));
+
+        option = {
+            tooltip : {
+                trigger: 'item',
+                formatter: '{b}'
+            },
+            series : [
+                {
+                    name: '中国',
+                    type: 'map',
+                    mapType: 'china',
+                    selectedMode : 'multiple',
+                    itemStyle:{
+                        normal:{label:{show:true}},
+                        emphasis:{label:{show:true}}
+                    },
+                    data:[
+                        {name:'上海',selected:true},
+                        {name:'江苏',selected:true},
+                        {name:'江西',selected:true},
+                        {name:'安徽',selected:true}
+                    ]
+                }
+            ]
+        };
+        myChart.setOption(option);
+
+    };
 
     /**
      * 初始化数据表格
