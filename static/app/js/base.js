@@ -25,6 +25,7 @@ function Base() {
      */
     this.initTravelMap = function () {
         // 基于准备好的dom，初始化echarts实例
+        //todo: 回去将这个修改为 jquery 方式
         var myChart = echarts.init(document.getElementById('travel-chinese-map'));
 
         option = {
