@@ -212,6 +212,39 @@ HelloWorldResponse.java         HelloWorldServiceService.java   WebServiceClient
 其实第二个方法打包部署昨天就试过了不行，估计是那时tomcat没停止再启动吧。 至于拷整个目录，我之前也都是拷错了，一直拷编译前的webroot目录， 所以有很多问题。
 
 
+
+# Idea 创建 webService
+
+> [利用IDEA创建Web Service服务端和客户端](http://blog.csdn.net/qq_35489188/article/details/52997014)
+
+一、服务端的创建
+
+此处省略不讲。
+
+二、客户端创建
+
+1、File => New => Project
+
+![new web service]({{ site.url }}/static/app/img/webservice/2017-07-07-webservice-client.png)
+
+输入对应的项目名称，完成即可。
+
+会自动下载需要的jar包等文件。
+
+2、Generator code
+
+项目右键=》webService=》Generate java Code From Wsdl。
+ 
+保证引入的 web service 可访问， 直接在 **Web service wsdl url** 输入对应的 wsdl 全路径。
+
+如：
+
+```
+http://localhost:12345/hell?wsdl
+```
+
+可以勾选 **Generate TestCase**, 会生成对应的测试代码。需要引入 junit 的代码。
+
 * any list
 {:toc}
 
