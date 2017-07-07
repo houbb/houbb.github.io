@@ -25,34 +25,36 @@ function Base() {
      */
     this.initTravelMap = function () {
         // 基于准备好的dom，初始化echarts实例
-        //todo: 回去将这个修改为 jquery 方式
-        var myChart = echarts.init(document.getElementById('travel-chinese-map'));
+        var dom = document.getElementById('travel-chinese-map');
+        if(!!dom) {
+            var myChart = echarts.init(dom);
 
-        option = {
-            tooltip : {
-                trigger: 'item',
-                formatter: '{b}'
-            },
-            series : [
-                {
-                    name: '中国',
-                    type: 'map',
-                    mapType: 'china',
-                    selectedMode : 'multiple',
-                    itemStyle:{
-                        normal:{label:{show:true}},
-                        emphasis:{label:{show:true}}
-                    },
-                    data:[
-                        {name:'上海',selected:true},
-                        {name:'江苏',selected:true},
-                        {name:'江西',selected:true},
-                        {name:'安徽',selected:true}
-                    ]
-                }
-            ]
-        };
-        myChart.setOption(option);
+            option = {
+                tooltip : {
+                    trigger: 'item',
+                    formatter: '{b}'
+                },
+                series : [
+                    {
+                        name: '中国',
+                        type: 'map',
+                        mapType: 'china',
+                        selectedMode : 'multiple',
+                        itemStyle:{
+                            normal:{label:{show:true}},
+                            emphasis:{label:{show:true}}
+                        },
+                        data:[
+                            {name:'上海',selected:true},
+                            {name:'江苏',selected:true},
+                            {name:'江西',selected:true},
+                            {name:'安徽',selected:true}
+                        ]
+                    }
+                ]
+            };
+            myChart.setOption(option);
+        }
 
     };
 
