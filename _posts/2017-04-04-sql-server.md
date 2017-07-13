@@ -87,6 +87,35 @@ SELECT top 10 * from table with(xlock);
  SELECT top 10 * from table with(nolock)
 ```
 
+## 查询结果当做表继续查询
+
+- 表和数据
+
+| traceId | count | name |
+|:---|:---|:----|
+| 001	| 1	| one |       
+| 001	| 2	| two |      
+| 002	| 2	| three |     
+| 002	| 1	| four |
+
+查询需求：
+
+1. 将相同 traceId 下，最大 count 的数据查询出来。预期结果:
+
+```
+001 2 two
+002 2 three
+```
+
+- 查询实现
+
+```sql
+select a.* from [test].[dbo].[temp] a, 
+( SELECT [traceId], max([count]) AS [count] FROM [test].[dbo].[temp] GROUP BY (traceId) ) b
+where a.traceId = b.traceId 
+and a.[count] = b.[count];
+```
+
 
 # 数据库的复制
 
