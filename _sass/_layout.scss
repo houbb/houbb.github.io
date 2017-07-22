@@ -339,6 +339,10 @@ ul#markdown-toc {
 }
 ul#markdown-toc ul{
     list-style: none !important;
+    display: none;
+}
+ul#markdown-toc ul.active{
+    display: inline-block;
 }
 
 //此处a不要使用 >a 因为存在嵌套

@@ -110,7 +110,17 @@ function Base() {
         header.on('scrollSpy:enter', function() {
             $("#markdown-toc a").removeClass("active");
             var id = $(this).attr("id");
-            $("#markdown-toc a[href='#"+id+"']").addClass("active");
+            var activeToc = $("#markdown-toc a[href='#"+id+"']");
+            activeToc.addClass("active");
+
+            var activeTocParent = activeToc.parent("li").parent("ul");
+            if(!activeTocParent.attr("id")) {
+                $("ul#markdown-toc ul").removeClass("active");
+
+                activeTocParent.addClass("active");
+            } else {
+                $("ul#markdown-toc ul").removeClass("active");
+            }
 
             //滚动到页面的最上方 或者是存在其他没有ID的header信息
             //1.由此可见对于HEADER的定义应该更加具有区分性。
@@ -225,10 +235,10 @@ function Base() {
 
         //开始隐藏文章导航
         var icon = $("#markdown-toc .fa");
-        if (icon.hasClass(CLASS.left)) {
-            toc.children("li").hide();
-            icon.removeClass(CLASS.left).addClass(CLASS.right)
-        }
+        // if (icon.hasClass(CLASS.left)) {
+        //     toc.children("li").hide();
+        //     icon.removeClass(CLASS.left).addClass(CLASS.right)
+        // }
 
         //文章导航点击事件
         icon.on("click", function () {
