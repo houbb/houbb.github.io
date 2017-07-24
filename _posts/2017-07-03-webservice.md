@@ -245,6 +245,50 @@ http://localhost:12345/hell?wsdl
 
 可以勾选 **Generate TestCase**, 会生成对应的测试代码。需要引入 junit 的代码。
 
+
+<label class="label label-warning">Attention</label>
+
+1、不可在同一个地址上发布不同的服务。
+
+比如这样：
+
+```java
+public static void main(String[] args) {
+    Endpoint.publish("http://127.0.0.1:12345/helloworld", new HelloWorldService());
+    Endpoint.publish("http://127.0.0.1:12345/helloworld", new MyDogService());
+}
+```
+
+(我就进行了这样的测试)
+
+否则迎接你的将是：
+
+```
+Exception in thread "main" com.sun.xml.internal.ws.server.ServerRtException: 服务器运行时错误: java.net.BindException: Address already in use: bind
+	at com.sun.xml.internal.ws.transport.http.server.ServerMgr.createContext(ServerMgr.java:117)
+	at com.sun.xml.internal.ws.transport.http.server.HttpEndpoint.publish(HttpEndpoint.java:64)
+	at com.sun.xml.internal.ws.transport.http.server.EndpointImpl.publish(EndpointImpl.java:232)
+	at com.sun.xml.internal.ws.spi.ProviderImpl.createAndPublishEndpoint(ProviderImpl.java:126)
+	at javax.xml.ws.Endpoint.publish(Endpoint.java:240)
+	at com.ryo.webservice.core.HelloWorldService.main(HelloWorldService.java:29)
+Caused by: java.net.BindException: Address already in use: bind
+	at sun.nio.ch.Net.bind0(Native Method)
+	at sun.nio.ch.Net.bind(Net.java:433)
+	at sun.nio.ch.Net.bind(Net.java:425)
+	at sun.nio.ch.ServerSocketChannelImpl.bind(ServerSocketChannelImpl.java:223)
+	at sun.nio.ch.ServerSocketAdaptor.bind(ServerSocketAdaptor.java:74)
+	at sun.net.httpserver.ServerImpl.<init>(ServerImpl.java:100)
+	at sun.net.httpserver.HttpServerImpl.<init>(HttpServerImpl.java:50)
+	at sun.net.httpserver.DefaultHttpServerProvider.createHttpServer(DefaultHttpServerProvider.java:35)
+	at com.sun.net.httpserver.HttpServer.create(HttpServer.java:130)
+	at com.sun.xml.internal.ws.transport.http.server.ServerMgr.createContext(ServerMgr.java:86)
+	... 5 more
+```
+
+2、如果是异构系统。(比如java X C#)，建议所有的字段全部使用 `String` 类型。
+
+否则SOAP在被不同的系统解析之后，字段类型方面会出现问题。
+
 * any list
 {:toc}
 

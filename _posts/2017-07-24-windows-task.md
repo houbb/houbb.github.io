@@ -76,7 +76,7 @@ pause
 
 也可以直接双击对应的任务，编辑对应的【触发器】=>【编辑】。
 
-![windows-task]({{ site.url }}/static/ap/img/windows/2017-07-24-windows-task.png)
+![windows-task]({{ site.url }}/static/app/img/windows/2017-07-24-windows-task.png)
 
 ## 移除任务
 
