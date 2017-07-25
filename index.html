@@ -11,26 +11,53 @@ description: "笔尖世界 梦里浮生"
 
 </style>
 
-<div class="home col-xs-12" >
+<div class="home col-xs-12">
 
-  <ul class="post-list col-xs-12">
-    {% for post in paginator.posts %}
-      <li>
-          <a class="index-post-title post-link my-a cursor" href="{{ post.url | prepend: site.baseurl }}" >{{ post.title }}</a>
+    <ul class="post-list col-xs-12">
 
-          <div class="post-content-preview text-muted">
-              {{ post.content | strip_html | truncate:200 }}
-          </div>
+        {% for post in paginator.posts %}
+        {% if post.stick == true %}
+        <li>
+            <a class="index-post-title post-link my-a cursor" href="{{ post.url | prepend: site.baseurl }}">{{
+                post.title }}</a>
 
-          <span class="post-item-time f12">
+            <div class="post-content-preview text-muted">
+                {{ post.content | strip_html | truncate:200 }}
+            </div>
+
+            <span class="post-item-time f12">
+                {{ post.date | date: "%Y-%m-%d %H:%M:%S" }}  |
+                  <a class="my-a" href="/categories/#{{ post.categories }}">{{ post.categories }}</a>  |
+                <i class="fa fa-fw fa-bookmark" title="stick"></i>
+              </span>
+        </li>
+        <!--<div class="my-hr"></div>-->
+        {% endif %}
+
+        {% endfor %}
+
+
+        {% for post in paginator.posts %}
+        {% if post.stick != true %}
+        <li>
+            <a class="index-post-title post-link my-a cursor" href="{{ post.url | prepend: site.baseurl }}">{{
+                post.title }}</a>
+
+            <div class="post-content-preview text-muted">
+                {{ post.content | strip_html | truncate:200 }}
+            </div>
+
+            <span class="post-item-time f12">
             {{ post.date | date: "%Y-%m-%d %H:%M:%S" }}  |
               <a class="my-a" href="/categories/#{{ post.categories }}">{{ post.categories }}</a>
           </span>
-      </li>
-      <div class="my-hr"></div>
-    {% endfor %}
+        </li>
+        {% endif %}
 
-    {% include paginator-limit.html %}
-  </ul>
+        <div class="my-hr"></div>
+        {% endfor %}
+
+        {% include paginator-limit.html %}
+    </ul>
 
 </div>
