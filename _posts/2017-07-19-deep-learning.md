@@ -52,7 +52,7 @@ Udacity->Good Fellow:
 > [deeplearningbook](https://github.com/exacity/deeplearningbook-chinese)
 
 
-# Books
+# Tips
 
 > [深度学习入门必看的书和论文？有哪些必备的技能需学习？](https://www.zhihu.com/question/31785984)
 
