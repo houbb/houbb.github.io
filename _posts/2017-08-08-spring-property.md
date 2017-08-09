@@ -223,15 +223,13 @@ public class UserTest {
 one
 ```
 
+> 参考文档
+
 [Spring在代码中获取properties文件属性](http://www.cnblogs.com/Jason-Xiang/p/6396235.html)
 
 [Spring获取properties文件中的属性](http://blog.csdn.net/wlfighter/article/details/52563605)
 
-[ Spring中属性文件properties的读取与使用](http://blog.csdn.net/bnna8356586/article/details/51406459)
+[Spring中属性文件properties的读取与使用](http://blog.csdn.net/bnna8356586/article/details/51406459)
 
 [五种方式让你在java中读取properties文件内容不再是难题](http://www.cnblogs.com/hafiz/p/5876243.html)
 
-
-
-* any list
-{:toc}
