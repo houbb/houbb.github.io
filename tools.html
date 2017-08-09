@@ -1,0 +1,56 @@
+---
+title: Tools
+layout: default
+header-img: "static/app/res/img/tags-bg.jpg"
+permalink: /tools/
+---
+
+<style>
+	.main-content-container {
+		min-height: 650px;
+	}
+	.svg-tool {
+		width: 250px;
+		height: 220px;
+	}
+
+	.svg-tool-rect {
+		width: 252px;
+		height: 222px;
+	}
+
+	.svg-tool:hover {
+		box-shadow: 3px 7px 7px #555555;
+	}
+</style>
+
+<!-- Page Header -->
+<header class="intro-header" style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<div class="site-heading" id="tag-heading">
+					<h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
+					<span class="subheading">{{ page.description }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<!-- Main Content -->
+<div class="main-content-container container">
+
+	<svg xmlns="http://www.w3.org/2000/svg" class="svg-tool">
+		<g>
+			<title>Img2Txt</title>
+			<rect fill="#000000" class="svg-tool-rect" x="-1" y="-1"></rect>
+			<text stroke="#000" transform="matrix(2.5411643768422993,0,0,3.2477922888113424,-262.4420065818572,-273.6580269569419) "
+				  xml:space="preserve" text-anchor="start"
+				  font-family="Lato,'Helvetica Neue',Arial,Helvetica,sans-serif"
+				  font-size="24" id="svg_2" y="120.05741" x="106.40613" stroke-opacity="null" stroke-width="0" fill="#fcfcfc">Img2Txt</text>
+		</g>
+	</svg>
+
+</div>
+

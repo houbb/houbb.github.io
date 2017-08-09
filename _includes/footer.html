@@ -1,19 +1,8 @@
 <footer class="site-footer">
 
-
-
   <a id="scroll-top" class="text-center" href="#" onfocus="this.blur();">
       <i class="fa fa-fw fa-angle-double-up"></i>
   </a>
-
-
-  <!--百度分享-->
-  <!--<div class="container footer-row text-center">-->
-        <!--<span class="text-muted">{{ site.description }}</span>-->
-
-    <!--<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"2","bdPos":"right","bdTop":"160.5"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>-->
-
-  <!--</div>-->
 
   <!--站内搜索相关 START-->
   <div class="cb-search-tool" style="position: fixed; top: 0px ; bottom: 0px; left: 0px; right:  0px;
@@ -75,10 +64,9 @@
 
 
   <!--站内搜索相关-->
-  <link rel="stylesheet" href="{{ "/search/css/cb-search.css" | prepend: site.baseurl }}">
-  <script src="{{ "/search/js/bootstrap3-typeahead.min.js" | prepend: site.baseurl }}"></script>
-  <script src="{{ "/search/js/cb-search.js" | prepend: site.baseurl }}"></script>
-
+  <link rel="stylesheet" href="{{ site.url }}/search/css/cb-search.css">
+  <script src="{{ site.url }}/search/js/bootstrap3-typeahead.min.js"></script>
+  <script src="{{ site.url }}/search/js/cb-search.js"></script>
 
 
   <!-- TODO: only load in tag.html -->
