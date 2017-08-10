@@ -35,35 +35,11 @@ layout: default
 
 <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
 
-  <!--<header class="post-header">-->
-    <!--<h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>-->
-    <!--<div>-->
-      <!--<i class="fa fa-fw fa-paint-brush"></i>-->
-      <!--<a class="my-a" id="article-author" href="{{ site.url }}/about/">{{ page.author }}</a>-->
-
-      <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
-      <!--<a class="my-a" href="/tags/"><i class="fa fa-fw fa-tags"></i></a>-->
-      <!--{% for tag in page.tags %}-->
-        <!--{{ tag }}-->
-      <!--{% endfor %}-->
-      <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
-      <!--<a class="my-a" href="/categories/"><i class="fa fa-fw fa-folder"></i></a>-->
-      <!--{% for category in page.categories %}-->
-        <!--{{ category }}-->
-      <!--{% endfor %}-->
-      <!--&nbsp;&nbsp;&nbsp;&nbsp;-->
-      <!--<i class="fa fa-fw fa-clock-o fa-spin" ></i> <span id="article-time">{{ page.date | date: "%Y-%m-%d" }}</span>-->
-    <!--</div>-->
-
-  <!--</header>-->
-
-
-
   <div class="container" style="overflow-y:hidden;">
     <div class="row">
       <div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1 post-container">
 
-        <div class="post-content" itemprop="articleBody">
+        <div class="post-content" itemprop="articleBody" style="min-height: 420px;">
           {{ content }}
         </div>
 

@@ -2,8 +2,8 @@
 layout: post
 title: SonarQube
 date:  2016-10-14 10:15:54 +0800
-categories: [Code Review]
-tags: [sonarQube]
+categories: [CI]
+tags: [sonarQube, ci]
 published: true
 ---
 

@@ -1,0 +1,21 @@
+# Wercker Configuration
+# continuous delivery platform that helps software developers
+# build and deploy their applications and microservices
+
+box: ruby
+build:
+  steps:
+
+    # Install dependencies
+    - bundle-install
+
+    # Execute jeykyll doctor command to validate the
+    # site against a list of known issues.
+    - script:
+        name: jekyll doctor
+        code: bundle exec jekyll doctor
+
+    - script:
+           name: jekyll build
+           code: bundle exec jekyll build --trace --destination "$WERCKER_OUTPUT_DIR"
+
