@@ -4,7 +4,7 @@ title:  Spring Property
 date:  2017-8-8 13:54:50 +0800
 categories: [Spring]
 tags: [property, spring]
-published: true
+published: false
 ---
 
 
@@ -139,11 +139,9 @@ public class UserTest {
 运行测试案例，报错如下：
 
 ```
-...
 Caused by: org.springframework.beans.factory.BeanDefinitionStoreException: Invalid bean definition with name 'two' defined 
 in class path resource [spring-beans-two.xml]: Could not resolve placeholder 'twoName' in string value "${twoName}"; 
 nested exception is java.lang.IllegalArgumentException: Could not resolve placeholder 'twoName' in string value "${twoName}"
-...
 ```
 
 ## 原因
