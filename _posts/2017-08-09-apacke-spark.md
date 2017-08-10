@@ -17,3 +17,4 @@ published: true
 Run programs up to 100x faster than [Hadoop](http://hadoop.apache.org/) MapReduce in memory, or 10x faster on disk.
  
 > [倾情大奉送--Spark入门实战系列](http://www.cnblogs.com/shishanyuan/p/4699644.html)
+
