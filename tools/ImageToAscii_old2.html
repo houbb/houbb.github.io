@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <style>
+        #dd {
+            height: 200px;
+            width: 200px;
+            display: block;
+            font: bold 5px/5px monospace;
+        }
+
+        #img-input {
+            width: 150px;
+            height: 30px;
+        }
+    </style>
+</head>
+
+
+<p class="bg-primary">选择图片，可以看到对应的ASCII图</p>
+<input id="img-input" type="file" accept="image/*" onchange="imgInputOnChange(this);">
+
+<p class="bg-primary">效果预览</p>
+<canvas id="canvas">
+</canvas>
+
+<div id='dd'></div>
+
+<script src="jscii.js"></script>
+
+<script>
+    /**
+     * 监听图片变化
+     * @param ImgFile
+     */
+    function imgInputOnChange(imgFile) {
+//        con
+//        var canvas = document.getElementById("canvas");
+//        var context = canvas.getContext("2d");
+//        canvas.width = 100;
+//        canvas.height = 100;
+//        var img = new Image();
+//        img.src = window.URL.createObjectURL(imgFile.files[0]);
+
+        var r = new FileReader();
+//        f=document.getElementById('file').files[0];
+        r.readAsDataURL(document.getElementById("img-input").files[0]);
+        r.onload = function (e) {
+
+//            var img = new Image();
+
+//            img.src = r.result;
+//            console.log(img.src);
+
+//            document.getElementById("dd").innerHTML += "<img src='" + r.result + "'>";
+
+            var img = document.createElement('img');
+            img.src = r.result;
+            img.id = "img";
+
+            document.body.appendChild(img);
+
+
+            var src = window.URL.createObjectURL(document.getElementById("img-input").files[0]);
+            var myImg = new Image();
+            myImg.src = src;
+
+
+
+            function to_ascii() {
+                var imgJscii = new Jscii({
+                    width: 120,
+                    color: true,
+                    el: document.getElementById("img"),
+                    fn: function(str) {
+                        document.getElementById("dd").innerHTML = str;
+                    }
+                });
+            }
+            to_ascii();
+
+
+
+//            var canvas = document.getElementById("canvas");
+//            var context = canvas.getContext("2d");
+//            canvas.width = 100;
+//            canvas.height = 100;
+//            context.drawImage(myImg, 0, 0, canvas.width, canvas.height);     //限制图片大小
+//            //获取图片对象以及元素点的数组
+//            var readWidth = canvas.width;
+//            var readHeight = canvas.height;
+//            var img1 = context.getImageData(0, 0, readWidth, readHeight);
+//            var data = img1.data;
+//            invert2(data, readWidth);
+        };
+
+//        var reader = new FileReader();
+//        reader.readAsDataURL(imgFile.files[0]);
+//        img.src = reader.result;
+
+//        console.log(window.URL.createObjectURL(imgFile.files[0]));
+//        alert(img.src);
+//        var img = ImgFile;
+
+
+    }
+
+
+    //    function ImageToCanvas(image) {
+    //        var canvas = document.createElement("canvas");
+    //        canvas.width = image.width;
+    //        canvas.height = image.height;
+    //        canvas.getContext("2d").drawImage(image, 0, 0);//0, 0参数画布上的坐标点，图片将会拷贝到这个地方
+    //        return canvas;
+    //    }
+
+    //    var imgInput = document.getElementById("canvas");
+    //    imgInput.onChange = function () {
+    //        console.log("onChange")
+    //    };
+
+    //    var canvas = document.getElementById("canvas");
+    //    var context = canvas.getContext("2d");
+    //    canvas.width = 100;
+    //    canvas.height = 100;
+    //    var img = new Image();
+    //    img.src = "love.png";
+
+
+    //    context.drawImage(img,0,0, canvas.width, canvas.height);     //限制图片大小
+    //    //获取图片对象以及元素点的数组
+    //    var readWidth = canvas.width;
+    //    var readHeight = canvas.height;
+    //    var img1 = context.getImageData(0, 0, readWidth, readHeight);
+    //    var data = img1.data;
+
+
+    //    img.onload =function(){
+    ////        invert2(this);
+    //    };
+
+
+    //    像素点的rgba数组
+    /**
+     * 进行转换
+     * @param data 数据本身
+     * @param readWidth 数据的宽度
+     */
+    function invert2(data, readWidth) {
+        var result = "";
+
+        //每个有4个值 RGBA
+        //data 的长度为 width*height*4 = 800*800*4 = 256W;
+        for (var i = 0, len = data.length; i < len; i += 4) {
+            var r = data[i];
+            var g = data[i + 1];
+            var b = data[i + 2];
+            result += gray2asc(rgb2gray(r, g, b));
+            if (i % (readWidth * 4) == 0 && i != 0) {
+                result += '\n';
+            }
+        }
+
+        const dom = document.createElement('pre');
+        dom.innerHTML = result;
+        document.body.appendChild(dom);
+    }
+
+    //rgb 转为灰度
+    function rgb2gray(r, g, b) {
+        return 0.299 * r + 0.578 * g + 0.114 * b;
+    }
+
+    //粒度控制的越精细越好
+    //gray => ascii
+    function gray2asc(gray) {
+        var arr = ["@", "#", "&", "$", "%", "*", "o", "c", "!", ";", ":", "-", ".", " ", " "];
+        var num = Math.floor(gray / 18);
+        return arr[num];
+    }
+
+
+</script>
+
+</html>

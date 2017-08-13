@@ -1,36 +1,71 @@
-<style>
-    pre {
-        height: 200px;
-        width: 200px;
-        display: block;
-        font: bold 5px/5px monospace;
-    }
-</style>
-<canvas id="canvas"></canvas>
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+    <meta charset="utf-8">
+
+    <style>
+        pre {
+            height: 200px;
+            width: 200px;
+            display: block;
+            font: bold 5px/5px monospace;
+        }
+
+        #img-input {
+            width: 150px;
+            height: 30px;
+        }
+    </style>
+</head>
+
+
+<p class="bg-primary">选择图片，可以看到对应的ASCII图</p>
+<input id="img-input" type="file" accept="image/*" onchange="imgInputOnChange(this);">
+
+<p class="bg-primary">效果预览</p>
+<canvas id="canvas">
+    你的浏览器暂时不支持canvas!
+</canvas>
+
 <script>
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-    canvas.width = 100;
-    canvas.height = 100;
-    var img = new Image();
-    img.src = "love.png";
+    /**
+     * 监听图片变化
+     * @param ImgFile
+     */
+    function imgInputOnChange(imgFile) {
+        var r = new FileReader();
+        r.readAsDataURL(document.getElementById("img-input").files[0]);
+        r.onload = function (e) {
+            var img = new Image();
+            img.src = r.result;
 
+            //chrome 是首先加载js的。所以图片渲染应该放在这里。
+            img.onload = function(){
+                var canvas = document.getElementById("canvas");
+                var context = canvas.getContext("2d");
+                canvas.width = 100;
+                canvas.height = 100;
+                context.drawImage(img, 0, 0, canvas.width, canvas.height);     //限制图片大小
+                //获取图片对象以及元素点的数组
+                var readWidth = canvas.width;
+                var readHeight = canvas.height;
+                var img1 = context.getImageData(0, 0, readWidth, readHeight);
+                var data = img1.data;
+                invert2(data, readWidth);
+            };
+        };
 
-    context.drawImage(img,0,0, canvas.width, canvas.height);     //限制图片大小
-    //获取图片对象以及元素点的数组
-    var readWidth = canvas.width;
-    var readHeight = canvas.height;
-    var img1 = context.getImageData(0, 0, readWidth, readHeight);
-    var data = img1.data;
-
-
-    img.onload =function(){
-        invert2(this);
-    };
-
+    }
 
     //    像素点的rgba数组
-    function invert2(img) {
+    /**
+     * 进行转换
+     * @param data 数据本身
+     * @param readWidth 数据的宽度
+     */
+    function invert2(data, readWidth) {
         var result = "";
 
         //每个有4个值 RGBA
@@ -40,14 +75,20 @@
             var g = data[i + 1];
             var b = data[i + 2];
             result += gray2asc(rgb2gray(r, g, b));
-            if(i%(readWidth*4)==0&&i!=0){
+            if (i % (readWidth * 4) == 0 && i != 0) {
                 result += '\n';
             }
         }
 
-        const dom = document.createElement('pre');
-        dom.innerHTML = result;
-        document.body.appendChild(dom);
+
+        var dom = document.getElementsByTagName("pre")[0];
+        if(dom) {
+            dom.innerHTML = result;
+        } else {
+            const dom = document.createElement('pre');
+            dom.innerHTML = result;
+            document.body.appendChild(dom);
+        }
     }
 
     //rgb 转为灰度
@@ -58,10 +99,12 @@
     //粒度控制的越精细越好
     //gray => ascii
     function gray2asc(gray) {
-        var arr=["@","#","&","$","%","*","o", "c", "!",";",":","-","."," "," "];
-        var num=Math.floor(gray/18);
+        var arr = ["@", "#", "&", "$", "%", "*", "o", "c", "!", ";", ":", "-", ".", " ", " "];
+        var num = Math.floor(gray / 18);
         return arr[num];
     }
 
 
 </script>
+
+</html>
