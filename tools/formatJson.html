@@ -3,13 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>原生js格式化json的方法</title>
+
+    <style>
+
+        textarea {
+            height: 600px;
+            width: 400px;
+            resize: none;
+            margin-right: 50px;
+        }
+
+    </style>
+
 </head>
+
+
 <body>
-<!--格式化后的json写入的位置-->
-<div id="writePlace"></div>
+
+<textarea id="original" placeholder="请输入原始json"></textarea>
+
+
+<textarea id="format" placeholder="格式化后的内容"></textarea>
+
+<br>
+<button onclick="formatOriginalJson()">格式化</button>
+
 <script>
+
+    /**
+     * 格式化原始的 Json 内容
+     */
+    function formatOriginalJson() {
+        var originalJson = document.getElementById("original").value.trim();
+        console.log(originalJson);
+        document.getElementById("format").value = formatJson(originalJson);
+    }
+
+
     //格式化代码函数,已经用原生方式写好了不需要改动,直接引用就好
-    var formatJson = function (json, options) {
+    function formatJson(json, options) {
         var reg = null,
                 formatted = '',
                 pad = 0,
@@ -67,14 +99,7 @@
                 }
         );
         return formatted;
-    };
-    //引用示例部分
-    //(1)创建json格式或者从后台拿到对应的json格式
-    var originalJson = {"name": "binginsist", "sex": "男", "age": "25"};
-    //(2)调用formatJson函数,将json格式进行格式化
-    var resultJson = formatJson(originalJson);
-    //(3)将格式化好后的json写入页面中
-    document.getElementById("writePlace").innerHTML = '<pre>' +resultJson + '<pre/>';
+    }
 </script>
 </body>
 </html>
