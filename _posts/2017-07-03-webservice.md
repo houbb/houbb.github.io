@@ -289,6 +289,23 @@ Caused by: java.net.BindException: Address already in use: bind
 
 否则SOAP在被不同的系统解析之后，字段类型方面会出现问题。
 
+
+# With SpringAop
+
+当 `@WebService` 和 Spring Aop 增强一起使用时，是会报错的。
+
+其实解决起来也简单，对于 `@WebService` 只是生成了对应的 xml 信息，便于生成对应的 bean、方法等信息。
+
+所以可以如下使用：
+
+```java
+String address = "http://127.0.0.1:12345/facade";
+Endpoint.publish(address, new Facade());
+```
+
+即：需要发布的 Facade 类直接 new()，不需要 spring 注入。 出来。
+
+
 * any list
 {:toc}
 
