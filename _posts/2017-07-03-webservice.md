@@ -303,7 +303,9 @@ String address = "http://127.0.0.1:12345/facade";
 Endpoint.publish(address, new Facade());
 ```
 
-即：需要发布的 Facade 类直接 new()，不需要 spring 注入。 出来。
+即：需要发布的 Facade 类直接 new()，不需要 spring 注入。 这样会导致直接调用的方法没有spring注入。
+
+如果实在想同时使用 aop 和 webService，可以将 aop 这一层进行封装。最外层不要涉及到 aop 即可。
 
 
 * any list
