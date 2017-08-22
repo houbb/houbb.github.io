@@ -93,3 +93,11 @@
         font-size: 20px
     }
 }
+
+/*logo*/
+.intro-header-logoimg {
+    position: absolute;
+    left: 1%;
+    right: 1%;
+    bottom: -34px
+}
