@@ -19,4 +19,7 @@ http://www.cnblogs.com/jelly7723/p/5576442.html
 
 # Blog
 
+https://doubleray.win/2017/04/11/blog-coding/
+
+
 https://doubleray.win/effects/
