@@ -15,3 +15,8 @@ http://www.cnblogs.com/jelly7723/p/5576442.html
 # js
 
 [简短的几句js实现css压缩和反压缩功能](http://www.cnblogs.com/liyunhua/p/4564060.html)
+
+
+# Blog
+
+https://doubleray.win/effects/
