@@ -6,12 +6,12 @@
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
-    margin-bottom: 0
+    margin-bottom: 40px;
 }
 
 @media only screen and (min-width: 768px) {
     .intro-header {
-        margin-bottom: 20px
+        margin-bottom: 50px
     }
 }
 
@@ -99,5 +99,10 @@
     position: absolute;
     left: 1%;
     right: 1%;
-    bottom: -34px
+    bottom: -34px;
+    text-align: center;
+}
+
+.intro-header-logoimg a {
+    cursor: pointer;
 }
