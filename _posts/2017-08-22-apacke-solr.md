@@ -344,6 +344,16 @@ There are several types of faceting: field values, numeric and date ranges, pivo
 
 查询的结果会根据 `facet.field=author` 进行分组。
 
+
+# Cleanup
+
+```
+$   bin/solr stop -all
+```
+
+可以停止服务。
+
+
 * any list
 {:toc}
 
