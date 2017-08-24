@@ -7,8 +7,6 @@ tags: [zookeeper]
 published: true
 ---
 
-* any list
-{:toc}
 
 
 # Zookeeper
@@ -16,6 +14,8 @@ published: true
 Apache ZooKeeper is an effort to develop and maintain an open-source server which enables highly reliable distributed coordination.
 
 > [zookeeper](http://zookeeper.apache.org/)
+
+> [quick start](https://zookeeper.apache.org/doc/r3.4.10/zookeeperStarted.html)
 
 ## Download
 
@@ -133,3 +133,73 @@ Using config: /Users/houbinbin/it/tools/zookeeper/server1/zookeeper-3.4.9/bin/..
 -n Stopping zookeeper ...
 STOPPED
 ```
+
+
+# In Windows
+
+> [zookeeper 安装 windows环境](http://blog.csdn.net/morning99/article/details/40426133)
+
+一、下载并解压
+
+(win7)
+
+当前解压路径为 `D:\Learn\apache\zookeeper\zookeeper-3.4.6\`
+
+
+二、配置
+
+在 **conf** 文件夹下添加配置文件，如果启动有报错提示cfg文件有错误，可以用 `zoo_sample.cfg` 内容替代 
+
+- `zoo.cfg`
+
+```properties
+# The number of milliseconds of each tick  心跳间隔 毫秒每次
+tickTime=2000
+
+# The number of ticks that the initial
+# synchronization phase can take
+initLimit=10
+
+# The number of ticks that can pass between
+# sending a request and getting anacknowledgement
+syncLimit=5
+
+# the directory where the snapshot isstored.  //镜像数据位置
+dataDir=D:\\Learn\\apache\\zookeeper\\data
+
+#日志位置
+dataLogDir=D:\\Learn\\apache\\zookeeper\\log
+
+# the port at which the clients willconnect  客户端连接的端口
+clientPort=2181
+```
+
+三、运行 
+
+```
+[D:\Learn\apache\zookeeper\zookeeper-3.4.6\bin]$ zkServer.cmd
+...
+```
+
+- 另开一个窗口
+
+```
+[D:\Learn\apache\zookeeper\zookeeper-3.4.6\bin]$ jps
+5200 RemoteJdbcServer
+12068 RemoteMavenServer
+11416 
+13928 
+9784 Jps
+13036 QuorumPeerMain
+6412 RemoteJdbcServer
+```
+
+- 启动客户端
+
+```
+[D:\Learn\apache\zookeeper\zookeeper-3.4.6\bin]$ zkCli.cmd -server 127.0.0.1:2181
+...
+```
+
+* any list
+{:toc}
