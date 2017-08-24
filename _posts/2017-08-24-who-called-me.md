@@ -112,7 +112,7 @@ com.intellij.rt.execution.junit.JUnitStarter.main(JUnitStarter.java:70)
 Process finished with exit code 0
 ```
 
-你对于这个应该很熟悉，虽然大部分是在异常的时候才会简单。这就是 java 方法的一个调用链。
+你对于这个应该很熟悉，虽然大部分是在异常的时候才会见到。这就是 java 方法的一个调用链。
 
 这句 `Thread.currentThread().getStackTrace()[2]` 就可以拿到调用当前方法的元素信息。
 
@@ -155,6 +155,10 @@ Process finished with exit code 0
 # 简单思考
 
 - 可以用作日志打印
+
+
+* any list
+{:toc}
 
 
 
