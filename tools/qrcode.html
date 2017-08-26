@@ -55,11 +55,19 @@
                 console.log("输入内容为空。。。");
             } else {
                 var utf8Text = utf16To8(text);
-                $("#qr-code canvas").remove();
+                var width = 200;
+                var height = 200;
+
 
                 $("#qr-code").qrcode({
+                    render: "canvas", //canvas方式
+                    width: width, //宽度
+                    height:height, //高度
                     text: utf8Text
                 });
+                var img = convertCanvasToImage();
+                $("#qr-code").html("");
+                $("#qr-code").append(img);
             }
         });
 
@@ -86,6 +94,13 @@
                 }
             }
             return out;
+        }
+
+        // Converts canvas to an image
+        var convertCanvasToImage = function() {
+            var image = new Image();
+            image.src = $("#qr-code").find("canvas")[0].toDataURL("image/png"); // [0]拿到原生的canvas元素
+            return image;
         }
 
 
