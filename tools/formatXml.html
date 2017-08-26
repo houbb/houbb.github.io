@@ -1,72 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <title>原生js格式化xml的方法</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>原生js格式化xml</title>
+
+    <link rel="stylesheet" href="base.css">
 
     <style>
 
-        textarea {
+        .textarea {
             height: 600px;
             width: 550px;
-            resize: none;
-            margin-right: 20px;
-
-            border: 0;
-            border-left: solid 1px #E5EBEE;
-            border-right: solid 1px #E5EBEE;
-            border-bottom: solid 1px #eee;
-            border-radius: 0;
-            outline: none;
-            font-size: 10px;
-        }
-
-        button {
-            display: inline-block;
-            padding: 6px 12px;
-            margin-bottom: 0;
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 1.42857143;
-            text-align: center;
-            white-space: nowrap;
-            vertical-align: middle;
-            -ms-touch-action: manipulation;
-            touch-action: manipulation;
-            cursor: pointer;
-            -webkit-user-select: none; k
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            background-image: none;
-            border: 1px solid transparent;
-            border-radius: 4px;
-
-            /*success*/
-            color: #fff;
-            background-color: #5cb85c;
-            border-color: #4cae4c;
-        }
-        button:hover {
-            color: #fff;
-            background-color: #449d44;
-            border-color: #398439;
         }
 
     </style>
 
 </head>
-<body>
-<!--格式化后的xml写入的位置-->
-<!--<textarea id="writePlace" rows="8" cols="40" ></textarea>-->
+<body class="container">
 
-<textarea id="original" placeholder="请输入原始内容"></textarea>
+<textarea class="textarea" id="original" placeholder="请输入原始内容"></textarea>
 
-
-<textarea id="format" placeholder="格式化后的内容"></textarea>
+<textarea class="textarea" id="format" placeholder="格式化后的内容"></textarea>
 
 <br>
-<button onclick="formatOriginalXml()">格式化</button>
+<button class="btn" onclick="formatOriginalXml()">格式化</button>
 
 <script>
     
