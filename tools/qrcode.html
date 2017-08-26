@@ -90,6 +90,8 @@
                 console.log("输入内容为空。。。");
             } else {
                 var utf8Text = utf16To8(text);
+                $("#qr-code canvas").remove();
+
                 $("#qr-code").qrcode({
                     text: utf8Text
                 });
