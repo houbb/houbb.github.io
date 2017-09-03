@@ -282,13 +282,13 @@ protected boolean isCandidateComponent(MetadataReader metadataReader) throws IOE
  
 ComponentScanBeanDefinitionParser.parse(...)
 
-中 
+中下面的代码实现，跳过。 
 
 ```java
 registerComponents(parserContext.getReaderContext(), beanDefinitions, element);
 ```
 
-实现。此处不研究。
+
 
 
 
