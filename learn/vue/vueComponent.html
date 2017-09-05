@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+    <title>Vue 测试实例</title>
+
+    <link rel="stylesheet" href="../css/base.css">
+
+    <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+
+</head>
+<body>
+
+<div id="app-7">
+    <ol>
+        <!--
+          现在我们为每个 todo-item 提供 todo 对象
+          todo 对象是变量，即其内容可以是动态的。
+          我们也需要为每个组件提供一个“key”，晚些时候我们会做个解释。
+        -->
+        <todo-item
+                v-for="item in groceryList"
+                v-bind:todo="item"
+                v-bind:key="item.id">
+        </todo-item>
+    </ol>
+</div>
+
+
+<script>
+
+    //定义一个组件。且此组件可以接受一个属性
+    Vue.component('todo-item', {
+        // todo-item 组件现在接受一个
+        // "prop"，类似于一个自定义属性
+        // 这个属性名为 todo。
+        props: ['todo'],
+        template: '<li>{{ todo.text }}</li>'
+    })
+
+    new Vue({
+        el: '#app-7',
+        data: {
+            groceryList: [
+                { id: 0, text: '蔬菜' },
+                { id: 1, text: '奶酪' },
+                { id: 2, text: '随便其他什么人吃的东西' }
+            ]
+        }
+    })
+
+</script>
+
+
+</body>
+</html>
