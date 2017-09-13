@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+    <title>Vue 测试实例</title>
+
+    <link rel="stylesheet" href="../css/base.css">
+
+    <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+
+</head>
+<body>
+
+<div id="demo">{{ fullName }}</div>
+
+<p>
+    计算属性默认只有 getter ，不过在需要时你也可以提供一个 setter
+</p>
+
+<script>
+
+    var vm = new Vue({
+        el: '#demo',
+        data: {
+            firstName: 'Foo',
+            lastName: 'Bar'
+        },
+        computed: {
+            fullName: {
+                // getter
+                get: function () {
+                    return this.firstName + ' ' + this.lastName
+                },
+                // setter
+                set: function (newValue) {
+                    var names = newValue.split(' ')
+                    this.firstName = names[0]
+                    this.lastName = names[names.length - 1]
+                }
+            }
+        }
+    })
+
+
+</script>
+
+
+</body>
+</html>
