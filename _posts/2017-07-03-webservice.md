@@ -308,6 +308,13 @@ Endpoint.publish(address, new Facade());
 如果实在想同时使用 aop 和 webService，可以将 aop 这一层进行封装。最外层不要涉及到 aop 即可。
 
 
+
+# 长度限制
+
+在异构系统中。比如 c# 调用 Java。可能对返回值的长度有限制(默认为 65535 字节长度。)
+
+在本地测试，Java 调用 Java 是没有这个限制的。
+
 * any list
 {:toc}
 
