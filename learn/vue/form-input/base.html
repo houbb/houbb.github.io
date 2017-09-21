@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+    <title>Vue 测试实例</title>
+
+    <link rel="stylesheet" href="../../css/base.css">
+
+    <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+
+</head>
+<body>
+
+
+
+<h2>文本</h2>
+<div id="example-1">
+    <input v-model="message" placeholder="edit me">
+    <p>Message is: {{ message }}</p>
+</div>
+
+<h2>多行文本</h2>
+<div id="example-textarea">
+    <span>Multiline message is:</span>
+    <p style="white-space: pre-line;">{{ message }}</p>
+    <br>
+    <textarea v-model="message" placeholder="add multiple lines"></textarea>
+</div>
+
+<script>
+    new Vue({
+        el: '#example-1',
+        data: {
+            message: ''
+        }
+    })
+
+    new Vue({
+        el: '#example-textarea',
+        data: {
+            message: ''
+        }
+    })
+</script>
+
+<h2>单个复选框</h2>
+<div id="example-2">
+    <input type="checkbox" id="checkbox" v-model="checked">
+    <label for="checkbox">{{ checked }}</label>
+</div>
+<script>
+    new Vue({
+        el: '#example-2',
+        data: {
+            checked: false
+        }
+    })
+</script>
+
+<h2>多个复选框</h2>
+<div id="example-3">
+    <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+    <label for="jack">Jack</label>
+    <input type="checkbox" id="john" value="John" v-model="checkedNames">
+    <label for="john">John</label>
+    <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+    <label for="mike">Mike</label>
+    <br>
+    <span>Checked names: {{ checkedNames }}</span>
+</div>
+<script>
+    new Vue({
+        el: '#example-3',
+        data: {
+            checkedNames: []
+        }
+    })
+</script>
+
+<h2>单选按钮</h2>
+<div id="example-4">
+    <input type="radio" id="one" value="One" v-model="picked">
+    <label for="one">One</label>
+    <br>
+    <input type="radio" id="two" value="Two" v-model="picked">
+    <label for="two">Two</label>
+    <br>
+    <span>Picked: {{ picked }}</span>
+</div>
+<script>
+    new Vue({
+        el: '#example-4',
+        data: {
+            picked: ''
+        }
+    })
+</script>
+
+
+<h2>选择列表</h2>
+<div id="example-5">
+    <select v-model="selected">
+        <option disabled value="">请选择</option>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+    </select>
+    <span>Selected: {{ selected }}</span>
+</div>
+<script>
+    new Vue({
+        el: '#example-5',
+        data: {
+            selected: ''
+        }
+    })
+</script>
+
+
+如果 v-model 表达初始的值不匹配任何的选项，select 元素就会以”未选中”的状态渲染。在 iOS 中，这会使用户无法选择第一个选项，因为这样的情况下，iOS 不会引发 change 事件。因此，像以上提供 disabled 选项是建议的做法。
+
+<h2>多选列表 (绑定到一个数组)</h2>
+
+<div id="example-6">
+    <select v-model="selected" multiple style="width: 50px;">
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+    </select>
+    <br>
+    <span>Selected: {{ selected }}</span>
+</div>
+<script>
+    new Vue({
+        el: '#example-6',
+        data: {
+            selected: []
+        }
+    })
+</script>
+
+
+<h3>动态选项，用 <code>v-for</code> 渲染：</h3>
+<div id="example-7">
+    <select v-model="selected">
+        <option v-for="option in options" v-bind:value="option.value">
+            {{ option.text }}
+        </option>
+    </select>
+    <span>Selected: {{ selected }}</span>
+</div>
+<script>
+    new Vue({
+        el: '#example-7',
+        data: {
+            selected: 'A',
+            options: [
+                { text: 'One', value: 'A' },
+                { text: 'Two', value: 'B' },
+                { text: 'Three', value: 'C' }
+            ]
+        }
+    })
+</script>
+
+</body>
+</html>
