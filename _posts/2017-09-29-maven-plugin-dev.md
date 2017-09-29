@@ -19,6 +19,8 @@ A mojo is a Maven plain Old Java Object. Each mojo is an executable goal in Mave
 
 # Quick Start
 
+下面是一个简单的例子。
+
 ## Create
 
 本文使用 [IDE](https://www.jetbrains.com/idea/)，可以直接通过项目原型创建。
