@@ -48,7 +48,9 @@ function Base() {
                             {name:'上海',selected:true},
                             {name:'江苏',selected:true},
                             {name:'江西',selected:true},
-                            {name:'安徽',selected:true}
+                            {name:'安徽',selected:true},
+                            {name:'辽宁',selected:true},
+                            {name:'四川',selected:true}
                         ]
                     }
                 ]
