@@ -74,7 +74,9 @@ published: true
 
 - Build Number Ranges
 
-`<idea-version since-build="145.0"/>` 这一行详细信息见 [Build Number Ranges](http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html)。
+`<idea-version since-build="145.0"/>` 
+
+用于指定插件对应的 idea 版本信息。详情见 [Build Number Ranges](http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html)。
 
 ## Creating an action
 
@@ -165,11 +167,11 @@ public class TextBoxes extends AnAction {
 
 - To debug a plugin
 
-Select Run | Debug in the main menu, or press <kbd>Shift</kbd> + <kbd>F9</kbd>.
+Select Run/Debug in the main menu, or press <kbd>Shift</kbd> + <kbd>F9</kbd>.
 
 - To run a plugin
 
-Select Run | Run in the main menu, or press <kbd>Shift</kbd> + <kbd>F10</kbd>.
+Select Run/Run in the main menu, or press <kbd>Shift</kbd> + <kbd>F10</kbd>.
 
 
 ## Deploying a Plugin
@@ -180,7 +182,7 @@ Select Run | Run in the main menu, or press <kbd>Shift</kbd> + <kbd>F10</kbd>.
 
 To deploy a plugin:
 
-- Make your project by invoking Build | Make Project.
+- Make your project by invoking Build / Make Project.
 
 - Prepare your plugin for deployment. In the main menu, select **Build | Prepare Plugin Module `<module name>` for Deployment**.
 
@@ -196,7 +198,7 @@ To deploy a plugin:
 
 这个和安装其他插件很类似。打开设置，直接安装即可。
 
-- In the main menu, select File | Settings to open the Settings dialog box.
+- In the main menu, select File/Settings to open the Settings dialog box.
 
 - In the Settings dialog box, under IDE Settings, click Plugins.
 
