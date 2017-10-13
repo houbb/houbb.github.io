@@ -184,7 +184,7 @@ To deploy a plugin:
 
 - Make your project by invoking Build / Make Project.
 
-- Prepare your plugin for deployment. In the main menu, select **Build | Prepare Plugin Module `<module name>` for Deployment**.
+- Prepare your plugin for deployment. In the main menu, select **Build / Prepare Plugin Module `<module name>` for Deployment**.
 
 运行完之后，会生成一个 `<module name>.jar` 文件。
 
