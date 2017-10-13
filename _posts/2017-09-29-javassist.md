@@ -109,8 +109,12 @@ public class SimpleTest {
 }
 ```
 
+# Thinking 
 
-TBC...
+使用这种修饰方式，比较适合**运行时**的增强。(spring 实现原理)
+
+但是如果想实现**编译时**的修改，就需要借助 JCTree。(Java 编译原理)
+
 
 * any list
 {:toc}

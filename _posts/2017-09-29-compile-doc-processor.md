@@ -12,9 +12,9 @@ published: true
 
 Java 可以在编译阶段对类的信息进行解析。
 
+阅读要求：最 Java 注解熟悉。
 
 # Simple Demo
-
 
 ## Coding
 
