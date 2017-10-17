@@ -256,7 +256,7 @@ OS name: "mac os x", version: "10.12.6", arch: "x86_64", family: "mac"
 $   mvn clean deploy -P sonatype-oss-release -Darguments="gpg.passphrase=设置gpg设置密钥时候输入的Passphrase" 
 ```
 
-mvn clean deploy -P release -Darguments="gpg.passphrase=houbinbin146"
+mvn clean deploy -P release -Darguments="gpg.passphrase=XXXXXXXX"
  
 
 http://blog.csdn.net/hj7jay/article/details/51130398
