@@ -54,6 +54,11 @@ com.github.houbb has been prepared, now user(s) houbbEcho can:
 
 ## Generate GPG
 
+PS: Windows 请下载 [gpg4win](https://www.gpg4win.org/download.html)
+
+
+
+
 Mac 系统。安装 [GPG](http://www.ruanyifeng.com/blog/2013/07/gpg.html)
 
 ```
@@ -240,6 +245,68 @@ OS name: "mac os x", version: "10.12.6", arch: "x86_64", family: "mac"
 </distributionManagement>
 <!--============================== ADD For sonatype END ==============================-->
 
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <!-- Source -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- Javadoc -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- GPG -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+    
 </project>
 ```
 
@@ -257,17 +324,61 @@ $   mvn clean deploy -P sonatype-oss-release -Darguments="gpg.passphrase=设置g
 ```
 
 mvn clean deploy -P release -Darguments="gpg.passphrase=houbinbin146"
- 
+
+
+如果只输入 `mvn clean deploy -P release` 会弹出密码输入框，输入对应的密码。(Windows 环境)
+
+然后等待发布完成即可。
+
+[stagingRepositories](https://oss.sonatype.org/#stagingRepositories) 中拉倒最下方或者是直接模糊查询，应该可以找到我们刚才发布的 jar。
+
+![mvn-stage-repo]({{ site.url }}/static/app/img/maven/2017-10-19-mvn-stage-repo.jpg)
+
+## close
+
+勾选我们的jar，点击上方的 **close**。会对项目进行校验(源码、文档、签名等)
+
+如果不合格下方会有对应的错误提示。
+
+顺利的话 status 会变成 closed。然后进行下一步。
+
+## release
+
+勾选我们的jar，点击上方的 **release**。
+
+点击之后，当前构件就会消失。
+
+## 构件已成功发布
+
+在 [Issue](https://issues.sonatype.org/issues) 下面回复一条 `构件已成功发布` 的评论，
+这是为了通知 Sonatype 的工作人员为需要发布的构件做审批，发布后会关闭该 Issue。
+
+这个，又只能等待了，当然他们晚上上班，还是第二天看。当审批通过后，将会收到邮件通知。
+
+## 从中央仓库中搜索构件
+
+这时，就可以在 maven 的中央仓库中搜索到自己发布的构件了，以后可以直接在 pom.xml 中使用了！
+
+中央仓库搜索网站：http://search.maven.org/
+
+第一次成功发布之后，以后就不用这么麻烦了，可以直接使用 Group Id 发布任何的构件，当然前提是 Group Id 没有变。
+
+以后的发布流程：
+
+1. 构件完成后直接使用 maven 在命令行上传构建；
+
+2. 在 [https://oss.sonatype.org/](https://oss.sonatype.org/) 中 close 并 release 构件；
+
+3. 等待同步好（大约2小时多）之后，就可以使用了
+
+
+# BLOG
 
 http://blog.csdn.net/hj7jay/article/details/51130398
 
 http://blog.csdn.net/wf632856695/article/details/71405311
 
 http://blog.csdn.net/ljbmxsm/article/details/78009268
-
-
-
-TBC....
 
 
 * any list
