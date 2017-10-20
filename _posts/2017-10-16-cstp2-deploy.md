@@ -204,6 +204,10 @@ services.msc
 http://localhost:8161/admin/
 ```
 
+PS: 对于 MQ 信息的清理
+
+原来的 MQ 可能包含脏数据。直接将 **Queues**、**Topics** 下的信息删除即可。
+
 ## Mule
 
 一、下载
