@@ -220,6 +220,80 @@ $   mvn clean compile
 [INFO] ------------------------------------------------------------------------
 ```
 
+
+# Annotation
+
+上面是基于 doc 来完成的。个人更倾向于注解的方式。
+
+二者不要同时使用，个人测试会报错。
+
+
+- 引入 jar
+
+```xml
+<dependencies>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-plugin-api</artifactId>
+      <version>3.0</version>
+    </dependency>
+ 
+    <!-- dependencies to annotations -->
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>3.4</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+```
+
+- 定义 MOJO
+
+```java
+@Mojo(name = "doc")
+public class DocMojo extends AbstractMojo {
+
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        System.out.println("------------------------------------ Hello Mvn Plugin!");
+    }
+}
+```
+
+## 对于参数的传入
+
+- xml 配置如下：
+
+```xml
+<plugin>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>maven-doc-plugin</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <configuration>
+        <username>root</username>
+    </configuration>
+</plugin>
+```
+
+- Mojo
+
+```java
+@Mojo(name = "doc")
+public class DocMojo extends AbstractMojo {
+    /**
+     * 用户名称
+     */
+    @Parameter
+    private String username;
+
+    public void execute() throws MojoExecutionException, MojoFailureException {
+        System.out.println("------------------------------------ Hello Mvn Plugin!");
+        System.out.println("username: "+username);
+    }
+
+}
+```
+
 * any list
 {:toc}
 
