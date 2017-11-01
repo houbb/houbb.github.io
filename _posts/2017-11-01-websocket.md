@@ -21,42 +21,54 @@ published: true
 
 常见解决方案：
 
-## Ajax long-polling
+一、Ajax long-polling
 
 性能差。
 
-## flash
+二、 flash
 
 需要会写 flash 代码。而且这个技术即将被淘汰。
 
-## Node.js Socket.io
+三、 Node.js Socket.io
 
 对于前端架构有要求，个人不太想用。
 
-## WebSocket
+四、 WebSocket
 
 缺点：有些浏览器不支持。
 
-个人学习，比较期望这个技术可以走的更远。
+个人倾向于此方案，期望这个技术可以走的更远。
 
 
 # What
 
-WebSocket 协议在 2008 年诞生，2011 年成为国际标准。所有浏览器都已经支持了。
+WebSocket 协议在 2008 年诞生，2011年成为国际标准。所有浏览器都已经支持了。
 
-(所有浏览器不包括 IE8 及其以前)
+| 浏览器	    | 支持情况 |
+|:---|:---|
+| Chrome	        | Chrome version 4+支持   |
+| Firefox	        | Firefox version 5+支持  |
+| IE	            | IE version 10+支持      |
+| Safari	        | IOS 5+支持              |
+| Android Brower	|   Android 4.5+支持      |
 
 它的最大特点就是，服务器可以主动向客户端推送信息，客户端也可以主动向服务器发送信息，是真正的双向平等对话，属于服务器推送技术的一种。
 
 ![2017-11-01-web-socket-description]({{ site.url }}/static/app/img/web/2017-11-01-web-socket-description.png)
 
 其他特点包括：
-（1）建立在 TCP 协议之上，服务器端的实现比较容易。
-（2）与 HTTP 协议有着良好的兼容性。默认端口也是80和443，并且握手阶段采用 HTTP 协议，因此握手时不容易屏蔽，能通过各种 HTTP 代理服务器。
-（3）数据格式比较轻量，性能开销小，通信高效。
-（4）可以发送文本，也可以发送二进制数据。
-（5）没有同源限制，客户端可以与任意服务器通信。
-（6）协议标识符是ws（如果加密，则为wss），服务器网址就是 URL。
+
+1. 建立在 TCP 协议之上，服务器端的实现比较容易。
+
+2. 与 HTTP 协议有着良好的兼容性。默认端口也是 80 和 443，并且握手阶段采用 HTTP 协议，因此握手时不容易屏蔽，能通过各种 HTTP 代理服务器。
+
+3. 数据格式比较轻量，性能开销小，通信高效。
+
+4. 可以发送文本，也可以发送二进制数据。
+
+5. 没有同源限制，客户端可以与任意服务器通信。
+
+6. 协议标识符是 `ws`（如果加密，则为wss），服务器网址就是 URL。
 
 
 # Client Demo
@@ -247,9 +259,7 @@ public class MyWebSocket {
 <!DOCTYPE html>
 <html>
 <head>
-
     <meta charset="UTF-8">
-
 </head>
 
 <body>
