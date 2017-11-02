@@ -10,6 +10,8 @@ published: true
 
 # CSTP2.0
 
+【CSTP】负责内容的接收和转发(ActiveMQ)，【Mule】负责接收到转发的数据并且入库。
+
 ## JDK
 
 - 常见命令
@@ -208,6 +210,26 @@ PS: 对于 MQ 信息的清理
 
 原来的 MQ 可能包含脏数据。直接将 **Queues**、**Topics** 下的信息删除即可。
 
+## CSTP
+
+- 目录结构
+
+```
+bin
+conf
+data
+lib
+logs
+```
+
+- 安装服务
+
+`bin/InstallApp-NT.bat` 以 **管理员的身份运行**。
+
+- 配置信息
+
+`conf` 目录文件下。
+
 ## Mule
 
 一、下载
@@ -303,11 +325,28 @@ E:\CSTP-DEPLOY\HY_MULE_SERVER
 
 # TD
 
+【TD】负责下载文件。【Kettle】负责解析入库。
+
+对于大文件或者不标准的文件，入库有问题。【补丁】来解决。
 
 TD 环境问题，不一定能下载下来。
 
 记住 **username/password**，直接在本地也可以下载。
 
+## TD
+
+- 目录结构
+
+```
+bin
+conf
+lib
+logs
+```
+
+- 安装服务
+
+`bin/InstallApp-NT.bat` 打包 windows 服务。
 
 ## Kettle
 
