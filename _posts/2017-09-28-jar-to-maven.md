@@ -381,6 +381,41 @@ http://blog.csdn.net/wf632856695/article/details/71405311
 http://blog.csdn.net/ljbmxsm/article/details/78009268
 
 
+# 常见问题
+
+## GPG 签名失败
+
+- 问题描述
+
+不知道是否是 windows 和 mac 同时操作，会导致一方失效。
+
+Mac 上传 jar 时出现报错：
+
+```
+gpg: 签名时失败： Inappropriate ioctl for device 
+gpg: signing failed: Inappropriate ioctl for device
+```
+
+- 解决方式
+
+1、命令行打开 `~/.gnupg` 文件夹
+
+2、添加 `gpg.conf` 文件，内容如下：
+
+```
+use-agent 
+pinentry-mode loopback 
+```
+3、添加 `gpg-agent.conf`，内容如下：
+
+```
+allow-loopback-pinentry
+```
+
+重新尝试即可。
+
+
+
 * any list
 {:toc}
 
