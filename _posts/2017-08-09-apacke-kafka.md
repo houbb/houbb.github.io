@@ -3,7 +3,7 @@ layout: post
 title:  Apache Kafka
 date:  2017-8-9 09:32:36 +0800
 categories: [Apache]
-tags: [apache, kafka]
+tags: [apache, kafka, mq]
 published: true
 ---
 

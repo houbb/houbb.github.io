@@ -3,7 +3,7 @@ layout: post
 title:  Apache Spark
 date:  2017-8-9 09:32:36 +0800
 categories: [Apache]
-tags: [apache, spark]
+tags: [apache, big data]
 published: true
 ---
 

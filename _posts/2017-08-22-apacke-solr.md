@@ -3,7 +3,7 @@ layout: post
 title:  Apache Solr
 date:  2017-8-22 19:00:16 +0800
 categories: [Apache]
-tags: [apache, solr]
+tags: [apache, solr, search]
 published: true
 ---
 

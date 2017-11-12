@@ -16,9 +16,67 @@ $(document).ready(function () {
     Base.initDataTables();
 
     Base.initTravelMap();
+
+    Base.handlePre();
 });
 var Base = new Base();
 function Base() {
+    /**
+     * 对于代码块进行处理
+     * 1. 有时候博客中的代码太长印象阅读体验。
+     * 2. 想法是设置最小高度。如果当代码块的高度超过100px则进行折叠。
+     * 3. 对于折叠的处理？怎么处理更加美观方便？
+     */
+    this.handlePre = function () {
+
+        var rougeList = $("div.highlighter-rouge");
+
+        // var languageType = "language-";  //语言类型
+
+        var $highlighterHeader = $("<div class='highlighter-header' style='background: #eef;'>" +
+            "<span class='language-type text-muted' title='代码类型'>&nbsp;&nbsp;[txt]</span>" +
+            "<span class='code-fold pull-right' style='cursor:pointer;padding-right: 8px;color: #444;' title='代码折叠'><i class='fa fa-fw fa-minus-square-o'></i></span>" +
+            "<span class='code-copy pull-right' style='cursor:pointer;padding-right: 8px;color: #444;' title='代码复制'><i class='fa fa-fw fa-copy'></i></span>" +
+            "</div>");
+
+        rougeList.prepend($highlighterHeader);
+
+
+        //1. handle languageType
+        $("div.highlighter-header>.language-type").each(function (i, e) {
+            var $e = $(e);
+
+            var $highlighterRouge = $e.parent('.highlighter-header').parent('.highlighter-rouge');  //最外层结点。
+
+            // console.log($highlighterRouge.hasClass("highlighter-rouge"));
+            var classAttr = $highlighterRouge.attr("class");   //language-xml highlighter-rouge
+
+            var languagePrefix = "language-";
+            var index = classAttr.indexOf(languagePrefix);
+            if(index > -1) {
+                var languageType = classAttr.substring(index, classAttr.length).split(" ")[0];
+                var language = languageType.substring(languagePrefix.length, languageType.length);
+                // console.log(language);
+
+                $e.html("&nbsp;&nbsp;["+language+"]");
+            }
+
+        });
+
+        //2.copy code   todo;
+
+
+        //3. toggle show code
+        $("div.highlighter-header>.code-fold").each(function (i, e) {
+            var $e = $(e);
+
+            var $code = $e.parent('.highlighter-header').next('.highlight');  //最外层结点。
+            $e.on('click', function () {
+                $code.toggleClass("hide");
+            });
+            
+        });
+    };
 
     /**
      * 初始化旅游地图
