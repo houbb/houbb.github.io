@@ -29,6 +29,8 @@ The project includes these modules:
 
 简单的 Java 示例 - 单词次数统计。
 
+[完整代码地址](https://github.com/houbb/hadoop-learn)
+
 ## 项目结构
 
 ```
