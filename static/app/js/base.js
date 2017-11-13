@@ -35,8 +35,8 @@ function Base() {
 
         var $highlighterHeader = $("<div class='highlighter-header' style='background: #eef;'>" +
             "<span class='language-type text-muted' title='代码类型'>&nbsp;&nbsp;[txt]</span>" +
-            "<span class='code-fold pull-right' style='cursor:pointer;padding-right: 8px;color: #444;' title='代码折叠'><i class='fa fa-fw fa-minus-square-o'></i></span>" +
-            "<span class='code-copy pull-right' style='cursor:pointer;padding-right: 8px;color: #444;' title='代码复制'><i class='fa fa-fw fa-copy'></i></span>" +
+            "<span class='code-fold pull-right' style='cursor:pointer;padding-right: 8px;' title='代码折叠'><i class='fa fa-fw fa-minus-square-o'></i></span>" +
+            "<span class='code-copy pull-right' style='cursor:pointer;padding-right: 8px;' title='代码复制'><i class='fa fa-fw fa-copy'></i></span>" +
             "</div>");
 
         rougeList.prepend($highlighterHeader);
@@ -63,7 +63,24 @@ function Base() {
 
         });
 
-        //2.copy code   todo;
+        //2.copy code
+        $("div.highlighter-header>.code-copy").each(function (i, e) {
+            var $e = $(e);
+
+            var $code = $e.parent('.highlighter-header').next('.highlight').find("code");  //最外层结点。
+            var text = $code.text();
+
+            $e.on('click', function () {
+                var result = new Copy().CopyToClipboard(text);
+                if(result) {
+                    // alert("复制成功！");
+                    $e.addClass("text-success");
+                } else {
+                    $e.addClass("text-danger");
+                }
+            });
+
+        });
 
 
         //3. toggle show code
