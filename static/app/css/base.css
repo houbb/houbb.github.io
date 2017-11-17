@@ -183,3 +183,23 @@ svg:not(:root) {
     height: 600px;
     background-color: #eeeeee;
 }
+
+
+
+/**
+line number
+ */
+.line-warp {
+    position: absolute;
+    top: 8px;
+    left: 0px;
+    width: 27px;
+    text-align: right;
+    color: #cccccc;
+}
+pre.highlight {
+    position: relative;
+}
+pre.highlight.padding-left {
+    padding-left: 35px;
+}

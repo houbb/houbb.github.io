@@ -36,6 +36,7 @@ function Base() {
         var $highlighterHeader = $("<div class='highlighter-header' style='background: #eef;'>" +
             "<span class='language-type text-muted' title='代码类型'>&nbsp;&nbsp;[txt]</span>" +
             "<span class='code-fold pull-right' style='cursor:pointer;padding-right: 8px;' title='代码折叠'><i class='fa fa-fw fa-minus-square-o'></i></span>" +
+            "<span class='code-linenum pull-right' style='cursor:pointer;padding-right: 8px;' title='代码行号'><i class='fa fa-fw fa-sort-numeric-asc'></i></span>" +
             "<span class='code-copy pull-right' style='cursor:pointer;padding-right: 8px;' title='代码复制'><i class='fa fa-fw fa-copy'></i></span>" +
             "</div>");
 
@@ -93,6 +94,33 @@ function Base() {
             });
             
         });
+
+
+        //4. add linenums
+        $("pre.highlight").addClass("padding-left");    //用户简化是否显示行号的间距
+        $('pre.highlight code').each(function (i, e) {
+            var code = $(e);
+            var array = code.html().split("\n");
+            var lineObj = $("<div class='line-warp'></div>");
+            var string = '';
+            for(var no=1;no<array.length;no++){
+                if(string.length>0)string = string + '<br>';
+                string = string + no;
+            }
+            lineObj.html(string);
+            code.before(lineObj);
+        });
+
+        //4.1 linenum handle
+        $("div.highlighter-header>.code-linenum").each(function (i, e) {
+            var $e = $(e);
+            var $line = $e.parent('.highlighter-header').next('.highlight').find(".line-warp");  //最外层结点。
+            $e.on('click', function () {
+                $line.toggleClass("hide");
+                $line.parent(".highlight").toggleClass("padding-left");
+            });
+        });
+
     };
 
     /**
