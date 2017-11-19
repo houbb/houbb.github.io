@@ -92,7 +92,6 @@ function Base() {
             $e.on('click', function () {
                 $code.toggleClass("hide");
             });
-            
         });
 
 
