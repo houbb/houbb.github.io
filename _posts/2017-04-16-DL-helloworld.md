@@ -3,7 +3,7 @@ layout: post
 title:  DL4j-01-base
 date:  2017-04-16 12:03:32 +0800
 categories: [Deep Learning]
-tags: [AI, DL]
+tags: [AI, DL, neural network]
 header-img: "static/app/res/img/kon-bg.jpeg"
 published: true
 ---
