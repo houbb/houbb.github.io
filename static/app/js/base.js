@@ -96,11 +96,10 @@ function Base() {
 
 
         //4. add linenums
-        $("pre.highlight").addClass("padding-left");    //用户简化是否显示行号的间距
         $('pre.highlight code').each(function (i, e) {
             var code = $(e);
             var array = code.html().split("\n");
-            var lineObj = $("<div class='line-warp'></div>");
+            var lineObj = $("<div class='line-warp hide'></div>");
             var string = '';
             for(var no=1;no<array.length;no++){
                 if(string.length>0)string = string + '<br>';
