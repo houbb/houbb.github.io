@@ -35,6 +35,11 @@ Apache MINA comes with many subprojects :
 
 > [mina 使用心得](http://www.iteye.com/topic/1109234)
 
+> [mina user-guide](http://mina.apache.org/mina-project/userguide/user-guide-toc.html)
+
+> [spring integration](http://jlcon.iteye.com/blog/369028)
+
+> [spring integration-demo](http://blog.csdn.net/qazwsxpcm/article/details/73255909)
 
 # Hello World
 
