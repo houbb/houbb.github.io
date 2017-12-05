@@ -333,6 +333,7 @@ written	1
 
 为了简单起见。本文首先从单个结点部署开始。
 
+> [SingleCluster.html](http://hadoop.apache.org/docs/r2.9.0/hadoop-project-dist/hadoop-common/SingleCluster.html)
 
 ## Prepare
 
