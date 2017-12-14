@@ -22,7 +22,7 @@ and high performance batch jobs through optimization and partitioning techniques
  
 # Quick Start
  
-> [Spring Batch 之 Sample](http://www.cnblogs.com/gulvzhe/archive/2011/10/31/2230655.html)
+> [完整代码](https://github.com/houbb/spring-data/tree/master/spring-batch-hw)
 
 本案例演示如何执行一个步骤，然后执行另一个步骤。
 
