@@ -190,6 +190,16 @@ PD可以对当前文档输出对应的信息。
 
 直接 【Reports】-》【Dictionary】-》【Title-模型物理对象】-》【Title-表集合】-》【Table - %item%】-》【Table Column - 列】
 
+# 逆向工程
+
+一个比较实用的功能。【File】-》【Reverse Engineer】-》【Database】
+
+指定数据库。
+
+
+
+
+
 # CodeSmith
 
 [Codesmith](http://www.codesmithtools.com/) is the best developer tools to get your job done faster and avoid repetitive work.
