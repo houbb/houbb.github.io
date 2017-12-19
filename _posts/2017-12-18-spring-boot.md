@@ -21,7 +21,7 @@ Spring Boot takes an opinionated view of building production ready applications.
 
 # Hello World
 
-> [完整代码](https://github.com/houbb/spring-boot-learn/tree/master/spring-boot-learn-hw) 
+> [完整代码](https://github.com/houbb/spring-boot/tree/master/spring-boot-hello) 
 
 ## 项目结构
 
