@@ -173,6 +173,8 @@ mvn -N versions:update-child-modules
 
 > [Auto-Config](http://openwebx.org/docs/autoconfig.html)
 
+> [简单案例](https://github.com/houbb/springmvc/tree/master/springmvc-autoconfig)
+
 Import in maven
 
 ```xml
