@@ -3,7 +3,7 @@ layout: post
 title:  MongoDB-05-operator
 date:  2017-06-09 23:09:56 +0800
 categories: [SQL]
-tags: [mangodb]
+tags: [sql, nosql]
 published: true
 ---
 

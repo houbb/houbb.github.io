@@ -3,7 +3,7 @@ layout: post
 title:  MongoDB-04-document 
 date:  2017-06-08 23:22:45 +0800
 categories: [SQL]
-tags: [mangodb]
+tags: [sql, nosql]
 published: true
 ---
 

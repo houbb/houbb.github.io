@@ -3,7 +3,7 @@ layout: post
 title:  MongoDB-06-sort, index, aggregate
 date:  2017-06-10 09:35:43 +0800
 categories: [SQL]
-tags: [mangodb]
+tags: [sql, nosql]
 published: true
 ---
 

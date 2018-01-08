@@ -3,7 +3,7 @@ layout: post
 title:  MongoDB-01-install 
 date:  2017-05-31 22:41:22 +0800
 categories: [SQL]
-tags: [mangodb]
+tags: [sql, nosql]
 published: true
 ---
 
