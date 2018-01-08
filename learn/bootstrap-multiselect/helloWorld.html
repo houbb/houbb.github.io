@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>bootstrap-multiselect</title>
+
+    <!-- Include Twitter Bootstrap and jQuery: -->
+    <link rel="stylesheet" href="extra/bootstrap-3.0.3.min.css" type="text/css"/>
+    <script type="text/javascript" src="extra/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="extra/bootstrap-3.0.3.min.js"></script>
+
+    <!-- Include the plugin's CSS and JS: -->
+    <script type="text/javascript" src="extra/bootstrap-multiselect.js"></script>
+    <link rel="stylesheet" href="extra/bootstrap-multiselect.css" type="text/css"/>
+
+</head>
+<body>
+
+<!-- Build your select: -->
+<select class="multiselect" multiple="multiple">
+    <option value="cheese">Cheese</option>
+    <option value="tomatoes">Tomatoes</option>
+    <option value="mozarella">Mozzarella</option>
+    <option value="mushrooms">Mushrooms</option>
+    <option value="pepperoni">Pepperoni</option>
+    <option value="onions">Onions</option>
+</select>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.multiselect').multiselect();
+    });
+
+</script>
+
+</body>
+</html>
