@@ -75,7 +75,7 @@ JUnit 的力量在于编码过程中的单元测试，而 FIT 是更高层次的
 
 ## 传出耦合( CE )
 
-![2018-01-09-better-code-ComponentDiagram-efferentcoup.png]({{ site.url }}/static/app/img/project/better-code/2018-01-09-better-code-ComponentDiagram-excep.pn2018-01-09-better-code-ComponentDiagram-efferentcoup.png)
+![2018-01-09-better-code-ComponentDiagram-efferentcoup.png]({{ site.url }}/static/app/img/project/better-code/2018-01-09-better-code-ComponentDiagram-efferentcoup.png)
 
 `com.acme.ascp.dao` 包完全是具体的；因此它的抽象性为 0。
 
