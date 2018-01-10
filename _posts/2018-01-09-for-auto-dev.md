@@ -71,6 +71,8 @@ Junit + mockito + powerMock
 通过分析代码的度量报告，比如由 [JDepend](http://mcs.une.edu.au/doc/jdepend/docs/JDepend.html) 工具生成的报告， 
 您可以有效地判定代码是否实现了确定的架构。
 
+> [静态检测工具](http://blog.51cto.com/tianya23/415146)
+
 # CI 反模式
 
 > [持续集成反模式](https://www.ibm.com/developerworks/cn/java/j-ap11297/)
