@@ -5,7 +5,6 @@ date:  2018-1-16 15:50:59 +0800
 categories: [Life]
 tags: [reading, it, stay hungry]
 published: true
-stick: true
 ---
 
 
