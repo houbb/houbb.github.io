@@ -330,6 +330,14 @@ into ```$SONAR_HOME/extensions/plugins``` and restart.
 </build>
 ```
 
+
+ps:  排除对 js 的校验，指定属性值。
+
+````
+<!--sonar-->
+<sonar.exclusions>**/*.js</sonar.exclusions>
+````
+
 - run
 
 ```
