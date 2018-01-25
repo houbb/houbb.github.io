@@ -15,6 +15,7 @@ published: true
 注意:
 
 - 新版要求jdk8+
+
 - 新版要求mysql5.6+
 
 [SonarQube](http://www.sonarqube.org/) is an open platform to manage code quality. As such, it covers the 7 axes of code quality:
@@ -25,9 +26,21 @@ published: true
 
 # Install in Windows
 
+## Requirements
+
+确保 jdk/mysql 安装完成。
+
+## 下载
+
 - [Download](http://www.sonarqube.org/downloads/) the sonar
 
-- Run the ```StartSonar.bat``` under **sonarqube-6.1\bin\windows-x86-64**
+当前测试版为 **6.7.1**
+
+## 运行 
+
+约定：`${BASE_DIR}` 为： `D:\Learn\sonar\sonarqube-6.7.1` (本地解压路径)
+
+- Run the ```StartSonar.bat``` under **${BASE_DIR}\bin\windows-x86-64**
 
 ```
 wrapper  | --> Wrapper Started as Console
@@ -47,7 +60,7 @@ jvm 1    |                   application.
 wrapper  | <-- Wrapper Stopped
 ```
 
-My sonarqube version is **6.1**, so we should know what we need:
+My sonarqube version is **6.7.1**, so we should know what we need:
 
 > [Requirements](http://docs.sonarqube.org/display/SONAR/Requirements)
 
@@ -56,7 +69,14 @@ My sonarqube version is **6.1**, so we should know what we need:
 [Download](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 
 and config ```jdk1.8``` for sonar.
 
-You can correctly config the ```jdk1.8``` environment, or directly set the java path in ```sonarqube-6.1\conf\wrapper.conf```  
+
+## 配置
+
+### JDK 配置
+
+You can correctly config the ```jdk1.8``` environment, or directly set the java path in 
+
+```${BASE_DIR}\conf\wrapper.conf```  
 
 ```
 # Path to JVM executable. By default it must be available in PATH.
@@ -64,6 +84,41 @@ You can correctly config the ```jdk1.8``` environment, or directly set the java 
 wrapper.java.command=D:\Program Files\Java\jdk1.8.0_102\bin\java.exe
 #wrapper.java.command=java
 ```
+
+### 数据库配置
+
+- mysql-connector
+
+复制 `mysql-connector-java-5.1.38.jar` 到：
+
+```
+${BASE_DIR}/extensions/jdbc-driver/mysql
+```
+
+- edit ```~/conf/sonar.properties```
+
+在 mysql 中创建数据库 `sonar`，用于存储信息。
+
+```
+# Comment the following lines to deactivate the default embedded database.
+#sonar.jdbc.url: jdbc:derby://localhost:1527/sonar;create=true
+#sonar.jdbc.driverClassName: org.apache.derby.jdbc.ClientDriver
+#sonar.jdbc.validationQuery: values(1)
+
+～～～～～～～～～～～～～～～...～～～～～～～～～～～～～～～～～～
+
+#----- MySQL 5.x/6.x
+# Comment the embedded database and uncomment the following
+#properties to use MySQL. The validation query is optional.
+#sonar.jdbc.validationQuery: select 1
+sonar.jdbc.driverClassName: com.mysql.jdbc.Driver
+sonar.jdbc.url=jdbc:mysql://localhost:3306/sonar?useUnicode=true&characterEncoding=utf8
+sonar.jdbc.username=root
+sonar.jdbc.password=123456
+```
+
+
+## 重启服务
 
 and restart ```StartSonar.bat```
 
@@ -86,7 +141,6 @@ jvm 1    | 2016.10.14 11:51:38 INFO  app[][o.s.p.m.Monitor] Process[ce] is up
 
 Credentials are ```admin/admin```
 
-
 ```
 localhost:9000
 ```
@@ -96,6 +150,51 @@ localhost:9000
 > Shut down
 
 Use ```Ctrl+c``` in bat command.
+
+
+## 测试
+
+- 生成体验命令
+
+根据提示，生成 admin 对应的 token。
+
+勾选 java=》maven 项目
+
+生成体验命令如下：
+
+```
+mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=d1e98b04bdd3efa9fcd139f24fc7162aba80983a
+```
+
+- 项目测试
+
+任意找个 java maven 项目，测试体验：
+
+```
+D:\CODE\_OTHER\netty>mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=1c6e94d365e83d003ccc519e1d341beb922e2d9f
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+......
+[INFO] ANALYSIS SUCCESSFUL, you can browse http://localhost:9000/dashboard/index/com.ryo:netty
+[INFO] Note that you will be able to access the updated dashboard once the server has processed the submitted analysis report
+[INFO] More about the report processing at http://localhost:9000/api/ce/task?id=AWEs50bzKz5jZpakiUaE
+[INFO] Task total time: 12.419 s
+[INFO] ------------------------------------------------------------------------
+[INFO] Reactor Summary:
+[INFO]
+[INFO] netty .............................................. SUCCESS [ 17.062 s]
+[INFO] netty-guide ........................................ SKIPPED
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 17.419 s
+[INFO] Finished at: 2018-01-25T18:40:11+08:00
+[INFO] Final Memory: 30M/509M
+[INFO] ------------------------------------------------------------------------
+```
+
+根据提示，访问[http://localhost:9000/dashboard/index/com.ryo:netty](http://localhost:9000/dashboard/index/com.ryo:netty) 即可看到对应的 QA 结果。
+
 
 # Install in Mac
 
