@@ -176,6 +176,8 @@ OS name: "mac os x", version: "10.12.6", arch: "x86_64", family: "mac"
 
 ## settings.xml
 
+- 用户名/密码
+
 修改 maven 全局配置 `settings.xml`，
 
 ```xml
@@ -190,6 +192,26 @@ OS name: "mac os x", version: "10.12.6", arch: "x86_64", family: "mac"
 
 
 用户名/密码为最初我们在 JIRA(Sonatype) 申请的账户信息。
+
+- GPG 配置
+
+```xml
+<profiles>
+    <profile>
+        <id>release</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        
+        <properties>
+            <gpg.executable>gpg</gpg.executable>
+            <gpg.passphrase>密钥的密码</gpg.passphrase>
+        </properties>
+    </profile>
+</profiles>
+```
+
+配置这个之后就不用每次 GPG 加密手动指定密码了。
 
 ## pom.xml
 
