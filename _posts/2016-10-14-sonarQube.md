@@ -66,17 +66,14 @@ My sonarqube version is **6.7.1**, so we should know what we need:
 
 - JDK1.8 or higher
 
-[Download](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 
-and config ```jdk1.8``` for sonar.
+[Download](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and config ```jdk1.8``` for sonar.
 
 
 ## 配置
 
 ### JDK 配置
 
-You can correctly config the ```jdk1.8``` environment, or directly set the java path in 
-
-```${BASE_DIR}\conf\wrapper.conf```  
+You can correctly config the ```jdk1.8``` environment, or directly set the java path in `${BASE_DIR}\conf\wrapper.conf`
 
 ```
 # Path to JVM executable. By default it must be available in PATH.
@@ -332,6 +329,14 @@ into ```$SONAR_HOME/extensions/plugins``` and restart.
     </plugins>
 </build>
 ```
+
+
+ps:  排除对 js 的校验，指定属性值。
+
+````
+<!--sonar-->
+<sonar.exclusions>**/*.js</sonar.exclusions>
+````
 
 - run
 
