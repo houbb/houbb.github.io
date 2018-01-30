@@ -26,6 +26,8 @@ published: true
 
 - 《深入理解Java虚拟机》
 
+> [开源软件架构](http://www.ituring.com.cn/book/1143)
+
 # Dev Book-List
 
 ## 推荐
