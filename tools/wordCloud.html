@@ -22,6 +22,10 @@
             width: 800px;
             min-height:600px;
         }
+
+        #test {
+            margin-left: 10px;
+        }
     </style>
 
 </head>
@@ -30,7 +34,7 @@
 
     <h1>字体云生成器</h1>
 
-    <p>将需要生成的内容每段使用英文逗号(<b>,</b>)隔开，点击可在下方生成对应的字体云图片(右键可保存图片)</p>
+    <p>将需要生成的内容每段使用英文逗号(<b>,</b>)隔开，点击【生成】可在下方生成对应的字体云图片(右键可保存图片)，点击【测试】按钮可预览。</p>
     <p>例如：你今天真好看,最好的告别,你一生的故事,最后的耍猴人,局外人,夜莺与玫瑰,岛上书店,无声告白</p>
 
     <textarea class="textarea" id="original" placeholder="请输入内容，使用逗号隔开……"></textarea>
@@ -38,6 +42,8 @@
     <br/>
 
     <button id="gen" class="btn">生成</button>
+
+    <button id="test" class="btn">测试</button>
 
     <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
     <div id="word-cloud-img"></div>
@@ -54,48 +60,60 @@
         var myChart = echarts.init(document.getElementById('word-cloud-img'));
 
         /**
-         * 生成字体云
+         * 点击生成按钮
          */
         $("#gen").on('click', function () {
-
             var text = $("#original").val().trim();
             if(text.length <= 0) {
                 console.log("输入内容为空。。。");
             } else {
-                //set css
-                $("#word-cloud-img").css("min-width", "800px").css("min-height", "600px");
-                var option = {
-                    tooltip: {},
-                    series: [ {
-                        type: 'wordCloud',
-                        gridSize: 2,
-                        sizeRange: [12, 50],
-                        rotationRange: [-90, 90],
-                        shape: 'pentagon',
-                        width: 800,
-                        height: 600,
-                        textStyle: {
-                            normal: {
-                                color: function () {
-                                    return 'rgb(' + [
-                                            Math.round(Math.random() * 160),
-                                            Math.round(Math.random() * 160),
-                                            Math.round(Math.random() * 160)
-                                        ].join(',') + ')';
-                                }
-                            },
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowColor: '#333'
-                            }
-                        },
-                        data: buildDataArray(text)
-                    } ]
-                };
-                myChart.setOption(option);
+                genWordCloud(text);
             }
         });
 
+        /**
+         * 点击测试按钮
+         */
+        $("#test").on('click', function () {
+            var text = "你今天真好看,最好的告别,你一生的故事,最后的耍猴人,局外人,夜莺与玫瑰,岛上书店,无声告白";
+            $("#original").val(text);
+            genWordCloud(text);
+        });
+
+        /**
+        * 生成字体云
+        */
+        function genWordCloud(txt) {
+            var option = {
+                tooltip: {},
+                series: [ {
+                    type: 'wordCloud',
+                    gridSize: 2,
+                    sizeRange: [12, 50],
+                    rotationRange: [-90, 90],
+                    shape: 'pentagon',
+                    width: 800,
+                    height: 600,
+                    textStyle: {
+                        normal: {
+                            color: function () {
+                                return 'rgb(' + [
+                                        Math.round(Math.random() * 160),
+                                        Math.round(Math.random() * 160),
+                                        Math.round(Math.random() * 160)
+                                    ].join(',') + ')';
+                            }
+                        },
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowColor: '#333'
+                        }
+                    },
+                    data: buildDataArray(txt)
+                } ]
+            };
+            myChart.setOption(option);
+        }
         /**
          * 构建数据数组
          * @param text
