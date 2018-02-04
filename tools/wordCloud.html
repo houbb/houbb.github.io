@@ -7,14 +7,16 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <title>Word Cloud</title>
 
+    <link rel="stylesheet" href="../static/libs/bootstrap/css/bootstrap.min.css">
+
     <link rel="stylesheet" href="base.css">
 
     <style>
 
         .textarea {
-            width: 600px;
             height: 300px;
             border-top: solid 1px #E5EBEE;
+            margin-bottom: 10px;
         }
 
         #word-cloud-img {
@@ -34,31 +36,41 @@
         #test {
             margin-left: 10px;
         }
+
+        .row {
+            padding-left: 15px;
+        }
     </style>
 
 </head>
 
 <body class="container">
 
-    <h1>字体云生成器</h1>
+    <div class="desc-warp">
+        <h1>字体云生成器</h1>
 
-    <p>将需要生成的内容每段使用英文逗号(<b>,</b>)隔开，点击【生成】可在下方生成预览，点击【保存图片】生成可保存图片。点击【测试】按钮进行预览测试。</p>
-    <p>例如：你今天真好看,最好的告别,你一生的故事,最后的耍猴人,局外人,夜莺与玫瑰,岛上书店,无声告白</p>
+        <p>将需要生成的内容每段使用英文逗号(<b>,</b>)隔开，点击【生成】可在下方生成预览，点击【保存图片】生成可保存图片。点击【测试】按钮进行预览测试。</p>
+        <p>例如：你今天真好看,最好的告别,你一生的故事,最后的耍猴人,局外人,夜莺与玫瑰,岛上书店,无声告白</p>
+    </div>
 
-    <textarea class="textarea" id="original" placeholder="请输入内容，使用逗号隔开……"></textarea>
+    <div class="row">
+        <textarea class="textarea  col-xs-12" id="original" placeholder="请输入内容，使用逗号隔开……"></textarea>
+    </div>
 
-    <br/>
+    <div class="row">
+        <button id="gen" class="btn">生成</button>
 
-    <button id="gen" class="btn">生成</button>
+        <button id="convertCanvasToImage" class="btn">保存图片</button>
 
-    <button id="convertCanvasToImage" class="btn">保存图片</button>
+        <button id="test" class="btn">测试</button>
+    </div>
 
-    <button id="test" class="btn">测试</button>
+    <div class="row">
+        <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+        <div class="col-xs-12" id="word-cloud-img"></div>
 
-    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-    <div id="word-cloud-img"></div>
-
-    <div id="word-cloud-img-actual"></div>
+        <div class="col-xs-12" id="word-cloud-img-actual"></div>
+    </div>
 
 </body>
 
@@ -119,8 +131,6 @@
         * 生成字体云
         */
         function genWordCloud(txt) {
-
-
             var option = {
                 tooltip: {},
                 series: [ {
