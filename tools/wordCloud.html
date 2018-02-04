@@ -14,7 +14,7 @@
     <style>
 
         .textarea {
-            height: 300px;
+            height: 280px;
             border-top: solid 1px #E5EBEE;
             margin-bottom: 10px;
         }
@@ -39,7 +39,6 @@
 
         .row {
             padding-left: 15px;
-            padding-right: 15px;
         }
     </style>
 
@@ -54,8 +53,8 @@
         <p>例如：你今天真好看,最好的告别,你一生的故事,最后的耍猴人,局外人,夜莺与玫瑰,岛上书店,无声告白</p>
     </div>
 
-    <div class="row">
-        <textarea class="textarea  col-xs-12" id="original" placeholder="请输入内容，使用逗号隔开……"></textarea>
+    <div class="row col-xs-12">
+        <textarea class="textarea" id="original" placeholder="请输入内容，使用逗号隔开……" style="width: 100%;"></textarea>
     </div>
 
     <div class="row">
@@ -66,11 +65,11 @@
         <button id="test" class="btn">测试</button>
     </div>
 
-    <div class="row">
+    <div class="row col-xs-12">
         <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
-        <div class="col-xs-12" id="word-cloud-img"></div>
+        <div id="word-cloud-img"></div>
 
-        <div class="col-xs-12" id="word-cloud-img-actual"></div>
+        <div id="word-cloud-img-actual"></div>
     </div>
 
 </body>
