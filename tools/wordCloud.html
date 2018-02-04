@@ -12,15 +12,23 @@
     <style>
 
         .textarea {
-            height: 200px;
             width: 600px;
+            height: 300px;
             border-top: solid 1px #E5EBEE;
         }
 
         #word-cloud-img {
             margin-top: 10px;
             width: 800px;
-            min-height:600px;
+            height: 600px;
+            display: none;
+        }
+
+        #word-cloud-img-actual {
+            margin-top: 10px;
+            width: 800px;
+            height: 600px;
+            display: none;
         }
 
         #test {
@@ -34,7 +42,7 @@
 
     <h1>字体云生成器</h1>
 
-    <p>将需要生成的内容每段使用英文逗号(<b>,</b>)隔开，点击【生成】可在下方生成对应的字体云图片(右键可保存图片)，点击【测试】按钮可预览。</p>
+    <p>将需要生成的内容每段使用英文逗号(<b>,</b>)隔开，点击【生成】可在下方生成预览，点击【保存图片】生成可保存图片。点击【测试】按钮进行预览测试。</p>
     <p>例如：你今天真好看,最好的告别,你一生的故事,最后的耍猴人,局外人,夜莺与玫瑰,岛上书店,无声告白</p>
 
     <textarea class="textarea" id="original" placeholder="请输入内容，使用逗号隔开……"></textarea>
@@ -43,10 +51,14 @@
 
     <button id="gen" class="btn">生成</button>
 
+    <button id="convertCanvasToImage" class="btn">保存图片</button>
+
     <button id="test" class="btn">测试</button>
 
     <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
     <div id="word-cloud-img"></div>
+
+    <div id="word-cloud-img-actual"></div>
 
 </body>
 
@@ -57,7 +69,7 @@
 <script>
     $(function () {
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('word-cloud-img'));
+        var myChart = echarts.init(document.getElementById('word-cloud-img'));;
 
         /**
          * 点击生成按钮
@@ -81,9 +93,34 @@
         });
 
         /**
+         * 点击生成图片按钮
+         */
+        $("#convertCanvasToImage").on('click', function () {
+            var elem = $("#word-cloud-img div:first");
+            if(elem.find("canvas").length <= 0) {
+                console.log("NO canvas found!");
+                return;
+            }
+
+            var image = new Image();
+            image.src = elem.find("canvas")[0].toDataURL("image/png"); // [0]拿到原生的canvas元素
+            image.width = 800;
+            image.height = 600;
+            var actual = $("#word-cloud-img-actual");
+            actual.html("");
+            actual.append(image);
+
+            //1. 状态的切换
+            $("#word-cloud-img").hide();
+            $("#word-cloud-img-actual").show();
+        });
+
+        /**
         * 生成字体云
         */
         function genWordCloud(txt) {
+
+
             var option = {
                 tooltip: {},
                 series: [ {
@@ -113,7 +150,12 @@
                 } ]
             };
             myChart.setOption(option);
+
+            //1. 状态的切换
+            $("#word-cloud-img-actual").hide();
+            $("#word-cloud-img").show();
         }
+
         /**
          * 构建数据数组
          * @param text
