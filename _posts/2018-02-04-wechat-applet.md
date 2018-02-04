@@ -10,7 +10,7 @@ published: true
 
 # WeChat
 
-[SEO 如何入门？](https://www.zhihu.com/question/19808544/answer/18476431)
+[小程序学习](https://www.zhihu.com/question/50907897/answer/128494332)
 
 * any list
 {:toc}
