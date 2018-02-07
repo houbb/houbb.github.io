@@ -3,7 +3,7 @@ layout: post
 title:  BlockChain 01 BitCoin
 date:  2018-2-6 09:18:43 +0800
 categories: [BlockChain]
-tags: [blockchain, bitcoin]
+tags: [blockchain, bit coin]
 published: true
 ---
 
