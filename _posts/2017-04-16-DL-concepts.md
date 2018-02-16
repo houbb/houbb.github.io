@@ -194,7 +194,7 @@ Examples labeled as 9 classified by model as 9: 972 times
 
 <label class="label label-danger">Error</label>
 
-原来运行的时候一直报错。就简单的看了下源代码
+原来运行的时候一直报错。就简单的看了下源代码 `org.deeplearning4j.datasets.fetchers.MnistDataFetcher`
 
 ```java
 if(train) {
