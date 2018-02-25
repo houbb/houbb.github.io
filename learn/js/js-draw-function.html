@@ -1,0 +1,240 @@
+<!-- <!doctype html> -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>js绘制数学函数</title>
+</head>
+
+<body>
+<div id="main" style="border-bottom:solid red 0px;height:100%;width:100%"></div>
+</body>
+
+<script>
+    function $(id){return document.getElementById(id)};
+    /*
+     绘图对象
+     绘图函数，比如画点，线，多边形，圆
+     绘图参数，比如背景颜色，画笔颜色
+     */
+    var Plot = {
+        container : null , //画布
+        ox : 500 , //原点x
+        oy : 300 , //原点y
+        baseLineColor : 'black' , //坐标轴颜色
+        brushColor : 'red' , //画笔颜色
+        brushWeight : 1 , //画笔粗细
+
+        baseLineX : null , // baseLineX 和 baseLineY 用于坐标移位
+        baseLineY : null ,
+
+        //初始化方法
+        init : function(containerId , ox , oy , baseLineColor , brushColor , brushWeight ){
+            if($(containerId)){
+                Plot.container = $(containerId);
+            }else{
+                alert('你必须制定一个区域作为画布！');
+                return;
+            }
+            if((typeof ox) == 'number'){
+                Plot.ox = ox ;
+            }
+            if((typeof oy)== 'number'){
+                Plot.oy = oy ;
+            }
+            Plot.baseLineColor = baseLineColor ;
+            Plot.brushWeight = brushWeight ;
+            Plot.brushColor = brushColor ;
+            Plot.drawCoordinate();
+        },
+
+        //设置原点函数
+        setOPoint : function(ox,oy){
+            Plot.ox = ox ;
+            Plot.oy = oy ;
+            Plot.container.removeChild(Plot.baseLineX) ;
+            Plot.container.removeChild(Plot.baseLineY) ;
+            Plot.drawCoordinate();
+        },
+
+        //设置画笔粗细函数
+        setBrushWeight : function(weight){
+            Plot.brushWeight = weight ;
+        },
+        setBrushColor : function(color){
+            Plot.brushColor = color ;
+        },
+
+        // 画坐标轴
+        drawCoordinate : function(){
+            var baseLineX = document.createElement('div') ;
+            baseLineX.style.position = 'absolute' ;
+            baseLineX.style.left = 0 ;
+            baseLineX.style.top = Plot.oy ;
+            baseLineX.style.fontSize = '1px' ;
+            baseLineX.style.height = '1px' ;
+            baseLineX.style.width = '100%' ;
+            baseLineX.style.overflow = 'hidden' ;
+            baseLineX.style.backgroundColor = Plot.baseLineColor ;
+            Plot.container.appendChild(baseLineX) ;
+            Plot.baseLineX = baseLineX ;
+
+            var baseLineY = document.createElement('div') ;
+            baseLineY.style.position = 'absolute' ;
+            baseLineY.style.left = Plot.ox ;
+            baseLineY.style.top = 0 ;
+            baseLineY.style.fontSize = '1px' ;
+            baseLineY.style.height = '100%' ;
+            baseLineY.style.width = '1px' ;
+            baseLineY.style.overflow = 'hidden' ;
+            baseLineY.style.backgroundColor = Plot.baseLineColor ;
+            Plot.baseLineY = baseLineY ;
+            Plot.container.appendChild(baseLineY) ;
+        },
+
+        //清理画布
+        clean : function(){
+            Plot.container.innerHTML = '' ;
+            Plot.drawCoordinate() ;
+        },
+
+        //画点，相对原点
+        drawDot : function(x,y){
+            var dot = document.createElement('div') ;
+            dot.style.left = Plot.ox + x + 'px' ;
+            dot.style.top = Plot.oy - y + 'px' ;
+            dot.style.height = Plot.brushWeight ;
+            dot.style.width = Plot.brushWeight ;
+            dot.style.position = 'absolute' ;
+            dot.style.fontSize = '1px' ;
+            dot.style.backgroundColor = Plot.brushColor ;
+            dot.style.overflow = 'hidden' ;
+            Plot.container.appendChild(dot) ;
+            dot = null ;
+
+        },
+
+        //sin函数，传入角度
+        sin : function(angle){
+            for(var i=0 ; i<angle ; i++){
+                Plot.drawDot(i,Math.sin(i/180*Math.PI)*100) ;
+            }
+        },
+
+        // cos函数，传入角度
+        cos : function(angle){
+            for(var i = 0 ; i < angle ; i++){
+                Plot.drawDot(i,Math.cos(i/180*Math.PI)*100)
+            }
+        },
+
+        //tan函数
+        tan : function(){
+            for(var i=0 ; i<720 ; i++){
+                if(Math.tan(i/180*Math.PI)*100>Plot.oy){
+                    continue ;
+                }
+                Plot.drawDot(i,Math.tan(1/180*Math.PI)*50);
+            }
+        },
+
+        //画线 从 (x0,y0) 到 (x1,y1)
+        line : function(x0,y0,x1,y1){
+            // 竖线
+            if((x1-x0)==0){
+                for(var i=((y1>y0)?y0:y1) ; i<((y1>y0)?y1:y0); i++ ){
+                    Plot.drawDot(x1,i);
+                };
+                return;
+            };
+            //横线
+            if((y1-y0)==0){
+                for( var i=((x1>x0)?x0:x1); i<((x1>x0)?x1:x0); i++ ){
+                    Plot.drawDot(i,y1);
+                };
+                return;
+            };
+            //斜线
+            //K=斜率，直线方程 y=kx + b;
+            var k = (y1-y0)/(x1-x0) ;
+            if(k<=1){
+                for(var i=((x1>x0) ? x0 : x1); i<((x1>x0) ? x1 : x0 );i++){
+                    Plot.drawDot(i,k*i+y1-k*x1);
+                };
+            }else{
+                for(var i=((y1>y0)?y0:y1) ; i<((y1>y0)?y1:y0) ; i++){
+                    Plot.drawDot((i-y1+k*x1)/k,i) ;
+
+                };
+            };
+            return;
+        },
+
+        // 画圆，radius是半径，（xi,yi）为圆心
+        circle : function(radius,xi,yi){
+            if((typeof xi)=='undefined'){
+                xi = 0 ;
+            };
+            if((typeof yi)=='undefined'){
+                yi = 0 ;
+            };
+            // 以i为角度,从0到360
+            var i = 0 ;
+            while(i<360){
+                var _x0 = Math.sin(i/180*Math.PI)*radius ;
+                var _y0 = Math.cos(i/180*Math.PI)*radius ;
+                var step = radius/100 ; // 使画出来的圆更圆润
+                if(1/step > 1){
+                    step = 1 ;
+                }else if(1/step < 0.2){
+                    step = 0.2 ;
+                }else{
+                    step = 1/step ;
+                };
+                Plot.drawDot(_x0+xi,_y0+yi) ;
+                i = i + step ;
+            }
+        },
+
+        //画多边形
+        polygon : function(dots){
+            if(typeof dots == 'undefined'){
+                alert('你应该指定一些点画多边形') ;
+                return ;
+            };
+            if(dots.constructor != Array){
+                alert('你应该指定一些点画多边形') ;
+                return ;
+            };
+            for(var i = 0 ; i < dots.length-1 ; i++){
+                Plot.line(dots[i].x , dots[i].y , dots[i+1].x , dots[i+1].y);
+                if(i ==1 && dots.length==2){break;}
+            };
+            Plot.line(dots[0].x, dots[0].y, dots[dots.length-1].x, dots[dots.length-1].y);
+        },
+    }
+</script>
+
+
+
+<!-- test -->
+<script>
+    Plot.init('main',500, 500,'green','red',1);
+    Plot.sin(720);
+    Plot.setBrushWeight(3);
+    // Plot.cos(720);
+    // Plot.setBrushWeight(2);
+    // Plot.circle(200,100,100);
+    // Plot.setBrushColor('purple');
+    // Plot.circle(100,100,100);
+    // Plot.setBrushColor('blue');
+    // Plot.circle(50,100,100);
+    // var t = new Array();
+    // var dots = new Array();
+    // dots[0] = {x:-10,y:-10};
+    // dots[1] = {x:400,y:10};
+    // dots[2] = {x:400,y:300};
+    // dots[3] = {x:10,y:300};
+    // Plot.polygon(dots);
+</script>
+
+</html>
