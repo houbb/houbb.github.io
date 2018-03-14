@@ -440,6 +440,32 @@ Visit ```http://localhost:9000/dashboard/index/com.ryo:git-demo```, you can see
 </properties>
 ```
 
+
+## 常见异常
+
+- 没有找到编译后的信息，报错如下：
+
+```
+[ERROR] Failed to execute goal org.sonarsource.scanner.maven:sonar-maven-plugin:3.1.1:sonar (default-cli) on project i2_crc: Please provide compiled classes of your p
+roject with sonar.java.binaries property -> [Help 1]
+```
+
+配置修改如下：
+
+```xml
+</properties>
+    <!--sonar-->
+    <sonar.java.binaries>target/classes</sonar.java.binaries>
+    <sonar.exclusions>**/*Test.java</sonar.exclusions>
+</properties>
+```
+
+运行：
+
+```
+mvn clean install sonar:sonar
+```
+
 # Use
 
 - Chinese pack
