@@ -28,6 +28,16 @@ published: true
 
 > [开源软件架构](http://www.ituring.com.cn/book/1143)
 
+## Longer
+
+- 《HTTP 权威指南》
+
+servlet + 手写 mvc 框架
+
+- 《高性能 MySQL》
+
+jdbc 手写 orm 框架
+
 # Dev Book-List
 
 ## 产品设计
