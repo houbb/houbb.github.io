@@ -16,6 +16,22 @@ published: true
 
 # Reading List
 
+## HTTP 深入学习
+
+《HTTP 权威指南》
+
+## MySQL 深入学习
+
+[MySQL 学习推荐书籍](https://www.zhihu.com/question/28385400)
+
+## JS 深入学习
+
+[JS 必读的 12 本书](http://www.360doc.com/content/16/1013/17/32626470_598171203.shtml)
+
+## CSS 深入学习
+
+《CSS 权威指南》
+
 ## Eager 
 
 - 《轻松学习多线程编程》
