@@ -11,7 +11,9 @@ published: true
 
 有时候，我们希望对某一个文件(文件夹)的变化做监听，自动实现起来未免会出现问题。
 
-JDK 已经为我们提供了非常好用的方式 [WatchService](https://docs.oracle.com/javase/tutorial/essential/io/notification.html)
+JDK 已经为我们提供了非常好用的方式 [WatchService](https://docs.oracle.com/javase/7/docs/api/java/nio/file/WatchService.html)
+
+> [notification](https://docs.oracle.com/javase/tutorial/essential/io/notification.html)
 
 # WatchService
 
