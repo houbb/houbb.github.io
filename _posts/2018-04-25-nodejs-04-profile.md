@@ -4,7 +4,7 @@ title:  NodeJs-04 Profile, Docker
 date:  2018-04-25 14:05:12 +0800
 categories: [NodeJs]
 tags: [js, nodejs]
-published: false
+published: true
 ---
 
 # Profile
@@ -160,13 +160,111 @@ npm-debug.log
 $ docker build -t ryo/node-web-app .
 ```
 
+
 运行日志：
 
+运行时需要下载东西，需要等待
+
+```
+Sending build context to Docker daemon  19.46kB
+Step 1/7 : FROM node:carbon
+carbon: Pulling from library/node
+f2b6b4884fc8: Pull complete
+4fb899b4df21: Pull complete
+74eaa8be7221: Pull complete
+2d6e98fe4040: Pull complete
+452c06dec5fa: Pull complete
+7b3c215894de: Pull complete
+094529398b79: Pull complete
+449fe646e95b: Pull complete
+Digest: sha256:26e4c77f9f797c3993780943239fa79419f011dd93ae4e0097089e2145aeaa24
+Status: Downloaded newer image for node:carbon
+ ---> 4635bc7d130c
+Step 2/7 : WORKDIR /Users/houbinbin/IT/learn/nodejs/docker
+Removing intermediate container 93d8a67037ea
+ ---> b2c2860c3e45
+Step 3/7 : COPY package*.json ./
+ ---> 3d56e8b7c31d
+Step 4/7 : RUN npm install
+ ---> Running in 5a1d1727f8b7
+npm WARN docker_web_app@1.0.0 No repository field.
+npm WARN docker_web_app@1.0.0 No license field.
+
+added 50 packages in 2.855s
+Removing intermediate container 5a1d1727f8b7
+ ---> 4733df210d6a
+Step 5/7 : COPY . .
+ ---> ae01567caa9a
+Step 6/7 : EXPOSE 8080
+ ---> Running in 389a701bb420
+Removing intermediate container 389a701bb420
+ ---> ef93c9dda34a
+Step 7/7 : CMD [ "npm", "start" ]
+ ---> Running in d96d7e79b0cd
+Removing intermediate container d96d7e79b0cd
+ ---> 0aad7ad8e102
+Successfully built 0aad7ad8e102
+Successfully tagged ryo/node-web-app:latest
+```
+
+- 罗列镜像
+
+```
+$   docker images
+```
+
+结果
+
+```
+REPOSITORY                       TAG                 IMAGE ID            CREATED             SIZE
+ryo/node-web-app                 latest              0aad7ad8e102        30 seconds ago      675MB
+```
+
+## 运行镜像
+
+- 运行
+
+```
+$ docker run -p 49860:8080 -d ryo/node-web-app
+```
+
+- ps
+
+```
+$   docker ps
+CONTAINER ID        IMAGE                            COMMAND                  CREATED             STATUS              PORTS                                                                     NAMES
+9398f1a6a83e        ryo/node-web-app                 "npm start"              9 seconds ago       Up 7 seconds        0.0.0.0:49860->8080/tcp                                                   objective_dijkstra
 ```
 
 ```
+$ docker logs 9398f1a6a83e
 
-- 罗列
+> docker_web_app@1.0.0 start /Users/houbinbin/IT/learn/nodejs/docker
+> node server.js
 
+Running on http://0.0.0.0:8080
+```
 
+## Test
+
+```
+$   curl -i localhost:49860
+```
+
+结果
+
+```
+HTTP/1.1 200 OK
+X-Powered-By: Express
+Content-Type: text/html; charset=utf-8
+Content-Length: 12
+ETag: W/"c-M6tWOb/Y57lesdjQuHeB1P/qTV0"
+Date: Wed, 25 Apr 2018 13:11:13 GMT
+Connection: keep-alive
+
+Hello world
+```
+
+* any list
+{:toc}
 
