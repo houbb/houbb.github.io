@@ -163,7 +163,236 @@ poll 阶段有两个主要功能:
 
 如果一个套接字或句柄被突然关闭(例如，socket.destroy())，“关闭”事件将在此阶段发出。否则，它将通过 `process.nextTick()` 发出。
 
-# TODO...
+# setImmediate() vs setTimeout()
+
+- `setImmediate()` is designed to execute a script once the current poll phase completes.
+
+- `setTimeout()` schedules a script to be run after a minimum threshold in ms has elapsed.
+
+执行计时器的顺序将根据调用它们的上下文而变化。
+如果两个都是从主模块中调用，那么时间将受到进程性能的约束(这可能会受到运行在机器上的其他应用程序的影响)。
+
+## 执行顺序-不在 IO 循环
+
+例如，如果我们运行的脚本不是在I/O循环中(即主模块)，那么执行两个定时器的顺序是不确定的，因为它受过程性能的约束:
+
+- code
+
+```js
+// timeout_vs_immediate.js
+setTimeout(() => {
+  console.log('timeout');
+}, 0);
+
+setImmediate(() => {
+  console.log('immediate');
+});
+```
+
+- 测试 & 结果
+
+```
+$ node timeout_vs_immediate.js
+timeout
+immediate
+
+$ node timeout_vs_immediate.js
+immediate
+timeout
+```
+
+## 执行顺序-在 IO 循环
+
+如果二者都在 IO 循环中，**immediate callback 永远首先被执行**。(这也正是优点)
+
+```js
+// timeout_vs_immediate.js
+const fs = require('fs');
+
+fs.readFile(__filename, () => {
+  setTimeout(() => {
+    console.log('timeout');
+  }, 0);
+  setImmediate(() => {
+    console.log('immediate');
+  });
+});
+```
+
+- 测试 & 结果
+
+```
+$ node timeout_vs_immediate.js
+immediate
+timeout
+
+$ node timeout_vs_immediate.js
+immediate
+timeout
+```
+
+# process.nextTick()
+
+## 理解
+
+您可能已经注意到，尽管它是异步API的一部分，但在图中没有显示 `process.nextTick()`。
+这是因为 `process.nextTick()` 在技术上不是事件循环的一部分。
+相反，不管事件循环的当前阶段如何，nextTickQueue 将在当前操作完成后进行处理。
+
+回头看我们的图表，任何时候调用 `process.nextTick()` 在给定的阶段，所有回调都传递给 `process.nextTick()` 将在事件循环继续之前得到解决。
+这可能会造成一些糟糕的情况，因为它允许您通过递归 `process.nextTick()` 调用来“饿死”您的I/O，从而阻止事件循环到达 poll 阶段。
+
+## Why would that be allowed?
+
+为什么会有这样的东西包含在Node.js中?
+
+它的一部分是设计理念，API应该始终是异步的，即使在不需要的地方也是如此。以这个代码片段为例:
+
+```js
+function apiCall(arg, callback) {
+  if (typeof arg !== 'string')
+    return process.nextTick(callback,
+                            new TypeError('argument should be string'));
+}
+```
+
+该代码段执行一个参数检查，如果它不正确，它将把错误传递给回调。
+最近更新的API允许将参数传递给 `process.nextTick()`，允许它在回调后传递的任何参数作为回调的参数，这样就不必嵌套函数了。
+
+我们所做的是将错误传递给用户，但只有在我们允许用户代码的其余部分执行之后。
+通过使用 `process.nextTick()`，我们保证 apiCall()总是在用户代码的其余部分和事件循环允许进行之前运行它的回调。
+为了实现这一点，JS调用堆栈允许unwind，然后立即执行所提供的回调，
+允许一个人在没有到达RangeError的情况下对 `process.nextTick()`进行递归调用。
+
+## 潜在问题
+
+这种理念(philosophy)会导致一些潜在的问题。以这个片段为例:
+
+```js
+let bar;
+
+// this has an asynchronous signature, but calls callback synchronously
+function someAsyncApiCall(callback) { callback(); }
+
+// the callback is called before `someAsyncApiCall` completes.
+someAsyncApiCall(() => {
+  // since someAsyncApiCall has completed, bar hasn't been assigned any value
+  console.log('bar', bar); // undefined
+});
+
+bar = 1;
+```
+
+用户定义了一些 `someAsyncApiCall()` 且此方法拥有异步的名称，但是它实际上是同步操作的。
+当它被调用时，提供给someAsyncApiCall()的回调被调用在事件循环的同一阶段，因为someAsyncApiCall()实际上并没有异步地做任何事情。
+因此，回调尝试引用bar，尽管它在范围内可能没有那个变量，因为脚本无法运行到完成。
+
+通过将回调放在一个process.nextTick()中，脚本仍然具有运行到完成的能力，允许在调用回调之前对所有变量、函数等进行初始化。
+它还具有不允许事件循环继续的优点。在允许事件循环继续之前，提醒用户注意错误可能是有用的。下面是使用process.nextTick()的前一个示例:
+
+```js
+let bar;
+
+function someAsyncApiCall(callback) {
+  process.nextTick(callback);
+}
+
+someAsyncApiCall(() => {
+  console.log('bar', bar); // 1
+});
+
+bar = 1;
+```
+
+### 其他的例子
+
+```js
+const server = net.createServer(() => {}).listen(8080);
+
+server.on('listening', () => {});
+```
+
+当仅通过一个端口时，端口立即被绑定。因此，可以立即调用“监听”回调。问题是，在那个时候没有设置 `.on('listening')` 回调。
+
+为了解决这个问题，`listening` 事件将在nextTick()中排队，以允许脚本运行到完成。这允许用户设置他们想要的任何事件处理程序。
+
+# process.nextTick() vs setImmediate()
+
+- process.nextTick() fires immediately on the same phase
+
+- setImmediate() fires on the following iteration or 'tick' of the event loop
+
+
+本质上，名称应该被交换。nextTick() 比setImmediate()更容易触发，但这是过去的一个工件，不太可能发生变化。
+做这个开关会在npm上破坏大量的软件包。每天都有更多的新模块被添加进来，这意味着我们每天都在等待，更多潜在的破坏发生。
+虽然他们很困惑，但名字本身不会改变。
+
+我们建议开发人员在**所有情况下使用setImmediate()**，因为它更容易推理(而且它会导致代码与更广泛的环境兼容，比如浏览器JS)。
+
+# Why use process.nextTick()?
+
+主要2个原因：
+
+1. 允许用户处理错误，清除任何不必要的资源，或者在事件循环继续之前尝试再次请求。
+
+2. 有时，有必要允许回调在调用堆栈解除后运行，但在事件循环继续之前。
+
+## 符合用户期望的例子
+
+```js
+const server = net.createServer();
+server.on('connection', (conn) => { });
+
+server.listen(8080);
+server.on('listening', () => { });
+```
+
+listen()是在事件循环的开头运行的，但是监听回调被放置在setImmediate()中。
+除非通过了主机名，否则将立即绑定到端口。对于要进行的事件循环，它必须击中轮询阶段，这意味着有一个非零的机会，
+连接可以被接收，允许连接事件在监听事件之前被触发。
+
+## 另一个例子
+
+另一个示例是运行一个函数构造函数，继承自 EventEmitter ，并希望在构造函数中调用事件:
+
+```js
+const EventEmitter = require('events');
+const util = require('util');
+
+function MyEmitter() {
+  EventEmitter.call(this);
+  this.emit('event');
+}
+util.inherits(MyEmitter, EventEmitter);
+
+const myEmitter = new MyEmitter();
+myEmitter.on('event', () => {
+  console.log('an event occurred!');
+});
+```
+
+您不能立即从构造函数中发出事件，因为脚本不会处理到用户为该事件分配回调的位置。
+因此，在构造函数本身中，您可以使用process.nextTick()来设置一个回调以在构造函数完成后发出事件，它提供了预期的结果:
+
+```js
+const EventEmitter = require('events');
+const util = require('util');
+
+function MyEmitter() {
+  EventEmitter.call(this);
+
+  // use nextTick to emit the event once a handler is assigned
+  process.nextTick(() => {
+    this.emit('event');
+  });
+}
+util.inherits(MyEmitter, EventEmitter);
+
+const myEmitter = new MyEmitter();
+myEmitter.on('event', () => {
+  console.log('an event occurred!');
+});
+```
 
 * any list
 {:toc}
