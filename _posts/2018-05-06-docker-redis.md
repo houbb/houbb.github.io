@@ -21,7 +21,6 @@ published: true
 
 - 下载命令 
 
-
 ```
 docker pull redis
 ```
@@ -64,6 +63,46 @@ redis:6379>
 redis:6379> info
 ```
 
+# docker 端口暴露
+
+> [docker 端口暴露](https://blog.csdn.net/wanglei_storage/article/details/48471753)
+
+```
+docker run -p 6379:6379 --name out-redis -d redis
+```
+
+将容器的 6379 暴露到 外部 6379。
+
+## 查看
+
+```
+$ docker ps
+
+CONTAINER ID        IMAGE               COMMAND                  CREATED                  STATUS              PORTS                    NAMES
+23fc6d14c62b        redis               "docker-entrypoint.s…"   Less than a second ago   Up 2 seconds        0.0.0.0:6379->6379/tcp   out-redis
+b430f08c9bcd        redis               "docker-entrypoint.s…"   4 hours ago              Up 4 hours          6379/tcp                 some-redis
+```
+
+
+
+**out-redis** 就是对于外部可见的。
+
+**some-redis** 对于外部不可见。
+
+- 查看端口信息
+
+```
+docker port ${container_id}
+```
+
+例子：
+
+```
+$ docker port 23fc6d14c62b
+
+6379/tcp -> 0.0.0.0:6379
+```
+
 # 指定 conf
 
 - 下载地址
@@ -75,7 +114,6 @@ redis:6379> info
 此处给出修改后的配置 [redis.conf]({{ site.url }}/static/app/res/redis/redis.conf)
 
 ### 指定
-
 
 - 创建文件夹
 
