@@ -44,7 +44,7 @@ docker run --name my-redis -d redis
 
 
 ```
-docker run -it --link some-redis:redis --rm redis redis-cli -h redis -p 6379
+docker run -it --link my-redis:redis --rm redis redis-cli -h redis -p 6379
 ```
 
 可以直接进入命令行
