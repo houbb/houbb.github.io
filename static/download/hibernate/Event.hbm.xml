@@ -1,6 +1,0 @@
-<hibernate-mapping package="com.ryo.model">
-    <class name="Event" table="EVENT"> <id name="id" column="EVENT_ID">
-        <generator class="native"/> </id>
-        <property name="date" type="timestamp" column="EVENT_DATE"/>
-        <property name="title"/> </class>
-</hibernate-mapping>
