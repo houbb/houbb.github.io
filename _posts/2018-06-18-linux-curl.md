@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Curl
+title:  Linux curl
 date:  2018-06-18 16:20:44 +0800
-categories: [Tool]
-tags: [tool]
+categories: [Linux]
+tags: [tool, shell, linux]
 published: true
 ---
 
