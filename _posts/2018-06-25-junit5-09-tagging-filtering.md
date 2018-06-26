@@ -51,6 +51,32 @@ public class TagDemo {
 }
 ```
 
+# Tag 表达式
+
+标签表达式是具有运算符`!` `&`和`|`的布尔表达式。此外，`(` 和 `)` 可以用于调整操作符的优先级。
+
+## 操作符号(按优先级的降序排列)
+
+| 操作符 |	意思 | 结合性 | 
+|:---|:---|:---|
+| ! | not | 右边 |
+| & | and | 左边 |
+| `|` | or | 左边 |
+
+如果您正在跨多个维度标记您的测试，标记表达式将帮助您选择要执行哪些测试。
+根据测试类型(例如，micro, integration，端到端)和特性(例如foo, bar, baz)标记以下标记表达式是有用的。
+
+- 示例
+
+| TAG 表达式 | 选中 |
+| `foo` | all tests for foo |
+| `bar | baz` | all tests for bar plus all tests for baz |
+| `bar & baz` | all tests for the interaction between bar and baz |
+| `foo & !end-to-end` | all tests for foo, but not the end-to-end tests |
+| `(micro | integration) & (foo | baz)` | all micro or integration tests for foo or baz |
+
+
+
 
 
 
