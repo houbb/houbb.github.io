@@ -23,7 +23,7 @@ DynamicNode的可实例化子类是DynamicContainer和DynamicTest。DynamicConta
 
 动态测试是在运行时生成的测试用例。它由显示名和可执行文件组成。可执行文件是一个@FunctionalInterface，这意味着动态测试的实现可以作为lambda表达式或方法引用提供。
 
-## 声明周期
+## 生命周期
 
 动态测试的执行生命周期与标准的@测试用例的执行生命周期完全不同。特别地，对于单个动态测试没有生命周期回调。
 这意味着@BeforeEach和@AfterEach方法及其对应的扩展回调对于@TestFactory方法执行，而不是对每个动态测试执行。
