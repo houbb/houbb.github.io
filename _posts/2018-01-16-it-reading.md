@@ -16,13 +16,22 @@ published: true
 
 # Reading List
 
+
+## 优秀的书籍
+
+《设计模式之禅》
+
 ## HTTP 深入学习
 
-《HTTP 权威指南》
+- 《HTTP 权威指南》
 
-## MySQL 深入学习
+Done. 2018
+
+## SQL 深入学习
 
 [MySQL 学习推荐书籍](https://www.zhihu.com/question/28385400)
+
+《Architecture of a Database System》
 
 ## JS 深入学习
 
@@ -71,7 +80,21 @@ jdbc 手写 orm 框架
 
 - 《图灵程序设计丛书 算法》
 
+- 《Spoken Language Processing: A Guide to Theory, Algorithm and System Development》
+
+
+- 《Reinforcement Learning: An Introduction》
+
+## 机器学习
+
+- 《机器学习导论》
+
+- 《Machine Learning: A Probabilistic Perspective》
+
+
 ## 程序调试/测试
+
+- 《Effective Software Testing》
 
 - 《调试九法——软硬件错误的排查之道》
 
@@ -94,6 +117,8 @@ jdbc 手写 orm 框架
 - 《奇思妙想：15 位计算机天才及其重大发现》
 
 - 《编程人生》
+
+
 
 ## 界面设计
 
@@ -143,6 +168,12 @@ Done. 有时间可以再看一遍。
 - 《Java性能权威指南》
 
 精读。
+
+## 其他
+
+- 《Programming Rust》
+
+新的语言
 
 # Done
 
