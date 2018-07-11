@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Java Method
+title:  Java Get Method
 date:  2017-09-05 19:56:51 +0800
 categories: [Java]
 tags: [java, reflect]
