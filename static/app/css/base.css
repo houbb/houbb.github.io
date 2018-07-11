@@ -1,5 +1,7 @@
 html {
-    font-family: sans-serif; /* 1 */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    SimSun, sans-serif; /* 1 */
     -ms-text-size-adjust: 100%; /* 2 */
     -webkit-text-size-adjust: 100%; /* 2 */
 }
@@ -104,10 +106,12 @@ svg:not(:root) {
 /*font size*/
 .f12 {
     font-size: 12px;
+    line-height: 20px;
 }
 
 .f14 {
     font-size: 14px;
+    line-height: 22px;
 }
 
 
