@@ -16,6 +16,12 @@ Node.js uses an event-driven, non-blocking I/O model that makes it lightweight a
 Node.js' package ecosystem, npm, is the largest ecosystem of open source libraries in the world.
 
 
+# 相关教程
+
+> [正确学习 node](https://i5ting.github.io/How-to-learn-node-correctly/)
+
+
+
 # 安装
 
 - 安装
