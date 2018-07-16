@@ -148,5 +148,7 @@ docker run -d -p 6379:6379 --name redis -v  ~/docker/redis:/var/lib/redis redis 
 
 > [docker 官方的 redis 镜像如何指定配置文件](https://segmentfault.com/q/1010000008272753)
 
+> [docker 安装部署 redis（配置文件启动）](https://segmentfault.com/a/1190000014091287)
+
 * any list
 {:toc}
