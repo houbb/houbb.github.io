@@ -384,6 +384,43 @@ If your can't read the following text, specify correct one like this:
  -v,--verbose                显示更多信息
 ```
 
+## 可执行 jar
+
+- xml 引入
+
+```xml
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-assembly-plugin</artifactId>
+	<version>2.5.5</version>
+	<configuration>
+		<archive>
+			<manifest>
+				<mainClass>com.xxg.Main</mainClass>
+			</manifest>
+		</archive>
+		<descriptorRefs>
+			<descriptorRef>jar-with-dependencies</descriptorRef>
+		</descriptorRefs>
+	</configuration>
+	<executions>
+		<execution>
+			<id>make-assembly</id>
+			<phase>package</phase>
+			<goals>
+				<goal>single</goal>
+			</goals>
+		</execution>
+	</executions>
+</plugin>
+```
+
+- 命令行执行
+
+```sh
+$   mvn package
+```
+
 
 
 
