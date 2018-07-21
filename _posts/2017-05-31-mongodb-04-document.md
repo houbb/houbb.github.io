@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  MongoDB-04-document 
-date:  2017-06-08 23:22:45 +0800
+date:  2017-05-31 13:41:22 +0800
 categories: [SQL]
-tags: [sql, nosql]
+tags: [sql, nosql, mongodb]
 published: true
 ---
 
@@ -360,6 +360,8 @@ MongoDB OR 条件语句使用了关键字 `$or`, 语法格式如下：
 ```
 
 
+* any list
+{:toc}
 
 
 

@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  MongoDB-01-install 
-date:  2017-05-31 22:41:22 +0800
+date:  2017-05-31 10:41:22 +0800
 categories: [SQL]
-tags: [sql, nosql]
+tags: [sql, nosql, mongodb]
 published: true
 ---
 
@@ -228,10 +228,11 @@ Server has startup warnings:
 
 
 ```
-> show bds
+> show dbs
 admin  0.000GB
 local  0.000GB
 ```
+
 
 
 

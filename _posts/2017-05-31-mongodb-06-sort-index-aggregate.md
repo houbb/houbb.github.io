@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  MongoDB-06-sort, index, aggregate
-date:  2017-06-10 09:35:43 +0800
+date:  2017-05-31 15:41:22 +0800
 categories: [SQL]
-tags: [sql, nosql]
+tags: [sql, nosql, mongodb]
 published: true
 ---
 
@@ -215,3 +215,6 @@ db.article.aggregate(
 ```
 
 经过$skip管道操作符处理后，前五个文档被"过滤"掉。
+
+* any list
+{:toc}

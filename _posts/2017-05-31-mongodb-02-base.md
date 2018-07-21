@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  MongoDB-02-base 
-date:  2017-06-01 22:55:34 +0800
+date:  2017-05-31 11:41:22 +0800
 categories: [SQL]
-tags: [sql, nosql]
+tags: [sql, nosql, mongodb]
 published: true
 ---
 
