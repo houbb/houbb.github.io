@@ -9,9 +9,13 @@ published: true
 
 # Http RESTful
 
+# 参考信息
+
 > [理解RESTful架构](http://www.ruanyifeng.com/blog/2011/09/restful.html)
 
 > [怎样用通俗的语言解释REST，以及RESTful？](https://www.zhihu.com/question/28557115)
+
+> [restfulapi](https://restfulapi.net/)
 
 * any list
 {:toc}
