@@ -57,8 +57,7 @@ Java应用程序默认在一个进程中运行。在Java应用程序中，您可
 
 # 参考资料
 
-[Java Concurrency](https://howtodoinjava.com/java-concurrency-tutorial/)
-
+https://howtodoinjava.com/java-concurrency-tutorial/
 
 * any list
 {:toc}

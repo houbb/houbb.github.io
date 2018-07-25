@@ -3,7 +3,7 @@ layout: post
 title:  Java Concurrency-05-lock intro 
 date:  2018-07-24 16:11:28 +0800
 categories: [Java]
-tags: [java, concurrency, thread]
+tags: [java, concurrency, thread, lock]
 published: true
 ---
 
@@ -81,15 +81,30 @@ ReentrantReadWriteLock中定义了2个内部类，`ReentrantReadWriteLock.ReadLo
 
 可以调用写入锁的 `newCondition()` 方法获取与该写入锁绑定的 Condition 对象，此时与普通的互斥锁并没有什么区别，但是调用读取锁的 newCondition() 方法将抛出异常。
 
+
+# 可重入锁、不可重入锁
+
+## 可重入锁
+
+可重入锁：即某个线程获得了锁之后，在锁释放前，它可以多次重新获取该锁。
+
+可重入锁解决了**重入死锁**的问题。
+
+java 的内置锁 `synchronized` 和 `ReentrantLock` 都是可重入锁
+
+## 不可重入锁
+
+不可重入锁（自旋锁）：不可以再次进入方法A，也就是说获得锁进入方法A是此线程在释放锁钱唯一的一次进入方法A。
+
 # 参考文档
 
-[深入理解乐观锁与悲观锁](http://www.hollischuang.com/archives/934)
+http://www.hollischuang.com/archives/934
 
-[数据库的锁机制](http://www.hollischuang.com/archives/909)
+http://www.hollischuang.com/archives/909
 
-[Java高效并发之乐观锁悲观锁、（互斥同步、非互斥同步）](https://blog.csdn.net/truelove12358/article/details/54963791)
+https://blog.csdn.net/truelove12358/article/details/54963791
 
-[Java中的锁-悲观锁、乐观锁，公平锁、非公平锁，互斥锁、读写锁](https://blog.csdn.net/loongshawn/article/details/76985272)
+https://blog.csdn.net/loongshawn/article/details/76985272
 
 * any list
 {:toc}

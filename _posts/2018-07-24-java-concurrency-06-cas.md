@@ -306,15 +306,15 @@ Java中的线程安全问题至关重要，要想保证线程安全，就需要�
 
 # 参考文档
 
-[JAVA CAS原理深度分析](http://zl198751.iteye.com/blog/1848575)
+http://zl198751.iteye.com/blog/1848575
 
-[深入浅出CAS](https://www.jianshu.com/p/fb6e91b013cc)
+https://www.jianshu.com/p/fb6e91b013cc
 
-[Java并发编程之CAS](http://ifeve.com/compare-and-swap/)
+http://ifeve.com/compare-and-swap/
 
-[乐观锁的一种实现方式——CAS](http://www.importnew.com/20472.html)
+http://www.importnew.com/20472.html
 
-[compare-and-swap-cas-algorithm](https://howtodoinjava.com/core-java/multi-threading/compare-and-swap-cas-algorithm/)
+https://howtodoinjava.com/core-java/multi-threading/compare-and-swap-cas-algorithm/
 
 * any list
 {:toc}

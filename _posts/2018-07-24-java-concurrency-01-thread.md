@@ -32,11 +32,11 @@ published: true
 
 # 参考资料
 
-[进程和线程](https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/0013868322563729e03f6905ea94f0195528e3647887415000)
+https://www.liaoxuefeng.com/wiki/001374738125095c955c1e6d8bb493182103fac9270762a000/0013868322563729e03f6905ea94f0195528e3647887415000
 
-[进程与线程的一个简单解释](http://www.ruanyifeng.com/blog/2013/04/processes_and_threads.html)
+http://www.ruanyifeng.com/blog/2013/04/processes_and_threads.html
 
-[腾讯面试题04.进程和线程的区别？](https://blog.csdn.net/mxsgoden/article/details/8821936)
+https://blog.csdn.net/mxsgoden/article/details/8821936
 
 * any list
 {:toc}
