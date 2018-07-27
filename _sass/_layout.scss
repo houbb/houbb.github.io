@@ -323,15 +323,15 @@ ul {
 */
 #markdown-toc {
     position: fixed;
-    left: 5px;
-    bottom: 90px;
+    right: 1px;
+    bottom: 60px;
     border-radius: 0.3em;
     box-shadow: rgba(0,0,0,0.15) 0 1px 4px;
     box-sizing: border-box;
     background-color: white;
     padding: 15px;
     z-index: 999;
-    @include opacityBg(0.6);
+    @include opacityBg(0.7);
 }
 
 #markdown-toc:hover {

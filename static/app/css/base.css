@@ -84,11 +84,11 @@ html {
 #scroll-top {
     background: #74b3fb;
     color: #fff;
-    bottom: 100px;
-    right: 20px;
-    height: 38px;
-    line-height: 38px;
-    width: 38px;
+    bottom: 20px;
+    right: 50px;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
     position: fixed;
     z-index: 9999;
     display: none
