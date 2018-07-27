@@ -32,8 +32,7 @@ function Base() {
         var rougeList = $("div.highlighter-rouge");
 
         // var languageType = "language-";  //语言类型
-
-        var $highlighterHeader = $("<div class='highlighter-header' style='background: #eef;'>" +
+        var $highlighterHeader = $("<div class='highlighter-header' style='background: #f7f7f9;'>" +
             "<span class='language-type text-muted' title='代码类型'>&nbsp;&nbsp;[txt]</span>" +
             "<span class='code-fold pull-right' style='cursor:pointer;padding-right: 8px;' title='代码折叠'><i class='fa fa-fw fa-minus-square-o'></i></span>" +
             "<span class='code-linenum pull-right' style='cursor:pointer;padding-right: 8px;' title='代码行号'><i class='fa fa-fw fa-sort-numeric-asc'></i></span>" +
