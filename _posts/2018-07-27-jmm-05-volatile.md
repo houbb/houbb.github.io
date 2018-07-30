@@ -2,7 +2,7 @@
 layout: post
 title:  JMM-05-volatile
 date:  2018-07-27 11:31:20 +0800
-categories: [Java]
+categories: [JMM]
 tags: [java, concurrency, thread]
 published: true
 ---
