@@ -327,7 +327,7 @@ function Base() {
         content.css("min-height", wh - headHeight)
     };
     this.initTOC = function () {
-        var CLASS = {left: "fa-chevron-circle-left", right: "fa-chevron-circle-right"};
+        var CLASS = {left: "fa-angle-double-left", right: "fa-angle-double-right"};
         var toc = $("#markdown-toc");
         var lastLi = toc.children("li:last");
         var iconHTML = '<i class="fa fa-fw fa-lg"></i>';

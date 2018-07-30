@@ -352,7 +352,7 @@ ul#markdown-toc ul.active{
 //此处a不要使用 >a 因为存在嵌套
 ul#markdown-toc  > li a {
     display: block;
-    max-width: 150px;
+    max-width: 140px;
     overflow: hidden;
     white-space: nowrap;
 }
