@@ -141,11 +141,22 @@ STEP 3: 判断当前时间窗口内的接口请求数是否小于最大允许的
 
 所以固定时间窗口算法也不失是一个好的微服务接口限流算法。
 
+# guava
+
+http://ifeve.com/guava-ratelimiter/
+
+可参考 guava 的实现。
+
 # 参考资料
 
 https://mp.weixin.qq.com/s/k9tm-4lBwm69nxnYp9octA
 
 https://github.com/wangzheng0822/ratelimiter4j
+
+- guava
+
+http://ifeve.com/guava-ratelimiter/
+
 
 * any list
 {:toc}
