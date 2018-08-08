@@ -60,7 +60,23 @@ git clone http://192.168.3.253/bbhou/i2_trade.git
 为了需要和远程中心仓库更新和同步代码,需要在添加一个原始远程地址;
 
 ```sh
-git remote add upstream http://192.168.3.253/bbhou/i2_trade.git
+git remote add upstream http://192.168.3.253/hy_i2_trade/i2_trade.git
+```
+
+- 删除
+
+```
+git remote remove upstream
+```
+
+- 查看
+
+```
+$ git remote -v
+origin  http://192.168.3.253/bbhou/i2_trade.git (fetch)
+origin  http://192.168.3.253/bbhou/i2_trade.git (push)
+upstream        http://192.168.3.253/hy_i2_trade/i2_trade.git (fetch)
+upstream        http://192.168.3.253/hy_i2_trade/i2_trade.git (push)
 ```
 
 ## Feach & Merge
@@ -68,10 +84,9 @@ git remote add upstream http://192.168.3.253/bbhou/i2_trade.git
 远程代码的更新拉取到本地并且合并
 
 ```sh
-git fetch -all
+git fetch --all
 git merge upstream/master
 ```
-
 
 # 参考资料
 
