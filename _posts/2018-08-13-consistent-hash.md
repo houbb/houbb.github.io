@@ -65,12 +65,9 @@ published: true
 
 # 代码实现
 
-
 ## 实现逻辑
 
-一致性哈希算法有多种具体的实现，包括 [Chord算法](https://en.wikipedia.org/wiki/Chord_(peer-to-peer))，
-
-[KAD 算法](https://wenku.baidu.com/view/ee91580216fc700abb68fcae.html)等实现，以上的算法的实现都比较复杂。
+一致性哈希算法有多种具体的实现，包括 [Chord 算法](https://en.wikipedia.org/wiki/Chord_(peer-to-peer))，[KAD 算法](https://en.wikipedia.org/wiki/Kademlia)等实现，以上的算法的实现都比较复杂。
 
 这里介绍一种网上广为流传的一致性哈希算法的基本实现原理，感兴趣的同学可以根据上面的链接或者去网上查询更详细的资料。
 
@@ -79,20 +76,29 @@ published: true
 当有一个写入缓存的请求到来时，计算 Key 值 k 对应的哈希值 Hash(k)，如果该值正好对应之前某个机器节点的 Hash 值，则直接写入该机器节点，
 如果没有对应的机器节点，则顺时针查找下一个节点，进行写入，如果超过 `2^32` 还没找到对应节点，则从0开始查找(因为是环状结构)。
 
-如图1所示:
+如图 1 所示:
 
 ![hash](http://blog.huanghao.me/wp-content/uploads/2011/06/%E5%9B%BE1.png)
 
-图1中Key K的哈希值在A与B之间，于是K就由节点B来处理。
+图 1 中 Key K 的哈希值在 A 与 B 之间，于是 K 就由节点B来处理。
 
 另外具体机器映射时，还可以根据处理能力不同，将一个实体节点映射到多个虚拟节点。
 
-经过一致性哈希算法散列之后，当有新的机器加入时，将只影响一台机器的存储情况，例如新加入的节点H的散列在B与C之间，则原先由C处理的一些数据可能将移至H处理，而其他所有节点的处理情况都将保持不变，因此表现出很好的单调性。而如果删除一台机器，例如删除C节点，此时原来由C处理的数据将移至D节点，而其它节点的处理情况仍然不变。而由于在机器节点散列和缓冲内容散列时都采用了同一种散列算法，因此也很好得降低了分散性和负载。而通过引入虚拟节点的方式，也大大提高了平衡性。
+经过一致性哈希算法散列之后，当有新的机器加入时，将只影响一台机器的存储情况，
+
+例如新加入的节点H的散列在 B 与 C 之间，则原先由 C 处理的一些数据可能将移至 H 处理，
+而其他所有节点的处理情况都将保持不变，因此表现出很好的单调性。
+
+而如果删除一台机器，例如删除 C 节点，此时原来由 C 处理的数据将移至 D 节点，而其它节点的处理情况仍然不变。
+
+而由于在机器节点散列和缓冲内容散列时都采用了同一种散列算法，因此也很好得降低了分散性和负载。
+
+而通过引入虚拟节点的方式，也大大提高了平衡性。
 
 
-## 代码
+## 实现代码
 
-[Consistent-hashing C 语言实现](https://www.codeproject.com/Articles/56138/Consistent-hashing)
+[consitent-hashing](https://github.com/houbb/consitent-hashing)
 
 # 参考资料
 
@@ -108,6 +114,33 @@ https://blog.csdn.net/sunxinhere/article/details/7981093
 
 http://blog.huanghao.me/?p=14
 
+- 代码实现
+
+[Consistent-hashing C 语言实现](https://www.codeproject.com/Articles/56138/Consistent-hashing)
+
+- chord
+
+http://101.96.10.64/db.cs.duke.edu/courses/cps212/spring15/15-744/S07/papers/chord.pdf
+
+https://github.com/ChuanXia/Chord
+
+https://en.wikipedia.org/wiki/Chord_(peer-to-peer)
+
+http://www.yeolar.com/note/2010/04/06/p2p-chord/
+
+https://github.com/ChuanXia/Chord
+
+https://github.com/netharis/Chord-Implementation/blob/master/Chord/Chord.java
+
+https://github.com/TitasNandi/Chord-JAVA
+
+
+
+- kademlia
+
+http://www.yeolar.com/note/2010/03/21/kademlia/
+
+https://en.wikipedia.org/wiki/Kademlia
 
 * any list
 {:toc}
