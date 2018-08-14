@@ -1,3 +1,17 @@
+---
+layout: post
+title:  Ubuntu JDK
+date:  2018-08-14 13:46:27 +0800
+categories: [Ubuntu]
+tags: [ubuntu, java]
+published: true
+---
+
+* any list
+{:toc}
+
+# 下载
+
 - download from the html
 
 ```

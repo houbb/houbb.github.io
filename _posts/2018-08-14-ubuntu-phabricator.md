@@ -1,8 +1,19 @@
+---
+layout: post
+title:  Ubuntu Phabricator
+date:  2018-08-14 13:46:27 +0800
+categories: [Ubuntu]
+tags: [ubuntu, devops]
+published: true
+---
+
+* any list
+{:toc}
+
+
+# 部署
 
 大部分操作都需要root权限,建议切换至超级管理员操作。
-
-
-
 
 
 

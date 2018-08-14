@@ -1,3 +1,15 @@
+---
+layout: post
+title:  Ubuntu MySQL backup
+date:  2018-08-14 13:46:27 +0800
+categories: [Ubuntu]
+tags: [ubuntu, sql]
+published: true
+---
+
+* any list
+{:toc}
+
 # mysql开启日志功能
 
 - 查看是否开启

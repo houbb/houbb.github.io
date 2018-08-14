@@ -29,11 +29,27 @@ It is a highly flexible tool, based upon the foundations of progressive enhancem
 
 # Hello World
 
-- 零配置
+## 零配置
 
 样式不太扁平化。功能很强大。
 
-<table id="datatbles-zero-table" class="display" cellspacing="0" width="100%">
+## 实际使用
+
+- table.js
+
+```js
+/**
+ * 初始化数据表格
+ */
+this.initDataTables = function () {
+    $("#datatbles-zero-table").DataTable();
+};
+```
+
+- table.html
+
+```html
+    <table id="datatbles-zero-table" class="display" cellspacing="0" width="100%">
         <thead>
             <tr>
                 <th>Name</th>
@@ -311,6 +327,7 @@ It is a highly flexible tool, based upon the foundations of progressive enhancem
             </tr>
         </tbody>
     </table>
+```
 
 
 

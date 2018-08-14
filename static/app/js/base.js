@@ -6,14 +6,8 @@ $(document).ready(function () {
     Base.scrollTop();
     $("table").addClass("table").addClass("table-bordered").addClass("table-hover");
     Base.sh();
-    Base.highchartsDemo()
     Base.initNo();
-
     Base.scrollSpy();
-
-
-    Base.semanticCheckBox();
-    Base.initDataTables();
 
     Base.initTravelMap();
 
@@ -159,45 +153,7 @@ function Base() {
         }
 
     };
-
-    /**
-     * 初始化数据表格
-     */
-    this.initDataTables = function () {
-        $("#datatbles-zero-table").DataTable();
-    };
-
-    /**
-     * semantic-ui checkbox
-     */
-    this.semanticCheckBox = function()
-    {
-        $('.ui.checkbox')
-            .checkbox()
-        ;
-
-        $('.ui.radio.checkbox')
-            .checkbox()
-        ;
-
-        $('.selection.dropdown')
-            .dropdown()
-        ;
-
-        $('select.dropdown')
-            .dropdown()
-        ;
-
-        $('.message .close')
-            .on('click', function() {
-                $(this)
-                    .closest('.message')
-                    .transition('fade')
-                ;
-            })
-        ;
-    };
-
+    
     /**
      * 滚动监听
      */
@@ -242,15 +198,10 @@ function Base() {
     this.initNo = function () {
        $("NO, no").addClass("label").addClass("label-info");
     };
-    this.highchartsDemo = function () {
-        $("#highchart-container").highcharts({
-            chart: {type: "bar"},
-            title: {text: "我的第一个图表"},
-            xAxis: {categories: ["苹果", "香蕉", "橙子"]},
-            yAxis: {title: {text: "something"}},
-            series: [{name: "小明", data: [1, 0, 4]}, {name: "小红", data: [5, 7, 3]}]
-        })
-    };
+    
+    /**
+     * 初始化语法高亮
+     */
     this.sh = function () {
         var DEFAULT_STYLE = {
             "java": "brush: java;",

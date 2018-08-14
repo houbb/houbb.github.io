@@ -1,4 +1,16 @@
-- download
+---
+layout: post
+title:  Ubuntu Dubbo admin
+date:  2018-08-14 13:46:27 +0800
+categories: [Ubuntu]
+tags: [ubuntu, dubbo]
+published: true
+---
+
+* any list
+{:toc}
+
+# download
 
 ```
 $   scp dubbo-admin-2.5.4-SNAPSHOT.war hbb@192.168.2.108:/home/hbb/tool/dubbo-admin/
