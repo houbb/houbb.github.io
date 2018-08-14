@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Semantic UI-01 acquaintance
+title: Semantic UI
 date:  2017-03-23 20:57:40 +0800
 categories: [UI]
 tags: [ui, semantic]
@@ -10,7 +10,8 @@ published: true
 
 # Semantic-Ui
 
-[Semantic](http://www.semantic-ui.cn/) is a development framework that helps create beautiful, responsive layouts using human-friendly HTML.
+[Semantic](http://www.semantic-ui.cn/) is a development framework that helps create beautiful, 
+responsive layouts using human-friendly HTML.
 
 > [Github](https://github.com/Semantic-Org/Semantic-UI)
 
@@ -236,12 +237,6 @@ Semantic's NPM install script will automatically update Semantic UI to the lates
 ```
 npm update
 ```
-
-
-
-
-
-
 
 * any list
 {:toc}
