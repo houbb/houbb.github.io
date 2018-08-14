@@ -225,7 +225,7 @@ HelloWorldResponse.java         HelloWorldServiceService.java   WebServiceClient
 
 1、File => New => Project
 
-![new web service]({{ site.url }}/static/app/img/webservice/2017-07-07-webservice-client.png)
+![new web service](https://raw.githubusercontent.com/houbb/resource/master/img/webservice/2017-07-07-webservice-client.png)
 
 输入对应的项目名称，完成即可。
 

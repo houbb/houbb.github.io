@@ -29,7 +29,7 @@ published: true
 
 (3) 如下:
 
-![markdownToPdf]({{ site.url }}/static/app/img/file/markdownToPdf.png)
+![markdownToPdf](https://raw.githubusercontent.com/houbb/resource/master/img/file/markdownToPdf.png)
 
 如此 html=>pdf 也在此列。
 

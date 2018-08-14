@@ -101,7 +101,7 @@ SolrCloud example running, please visit: http://localhost:8983/solr
 
 访问 `http://localhost:8983/solr`
 
-![apache-solr-index]({{ site.url }}/static/app/img/apache/solr/2017-08-23-apache-solr-index.png)
+![apache-solr-index](https://raw.githubusercontent.com/houbb/resource/master/img/apache/solr/2017-08-23-apache-solr-index.png)
 
 
 # Indexing Data

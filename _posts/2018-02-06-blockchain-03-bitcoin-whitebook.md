@@ -63,7 +63,7 @@ published: true
 并将其添加到硬币的末端。 收款人可以验证签名来验证链
 所有权。
 
-![20180207-bitcoin-whitebook-transaction.jpg]({{ site.url }}/static/app/img/blockchain/20180207-bitcoin-whitebook-transaction.jpg)
+![20180207-bitcoin-whitebook-transaction.jpg](https://raw.githubusercontent.com/houbb/resource/master/img/blockchain/20180207-bitcoin-whitebook-transaction.jpg)
 
 当然问题是收款人无法验证其中一个所有者没有双重支出
 硬币。一个常见的解决办法是引入一个值得信赖的中央权威机构，
@@ -88,7 +88,7 @@ published: true
 显然，时间是为了进入哈希。 每个时间戳都包含之前的时间戳
 它的散列，形成一个链，每个附加的时间戳加强之前。
 
-![20180207-bitcoin-whitebook-timeserver.jpg]({{ site.url }}/static/app/img/blockchain/20180207-bitcoin-whitebook-timeserver.jpg)
+![20180207-bitcoin-whitebook-timeserver.jpg](https://raw.githubusercontent.com/houbb/resource/master/img/blockchain/20180207-bitcoin-whitebook-timeserver.jpg)
 
 # 验证的工作
 
@@ -103,7 +103,7 @@ published: true
 无需重做工作。 后来的块被链接后，改变块的工作
 将包括重做之后的所有块。
 
-![20180207-bitcoin-whitebook-proof-of-work.jpg]({{ site.url }}/static/app/img/blockchain/20180207-bitcoin-whitebook-proof-of-work.jpg)
+![20180207-bitcoin-whitebook-proof-of-work.jpg](https://raw.githubusercontent.com/houbb/resource/master/img/blockchain/20180207-bitcoin-whitebook-proof-of-work.jpg)
 
 工作证明也解决了在多数决定中确定代表性的问题
 制造。如果大多数是基于一个IP地址一票的话，那么任何人都可以破坏它
@@ -174,7 +174,7 @@ published: true
 事务在Merkle树中被散列，只有块包含在块的哈希中。
 然后可以通过树枝上的树枝来压实旧的木块。 内部哈希则不需要存储。
 
-![20180207-bitcoin-whitebook-remaining-disk.jpg]({{ site.url }}/static/app/img/blockchain/20180207-bitcoin-whitebook-remaining-disk.jpg)
+![20180207-bitcoin-whitebook-remaining-disk.jpg](https://raw.githubusercontent.com/houbb/resource/master/img/blockchain/20180207-bitcoin-whitebook-remaining-disk.jpg)
 
 一个没有事务的块头大概是80个字节。 如果我们假设块是
 每10分钟产生一次，每年 `80字节* 6 * 24 * 365 = 4.2MB`。 
@@ -190,7 +190,7 @@ published: true
 他自己，但通过链接到链中的一个地方，他可以看到一个网络节点已经接受它，
 并在进一步确认网络已经接受之后添加块。
 
-![20180207-bitcoin-whitebook-simple-pay-verify.jpg]({{ site.url }}/static/app/img/blockchain/20180207-bitcoin-whitebook-simple-pay-verify.jpg)
+![20180207-bitcoin-whitebook-simple-pay-verify.jpg](https://raw.githubusercontent.com/houbb/resource/master/img/blockchain/20180207-bitcoin-whitebook-simple-pay-verify.jpg)
 
 因此，只要诚实的节点控制网络，验证是可靠的，但更多
 如果网络被攻击者威胁的话，这个漏洞很容易被攻破。 网络节点可以验证
@@ -209,7 +209,7 @@ published: true
 从较大的以前交易或多个输入组合较小的数额，最多两个
 输出：一个用于付款，另一个用于将更改（如果有）返还给发件人。
 
-![20180207-bitcoin-whitebook-combining-and-spliting-value.jpg]({{ site.url }}/static/app/img/blockchain/20180207-bitcoin-whitebook-combining-and-spliting-value.jpg)
+![20180207-bitcoin-whitebook-combining-and-spliting-value.jpg](https://raw.githubusercontent.com/houbb/resource/master/img/blockchain/20180207-bitcoin-whitebook-combining-and-spliting-value.jpg)
 
 应该指出，扇出，交易取决于几个交易，这些
 交易依赖更多，这里不是问题。 从来没有必要提取一个
@@ -225,7 +225,7 @@ published: true
 类似于证券交易所发布的信息的时间和大小
 个别行业，“磁带”，是公开的，但没有告知谁是当事人。
 
-![20180207-bitcoin-whitebook-privacy.jpg]({{ site.url }}/static/app/img/blockchain/20180207-bitcoin-whitebook-privacy.jpg)
+![20180207-bitcoin-whitebook-privacy.jpg](https://raw.githubusercontent.com/houbb/resource/master/img/blockchain/20180207-bitcoin-whitebook-privacy.jpg)
 
 作为附加的防火墙，每个事务都应该使用一个新的密钥对来保存它们
 从被链接到共同的所有者。 多点输入仍然是不可避免的

@@ -380,7 +380,7 @@ volatile 关键字有两个语义:
 
 假设处理器A和处理器B按程序的顺序并行执行内存访问，最终却可能得到 `x = y = 0` 的结果。
 
-![reordering]({{ site.url }}/static/app/img/java/jmm/2018-07-26-reordering.png)
+![reordering](https://raw.githubusercontent.com/houbb/resource/master/img/java/jmm/2018-07-26-reordering.png)
 
 这里处理器A和处理器B可以同时把共享变量写入自己的写缓冲区（A1，B1），然后从内存中读取另一个共享变量（A2，B2），最后才把自己写缓存区中保存的脏数据刷新到内存中（A3，B3）。当以这种时序执行时，程序就可以得到x = y = 0的结果。
 

@@ -29,7 +29,7 @@ published: true
 很多东西，都需要统一转化为标准的程序可识别的数据。这个过程很麻烦，比如数据的抓取。
 
 
-![现有ETL路径的流程图]({{ site.url }}/static/app/img/DL/ETL/2017-12-02-etl-struct.svg)
+![现有ETL路径的流程图](https://raw.githubusercontent.com/houbb/resource/master/img/DL/ETL/2017-12-02-etl-struct.svg)
 
 
 # 记录读取器
@@ -169,7 +169,7 @@ SequenceRecordReader trainFeatures = new CSVSequenceRecordReader();
 
 `NativeImageLoader` 可以读取一幅图像并将其转变为一个INDArray。请注意，您需要用网络定型时调整尺寸、缩放、标准化的方式来缩放和调整导入的图像。
 
-![2017-12-02-ETL_single_image.svg]({{ site.url }}/static/app/img/DL/ETL/2017-12-02-ETL_single_image.svg)
+![2017-12-02-ETL_single_image.svg](https://raw.githubusercontent.com/houbb/resource/master/img/DL/ETL/2017-12-02-ETL_single_image.svg)
 
 * any list
 {:toc}

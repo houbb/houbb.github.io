@@ -158,7 +158,7 @@ public class MyCallback : MS.ICallbackServiceCallback
 
 - Form
 
-![form]({{ site.url }}/static/app/img/network/wcf/2017-04-25-wcf-client-callback.png)
+![form](https://raw.githubusercontent.com/houbb/resource/master/img/network/wcf/2017-04-25-wcf-client-callback.png)
 
 - Code
 

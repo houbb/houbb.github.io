@@ -24,7 +24,7 @@ published: true
 
 输入用户名和密码再点创建就行了！
 
-![ftp-user]({{ site.url }}/static/app/img/ftp/windows/2017-05-06-windows-ftp-user.png)
+![ftp-user](https://raw.githubusercontent.com/houbb/resource/master/img/ftp/windows/2017-05-06-windows-ftp-user.png)
 
 
 二、安装 IIS 组件
@@ -33,7 +33,7 @@ published: true
 
 这样就把FTP安装在服务器上了！(Web管理工具、万维网工具在根节点选中即可)
 
-![ftp-user]({{ site.url }}/static/app/img/ftp/windows/2017-05-06-windows-ftp-service.png)
+![ftp-user](https://raw.githubusercontent.com/houbb/resource/master/img/ftp/windows/2017-05-06-windows-ftp-service.png)
 
 
 三、配置 FTP 服务器
@@ -44,7 +44,7 @@ published: true
 
 在弹出的对话框中输入Ftp站点的名称（例如"myftp"),物理路径（例如"C:\MyFTP"）, 点击 "下一步".
 
-![add server]({{ site.url }}/static/app/img/ftp/windows/2017-05-06-windows-ftp-add-server.png)
+![add server](https://raw.githubusercontent.com/houbb/resource/master/img/ftp/windows/2017-05-06-windows-ftp-add-server.png)
 
 
 

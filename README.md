@@ -20,3 +20,6 @@ You can visit it [here](https://houbb.github.io/).
 | 5 | blog_2018_08_08 | | |
 | 6 | blog_2018_05_30 | 保留原来的学习博客+js+试验demo| 2018-05-30 10:29:08 |
 
+# github 资源图片地址
+
+https://raw.githubusercontent.com/houbb/resource/master/img

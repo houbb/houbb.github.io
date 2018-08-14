@@ -17,7 +17,7 @@ published: true
 这些层都是[受限玻尔兹曼机（RBM）](https://deeplearning4j.org/cn/restrictedboltzmannmachine.html)，即构成深度置信网络的基本单元，
 它们有一些特殊之处，我们将在下文中介绍。以下是简化的深度自动编码器架构示意图，下文会作具体说明。
 
-![2017-11-30-deep-autoencoder.png]({{ site.url }}/static/app/img/DL/autoencoder/2017-11-30-deep-autoencoder.png)
+![2017-11-30-deep-autoencoder.png](https://raw.githubusercontent.com/houbb/resource/master/img/DL/autoencoder/2017-11-30-deep-autoencoder.png)
 
 这种算法的大致思想是：
 

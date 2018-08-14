@@ -26,7 +26,7 @@ BadJS is a solve and trace method of web js error.
 
 > [better js](http://slides.com/loskael/badjs/fullscreen#/)
 
-![strut]({{ site.url }}/static/app/img/2016-07-06-bad-js.png)
+![strut](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-06-bad-js.png)
 
 
 

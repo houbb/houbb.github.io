@@ -67,7 +67,7 @@ JUnit 的力量在于编码过程中的单元测试，而 FIT 是更高层次的
 
 ## 传入耦合( CA )
 
-![2018-01-09-better-code-ComponentDiagram-excep.png]({{ site.url }}/static/app/img/project/better-code/2018-01-09-better-code-ComponentDiagram-excep.png)
+![2018-01-09-better-code-ComponentDiagram-excep.png](https://raw.githubusercontent.com/houbb/resource/master/img/project/better-code/2018-01-09-better-code-ComponentDiagram-excep.png)
 
 如图所示，exception 包具有一个值为 4 的传入耦合（或者叫做 Ca），这并非是件坏事。
 
@@ -75,7 +75,7 @@ JUnit 的力量在于编码过程中的单元测试，而 FIT 是更高层次的
 
 ## 传出耦合( CE )
 
-![2018-01-09-better-code-ComponentDiagram-efferentcoup.png]({{ site.url }}/static/app/img/project/better-code/2018-01-09-better-code-ComponentDiagram-efferentcoup.png)
+![2018-01-09-better-code-ComponentDiagram-efferentcoup.png](https://raw.githubusercontent.com/houbb/resource/master/img/project/better-code/2018-01-09-better-code-ComponentDiagram-efferentcoup.png)
 
 `com.acme.ascp.dao` 包完全是具体的；因此它的抽象性为 0。
 

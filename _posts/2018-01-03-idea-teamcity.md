@@ -208,7 +208,7 @@ Password:   XXX
 
 (2) 左上角点击 [projects](http://localhost:8111/overview.html) 以创建项目。
 
-![2018-01-03-idea-teamcity-mysetting.png]({{ site.url }}/static/app/img/idea/teamcity/2018-01-03-idea-teamcity-mysetting.png)
+![2018-01-03-idea-teamcity-mysetting.png](https://raw.githubusercontent.com/houbb/resource/master/img/idea/teamcity/2018-01-03-idea-teamcity-mysetting.png)
 
 
 ## Create project
@@ -237,7 +237,7 @@ Auto-detected Build Steps 系统直接分析出这是一个 maven 项目，我�
 
 这里可以添加多个步骤，简单起见，我使用默认的步骤。(可点击 `Edit` 进行编辑)
 
-![2018-01-03-idea-teamcity-steps.png]({{ site.url }}/static/app/img/idea/teamcity/2018-01-03-idea-teamcity-steps.png)
+![2018-01-03-idea-teamcity-steps.png](https://raw.githubusercontent.com/houbb/resource/master/img/idea/teamcity/2018-01-03-idea-teamcity-steps.png)
 
 - 运行
 

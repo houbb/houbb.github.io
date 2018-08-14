@@ -21,7 +21,7 @@ published: true
 
 类似于 [powermock](https://github.com/powermock/powermock) 在我们写单元测试中的功能，可以模拟反馈。
 
-![2017-11-03-mock-server.png]({{ site.url }}/static/app/img/test/mock/2017-11-03-mock-server.png)
+![2017-11-03-mock-server.png](https://raw.githubusercontent.com/houbb/resource/master/img/test/mock/2017-11-03-mock-server.png)
 
 
 ## 工具推荐

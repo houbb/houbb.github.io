@@ -20,7 +20,7 @@ The default handler is based on the ```@Controller``` and ```@RequestMapping``` 
 > [Web MVC](http://docs.spring.io/spring/docs/current/spring-framework-reference/htmlsingle/#mvc)
 
 
-![mvc]({{ site.url }}/static/app/img/2016-06-19-spring-mvc.png)
+![mvc](https://raw.githubusercontent.com/houbb/resource/master/img/2016-06-19-spring-mvc.png)
 
 
 # Hello World

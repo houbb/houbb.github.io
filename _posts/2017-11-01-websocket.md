@@ -54,7 +54,7 @@ WebSocket 协议在 2008 年诞生，2011年成为国际标准。所有浏览器
 
 它的最大特点就是，服务器可以主动向客户端推送信息，客户端也可以主动向服务器发送信息，是真正的双向平等对话，属于服务器推送技术的一种。
 
-![2017-11-01-web-socket-description]({{ site.url }}/static/app/img/web/2017-11-01-web-socket-description.png)
+![2017-11-01-web-socket-description](https://raw.githubusercontent.com/houbb/resource/master/img/web/2017-11-01-web-socket-description.png)
 
 其他特点包括：
 

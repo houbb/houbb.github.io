@@ -29,7 +29,7 @@ published: true
 OmniGraffle 中提供单次使用、保持状态、临时调用这三种调用工具的模式，分别对应着单击、双击、按住某个字母。
 
 
-![toolbar]({{ site.url }}/static/app/img/omnigraffle/2017-02-27-toolbar.png)
+![toolbar](https://raw.githubusercontent.com/houbb/resource/master/img/omnigraffle/2017-02-27-toolbar.png)
 
 
 > 为了工作效率的设计
@@ -46,7 +46,7 @@ OmniGraffle 中提供单次使用、保持状态、临时调用这三种调用�
 
 (发现自己的只有 ⌘1-⌘4, 可能是版本或者是设置问题。暂时不表)
 
-![check-panel]({{ site.url }}/static/app/img/omnigraffle/2017-02-27-check-panel.png)
+![check-panel](https://raw.githubusercontent.com/houbb/resource/master/img/omnigraffle/2017-02-27-check-panel.png)
 
 <label class="label label-info">Tips</label>
 
@@ -59,7 +59,7 @@ OmniGraffle 中提供单次使用、保持状态、临时调用这三种调用�
 
 (后面的概念比较多,建议慢慢学习。Layer就是图层,如果学习过PS应该很容易理解这种概念)
 
-![canvas]({{ site.url }}/static/app/img/omnigraffle/2017-02-27-canvas.png)
+![canvas](https://raw.githubusercontent.com/houbb/resource/master/img/omnigraffle/2017-02-27-canvas.png)
 
 <label class="label label-info">Tips</label>
 
@@ -75,7 +75,7 @@ OmniGraffle 中提供单次使用、保持状态、临时调用这三种调用�
 群组和解散群组的快捷键分别是「⇧⌘G」（Group）和「⇧⌘U」（UnGroup）。
 
 
-![canvas]({{ site.url }}/static/app/img/omnigraffle/2017-02-27-object-control.png)
+![canvas](https://raw.githubusercontent.com/houbb/resource/master/img/omnigraffle/2017-02-27-object-control.png)
 
 
 右侧为「样式托盘」,在 OmniGraffle7 中位于右下侧。
@@ -103,7 +103,7 @@ OmniGraffle 中提供单次使用、保持状态、临时调用这三种调用�
 手动对齐多个对象可以通过「检查器」「版面：对齐」来完成，「版面对齐」会以页面为对齐基准，另外还可以在选中对象上右键菜单「对齐」。
 
 
-![canvas]({{ site.url }}/static/app/img/omnigraffle/2017-02-27-alignment.png)
+![canvas](https://raw.githubusercontent.com/houbb/resource/master/img/omnigraffle/2017-02-27-alignment.png)
 
 
 > 页面缩放

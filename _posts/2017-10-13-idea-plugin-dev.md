@@ -28,7 +28,7 @@ published: true
 
 直接新建一个插件项目。
 
-![new plugin project]({{ site.url }}/static/app/img/idea/2017-10-13-idea-new-plugin.jpg)
+![new plugin project](https://raw.githubusercontent.com/houbb/resource/master/img/idea/2017-10-13-idea-new-plugin.jpg)
 
 - plugin.xml
 

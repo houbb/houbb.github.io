@@ -41,7 +41,7 @@ HDFS拥有大量的数据并提供更容易的访问。为了存储这样巨大�
 
 下面给出了Hadoop文件系统的体系结构。
 
-![static/app/img/hadoop/2017-12-09-hdfs_architecture.jpg]({{ site.url }}/static/app/img/hadoop/2017-12-09-hdfs_architecture.jpg)
+![static/app/img/hadoop/2017-12-09-hdfs_architecture.jpg](https://raw.githubusercontent.com/houbb/resource/master/img/hadoop/2017-12-09-hdfs_architecture.jpg)
 
 ## Namenode
    

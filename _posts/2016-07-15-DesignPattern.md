@@ -48,7 +48,7 @@ and it can provide a way to access the instance. This is the Singleton pattern.
 
 > Structure
 
-![singleton]({{ site.url }}/static/app/img/2016-07-15-singleton.png)
+![singleton](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-15-singleton.png)
 
 > Consequences
 

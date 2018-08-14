@@ -89,7 +89,7 @@ M = M_0 + M_1 + ... + M_t
 应计利息额=票面利率 × 100 ÷ 4 × DayDiff(B, F)/DayDiff(B, C)  
 ```
 
-![ai]({{ site.url }}/static/app/img/finance/bond/2017-05-07-finance-bond-ai.png)
+![ai](https://raw.githubusercontent.com/houbb/resource/master/img/finance/bond/2017-05-07-finance-bond-ai.png)
 
 
 # 到期收益率
@@ -107,7 +107,7 @@ M = M_0 + M_1 + ... + M_t
 设F为债券的面值，C为按票面利率每年支付的利息，Pv为债券当前市场价格，r为到期收益率，则：
 
 
-![ai]({{ site.url }}/static/app/img/finance/bond/2017-05-07-finance-bond-rate.png)
+![ai](https://raw.githubusercontent.com/houbb/resource/master/img/finance/bond/2017-05-07-finance-bond-rate.png)
 
 
 上述等式的分母(此处不够确切，后续修改)有三种情况：

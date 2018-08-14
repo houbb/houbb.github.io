@@ -124,7 +124,7 @@ Hadoop旨在从**单个服务器扩展到数千个机器，每个都提供本地
 - Hadoop MapReduce：这是基于YARN的用于并行处理大数据集的系统。
 
 
-![2017-12-05-hadoop_architecture.jpg]({{ site.url }}/static/app/img/hadoop/2017-12-05-hadoop_architecture.jpg)
+![2017-12-05-hadoop_architecture.jpg](https://raw.githubusercontent.com/houbb/resource/master/img/hadoop/2017-12-05-hadoop_architecture.jpg)
 
 
 ## MapReduce

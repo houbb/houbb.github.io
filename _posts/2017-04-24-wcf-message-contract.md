@@ -120,7 +120,7 @@ public class MyService : IService
 
 到到客户端时。代码会变成：
 
-![service contract]({{ site.url }}/static/app/img/network/wcf/2017-04-24-message-contract.png)
+![service contract](https://raw.githubusercontent.com/houbb/resource/master/img/network/wcf/2017-04-24-message-contract.png)
 
 
 我们看到，在服务器端定义的消息协定类，在客户端代码中，类的成员都被拆开了。这样就得出这样一个结论：

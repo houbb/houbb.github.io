@@ -12,8 +12,6 @@ published: true
 
 我们经常去 maven 上搜索使用的 jar，非常的方便。但是怎么样将自己的 jar 上传到 Maven 仓库呢？
 
-> [jar发布到maven中央仓库小记](http://blog.csdn.net/hj7jay/article/details/51130398)
-
 ## Register Sonatype
 
 [注册](https://issues.sonatype.org/secure/Signup!default.jspa) 一个 Jira 账户。
@@ -25,10 +23,9 @@ Sonatype 还提供了一个名为 OSS 的系统，具体的构件发布是在这
 
 ## Create Issue
 
-![sonatype-create-issue]({{ site.url }}/static/app/img/nexus/2017-09-28-sonatype-create-issue.png)
+![sonatype-create-issue](https://raw.githubusercontent.com/houbb/resource/master/img/nexus/2017-09-28-sonatype-create-issue.png)
 
-点击 **Create** 按钮，将信息补充完整。
-
+点击 <kbd>Create</kbd> 按钮，将信息补充完整。
 
 选择 
 
@@ -55,8 +52,6 @@ com.github.houbb has been prepared, now user(s) houbbEcho can:
 ## Generate GPG
 
 PS: Windows 请下载 [gpg4win](https://www.gpg4win.org/download.html)
-
-
 
 
 Mac 系统。安装 [GPG](http://www.ruanyifeng.com/blog/2013/07/gpg.html)
@@ -354,7 +349,7 @@ mvn clean deploy -P release -Darguments="gpg.passphrase=XXXXXXXX"
 
 [stagingRepositories](https://oss.sonatype.org/#stagingRepositories) 中拉倒最下方或者是直接模糊查询，应该可以找到我们刚才发布的 jar。
 
-![mvn-stage-repo]({{ site.url }}/static/app/img/maven/2017-10-19-mvn-stage-repo.jpg)
+![mvn-stage-repo](https://raw.githubusercontent.com/houbb/resource/master/img/maven/2017-10-19-mvn-stage-repo.jpg)
 
 ## close
 
@@ -437,6 +432,10 @@ allow-loopback-pinentry
 重新尝试即可。
 
 
+
+# 参考资料
+
+http://blog.csdn.net/hj7jay/article/details/51130398
 
 * any list
 {:toc}

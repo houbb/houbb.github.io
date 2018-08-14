@@ -1178,7 +1178,7 @@ http://139.196.28.125:8080/configure
 
 找到**Phabricator** -》**Credentials**, 添加信息如下:
 
-![phabricator-jenkins]({{ site.url }}/static/app/img/phabricator/2017-01-15-phabricator-jenkins.png)
+![phabricator-jenkins](https://raw.githubusercontent.com/houbb/resource/master/img/phabricator/2017-01-15-phabricator-jenkins.png)
 
 
 

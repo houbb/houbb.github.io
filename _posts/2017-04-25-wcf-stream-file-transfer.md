@@ -121,7 +121,7 @@ namespace Server.Service
 
 - Form
 
-![client]({{ site.url }}/static/app/img/network/wcf/2017-04-25-wcf-file-client.png)
+![client](https://raw.githubusercontent.com/houbb/resource/master/img/network/wcf/2017-04-25-wcf-file-client.png)
 
 - Code
 

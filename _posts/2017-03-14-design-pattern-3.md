@@ -41,7 +41,7 @@ Observer 模式解决的是一个相当常见的问题:
 四、结构
 
 
-![struct]({{ site.url }}/static/app/img/designpattern/2017-03-13-design-pattern-observer.png)
+![struct](https://raw.githubusercontent.com/houbb/resource/master/img/designpattern/2017-03-13-design-pattern-observer.png)
 
 五、参与者
 
@@ -81,7 +81,7 @@ Observer 模式解决的是一个相当常见的问题:
 
 (下图请忽略时序，并不严格按照此执行顺序)
 
-![SequenceDiagram]({{ site.url }}/static/app/img/designpattern/2017-03-13-observer-SequenceDiagram.png)
+![SequenceDiagram](https://raw.githubusercontent.com/houbb/resource/master/img/designpattern/2017-03-13-observer-SequenceDiagram.png)
 
 
 七、效果

@@ -25,7 +25,7 @@ to work with relational data as domain-specific objects, eliminating the need fo
 
 一、Struct
 
-![ef-struct]({{ site.url }}/static/app/img/dotnet/2017-03-20-dotnet-ef-struct.png)
+![ef-struct](https://raw.githubusercontent.com/houbb/resource/master/img/dotnet/2017-03-20-dotnet-ef-struct.png)
 
 
 EDM （实体数据模型）：EDM包括三个模型，概念模型、 映射和存储模型。
@@ -58,7 +58,7 @@ EntityFramework4.1中Context类从ObjectContext类继承。DbContext类与Object
 `DbContext`是EntityFramework很重要的部分，连接域模型与数据库的桥梁，是与数据库通信的主要类
 
 
-![DbContext]({{ site.url }}/static/app/img/dotnet/2017-03-20-dotnet-ef-dbcontext.png)
+![DbContext](https://raw.githubusercontent.com/houbb/resource/master/img/dotnet/2017-03-20-dotnet-ef-dbcontext.png)
 
 DbContext主要负责以下活动：
 
@@ -153,7 +153,7 @@ public class Student
 Added Deleted Modified Unchanged Detached
 
 
-![Lifecycle]({{ site.url }}/static/app/img/dotnet/2017-03-20-dotnet-ef-db-status.png)
+![Lifecycle](https://raw.githubusercontent.com/houbb/resource/master/img/dotnet/2017-03-20-dotnet-ef-db-status.png)
 
 
 五、Code First、DBFirst、Model First

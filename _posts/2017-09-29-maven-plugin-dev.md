@@ -124,7 +124,7 @@ $   mvn clean install
 
 - 直接点击运行
 
-![mvn-run-plugin]({{ site.url }}/static/app/img/maven/2017-09-29-mvn-run-plugin.png)
+![mvn-run-plugin](https://raw.githubusercontent.com/houbb/resource/master/img/maven/2017-09-29-mvn-run-plugin.png)
 
 - 通过命令
 

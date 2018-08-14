@@ -15,7 +15,7 @@ published: true
 
 > Modules
 
-![modules]({{ site.url }}/static/app/img/spring/2017-04-08-spring-net-overview.gif)
+![modules](https://raw.githubusercontent.com/houbb/resource/master/img/spring/2017-04-08-spring-net-overview.gif)
 
 
 # Install

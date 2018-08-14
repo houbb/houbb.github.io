@@ -107,7 +107,7 @@ public class SimpleDemo {
 
 # 类结构说明
 
-![2018-08-08-spring-retry.jpg]({{ site.url }}/static/app/img/spring/2018-08-08-spring-retry.jpg)
+![2018-08-08-spring-retry.jpg](https://raw.githubusercontent.com/houbb/resource/master/img/spring/2018-08-08-spring-retry.jpg)
 
 ## 概览
 

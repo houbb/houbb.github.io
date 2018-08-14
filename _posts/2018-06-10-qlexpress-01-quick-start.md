@@ -74,7 +74,7 @@ public class HelloWorldTest {
 
 ## 整体架构
 
-![2018-06-10-qlexpress-struct.jpeg]({{ site.url }}/static/app/img/java/qlexpress/2018-06-10-qlexpress-struct.jpeg)
+![2018-06-10-qlexpress-struct.jpeg](https://raw.githubusercontent.com/houbb/resource/master/img/java/qlexpress/2018-06-10-qlexpress-struct.jpeg)
 
 ## 调用方法入参
 

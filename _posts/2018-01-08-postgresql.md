@@ -42,7 +42,7 @@ POSTGRES pioneered many concepts that only became available in some commercial d
 
 首页如下：
 
-![2018-01-08-sql-postgresql-index.png]({{ site.url }}/static/app/img/sql/sql/2018-01-08-sql-postgresql-index.png)
+![2018-01-08-sql-postgresql-index.png](https://raw.githubusercontent.com/houbb/resource/master/img/sql/sql/2018-01-08-sql-postgresql-index.png)
 
 
 - 新建 Server

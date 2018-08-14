@@ -49,7 +49,7 @@ published: true
 - 分隔容忍(Partition tolerance) (系统中任意信息的丢失或失败不会影响系统的继续运作)
 
 
-![cap]({{ site.url }}/static/app/img/sql/2017-05-31-cap-theoram-image.png)
+![cap](https://raw.githubusercontent.com/houbb/resource/master/img/sql/2017-05-31-cap-theoram-image.png)
 
 # Install
 

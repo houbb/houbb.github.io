@@ -28,7 +28,7 @@ A network [socket](https://en.wikipedia.org/wiki/Network_socket) is an internal 
 
 3. 客户必须将确认序号设置为服务器的ISN加1以对服务器的SYN报文段进行确认。
 
-![connect]({{ site.url }}/static/app/img/socket/2017-04-19-connect-3.png)
+![connect](https://raw.githubusercontent.com/houbb/resource/master/img/socket/2017-04-19-connect-3.png)
 
 
 二、四次握手断开连接
@@ -43,7 +43,7 @@ A network [socket](https://en.wikipedia.org/wiki/Network_socket) is an internal 
 4. 客户端收到服务端发来的FIN断开请求后，会发送一个ACK做出应答，表示已经收到服务端的请求
 
 
-![close]({{ site.url }}/static/app/img/socket/2017-04-19-close-4.png)
+![close](https://raw.githubusercontent.com/houbb/resource/master/img/socket/2017-04-19-close-4.png)
 
 
 - 参见

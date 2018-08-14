@@ -47,7 +47,7 @@ published: true
   
 - 本币交易系统交易方式和报价类型
   
-![type]({{ site.url }}/static/app/img/finance/2017-05-02-trade-type-exchange-means.png)
+![type](https://raw.githubusercontent.com/houbb/resource/master/img/finance/2017-05-02-trade-type-exchange-means.png)
 
 
 

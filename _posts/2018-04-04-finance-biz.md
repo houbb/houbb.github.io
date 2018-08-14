@@ -9,7 +9,7 @@ published: true
 
 # 业务简介
 
-![2018-04-04-finance-biz.png]({{ site.url }}/static/app/img/finance/biz/2018-04-04-finance-biz.png)
+![2018-04-04-finance-biz.png](https://raw.githubusercontent.com/houbb/resource/master/img/finance/biz/2018-04-04-finance-biz.png)
 
 
 # 资管 + 金融

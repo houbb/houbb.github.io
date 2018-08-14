@@ -76,7 +76,7 @@ WebSocket是HTML5开始提供的一种浏览器与服务器间进行全双工通
 
 少部分浏览器不支持，浏览器支持的程度与方式有区别。(恕我直言，不支持的可以直接放弃)
 
-![web browser]({{ site.url }}/static/app/img/network/websocket/2017-04-21-websocket-browser.png)
+![web browser](https://raw.githubusercontent.com/houbb/resource/master/img/network/websocket/2017-04-21-websocket-browser.png)
 
 
 # WebSocket 原理
@@ -281,7 +281,7 @@ namespace WebSocketDemo
 
 直接运行 控制台程序。然后打开 html 页面。
 
-![web browser]({{ site.url }}/static/app/img/network/websocket/2017-04-21-websocket-demo.png)
+![web browser](https://raw.githubusercontent.com/houbb/resource/master/img/network/websocket/2017-04-21-websocket-demo.png)
 
 
 # 框架

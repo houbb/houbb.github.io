@@ -47,5 +47,5 @@ Cannot load supported formats: Cannot run program "svn": CreateProcess error=2
 
 - Set the idea, use <kbd>ctrl</kbd>+<kbd>alt</kbd>+<kbd>s</kbd> , choose Version Control -> Subversion -> General.
 
-![subversion]({{ site.url }}/static/app/img/2016-05-17-subversion.jpg)
+![subversion](https://raw.githubusercontent.com/houbb/resource/master/img/2016-05-17-subversion.jpg)
 

@@ -76,11 +76,11 @@ View->Tools->DataBase
 + -> Data Source->MySQL
 ```
 
-![database]({{ site.url }}/static/app/img/2016-05-19-idea-mysql.png)
+![database](https://raw.githubusercontent.com/houbb/resource/master/img/2016-05-19-idea-mysql.png)
 
 # Hello world
 
-![database]({{ site.url }}/static/app/img/2016-05-19-hibernate-form.png)
+![database](https://raw.githubusercontent.com/houbb/resource/master/img/2016-05-19-hibernate-form.png)
 
 
 > File list

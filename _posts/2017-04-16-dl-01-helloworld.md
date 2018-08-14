@@ -169,7 +169,7 @@ Examples labeled as 1 classified by model as 1: 100 times
 
 效果如下
 
-![MLPClassifierLinear]({{ site.url }}/static/app/img/DL/DL4j/2017-04-16-dl-helloworld.png)
+![MLPClassifierLinear](https://raw.githubusercontent.com/houbb/resource/master/img/DL/DL4j/2017-04-16-dl-helloworld.png)
 
 
 

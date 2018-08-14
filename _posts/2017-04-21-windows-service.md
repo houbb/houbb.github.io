@@ -76,7 +76,7 @@ namespace WindowsServiceTest
 
 双击`Service1.cs`，右键->【添加安装程序】。自动生成如下
 
-![windows-service-installer]({{ site.url }}/static/app/img/network/windows-service/2017-04-21-windows-service-installer.png)
+![windows-service-installer](https://raw.githubusercontent.com/houbb/resource/master/img/network/windows-service/2017-04-21-windows-service-installer.png)
 
 - 修改安装服务名
 

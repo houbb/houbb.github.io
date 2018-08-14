@@ -231,7 +231,7 @@ getting-started-guide.html
 
 我们使用浏览器打开 `api-guide.html`，如下：
 
-![2017-12-13-spring-restdocs-demo.png]({{ site.url }}/static/app/img/spring/restdocs/2017-12-13-spring-restdocs-demo.png)
+![2017-12-13-spring-restdocs-demo.png](https://raw.githubusercontent.com/houbb/resource/master/img/spring/restdocs/2017-12-13-spring-restdocs-demo.png)
 
 
 ## 运行服务

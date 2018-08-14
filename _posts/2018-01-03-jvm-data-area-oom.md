@@ -9,7 +9,7 @@ published: true
 
 # 运行时数据区
 
-![2018-01-03-jvm-rt-data-area.png]({{ site.url }}/static/app/img/jvm/2018-01-03-jvm-rt-data-area.png)
+![2018-01-03-jvm-rt-data-area.png](https://raw.githubusercontent.com/houbb/resource/master/img/jvm/2018-01-03-jvm-rt-data-area.png)
 
 > 图片来源 [读《深入理解Java虚拟机》](https://www.cnblogs.com/zhouxuanyu/p/6942417.html)
 

@@ -26,7 +26,7 @@ DSL(领域特定语言)通常是由大致类似于这些的规则构建的:
 5. WORD3 [ , WORD3 ... ]
 ```
 
-![2018-07-16-grammar.png]({{ site.url }}/static/app/img/design/2018-07-16-grammar.png)
+![2018-07-16-grammar.png](https://raw.githubusercontent.com/houbb/resource/master/img/design/2018-07-16-grammar.png)
 
 ```
 Grammar  ::= 'SINGLE-WORD'

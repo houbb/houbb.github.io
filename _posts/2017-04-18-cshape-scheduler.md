@@ -86,7 +86,7 @@ git下载源码后部分开发人员无法编译的问题（挺诡异的问题�
 解决方式: 【计算机】右键->【管理】->【服务】->【ASP.NET 状态服务】开启即可。为了方便，可以设置为自动。
 
 
-![hello]({{ site.url }}/static/app/img/schedular/dotnet/2017-04-19-Scheduler-nodes.png)
+![hello](https://raw.githubusercontent.com/houbb/resource/master/img/schedular/dotnet/2017-04-19-Scheduler-nodes.png)
   
 (默认数据库初始化的时候已经有一NODE了。暂时可以不设置。)
 
@@ -148,7 +148,7 @@ NodeID 就是新建 node 时需要记住的ID。当然你可以指定任意一�
 
 web页面上【任务管理】->【任务列表】新建任务如下：
 
-![new task]({{ site.url }}/static/app/img/scheduler/dotnet/2017-04-19-Scheduler-task.png)
+![new task](https://raw.githubusercontent.com/houbb/resource/master/img/scheduler/dotnet/2017-04-19-Scheduler-task.png)
 
 注意：
 
@@ -167,7 +167,7 @@ web页面上【任务管理】->【任务列表】新建任务如下：
 若成功大概界面如下：
 
 
-![task list]({{ site.url }}/static/app/img/scheduler/dotnet/2017-04-19-Scheduler-task-list.png)
+![task list](https://raw.githubusercontent.com/houbb/resource/master/img/scheduler/dotnet/2017-04-19-Scheduler-task-list.png)
 
   
 七、 安装redis。（redis做即时通知使用，如果没有redis，进行任务开启，卸载等操作时界面反应速度较慢,【系统必须】Redis内部实时通讯专用,密码为空）

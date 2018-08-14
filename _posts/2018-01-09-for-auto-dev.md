@@ -122,7 +122,7 @@ Junit + mockito + powerMock
 
 > [使用自动化加速部署](https://www.ibm.com/developerworks/cn/java/j-ap01088/)
 
-![2018-01-09-auto-dev-build-architecture.png]({{ site.url }}/static/app/img/project/auto-dev/2018-01-09-auto-dev-build-architecture.png)
+![2018-01-09-auto-dev-build-architecture.png](https://raw.githubusercontent.com/houbb/resource/master/img/project/auto-dev/2018-01-09-auto-dev-build-architecture.png)
 
 ## 外部化属性
 
@@ -209,13 +209,13 @@ Martin Fowler 编写了 《Refactoring》
 
 常见的由 DBA 进行操作：(一些公司直连研发都没有)
 
-![2018-01-09-auto-dev-manual-process.gif]({{ site.url }}/static/app/img/project/auto-dev/2018-01-09-auto-dev-manual-process.gif)
+![2018-01-09-auto-dev-manual-process.gif](https://raw.githubusercontent.com/houbb/resource/master/img/project/auto-dev/2018-01-09-auto-dev-manual-process.gif)
 
 ## 自动化
 
 使用工具 [LiquiBase](http://www.liquibase.org/) 进行数据库的自动更新。
 
-![2018-01-09-auto-dev-automated-process.gif]({{ site.url }}/static/app/img/project/auto-dev/2018-01-09-auto-dev-automated-process.gif)
+![2018-01-09-auto-dev-automated-process.gif](https://raw.githubusercontent.com/houbb/resource/master/img/project/auto-dev/2018-01-09-auto-dev-automated-process.gif)
 
 
 # 使用基于向导的安装程序

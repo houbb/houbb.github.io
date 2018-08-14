@@ -53,7 +53,7 @@ File -> Create Model -> Model Types -> Physical Data Model -> Physical Diagram
 
 点击 Columns 导航页, 可设置列属性。
 
-![columns]({{ site.url }}/static/app/img/powerdesinger/2017-03-21-powerdesinger-columns.jpg)
+![columns](https://raw.githubusercontent.com/houbb/resource/master/img/powerdesinger/2017-03-21-powerdesinger-columns.jpg)
 
 
 五、Edit one column Detail
@@ -71,7 +71,7 @@ File -> Create Model -> Model Types -> Physical Data Model -> Physical Diagram
 
 任意空白处右键，选择Properties。弹出内容如下
 
-![columns]({{ site.url }}/static/app/img/powerdesinger/2017-03-21-powerdesinger-properties.jpg)
+![columns](https://raw.githubusercontent.com/houbb/resource/master/img/powerdesinger/2017-03-21-powerdesinger-properties.jpg)
 
 
 然后点击上方【Database】选择【Generate Database】，设置好文件输出路径和文件名称即可。
@@ -141,7 +141,7 @@ comment on table Person is
 
 1、 指定生成的文字编码。(中文默认应该是GBK2312，经测试UTF-8依然乱码)
 
-![columns]({{ site.url }}/static/app/img/powerdesinger/2017-03-21-powerdesinger-gbk.png)
+![columns](https://raw.githubusercontent.com/houbb/resource/master/img/powerdesinger/2017-03-21-powerdesinger-gbk.png)
 
 2、 数据库链接上指定编码
 
