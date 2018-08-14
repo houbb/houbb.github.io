@@ -1,0 +1,33 @@
+id,value,color
+Ryo,
+Ryo.Front-End,
+Ryo.Front-End.Design,1,#808080
+Ryo.Front-End.Ps,0.5,#2E2575
+Ryo.Front-End.HTML & CSS,3,#E54F24
+Ryo.Front-End.SVG,1.5,#FF9900
+Ryo.Front-End.Bootstrap,3,#563B7E
+Ryo.Front-End.JavaScript World,
+Ryo.Front-End.JavaScript World.JavaScript,3,#D6BA33
+Ryo.Front-End.JavaScript World.JQuery,3,#1169AE
+Ryo.Front-End.JavaScript World.D3 js,2.5,#F6854D
+Ryo.Back-End,
+Ryo.Back-End.PHP,1.5,#617CBE
+Ryo.Back-End.C++,1,#0073AD
+Ryo.Back-End.SQL,1.5,#E58E00
+Ryo.Back-End.Java World,
+Ryo.Back-End.Java World.Java SE,3,#EB2C2F
+Ryo.Back-End.Java World.JSP,2,#EB2C2F
+Ryo.Back-End.Java World.Hibernate,2.5,#59666C
+Ryo.Back-End.Java World.Spring MVC / Boot,3,#6DB33F
+Ryo.Back-End.Java World.Spring Data,2.5,#6DB33F
+Ryo.Back-End.Java World.Spring Security,2.5,#5FA134
+Ryo.Back-End.Java World.Thymeleaf,3,#005F0F
+Ryo.Databases,
+Ryo.Databases.MySQL,2.5,#00618A
+Ryo.SysAdmin,
+Ryo.SysAdmin.VPS & SharedHost,2,#808080
+Ryo.SysAdmin.Linux,2.5,#040404
+Ryo.SysAdmin.Apache & Ryocat,2,#CA212F
+Ryo.CMS,
+Ryo.CMS.Wordpress,1.5,#00A0D2
+Ryo.CMS.Drupal,1.5,#0678BE
