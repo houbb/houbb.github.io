@@ -5,34 +5,19 @@ header-img: "static/app/res/img/tags-bg.jpg"
 permalink: /tools/
 ---
 
+
+<head>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
+</head>
+
 <style>
 	.main-content-container {
 		min-height: 650px;
 	}
-	.svg-tool {
-		width: 250px;
-		height: 200px;
+	.stackable>a {
+		line-height: 80px;
 		text-align: center;
-	}
-
-	.svg-tool-rect {
-		width: 252px;
-		height: 202px;
-	}
-
-	.svg-tool:hover {
-		box-shadow: 3px 7px 7px #555555;
-	}
-
-	.well-tool {
-		width: 250px;
-		height: 200px;
-	}
-	.well-tool:hover{
-		box-shadow: 3px 5px 5px #aaa;
-	}
-	.well-tool-body {
-		min-height: 100px;
+		font-size: 26px;
 	}
 </style>
 
@@ -58,140 +43,17 @@ permalink: /tools/
 	<h1>脑洞合集</h1>
 	<br/>
 
-	<div class="row">
+	<div class="ui four column stackable padded grid">
+			<a class="red column" href="ImageToAscii.html"><span>ImageToAscii</span></a>
+			<a class="orange column" href="formatJson.html"><span>FormatJson</span></a>
+			<a class="yellow column" href="formatXml.html"><span>FormatXml</span></a>
+			<a class="olive column" href="formatCss.html"><span>FormatCss</span></a>
 
-		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 tools-item">
-			<a href="ImageToAscii.html">
-			<svg xmlns="http://www.w3.org/2000/svg" class="svg-tool">
-					<g>
-						<rect fill="#000000" class="svg-tool-rect" x="-1" y="-1"></rect>
-						<text stroke="#000" transform="matrix(2.5411643768422993,0,0,3.2477922888113424,-262.4420065818572,-273.6580269569419) "
-					  xml:space="preserve" text-anchor="start"
-					  font-family="Lato,'Helvetica Neue',Arial,Helvetica,sans-serif"
-					  font-size="24" id="svg_2" y="120.05741" x="106.40613" stroke-opacity="null" stroke-width="0" fill="#fcfcfc">Img2Txt</text>
-					</g>
-			</svg>
-			</a>
-		</div>
-
-		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 tools-item">
-			<a href="formatJson.html">
-				<svg xmlns="http://www.w3.org/2000/svg" class="svg-tool">
-					<g>
-						<rect fill="#000000" class="svg-tool-rect" x="-1" y="-1"></rect>
-						<text stroke="#000" transform="matrix(2.5411643768422993,0,0,3.2477922888113424,-262.4420065818572,-273.6580269569419) "
-					  xml:space="preserve" text-anchor="start"
-					  font-family="Lato,'Helvetica Neue',Arial,Helvetica,sans-serif"
-					  font-size="24" id="svg_2" y="120.05741" x="106.40613" stroke-opacity="null" stroke-width="0" fill="#fcfcfc">F-Json</text>
-					</g>
-				</svg>
-			</a>
-		</div>
-
-		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 tools-item">
-			<a href="formatXml.html">
-				<svg xmlns="http://www.w3.org/2000/svg" class="svg-tool">
-					<g>
-						<rect fill="#000000" class="svg-tool-rect" x="-1" y="-1"></rect>
-						<text stroke="#000" transform="matrix(2.5411643768422993,0,0,3.2477922888113424,-262.4420065818572,-273.6580269569419) "
-					  xml:space="preserve" text-anchor="start"
-					  font-family="Lato,'Helvetica Neue',Arial,Helvetica,sans-serif"
-					  font-size="24" id="svg_2" y="120.05741" x="106.40613" stroke-opacity="null" stroke-width="0" fill="#fcfcfc">F-XML</text>
-					</g>
-				</svg>
-			</a>
-		</div>
-
-		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 tools-item">
-			<a href="formatCss.html">
-				<svg xmlns="http://www.w3.org/2000/svg" class="svg-tool">
-					<g>
-						<rect fill="#000000" class="svg-tool-rect" x="-1" y="-1"></rect>
-						<text stroke="#000" transform="matrix(2.5411643768422993,0,0,3.2477922888113424,-262.4420065818572,-273.6580269569419) "
-					  xml:space="preserve" text-anchor="start"
-					  font-family="Lato,'Helvetica Neue',Arial,Helvetica,sans-serif"
-					  font-size="24" id="svg_2" y="120.05741" x="106.40613" stroke-opacity="null" stroke-width="0" fill="#fcfcfc">F-CSS</text>
-					</g>
-				</svg>
-			</a>
-		</div>
-
-		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 tools-item">
-			<a href="color.html">
-				<svg xmlns="http://www.w3.org/2000/svg" class="svg-tool">
-					<g>
-						<rect fill="#000000" class="svg-tool-rect" x="-1" y="-1"></rect>
-						<text stroke="#000" transform="matrix(2.5411643768422993,0,0,3.2477922888113424,-262.4420065818572,-273.6580269569419) "
-					  xml:space="preserve" text-anchor="start"
-					  font-family="Lato,'Helvetica Neue',Arial,Helvetica,sans-serif"
-					  font-size="24" id="svg_2" y="120.05741" x="106.40613" stroke-opacity="null" stroke-width="0" fill="#fcfcfc">RGB</text>
-					</g>
-				</svg>
-			</a>
-		</div>
-
-		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 tools-item">
-			<a href="qrcode.html">
-				<svg xmlns="http://www.w3.org/2000/svg" class="svg-tool">
-					<g>
-						<rect fill="#000000" class="svg-tool-rect" x="-1" y="-1"></rect>
-						<text stroke="#000" transform="matrix(2.5411643768422993,0,0,3.2477922888113424,-262.4420065818572,-273.6580269569419) "
-					  xml:space="preserve" text-anchor="start"
-					  font-family="Lato,'Helvetica Neue',Arial,Helvetica,sans-serif"
-					  font-size="24" id="svg_2" y="120.05741" x="106.40613" stroke-opacity="null" stroke-width="0" fill="#fcfcfc">QrCode</text>
-					</g>
-				</svg>
-			</a>
-		</div>
-
-		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 tools-item">
-			<a href="tts.html">
-				<svg xmlns="http://www.w3.org/2000/svg" class="svg-tool">
-					<g>
-						<rect fill="#000000" class="svg-tool-rect" x="-1" y="-1"></rect>
-						<text stroke="#000" transform="matrix(2.5411643768422993,0,0,3.2477922888113424,-262.4420065818572,-273.6580269569419) "
-					  xml:space="preserve" text-anchor="start"
-					  font-family="Lato,'Helvetica Neue',Arial,Helvetica,sans-serif"
-					  font-size="24" id="svg_2" y="120.05741" x="106.40613" stroke-opacity="null" stroke-width="0" fill="#fcfcfc">TTS</text>
-					</g>
-				</svg>
-			</a>
-		</div>
-
-		<div class="col-lg-3 col-md-4 col-sm-6 col-xs-12 tools-item">
-			<a href="wordCloud.html">
-				<svg xmlns="http://www.w3.org/2000/svg" class="svg-tool">
-					<g>
-						<rect fill="#000000" class="svg-tool-rect" x="-1" y="-1"></rect>
-						<text stroke="#000" transform="matrix(2.5411643768422993,0,0,3.2477922888113424,-262.4420065818572,-273.6580269569419) "
-					  xml:space="preserve" text-anchor="start"
-					  font-family="Lato,'Helvetica Neue',Arial,Helvetica,sans-serif"
-					  font-size="24" id="svg_2" y="120.05741" x="106.40613" stroke-opacity="null" stroke-width="0" fill="#fcfcfc">W-Cloud</text>
-					</g>
-				</svg>
-			</a>
-		</div>
-
+			<a class="green column" href="color.html"><span>Color</span></a>
+			<a class="teal column" href="qrcode.html"><span>Qrcode</span></a>
+			<a class="blue column" href="tts.html"><span>TTS</span></a>
+			<a class="violet column" href="wordCloud.html"><span>WordCloud</span></a>
 	</div>
-
-
-
-	<br/>
-	<br/>
-	<h1>简单案例</h1>
-
-	<div class="well well-tool col-lg-3 col-md-4 col-sm-6 col-xs-12">
-		<h2>二级联动</h2>
-		<p class="text-muted well-tool-body">js 演示简单下拉框二级联动</p>
-
-		<button class="btn btn-info">
-			<a href="selectLinkage.html">详情 >></a>
-		</button>
-	</div>
-
-	<br/>
-
-
 
 </div>
 

@@ -8,6 +8,11 @@ header-img: "static/app/res/img/python-bg.jpg"
 published: true
 ---
 
+<head>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
+</head>
+
+
 # Semantic-Ui
 
 [Semantic](http://www.semantic-ui.cn/) is a development framework that helps create beautiful, 
@@ -212,6 +217,7 @@ Running the gulp build tools will compile CSS and Javascript for use in your pro
 我觉得上面这么复杂的操作，只是为了让你更好的选择性安装css/js等文件。其实如果需求简单，可以直接把对应的文件下载下来，引入即可。
 
 简单的颜色测试
+
 
 <div class="ui five column stackable padded grid">
   <div class="red column">Red</div>

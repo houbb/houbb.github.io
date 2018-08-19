@@ -26,5 +26,16 @@ With no extra effort on your part, Markdown Here eliminates all the hassle of fo
 
 ps: 需要技能。Chrome 插件开发。
 
+
+# markdown css
+
+这是一个趣的 css，将 html 转换为 markdown 的样式。
+
+[Markdown css](https://mrcoles.com/demo/markdown-css/)
+
+## 用途
+
+可以将繁琐的页面变得简洁易读。
+
 * any list
 {:toc}

@@ -38,6 +38,18 @@ Python 3.5.0 (v3.5.0:374f501f4567, Sep 12 2015, 11:00:19)
 Type "help", "copyright", "credits" or "license" for more information.
 ```
 
+- 卸载
+
+```sh
+$   brew uninstall python
+```
+
+# 参考资料
+
+- 卸载
+
+https://blog.csdn.net/yilovexing/article/details/78750990
+
 * any list
 {:toc}
 

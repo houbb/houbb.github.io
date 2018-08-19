@@ -13,6 +13,10 @@ published: true
 When webpack processes your application, it recursively builds a dependency graph
 that includes every module your application needs, then packages all of those modules into one or more bundles.
 
+## 教程
+
+[webpack-4](https://wanago.io/2018/07/16/webpack-4-course-part-one-entry-output-and-es6-modules/)
+
 # 快速开始
 
 ## 起步
