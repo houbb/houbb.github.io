@@ -121,7 +121,7 @@ static void Main(string[] args)
 
 为了使演示操作更方便，客户端使用Windows Forms项目。界面如下：
 
-![form]({{ site.url}}/static/app/img/network/wcf/2017-04-25-wcf-session-client-form.png)
+![form](https://raw.githubusercontent.com/houbb/resource/master/img/network/wcf/2017-04-25-wcf-session-client-form.png)
 
 我们点击【Call SetVal()】进行设置值。点击【Call GetVal()】进行取值。
 
@@ -181,7 +181,7 @@ namespace SessionFormsClient
 
 测试结果如下。取值时并不是我们的预期值**100**，而是 **int.MIN_VALUE**;
 
-![test one]({{ site.url}}/static/app/img/network/wcf/2017-04-25-wcf-session-client-test1.png)
+![test one](https://raw.githubusercontent.com/houbb/resource/master/img/network/wcf/2017-04-25-wcf-session-client-test1.png)
 
 - Server
  

@@ -237,7 +237,7 @@ public class PrototypeTest extends TestCase {
 
 ## shallow copy
 
-![shallowCopy]({{site.url}}/static/app/img/2016-07-15-shallowCopy.png)
+![shallowCopy](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-15-shallowCopy.png)
 
 Java object's ```clone()``` is shallow copy. See the flowing demo.
 
@@ -315,7 +315,7 @@ public class PrototypeTest extends TestCase {
 
 ## deep copy
 
-![shallowCopy]({{site.url}}/static/app/img/2016-07-15-deepCopy.png)
+![shallowCopy](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-15-deepCopy.png)
 
 - add ```Serializable``` for Person
 
@@ -395,7 +395,7 @@ public class DeepCopyTest extends TestCase {
 
 ## simple factory
 
-![simpleFactory]({{site.url}}/static/app/img/2016-07-15-simple-factory.png)
+![simpleFactory](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-15-simple-factory.png)
 
 
 - interface
@@ -467,7 +467,7 @@ public void testFactory() {
 
 ## factory method
 
-![simpleFactory]({{site.url}}/static/app/img/2016-07-15-factory-method.png)
+![simpleFactory](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-15-factory-method.png)
 
 - Interface
 
@@ -577,7 +577,7 @@ Provide an interface for creating families of related or dependent objects witho
 
 > Structure
 
-![abstractFactory]({{site.url}}/static/app/img/2016-07-16-abstract-factory.png)
+![abstractFactory](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-16-abstract-factory.png)
 
 
 > Consequences

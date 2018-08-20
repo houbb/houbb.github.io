@@ -196,7 +196,7 @@ Listen 1234
 
 - restart the Apache and you can see
 
-![phabricator index]({{site.url}}/static/app/img/phabricator/2016-09-22-phabricator-index.png)
+![phabricator index](https://raw.githubusercontent.com/houbb/resource/master/img/phabricator/2016-09-22-phabricator-index.png)
 
 
 - config mysql
@@ -291,7 +291,7 @@ Completed applying all schema adjustments.
 http://127.0.0.1:1234/
 ```
 
-![phabricator]({{site.url}}/static/app/img/phabricator/2016-09-22-phabricator-visit.png)
+![phabricator](https://raw.githubusercontent.com/houbb/resource/master/img/phabricator/2016-09-22-phabricator-visit.png)
 
 
 # Install in Ubuntu

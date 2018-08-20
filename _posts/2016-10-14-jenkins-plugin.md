@@ -66,14 +66,14 @@ Enter a name, and generate one:
 
 ```30a4d56f3130d246818ed384ece7d15c56ae8c85``` named **admin**, copy this into **Server authentication token**
 
-![sonar]({{ site.url}}/static/app/img/jenkins/2016-12-10-jenkins-sonar.png)
+![sonar](https://raw.githubusercontent.com/houbb/resource/master/img/jenkins/2016-12-10-jenkins-sonar.png)
 
 
 > 配置sonar scanner
 
 系统管理–》Global Tool Configuration
 
-![scanner]({{ site.url}}/static/app/img/jenkins/2016-12-10-jenkins-sonar-scanner.png)
+![scanner](https://raw.githubusercontent.com/houbb/resource/master/img/jenkins/2016-12-10-jenkins-sonar-scanner.png)
 
 
 > 配置项目
@@ -95,7 +95,7 @@ sonar.language=java
 或者直接将此内容添加在**Analysis properties**中。
 
 
-![scanner]({{ site.url}}/static/app/img/jenkins/2016-12-10-jenkins-sonar-executor.png)
+![scanner](https://raw.githubusercontent.com/houbb/resource/master/img/jenkins/2016-12-10-jenkins-sonar-executor.png)
 
 
 - Edit the ```pom.xml``` in your project:

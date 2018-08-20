@@ -82,7 +82,7 @@ static void Main(string[] args)
 
 这个运行时完全正常的。如果此时你在**Client**端查看User的属性。应该如下：
 
-![data]({{ site.url}}/static/app/img/network/data/2017-04-23-wcf-data-model.png)
+![data](https://raw.githubusercontent.com/houbb/resource/master/img/network/data/2017-04-23-wcf-data-model.png)
 
 
 # User Data Contract

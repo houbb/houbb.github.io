@@ -38,7 +38,7 @@ Provide a surrogate or placeholder for another object to control access to it.
 
 > struct
 
-![static proxy]({{site.url}}/static/app/img/2016-07-18-static-proxy.png)
+![static proxy](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-18-static-proxy.png)
 
 > demo
 
@@ -110,7 +110,7 @@ Why we use dynamic proxy ? If there are many methods, it's hard to use static pr
 
 > struct
 
-![static proxy]({{site.url}}/static/app/img/2016-07-18-dynamic-proxy.png)
+![static proxy](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-18-dynamic-proxy.png)
 
 - Request.java
 
@@ -228,7 +228,7 @@ Instead of many conditionals, move related conditional branches into their own S
 
 > Struct
 
-![Strategy]({{site.url}}/static/app/img/2016-07-19-strategy.png)
+![Strategy](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-19-strategy.png)
 
 
 > Consequences

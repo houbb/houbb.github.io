@@ -78,7 +78,7 @@ and then, you can see:
 
 The composition of charset.
 
-![highcharts compostion]({{site.url}}/static/app/img/highcharts/2016-10-27-highcharts-compostion.jpg)
+![highcharts compostion](https://raw.githubusercontent.com/houbb/resource/master/img/highcharts/2016-10-27-highcharts-compostion.jpg)
 
 
 

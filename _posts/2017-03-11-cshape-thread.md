@@ -22,7 +22,7 @@ published: true
 
 线程生命周期开始于 **System.Threading.Thread** 类的对象被创建时，结束于线程被终止或完成执行时。
 
-![thread]({{ site.url}}/static/app/img/cshape/2017-03-12-cshape-thread.png)
+![thread](https://raw.githubusercontent.com/houbb/resource/master/img/cshape/2017-03-12-cshape-thread.png)
 
 1、未启动状态
 
