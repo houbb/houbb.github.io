@@ -4,7 +4,8 @@ $(document).ready(function () {
     $("UML, uml").sequenceDiagram({theme: "hand"});
     Base.musicPlay();
     Base.scrollTop();
-    $("table").addClass("table").addClass("table-bordered").addClass("table-hover");
+    $("table").addClass("table").addClass("table-bordered")
+    .addClass("table-hover").addClass("table-striped");
     Base.sh();
     Base.initNo();
     Base.scrollSpy();
