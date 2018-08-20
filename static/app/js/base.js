@@ -13,9 +13,23 @@ $(document).ready(function () {
     Base.initTravelMap();
 
     Base.handlePre();
+    
+    Base.historyoftoday();
 });
 var Base = new Base();
 function Base() {
+    /**
+     * 那年今日
+     */
+    this.historyoftoday = function(){
+        var historyoftoday = $("#historyoftoday");
+		var date = new Date();
+		var nowMonth = date.getMonth() + 1;
+		var nowDay = date.getDate();
+
+		var url = "https://raw.githubusercontent.com/gitbook-echo/history-of-today/master/md/"+nowMonth+"/"+nowDay+".md";
+		historyoftoday.attr("href", url);
+    };
     /**
      * 对于代码块进行处理
      * 1. 有时候博客中的代码太长印象阅读体验。
