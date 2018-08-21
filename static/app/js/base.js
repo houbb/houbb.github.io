@@ -23,13 +23,16 @@ function Base() {
      */
     this.historyoftoday = function(){
         var historyoftoday = $("#historyoftoday");
-		var date = new Date();
+        var date = new Date();
+        // 为了实际需要，获取明天的
+        date.setDate(date.getDate()+1);
 		var nowMonth = date.getMonth() + 1;
 		var nowDay = date.getDate();
 
 		var url = "https://raw.githubusercontent.com/gitbook-echo/history-of-today/master/md/"+nowMonth+"/"+nowDay+".md";
 		historyoftoday.attr("href", url);
     };
+    
     /**
      * 对于代码块进行处理
      * 1. 有时候博客中的代码太长印象阅读体验。
