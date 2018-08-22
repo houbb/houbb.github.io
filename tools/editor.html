@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>wangEditor</title>
+</head>
+    <style>
+        .toolbar {
+            border: 1px solid #ccc;
+        }
+        .text {
+            margin-top: -1px;
+            border: 1px solid #ccc;
+            height: 550px;
+        }
+    </style>
+    <body>
+        <div id="toolbar" class="toolbar"></div>
+        <div id="editor" class="text"></div>
+    </body>
+<script src="../static/libs/jQuery/jquery-2.2.3.min.js"></script>
+<script src="../static/libs/bootstrap/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/wangEditor/3.1.1/wangEditor.min.js"></script>
+<script>
+$(function (){
+    var E = window.wangEditor
+    var editor = new E('#toolbar', '#editor');
+    // 关闭粘贴样式的过滤
+    editor.customConfig.pasteFilterStyle = false;
+    editor.customConfig.uploadImgShowBase64 = true;
+    editor.create();
+});
+</script>
+
+</html>
