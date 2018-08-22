@@ -9,10 +9,203 @@ published: true
 
 # synchronized
 
+## 问题
+
+synchronized锁住的是代码还是对象。
+
+答案是：
+
+synchronized 锁住的是括号里的对象，而不是代码。
+
+对于非 static 的 synchronized 方法，锁的就是对象本身也就是 this。
+
+## 验证
+
+### 案例 1
+
+- SyncDemo.java
+
+```java
+public class SyncDemo {
+
+    public synchronized void test() {
+        System.out.println("test开始..");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("test结束..");
+    }
+
+    static class MyThread extends Thread {
+
+        @Override
+        public void run() {
+            SyncDemo sync = new SyncDemo();
+            sync.test();
+        }
+    }
+
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 3; i++) {
+            Thread thread = new MyThread();
+            thread.start();
+        }
+    }
+}
+```
+
+- 日志
+
+```
+test开始..
+test开始..
+test开始..
+test结束..
+test结束..
+test结束..
+```
+
+此时的 SyncDemo 对象每次都是新建的，所以锁是无法生效的。
+
+- 同理，修改成如下的样子依然不生效。
+
+因为二者是等价的。
+
+```java
+public  void test() {
+    synchronized(this) {
+        System.out.println("test开始..");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("test结束..");
+    }
+}
+```
+
+### 案例 2
+
+将代码进行如下调整，即可达到我们的目的。保证只有一个 `SyncDemo` 实例。
+
+- SyncDemo3.java
+
+```java
+public class SyncDemo3 {
+
+    public synchronized void test() {
+        System.out.println("test开始..");
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        System.out.println("test结束..");
+    }
+
+    static class MyThread extends Thread {
+
+        private SyncDemo3 sync;
+
+        public MyThread(SyncDemo3 sync) {
+            this.sync = sync;
+        }
+
+        @Override
+        public void run() {
+            sync.test();
+        }
+    }
+
+    public static void main(String[] args) {
+        SyncDemo3 syncDemo3 = new SyncDemo3();
+
+        for (int i = 0; i < 3; i++) {
+            Thread thread = new MyThread(syncDemo3);
+            thread.start();
+        }
+    }
+
+}
+```
+
+- 日志
+
+```
+test开始..
+test结束..
+test开始..
+test结束..
+test开始..
+test结束..
+```
+
+### 案例 3
+
+如果想让每次创建的对象，也可以按照锁去执行，怎么做？
+
+- SyncDemo4.java
+
+```java
+public class SyncDemo4 {
+
+    public  void test() {
+        synchronized(SyncDemo4.class) {
+            System.out.println("test开始..");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("test结束..");
+        }
+    }
+
+    static class MyThread extends Thread {
+
+        @Override
+        public void run() {
+            SyncDemo4 sync = new SyncDemo4();
+            sync.test();
+        }
+
+    }
+
+    public static void main(String[] args) {
+        for (int i = 0; i < 3; i++) {
+            Thread thread = new MyThread();
+            thread.start();
+        }
+    }
+}
+```
+
+- 日志
+
+```java
+test开始..
+test结束..
+test开始..
+test结束..
+test开始..
+test结束..
+```
+
+## static synchronized
+
+上面代码用 `synchronized(Sync.class)` 实现了全局锁的效果。
+
+最后说说 static synchronized 方法，static 方法可以直接类名加方法名调用，方法中无法使用 this，所以它锁的不是 this，而是类的 Class 对象，
+
+所以，static synchronized 方法也相当于全局锁，相当于锁住了代码段。
 
 # 原理
 
-synchronized用的锁是存在Java对象头里的。
+synchronized 用的锁是存在 Java 对象头里的。
 
 JVM基于进入和退出 `Monitor` 对象来实现方法同步和代码块同步。
 
@@ -521,11 +714,6 @@ ps: 也就是资源竞争不激烈的时候，比较适合使用。
 
 - synchronized 使用起来更加方便
 
-
-# 其他疑问
-
-- synchronized 到底锁的是什么？
-
 # 参考资料
 
 https://zhuanlan.zhihu.com/p/29866981
@@ -539,6 +727,11 @@ https://blog.csdn.net/chenssy/article/details/54883355
 https://blog.csdn.net/u012465296/article/details/53022317
 
 https://github.com/waylau/java-virtual-machine-specification
+
+
+- sync 的陷阱
+
+[聊聊 synchronized 为什么无法锁住 Integer](http://gao-xianglong.iteye.com/blog/2396071)
 
 * any list
 {:toc}
