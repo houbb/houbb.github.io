@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  SQL 2PC
-date:  2018-08-31 15:24:54 +0800
+date:  2018-09-02 11:03:38 +0800
 categories: [SQL]
-tags: [sql, transaction, distribute, sh]
+tags: [sql, transaction, distributed, sh]
 published: true
 ---
 
@@ -100,7 +100,6 @@ commit-request阶段(或投票阶段),一个协调过程试图准备所有事务
 记录abort日志
 
 向协调者发送rollback done消息
-
 
 - 如果参与者收到的是commit消息
 
