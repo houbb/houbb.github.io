@@ -4,6 +4,7 @@ title:  SQL 2PC
 date:  2018-09-02 11:03:38 +0800
 categories: [SQL]
 tags: [sql, transaction, distributed, sh]
+excerpt: SQL 分布式事务两阶段提交协议(2PC)是一种原子承诺协议(ACP)。它是一种分布式算法，协调参与分布式原子事务的所有进程，以决定是否提交或回滚事务(这是一种专门的共识协议类型)。
 published: true
 ---
 

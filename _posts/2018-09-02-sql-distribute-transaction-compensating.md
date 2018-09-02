@@ -4,6 +4,7 @@ title: Compensating Transaction pattern
 date:  2018-09-02 13:27:14 +0800
 categories: [SQL]
 tags: [sql, transaction, distributed, sh]
+excerpt: 补偿事务可能无法简单地用系统在操作开始时的状态替换当前状态，因为这种方法可能覆盖应用程序的其他并发实例所做的更改。相反，它必须是一个考虑到并发实例所做的任何工作的智能流程。这个过程通常是特定于应用程序的，由原始操作执行的工作的性质驱动。
 published: true
 ---
 

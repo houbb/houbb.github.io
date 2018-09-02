@@ -4,6 +4,7 @@ title:  SQL Distribute Transaction
 date:  2018-09-02 10:06:45 +0800
 categories: [SQL]
 tags: [sql, transaction, distributed, sh]
+excerpt: SQL 分布式事务, 二段提交, 本地消息表, Saga 事务, 最大努力通知
 published: true
 ---
 
@@ -235,6 +236,8 @@ C1=加100元 C2=给用户减一瓶水 C3=给库存加一瓶水
 [补偿](https://houbb.github.io/2018/09/02/sql-distribute-transaction-compensating)
 
 [幂等](https://houbb.github.io/2018/09/02/idempotency-patterns)
+
+[JTA](https://houbb.github.io/2018/09/02/sql-jta)
 
 # 参考资料
 

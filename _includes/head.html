@@ -9,8 +9,8 @@
 
 
   <title>{% if page.title %}{{ page.title | escape }}{% else %}{{ site.title | escape }}{% endif %}</title>
-  <meta name="keyword" >
-  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <meta name="keyword" content="{% if page.keyword %}{{ page.keyword | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ page.title }}{% endif %}">
+  <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ page.title }}{% endif %}">
   <meta name="robots" contect= "all"> 
 
   <link rel="stylesheet" href="{{ "{{ site.url }}/static/libs/bootstrap/css/bootstrap-custom.css" | prepend: site.baseurl }}">
@@ -35,5 +35,6 @@
   <script src="{{ site.url }}/static/libs/jQuery/jquery-2.2.3.min.js"></script>
 
   <!-- 方便 google 收录 -->
+
 
 </head>
