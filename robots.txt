@@ -1,5 +1,10 @@
 # www.robotstxt.org/
 # www.google.com/support/webmasters/bin/answer.py?hl=en&answer=156449
 
+User-agent: Googlebot
+Disallow: /nogooglebot/
+
 User-agent: *
+Allow: /
+
 Sitemap: https://houbb.github.io/sitemap.xml

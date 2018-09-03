@@ -3,8 +3,9 @@ layout: post
 title:  MySQL Index
 date:  2018-07-30 18:53:18 +0800
 categories: [SQL]
-tags: [sql, data struct]
+tags: [sql, data struct, mysql, index, sh]
 published: true
+expert: MySQL 索引及其原理详解。
 ---
 
 # SQL Index
@@ -565,26 +566,71 @@ mysql中提到,一个表最多 16 个索引,最大索引长度 256 字节.
 
 ## 索引不生效的场景
 
-- `!=` 或者 `<>`
+### `!=` 或者 `<>`
 
-- 使用聚合函数
+负向条件查询不能使用索引
 
-- 表关联的时候。只有当主键和外键具有相同的类型才会生效。
+- 实例
 
-- LIKE, REGEX 只有当第一个不是通配符才会生效。
+```sql
+select * from order where status!=0 and stauts!=1
+```
+
+not in/not exists都不是好习惯
+
+建议优化为：
+
+```sql
+select * from order where status in(2,3)
+```
+
+### 在属性上进行计算不能命中索引
+
+```sql
+select * from order where YEAR(date) < = '2017'
+```
+
+即使date上建立了索引，也会全表扫描，可优化为值计算：
+
+```sql
+select * from order where date < = CURDATE()
+```
+
+或者：
+
+```sql
+select * from order where date < = '2017-01-01'
+```
+ 
+
+### 使用聚合函数
+
+### 表关联的时候。只有当主键和外键具有相同的类型才会生效。
+
+### LIKE, REGEX 只有当第一个不是通配符才会生效。
 
 ```sql
 like '%abc'   ×
 like 'abc%'   √
 ```
 
-- ORDER BY
+### ORDER BY
 
 只有当条件不是表达式时会生效。多表的时候效果不好。
 
-- 相同的字段太多
+### 相同的字段太多
 
 比如全是 0/1
+
+- 实例
+
+```
+select * from user where sex=1
+```
+
+性别大部分只有男女，索引效果不佳。
+
+经验上，能过滤80%数据时就可以使用索引。对于订单状态，如果状态值很少，不宜使用索引，如果状态值很多，能够过滤大量数据，则应该建立索引。
 
 # 拓展知识
 
@@ -640,6 +686,8 @@ https://dev.mysql.com/doc/refman/8.0/en/optimization-indexes.html
 https://www.tutorialspoint.com/mysql/mysql-indexes.htm
 
 https://www.guru99.com/indexes.html
+
+[10 条优化技巧](https://mp.weixin.qq.com/s/dGcgts4NNTmVQNRT-j2MZw)
 
 - 对比
 

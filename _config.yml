@@ -75,7 +75,7 @@ permalink: /:year/:month/:day/:title
 
 
 # 路径
-url: "https://houbb.github.io/" # the base hostname & protocol for your site
+url: "" # the base hostname & protocol for your site
 detach:  false
 port:    4000
 host:    127.0.0.1
