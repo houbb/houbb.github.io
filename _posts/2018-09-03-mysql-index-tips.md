@@ -257,6 +257,10 @@ select * from order where order_status IN (0,1);
 select * from order where order_status = 0 union select * from order where order_status = 1;
 ```
 
+[架构师之路-答案](https://mp.weixin.qq.com/s/ZWez27EmVw_u7GzNbvXuYw)
+
+ps: 和我的验证结果感觉不符合。本地 mysql 版本：V5.6.0
+
 ## 准备工作
 
 - 添加索引

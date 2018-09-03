@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  MySQL Best Practise
+title:  MySQL Best Practice
 date:  2018-09-03 08:57:39 +0800
 categories: [SQL]
-tags: [sql, mysql, best-practise, sh]
+tags: [sql, mysql, best-practice, sh]
 published: true
 excerpt: MySQL 数据库最佳实践，count(*)，全文索引，事务、行锁与表锁、外键
 ---

@@ -3,14 +3,12 @@ layout: post
 title:  Query Design
 date:  2018-09-03 10:50:21 +0800
 categories: [Design]
-tags: [query, sql, design, sh]
+tags: [query,  design, summary, todo, sh]
 published: false
 excerpt: 搜索引擎的设计。
 ---
 
-# 
-
-# 拓展阅读
+# 搜索引擎
 
 # 参考资料
 
