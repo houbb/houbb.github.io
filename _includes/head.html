@@ -13,6 +13,8 @@
   <meta name="description" content="{% if page.excerpt %}{{ page.excerpt | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ page.title }}{% endif %}">
   <meta name="robots" contect= "all"> 
 
+  {% seo %}
+  
   <link rel="stylesheet" href="{{ "{{ site.url }}/static/libs/bootstrap/css/bootstrap-custom.css" | prepend: site.baseurl }}">
   <link rel="stylesheet" href="{{ "{{ site.url }}/static/libs/fontAwesome/css/font-awesome.min.css" | prepend: site.baseurl }}">
   <link rel="stylesheet" href="{{ "{{ site.url }}/static/libs/syntaxhighlighter/styles/shCore.css" | prepend: site.baseurl }}">
