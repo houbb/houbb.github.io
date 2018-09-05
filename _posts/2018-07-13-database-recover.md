@@ -3,12 +3,11 @@ layout: post
 title:  Database Recover
 date:  2018-07-13 17:39:24 +0800
 categories: [Database]
-tags: [database]
+tags: [database, sql, master-slave, distributed, sh]
 published: true
 ---
 
 # 数据库恢复
-
 
 # 高可用数据库架构
 
