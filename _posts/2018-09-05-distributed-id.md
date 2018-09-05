@@ -221,6 +221,68 @@ ID生成服务假设每次批量拉取6个ID，服务访问数据库，将当前
 
 ## 实现
 
+TODO:
+
+# 时间回拨问题
+
+由于存在时间回拨问题，但是他又是那么快和简单，我们思考下是否可以解决呢？ 
+
+## 美团解决时钟问题
+
+[Leaf——美团点评分布式ID生成系统](https://tech.meituan.com/MT_Leaf.html) 非常优秀，但是并没有对应的解决方案。
+
+![解决时钟问题](https://tech.meituan.com/img/leaf/snowflake.flow.png)
+
+## 时间回拨的原因
+
+第一：人物操作，在真实环境一般不会有那个傻逼干这种事情，所以基本可以排除。 
+
+第二：由于有些业务等需要，机器需要同步时间服务器（在这个过程中可能会存在时间回拨，查了下我们服务器一般在10ms以内（2小时同步一次））。
+
+## 解决方法
+
+由于是分布在各各机器自己上面，如果要几台集中的机器（并且不做时间同步），那么就基本上就不存在回拨可能性了（曲线救国也是救国，哈哈），但是也的确带来了新问题，各各结点需要访问集中机器，要保证性能，百度的 [uid-generator](https://github.com/baidu/uid-generator) 产生就是基于这种情况做的（每次取一批回来，很好的思想，性能也非常不错）。
+
+## 时间问题回拨的解决方法：
+
+当回拨时间小于15ms，就等时间追上来之后继续生成。
+
+当时间大于15ms时间我们通过更换 workid 来产生之前都没有产生过的来解决回拨问题。
+
+### 调整 workid 段位
+
+Snowflake 算法稍微调整下位段：
+
+- sign(1bit)
+
+固定1bit符号标识，即生成的畅途分布式唯一id为正数。
+
+- delta seconds (38 bits)
+
+当前时间，相对于时间基点"2017-12-21"的增量值，单位：毫秒，最多可支持约8.716年
+
+- worker id (15 bits)
+
+机器id，最多可支持约3.28万个节点。
+
+- sequence (10 bits)
+
+每秒下的并发序列，10 bits，这个算法单机每秒内理论上最多可以生成1000*(2^10)，也就是100W的ID，完全能满足业务的需求。
+
+### 关键
+
+下面到了关键了：
+
+现在我把3万多个workid放到一个队列中（基于redis），由于需要一个集中的地方来管理workId，每当节点启动时候，（先在本地某个地方看看是否有 借鉴弱依赖zk 本地先保存），如果有那么值就作为workid，如果不存在，就在队列中取一个当workid来使用（队列取走了就没了 ），当发现时间回拨太多的时候，我们就再去队列取一个来当新的workid使用，把刚刚那个使用回拨的情况的workid存到队列里面（队列我们每次都是从头取，从尾部进行插入，这样避免刚刚a机器使用又被b机器获取的可能性）。
+
+### 思考
+
+如果引入了redis为啥不用redis下发id？（查看分布式系统唯一ID生成方案汇总会获得答案，我们这里仅仅是用来一致性队列的，能做一致性队列的基本都可以)。
+
+引入redis就意味着引入其他第三方的架构，做基础框架最好是不要引用（越简单越好，目前还在学习提高）。
+
+redis一致性怎么保证？（redis挂了怎么办，怎么同步，的确值得商榷。可能会引入会引入很多新的小问题）。
+
 # MongoDB ObjectId
 
 [MongoDB ObjectId](https://docs.mongodb.com/manual/reference/method/ObjectId/) 和snowflake算法类似。
@@ -264,6 +326,8 @@ zookeeper主要通过其znode数据版本来生成序列号，可以生成32位�
 
 # 参考资料
 
+[Leaf——美团点评分布式ID生成系统](https://tech.meituan.com/MT_Leaf.html)
+
 [分布式系统唯一ID生成方案汇总](http://www.cnblogs.com/haoxinyue/p/5208136.html)
 
 [浅谈CAS在分布式ID生成方案上的应用](https://mp.weixin.qq.com/s/QtjpUpl2FF0DKPPHh6HDGg)
@@ -276,7 +340,17 @@ zookeeper主要通过其znode数据版本来生成序列号，可以生成32位�
 
 https://juejin.im/post/5a7f9176f265da4e721c73a8
 
-https://github.com/beyondfengyu/SnowFlake
+[原理讲解](https://segmentfault.com/a/1190000011282426)
+
+- snowflake 源码实现
+
+https://www.cnblogs.com/relucent/p/4955340.html
+
+[Twitter的雪花算法SnowFlake，使用Java语言实现](https://github.com/beyondfengyu/SnowFlake)
+
+[UidGenerator：百度出品的基于 Snowflake 算法的唯一 ID 生成器（Java）](https://toutiao.io/posts/p5nyut/preview)
+
+[UC 实现版本](https://github.com/sumory/uc/blob/master/src/com/sumory/uc/id/IdWorker.java)
 
 - uuid
 
