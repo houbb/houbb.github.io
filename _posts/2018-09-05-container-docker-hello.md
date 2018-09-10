@@ -234,6 +234,13 @@ $ docker container rm [containerID]
 
 下面通过一个实例，演示如何编写 Dockerfile 文件。
 
+# 常见命令
+
+- 重启已经停止的 container
+
+```
+$ docker container restart ${container_id}
+```
 
 # 拓展阅读
 

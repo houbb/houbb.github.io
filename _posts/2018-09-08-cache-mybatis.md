@@ -190,63 +190,7 @@ public interface InitializingObject {
 
 # mybatis 缓存实战
 
-## 建表
-
-- db.sql
-
-```sql
-CREATE DATABASE mybatis
-  DEFAULT CHARACTER SET utf8
-  COLLATE utf8_general_ci;
-
-USE mybatis;
-```
-
-- init.sql
-
-```sql
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE user (
-  id        BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
-  COMMENT '主键, 自增',
-  username  VARCHAR(64)                           NOT NULL
-  COMMENT '用户名',
-  password  VARCHAR(128)                          NOT NULL
-  COMMENT '密码',
-  `created_time` timestamp NULL,
-  `updated_time` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-  UNIQUE INDEX `username_UNIQUE` (`username`)
-)
-  COMMENT '用户表';
-
-INSERT INTO `user` (username, password, created_time, updated_time) VALUES (
-  'ryo', '123456', NOW(), NOW()
-);
-
-DROP TABLE IF EXISTS `role`;
-CREATE TABLE role (
-  id          BIGINT(20) PRIMARY KEY AUTO_INCREMENT NOT NULL
-  COMMENT '主键,自增',
-  name        VARCHAR(64)                           NOT NULL
-  COMMENT '角色名称',
-  code        VARCHAR(64)                           NOT NULL
-  COMMENT '角色代码',
-  description VARCHAR(128)                          NULL DEFAULT ''
-  COMMENT '角色说明',
-  `created_time` timestamp NULL,
-  `updated_time` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-
-  INDEX `name`(`name`),
-  UNIQUE INDEX `code_UNIQUE`(`code`)
-)
-  COMMENT '角色表';
-
-INSERT INTO `role` (name, code, description, created_time, updated_time) VALUES (
-  '管理员', 'admin', '这个系统里天下第一', NOW(), NOW()
-);
-
-```
+![mybatis 缓存实战](https://houbb.github.io/2018/09/08/cache-mybatis-in-action)
 
 # 参考资料
 
