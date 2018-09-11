@@ -167,7 +167,15 @@ graph-easy <<< '[Application] - 1 ->  [f-service] - 3 -> [Application] [f-servic
 graph-easy <<< '[f-service]{flow:down;}--> { start: front,0; }[BD-T1], [DB-T2] [Pair check]{flow:up;}--> { start: front,0; }[BD-T1], [DB-T2]'
 ```
 
+- database
 
+```
+graph-easy <<< '[service-A] - put ->  [cache] - get -> [service-B]
+```
+
+```
+graph-easy <<< '[service] - Put ->  [cache] [service] - Update ->  [cache] [service] - Apply ->  [sso]'
+```
 
 # 参考资料
 
