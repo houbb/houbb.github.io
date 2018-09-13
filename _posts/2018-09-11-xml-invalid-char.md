@@ -32,8 +32,6 @@ excerpt: XML 非法字符,PCDATA invalid Char value 8,非法字符 0X0
 
 https://github.com/jankotek/mapdb
 
-# 参考资料
-
 [怎样去除 XML 中像 ^H 等无效字符？ PCDATA invalid Char value 8](http://ju.outofmemory.cn/entry/31232)
 
 * any list
