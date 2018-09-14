@@ -129,6 +129,7 @@ public class SuppressWarnings {
 `@SuppressWarnings` 可以使用属性列表如下：
 
 | 属性 | 备注 |
+|:---|:---|
 | all | 禁止所有警告 |
 | boxing | 禁止与装箱/拆箱操作相关的警告 |
 | cast | 强制转换以抑制与强制转换操作相关的警告 |
