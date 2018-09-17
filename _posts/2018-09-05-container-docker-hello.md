@@ -242,6 +242,45 @@ $ docker container rm [containerID]
 $ docker container restart ${container_id}
 ```
 
+# docker search 列出 TAG
+
+
+## 方案一
+
+直接去 hub 上去查看
+
+## 方案二
+
+- docker-show-repo-tag.sh
+
+```sh
+#!/bin/sh
+#
+# Simple script that will display docker repository tags.
+#
+# Usage:
+#   $ docker-show-repo-tags.sh ubuntu centos
+for Repo in $* ; do
+  curl -s -S "https://registry.hub.docker.com/v2/repositories/library/$Repo/tags/" | \
+    sed -e 's/,/,\n/g' -e 's/\[/\[\n/g' | \
+    grep '"name"' | \
+    awk -F\" '{print $4;}' | \
+    sort -fu | \
+    sed -e "s/^/${Repo}:/"
+done
+```
+
+- search 时使用命令
+
+```
+$ ./docker-show-repo-tags.sh ubuntu centos
+ubuntu:14.04
+ubuntu:16.04
+ubuntu:17.04
+ubuntu:latest
+...
+```
+
 # 拓展阅读
 
 [Rancher](https://houbb.github.io/2016/10/26/rancher)
@@ -255,6 +294,10 @@ $ docker container restart ${container_id}
 - 自定义镜像
 
 https://yeasy.gitbooks.io/docker_practice/image/build.html
+
+- docker search 列出 TAG
+
+http://suntus.github.io/2017/12/07/docker%20search%E6%97%B6%E5%88%97%E5%87%BAtag/
 
 * any list
 {:toc}
