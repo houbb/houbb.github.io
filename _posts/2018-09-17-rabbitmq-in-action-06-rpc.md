@@ -2,7 +2,7 @@
 layout: post
 title: RabbitMQ 实战入门-06-远程调用
 date:  2018-09-17 13:43:16 +0800
-categories: [JMS]
+categories: [MQ]
 tags: [java, docker, mq, in-action, sh]
 published: true
 excerpt: RabbitMQ 实战入门-06-远程调用

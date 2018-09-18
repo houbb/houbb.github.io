@@ -2,8 +2,8 @@
 layout: post
 title: Spring ActiveMQ
 date:  2018-09-17 11:54:23 +0800
-categories: [JMS]
-tags: [java, spring, mq, sh]
+categories: [MQ]
+tags: [java, spring, mq, jms, sh]
 published: false
 excerpt: Spring 整合 activeMQ
 ---
