@@ -1,11 +1,11 @@
 ---
 layout: post
-title: RabbitMQ Java 实战入门-01-Hello World
+title: RabbitMQ 实战入门-01-Hello World
 date:  2018-09-17 13:43:16 +0800
 categories: [JMS]
 tags: [java, docker, mq, in-action, sh]
 published: true
-excerpt: RabbitMQ Java 实战入门-01-Hello World
+excerpt: RabbitMQ 实战入门-01-Hello World
 ---
 
 # 准备工作

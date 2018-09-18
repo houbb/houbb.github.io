@@ -274,6 +274,10 @@ channel.basicQos(prefetchCount);
 
 你会想要关注这个问题，也许会增加更多的员工，或者有其他的策略。
 
+# 源码地址
+
+以上源代码参见 [rabbitmq-workerqueue](https://github.com/houbb/jms-learn/tree/master/jms-rabbitmq/jms-rabbitmq-hello/src/main/java/com/github/houbb/jms/rabbitmq/workerqueue)
+
 # 参考资料
 
 - 官方

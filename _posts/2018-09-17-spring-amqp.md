@@ -4,7 +4,7 @@ title: Spring AMQP
 date:  2018-09-17 11:54:23 +0800
 categories: [JMS]
 tags: [java, spring, mq, sh]
-published: true
+published: false
 excerpt: Spring AMQP 入门介绍
 ---
 
