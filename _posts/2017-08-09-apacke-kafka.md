@@ -265,7 +265,109 @@ mac
 
 ## Zookeeper 启动
 
-TBC...
+- 基础知识介绍
+
+[Zookeeper](https://houbb.github.io/2016/09/25/zookeeper)
+
+- 启动服务
+
+```
+$   cd /Users/houbinbin/it/tools/zookeeper/server1/zookeeper-3.4.9/bin
+$   sh zkServer.sh start
+```
+
+- 查看 status
+
+```
+$    jps
+
+22180 QuorumPeerMain
+4694 ReceiveLogsDirectError
+22191 Jps
+```
+
+## 运行
+
+- 下载
+
+[下载](http://mirrors.shu.edu.cn/apache/kafka/1.1.1/kafka_2.11-1.1.1.tgz) V2.0.0 版本的 `kafka_2.11-1.1.1.tgz`。
+
+解压并进入对应文件夹。
+
+- 准备工作
+
+确保 zookeeper 已经正常运行。
+
+```
+$ pwd
+/Users/houbinbin/IT/tools/kafka/kafka_2.11-1.1.1
+```
+
+- 运行
+
+```
+$   bin/kafka-server-start.sh config/server.properties
+
+...
+[2018-09-19 14:34:28,045] INFO [TransactionCoordinator id=0] Starting up. (kafka.coordinator.transaction.TransactionCoordinator)
+[2018-09-19 14:34:28,046] INFO [Transaction Marker Channel Manager 0]: Starting (kafka.coordinator.transaction.TransactionMarkerChannelManager)
+[2018-09-19 14:34:28,046] INFO [TransactionCoordinator id=0] Startup complete. (kafka.coordinator.transaction.TransactionCoordinator)
+[2018-09-19 14:34:28,072] INFO [/config/changes-event-process-thread]: Starting (kafka.common.ZkNodeChangeNotificationListener$ChangeEventProcessThread)
+[2018-09-19 14:34:28,079] INFO [SocketServer brokerId=0] Started processors for 1 acceptors (kafka.network.SocketServer)
+[2018-09-19 14:34:28,080] INFO Kafka version : 1.1.1 (org.apache.kafka.common.utils.AppInfoParser)
+[2018-09-19 14:34:28,081] INFO Kafka commitId : 8e07427ffb493498 (org.apache.kafka.common.utils.AppInfoParser)
+[2018-09-19 14:34:28,082] INFO [KafkaServer id=0] started (kafka.server.KafkaServer)
+```
+
+## 创建 Topic
+
+让我们创建一个名为“test”的主题，只有一个分区和一个副本:
+
+```
+$   bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+```
+
+
+如果我们运行列表主题命令，我们现在可以看到这个主题:
+
+```
+$   bin/kafka-topics.sh --list --zookeeper localhost:2181
+
+test
+```
+
+或者，您也可以将代理配置为在发布不存在的主题时自动创建主题，而不是手动创建主题。
+
+## 发送消息
+
+Kafka附带一个命令行客户机，它将从文件或标准输入中获取输入，并将其作为消息发送到Kafka集群。默认情况下，每一行都将作为单独的消息发送。
+
+运行生产者，然后在控制台输入一些消息发送到服务器。
+
+```
+$ bin/kafka-console-producer.sh --broker-list localhost:9092 --topic test
+>This is a message
+This is another message
+>>hello kafka
+```
+
+ps: 其中前两句是默认就有的两个消息。
+
+## 创建消费者
+
+Kafka还有一个命令行使用者，它会将消息转储到标准输出。
+
+```
+$ bin/kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic test --from-beginning
+This is a message
+This is another message
+hello kafka
+```
+
+如果上面的每个命令都在不同的终端中运行，那么现在您应该能够在生产者终端中键入消息，并看到它们出现在消费者终端中。
+
+所有命令行工具都有其他选项;不带参数地运行命令将更详细地显示记录它们的用法信息。
+
 
 # Windows 失败尝试
 
@@ -296,6 +398,15 @@ TBC...
 ```
 
 几种方式都尝试了，依然失败！
+
+
+# 其他分布式队列
+
+[NSQ](https://nsq.io/)
+
+[Celery](http://docs.celeryproject.org/en/latest/)
+
+[Kue](https://github.com/Automattic/kue)
 
 # 参考文档
 
