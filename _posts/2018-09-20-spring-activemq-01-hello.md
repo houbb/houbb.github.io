@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Spring ActiveMQ-01-入门
+title: Spring 整合 ActiveMQ-01-入门
 date:  2018-09-20 09:35:26 +0800
 categories: [MQ]
 tags: [java, spring, mq, jms, sh]
