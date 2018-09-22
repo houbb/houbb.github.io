@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  Java IO-02-管道
+title:  Java IO-04-流
 date:  2018-09-21 17:36:38 +0800
 categories: [Java]
 tags: [java, io, java-base, sf]
 published: true
-excerpt: java io 入门系列-02-管道
+excerpt: java io 入门系列-04-流
 ---
 
 # System
