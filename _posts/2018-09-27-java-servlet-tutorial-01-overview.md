@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Java Servlet 入门系列-01-概览
+title: Java Servlet 教程-01-概览
 date:  2018-09-27 12:41:16 +0800
 categories: [Java]
 tags: [web, servlet, java, sh]
 published: true
-excerpt: Java Servlet 入门系列-01-概览
+excerpt: Java Servlet 教程-01-概览
 ---
 
 # Servlet
@@ -70,7 +70,7 @@ Tomcat 作为Servlet容器,负责处理客户请求,把请求传送给Servlet,�
 
 但是在上面这个图中，并不知道是如何转变的，只知道浏览器发送过来的请求也就是request，我们响应回去的就用response。忽略了其中的细节，现在就来探究一下。
 
-![tomcat-servlet](https://images2015.cnblogs.com/blog/874710/201702/874710-20170214204632894-1786729693.png)
+![tomcat-servlet](https://raw.githubusercontent.com/houbb/resource/master/img/web/servlet/20180927-servlet-tomcat.png)
 
 ①：Tomcat将http请求文本接收并解析，然后封装成HttpServletRequest类型的request对象，所有的HTTP头数据读可以通过request对象调用对应的方法查询到。
 
