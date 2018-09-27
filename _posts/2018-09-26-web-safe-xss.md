@@ -3,7 +3,7 @@ layout: post
 title: XSS
 date:  2018-09-26 08:56:29 +0800
 categories: [Web]
-tags: [web, web-safe, TODO, sh]
+tags: [web, web-safe, sh]
 published: true
 excerpt: web 安全之跨站脚本攻击
 ---

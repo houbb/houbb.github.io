@@ -2,7 +2,7 @@
 layout: post
 title: Spring Statemachine
 date:  2018-09-26 14:24:33 +0800
-categories: [Web]
+categories: [Spring]
 tags: [web, spring, session, distributed, sh]
 published: true
 excerpt: Spring 状态机入门教程

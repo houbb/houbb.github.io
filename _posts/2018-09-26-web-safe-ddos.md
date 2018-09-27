@@ -3,7 +3,7 @@ layout: post
 title: DDoS
 date:  2018-09-26 09:02:24 +0800
 categories: [Web]
-tags: [web, web-safe, TODO, sh]
+tags: [web, web-safe, sh]
 published: true
 excerpt: Distributed Denial of Service （DDoS， 分布式拒绝服务）
 ---
