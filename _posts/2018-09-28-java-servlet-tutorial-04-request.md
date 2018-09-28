@@ -1,11 +1,11 @@
 ---
 layout: post
 title: Java Servlet 教程-04-请求 HttpServletRequest
-date:  2018-09-27 14:49:58 +0800
+date:  2018-09-28 14:43:52 +0800
 categories: [Java]
 tags: [web, servlet, java, sh]
 published: true
-excerpt: Java Servlet 教程-04-请求 HttpServletRequest
+excerpt: Java Servlet 教程之请求 HttpServletRequest
 ---
 
 # 请求

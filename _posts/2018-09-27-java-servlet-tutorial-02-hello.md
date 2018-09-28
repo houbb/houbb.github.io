@@ -5,7 +5,7 @@ date:  2018-09-27 14:49:58 +0800
 categories: [Java]
 tags: [web, servlet, java, sh]
 published: true
-excerpt: Java Servlet 教程-02-入门案例 hello world
+excerpt: Java Servlet 教程之入门案例 hello world
 ---
 
 # 快速开始

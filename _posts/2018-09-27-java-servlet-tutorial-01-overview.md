@@ -5,7 +5,7 @@ date:  2018-09-27 12:41:16 +0800
 categories: [Java]
 tags: [web, servlet, java, sh]
 published: true
-excerpt: Java Servlet 教程-01-概览
+excerpt: Java Servlet 教程之概览
 ---
 
 # Servlet
