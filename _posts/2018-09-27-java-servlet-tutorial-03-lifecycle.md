@@ -18,7 +18,7 @@ Servlet 生命周期可被定义为从创建直到毁灭的整个过程。
 
 以下是 Servlet 遵循的过程：
 
-1. Servlet 通过调用 init () 方法进行初始化。
+1. Servlet 通过调用 init() 方法进行初始化。
 
 2. Servlet 调用 service() 方法来处理客户端的请求。
 
@@ -157,17 +157,17 @@ TODO...
 
 - ServletConfig
 
-1. 每个Servlet程序都对应一个ServletConfig对象
+1. 每个 Servlet 程序都对应一个 ServletConfig 对象
 
-2. ServletConfig配置初始化数据，只能在配置Servlet获得，其他Servlet无法获得 
+2. ServletConfig 配置初始化数据，只能在配置Servlet获得，其他Servlet无法获得 
 
 - ServletContext
 
-1. ServletContext 是 Servlet 上下文对象
+1. 每个 web 应用都有一个  ServletContext(叫做 AppContext 更加适合)
 
-2. 每一个工程对应创建单独ServletContext对象，这个对象代表当前web工程
+2. 每一个工程对应创建单独 ServletContext 对象，这个对象代表当前 web 工程
 
-3. 操作ServletContext必须通过ServletConfig获得对象
+3. 操作 ServletContext 必须通过 ServletConfig 获得对象
 
 ## Servlet 真正的任务
 
