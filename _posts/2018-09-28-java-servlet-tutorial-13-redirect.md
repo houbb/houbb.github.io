@@ -70,7 +70,7 @@ public class StatusHeaderServlet extends HttpServlet {
 
 # 请求转发对比
 
-## 请求转发（RequestDispatcher）的过程
+## 重定向过程
 
 客户浏览器发送http请求——》web服务器接受后发送302状态码响应及对应新的location给客户浏览器——》客户浏览器发现是302响应，则自动再发送一个新的http请求，请求url是新的location地址——》服务器根据此请求寻找资源并发送给客户。
 
@@ -78,7 +78,7 @@ public class StatusHeaderServlet extends HttpServlet {
 
 在客户浏览器路径栏显示的是其重定向的路径，客户可以观察到地址的变化的。重定向行为是浏览器做了至少两次的访问请求的。
 
-## 重定向（sendRedirect）的工作原理
+## 内部跳转过程
 
 客户浏览器发送http请求——》web服务器接受此请求——》调用内部的一个方法在容器内部完成请求处理和转发动作——》将目标资源发送给客户；
 
