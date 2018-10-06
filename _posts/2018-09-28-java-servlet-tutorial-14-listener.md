@@ -275,15 +275,13 @@ public class AttrErrorServlet extends HttpServlet implements SingleThreadModel {
 
 # 参考资料
 
-https://github.com/waylau/servlet-3.1-specification/tree/master/docs/Application%20Lifecycle%20Events
+[servlet 生命周期](https://github.com/waylau/servlet-3.1-specification/tree/master/docs/Application%20Lifecycle%20Events)
 
 《Head First Servlet & JSP》
 
 [Synchronized 作用于局部变量](http://linuxlsx.top/blog/2015/12/10/synchronized-local-variable-string/)
 
 [【转载】最佳实践: 勿在 Servlet 中实现 SingleThreadModel](https://blog.csdn.net/u012485012/article/details/50782841)
-
-
 
 * any list
 {:toc}

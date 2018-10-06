@@ -294,7 +294,8 @@ public class ResponseDispatchServlet extends HttpServlet {
 
 [HTTP 请求和响应格式](https://my.oschina.net/zhaoqian/blog/90315)
 
-https://waylau.gitbooks.io/servlet-3-1-specification/docs/The%20Response/5%20The%20Response.html
+[resp](https://waylau.gitbooks.io/servlet-3-1-specification/docs/The%20Response/5%20The%20Response.html)
+
 
 http://www.runoob.com/servlet/servlet-server-response.html
 
