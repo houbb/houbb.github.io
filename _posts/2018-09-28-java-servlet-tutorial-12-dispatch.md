@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Java Servlet 教程-12-请求分发 Dispatching Requests
+title: Java Servlet 教程-12-请求分发 RequestDispatcher
 date:  2018-10-05 15:11:45 +0800
 categories: [Java]
 tags: [web, servlet, java, sh]
 published: true
-excerpt: Java Servlet 教程-12-请求分发 Dispatching Requests
+excerpt: Java Servlet 教程-12-请求分发 RequestDispatcher
 ---
 
 # 分发请求
