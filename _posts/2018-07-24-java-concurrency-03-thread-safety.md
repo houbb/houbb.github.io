@@ -45,19 +45,24 @@ published: true
 
 线程安全类封装任何需要的同步，以便客户端不需要提供它们自己的同步。
 
-# 无状态的类
+
+# 线程安全的实现方式
+
+保证类的线程安全，有以下的几种方式：
+
+## 无状态的类
 
 线程安全类的一个很好的例子是java servlet，它没有字段和引用，没有其他类的字段等等。它们是无状态(`stateless`)的。
 
 ```java
-public class StatelessFactorizer implements Servlet
-{
-    public void service(ServletRequest req, ServletResponse resp)
-    {
+public class StatelessFactorizer implements Servlet {
+
+    public void service(ServletRequest req, ServletResponse resp) {
         BigInteger i = extractFromRequest(req);
         BigInteger[] factors = factor(i);
         encodeIntoResponse(resp, factors);
     }
+
 }
 ```
 
@@ -66,6 +71,22 @@ public class StatelessFactorizer implements Servlet
 因为这两个线程不共享状态，所以它们好像访问了不同的实例。
 
 由于访问无状态对象的线程的操作不会影响其他线程中操作的正确性，因此无状态对象是线程安全的。
+
+## 不可变的类
+
+[不可变设计模式](https://houbb.github.io/2018/10/08/pattern-immutable)
+
+## 悲观锁 synchronized
+
+[synchronized](https://houbb.github.io/2018/07/25/java-concurrency-09-sync)
+
+## 乐观锁 volatile
+
+[volatile](https://houbb.github.io/2018/07/27/jmm-05-volatile)
+
+## ThreadLocal
+
+[ThreadLocal](https://houbb.github.io/2018/10/08/java-threadlocal)
 
 * any list
 {:toc}
