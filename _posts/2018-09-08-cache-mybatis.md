@@ -204,6 +204,8 @@ public interface InitializingObject {
 
 [mybatis 缓存机制](https://www.zhihu.com/question/40718470)
 
+[MyBatis实战缓存机制设计与原理解析](https://mp.weixin.qq.com/s/YaM87e9WxSeUH-4sg0qq0w)
+
 - 陷阱
 
 [去除 mybatis 二级缓存](http://blog.51cto.com/1008610086/1431219)
