@@ -1,10 +1,10 @@
 ---
 layout: post
 title:  Algorithm Load Balance
-date:  2018-09-06 11:37:31 +0800
+date:  2018-09-10 11:37:31 +0800
 categories: [Algorithm]
-tags: [algorithm, TODO, sh]
-published: false
+tags: [algorithm, sh]
+published: true
 excerpt: 负载均衡。
 ---
 
