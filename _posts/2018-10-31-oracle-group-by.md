@@ -31,6 +31,18 @@ SELECT wm_concat(remark), user_id FROM user_log
 GROUP BY user_id;
 ```
 
+
+- 使用报错
+
+```
+oracle wmsys.wm_concat ORA-00932: 数据类型不一致: 应为 -, 但却获得 CLOB
+```
+
+oracle 函数 wmsys.wm_concat 在 10.2.0.4版本以前是 varchar2 类型，但是 从 10.2.0.5 开始，是 CLOB 类型，是一个坑！！
+
+改成 `to_char(wm_concat( ...... ))` 解决
+
+
 ## LISTAGG
 
 当然需求是多变的，还有可能按照其他符号分隔。
