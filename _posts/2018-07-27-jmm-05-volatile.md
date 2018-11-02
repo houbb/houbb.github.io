@@ -417,6 +417,16 @@ Doug lea使用追加到64字节的方式来填满高速缓冲区的缓存行，*
 
 ps: 忽然觉得术业想专攻，博学与睿智缺一不可。
 
+# double/long 线程不安全
+
+Java虚拟机规范定义的许多规则中的一条：所有对基本类型的操作，除了某些对long类型和double类型的操作之外，都是原子级的。
+
+目前的JVM（java虚拟机）都是将32位作为原子操作，并非64位。
+
+当线程把主存中的 long/double类型的值读到线程内存中时，可能是两次32位值的写操作，显而易见，如果几个线程同时操作，那么就可能会出现高低2个32位值出错的情况发生。
+
+要在线程间共享long与double字段是，必须在synchronized中操作，或是声明为volatile。
+
 # 参考资料
 
 [se8-jls-8.3.1.4](https://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.3.1.4)

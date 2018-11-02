@@ -696,6 +696,119 @@ ps: 也就是资源竞争不激烈的时候，比较适合使用。
 
 5) 若达到sleep限制或者被主动唤醒或者完成yield, 则重复1)~4)步，直到获得为止
 
+# 内置锁
+
+java 的每一个对象都有一个内置锁。
+
+synchronized 提供的是一种互斥锁。互斥锁，即能到达到互斥访问目的的锁。
+
+举个简单的例子，如果对临界资源加上互斥锁，当一个线程在访问该临界资源时，其他线程便只能等待。
+
+在 Java 中，可以使用 synchronized 关键字来标记一个方法或者代码块，当某个线程调用该对象的synchronized方法或者访问synchronized代码块时，这个线程便获得了该对象的锁，其他线程暂时无法访问这个方法，只有等待这个方法执行完毕或者代码块执行完毕，这个线程才会释放该对象的锁，其他线程才能执行这个方法或者代码块。
+
+# 可重入性
+
+## 概念
+
+若一个程序或子程序可以“在任意时刻被中断然后操作系统调度执行另外一段代码，这段代码又调用了该子程序不会出错”，则称其为可重入（reentrant或re-entrant）的。
+
+即当该子程序正在运行时，执行线程可以再次进入并执行它，仍然获得符合设计时预期的结果。
+
+与多线程并发执行的线程安全不同，可重入强调对单个线程执行时重新进入同一个子程序仍然是安全的。
+
+## 可重入的条件
+
+1. 不在函数内使用静态或全局数据。
+
+2. 不返回静态或全局数据，所有数据都由函数的调用者提供。
+
+3. 使用本地数据（工作内存），或者通过制作全局数据的本地拷贝来保护全局数据。
+
+4. 不调用不可重入函数。
+
+## 可重入与线程安全
+
+一般而言，可重入的函数一定是线程安全的，反之则不一定成立。
+
+在不加锁的前提下，如果一个函数用到了全局或静态变量，那么它不是线程安全的，也不是可重入的。
+
+如果我们加以改进，对全局变量的访问加锁，此时它是线程安全的但不是可重入的，因为通常的枷锁方式是针对不同线程的访问（如Java的synchronized），当同一个线程多次访问就会出现问题。
+
+只有当函数满足可重入的所有条件时，才是可重入的。
+
+## synchronized 的可重入性
+
+- synchronized 是可重入锁
+
+如果一个获取锁的线程调用其它的synchronized修饰的方法，会发生什么？
+
+从设计上讲，当一个线程请求一个由其他线程持有的对象锁时，该线程会阻塞。
+
+当线程请求自己持有的对象锁时，如果该线程是重入锁，请求就会成功，否则阻塞。
+
+我们回来看synchronized，synchronized拥有强制原子性的内部锁机制，是一个可重入锁。
+
+因此，在一个线程使用synchronized方法时调用该对象另一个synchronized方法，即一个线程得到一个对象锁后再次请求该对象锁，是永远可以拿到锁的。
+
+在Java内部，同一个线程调用自己类中其他synchronized方法/块时不会阻碍该线程的执行，同一个线程对同一个对象锁是可重入的，同一个线程可以获取同一把锁多次，也就是可以多次重入。
+
+原因是Java中线程获得对象锁的操作是以线程为单位的，而不是以调用为单位的。
+
+- synchronized 可重入锁的实现
+
+之前谈到过，每个锁关联一个线程持有者和一个计数器。
+
+当计数器为0时表示该锁没有被任何线程持有，那么任何线程都都可能获得该锁而调用相应方法。
+
+当一个线程请求成功后，JVM会记下持有锁的线程，并将计数器计为1。此时其他线程请求该锁，则必须等待。
+
+而该持有锁的线程如果再次请求这个锁，就可以再次拿到这个锁，同时计数器会递增。
+
+当线程退出一个synchronized方法/块时，计数器会递减，如果计数器为0则释放该锁。
+
+## 为什么要可重入
+
+```java
+class Father {
+	public synchronized void doSomething() {
+		System.out.println("father.doSomething()");
+	}
+}
+
+public class Child extends Father {
+	public static void main(String[] args) {
+		Child child = new Child();
+		child.doSomething();
+	}
+
+	public synchronized void doSomething() {
+		System.out.println("child.doSomething()");
+		doAnotherThing(); // 调用自己类中其他的synchronized方法
+	}
+
+	private synchronized void doAnotherThing() {
+		super.doSomething(); // 调用父类的synchronized方法
+		System.out.println("child.doAnotherThing()");
+	}
+}
+```
+
+运行结果：
+
+```
+child.doSomething()
+father.doSomething()
+child.doAnotherThing()
+```
+
+这里的对象锁只有一个,就是child对象的锁,当执行child.doSomething时，该线程获得child对象的锁，在doSomething方法内执行doAnotherThing时再次请求child对象的锁，因为synchronized是重入锁，所以可以得到该锁，继续在doAnotherThing里执行父类的doSomething方法时第三次请求child对象的锁，同理可得到，如果不是重入锁的话，那这后面这两次请求锁将会被一直阻塞，从而导致死锁。
+
+
+## 可重入锁的意义
+
+所以在java内部，同一线程在调用自己类中其他synchronized方法/块或调用父类的synchronized方法/块都不会阻碍该线程的执行，就是说同一线程对同一个对象锁是可重入的，而且同一个线程可以获取同一把锁多次，也就是可以多次重入。
+
+因为java线程是基于“每线程（per-thread）”，而不是基于“每调用（per-invocation）”的（java中线程获得对象锁的操作是以每线程为粒度的，per-invocation互斥体获得对象锁的操作是以每调用作为粒度的）
 
 # 总结
 
@@ -728,10 +841,17 @@ https://blog.csdn.net/u012465296/article/details/53022317
 
 https://github.com/waylau/java-virtual-machine-specification
 
-
 - sync 的陷阱
 
 [聊聊 synchronized 为什么无法锁住 Integer](http://gao-xianglong.iteye.com/blog/2396071)
+
+- 可重入性
+
+[Java多线程：synchronized的可重入性](https://www.cnblogs.com/cielosun/p/6684775.html)
+
+[java synchronized内置锁的可重入性和分析总结](http://topmanopensource.iteye.com/blog/1736739)
+
+[java内置锁synchronized的可重入性](https://my.oschina.net/leoson/blog/107642)
 
 * any list
 {:toc}
