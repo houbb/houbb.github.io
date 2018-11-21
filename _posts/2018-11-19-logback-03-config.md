@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Logback-03-Config
-date: 2018-11-20 11:11:55 +0800
+date: 2018-11-19 08:11:55 +0800
 categories: [Log]
 tags: [log, sh]
 published: true
