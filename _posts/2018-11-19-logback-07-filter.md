@@ -14,15 +14,15 @@ Logback-classic提供两种类型的过滤器，常规过滤器和turbo过滤器
 
 ## 常规过滤器
 
-常规的logback-classic过滤器扩展了Filter抽象类，它基本上由一个以ILoggingEvent实例作为参数的decision（）方法组成。
+常规的logback-classic过滤器扩展了Filter抽象类，它基本上由一个以ILoggingEvent实例作为参数的decision()方法组成。
 
-过滤器按有序列表组织，并基于三元逻辑。每个过滤器的决定（ILoggingEvent事件）方法按顺序调用。此方法返回FilterReply枚举值之一，即DENY，NEUTRAL或ACCEPT之一。如果decision（）返回的值为DENY，则会立即删除日志事件，而不会咨询剩余的过滤器。如果返回的值是NEUTRAL，则查询列表中的下一个过滤器。如果没有其他过滤器可供参考，则会正常处理日志记录事件。如果返回的值是ACCEPT，则立即处理日志事件，跳过其余过滤器的调用。
+过滤器按有序列表组织，并基于三元逻辑。每个过滤器的决定（ILoggingEvent事件）方法按顺序调用。此方法返回FilterReply枚举值之一，即DENY，NEUTRAL或ACCEPT之一。如果decision()返回的值为DENY，则会立即删除日志事件，而不会咨询剩余的过滤器。如果返回的值是NEUTRAL，则查询列表中的下一个过滤器。如果没有其他过滤器可供参考，则会正常处理日志记录事件。如果返回的值是ACCEPT，则立即处理日志事件，跳过其余过滤器的调用。
 
 在logback-classic中，可以将过滤器添加到Appender实例中。通过向appender添加一个或多个过滤器，您可以按任意条件过滤事件，例如日志消息的内容，MDC的内容，一天中的时间或日志记录事件的任何其他部分。
 
 ## 实现自己的过滤器
 
-创建自己的过滤器很简单。您所要做的就是扩展Filter抽象类并实现decision（）方法。
+创建自己的过滤器很简单。您所要做的就是扩展Filter抽象类并实现decision()方法。
 
 下面显示的SampleFilter类提供了一个示例。其decision方法返回ACCEPT以记录其消息字段中包含字符串“sample”的事件。
 
@@ -134,7 +134,7 @@ LevelFilter根据精确的级别匹配过滤事件。如果事件的级别等于
 
 ThresholdFilter过滤低于指定阈值的事件。
 
-对于等于或高于阈值的事件，ThresholdFilter将在调用其decision（）方法时响应NEUTRAL。但是，将拒绝级别低于阈值的事件。这是一个示例配置文件。
+对于等于或高于阈值的事件，ThresholdFilter将在调用其decision()方法时响应NEUTRAL。但是，将拒绝级别低于阈值的事件。这是一个示例配置文件。
 
 - EvaluatorFilter
 
@@ -148,7 +148,7 @@ EvaluatorFilter是封装EventEvaluator的通用过滤器。
 
 # Matcher
 
-虽然可以通过调用String类中的matches（）方法来进行模式匹配，但每次调用过滤器时都会产生编译全新Pattern对象的成本。
+虽然可以通过调用String类中的matches()方法来进行模式匹配，但每次调用过滤器时都会产生编译全新Pattern对象的成本。
 
 要消除此开销，可以预定义一个或多个Matcher对象。定义匹配器后，可以在评估程序表达式中按名称重复引用它。
 
