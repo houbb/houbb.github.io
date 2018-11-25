@@ -47,8 +47,6 @@ docker run -p 27017:27017 -v $PWD/db:/c/Users/systemDir/data/db -d mongo
 docker run -it mongo:3.2 mongo --host 172.17.0.1
 ```
 
-
-
 # 参考资料
 
 http://www.runoob.com/docker/docker-install-mongodb.html
