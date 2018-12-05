@@ -1,0 +1,59 @@
+---
+layout: post
+title: Linux 常用命令
+date: 2018-12-05 11:35:23 +0800
+categories: [Linux]
+tags: [linux, sh]
+published: true
+excerpt: Linux 常用命令
+---
+
+# 线上常用命令
+
+## 查看端口占用
+
+```
+lsof -i:端口号
+netstat  -anp  |grep   端口号
+```
+
+# 日志查看的方式
+
+## 实时查看
+
+```
+tail -f XXX.log
+```
+
+## 完全打印
+
+```
+cat XXX.log
+```
+
+## vi 查看
+
+[vi 常用命令]()
+
+
+# grep 命令
+
+grep指令用于查找内容包含指定的范本样式的文件，如果发现某文件的内容符合所指定的范本样式，预设grep指令会把含有范本样式的那一列显示出来。
+
+若不指定任何文件名称，或是所给予的文件名为"-"，则grep指令会从标准输入设备读取数据。
+
+
+
+# Windows 可用命令行工具
+
+[Xshell](https://www.netsarang.com/products/xsh_overview.html)
+
+[Cmder](http://cmder.net/)
+
+# 参考资料
+
+[查看端口占用](https://www.cnblogs.com/hindy/p/7249234.html)
+
+
+* any list
+{:toc}
