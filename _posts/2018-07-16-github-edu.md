@@ -15,5 +15,11 @@ published: true
 
 > [20 of the most popular courses on GitHub](https://education.github.community/t/20-of-the-most-popular-courses-on-github/27832)
 
+# 其他学习网站
+
+[openstax](https://openstax.org/subjects)
+
+[600 免费课程](https://qz.com/1437623/600-free-online-courses-you-can-take-from-universities-worldwide/)
+
 * any list
 {:toc}

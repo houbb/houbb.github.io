@@ -38,14 +38,26 @@ redis                            latest              c5355f8853e4        5 weeks
 docker run --name my-redis -d redis
 ```
 
+- 查看 
+
+```
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                      NAMES
+c86ec24c49dd        redis               "docker-entrypoint.s…"   7 minutes ago       Up 7 minutes        6379/tcp                   my-redis
+```
+
+
 ## 访问
 
 > [Redis 连接](https://blog.csdn.net/chenyufeng1991/article/details/78513463)
 
+另开一个 container 进入
 
 ```
-docker run -it --link some-redis:redis --rm redis redis-cli -h redis -p 6379
+docker exec -it c86ec24c49dd redis-cli
 ```
+
+`c86ec24c49dd` 就是 redis 运行的 container id。
 
 可以直接进入命令行
 
