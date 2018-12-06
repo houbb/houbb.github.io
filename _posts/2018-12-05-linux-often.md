@@ -35,6 +35,13 @@ cat XXX.log
 
 [vi 常用命令]()
 
+## 直接 grep 查看
+
+```
+grep -a 'XXXXX' application.log  
+```
+
+查询对应的信息
 
 # grep 命令
 
