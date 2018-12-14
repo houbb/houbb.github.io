@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Mongo Explain-08
+title: Mongo Explain-14
 date: 2018-12-10 11:35:23 +0800
 categories: [sql]
 tags: [sql, nosql, index, mongo, sh]

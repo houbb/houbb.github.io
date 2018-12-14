@@ -677,7 +677,6 @@ db.inventory.find(
 ).hint({ quantity: 1, type: 1 }).explain("executionStats")
 ```
 
-
 # 性能优化拓展阅读
 
 https://docs.mongodb.com/manual/core/query-optimization/
