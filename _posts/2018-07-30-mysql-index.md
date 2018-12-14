@@ -705,6 +705,12 @@ InnoDB 索引和记录是存储在一起的，而 MyISAM 的索引和记录是�
 
 # 参考资料
 
+- 底层数据结构
+
+https://www.cnblogs.com/zlcxbb/p/5757245.html
+
+https://www.cnblogs.com/weizhixiang/p/5914120.html
+
 - index
 
 https://en.wikipedia.org/wiki/Database_index

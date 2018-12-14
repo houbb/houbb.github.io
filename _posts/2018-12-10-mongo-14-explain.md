@@ -562,6 +562,8 @@ PROJECTION
 
 - 执行计划
 
+[Mongo explain 执行结果](https://docs.mongodb.com/manual/reference/explain-results/)
+
 [MongoDB执行计划获取(db.collection.explain())](http://lib.csdn.net/article/mongodb/56192)
 
 [Mongo 官方 - 性能分析](https://docs.mongodb.com/manual/tutorial/analyze-query-plan/)
