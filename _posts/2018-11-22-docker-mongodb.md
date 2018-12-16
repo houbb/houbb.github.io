@@ -47,6 +47,26 @@ docker run -p 27017:27017 -v $PWD/db:/c/Users/systemDir/data/db -d mongo
 docker run -it mongo:3.2 mongo --host 172.17.0.1
 ```
 
+# Mac 使用
+
+## 下载
+
+```
+docker pull mongo
+```
+
+## 运行
+
+```
+docker run -p 27017:27017  -d mongo
+```
+
+## 链接
+
+```
+docker run -it mongo mongo --host 172.17.0.1
+```
+
 # 参考资料
 
 http://www.runoob.com/docker/docker-install-mongodb.html
