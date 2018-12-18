@@ -3,7 +3,7 @@ layout: post
 title: Mongo Query Optimize-16
 date: 2018-12-10 11:35:23 +0800
 categories: [sql]
-tags: [sql, nosql, index, mongo, sh]
+tags: [sql, nosql, explain, mongo, sh]
 published: true
 excerpt: Mongo 查询性能优化
 ---

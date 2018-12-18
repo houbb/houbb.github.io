@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Mongo-05-Sort Order
+title: Mongo Sort Order-05
 date: 2018-12-10 11:35:23 +0800
 categories: [sql]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo-04-Sort Order
+excerpt: Mongo Sort Order-05
 ---
 
 # Comparison/Sort Order

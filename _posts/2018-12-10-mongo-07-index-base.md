@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Mongo-07-Index
+title: Mongo Index-07
 date: 2018-12-10 11:35:23 +0800
 categories: [sql]
 tags: [sql, nosql, index, mongo, sh]

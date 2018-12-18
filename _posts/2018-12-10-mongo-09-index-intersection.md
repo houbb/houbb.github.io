@@ -5,7 +5,7 @@ date: 2018-12-10 11:35:23 +0800
 categories: [sql]
 tags: [sql, nosql, index, mongo, sh]
 published: true
-excerpt: Mongo Index Intersection
+excerpt: Mongo 交叉索引
 ---
 
 # index-intersection

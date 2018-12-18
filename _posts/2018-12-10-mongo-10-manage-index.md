@@ -5,7 +5,7 @@ date: 2018-12-10 11:35:23 +0800
 categories: [sql]
 tags: [sql, nosql, index, mongo, sh]
 published: true
-excerpt: Mongo Manage Index
+excerpt: Mongo 管理索引
 ---
 
 # Manage Index

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Mongo-03-Document
+title: Mongo Document-03
 date: 2018-12-10 11:35:23 +0800
 categories: [sql]
 tags: [sql, nosql, mongo, sh]

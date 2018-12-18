@@ -3,7 +3,7 @@ layout: post
 title: Mongo Bulk Write-22
 date: 2018-12-10 11:35:23 +0800
 categories: [sql]
-tags: [sql, nosql, index, mongo, sh]
+tags: [sql, nosql, mongo, sh]
 published: true
 excerpt: Mongo 批量写操作
 ---
