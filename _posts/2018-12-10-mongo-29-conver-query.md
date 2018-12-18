@@ -3,7 +3,7 @@ layout: post
 title: Mongo Conver Query-29
 date: 2018-12-10 11:35:23 +0800
 categories: [sql]
-tags: [sql, nosql, index, mongo, TODO, sh]
+tags: [sql, nosql, index, mongo, sh]
 published: true
 excerpt: Mongo 覆盖查询
 ---

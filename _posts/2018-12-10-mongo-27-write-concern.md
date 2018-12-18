@@ -3,7 +3,7 @@ layout: post
 title: Mongo write concern-27
 date: 2018-12-10 11:35:23 +0800
 categories: [sql]
-tags: [sql, nosql, mongo, TODO, sh]
+tags: [sql, nosql, mongo, sh]
 published: true
 excerpt: Mongo 写入时的隔离级别
 ---

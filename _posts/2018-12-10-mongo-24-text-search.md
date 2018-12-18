@@ -3,7 +3,7 @@ layout: post
 title: Mongo Text Search-24
 date: 2018-12-10 11:35:23 +0800
 categories: [sql]
-tags: [sql, nosql, index, mongo, TODO, sh]
+tags: [sql, nosql, index, mongo, sh]
 published: true
 excerpt: Mongo 文本索引查询
 ---
