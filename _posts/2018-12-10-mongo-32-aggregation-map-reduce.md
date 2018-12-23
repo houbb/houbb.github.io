@@ -67,7 +67,7 @@ mongodb 支持共享集合上的Map-Reduce操作。Map-Reduce操作还可以将�
 
 # 参考资料
 
-https://docs.mongodb.com/manual/aggregation/
+https://docs.mongodb.com/manual/core/map-reduce/
 
 * any list
 {:toc}
