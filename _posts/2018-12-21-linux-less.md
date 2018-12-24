@@ -1,11 +1,11 @@
 ---
 layout: post
-title: linux less
+title: linux less, linux more
 date: 2018-12-21 11:28:06 +0800
 categories: [Linux]
 tags: [linux, shell, sh]
 published: true
-excerpt: linux less 命令
+excerpt: linux less/more 命令
 ---
 
 # Linux less
