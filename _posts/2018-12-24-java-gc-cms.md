@@ -1,0 +1,117 @@
+---
+layout: post
+title: Java GC CMS
+date: 2018-12-23 20:42:38 +0800
+categories: [Java]
+tags: [java, gc, TODO, sh]
+published: true
+excerpt: Java CMS 垃圾收集器
+---
+
+# CMS 的问题
+
+我觉得这些问题提的非常好，其实不看本篇解答，直接根据问题的角度去学习就足够了。
+
+## 问题
+
+带着问题去学习一个东西，才会有目标感，我先把一直以来自己对CMS的一些疑惑罗列了下，希望这篇学习笔记能解决掉这些疑惑，希望也能对你有所帮助。
+
+CMS出现的初衷、背景和目的？
+
+CMS的适用场景？
+
+CMS的trade-off是什么?优势、劣势和代价
+
+CMS会回收哪个区域的对象？
+
+CMS的GC Roots包括那些对象？
+
+CMS的过程？
+
+CMS和Full gc是不是一回事？
+
+CMS何时触发？
+
+CMS的日志如何分析？
+
+CMS的调优如何做？
+
+CMS扫描那些对象？
+
+CMS和CMS collector的区别？
+
+CMS的推荐参数设置？
+
+为什么ParNew可以和CMS配合使用，而Parallel Scanvenge不可以？
+
+## 基础知识
+
+你需要对 GC 就基础知识，参见 [java gc 详解](https://houbb.github.io/2018/10/08/jvm-04-gc)
+
+- 拓展阅读
+
+[Java GC 调优, ZGC 的原理](https://houbb.github.io/2018/11/28/java-gc-optimize)
+
+# CMS 
+
+CMS收集器：Mostly-Concurrent收集器，也称并发标记清除收集器（Concurrent Mark-Sweep GC，CMS收集器），它管理新生代的方式与Parallel收集器和Serial收集器相同，而在老年代则是尽可能得并发执行，每个垃圾收集器周期只有2次短停顿。
+
+## CMS的初衷和目的
+
+为了消除Throught收集器和Serial收集器在Full GC周期中的长时间停顿。
+
+## CMS的适用场景
+
+如果你的应用需要更快的响应，不希望有长时间的停顿，同时你的CPU资源也比较丰富，就适合适用CMS收集器。
+
+# CMS的过程
+
+## CMS的正常过程
+
+这里我们首先看下CMS并发收集周期正常完成的几个状态。
+
+###（STW）初始标记
+
+这个阶段是标记从GcRoots直接可达的老年代对象、新生代引用的老年代对象，就是下图中灰色的点。
+
+这个过程是单线程的。
+
+![初始标记](https://mmbiz.qpic.cn/mmbiz_png/4AG6tic68AGbhz9aSm1yYvxCbspqSWxMuExQ8xEZPXyIicez8Ne2rkm7B0NghTpYl1wbHiaLwJ2O6bicg3Xe3Iiav5w/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+
+### 并发标记
+
+由上一个阶段标记过的对象，开始tracing过程，标记所有可达的对象，这个阶段垃圾回收线程和应用线程同时运行，如上图中的黄色的点。
+
+在并发标记过程中，应用线程还在跑，因此会导致有些对象会从新生代晋升到老年代、有些老年代的对象引用会被改变、有些对象会直接分配到老年代，这些受到影响的老年代对象所在的card会被标记为dirty，用于重新标记阶段扫描。
+
+这个阶段过程中，老年代对象的card被标记为dirty的可能原因，就是下图中绿色的线：
+
+![并发标记](https://mmbiz.qpic.cn/mmbiz_png/4AG6tic68AGbhz9aSm1yYvxCbspqSWxMuxdfbaRCo5HeG17kGLT16CKicX4EaA50bnicrY4rQRDv4YkyqSRWzkXoQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+
+### 预清理
+
+预清理，也是用于标记老年代存活的对象，目的是为了让重新标记阶段的STW尽可能短。这个阶段的目标是在并发标记阶段被应用线程影响到的老年代对象，包括：
+
+（1）老年代中card为dirty的对象；
+
+（2）幸存区(from和to)中引用的老年代对象。因此，这个阶段也需要扫描新生代+老年代。【PS：会不会扫描Eden区的对象，我看源代码猜测是没有，还需要继续求证】
+
+### 可中断的预清理
+
+这个阶段的目标跟“预清理”阶段相同，也是为了减轻重新标记阶段的工作量。
+
+可中断预清理的价值：在进入重新标记阶段之前尽量等到一个Minor GC，尽量缩短重新标记阶段的停顿时间。
+
+另外可中断预清理会在Eden达到50%的时候开始，这时候离下一次minor gc还有半程的时间。
+
+这个还有另一个意义，即避免短时间内连着的两个停顿。
+
+TODO...
+
+# 参考资料
+
+[不容错过的 CMS 学习笔记](https://mp.weixin.qq.com/s/SW-WjgRC7PEMXZts9md23w)
+
+* any list
+{:toc}
