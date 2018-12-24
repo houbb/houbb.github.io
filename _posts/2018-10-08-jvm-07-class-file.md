@@ -930,7 +930,9 @@ constant_pool_count：占2字节。0x0016。转化为十进制为22，即说明�
 </tbody>
 </table>
 
-根据上面的表格，测试类的访问标志0x0021= 0x0001 | 0x0020 =ACC_PUBLIC | ACC_SUPER 
+根据上面的表格，测试类的访问标志
+
+`0x0021= 0x0001 | 0x0020 =ACC_PUBLIC | ACC_SUPER`
 
 ## 5.类索引、父类索引和接口索引集合
  
