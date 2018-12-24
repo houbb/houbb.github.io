@@ -178,13 +178,15 @@ Done. 有时间可以再看一遍。
 
 精读。
 
+- [《大话 java 性能优化》](http://mebook.cc/download.php?id=23542)
+
+精读。
+
 ## 其他
 
 - 《Programming Rust》
 
 新的语言
-
-
 
 
 * any list
