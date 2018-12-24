@@ -104,6 +104,16 @@ Constant pool:
 SourceFile: "Main.java"
 ```
 
+## 文件格式
+
+Class文件的结构不像XML等描述语言那样松散自由。
+
+由于它没有任何分隔符号，所以，以上数据项无论是顺序还是数量都是被严格限定的。
+
+哪个字节代表什么含义，长度是多少，先后顺序如何，都不允许改变。
+
+![文件格式](http://img.my.csdn.net/uploads/201209/04/1346768613_6175.png)
+
 # 概述
 
 任何一个Class文件都对应唯一一个类或接口的定义信息，但是不是所有的类或接口都得定义在文件中（它们也可以通过类加载器直接生成)。
@@ -3122,6 +3132,16 @@ PS：
 [Class文件详解](https://blog.csdn.net/IT_GJW/article/details/80447947)
 
 [理解JAVA Class文件，破解class文件的第一步](https://blog.csdn.net/tyyj90/article/details/78472986)
+
+[Java二进制字节码的结构、加载](http://www.codeorg.cn/article/detail//java/356)
+
+- 文件解析
+
+[Java字节码结构剖析一：常量池](http://www.importnew.com/30461.html)
+
+[Java字节码结构剖析二：字段表](http://www.importnew.com/30505.html)
+
+[Java字节码结构剖析三：方法表](http://www.importnew.com/30521.html)
 
 * any list
 {:toc}
