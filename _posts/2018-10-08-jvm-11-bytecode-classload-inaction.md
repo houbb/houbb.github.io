@@ -13,18 +13,18 @@ excerpt: JVM 字节码类加载实战
 
 [OSGI]() 学习类加载机制
 
-[jboss]() 源码学习 JEE 标准
+[jboss](https://houbb.github.io/2018/12/20/jboss) 源码学习 JEE 标准
 
-[Tomcat]() 学习经典的类加载机制
+[Tomcat](https://houbb.github.io/2018/09/05/container-tomcat) 学习经典的类加载机制
 
 
 # 动态字节码
 
-以前使用 [spring aop]() 最多使用的就是动态代理和动态字节码。
+以前使用 [spring aop](https://houbb.github.io/2018/07/02/annotation-05-spring-aop) 最多使用的就是动态代理和动态字节码。
 
-[CBLIB]()
+[CBLIB](https://houbb.github.io/2018/07/23/cglib)
 
-[AMS]()
+[AMS](https://houbb.github.io/2018/07/20/asm)
 
 # 不同 jdk 版本之间的转换
 
