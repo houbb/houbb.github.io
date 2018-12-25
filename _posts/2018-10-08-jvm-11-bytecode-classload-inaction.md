@@ -11,7 +11,7 @@ excerpt: JVM 字节码类加载实战
 # 类加载
 
 
-[OSGI]() 学习类加载机制
+[OSGI](https://houbb.github.io/2018/12/25/osgi) 学习类加载机制
 
 [jboss](https://houbb.github.io/2018/12/20/jboss) 源码学习 JEE 标准
 
@@ -28,7 +28,7 @@ excerpt: JVM 字节码类加载实战
 
 # 不同 jdk 版本之间的转换
 
-[Retrotranslator]() 可以将 1.5 版本的 jdk 转换为以前的 jdk 版本。
+[Retrotranslator](https://houbb.github.io/2018/12/25/retrotranslator) 可以将 1.5 版本的 jdk 转换为以前的 jdk 版本。
 
 # 参考资料
 
