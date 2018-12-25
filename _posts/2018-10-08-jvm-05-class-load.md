@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JVM-05-class-load
+title: JVM-05-class load 
 date:  2018-10-08 16:04:16 +0800
 categories: [Java]
 tags: [sql, java, jvm, sh]
