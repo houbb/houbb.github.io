@@ -117,9 +117,7 @@ ps: 所有的高可用都是用冗余的方式。所有的数据冗余都存在�
 
 # 参考资料
 
-https://docs.mongodb.com/manual/core/transactions/
-
-https://docs.mongodb.com/manual/core/transactions-production-consideration/
+https://docs.mongodb.com/manual/replication/
 
 * any list
 {:toc}
