@@ -5,7 +5,7 @@ date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, sh]
 published: true
-excerpt: Java 人体工程学
+excerpt: Java GC 人体工程学
 ---
 
 # 人机工程学(Ergonomics)
