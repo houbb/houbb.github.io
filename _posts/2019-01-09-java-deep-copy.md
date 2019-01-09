@@ -250,6 +250,8 @@ Dozer是基于反射来实现对象拷贝，反射调用set/get 或者是直接�
 
 [JAVA深复制(深克隆)与浅复制(浅克隆)](https://www.cnblogs.com/yxnchinahlj/archive/2010/09/20/1831615.html)
 
+[任意JAVA对象的深度拷贝](https://napp.iteye.com/blog/549463)
+
 * any list
 {:toc}
 
