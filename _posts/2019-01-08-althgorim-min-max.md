@@ -156,6 +156,8 @@ f(n)=(2^m)*f(n/2^m)+2^(m+1)-2;【式子C】
 
 [再问我最大值最小值了](https://mp.weixin.qq.com/s/hOFzKG9mBUp3TD76mywFYw)
 
+[求数组最大值](https://mp.weixin.qq.com/s/pvcpBnnEvjOtL0pMU51GDA)
+
 * any list
 {:toc}
 
