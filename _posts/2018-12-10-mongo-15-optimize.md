@@ -66,7 +66,7 @@ nReturned=totalKeysExamined=totalDocsExamined
 
 如果有sort的时候，为了使得sort不在内存中进行，我们可以在保证 nReturned=totalDocsExamined 的基础上，totalKeysExamined可以大于totalDocsExamined与nReturned，因为量级较大的时候内存排序非常消耗性能。
 
-后面我们会针对例子来进行分析。
+后面我们会针对例子来进行分析。
 
 ## 关注点3：Stage状态分析
 
