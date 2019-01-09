@@ -44,7 +44,7 @@ excerpt: Mongo Optimize 性能优化
 
 这里主要谈3个返回项，nReturned，totalKeysExamined与totalDocsExamined，分别代表该条查询返回的条目、索引扫描条目和文档扫描条目。
 
-很好理解，这些都直观的影响到executionTimeMillis，我们需要扫描的越少速度越快。
+很好理解，这些都直观的影响到executionTimeMillis。我们需要扫描的越少速度越快。
 
 对于一个查询， 我们最理想的状态是
 
