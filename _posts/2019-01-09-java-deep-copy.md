@@ -234,6 +234,10 @@ public static void copyProperties(Object source, Object target) throws BeansExce
 
 可以看到, 成员变量赋值是基于目标对象的成员列表, 并且会跳过ignore的以及在源对象中不存在的, 所以这个方法是安全的, 不会因为两个对象之间的结构差异导致错误, 但是必须保证同名的两个成员变量类型相同。
 
+## BeanCopier
+
+性能比较好
+
 ## dozer
 
 Dozer（http://dozer.sourceforge.net/）能够实现深拷贝。
@@ -241,6 +245,20 @@ Dozer（http://dozer.sourceforge.net/）能够实现深拷贝。
 Dozer是基于反射来实现对象拷贝，反射调用set/get 或者是直接对成员变量赋值。 
 
 该方式通过invoke执行赋值，实现时一般会采用beanutil, Javassist等开源库。
+
+## 利用 json
+
+利用 json 序列化+反序列化，也可以实现深度复制。
+
+## 综上推荐使用：
+
+1. BeanUtils（简单，易用）
+
+2. BeanCopier（加入缓存后和手工set的性能接近）
+
+3. Dozer（深拷贝）
+
+4. fastjson（特定场景下使用）
 
 # 参考资料
 
