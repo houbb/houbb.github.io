@@ -1,0 +1,54 @@
+---
+layout: post
+title: Java Concurrency-00-并发概览
+date:  2019-1-18 11:05:31 +0800
+categories: [Concurrency]
+tags: [java, concurrency, sh]
+published: true
+excerpt: Java Concurrency-00-并发概览
+---
+
+# 本系列学习目的
+
+提升对于 java 多线程的理解，要学会横向对比学习，多看些文章。
+
+目前大部分的文章都是止步于创建和常见的类，本系列重在实践，参考书籍《java 并发编程实战》《Java并发编程的艺术》
+
+后续原理参考《深入理解并行编程》。
+
+对于 java 多线程的基础知识，参考 [Java Thread 小结](https://houbb.github.io/2019/01/09/java-thread-all-in-one)
+
+经典书籍[《图解 Java 多线程设计模式》](https://blog.csdn.net/ryo1060732496/column/info/19835) 系列学习笔记。
+
+对于 jvm 相关知识不用重复学习，已经完成。见 [JMM](https://houbb.github.io/2018/07/26/jmm-01-intro) & [jvm](https://houbb.github.io/2018/10/07/jvm-01-java-overview)
+
+# 推荐书籍和博客
+
+## 书籍
+
+《java 并发编程实战》java 并发圣经
+
+《Java并发编程的艺术》阿里大牛编著
+
+[《深入理解并行编程》中文版](http://ifeve.com/perfbook/) 感觉比较深入，最后读
+
+## 博客
+
+[《深入浅出 Java Concurrency》](http://www.blogjava.net/xylz/archive/2010/07/08/325587.html) 别人的整理，前车之鉴。
+
+# java 并发整体大纲
+
+## 线程安全性
+
+## 并发容器 JUC 及相关工具类
+
+## 线程池
+
+## 死锁
+
+## 性能及其测试
+
+## 锁
+
+* any list
+{:toc}
