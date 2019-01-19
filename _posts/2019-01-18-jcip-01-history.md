@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Java Concurrency-01-并发历史
+title: JCIP-01-并发历史
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [java, concurrency, sh]
 published: true
-excerpt: Java Concurrency-01-并发历史
+excerpt: JCIP-01-并发历史
 ---
 
 # 1.并发的发展历史

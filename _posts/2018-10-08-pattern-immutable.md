@@ -3,7 +3,7 @@ layout: post
 title: Java Immutable
 date:  2018-10-08 17:55:28 +0800
 categories: [Pattern]
-tags: [sql, java, pattern, sh]
+tags: [sql, java, pattern, thread-safe, sh]
 published: true
 excerpt: Java 设计模式之不可变对象
 ---

@@ -1,11 +1,11 @@
 ---
 layout: post
-title: Java Concurrency-00-并发概览
+title: JCIP-00-并发概览
 date:  2019-1-18 11:05:31 +0800
 categories: [Concurrency]
 tags: [java, concurrency, sh]
 published: true
-excerpt: Java Concurrency-00-并发概览
+excerpt: JCIP-00-并发概览
 ---
 
 # 本系列学习目的
