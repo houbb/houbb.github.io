@@ -115,6 +115,19 @@ $   history | grep cat | grep vpn
   502  history | grep cat | grep vpn
 ```
 
+
+# 统计某个正则出现的次数
+
+```
+egrep -o  '正则表达式' XXX.log | sort -n | uniq  -c
+```
+
+XXX.log 符合正则的信息，`-o` 表示只显示匹配内容
+
+sort -n  按值进行排序
+
+uniq  -c 独一无二的结果，和对应的次数。
+
 # 参考资料
 
 [linux 命令大全](http://www.runoob.com/linux/linux-command-manual.html)
