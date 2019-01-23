@@ -1,0 +1,459 @@
+---
+layout: post
+title: Mybatis 拦截器
+date:  2019-1-23 08:49:44 +0800
+categories: [Mybatis]
+tags: [mybatis, TODO, sh]
+published: false
+excerpt: Mybatis 拦截器
+---
+
+# 分页插件
+
+比如分页插件：[pagehelper](https://pagehelper.github.io/)
+
+可以大幅度提升我们的开发效率。
+
+# 需求
+
+数据库中敏感字段的对称加密，或者诸如密码之类的非对称加密。
+
+其实都可以不是在一次次的代码查询和更新中手动实现，可以通过自定义注解来实现。
+
+## 设计思路
+
+1. 利用注解标明需要加密解密的entity类对象以及其中的数据
+
+2. mybatis拦截Executor.class对象中的query,update方法
+
+3. 在方法执行前对parameter进行加密解密，在拦截器执行后，解密返回的结果
+
+# 加解密拦截器源码
+
+## 自定义注解
+
+可以分为两类，加密+解密。
+
+为了快速定位对象，可以允许注解在类和字段上使用。只有当类上有这个注解的时候，才会去处理每一个字段。
+
+加密：对称，非对称。用户可以指定加密算法。`@Encode`，
+
+解密：对称解密。如果是密码这种，可以直接返回密文。(仅限于登录验证等) `@Decode`
+
+## 代码实现
+
+```java
+import org.apache.ibatis.executor.Executor;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.plugin.*;
+import org.apache.ibatis.session.ResultHandler;
+import org.apache.ibatis.session.RowBounds;
+import org.springframework.stereotype.Component;
+
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Properties;
+
+/**
+ * 统一加解密
+ * 查询，入参需要加密的进行加密，取出的列表字段，需要解密的字段进行解密；
+ * 新增，更新的数据，对需要加密的数据进行加密
+ */
+@Intercepts({
+        @Signature(type = Executor.class, method = "update", args = {MappedStatement.class,
+                Object.class}),
+        @Signature(type = Executor.class, method = "query", args = {MappedStatement.class,
+                Object.class,
+                RowBounds.class,
+                ResultHandler.class})})
+@Component
+public class EncodeInterceptor implements Interceptor {
+
+    private static final String QUERY = "query";
+
+    private static final String UPDATE = "update";
+
+    /**
+     * 拦截处理
+     *
+     * @see Interceptor#intercept(Invocation)
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    public Object intercept(Invocation invocation) throws Throwable {
+        Object result = null;
+        String methodName = invocation.getMethod().getName();
+
+        // 最外层统一添加异常处理，防止未考虑到的问题
+        try {
+            if (QUERY.equals(methodName)) {
+                Invocation newInvocation = decodeParameter(invocation);
+                // 对查询后的结果集进行解密，返回单条记录也属于ArrayList,循环一次
+                // 执行请求方法，并将所得结果保存到result中
+                result = newInvocation.proceed();
+                if (result instanceof ArrayList) {
+                    ArrayList<Object> resultNew = (ArrayList<Object>) result;
+                    for (int i = 0; i < resultNew.size(); i++) {
+                        resultNew.set(i, decodeClass(resultNew.get(i)));
+                    }
+                    return resultNew;
+                }
+            } else if (UPDATE.equals(methodName)) {
+                Invocation newInvocation = encryptParameter(invocation);
+                result = newInvocation.proceed();
+            } else {
+                result = invocation.proceed();
+            }
+        } catch (Exception e) {
+            // 输出异常信息，直接不做处理，返回原值。
+            result = invocation.proceed();
+        }
+
+        return result;
+    }
+
+    @Override
+    public Object plugin(Object target) {
+        return Plugin.wrap(target, this);
+    }
+
+    @Override
+    public void setProperties(Properties arg0) {
+    }
+
+    /**
+     * 参数加密
+     *
+     * @param invocation
+     * @return
+     */
+    private Invocation encodeParameter(Invocation invocation) throws Exception {
+        Object[] parameters = invocation.getArgs();
+
+        // 第二个参数为业务参数
+        Object businessParameter = null;
+        if (invocation.getArgs().length > 1) {
+            businessParameter = parameters[1];
+        } else {
+            return invocation;
+        }
+
+        if (null == businessParameter) {
+            return invocation;
+        }
+
+        parameters[1] = encodeClass(businessParameter);
+
+        Invocation newInvocation = new Invocation(invocation.getTarget(), invocation.getMethod(),
+                parameters);
+
+        return newInvocation;
+
+    }
+
+    /**
+     * 加密实体类参数
+     *
+     * @param parameter
+     * @return
+     */
+    private Object encodeClass(Object parameter) throws Exception {
+        if (!parameter.getClass().isAnnotationPresent(Encode.class)) {
+            return parameter;
+        }
+
+        Field[] fields = parameter.getClass().getDeclaredFields();
+        // 循环匹配待加密的字段
+        for (Field field : fields) {
+            if (!field.isAnnotationPresent(Encode.class)) {
+                continue;
+            }
+            //将filed的值存入obj上
+            field.setAccessible(true);
+            Object value = field.get(parameter);
+            if (null != value) {
+                field.set(parameter, "加密算法"));
+            }
+        }
+        return parameter;
+    }
+
+    /**
+     * 对对象进行解密.
+     *
+     * @param result
+     * @return
+     */
+    public Object decodeClass(Object result) throws Exception {
+        if (!result.getClass().isAnnotationPresent(Decode.class)) {
+            return result;
+        }
+
+        Field[] fields = result.getClass().getDeclaredFields();
+        // 循环匹配待加密的字段
+        for (Field field : fields) {
+            if (!field.isAnnotationPresent(Decode.class)) {
+                continue;
+            }
+            //将filed的值存入obj上
+            field.setAccessible(true);
+            Object value = field.get(result);
+            if (null != value) {
+                field.set(result, "解密算法"));
+            }
+        }
+        return result;
+    }
+
+}
+```
+
+# Mybatis Interceptor 拦截器原理
+
+Mybatis采用责任链模式，通过动态代理组织多个拦截器（插件），通过这些拦截器可以改变Mybatis的默认行为（诸如SQL重写之类的），由于插件会深入到Mybatis的核心，因此在编写自己的插件前最好了解下它的原理，以便写出安全高效的插件。
+
+
+## 代理链的生成
+
+Mybatis支持对Executor、StatementHandler、PameterHandler和ResultSetHandler进行拦截，也就是说会对这4种对象进行代理。
+
+通过查看Configuration类的源代码我们可以看到，每次都对目标对象进行代理链的生成。
+
+### ParameterHandler
+
+参数拦截器
+
+```java
+public ParameterHandler newParameterHandler(MappedStatement mappedStatement, Object parameterObject, BoundSql boundSql) {
+    ParameterHandler parameterHandler = mappedStatement.getLang().createParameterHandler(mappedStatement, parameterObject, boundSql);
+    parameterHandler = (ParameterHandler) interceptorChain.pluginAll(parameterHandler);
+    return parameterHandler;
+}
+```
+
+### ResultSetHandler
+
+结果集拦截器
+
+```java
+public ResultSetHandler newResultSetHandler(Executor executor, MappedStatement mappedStatement, RowBounds rowBounds, ParameterHandler parameterHandler,
+      ResultHandler resultHandler, BoundSql boundSql) {
+    ResultSetHandler resultSetHandler = new DefaultResultSetHandler(executor, mappedStatement, parameterHandler, resultHandler, boundSql, rowBounds);
+    resultSetHandler = (ResultSetHandler) interceptorChain.pluginAll(resultSetHandler);
+    return resultSetHandler;
+}
+```
+
+### StatementHandler
+
+语句拦截器
+
+```java
+public StatementHandler newStatementHandler(Executor executor, MappedStatement mappedStatement, Object parameterObject, RowBounds rowBounds, ResultHandler resultHandler, BoundSql boundSql) {
+    StatementHandler statementHandler = new RoutingStatementHandler(executor, mappedStatement, parameterObject, rowBounds, resultHandler, boundSql);
+    statementHandler = (StatementHandler) interceptorChain.pluginAll(statementHandler);
+    return statementHandler;
+}
+```
+
+### Executor
+
+执行器拦截器
+
+```java
+public Executor newExecutor(Transaction transaction, ExecutorType executorType, boolean autoCommit) {
+    executorType = executorType == null ? defaultExecutorType : executorType;
+    executorType = executorType == null ? ExecutorType.SIMPLE : executorType;
+    Executor executor;
+    if (ExecutorType.BATCH == executorType) {
+      executor = new BatchExecutor(this, transaction);
+    } else if (ExecutorType.REUSE == executorType) {
+      executor = new ReuseExecutor(this, transaction);
+    } else {
+      executor = new SimpleExecutor(this, transaction);
+    }
+    if (cacheEnabled) {
+      executor = new CachingExecutor(executor, autoCommit);
+    }
+    executor = (Executor) interceptorChain.pluginAll(executor);
+    return executor;
+}
+```
+
+## Mybatis的拦截器实现原理
+
+接下来让我们通过分析源代码的方式来解读Mybatis的拦截器实现原理
+
+对于拦截器Mybatis为我们提供了一个Interceptor接口，通过实现该接口就可以定义我们自己的拦截器。我们先来看一下这个接口的定义：
+
+### Interceptor
+
+```java
+package org.apache.ibatis.plugin;
+
+import java.util.Properties;
+
+public interface Interceptor {
+
+  Object intercept(Invocation invocation) throws Throwable;
+
+  Object plugin(Object target);
+
+  void setProperties(Properties properties);
+
+}
+```
+
+我们可以看到在该接口中一共定义有三个方法，intercept、plugin和setProperties。
+
+plugin方法是拦截器用于封装目标对象的，通过该方法我们可以返回目标对象本身，也可以返回一个它的代理。当返回的是代理的时候我们可以对其中的方法进行拦截来调用intercept方法，当然也可以调用其他方法，这点将在后文讲解。
+
+setProperties方法是用于在Mybatis配置文件中指定一些属性的。
+
+定义自己的Interceptor最重要的是要实现plugin方法和intercept方法，在plugin方法中我们可以决定是否要进行拦截进而决定要返回一个什么样的目标对象。而intercept方法就是要进行拦截的时候要执行的方法。
+
+
+## plugin 的源码
+
+对于plugin方法而言，其实Mybatis已经为我们提供了一个实现。Mybatis中有一个叫做Plugin的类，里面有一个静态方法wrap(Object target,Interceptor interceptor)，通过该方法可以决定要返回的对象是目标对象还是对应的代理。
+
+这里我们先来看一下Plugin的源码：
+
+```java
+package org.apache.ibatis.plugin;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.ibatis.reflection.ExceptionUtil;
+
+//这个类是Mybatis拦截器的核心,大家可以看到该类继承了InvocationHandler
+//又是JDK动态代理机制
+public class Plugin implements InvocationHandler {
+
+  //目标对象
+  private Object target;
+  //拦截器
+  private Interceptor interceptor;
+  //记录需要被拦截的类与方法
+  private Map<Class<?>, Set<Method>> signatureMap;
+
+  private Plugin(Object target, Interceptor interceptor, Map<Class<?>, Set<Method>> signatureMap) {
+    this.target = target;
+    this.interceptor = interceptor;
+    this.signatureMap = signatureMap;
+  }
+
+  //一个静态方法,对一个目标对象进行包装，生成代理类。
+  public static Object wrap(Object target, Interceptor interceptor) {
+    //首先根据interceptor上面定义的注解 获取需要拦截的信息
+    Map<Class<?>, Set<Method>> signatureMap = getSignatureMap(interceptor);
+    //目标对象的Class
+    Class<?> type = target.getClass();
+    //返回需要拦截的接口信息
+    Class<?>[] interfaces = getAllInterfaces(type, signatureMap);
+    //如果长度为>0 则返回代理类 否则不做处理
+    if (interfaces.length > 0) {
+      return Proxy.newProxyInstance(
+          type.getClassLoader(),
+          interfaces,
+          new Plugin(target, interceptor, signatureMap));
+    }
+    return target;
+  }
+
+  //代理对象每次调用的方法
+  public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+    try {
+      //通过method参数定义的类 去signatureMap当中查询需要拦截的方法集合
+      Set<Method> methods = signatureMap.get(method.getDeclaringClass());
+      //判断是否需要拦截
+      if (methods != null && methods.contains(method)) {
+        return interceptor.intercept(new Invocation(target, method, args));
+      }
+      //不拦截 直接通过目标对象调用方法
+      return method.invoke(target, args);
+    } catch (Exception e) {
+      throw ExceptionUtil.unwrapThrowable(e);
+    }
+  }
+
+  //根据拦截器接口（Interceptor）实现类上面的注解获取相关信息
+  private static Map<Class<?>, Set<Method>> getSignatureMap(Interceptor interceptor) {
+    //获取注解信息
+    Intercepts interceptsAnnotation = interceptor.getClass().getAnnotation(Intercepts.class);
+    //为空则抛出异常
+    if (interceptsAnnotation == null) { // issue #251
+      throw new PluginException("No @Intercepts annotation was found in interceptor " + interceptor.getClass().getName());      
+    }
+    //获得Signature注解信息
+    Signature[] sigs = interceptsAnnotation.value();
+    Map<Class<?>, Set<Method>> signatureMap = new HashMap<Class<?>, Set<Method>>();
+    //循环注解信息
+    for (Signature sig : sigs) {
+      //根据Signature注解定义的type信息去signatureMap当中查询需要拦截方法的集合
+      Set<Method> methods = signatureMap.get(sig.type());
+      //第一次肯定为null 就创建一个并放入signatureMap
+      if (methods == null) {
+        methods = new HashSet<Method>();
+        signatureMap.put(sig.type(), methods);
+      }
+      try {
+        //找到sig.type当中定义的方法 并加入到集合
+        Method method = sig.type().getMethod(sig.method(), sig.args());
+        methods.add(method);
+      } catch (NoSuchMethodException e) {
+        throw new PluginException("Could not find method on " + sig.type() + " named " + sig.method() + ". Cause: " + e, e);
+      }
+    }
+    return signatureMap;
+  }
+
+  //根据对象类型与signatureMap获取接口信息
+  private static Class<?>[] getAllInterfaces(Class<?> type, Map<Class<?>, Set<Method>> signatureMap) {
+    Set<Class<?>> interfaces = new HashSet<Class<?>>();
+    //循环type类型的接口信息 如果该类型存在与signatureMap当中则加入到set当中去
+    while (type != null) {
+      for (Class<?> c : type.getInterfaces()) {
+        if (signatureMap.containsKey(c)) {
+          interfaces.add(c);
+        }
+      }
+      type = type.getSuperclass();
+    }
+    //转换为数组返回
+    return interfaces.toArray(new Class<?>[interfaces.size()]);
+  }
+
+}
+```
+
+# 总结
+
+mybatis 这种责任链和允许用户自定义注解的设计非常不错。
+
+实现自己的插件，比如分页插件，要开源分享。因为你写的代码全是 BUG，不分享你以为自己的代码是无懈可击的。
+
+要学会偷懒，不要这么勤快的去写代码。能使用插件的事情，坚决不用代码。
+
+一次搞定，以后全部省时省力。
+
+# TODO
+
+自己开源实现一个 myabtis 的加密解密插件。
+
+# 参考资料
+
+https://pagehelper.github.io
+
+[mybatis拦截器处理敏感字段](https://blog.csdn.net/alleged/article/details/83313875)
+
+[Mybatis Interceptor 拦截器原理 源码分析](http://www.cnblogs.com/daxin/p/3541922.html)
+
+* any list
+{:toc}

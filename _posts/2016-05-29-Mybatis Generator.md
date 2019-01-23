@@ -6,8 +6,6 @@ categories: [SQL]
 tags: [mybatis]
 published: true
 ---
-* any list
-{:toc}
 
 # Mybatis Generator
 
@@ -23,8 +21,6 @@ Then, use **schema.sql** to create table in your mysql.
 use ```mvn mybatis-generator:generate``` to run project.
 
 You may find directory not exists error, solve it.
-
-
 
 > pom.xml
 
@@ -146,6 +142,19 @@ PRIMARY KEY (`id`)
 </generatorConfiguration>
 ```
 
+## 生成 example
+
+mbg 可以生成对象的 example，这样写 Creteria 比较方便，但是缺点是生成的类变多。
+
+
+```xml
+<table tableName="表名称" domainObjectName="实体对象名称"
+    enableCountByExample="true" enableUpdateByExample="true"
+    enableDeleteByExample="true" enableSelectByExample="true"
+    selectByExampleQueryId="true">
+</table>
+```
+
 # Bugs
 
 - [properties bug](http://mybatis-user.963551.n3.nabble.com/lt-properties-resource-quot-database-properties-quot-gt-is-not-working-for-me-td3230072.html)
@@ -161,3 +170,6 @@ Failed to execute goal org.mybatis.generator:mybatis-generator-maven-plugin:1.3.
 ```
 
 Change the version into **1.3.2** will be okay.
+
+* any list
+{:toc}
