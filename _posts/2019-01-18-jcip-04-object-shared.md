@@ -107,7 +107,7 @@ java的concurrent包下提供了一些原子类，我们可以通过阅读API来
 > 具体参见 [volatile 详解](https://houbb.github.io/2018/07/27/jmm-05-volatile)
 
 ## 1.5 CAS 乐观锁 + 系统内置原子操作类
-
+ 
 ## AtomicXXX
 
 jdk 提供了很多原子类型，这种类型的基本原理总结起来，volatile + unsafe 的 Compare and Swap，这种 Unsafe 操作并不推荐在自己的代码中使用，因为各 JDK 版本在这里变化较大，有可能升级 JDK 时造成各种问题。而且也要保证自己能够用好。
