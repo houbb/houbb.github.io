@@ -141,9 +141,177 @@ public class PriorityQueueExample {
 }
 ```
 
+# 优先级队列源码解析
+
+## 类的定义
+
+```java
+public class PriorityQueue<E> extends AbstractQueue<E>
+    implements java.io.Serializable {}
+```
+
+## 基础属性
+
+java version "1.8.0_191"
+
+```java
+private static final int DEFAULT_INITIAL_CAPACITY = 11;
+
+/**
+ * Priority queue represented as a balanced binary heap: the two
+ * children of queue[n] are queue[2*n+1] and queue[2*(n+1)].  The
+ * priority queue is ordered by comparator, or by the elements'
+ * natural ordering, if comparator is null: For each node n in the
+ * heap and each descendant d of n, n <= d.  The element with the
+ * lowest value is in queue[0], assuming the queue is nonempty.
+ */
+transient Object[] queue; // non-private to simplify nested class access
+
+/**
+ * The number of elements in the priority queue.
+ */
+private int size = 0;
+
+/**
+ * The comparator, or null if priority queue uses elements'
+ * natural ordering.
+ */
+private final Comparator<? super E> comparator;
+
+/**
+ * The number of times this priority queue has been
+ * <i>structurally modified</i>.  See AbstractList for gory details.
+ */
+transient int modCount = 0; // non-private to simplify nested class access
+```
+
+## 构造器
+
+构造器大同小异，调用了公共的初始化方法。
+
+```java
+private void initElementsFromCollection(Collection<? extends E> c) {
+    Object[] a = c.toArray();
+    // If c.toArray incorrectly doesn't return Object[], copy it.
+    if (a.getClass() != Object[].class)
+        a = Arrays.copyOf(a, a.length, Object[].class);
+    int len = a.length;
+    if (len == 1 || this.comparator != null)
+        for (int i = 0; i < len; i++)
+            if (a[i] == null)
+                throw new NullPointerException();
+    this.queue = a;
+    this.size = a.length;
+}
+```
+
+初始化建立一个小顶堆，就是使用 
+
+```java
+private void initFromCollection(Collection<? extends E> c) {
+    initElementsFromCollection(c);
+    heapify();
+}
+```
+
+其中 
+
+```java
+/**
+ * Establishes the heap invariant (described above) in the entire tree,
+ * assuming nothing about the order of the elements prior to the call.
+ */
+@SuppressWarnings("unchecked")
+private void heapify() {
+    for (int i = (size >>> 1) - 1; i >= 0; i--)
+        siftDown(i, (E) queue[i]);
+}
+```
+
+## 核心调整过程
+
+调整，使数据满足小顶堆的结构。 
+
+首先介绍两个调整方式siftUp和siftDown
+
+### siftDown
+
+在给定初始化元素的时候，要调整元素，使其满足最小堆的结构性质。因此不停地从上到下将元素x的键值与孩子比较并做交换，直到找到元素x的键值小于等于孩子的键值（即保证它比其左右结点值小），或者是下降到叶子节点为止。 
+
+例如如下的示意图，调整9这个节点： 
+
+![siftdown](https://files.jb51.net/file_images/article/201605/201651785106575.png?201641785121)
 
 
+```java
+private void siftDownComparable(int k, E x) {
+  Comparable<? super E> key = (Comparable<? super E>)x;
+  int half = size >>> 1;    // size/2是第一个叶子结点的下标
+  //只要没到叶子节点
+  while (k < half) {
+    int child = (k << 1) + 1; // 左孩子
+    Object c = queue[child];
+    int right = child + 1;
+    //找出左右孩子中小的那个
+    if (right < size &&
+      ((Comparable<? super E>) c).compareTo((E) queue[right]) > 0)
+      c = queue[child = right];
+    if (key.compareTo((E) c) <= 0)
+      break;
+    queue[k] = c;
+    k = child;
+  }
+  queue[k] = key;
+}
+```
 
+### siftUp
+
+priorityQueue 每次新增加一个元素的时候是将新元素插入对尾的。
+
+因此，应该与siftDown有同样的调整过程，只不过是从下（叶子）往上调整。 
+
+例如如下的示意图，填加key为3的节点： 
+
+![siftUp](https://files.jb51.net/file_images/article/201605/201651785144192.png?201641785154)
+
+```java
+private void siftUpComparable(int k, E x) {
+  Comparable<? super E> key = (Comparable<? super E>) x;
+  while (k > 0) {
+    int parent = (k - 1) >>> 1;   //获取parent下标
+    Object e = queue[parent];
+    if (key.compareTo((E) e) >= 0)
+      break;
+    queue[k] = e;
+    k = parent;
+  }
+  queue[k] = key;
+}
+```
+
+## 扩容
+
+从实例成员可以看出，PriorityQueue维护了一个Object[], 因此它的扩容方式跟顺序表ArrayList相差不多。 
+
+```java
+/**
+ * Increases the capacity of the array.
+ *
+ * @param minCapacity the desired minimum capacity
+ */
+private void grow(int minCapacity) {
+    int oldCapacity = queue.length;
+    // Double size if small; else grow by 50%
+    int newCapacity = oldCapacity + ((oldCapacity < 64) ?
+                                     (oldCapacity + 2) :
+                                     (oldCapacity >> 1));
+    // overflow-conscious code
+    if (newCapacity - MAX_ARRAY_SIZE > 0)
+        newCapacity = hugeCapacity(minCapacity);
+    queue = Arrays.copyOf(queue, newCapacity);
+}
+```
 
 # 参考资料
 
