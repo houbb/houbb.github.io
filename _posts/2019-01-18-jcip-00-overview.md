@@ -36,19 +36,5 @@ excerpt: JCIP-00-并发概览
 
 [《深入浅出 Java Concurrency》](http://www.blogjava.net/xylz/archive/2010/07/08/325587.html) 别人的整理，前车之鉴。
 
-# java 并发整体大纲
-
-## 线程安全性
-
-## 并发容器 JUC 及相关工具类
-
-## 线程池
-
-## 死锁
-
-## 性能及其测试
-
-## 锁
-
 * any list
 {:toc}
