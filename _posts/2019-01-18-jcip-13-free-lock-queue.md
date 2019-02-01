@@ -475,6 +475,8 @@ IBM developerWorks的[《设计不使用互斥锁的并发数据结构》](http:
 
 [共享内存无锁队列的实现](https://cloud.tencent.com/developer/article/1006241)
 
+[wiki-非阻塞算法](https://en.wikipedia.org/wiki/Non-blocking_algorithm)
+
 * any list
 {:toc}
 
