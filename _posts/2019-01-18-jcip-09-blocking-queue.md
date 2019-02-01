@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  JCIP-09-阻塞队列
+title:  JCIP-09-阻塞队列 BlockingQueue
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [java, concurrency, lock, sh]
