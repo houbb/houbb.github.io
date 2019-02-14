@@ -33,7 +33,7 @@ excerpt: poi word-01-概览
 
 （隐藏掉了大部分样式之类的信息）
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <?mso-application progid="Word.Document"?>
 <pkg:package xmlns:pkg="http://schemas.microsoft.com/office/2006/xmlPackage"><pkg:part pkg:name="/_rels/.rels" pkg:contentType="application/vnd.openxmlformats-package.relationships+xml" pkg:padding="512"><pkg:xmlData><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId1" 
@@ -83,6 +83,8 @@ w:hint="eastAsia"/></w:rPr><w:t>。</w:t></w:r></w:p><w:p w:rsidR="00920BBB" w:r
 [Java 对Word文件的生成（基于Apache POI）](https://www.jianshu.com/p/7af902234eb9)
 
 [使用poi生成word文档（最全例子）](https://blog.csdn.net/owen_william/article/details/81290024)
+
+[生成 word 详解](http://www.cnblogs.com/qingruihappy/p/8443403.html)
 
 * any list
 {:toc}
