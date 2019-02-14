@@ -7,8 +7,7 @@ tags: [Freemarker]
 published: true
 ---
 
-* any list
-{:toc}
+
 
 # Freemarker
 
@@ -472,3 +471,33 @@ output
 
 </html>
 ```
+
+
+# 处理纯字符串
+
+有时候我们希望将一穿带有 `${}` 的字符串替代掉。
+
+怎么办呢？
+
+## 测试代码
+
+```java
+public static void main(String[] args) throws IOException, TemplateException {
+    Configuration configuration = Configuration.getDefaultConfiguration();
+    Template template = new Template("template", "hello ${keyword}", configuration);
+    StringWriter stringwriter = new StringWriter();
+    Map<String, String> map = new HashMap<>();
+    map.put("keyword", "word");
+    template.process(map, stringwriter);
+    System.out.println(stringwriter.toString());
+}
+```
+
+这个结果就是：
+
+```
+hello world
+```
+
+* any list
+{:toc}
