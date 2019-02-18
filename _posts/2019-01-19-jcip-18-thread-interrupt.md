@@ -919,15 +919,21 @@ class Example6 extends Thread {
 
 # 下期学习目标
 
+## Executor 框架
+
 FutureTask
 
 Future
+
+Fork/Join 框架
 
 栅栏
 
 闭锁
 
 信号量
+
+《JCIP-105》
 
 * any list
 {:toc}
