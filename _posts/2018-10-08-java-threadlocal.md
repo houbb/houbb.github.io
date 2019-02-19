@@ -46,6 +46,57 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 在一个线程消失后，它的所有线程本地实例副本都将受到垃圾收集(除非存在对这些副本的其他引用)。
 
+## 保证实例创建的线程安全性
+
+如果每次 service 都创建一个对象，会有些浪费。
+
+如果不创建，可能不存在并发安全问题。
+
+使用下面的方式，为每一个线程创建一个实例。(spring 采用的方式)
+
+```java
+import com.github.houbb.bean.mapping.api.core.IBeanMpping;
+import com.github.houbb.bean.mapping.core.api.core.DefaultBeanMapping;
+import com.github.houbb.bean.mapping.core.util.ObjectUtil;
+
+/**
+ * Bean 映射工厂
+ * @author binbin.hou
+ * date 2019/2/19
+ */
+public final class BeanMappingFactory {
+
+    /**
+     * 用于保存当前线程的信息
+     */
+    private static final ThreadLocal<IBeanMpping> THREAD_LOCAL = new ThreadLocal<>();
+
+    /**
+     * 获取对应的实现
+     * 1. 线程安全
+     * @return 结果
+     */
+    public static IBeanMpping getInstance() {
+        IBeanMpping beanMpping = THREAD_LOCAL.get();
+        if(ObjectUtil.isNull(beanMpping)) {
+            beanMpping = new DefaultBeanMapping();
+            THREAD_LOCAL.set(beanMpping);
+        }
+        return beanMpping;
+    }
+
+
+    /**
+     * 清空
+     * 1. 建议在每个线程执行结束，调用
+     */
+    public static void clear() {
+        THREAD_LOCAL.remove();
+    }
+
+}
+```
+
 ## 个人理解
 
 为每一个线程都创建一个副本，所以不存在并发的资源安全问题。
