@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  JCIP-19-thread pool 手写线程池
+title:  JCIP-21-thread pool 手写线程池
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [java, concurrency, thread, sh]
 published: true
-excerpt: JCIP-19-thread pool 手写线程池
+excerpt: JCIP-21-thread pool 手写线程池
 ---
 
 # 手写线程池
@@ -13,6 +13,20 @@ excerpt: JCIP-19-thread pool 手写线程池
 本文描述了线程池的核心类。
 
 从原理理解线程池
+
+## 线程池的作用
+
+- 降低资源消耗。
+
+通过重复利用已创建的线程降低线程创建和销毁造成的消耗。
+
+- 提高响应速度。
+
+当任务到达时，任务可以不需要的等到线程创建就能立即执行。
+
+- 提高线程的可管理性。
+
+线程是稀缺资源，如果无限制的创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一的分配，调优和监控。
 
 # 代码的实现
 

@@ -1,11 +1,11 @@
 ---
 layout: post
-title:  JCIP-20-同步工具类。闭锁/栅栏/信号量/阻塞队列/FutureTask
+title:  JCIP-19-同步工具类。闭锁/栅栏/信号量/阻塞队列/FutureTask
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [java, concurrency, thread, sh]
 published: true
-excerpt: JCIP-20-同步工具类。闭锁（如CountDownLatch），栅栏（如CyclicBarrier），信号量（如Semaphore）和阻塞队列（如LinkedBlockingQueue）
+excerpt: JCIP-19-同步工具类。闭锁（如CountDownLatch），栅栏（如CyclicBarrier），信号量（如Semaphore）和阻塞队列（如LinkedBlockingQueue）
 ---
 
 # 同步工具类
