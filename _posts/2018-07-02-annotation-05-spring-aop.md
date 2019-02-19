@@ -266,5 +266,145 @@ call save...
 > [annotation 定义与解析](https://github.com/houbb/jdk/tree/master/jdk-annotation/src/main/java/com/ryo/jdk/annotation/spring)
 
 
+# spring aop 存在的问题
+
+## 问题
+
+在类C中，方法A调用方法B，
+
+B方法被AOP拦截。（可能是方法B上在另外的@Aspect切面定义上了切点/也可能是加了 `@Transactional` 事务注解，底层原理也是AOP实现），最终A-》B ，B并不会触发AOP。
+
+比如：
+
+```java
+@Service
+public class ClassA{
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void methodA(){
+    }
+    /**
+     * 这里调用methodA() 的事务将会失效
+     */
+    public void methodB(){
+        this.methodA();
+    }
+}
+```
+
+## 原因
+
+spring 在 aop 处理的时候，当执行一个有注解的方法时，调用其他的方法只是普通的方法。
+
+所以针对这个问题，有下面的几种解决方式。
+
+## 解决方案
+
+### 方法一：自注入
+
+直接在当前类@Autowire 或者@Resource 注入自己,然后用注入的bean 调用方法
+
+### 方案二：使用增强的对象
+
+直接使用 spring 相关的工具，获取增强后的对象。
+
+```java
+@Service
+public class ClassA extends BaseClass{
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+　　@Override
+    public void methodA(){
+    }
+    /**
+     * 这里调用methodA() 的事务将会失效
+     */
+　　
+    public void methodB(){
+　　　　　　//使用getBean
+　　((BaseClass)SpringUtil.getBean("classA")).methodA();
+    }
+}
+```
+
+### 方式三：获取增强代理 
+
+分成两步，设置暴露代理。使用暴露的代理去实现。
+
+#### 1. 设置暴露代理
+
+- SpringBoot
+
+注解开启cglib代理,开启 exposeProxy = true,暴露代理对象 (否则AopContext.currentProxy()) 会抛出异常
+
+```java
+@EnableAspectJAutoProxy(exposeProxy = true)
+public class Application{
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+}
+```
+
+配置方式:配置方式下,我用的是SpringBoot 1.5.4没有找到exposeProxy的选项,所以建议使用注解式.
+
+- 传统Spring配置文件
+
+```xml
+<aop:aspectj-autoproxy expose-proxy="true"/>
+```
+
+#### 2. (需要保证Spring对这个bean创建了代理对象,基本上涉及到Aop的方法的类,都会创建代理对象) 可以用以下代码判断
+
+```java
+/**
+ * Created by laizhenwei on 19:37 2017-10-14
+ */
+@Service("classImplProxy")
+@Scope(proxyMode = ScopedProxyMode.INTERFACES)
+public class ClassImplProxy implements IClass {
+
+    @Override
+    @Transactional
+    public void sysout() {
+    }
+
+    //是否代理对象
+    @Override
+    public boolean isAopProxy() {
+        return AopUtils.isAopProxy(AopContext.currentProxy());
+    }
+
+    //是否cglib 代理对象
+    @Override
+    public boolean isCglibProxy() {
+        return AopUtils.isCglibProxy(AopContext.currentProxy());
+    }
+
+    //是否jdk动态代理
+    @Override
+    public boolean isJdkDynamicProxy() {
+        return AopUtils.isJdkDynamicProxy(AopContext.currentProxy());
+    }
+}
+```
+
+获取代理对象 
+
+```java
+@Service
+public class ClassA{
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void methodA(){
+    }
+    public void methodB(){
+        //手动获取此对象Spring的代理类
+        ((ClassA)AopContext.currentProxy()).methodA();
+    }
+}
+```
+
+# 参考资料
+
+[spring aop无法拦截类内部的方法调用](https://www.cnblogs.com/dennyzhangdd/p/9242148.html)
+
 * any list
 {:toc}
