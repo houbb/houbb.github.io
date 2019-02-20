@@ -22,6 +22,14 @@ excerpt: JCIP-00-并发概览
 
 对于 jvm 相关知识不用重复学习，已经完成。见 [JMM](https://houbb.github.io/2018/07/26/jmm-01-intro) & [jvm](https://houbb.github.io/2018/10/07/jvm-01-java-overview)
 
+# 多线程基础知识
+
+[Thread 多线程线程入门](https://houbb.github.io/2016/07/01/thread)
+
+[Thread Advanced 多线程进阶](https://houbb.github.io/2016/07/02/thread-advanced)
+
+[Java Thread 小结](https://houbb.github.io/2019/01/09/java-thread-all-in-one)
+
 # 推荐书籍和博客
 
 ## 书籍
@@ -29,6 +37,8 @@ excerpt: JCIP-00-并发概览
 《java 并发编程实战》java 并发圣经
 
 《Java并发编程的艺术》阿里大牛编著
+
+《Java高并发程序设计》
 
 [《深入理解并行编程》中文版](http://ifeve.com/perfbook/) 感觉比较深入，最后读
 
