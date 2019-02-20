@@ -1,14 +1,14 @@
 ---
 layout: post
-title:  JCIP-24-Executor ScheduledThreadPoolExecutor Timer 
+title:  JCIP-24-Executor ScheduledThreadPoolExecutor
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [java, concurrency, thread, async, sh]
 published: true
-excerpt: JCIP-24-Executor ScheduledThreadPoolExecutor Timer 
+excerpt: JCIP-24-Executor ScheduledThreadPoolExecutor
 ---
 
-# Timer
+# ScheduledThreadPoolExecutor
 
 # 拓展阅读
 
