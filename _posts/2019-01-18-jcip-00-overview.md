@@ -30,6 +30,8 @@ excerpt: JCIP-00-并发概览
 
 [Java Thread 小结](https://houbb.github.io/2019/01/09/java-thread-all-in-one)
 
+TODO：把 CSDN 整理的知识整合过来。
+
 # 推荐书籍和博客
 
 ## 书籍
@@ -41,6 +43,8 @@ excerpt: JCIP-00-并发概览
 《Java高并发程序设计》
 
 [《深入理解并行编程》中文版](http://ifeve.com/perfbook/) 感觉比较深入，最后读
+
+《Java程序性能优化》
 
 ## 博客
 
