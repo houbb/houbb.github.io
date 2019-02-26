@@ -57,6 +57,16 @@ threadFactory:使用ThreadFactory创建新线程，默认使用defaultThreadFact
  
 handle:定义处理被拒绝任务的策略，默认使用ThreadPoolExecutor.AbortPolicy,任务被拒绝时将抛出RejectExecutorException
 
+### 情况说明
+
+如果运行的线程少于 corePoolSize，ThreadPoolExecutor 会始终首选创建新的线程来处理请求；注意，这时即使有空闲线程也不会重复使用（这和数据库连接池有很大差别）。
+
+如果运行的线程等于或多于 corePoolSize，则 ThreadPoolExecutor 会将请求加入队列BlockingQueue，而不添加新的线程（这和数据库连接池也不一样）。
+
+如果无法将请求加入队列（比如队列已满），则创建新的线程来处理请求；但是如果创建的线程数超出 maximumPoolSize，在这种情况下，请求将被拒绝。
+
+newCachedThreadPool使用了SynchronousQueue，并且是无界的。
+
 ## 实际使用
 
 建议使用 Executors 提供的方式去创建 ThreadPoolExecutor。
@@ -319,7 +329,9 @@ private static ExecutorService executor = new ThreadPoolExecutor(10,10,60L, Time
 
 样可以指定corePoolSize、maximumPoolSize、workQueue为ArrayBlockingQueue有界队列
 
+# ThreadPoolExecutor 源码
 
+TODO...
 
 # 参考资料
 
@@ -328,6 +340,12 @@ private static ExecutorService executor = new ThreadPoolExecutor(10,10,60L, Time
 《java 并发编程实战》P125
 
 [《Alibaba 开发手册》](https://files-cdn.cnblogs.com/files/han-1034683568/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%E7%BB%88%E6%9E%81%E7%89%88v1.3.0.pdf)
+
+[Java并发编程实战系列8之线程池的使用](https://yq.aliyun.com/articles/636093)
+
+- 源码
+
+[Java并发编程原理与实战三十七：线程池的原理与使用](https://www.colabug.com/4221632.html)
 
 * any list
 {:toc}
