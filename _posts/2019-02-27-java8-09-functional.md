@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Java Functional
+title: Java8-09-functional 函数式编程
 date:  2019-2-27 15:48:49 +0800
 categories: [Java]
 tags: [java, jdk8, sh]
