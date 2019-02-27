@@ -1,10 +1,10 @@
 ---
 layout: post
 title: Java Functional
-date:  2017-6-29 09:43:55 +0800
+date:  2019-2-27 15:48:49 +0800
 categories: [Java]
-tags: [functional]
-published: false
+tags: [java, jdk8, sh]
+published: true
 ---
 
 # Functional Programming in Java
@@ -444,7 +444,9 @@ public void groupByFirstLetterTest() {
 }
 ```
 
+# 拓展阅读
 
+[java 函数式编程-系列教程](https://www.iteye.com/blogs/subjects/Java8-FP)
 
 * any list
 {:toc}

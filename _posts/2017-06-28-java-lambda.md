@@ -4,7 +4,7 @@ title: Java Lambda
 date:  2017-6-28 16:35:38 +0800
 categories: [Java]
 tags: [lambda]
-published: true
+published: false
 ---
 
 # Lambda 
@@ -62,7 +62,7 @@ button.addActionListener(new ActionListener() {
 很多库都依赖于上面的模式。对于并行 API 更是如此，因为我们需要把待执行的代码提供给并行 API，并行编程是一个非常值得研究的领域，
 因为在这里摩尔定律得到了重生：尽管我们没有更快的 CPU 核心（core），但是我们有更多的 CPU 核心。而串行 API 就只能使用有限的计算能力。
 
-匿名内部类并不是一个好的 选择，因为：
+匿名内部类并不是一个好的选择，因为：
 
 - 语法过于冗余
 
