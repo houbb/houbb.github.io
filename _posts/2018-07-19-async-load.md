@@ -1,6 +1,6 @@
 ---
-layout: post
-title:  asyncload
+layout: post 
+title:  asyncload 异步并行框架
 date:  2018-07-19 17:29:38 +0800
 categories: [Java]
 tags: [java, thread, sh]
@@ -24,6 +24,22 @@ published: true
 3. 业务执行过程需要获取mock对象的真实数据时，阻塞等待原始结果返回，整个过程透明完成
 
 很明显，经过异步并行加载后，一次 request 请求总的响应时间就等于最长的依赖关系请求链的相应时间。
+
+# 异步并行框架
+
+定义一个基于注解+spring整合的框架。
+
+原理是 java 的线程池，这样所有的处理信息都是同步的，调用的时候对代码无侵入。
+
+基于 AOP。
+
+参考 mykit-async 框架。
+
+# 参考资料
+
+[mykit-async之——异步并行框架正式开源](https://blog.csdn.net/l1028386804/article/details/82564153)
+
+[Spring中@Async注解执行异步任务](https://segmentfault.com/a/1190000015190901)
 
 * any list
 {:toc}
