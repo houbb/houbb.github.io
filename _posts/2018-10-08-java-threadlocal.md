@@ -118,6 +118,24 @@ ThreadLocal对象通常用于防止对可变的单实例变量（Singleton）或
 
 开发人员经常滥用ThreadLocal，例如将所有全局变量都作为ThreadLocal对象，或者作为一种“隐藏”方法参数的手段。ThreadLocal变量类似于全局变量，它能降低代码的可重用性，并在类之间引入隐含的耦合性，因此在使用时要格外小心。
 
+# ThredaLocal 保证线程安全的两种方式
+
+## 无状态
+
+无状态的类天生线程安全。
+
+但是存在一个问题，同一个线程中属性可能无法传递。
+
+ThreadLocal 可以让变量在同一个线程中可见。
+
+## 副本
+
+DateFormat 线程不安全。
+
+使用的时候可以用 `ThreadLocal<DateFormat> format = new ThreadLocal<>();`
+
+为每个线程单独创建一个副本，从而保证线程的安全性。
+
 # ThreadLocal 原理
 
 ## ThreadLocal 维护线程与实例的映射
