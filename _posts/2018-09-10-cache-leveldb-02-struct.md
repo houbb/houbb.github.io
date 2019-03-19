@@ -40,7 +40,9 @@ SSTable中的某个文件属于特定层级，而且其存储的记录是key有�
 
 # Current 文件
 
-Current文件是干什么的呢？这个文件的内容只有一个信息，就是记载当前的manifest文件名。因为在LevleDb的运行过程中，随着Compaction的进行，SSTable文件会发生变化，会有新的文件产生，老的文件被废弃，Manifest也会跟着反映这种变化，此时往往会新生成Manifest文件来记载这种变化，而Current则用来指出哪个Manifest文件才是我们关心的那个Manifest文件。
+Current文件是干什么的呢？
+
+这个文件的内容只有一个信息，就是记载当前的manifest文件名。因为在LevleDb的运行过程中，随着Compaction的进行，SSTable文件会发生变化，会有新的文件产生，老的文件被废弃，Manifest也会跟着反映这种变化，此时往往会新生成Manifest文件来记载这种变化，而Current则用来指出哪个Manifest文件才是我们关心的那个Manifest文件。
 
 以上介绍的内容就构成了LevelDb的整体静态结构，在LevelDb日知录接下来的内容中，我们会首先介绍重要文件或者内存数据的具体数据布局与结构。
 
