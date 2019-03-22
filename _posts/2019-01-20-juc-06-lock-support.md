@@ -9,9 +9,9 @@ published: true
 
 # LockSupport
 
-在Java多线程中，当需要阻塞或者唤醒一个线程时，都会使用LockSupport工具类来完成相应的工作。LockSupport定义了一组公共静态方法，这些方法提供了最基本的线程阻塞和唤醒功能，而LockSupport也因此成为了构建同步组件的基础工具。
+在Java多线程中，当需要阻塞或者唤醒一个线程时，都会使用LockSupport工具类来完成相应的工作。
 
-
+LockSupport定义了一组公共静态方法，这些方法提供了最基本的线程阻塞和唤醒功能，而LockSupport也因此成为了构建同步组件的基础工具。
 
 
 ## 方法
@@ -87,65 +87,134 @@ public native void park(boolean isAbsolute, long time);
 
 有一点比较难理解的，是unpark操作可以再park操作之前。也就是说，先提供许可。
 
-当某线程调用park时，已经有许可了，它就消费这个许可，然后可以继续运行。这其实是必须的。
+**当某线程调用park时，已经有许可了，它就消费这个许可，然后可以继续运行。这其实是必须的。**
 
 考虑最简单的生产者(Producer)消费者(Consumer)模型：Consumer需要消费一个资源，于是调用park操作等待；Producer则生产资源，然后调用unpark给予Consumer使用的许可。非常有可能的一种情况是，Producer先生产，这时候Consumer可能还没有构造好（比如线程还没启动，或者还没切换到该线程）。那么等Consumer准备好要消费时，显然这时候资源已经生产好了，可以直接用，那么park操作当然可以直接运行下去。
 
 如果没有这个语义，那将非常难以操作。
 
-## 其它细节 
 
-理解了以上两点，我觉得应该把握了关键，其它细节就不是那么关键，也容易理解了，不作分析。
+## Semaphore 对比 
 
+这个类的作用有点类似于Semaphore，通过许可证(permit)来联系使用它的线程。
+
+如果许可证可用，调用park方法会立即返回并在这个过程中消费这个许可，不然线程会阻塞。
+
+调用unpark会使许可证可用。(和Semaphores有些许区别,许可证不会累加，最多只有一张）
+
+因为有了许可证，所以调用park和unpark的先后关系就不重要了，这里可以对比一下Object的wait和notify,如果先调用同一个对象的notify再wait，那么调用wait的线程依旧会被阻塞，依赖方法的调用顺序。
 
 # Lock 与 LockSupport
-
-主要的区别应该说是它们面向的对象不同。阻塞和唤醒是对于线程来说的，LockSupport的park/unpark更符合这个语义，以“线程”作为方法的参数，语义更清晰，使用起来也更方便。而wait/notify的实现使得“线程”的阻塞/唤醒对线程本身来说是被动的，要准确的控制哪个线程、什么时候阻塞/唤醒很困难，要不随机唤醒一个线程（notify）要不唤醒所有的（notifyAll）。先把API粘贴上来，该类据我所知为Lock()实现提供了基本操作，比如ReentrantLock的lock就是利用了LockSupport的相关方法来使线程阻塞或者唤醒的。
-
-JDK1.8后，ReentrantLock及ReentrantReadWriteLock是基于AQS实现的，AQS内部使用了unsafe类进行操作；LockSupport也是基于unsafe类操作。
-
-可以说LockSupport也是阻塞的，但是不会发生Thread.suspend 和 Thread.resume所可能引发的死锁问题。
-
-而AQS是非阻塞机制。
-
-## LockSupport.park()和unpark()，与object.wait()和notify()的区别？   
 
 主要的区别应该说是它们面向的对象不同。
 
 阻塞和唤醒是对于线程来说的，LockSupport的park/unpark更符合这个语义，以“线程”作为方法的参数，语义更清晰，使用起来也更方便。
 
-而wait/notify的实现使得“阻塞/唤醒对线程本身来说是被动的，要准确的控制哪个线程、什么时候阻塞/唤醒很困难，要不随机唤醒一个线程（notify）要不唤醒所有的（notifyAll）。
+而wait/notify的实现使得“线程”的阻塞/唤醒对线程本身来说是被动的，要准确的控制哪个线程、什么时候阻塞/唤醒很困难，要不随机唤醒一个线程（notify）要不唤醒所有的（notifyAll）。
 
-前几篇分析过wait和notify方法，这两个方法是用来在两个线程之间进行通信的（生产者消费者模型的基本实现）。
+JDK1.8后，ReentrantLock及ReentrantReadWriteLock是基于AQS实现的，AQS内部使用了unsafe类进行操作；LockSupport也是基于unsafe类操作。
+
+可以说LockSupport也是阻塞的，但是不会发生 `Thread.suspend()` 和 `Thread.resume()` 所可能引发的死锁问题。
+
+## LockSupport 的优势
+
+我们可以使用它来阻塞和唤醒线程,功能和wait,notify有些相似,但是LockSupport比起wait,notify功能更强大，也好用的多。
+
+
+## wait() and notify() 
+
+- 代码
 
 ```java
-public class Test {
-    public static void main(String[] args) throws Exception {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("starting");
- 
-                LockSupport.park(this);
- 
-                System.out.println("oh,I am alive");
- 
+public class WaitNotifyTest {
+    private static Object obj = new Object();
+    public static void main(String[] args) {
+        new Thread(new WaitThread()).start();
+        new Thread(new NotifyThread()).start();
+    }
+    static class WaitThread implements Runnable {
+        @Override
+        public void run() {
+            synchronized (obj) {
+                System.out.println("start wait!");
+                try {
+                    obj.wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("end wait!");
             }
-        });
-        thread.start();
-        Thread.sleep(3000);
-        System.out.println("main over");
-        LockSupport.unpark(thread);
+        }
+    }
+    static class NotifyThread implements Runnable {
+        @Override
+        public void run() {
+            synchronized (obj) {
+                System.out.println("start notify!");
+                obj.notify();
+                System.out.println("end notify");
+            }
+        }
     }
 }
 ```
 
-- 执行结果
+- 日志信息
 
 ```
-starting
-main over
-oh,I am alive
+start wait!
+start notify!
+end notify
+end wait!
+```
+
+使用wait，notify来实现等待唤醒功能至少有两个缺点：
+
+1. 由上面的例子可知,wait和notify都是Object中的方法,在调用这两个方法前必须先获得锁对象，这限制了其使用场合:只能在同步代码块中。
+
+2. 另一个缺点可能上面的例子不太明显，当对象的等待队列中有多个线程时，notify只能随机选择一个线程唤醒，无法唤醒指定的线程。
+
+而使用LockSupport的话，我们可以在任何场合使线程阻塞，同时也可以指定要唤醒的线程，相当的方便。
+
+## 使用 LockSupport
+
+```java
+public class LockSupportTest {
+
+    public static void main(String[] args) {
+        Thread parkThread = new Thread(new ParkThread());
+        parkThread.start();
+        System.out.println("开始线程唤醒");
+        LockSupport.unpark(parkThread);
+        System.out.println("结束线程唤醒");
+
+    }
+
+    static class ParkThread implements Runnable{
+
+        @Override
+        public void run() {
+            System.out.println("开始线程阻塞");
+            LockSupport.park();
+            System.out.println("结束线程阻塞");
+        }
+    }
+}
+```
+
+LockSupport.park();可以用来阻塞当前线程,park是停车的意思，把运行的线程比作行驶的车辆，线程阻塞则相当于汽车停车，相当直观。
+
+该方法还有个变体LockSupport.park(Object blocker),指定线程阻塞的对象blocker，该对象主要用来排查问题。
+
+方法LockSupport.unpark(Thread thread)用来唤醒线程，因为需要线程作参数，所以可以指定线程进行唤醒。
+
+- 日志信息
+
+```
+开始线程唤醒
+开始线程阻塞
+结束线程唤醒
+结束线程阻塞
 ```
 
 ## 优势
@@ -155,6 +224,106 @@ oh,I am alive
 1. LockSupport不需要在同步代码块里。所以线程间也不需要维护一个共享的同步对象了，实现了线程间的解耦。 
 
 2. unpark函数可以先于park调用，所以不需要担心线程间的执行的先后顺序。
+
+# 其他场景
+
+## 可以先唤醒线程再阻塞线程
+
+在阻塞线程前睡眠1秒中，使唤醒动作先于阻塞发生，看看会发生什么
+
+```java
+public class LockSupportTest {
+
+    public static void main(String[] args) {
+        Thread parkThread = new Thread(new ParkThread());
+        parkThread.start();
+        System.out.println("开始线程唤醒");
+        LockSupport.unpark(parkThread);
+        System.out.println("结束线程唤醒");
+
+    }
+
+    static class ParkThread implements Runnable{
+
+        @Override
+        public void run() {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("开始线程阻塞");
+            LockSupport.park();
+            System.out.println("结束线程阻塞");
+        }
+    }
+}
+```
+
+- 日志信息
+
+```
+开始线程唤醒
+结束线程唤醒
+开始线程阻塞
+结束线程阻塞
+```
+
+先唤醒指定线程,然后阻塞该线程，但是线程并没有真正被阻塞而是正常执行完后退出了。
+
+这是怎么回事？
+
+## 先唤醒线程两次再阻塞两次会发生什么
+
+我们试着在改动下代码,先唤醒线程两次，在阻塞线程两次，看看会发生什么。
+
+- 代码
+
+```java
+public class LockSupportTest {
+
+    public static void main(String[] args) {
+        Thread parkThread = new Thread(new ParkThread());
+        parkThread.start();
+        for(int i=0;i<2;i++){
+            System.out.println("开始线程唤醒");
+            LockSupport.unpark(parkThread);
+            System.out.println("结束线程唤醒");
+        }
+    }
+
+    static class ParkThread implements Runnable{
+
+        @Override
+        public void run() {
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            for(int i=0;i<2;i++){
+                System.out.println("开始线程阻塞");
+                LockSupport.park();
+                System.out.println("结束线程阻塞");
+            }
+        }
+    }
+}
+```
+
+可以看到线程被阻塞导致程序一直无法结束掉。
+
+对比上面的例子，我们可以得出一个匪夷所思的结论，先唤醒线程，在阻塞线程，线程不会真的阻塞；但是先唤醒线程两次再阻塞两次时就会导致线程真的阻塞。
+
+那么这到底是为什么？
+
+- 个人理解
+
+unpark() 是上面说到的许可，park() 第一次时被使用之后其实就消失了。
+
+再次 park() 就会阻塞线程。
+
+LockSupport是不可重入的，如果一个线程连续2次调用LockSupport.park()，那么该线程一定会一直阻塞下去。
 
 # 源码
 
@@ -268,6 +437,50 @@ public class LockSupport {
 }
 ```
 
+
+# 应用
+
+看一个Java docs中的示例用法：一个先进先出非重入锁类的框架
+
+```java
+class FIFOMutex {
+    private final AtomicBoolean locked = new AtomicBoolean(false);
+    private final Queue<Thread> waiters = new ConcurrentLinkedQueue<Thread>();
+ 
+    public void lock() {
+      boolean wasInterrupted = false;
+      Thread current = Thread.currentThread();
+      waiters.add(current);
+ 
+      // Block while not first in queue or cannot acquire lock
+      while (waiters.peek() != current ||
+             !locked.compareAndSet(false, true)) {
+        LockSupport.park(this);
+        if (Thread.interrupted()) // ignore interrupts while waiting
+          wasInterrupted = true;
+      }
+ 
+      waiters.remove();
+      if (wasInterrupted)          // reassert interrupt status on exit
+        current.interrupt();
+    }
+ 
+    public void unlock() {
+      locked.set(false);
+      LockSupport.unpark(waiters.peek());
+    }
+  }
+}
+```
+
+# 总结
+
+LockSupport是JDK中用来实现线程阻塞和唤醒的工具。
+
+使用它可以在任何场合使线程阻塞，可以指定任何线程进行唤醒，并且不用担心阻塞和唤醒操作的顺序，但要注意连续多次唤醒的效果和一次唤醒是一样的。
+
+JDK并发包下的锁和其他同步工具的底层实现中大量使用了LockSupport进行线程的阻塞和唤醒，掌握它的用法和原理可以让我们更好的理解锁和其它同步工具的底层实现。
+
 # 拓展阅读
 
 [Unsafe](https://houbb.github.io/2019/01/20/juc-05-unsafe)
@@ -281,6 +494,14 @@ public class LockSupport {
 [Java中Lock和LockSupport的区别到底是什么？](https://www.zhihu.com/question/26471972)
 
 [关于LockSupport](https://www.cnblogs.com/zhizhizhiyuan/p/4966827.html)
+
+[阻塞和唤醒线程——LockSupport功能简介及原理浅析](http://www.cnblogs.com/takumicx/p/9328459.html)
+
+[LockSupport原理剖析](https://blog.csdn.net/lldouble/article/details/80938644)
+
+https://yq.aliyun.com/articles/493552
+
+https://www.cnblogs.com/fairjm/p/locksuport.html
 
 * any list
 {:toc}
