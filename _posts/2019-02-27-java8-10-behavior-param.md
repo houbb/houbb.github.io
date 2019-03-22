@@ -248,7 +248,7 @@ List<Apple> heavyApples = filterByCondition(apples,(Apple apple) -> apple.getWei
 List<Apple> heavyApples = filterByCondition(apples,apple -> apple.getWeight() > 150);
 ```
 
-# 拓展阅读
+# 参考资料
 
 《java8 实战》
 
