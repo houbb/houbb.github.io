@@ -187,10 +187,130 @@ public static void main(String[] args) {
 [Apple{color='yellow', weight=98}]
 ```
 
+# Functional 的使用
+
+## 场景
+
+我们希望根据配置去限定交易，不同的限制类型处理方式也不同。
+
+## 实现
+
+- 交易+配置信息对象
+
+```java
+public class BizObject {
+
+    /**
+     * 业务大小
+     */
+    private int bizSize;
+
+    /**
+     * 限制大小
+     */
+    private int limitSize;
+
+    /**
+     * 操作符
+     */
+    private String operate;
+
+    public BizObject(int bizSize, int limitSize, String operate) {
+        this.bizSize = bizSize;
+        this.limitSize = limitSize;
+        this.operate = operate;
+    }
+
+    // getter & setter & toString()
+}
+```
+
+- 操作符枚举定义
+
+这样可以让一种操作符，直接映射有对象的实现函数。
+
+后期添加，则调整枚举即可，不需要调整核心逻辑。
+
+```java
+import com.google.common.base.Function;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+public enum  OperateEnum {
+    GREAT_THAN("GT", new Function<BizObject, Boolean>() {
+        @Nullable
+        @Override
+        public Boolean apply(@Nullable BizObject bizObject) {
+            return bizObject.getBizSize() > bizObject.getLimitSize();
+        }
+    }),
+    LESS_THAN("LT", new Function<BizObject, Boolean>() {
+        @Nullable
+        @Override
+        public Boolean apply(@Nullable BizObject bizObject) {
+            return bizObject.getBizSize() < bizObject.getLimitSize();
+        }
+    }),
+    ;
+
+    private final String code;
+
+    private final Function<BizObject, Boolean> function;
+
+    OperateEnum(String code, Function<BizObject, Boolean> function) {
+        this.code = code;
+        this.function = function;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public Function<BizObject, Boolean> getFunction() {
+        return function;
+    }
+
+    public static OperateEnum getOperateEnum(final String code) {
+        for(OperateEnum operateEnum : OperateEnum.values()) {
+            if(operateEnum.code.equals(code)) {
+                return operateEnum;
+            }
+        }
+        return null;
+    }
+}
+```
+
+## 测试
+
+- 测试代码
+
+```java
+import com.ryo.jdk.jdk7.model.BizObject;
+import com.ryo.jdk.jdk7.model.OperateEnum;
+
+public class GuavaFunctional {
+
+    public static void main(String[] args) {
+        BizObject lt = new BizObject(10, 20, "LT");
+        BizObject gt = new BizObject(10, 20, "GT");
+
+        System.out.println(OperateEnum.getOperateEnum(lt.getOperate()).getFunction().apply(lt));
+        System.out.println(OperateEnum.getOperateEnum(gt.getOperate()).getFunction().apply(gt));
+    }
+
+}
+```
+
+- 结果
+
+```
+true
+false
+```
+
 # 拓展阅读
 
 [java8 行为参数化](https://houbb.github.io/2019/02/27/java8-10-behavior-param)
-
 
 # 参考资料
 
