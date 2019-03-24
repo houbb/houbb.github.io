@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Java8-15-Stream 使用流收集数据-01-收集器+归约与汇总+分组
+title: Java8-15-Stream 收集器 01-归约与汇总+分组
 date:  2019-2-27 15:48:49 +0800
 categories: [Java]
 tags: [java, jdk8, functional, sh]
