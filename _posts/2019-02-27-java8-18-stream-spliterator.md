@@ -281,7 +281,9 @@ private static class WordCounterSpliterator implements Spliterator<Character> {
 
 tryAdvance 方法把 String 中当前位置的 Character 传给了 Consumer ，并让位置加一。作为参数传递的 Consumer 是一个Java内部类，在遍历流时将要处理的 Character 传给了一系列要对其执行的函数。这里只有一个归约函数，即 WordCounter 类的 accumulate方法。如果新的指针位置小于 String 的总长，且还有要遍历的 Character ，则tryAdvance 返回 true 。
 
-trySplit 方法是 Spliterator 中最重要的一个方法，因为它定义了拆分要遍历的数据结构的逻辑。就像 RecursiveTask 的 compute 方法一样（分支/合并框架的使用方式），首先要设定不再进一步拆分的下限。这里用了一个非常低的下限——10个 Character ，仅仅是为了保证程序会对那个比较短的 String 做几次拆分。在实际应用中，就像分支/合并的例子那样，你肯定要用更高的下限来避免生成太多的任务。如果剩余的 Character 数量低于下限，你就返回 null 表示无需进一步拆分。相反，如果你需要执行拆分，就把试探的拆分位置设在要解析的 String 块的中间。但我们没有直接使用这个拆分位置，因为要避免把词在中间断开，于是就往前找，直到找到一个空格。一旦找到了适当的拆分位置，就可以创建一个新的 Spliterator 来遍历从当前位置到拆分位置的子串；把当前位置 this 设为拆分位置，因为之前的部分将由新Spliterator 来处理，最后返回。
+trySplit 方法是 Spliterator 中最重要的一个方法，因为它定义了拆分要遍历的数据结构的逻辑。就像 RecursiveTask 的 compute 方法一样（分支/合并框架的使用方式），首先要设定不再进一步拆分的下限。这里用了一个非常低的下限——10个 Character ，仅仅是为了保证程序会对那个比较短的 String 做几次拆分。
+
+在实际应用中，就像分支/合并的例子那样，你肯定要用更高的下限来避免生成太多的任务。如果剩余的 Character 数量低于下限，你就返回 null 表示无需进一步拆分。相反，如果你需要执行拆分，就把试探的拆分位置设在要解析的 String 块的中间。但我们没有直接使用这个拆分位置，因为要避免把词在中间断开，于是就往前找，直到找到一个空格。一旦找到了适当的拆分位置，就可以创建一个新的 Spliterator 来遍历从当前位置到拆分位置的子串；把当前位置 this 设为拆分位置，因为之前的部分将由新Spliterator 来处理，最后返回。
 
 还需要遍历的元素的 estimatedSize 就是这个 Spliterator 解析的 String 的总长度和当前遍历的位置的差。
 
