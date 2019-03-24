@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Java8-19-lambda 测试调试
+title: Java8-21-lambda 测试调试
 date:  2019-2-27 15:48:49 +0800
 categories: [Java]
 tags: [java, jdk8, functional, sh]
