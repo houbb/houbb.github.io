@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Java8-15-Stream 收集器 02-分区+收集器接口+自定义收集器
+title: Java8-16-Stream 收集器 02-分区+收集器接口+自定义收集器
 date:  2019-2-27 15:48:49 +0800
 categories: [Java]
 tags: [java, jdk8, functional, sh]
