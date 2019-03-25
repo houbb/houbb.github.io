@@ -518,6 +518,7 @@ public static Optional<Integer> stringToInt(String s) {
 1. 原来对于 Optional 的理解，完全停留在避免 NPE 上。现在看来，其实特性非常的丰富。
 
 2. 使用 Optional 替代原来可能为 null 的编程，可以提升代码的健壮性。
+
 # 拓展阅读
 
 [空对象模式](https://blog.csdn.net/ryo1060732496/article/details/80444904)
