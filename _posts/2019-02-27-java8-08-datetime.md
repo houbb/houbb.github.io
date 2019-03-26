@@ -534,7 +534,9 @@ ZoneOffset newYorkOffset = ZoneOffset.of("-05:00");
 
 注意，使用这种方式定义的ZoneOffset并未考虑任何日光时的影响，所以在大多数情况下，不推荐使用。
 
-由于ZoneOffset也是ZoneId，所以你可以像上面的代码那样使用它。你甚至还可以创建这样的OffsetDateTime，它使用ISO-8601的历法系统，以相对于UTC/格林尼治时间的偏差方式表示日期时间。
+由于ZoneOffset也是ZoneId，所以你可以像上面的代码那样使用它。
+
+你甚至还可以创建这样的OffsetDateTime，它使用ISO-8601的历法系统，以相对于UTC/格林尼治时间的偏差方式表示日期时间。
 
 ```java
 LocalDateTime dateTime = LocalDateTime.of(2018, 11, 17, 18, 45);
