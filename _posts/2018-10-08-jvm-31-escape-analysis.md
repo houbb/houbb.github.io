@@ -112,5 +112,7 @@ Java对象在实际的JVM实现中可能在GC堆上分配空间，也可能在�
 
 [JVM的栈上分配与逃逸分析(Escape Analysis）](https://blog.csdn.net/blueheart20/article/details/52050545)
 
+[浅谈HotSpot逃逸分析](https://www.jianshu.com/p/20bd2e9b1f03)
+
 * any list
 {:toc}
