@@ -2,8 +2,8 @@
 layout: post
 title:  Netty-00-概览
 date:  2017-11-16 19:23:06 +0800
-categories: [Java]
-tags: [net, socket, io, nio, sf]
+categories: [Netty]
+tags: [netty, java, sh]
 published: true
 ---
 

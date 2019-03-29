@@ -2,8 +2,8 @@
 layout: post
 title:  Netty-03-基础组件之 Channel
 date:  2017-11-16 19:23:06 +0800
-categories: [JBoss]
-tags: [net]
+categories: [Netty]
+tags: [netty, java, sh]
 published: true
 ---
 
