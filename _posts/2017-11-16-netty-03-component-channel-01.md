@@ -46,6 +46,19 @@ Netty中的所有I/O操作都是异步的。
 
 # Channel 工作原理
 
+## 生命周期
+
+Interface Channel定义了一组和ChannelInboundHandler API密切相关的简单但功能强大的状态模型，其Channel主要有4个状态。
+
+| 状态    | 描述 |
+|:---|:---|
+| ChannelUnregistered | Channel 已经被创建，但还未注册到EventLoop |
+| ChannelRegistered   | Channel 已经被注册到了EventLoop |
+| ChannelActive       | Channel 处于活动状态（已经连接到它的远程节点）。它现在可以接收和发送数据了 |
+| ChannelInactive     | Channel 没有连接到远程节点 |
+
+当这些状态发生改变时，将会生成对应的事件。这些事件将会被转发给ChannelPipeline中的ChannelHandler，其可以随后对它们做出响应。 
+
 ## 工作原理
 
 ![工作原理](https://images2015.cnblogs.com/blog/562880/201612/562880-20161217183926073-1296213324.png)
