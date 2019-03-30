@@ -42,6 +42,8 @@ published: true
 
 《Netty 权威指南》
 
+《Netty 进阶之路》
+
 [Netty4 用户指南](https://waylau.com/netty-4-user-guide/)
 
 [Netty 实战精髓](https://github.com/waylau/essential-netty-in-action)
