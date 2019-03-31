@@ -318,7 +318,7 @@ Echo server received: Client channel active!
 
 # 参考资料
 
-《Netty 实战》
+《Netty 实战》P54
 
 * any list
 {:toc}
