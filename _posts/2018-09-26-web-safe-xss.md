@@ -1,6 +1,6 @@
 ---
 layout: post
-title: XSS
+title: XSS-web 安全
 date:  2018-09-26 08:56:29 +0800
 categories: [Web]
 tags: [web, web-safe, sh]
