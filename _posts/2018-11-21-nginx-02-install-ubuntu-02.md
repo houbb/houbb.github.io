@@ -1,20 +1,11 @@
 ---
 layout: post
-title: Nginx
-date:  2016-12-22 21:00:34 +0800
-categories: [Tool]
-tags: [nginx]
-published: false
+title: Nginx-02-Nginx Ubuntu 安装
+date: 2018-11-22 8:01:55 +0800
+categories: [Web]
+tags: [web-server, nginx, ubuntu, install, sh]
+published: true
 ---
-
-# nginx
-
-[nginx](http://nginx.org/en/) is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP/UDP proxy server, originally written by Igor Sysoev.
-
-> [tengine zh_CN](http://tengine.taobao.org/)
-
-学习则以 tengine 为主。
-
 
 # Nginx in Ubuntu
 
@@ -74,7 +65,7 @@ server {
 
 > Usage
 
-```
+```conf
 # nginx -c /etc/nginx/nginx.conf
 关闭 nginx
 
@@ -91,6 +82,12 @@ server {
 
 # service nginx {start|stop|status|restart|reload|configtest|}
 ```
+
+# 参考资料
+
+> [tengine zh_CN](http://tengine.taobao.org/)
+
+学习则以 tengine 为主。
 
 * any list
 {:toc}
