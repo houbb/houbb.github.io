@@ -8,6 +8,13 @@ published: true
 ---
 
 
+
+# 项目结构
+
+http://www.aosabook.org/en/index.html
+
+[开源软件架构](http://www.ituring.com.cn/book/1143)
+
 # IT Reading
 
 将技术相关的阅读和文艺生活方面的阅读区分开。
@@ -56,7 +63,6 @@ Done. 2018
 
 - 《深入理解Java虚拟机》
 
-> [开源软件架构](http://www.ituring.com.cn/book/1143)
 
 ## Longer
 
