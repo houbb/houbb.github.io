@@ -5,7 +5,6 @@ date: 2018-12-12 11:35:23 +0800
 categories: [Net]
 tags: [net, sh]
 published: true
-excerpt: Redis Learn
 ---
 
 # 前言
@@ -33,8 +32,6 @@ excerpt: Redis Learn
 [Redis 深度历险：核心原理与应用实践](https://juejin.im/book/5afc2e5f6fb9a07a9b362527/section/5b336601f265da598e13f917)
 
 [《Redis 设计与实现》](http://redisbook.com/)
-
-
 
 [《Redis 开发与运维》](https://book.douban.com/subject/26971561/)
 

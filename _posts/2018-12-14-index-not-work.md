@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Index Not Work
+title: 索引性能不好的场景
 date: 2018-12-14 11:35:23 +0800
 categories: [SQL]
 tags: [sql, index, sh]
-published: false
-excerpt: Index 性能不好的场景
+published: true
 ---
 
 # 感受

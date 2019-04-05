@@ -5,7 +5,6 @@ date: 2018-12-18 17:21:25 +0800
 categories: [Web]
 tags: [web, css, sh]
 published: true
-excerpt: Spectre CSS
 ---
 
 # Spectre CSS
