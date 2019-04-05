@@ -3,9 +3,8 @@ layout: post
 title: Kafka 为什么这么快
 date:  2018-09-19 15:44:59 +0800
 categories: [MQ]
-tags: [java, mq, kafka, sh]
+tags: [java, mq, kafka, why-so-fast, sh]
 published: true
-excerpt: Kafka 为什么这么快
 ---
 
 # Kafka

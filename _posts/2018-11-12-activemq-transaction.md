@@ -1,11 +1,10 @@
 ---
 layout: post
-title: ActimeMQ Transaction
+title: ActiveMQ Transaction
 date:  2018-11-12 08:38:35 +0800
-categories: [MQ]
-tags: [mq, sf]
+categories: [JMS]
+tags: [mq, tx, jms, sf]
 published: true
-excerpt: ActimeMQ Transaction
 ---
 
 # 消息事务

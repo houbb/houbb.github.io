@@ -1,11 +1,10 @@
 ---
 layout: post
-title: 手写 MQ-01-概览
+title: MQ 手写-01-概览
 date:  2018-09-20 09:35:26 +0800
 categories: [MQ]
-tags: [java, spring, mq, jms, sh]
+tags: [java, mq, hand-write, sh]
 published: true
-excerpt: 手写 MQ-01-概览
 ---
 
 # 何时需要 MQ
