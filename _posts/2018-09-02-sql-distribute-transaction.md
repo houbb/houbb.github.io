@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  SQL Distribute Transaction
+title:  分布式事务-数据库实现
 date:  2018-09-02 10:06:45 +0800
 categories: [SQL]
 tags: [sql, transaction, distributed, sh]

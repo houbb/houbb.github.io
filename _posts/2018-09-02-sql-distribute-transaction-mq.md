@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  MQ Transaction
+title:  分布式事务-本地消息表
 date:  2018-09-02 10:54:19 +0800
 categories: [SQL]
 tags: [sql, mq, transaction, distributed, sh]
@@ -312,6 +312,8 @@ https://juejin.im/post/5aa3c7736fb9a028bb189bca
 https://blog.csdn.net/chunlongyu/article/details/53844393
 
 https://segmentfault.com/a/1190000012415698
+
+[我说分布式事务之消息最终一致性事务（二）：RocketMQ的实现](https://mp.weixin.qq.com/s/Uci2bMt6IYrUYiunV1n_EQ)
 
 * any list
 {:toc}

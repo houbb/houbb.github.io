@@ -39,6 +39,8 @@ ACID，是指在数据库管理系统（DBMS）中，事务(transaction)所具�
 
 这是Brewer教授于2000年提出的，后人也论证了CAP理论的正确性。
 
+![CAP 理论](https://ss0.baidu.com/6ONWsjip0QIZ8tyhnq/it/u=1595646483,3153366617&fm=173&s=F2B5E16C92A6E54F1D9A14090300E098&w=640&h=551&img.JPG)
+
 ## 一致性（Consistency）
 
 对于分布式的存储系统，一个数据往往会存在多份。
@@ -85,8 +87,6 @@ Operationswill complete, even if individual components are unavailable。
 
 即使部分的组件不可用，施加的操作也可以完成。
 
-
-
 # BASE
 
 接受最终一致性的理论支撑是BASE模型，BASE全称是BasicallyAvailable（基本可用）, Soft-state（软状态/柔性事务）, Eventually Consistent（最终一致性）。
@@ -102,6 +102,23 @@ BASE模型在理论逻辑上是相反于ACID（原子性Atomicity、一致性Con
 
 这段时间就被称之为最终一致性的时间窗口。
 
+# 一致性模型
+
+数据的一致性模型可以分成以下 3 类：
+
+## 强一致性
+
+数据更新成功后，任意时刻所有副本中的数据都是一致的，一般采用同步的方式实现。
+
+## 弱一致性
+
+数据更新成功后，系统不承诺立即可以读到最新写入的值，也不承诺具体多久之后可以读到。
+
+## 最终一致性
+
+弱一致性的一种形式，数据更新成功后，系统不承诺立即可以返回最新写入的值，但是保证最终会返回上一次更新操作的值。
+
+分布式系统数据的强一致性、弱一致性和最终一致性可以通过Quorum NRW算法分析。
 
 # 参考资料 
 
@@ -114,6 +131,10 @@ https://blog.csdn.net/lengyuhong/article/details/5981872
 https://www.jdon.com/concurrent/acid-database.html
 
 https://blog.csdn.net/sunxinhere/article/details/7936485
+
+## 经典论文
+
+![Dynamo: Amazon’s Highly Available Key-value Store](http://www.read.seas.harvard.edu/~kohler/class/cs239-w08/decandia07dynamo.pdf)
 
 * any list
 {:toc}
