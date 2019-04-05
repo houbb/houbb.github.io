@@ -2,8 +2,8 @@
 layout: post
 title: BloomFilter 使用最佳实践
 date:  2019-4-1 19:24:57 +0800
-categories: [Best-Pratice]
-tags: [best-pratice, tool, sf]
+categories: [Best-Practice]
+tags: [best-practice, tool, sf]
 published: true
 ---
 

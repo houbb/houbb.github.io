@@ -38,7 +38,7 @@ String是Redis提供的字符串类型。可以针对String类型独立设置exp
 
 下图中的左边是一个key为Set:order:ids的Set集合，它可能是一个全量集合，也可能是某个查询条件获取出来的一个集合：
 
-![string-type](https://mmbiz.qpic.cn/mmbiz_png/tibrg3AoIJTt51XwicjicD4oSVQjKUV8ATwU7r9Jy0h2MibzV7WvQXLwAYiaib8w0iadSWHS1XYFIqBQzKmicKQbibicxdnw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![string-type](https://img-blog.csdnimg.cn/20181225221801768)
 
 有时候复杂点的场景需要多个Set集合来支撑计算，在Redis服务器里可能会有很多类似这样的集合。这些集合我们可以称为功能数据，这些数据是用来辅助cache计算的，当进行各种集合运算之后会得出当前查询需要返回的子集，最后我们才会去获取某个订单真正的数据。
 
@@ -64,7 +64,7 @@ List在提高throughput的场景中非常适用，因为它特有的LPUSH、RPUS
 
 下图中模拟了一个典型的支付callback峰值场景：
 
-![type-list](https://mmbiz.qpic.cn/mmbiz_png/tibrg3AoIJTt51XwicjicD4oSVQjKUV8ATwibAU7vDwMW7zvSxrq4Ep9X7UibD17FpffMicRpL4839Ps9YaK73OeibibvQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![type-list](https://img-blog.csdnimg.cn/20181225221801866)
 
 在峰值出现的地方一般我们都会使用加buffer的方式来加快请求处理速度，这样才能提高并发处理能力，提高through put。
 
@@ -90,7 +90,7 @@ Hash数据类型的特点通常可以用来解决带有映射关系，同时又�
 
 下图使用Hash数据类型来记录页面的a/bmetrics：
 
-![type-hash](https://mmbiz.qpic.cn/mmbiz_png/tibrg3AoIJTt51XwicjicD4oSVQjKUV8ATwuxXPZrNL1I2e5cK0tzyADNAovyFtEzASdtScaQNxzTZSvsBNcvIapQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![type-hash](https://img-blog.csdnimg.cn/20181225221801882)
 
 
 左边的是首页index的各个区域的统计，右边是营销marketing的各个区域统计。
@@ -151,7 +151,7 @@ Set集合在使用场景上还是比较多和自由的。举个简单的例子�
 
 下图中左右两边是两个不同的集合：
 
-![type-set](https://mmbiz.qpic.cn/mmbiz_png/tibrg3AoIJTt51XwicjicD4oSVQjKUV8ATw3dLOptTV7A4cia33TwFTsugFXYZUTnIRnV24fj25kFLNO9k2LbAuwNQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![type-set](https://img-blog.csdnimg.cn/20181225221801897)
 
 左边是营销域中的可用商品ids集合，右边是营销域中活动商品ids集合，中间计算出两个集合的交集。
 
@@ -213,7 +213,7 @@ Zset最强大的功能就是可以根据某个score比分值进行排序，这�
 
 下图是一个根据团购code创建的Zset，score分值就是参团人数累加和：
 
-![type-zset](https://mmbiz.qpic.cn/mmbiz_jpg/tibrg3AoIJTt51XwicjicD4oSVQjKUV8ATw0ObB8Zr67yEMibTdrMayROBU8GmCMGGV9khuxOXrd5RzayXzkd6XwXw/640?wx_fmt=jpeg&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![type-zset](https://img-blog.csdnimg.cn/20181225221801914)
 
 
 ## 案例
@@ -273,6 +273,8 @@ Zset本身提供了很多方法用来进行集合的排序，如果需要score�
 # 参考资料
 
 [Redis存储总用String？](https://mp.weixin.qq.com/s/tG_IgWPm4j3SVzVxtjRthQ)
+
+https://blog.csdn.net/gupao123456/article/details/85255100
 
 * any list
 {:toc}

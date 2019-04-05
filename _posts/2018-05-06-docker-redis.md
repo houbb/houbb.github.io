@@ -154,6 +154,69 @@ docker run -d -p 6379:6379 --name redis -v  ~/docker/redis:/var/lib/redis redis 
 2cc8ed33d174cec19bfe5cf098d94c2ecfa3eaa198d7bb0de520fff847f9766b
 ```
 
+
+# 运行已经存在的 Redis 镜像
+
+
+## 查看镜像
+
+```
+docker images | grep redis
+```
+
+如下：
+
+```
+redis                            latest              5958914cc558        4 months ago        136MB
+```
+
+说明镜像已经存在。
+
+## 运行镜像
+
+```
+docker run --name my-redis -d redis
+```
+
+日志如下
+
+```
+docker: Error response from daemon: Conflict. The container name "/my-redis" is already in use by container "c86ec24c49dd6e35fd9689d641f543bafcf0c6a91f43f2fbe16fab2ab834989f". You have to remove (or rename) that container to be able to reuse that name.
+See 'docker run --help'.
+```
+
+说明 container 已经存在。
+
+## 运行 container 
+
+```
+docker container start my-redis
+my-redis
+```
+
+正常启动。
+
+## 访问 Redis 
+
+- 查看 container.ID
+
+```
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS
+   NAMES
+c86ec24c49dd        redis               "docker-entrypoint.s…"   3 months ago        Up 4 minutes        6379/tcp
+    my-redis
+```
+
+- 进入 container 
+
+```
+docker exec -it c86ec24c49dd redis-cli
+```
+
+直接进入，测试即可。
+
+
 # 一些问题
 
 > [启动警告](https://blog.csdn.net/a491857321/article/details/52006376)
