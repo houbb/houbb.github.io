@@ -3,7 +3,7 @@ layout: post
 title:  Command Tool
 date:  2018-08-18 14:52:41 +0800
 categories: [Tool]
-tags: [command, too, sh]
+tags: [command, tool, sh]
 published: true
 ---
 

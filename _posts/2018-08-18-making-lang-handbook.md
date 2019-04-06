@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Making lang handbook 
+title:  如何手写一门语言
 date:  2018-08-18 10:20:47 +0800
 categories: [Lang]
-tags: [lang, sf]
+tags: [lang, hand-write, sf]
 published: true
 ---
 
