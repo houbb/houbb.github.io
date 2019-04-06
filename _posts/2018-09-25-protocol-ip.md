@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  IP
+title:  IP 协议
 date:  2018-09-25 14:44:40 +0800
 categories: [Protocol]
 tags: [ip, protocol, sh]
 published: true
-excerpt: IP 网络协议 协议入门介绍
 ---
 
 # IP 协议

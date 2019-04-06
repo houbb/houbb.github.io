@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  TCP/IP
+title:  TCP/IP 协议
 date:  2018-09-25 16:42:47 +0800
 categories: [Protocol]
 tags: [tpc, ip, protocol, sh]
 published: true
-excerpt: TCP/IP 协议
 ---
 
 # 什么是 TCP/IP 模型？

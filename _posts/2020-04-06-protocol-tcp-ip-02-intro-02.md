@@ -1,19 +1,15 @@
 ---
 layout: post
-title:  TCP/IP
-date:  2017-04-20 22:19:21 +0800
-categories: [Network]
-tags: [tcp, ip]
-header-img: "static/app/res/img/nightsky-bg.jpeg"
+title: TCP/IP 协议-02-协议简介及其他常见协议
+date:  2019-4-5 11:56:39 +0800
+categories: [Protocol]
+tags: [protocol, tcp/ip, system, sh]
 published: true
 ---
 
-
 # TCP/IP
 
-
 [TCP/IP](http://www.runoob.com/tcpip/tcpip-intro.html) 指传输控制协议/网际协议（Transmission Control Protocol / Internet Protocol）。
- 
  
 一、TCP 使用固定的连接
  
@@ -44,8 +40,6 @@ IP 负责将每个包路由至它的目的地。
 IP 路由器负责将这个包路由至它的目的地，直接地或者通过其他的路由器。
 
 在一个相同的通信中，一个包所经由的路径可能会和其他的包不同。而路由器负责根据通信量、网络中的错误或者其他参数来进行正确地寻址。
-
-
 
 # 寻址
 
@@ -89,7 +83,6 @@ FF05：0：0：0：0：0：0：B3可以定成：FF05：：B3
 
 
 # 协议
-
 
 以下仅仅简单列举常见协议
 
@@ -147,14 +140,15 @@ NTP 用于在计算机之间同步时间（钟）
 
 (这一点现在市场做的很成熟，暂时不是很有兴趣。)
 
+# 拓展阅读
 
+[TCP/IP 协议简介](https://houbb.github.io/2018/09/25/protocol-tcp-ip)
 
+[TCP 协议详解](https://houbb.github.io/2018/09/25/protocol-tcp)
 
+[IP 协议详解](https://houbb.github.io/2018/09/25/protocol-ip)
 
-
-
- 
- 
+[OSI 协议和 TCP/IP 协议](https://houbb.github.io/2018/09/25/protocol-osi-tcp-ip)
 
 * any list
 {:toc}

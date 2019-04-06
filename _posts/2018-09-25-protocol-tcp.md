@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  TCP
+title:  TCP 协议入门介绍
 date:  2018-09-25 16:42:47 +0800
 categories: [Protocol]
 tags: [tpc, ip, protocol, sh]
 published: true
-excerpt: TCP 协议入门介绍
 ---
 
 # 为什么需要这套协议
