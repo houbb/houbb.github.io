@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Elasticsearch
+title: Elasticsearch-02-核心概念介绍
 date:  2018-11-15 08:38:35 +0800
 categories: [Search]
 tags: [apache, search, sh]
 published: true
-excerpt: 搜索是神器 Elasticsearch 入门介绍
 ---
 
 # Elasticsearch

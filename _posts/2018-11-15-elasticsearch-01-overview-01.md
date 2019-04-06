@@ -1,14 +1,11 @@
 ---
 layout: post
-title: Elasticsearch
+title: Elasticsearch-01-快速入门
 date:  2016-10-16 09:07:21 +0800
-categories: [Tools]
-tags: [elasticsearch]
+categories: [Search]
+tags: [search, overview, sh]
 published: true
 ---
-
-* any list
-{:toc}
 
 # Elasticsearch
 
@@ -157,14 +154,5 @@ The two wildcard should't the first char.
 + - && || ! () {} [] ^" ~ * ? : \
 ```
 
-
-
-
-
-
-
-
-
-
-
-
+* any list
+{:toc}

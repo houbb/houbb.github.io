@@ -1,22 +1,17 @@
 ---
 layout: post
-title: For faster query
+title: 搜索引擎-02-分词与全文索引
 date:  2017-2-24 09:53:51 +0800
-categories: [SQL]
-tags: [mysql, index, query, sf]
+categories: [Search-Engine]
+tags: [search-engine, index, sh]
 published: true
-excerpt: MySQL 全文索引提升查询速度。
 ---
 
-# Query
+# 搜索引擎
 
 查询，想必你不会陌生。
 
 如何更好的查询，本文将持续记录一些点滴。
-
-> 搜索引擎相关概念。
-
-参见 [深入浅出搜索架构引擎、方案与细节（上）](http://qoofan.com/read/LlorpJYwnR.html)
 
 对于大部分不是专门研究搜索引擎的同学，记住以下几点即可：
 
@@ -505,10 +500,17 @@ a.id DESC
 
 # More
 
-> [架构师之路](http://mp.weixin.qq.com/s?src=3&timestamp=1487905680&ver=1&signature=xqjBIqXRrTSrhO9bVfPMKw*Gg90a6ZTGaG2SA1uH4jOUTN1KOorK30nmorj9iQUGvKEdedV09P8oLcTuhYUoK0oc9Aj9xpU3Zd594LBn3S5HuRsDfdfZpw4bVG8OQR94Yq-qiaPwwlHadlETIlTc4JovdsucMTQUPGGOU*2QS0k=)
+[架构师之路](http://mp.weixin.qq.com/s?src=3&timestamp=1487905680&ver=1&signature=xqjBIqXRrTSrhO9bVfPMKw*Gg90a6ZTGaG2SA1uH4jOUTN1KOorK30nmorj9iQUGvKEdedV09P8oLcTuhYUoK0oc9Aj9xpU3Zd594LBn3S5HuRsDfdfZpw4bVG8OQR94Yq-qiaPwwlHadlETIlTc4JovdsucMTQUPGGOU*2QS0k=)
 
-> [MySQL索引背后的数据结构及算法原理](http://blog.codinglabs.org/articles/theory-of-mysql-index.html)
+[MySQL索引背后的数据结构及算法原理](http://blog.codinglabs.org/articles/theory-of-mysql-index.html)
 
+[深入浅出搜索架构引擎、方案与细节（上）](http://qoofan.com/read/LlorpJYwnR.html)
+
+# 个人小结
+
+1. 对于最简单的查询，可以使用 jiebe 进行分词。结合 pinyin 对存储的核心字段的拼音全拼写，简拼写进行存储，然后索引即可。
+
+2. 对于文章等常见信息，如果想使用全文索引，就可以采用数据库自带的全文索引。
 
 * any list
 {:toc}
