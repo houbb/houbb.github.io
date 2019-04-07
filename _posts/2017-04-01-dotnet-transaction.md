@@ -2,9 +2,8 @@
 layout: post
 title:  Dotnet Transaction
 date:  2017-04-06 23:28:04 +0800
-categories: [SQL]
+categories: [DotNet]
 tags: [transaction]
-header-img: "static/app/res/img/kon-bg.jpeg"
 published: true
 ---
 

@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  Ruby-04-var, operator
-date:  2017-04-15 16:00:44 +0800
-categories: [Programming Language]
-tags: [ruby]
+date:  2017-04-15 00:18:43 +0800
+categories: [Lang]
+tags: [ruby, lang]
 header-img: "static/app/res/img/article-bg.jpeg"
 published: true
 ---

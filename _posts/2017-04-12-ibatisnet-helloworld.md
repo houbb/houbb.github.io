@@ -2,7 +2,7 @@
 layout: post
 title:  IbatisNet-01-hello world
 date:  2017-04-09 22:22:22 +0800
-categories: [SQL]
+categories: [DotNet]
 tags: [ibatis, dotnet]
 header-img: "static/app/res/img/kon-bg.jpeg"
 published: true
