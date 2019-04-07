@@ -1,14 +1,11 @@
 ---
 layout: post
-title: Reflecting
-date:  2016-5-02 10:31:09 +0800
+title: Reflection-11-lombok 和反射 toString
+date:  2018-07-01 17:07:11 +0800
 categories: [Java]
-tags: [reflecting]
+tags: [java, reflect]
 published: true
 ---
-
-* any list
-{:toc}
 
 # Reflection
 
@@ -211,7 +208,5 @@ IntelliJ IDEA->Prefercence->plugins
 
 search for <label class="label label-success">lombok</label>, install and restart.
 
-
-
-
-
+* any list
+{:toc}

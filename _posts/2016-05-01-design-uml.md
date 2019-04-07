@@ -1,15 +1,11 @@
 ---
 layout: post
-title: UML
+title: UML-架构图
 date:  2016-5-1 12:17:41 +0800
-categories: [Util]
-tags: [UML]
+categories: [Design]
+tags: [uml]
 published: true
 ---
-
-* any list
-{:toc}
-
 
 # UML
 
@@ -105,3 +101,6 @@ and you can see:
     C->>D: Open arrow
     D-->>A: Dashed open arrow
 </uml>
+
+* any list
+{:toc}

@@ -2,13 +2,11 @@
 layout: post
 title: MySQL View 
 date:  2017-03-30 20:44:19 +0800
-categories: [UI]
-tags: [mysql, view]
+categories: [SQL]
+tags: [mysql, view, sql]
 header-img: "static/app/res/img/kon-bg.jpeg"
 published: true
 ---
-
-
 
 # Mysql View
 

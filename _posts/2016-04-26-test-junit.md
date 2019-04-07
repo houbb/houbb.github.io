@@ -1,14 +1,11 @@
 ---
 layout: post
-title: JUnit
+title: JUnit-java 单元测试
 date:  2016-4-26 12:53:12 +0800
 categories: [Test]
-tags: [junit]
+tags: [junit, test]
 published: true
 ---
-
-* any list
-{:toc}
 
 # JUnit
 
@@ -439,5 +436,5 @@ public class UserServiceTest {
 > https://github.com/jayway/powermock
 
 
-
-
+* any list
+{:toc}
