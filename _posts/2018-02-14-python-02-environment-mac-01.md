@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Python-01-Python Mac 环境
+title:  Python-02-Python Mac 环境
 date:  2018-02-14 15:09:30 +0800
 categories: [Lang]
 tags: [python, lang, sh]
