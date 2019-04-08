@@ -98,11 +98,17 @@ less xxx.log
 
 输入 `/` + 搜索的关键词+回车
 
+# 只显示符合条件的第一条
+
+```
+less XXX.log | grep '关键字' | head -n 1
+```
+
 # 拓展学习
 
 [linux more]()
 
-[linux cat]()
+[linux cat](https://houbb.github.io/2018/12/21/linux-cat)
 
 # 参考资料
 
