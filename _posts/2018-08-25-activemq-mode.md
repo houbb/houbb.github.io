@@ -3,7 +3,7 @@ layout: post
 title:  ActiveMQ Communication Mode
 date:  2018-08-25 14:44:28 +0800
 categories: [MQ]
-tags: [mq, java, apache, todo, sf]
+tags: [mq, java, jms, sf]
 published: true
 ---
 
