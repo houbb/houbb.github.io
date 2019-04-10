@@ -311,7 +311,7 @@ python 的单例其实和 java 的思想是一样的，都需要注意可能存�
 
 # 拓展阅读
 
-[java 的单例模式]()
+[java 的单例模式](https://houbb.github.io/2017/03/14/design-pattern-singletion-4)
 
 - python
 
