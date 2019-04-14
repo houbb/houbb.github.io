@@ -210,6 +210,16 @@ Run your spiders at: https://app.scrapinghub.com/p/385369/
 
 看的出来，可以可视化的指定优先级，可以执行很多爬虫。
 
+## 定时执行
+
+scrapinghub还有一个强大的功能就是定时执行爬虫任务，一般我们的需求就是每天定时爬取某个站点来获取更新的数据，刚好定时任务就派上用场了。
+
+在scrapinghub中创建定时任务也非常的简单。
+
+在菜单栏左侧点击Periodic Jobs，就进入到定时任务面板了。
+
+
+
 ## 数据
 
 可以把收集的数据进行导出。
@@ -247,10 +257,6 @@ Run your spiders at: https://app.scrapinghub.com/p/385369/
 [yeild 关键字]()
 
 [python 生成器]()
-
-[python 调用命令行]()
-
-[python 调用命令行]()
 
 # 参考资料
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Python-36-splider Flidder 抓包工具
+title: Python-39-splider Flidder 抓包工具
 date:  2018-02-14 15:09:30 +0800
 categories: [Lang]
 tags: [python, python3, http, lang, sh]
