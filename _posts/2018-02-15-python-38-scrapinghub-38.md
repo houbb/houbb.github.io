@@ -49,12 +49,170 @@ Scrapy Cloud是我们基于云的Web爬网平台，允许您轻松部署爬网�
 
 您可以在仪表板中浏览并与团队共享，也可以使用我们的API在您的应用中使用您的数据。
 
+# 创建一个 scrapy 项目
 
-# 快速开始
+## 创建运行项目
+
+```
+scrapy startproject tutorial
+```
+
+日志如下：
+
+```
+New Scrapy project 'tutorial', using template directory 'c:\users\binbin.hou\appdata\local\programs\python\python37\lib\site-packages\scrapy\templates\project', created in:
+    D:\python\tutorial
+
+You can start your first spider with:
+    cd tutorial
+    scrapy genspider example example.com
+```
+
+### 查看目录结构
+
+打开 tutorial 文件夹
+
+```
+tutorial/
+    scrapy.cfg            # deploy configuration file
+
+    tutorial/             # project's Python module, you'll import your code from here
+        __init__.py
+
+        items.py          # project items definition file
+
+        middlewares.py    # project middlewares file
+
+        pipelines.py      # project pipelines file
+
+        settings.py       # project settings file
+
+        spiders/          # a directory where you'll later put your spiders
+            __init__.py
+```
+
+## 第一个爬虫
+
+新建一个文件 `blog_spider.py` 放在文件夹 `tutorial/spiders`下。
+
+
+```py
+import scrapy
+
+class BlogSpider(scrapy.Spider):
+    name = 'blogspider'
+    start_urls = ['https://blog.csdn.net/ryo1060732496']
+
+    next_pages = []
+    for num in range(2, 22):
+        next_pages.append('https://blog.csdn.net/ryo1060732496/article/list/'+str(num))
+
+    def parse(self, response):
+        for href in response.css('.article-list>.article-item-box>h4'):
+            yield {'href': href.css('a').attrib['href']}
+
+        for next_page in self.next_pages:
+            yield response.follow(next_page, self.parse)
+```
+
+## 运行脚本
+
+在项目的顶层执行。
+
+```
+$   pwd
+D:\python\tutorial
+```
+
+执行
+
+```
+scrapy crawl blogspider
+```
+
+## 保存抓取的数据
+
+```
+scrapy crawl blogspider -o blog.json
+```
+
+# 部署到 hub 快速开始
 
 ## 注册登录
 
-## 上传代码
+此处我直接使用 github 进行登录。
+
+## Scrapy Cloud Projects
+
+点击新建，创建一个新的爬虫项目。
+
+## Code
+
+在 hub 上，可以查看对应的项目信息
+
+```
+$ pip install shub
+$ shub login
+API key: XXXX
+```
+
+然后一直处于登录状态
+
+## Deploys
+
+选择在对应的文件目录下，执行部署命令。
+
+### 路径确认
+
+```
+> pwd
+D:\python\tutorial
+
+> ls
+d-----        2019/4/13     19:07                tutorial
+-a----        2019/4/13     19:07            259 scrapy.cfg
+```
+
+### 执行部署
+
+运行部署命令：
+
+```
+shub deploy 385369
+```
+
+- 部署日志
+
+```
+Messagepack is not available, please ensure that msgpack-python library is properly installed.
+Saving project 385369 as default target. You can deploy to it via 'shub deploy' from now on
+Saved to D:\python\tutorial\scrapinghub.yml.
+Packing version 1555154269
+Created setup.py at D:\python\tutorial
+Deploying to Scrapy Cloud project "385369"
+Run your spiders at: https://app.scrapinghub.com/p/385369/
+{"status": "ok", "project": 385369, "version": "1555154269", "spiders": 1}
+```
+
+## Hub 页面查看
+
+直接打开连接 [https://app.scrapinghub.com/p/385369/1](https://app.scrapinghub.com/p/385369/1) 可以看到刚才部署的爬虫。
+
+直接点击右上角的【run】
+
+日志如下：
+
+```
+
+```
+
+### 爬虫项目运行
+
+看的出来，可以可视化的指定优先级，可以执行很多爬虫。
+
+## 数据
+
+可以把收集的数据进行导出。
 
 # 个人收获
 
@@ -70,9 +228,37 @@ Scrapy Cloud是我们基于云的Web爬网平台，允许您轻松部署爬网�
 
 这个 hub 可以获取到程序员的大量爬虫结果。
 
+## 速度
+
+不知道是不是网速的原因，感觉脚本执行的特别慢。
+
+本地几秒钟的执行脚本，执行了几分钟还没有结束。
+
+## 技术的本质
+
+技术的本质还是一样的。
+
+定时 job 任务的执行。
+
+# 拓展阅读
+
+[多线程]()
+
+[yeild 关键字]()
+
+[python 生成器]()
+
+[python 调用命令行]()
+
+[python 调用命令行]()
+
 # 参考资料
 
 [数据采集练习之部署爬虫到Scrapy Cloud](https://www.jianshu.com/p/27e5897bc95b)
+
+- scrapy
+
+[http://doc.scrapy.org/en/latest/intro/tutorial.html](http://doc.scrapy.org/en/latest/intro/tutorial.html)
 
 * any list
 {:toc}
