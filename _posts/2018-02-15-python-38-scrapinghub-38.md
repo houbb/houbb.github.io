@@ -216,7 +216,7 @@ scrapinghub还有一个强大的功能就是定时执行爬虫任务，一般我
 
 在scrapinghub中创建定时任务也非常的简单。
 
-在菜单栏左侧点击Periodic Jobs，就进入到定时任务面板了。
+在菜单栏左侧点击 Periodic Jobs，就进入到定时任务面板了。
 
 
 
