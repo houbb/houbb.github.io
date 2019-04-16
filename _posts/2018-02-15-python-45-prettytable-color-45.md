@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Python-51-prettytable-color 更好的命令号表格输出
+title: Python-45-prettytable-color 更好的命令号表格输出
 date:  2018-02-14 15:09:30 +0800
 categories: [Lang]
 tags: [python, python3, cli, lang, sh]
