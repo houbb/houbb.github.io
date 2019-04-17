@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Python-52 金融量化计算
+title: Qutan-02-金融量化计算
 date:  2018-02-14 15:09:30 +0800
 categories: [Lang]
 tags: [python, python3, quant, stock, lang, sh]
@@ -77,7 +77,6 @@ http://echarts.baidu.com/
 5. 量化计算--
 
 6. 多只股票之间的关联性最小
-
 
 # 书籍的知识沉淀
 
