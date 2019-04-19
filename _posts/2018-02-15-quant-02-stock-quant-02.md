@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Python-52 金融量化计算
+title: Qutan-02-金融量化计算
 date:  2018-02-14 15:09:30 +0800
 categories: [Lang]
 tags: [python, python3, quant, stock, lang, sh]

@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Python-50-stock 股票基本信息
+title: 量化计算-01-stock 股票基本信息
 date:  2018-02-14 15:09:30 +0800
-categories: [Lang]
-tags: [python, python3, stock, lang, sh]
+categories: [Quant]
+tags: [quant, stock, lang, sh]
 published: true
 ---
 
