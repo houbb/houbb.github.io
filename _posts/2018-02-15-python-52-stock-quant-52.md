@@ -63,7 +63,6 @@ http://echarts.baidu.com/
 
 [雪球股票讨论度与价格走势的关系](https://github.com/garydai/stock)
 
-
 # 拆分为具体步骤：
 
 1. 获取所有的股票名称+代码==》命令行工具
@@ -77,7 +76,6 @@ http://echarts.baidu.com/
 5. 量化计算--
 
 6. 多只股票之间的关联性最小
-
 
 # 书籍的知识沉淀
 

@@ -50,6 +50,8 @@ published: true
 
 [Netty 易百教程](https://www.yiibai.com/netty/)
 
+[Github Netty 学习笔记](https://github.com/code4craft/netty-learning/blob/master/publish/all.md)
+
 # 参考资料
 
 [Netty学习和进阶策略](https://mp.weixin.qq.com/s/WcWBmvkbft-aNrwqcQu32w)
