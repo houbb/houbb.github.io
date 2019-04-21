@@ -66,9 +66,11 @@ published: true
 
 7. [TCP/IP 原理](https://houbb.github.io/2019/04/05/protocol-tcp-ip-01-overview-01) ing
 
-8. [lock-free 无锁编程]()
+8. [lock-free 无锁编程](https://houbb.github.io/tags/#lock-free) √
 
-## java 进阶知识
+9. [手写 rpc 学习 netty]() TODO
+
+## java 知识准备
 
 [java 注解](https://houbb.github.io/tags/#annotation)   √
 
