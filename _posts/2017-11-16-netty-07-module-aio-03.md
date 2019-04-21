@@ -7,7 +7,6 @@ tags: [netty, java, io, sh]
 published: true
 ---
 
-
 # java 中的 AIO 
 
 jdk7中新增了一些与文件(网络)I/O相关的一些api。这些API被称为NIO.2，或称为AIO(Asynchronous I/O)。
@@ -28,14 +27,6 @@ AsynchronousServerSocketChannel: 服务器异步socket。
 
 因为AIO的实施需充分调用OS参与，IO需要操作系统支持、并发也同样需要操作系统的支持，所以性能方面不同操作系统差异会比较明显。
 
-# Unix中的I/O模型
-Unix定义了五种I/O模型
-
-阻塞I/O
-非阻塞I/O
-I/O复用（select、poll、linux 2.6种改进的epoll）
-信号驱动IO（SIGIO）
-异步I/O（POSIX的aio_系列函数）
 # 异步非阻塞 I/O（AIO）
 
 最后，异步非阻塞 I/O 模型是一种CPU处理与 I/O 重叠进行的模型。读请求会立即返回，说明 read 请求已经成功发起了。

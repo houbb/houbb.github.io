@@ -21,7 +21,6 @@ I/O复用（select、poll、linux 2.6种改进的epoll）
 
 异步I/O（POSIX的aio_系列函数）
 
-
 # 异步的处理
 
 异步无非是通知系统做一件事情。然后忘掉它，自己做其他事情去了。很多时候系统做完某一件事情后需要一些后续的操作。怎么办？这时候就是告诉异步调用如何做后续处理。通常有两种方式：
@@ -34,11 +33,11 @@ I/O复用（select、poll、linux 2.6种改进的epoll）
 
 ## jdk 
 
-BIO
+[BIO](https://houbb.github.io/2017/11/16/netty-07-module-bio-01)
 
-NIO
+[NIO](https://houbb.github.io/2017/11/16/netty-07-module-nio-02)
 
-AIO
+[AIO](https://houbb.github.io/2017/11/16/netty-07-module-aio-03)
 
 ## unix
 
