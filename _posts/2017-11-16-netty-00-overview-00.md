@@ -52,6 +52,26 @@ published: true
 
 [Github Netty 学习笔记](https://github.com/code4craft/netty-learning/blob/master/publish/all.md)
 
+# 如何学习
+
+1. [java 网络编程](https://houbb.github.io/2018/09/22/java-net-01-overview) √
+
+2. [java nio](https://houbb.github.io/2018/09/22/java-nio-01-overview)  √
+
+3. [java 多线程并发系列](https://houbb.github.io/2018/07/24/java-concurrency-01-thread)  √
+
+4. [rpc 相关](https://houbb.github.io/tags/#rpc) √
+
+6. [linux 网络通讯模型](https://houbb.github.io/2017/11/16/netty-07-module-linux-00-overview-00)  ing
+
+7. [TCP/IP 原理](https://houbb.github.io/2019/04/05/protocol-tcp-ip-01-overview-01) ing
+
+8. [lock-free 无锁编程]()
+
+## java 进阶知识
+
+[java 注解](https://houbb.github.io/tags/#annotation)   √
+
 # 参考资料
 
 [Netty学习和进阶策略](https://mp.weixin.qq.com/s/WcWBmvkbft-aNrwqcQu32w)
