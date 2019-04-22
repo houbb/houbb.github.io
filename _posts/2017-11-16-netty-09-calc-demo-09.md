@@ -146,6 +146,9 @@ public class SocketBioServer {
 ....
 
 
+# 改进为线程池
+
+
 
 # 本地调用
 
@@ -200,10 +203,6 @@ public class LocalCalc implements ICalc {
 
 }
 ```
-
-
-# socket bio 
-
 
 
 # 参考资料
