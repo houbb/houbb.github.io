@@ -582,18 +582,17 @@ java.net.SocketTimeoutException: Read timed out
 
 ## 流的关闭顺序
 
-[流的关闭顺序]()
+[流的关闭顺序](https://houbb.github.io/2017/11/16/netty-11-io-close-order-11)
 
 ## Connection reset 异常
 
 这里遇到了一个异常。按照常理，我们应该忽略这个内容，但是这里恰恰是我们可以学习到知识的地方。
 
-[socket connection reset 异常详解]()
+[socket connection reset 异常详解](https://houbb.github.io/2017/11/16/netty-10-socket-connection-reset-10)
 
 # 参考资料
 
 [java BIO实例——ServerSocket、Socket编程](https://blog.csdn.net/liuxiao723846/article/details/50457647)
-
 
 * any list
 {:toc}
