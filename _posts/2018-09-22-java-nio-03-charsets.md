@@ -3,9 +3,8 @@ layout: post
 title:  Java NIO-03-Charsets
 date:  2018-09-22 11:20:47 +0800
 categories: [Java]
-tags: [java, io, java-base, sf]
+tags: [java, nio, java-base, sf]
 published: true
-excerpt: Java NIO-03-Charsets
 ---
 
 # Standard charsets

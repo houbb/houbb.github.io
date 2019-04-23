@@ -3,9 +3,8 @@ layout: post
 title:  Java NIO-05-Buffer
 date:  2018-09-22 12:20:47 +0800
 categories: [Java]
-tags: [java, io, java-base, sf]
+tags: [java, nio, java-base, sf]
 published: true
-excerpt: Java NIO-05-Buffer
 ---
 
 # Buffer

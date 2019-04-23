@@ -3,9 +3,8 @@ layout: post
 title:  Java NIO-01-Overview
 date:  2018-09-22 09:18:47 +0800
 categories: [Java]
-tags: [java, io, java-base, sf]
+tags: [java, nio, java-base, sf]
 published: true
-excerpt: java nio 入门系列-01-概览
 ---
 
 # NIO
