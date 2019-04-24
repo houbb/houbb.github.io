@@ -473,6 +473,8 @@ mvn clean install sonar:sonar
 ![chinese pack](https://raw.githubusercontent.com/houbb/resource/master/img/tools/sonar/2016-11-13-sonar-chinese-pack.png)
 
 
+# QA 工具
 
+idea 中可以安裝 [SonarLint]() 和 [Alibaba]() 來提升代碼質量。
 
 
