@@ -47,9 +47,7 @@ poll
 
 Epoll
 
-Reactor
-
-select=>poll=>epoll=>aio=>libvent=>libuv
+select=>poll=>epoll=>libvent=>libuv
 
 ## windows
 

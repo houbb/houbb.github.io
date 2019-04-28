@@ -1,11 +1,17 @@
 ---
 layout: post
-title:  Netty-07-linux 通讯模型之 select
+title:  Netty-08-linux 通讯模型之 select
 date:  2017-11-16 19:23:06 +0800
 categories: [Netty]
 tags: [netty, java, io, linux, sh]
 published: true
 ---
+
+# 概览
+
+epoll跟select都能提供多路I/O复用的解决方案。
+
+在现在的Linux内核里有都能够支持，其中epoll是Linux所特有，而select则应该是POSIX所规定，一般操作系统均有实现。
 
 # select
 
@@ -19,7 +25,7 @@ published: true
 
 ## 函数定义
 
-```c
+```
 int select(int nfds,
                fd_set *restrict readfds,
                fd_set *restrict writefds,
@@ -73,6 +79,8 @@ poll方法返回时会返回一个描述读写操作是否就绪的mask掩码，
 
 # select 的缺点
 
+select本质上是通过设置或者检查存放fd标志位的数据结构来进行下一步处理。
+
 总结下select的几大缺点：
 
 （1）每次调用select，都需要把fd集合从用户态拷贝到内核态，这个开销在fd很多时会很大 
@@ -80,6 +88,12 @@ poll方法返回时会返回一个描述读写操作是否就绪的mask掩码，
 （2）同时每次调用select都需要在内核遍历传递进来的所有fd，这个开销在fd很多时也很大 
 
 （3）select支持的文件描述符数量太小了，默认是1024
+
+一般来说这个数目和系统内存关系很大，具体数目可以cat /proc/sys/fs/file-max察看。32位机默认是1024个。64位机默认是2048.
+
+（4）对socket进行扫描时是线性扫描，即采用轮询的方法，效率较低
+
+当套接字比较多的时候，每次select()都要通过遍历FD_SETSIZE个Socket来完成调度,不管哪个Socket是活跃的,都遍历一遍。这会浪费很多CPU时间。如果能给套接字注册某个回调函数，当他们活跃时，自动完成相关操作，那就避免了轮询，这正是epoll与kqueue做的。
 
 # 源码
 
@@ -262,6 +276,8 @@ int main(int argc, char *argv[])
 [Linux 下select 模型](https://blog.csdn.net/HQ354974212/article/details/76176906)
 
 [linux select 多路复用机制](https://blog.csdn.net/turkeyzhou/article/details/8609360)
+
+https://www.cnblogs.com/renxs/p/3683189.html
 
 * any list
 {:toc}
