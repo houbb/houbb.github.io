@@ -9,5 +9,3 @@ published: false
 
 * any list
 {:toc}
-
-
