@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Netty-09-ByteBuf 实战
+title:  Netty-10-资源管理
 date:  2017-11-16 19:23:06 +0800
 categories: [Netty]
 tags: [netty, java, io, sh]
@@ -42,7 +42,13 @@ SEVERE: LEAK: ByteBuf.release() was not called before it's garbage-collected. En
 
 Netty目前定义了四中检测级别，
 
-DISABLE, SIMPLE(默认),ADVANCED, PARANOID
+```
+级别	描述
+DISABLED	禁用泄漏检测。只有在详尽的测试之后才应设置为这值
+SIMPLE		使用1%的默认采样率检测并报告任何发现的泄漏。这是默认级别，适合绝大部分情况
+ADVANCED	使用默认的采样率，报告所发现的任何的泄漏以及对应的消息被访问的位置
+PARANOID	类似于ADVANCED,但是其将会对每次(对消息的)访问都进行采样。会对性能有很大影响，应该在调试阶段使用
+```
 
 可以通过 `java -Dio.netty.leakDetectionLevel=ADVANCED` 指定
 
@@ -65,9 +71,15 @@ Created at:
 
 2，要在GC之后，然后在分配，此时就会打印出对应的detect信息。
 
+# 个人收获
+
+1. 内存泄漏的 debug 一直是一种比较难的方式。
+
+2. 抽样分析，是在样本足够大的时候一种数学统计的思维。google 的监控系统也有类似的思维。
+
 # 参考资料
 
-《Netty in Action》 P76 
+《Netty in Action》 P99
 
 - free
 
