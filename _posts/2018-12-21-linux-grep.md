@@ -124,6 +124,21 @@ $   history | grep cat | grep vpn
   502  history | grep cat | grep vpn
 ```
 
+# 查看过滤后的前(后)几条
+
+多个命令的结合。
+
+展现：less/cat/more
+
+过滤：grep
+
+前几行：head/tail
+
+```
+$ less application.2019-04-27-0.log | grep 'npay' | head -n 10
+```
+
+查看包含关键词 napy 的数据，匹配的前几个。
 
 # 统计某个正则出现的次数
 
@@ -136,6 +151,46 @@ XXX.log 符合正则的信息，`-o` 表示只显示匹配内容
 sort -n  按值进行排序
 
 uniq  -c 独一无二的结果，和对应的次数。
+
+# 语法高亮
+
+有时候 grep 之后不是高亮的，看起来比较痛苦。
+
+```
+export GREP_OPTIONS='--color=always' 
+```
+
+设置即可。
+
+## 参数说明
+
+export GREP_OPTIONS='--color=XXX' ; color有三个值供选择: never always auto ;
+
+always和auto的区别: always会在任何情况下都给匹配字段加上颜色标记; auto 只给最后一个管道符匹配项加亮显示；
+
+export GREP_COLOR='a;b' #默认是1;31，即高亮的红色; 您可以根据自己的喜好设置不同的颜色； 
+
+a可以选择:【0,1,4,5,7,8】
+
+0 关闭所有属性
+1 设置高亮度
+4 下划线
+5 闪烁
+7 反显
+8 消隐
+
+b可以选择:【30-37或40-47】
+
+30 black
+31 red
+32 green
+33 yellow
+34 blue
+35 purple
+36 cyan
+37 white
+30 — 37 设置前景色
+40 — 47 设置背景色
 
 # 参考资料
 

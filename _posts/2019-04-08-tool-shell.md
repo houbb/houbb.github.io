@@ -27,6 +27,11 @@ published: true
 
 [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html)
 
+
+# SecureCRT 中文乱码问题
+
+选项－全局选项－常规－默认会话－编辑默认设－外观（字体Lucida Console 10pt，字符编码UTF-8）
+
 * any list
 {:toc}
 
