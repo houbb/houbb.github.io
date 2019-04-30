@@ -44,27 +44,66 @@ future.syncUninterruptibly();
 
 # 源码
 
-- DefaultPromise
-
-以这个类为例。
+- SingleThreadEventExecutor
 
 ```java
-@Override
-public Promise<V> syncUninterruptibly() {
-    awaitUninterruptibly();
-    rethrowIfFailed();
-    return this;
-}
-```
+    @Override
+    public Future<?> shutdownGracefully(long quietPeriod, long timeout, TimeUnit unit) {
+        if (quietPeriod < 0) {
+            throw new IllegalArgumentException("quietPeriod: " + quietPeriod + " (expected >= 0)");
+        }
+        if (timeout < quietPeriod) {
+            throw new IllegalArgumentException(
+                    "timeout: " + timeout + " (expected >= quietPeriod (" + quietPeriod + "))");
+        }
+        if (unit == null) {
+            throw new NullPointerException("unit");
+        }
 
-分成两步，等待且不抛出异常
+        if (isShuttingDown()) {
+            return terminationFuture();
+        }
 
-如果失败则抛出异常。
+        boolean inEventLoop = inEventLoop();
+        boolean wakeup;
+        int oldState;
+        for (;;) {
+            if (isShuttingDown()) {
+                return terminationFuture();
+            }
+            int newState;
+            wakeup = true;
+            oldState = state;
+            if (inEventLoop) {
+                newState = ST_SHUTTING_DOWN;
+            } else {
+                switch (oldState) {
+                    case ST_NOT_STARTED:
+                    case ST_STARTED:
+                        newState = ST_SHUTTING_DOWN;
+                        break;
+                    default:
+                        newState = oldState;
+                        wakeup = false;
+                }
+            }
+            if (STATE_UPDATER.compareAndSet(this, oldState, newState)) {
+                break;
+            }
+        }
+        gracefulShutdownQuietPeriod = unit.toNanos(quietPeriod);
+        gracefulShutdownTimeout = unit.toNanos(timeout);
 
-- awaitUninterruptibly
+        if (oldState == ST_NOT_STARTED) {
+            doStartThread();
+        }
 
-```java
+        if (wakeup) {
+            wakeup(inEventLoop);
+        }
 
+        return terminationFuture();
+    }
 ```
 
 
