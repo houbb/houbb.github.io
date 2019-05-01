@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Jar to Maven
+title:  maven 发布到中央仓库
 date:  2017-09-28 18:52:13 +0800
 categories: [Maven]
 tags: [maven]
@@ -795,6 +795,103 @@ under the License.
   -->
 </settings>
 ```
+
+
+# windows 实战记录
+
+## 下载 gpg
+
+[gpg4win](https://www.gpg4win.org/get-gpg4win.html) 下载安装
+
+推荐使用 [Gpg4win-Vanilla](http://files.gpg4win.org/) 版本，因为它仅包括 GnuPG，这个工具才是我们所需要的。
+
+此处我下载的是 `gpg4win-vanilla-2.3.4.exe	2017-07-06 15:46	3.2M` 这个文件。
+
+## 安装
+
+直接双击安装。
+
+- 验证
+
+```
+$   gpg --version
+```
+
+日志信息如下：
+
+```
+C:\Users\binbin.hou>gpg --version
+gpg (GnuPG) 2.0.30 (Gpg4win 2.3.4)
+libgcrypt 1.7.8
+Copyright (C) 2015 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Home: C:/Users/binbin.hou/AppData/Roaming/gnupg
+Supported algorithms:
+Pubkey: RSA, RSA, RSA, ELG, DSA
+Cipher: IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH,
+        CAMELLIA128, CAMELLIA192, CAMELLIA256
+Hash: MD5, SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224
+Compression: Uncompressed, ZIP, ZLIB, BZIP2
+```
+
+## 生成密钥对
+
+```
+$   gpg --gen-key   
+```
+
+这里选择默认的第一个。
+
+之后往下，会让你输入用户名和邮箱，还有一个Passphase，相当于密钥库密码，不要忘记。
+
+## 查看公钥
+
+```
+gpg --list-keys
+```
+
+如下：
+
+```
+C:/Users/binbin.hou/AppData/Roaming/gnupg/pubring.gpg
+-----------------------------------------------------
+pub   2048R/401804C3 2019-05-01
+uid       [ultimate] houbb (gpg) <1060732496@qq.com>
+sub   2048R/C45E13DE 2019-05-01
+```
+
+我这里的公钥 ID 是 `401804C3` 马上就会用到了。
+
+
+## 将公钥发布到 PGP 密钥服务器
+ 
+```
+$   gpg --keyserver hkp://keyserver.ubuntu.com:11371 --send-keys 401804C3
+```
+
+## 验证是否上传成功
+
+```
+$   gpg --keyserver hkp://keyserver.ubuntu.com:11371 --recv-keys 401804C3
+```
+
+日志信息如下：
+
+```
+gpg: requesting key 401804C3 from hkp server keyserver.ubuntu.com
+gpg: key 401804C3: "houbb (gpg) <1060732496@qq.com>" not changed
+gpg: Total number processed: 1
+gpg:              unchanged: 1
+```
+
+剩下的就和 mac 一样了。
+
+## setting.xml
+
+有时候 idea 指定 的 xml 好像没有用，建议使用 setting.xml 进行相关的修改。
 
 # 参考资料
 
