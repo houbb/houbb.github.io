@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Compress Althgorim
+title: Compress Althgorim-压缩算法 gzip
 date:  2018-11-9 18:55:36 +0800
 categories: [Althgorim]
-tags: [althgorim, sh]
+tags: [althgorim, compress, sh]
 published: true
-excerpt: 压缩算法简介
 ---
 
 # 创作原因
