@@ -365,15 +365,60 @@ private void set(ThreadLocal<?> key, Object value) {
 }
 ```
 
+## 无法保证的场景
+
+但这样也并不能保证ThreadLocal不会发生内存泄漏，例如：
+
+（1）使用static的ThreadLocal，延长了ThreadLocal的生命周期，可能导致的内存泄漏。
+
+（2）分配使用了ThreadLocal又不再调用get()、set()、remove()方法，那么就会导致内存泄漏。
+
+# 为什么使用弱引用？
+
+从表面上看，发生内存泄漏，是因为Key使用了弱引用类型。
+
+但其实是因为整个Entry的key为null后，没有主动清除value导致。
+
+但为什么使用弱引用而不是强引用？
+
+## 官方说话
+
+官方文档的说法：
+
+```
+To help deal with very large and long-lived usages, the hash table entries use WeakReferences for keys.
+为了处理非常大和生命周期非常长的线程，哈希表使用弱引用作为 key。
+```
+
+## 场景
+
+下面我们分两种情况讨论：
+
+### key 为强引用
+
+key 使用强引用：引用的ThreadLocal的对象被回收了，但是ThreadLocalMap还持有ThreadLocal的强引用，如果没有手动删除，ThreadLocal不会被回收，导致Entry内存泄漏。
+
+### key 为弱引用
+
+key 使用弱引用：引用的ThreadLocal的对象被回收了，由于ThreadLocalMap持有ThreadLocal的弱引用，即使没有手动删除，ThreadLocal也会被回收。
+
+value在下一次ThreadLocalMap调用set,get，remove的时候会被清除。
+
+比较两种情况，我们可以发现：由于ThreadLocalMap的生命周期跟Thread一样长，如果都没有手动删除对应key，都会导致内存泄漏，但是使用弱引用可以多一层保障：
+
+弱引用ThreadLocal不会内存泄漏，对应的value在下一次ThreadLocalMap调用set,get,remove的时候会被清除。
+
+因此，ThreadLocal内存泄漏的根源是：由于ThreadLocalMap的生命周期跟Thread一样长，如果没有手动删除对应key的value就会导致内存泄漏，而不是因为弱引用。
+
 # 会导致内存泄漏吗
 
-不会导致内存泄漏。
+会导致内存泄漏，如果线程一直没有被销毁的话。
 
 ## 网上的说法
 
-有网上讨论说ThreadLocal会导致内存泄露，原因如下
+有网上讨论说 ThreadLocal 会导致内存泄露，原因如下
 
-1. 首先ThreadLocal实例被线程的ThreadLocalMap实例持有，也可以看成被线程持有。
+1. 首先 ThreadLocal 实例被线程的ThreadLocalMap实例持有，也可以看成被线程持有。
 
 2. 如果应用使用了线程池，那么之前的线程实例处理完之后出于复用的目的依然存活
 
@@ -407,6 +452,34 @@ static class ThreadLocalMap {
 所以实际上从ThreadLocal设计角度来说是不会导致内存泄露的。
 
 弱引用相关知识参见 [java 弱引用](https://houbb.github.io/2018/08/20/java-weak-reference#%E5%BC%B1%E5%BC%95%E7%94%A8weak-reference)
+
+只有一种场景，那就是线程一直没有被销毁。比如线程池场景。
+
+## 生命周期
+
+threadlocal里面使用了一个存在弱引用的map,当释放掉threadlocal的强引用以后,map里面的value却没有被回收.而这块value永远不会被访问到了. 所以存在着内存泄露. 
+
+在threadlocal的生命周期中,都存在这些引用. 
+
+看下图: 实线代表强引用,虚线代表弱引用.
+
+![生命周期](https://images0.cnblogs.com/blog/458716/201401/172259164557.jpg)
+
+每个thread中都存在一个map, map的类型是ThreadLocal.ThreadLocalMap. Map中的key为一个threadlocal实例. 
+
+这个Map的确使用了弱引用,不过弱引用只是针对key. 每个key都弱引用指向threadlocal. 当把threadlocal实例置为null以后,没有任何强引用指向threadlocal实例,所以threadlocal将会被gc回收. 但是,我们的value却不能回收,因为存在一条从current thread连接过来的强引用. 
+
+只有当前thread结束以后, current thread就不会存在栈中,强引用断开, Current Thread, Map, value将全部被GC回收.
+
+所以得出一个结论就是只要这个线程对象被gc回收，就不会出现内存泄露，但在threadLocal设为null和线程结束这段时间不会被回收的，就发生了我们认为的内存泄露。
+
+其实这是一个对概念理解的不一致，也没什么好争论的。
+
+最要命的是线程对象不被回收的情况，这就发生了真正意义上的内存泄露。比如使用线程池的时候，线程结束是不会销毁的，会再次使用的。就可能出现内存泄露。　
+
+## 解决方案
+
+使用 `remove()` 方法移除对象，如果使用线程池的话。
 
 # 只能一个线程访问吗
 
@@ -450,6 +523,198 @@ private void testInheritableThreadLocal() {
 
 它们都是**位于堆上，只是通过一些技巧将可见性修改成了线程可见**。
 
+
+# ThreadLocal 线程安全吗？
+
+## 场景
+
+As we all know, java 的 DateFormat 是线程不安全的。
+
+我们为了保证线程安全，又不想浪费太多的内存，于是就有人想使用 ThreadLocal 来保证线程安全性。
+
+这样每个线程都有副本，那么这样做真的安全，吗？
+
+## 测试代码
+
+- Number.java
+
+```java
+public class Number {
+
+
+    private int num;
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+    
+}
+```
+
+- 测试类
+
+```java
+package com.ryo.netty.threadlocal;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+public class NotSafeThread implements Runnable {
+
+
+    public static Number number = new Number();
+
+    public static int i = 0;
+
+    @Override
+    public void run() {
+        //每个线程计数加一
+        number.setNum(i++);
+        //将其存储到ThreadLocal中
+        value.set(number);
+
+        // 添加延时测试,为了效果更加明显
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //输出num值
+        System.out.println(Thread.currentThread().getName()+": "+value.get().getNum());
+    }
+
+    public static ThreadLocal<Number> value = new ThreadLocal<>();
+
+    public static void main(String[] args) {
+        ExecutorService newCachedThreadPool = Executors.newFixedThreadPool(3);
+        for (int i = 0; i < 5; i++) {
+            newCachedThreadPool.execute(new NotSafeThread());
+        }
+        // 关闭线程池
+        newCachedThreadPool.shutdown();
+    }
+
+}
+```
+
+## 测试日志
+
+```
+pool-1-thread-1: 2
+pool-1-thread-3: 2
+pool-1-thread-2: 2
+pool-1-thread-1: 4
+pool-1-thread-3: 4
+```
+
+很明显，并没有达到每个对象一个副本的概念。为什么会这样呢？
+
+## 源码分析
+
+- set
+
+```java
+public void set(Object obj) {
+    Thread thread = Thread.currentThread();
+    ThreadLocalMap threadlocalmap = getMap(thread);
+    if(threadlocalmap != null)
+        threadlocalmap.set(this, obj);
+    else
+        createMap(thread, obj);
+}
+```
+
+- getMap
+
+```java
+ThreadLocal.ThreadLocalMap getMap(Thread thread) {
+    //返回的是thread的成员变量
+    return thread.inheritableThreadLocals;
+}
+```
+
+可以看到，这些特定于线程的值是保存在当前的 Thread 对象中，并非保存在 ThreadLocal 对象中。
+
+并且我们发现Thread对象中保存的是Object对象的一个引用，这样的话，当有其他线程对这个引用指向的对象做修改时，当前线程Thread对象中保存的值也会发生变化。
+
+这也就是为什么上面的程序为什么会输出一样的结果：线程中保存的是同一Number对象的引用，在线程睡眠2s的时候，其他线程将num变量进行了修改，因此它们最终输出的结果是相同的。
+
+## 正确的方式
+
+那么，ThreadLocal的“为每个使用该变量的线程都存有一份独立的副本，因此get总是返回由当前执行线程在调用set时设置的最新值。
+
+”这句话中的“独立的副本”，也就是我们理解的“线程本地存储”只能是每个线程所独有的对象并且不与其他线程进行共享，大概是这样的情况：
+
+```java
+public static ThreadLocal<Number> value = new ThreadLocal<Number>() {
+    public Number initialValue(){//为每个线程保存的值进行初始化操作
+        return new Number();
+    }
+};
+```
+
+or
+
+```java
+public void run() {
+    value.set(new Number());
+}
+```
+
+## 程序员的吐槽
+
+好吧...这个时候估计你会说：那这个ThreadLocal有什么用嘛，每个线程都自己new一个对象使用，只有它自己使用这个对象而不进行共享，那么程序肯定是线程安全的咯。这样看起来我不使用ThreadLocal，在需要用某个对象的时候，直接new一个给本线程使用不就好咯。
+
+确实，ThreadLocal的使用不是为了能让多个线程共同使用某一对象，而是我有一个线程A，其中我需要用到某个对象o，这个对象o在这个线程A之内会被多处调用，而我不希望将这个对象o当作参数在多个方法之间传递，于是，我将这个对象o放到TheadLocal中，这样，在这个线程A之内的任何地方，只要线程A之中的方法不修改这个对象o，我都能取到同样的这个变量o。
+
+比如：spring 中事务获取 connection, 日志的 MDC。
+
+## 正确的使用姿势-事务
+
+再举一个在实际中应用的例子，
+
+例如，我们有一个银行的BankDAO类和一个个人账户的PeopleDAO类，现在需要个人向银行进行转账，在PeopleDAO类中有一个账户减少的方法，BankDAO类中有一个账户增加的方法，那么这两个方法在调用的时候必须使用同一个Connection数据库连接对象，如果他们使用两个Connection对象，则会开启两段事务，可能出现个人账户减少而银行账户未增加的现象。
+
+使用同一个Connection对象的话，在应用程序中可能会设置为一个全局的数据库连接对象，从而避免在调用每个方法时都传递一个Connection对象。
+
+问题是当我们把Connection对象设置为全局变量时，你不能保证是否有其他线程会将这个Connection对象关闭，这样就会出现线程安全问题。
+
+解决办法就是在进行转账操作这个线程中，使用ThreadLocal中获取Connection对象，这样，在调用个人账户减少和银行账户增加的线程中，就能从ThreadLocal中取到同一个Connection对象，并且这个Connection对象为转账操作这个线程独有，不会被其他线程影响，保证了线程安全性。
+
+```java
+public class ConnectionHolder {
+    
+    public static ThreadLocal<Connection> connectionHolder = new ThreadLocal<Connection>() {
+    };
+    
+    public static Connection getConnection(){
+        Connection connection = connectionHolder.get();
+        if(null == connection){
+            connection = DriverManager.getConnection(DB_URL);
+            connectionHolder.set(connection);
+        }
+        return connection;
+    }
+ 
+}
+```
+
+在框架中，我们需要将一个事务上下文（Transaction  Context）与某个执行中的线程关联起来。
+
+通过将事务上下文保存在静态的ThreaLocal对象中（这个上下文肯定是不与其他线程共享的），可以很容易地实现这个功能：
+
+当框架代码需要判断当前运行的是哪一个事务时，只需从这个ThreadLocal对象中读取事务上下文，避免了在调用每个方法时都需要传递执行上下文信息。
+
 # 拓展阅读
 
 [java 弱引用](https://houbb.github.io/2018/08/20/java-weak-reference#%E5%BC%B1%E5%BC%95%E7%94%A8weak-reference)
@@ -463,6 +728,16 @@ private void testInheritableThreadLocal() {
 [正确理解Thread Local的原理与适用场景](http://www.jasongj.com/java/threadlocal/)
 
 [Java中的ThreadLocal通常是在什么情况下使用的？](https://www.zhihu.com/question/21709953)
+
+## 内存泄漏
+
+[ThreadLocal可能引起的内存泄露](https://www.cnblogs.com/onlywujun/p/3524675.html)
+
+[ThreadLocal内存泄漏真因探究](https://www.jianshu.com/p/a1cd61fa22da)
+
+## 线程安全
+
+[ThreadLocal使用注意：线程不安全，可能会发生内存泄漏](https://blog.csdn.net/h2604396739/article/details/83033302)
 
 * any list
 {:toc}
