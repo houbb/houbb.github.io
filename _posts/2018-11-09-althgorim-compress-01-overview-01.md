@@ -125,6 +125,15 @@ Deflate仍然是两个算法如何结合在一起并相互发挥作用的一个�
 
 [ZIP压缩算法详细分析及解压实例解释](https://www.cnblogs.com/esingchan/p/3958962.html)
 
+
+# 压缩和归档的作用
+
+1. mq 传输的时候，数据较大，就需要压缩。(一般网络传输)
+
+2. 数据存储，数据量很大的时候。比如数据库，日志就需要归档。
+
+3. 这个技术为后期框架提供基础。
+
 # 参考资料
 
 [The Elegance of Deflate](http://www.codersnotes.com/notes/elegance-of-deflate/)
