@@ -79,6 +79,19 @@ paradise 的接班人。
 
 比较类，类似于 Compare2 的 java 底层实现。终止。
 
+- Compress
+
+压缩工具类
+
+- enc
+
+加密工具。待完成。
+
+- communicate
+
+比如：微信/qq/dingding/邮件/短信/电话 等信息沟通方式
+
+
 # 开发工具
 
 - Sensitive
@@ -116,6 +129,46 @@ paradise 的接班人。
 - rate-limit
 
 限流框架
+
+# 核心框架重写
+
+## 中间件
+
+RPC
+
+Cache
+
+MQ
+
+SQL
+
+## 基本组件
+
+JDBC
+
+MVC
+
+IOC/AOP==>spring
+
+# 分布式核心组件
+
+- rate-limit
+
+限流框架
+
+- 鉴权
+
+SSO
+
+- 熔断
+
+- 重试
+
+spring-retry 改进。
+
+- hash
+
+balance
 
 
 * any list
