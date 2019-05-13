@@ -15,18 +15,44 @@ excerpt: Github 开源项目
 
 ## 基础
 
-- maven-archetype
+- maven-archetype  这个不用处理
 
 Heaven  Done
 
 API         Done
 
-log-integration     
+log-integration     Done      
+ 
+# 测试相关 
 
-# Maven 
+- JunitPerf
+
+性能测试框架
 
 - gen-maven-plugin
 
+这个框架拆分为两个框架：
+
+1. 测试生成 (gent-plugin)
+
+2. 注释生成 (genm-plugin)
+
+3. 文档生成 (idoc)
+
+- DataFactory
+
+为单元测试提供初始化数据。
+
+缺少：只有结果，无法让结果值和对象初始化值联系起来。
+
+
+# 框架
+
+https://github.com/houbb/compress  Done
+
+https://github.com/houbb/opencc4j   Done
+
+https://github.com/houbb/markdown-toc Done
 
 # 文档相关
 
@@ -37,19 +63,6 @@ log-integration
 - idoc
 
 生成接口文档。开发中。。。
-
-# 测试相关
-
-- DataFactory
-
-为单元测试提供初始化数据。
-
-缺少：只有结果，无法让结果值和对象初始化值联系起来。
-
-- JunitPerf
-
-性能测试框架
-
 
 
 * any list

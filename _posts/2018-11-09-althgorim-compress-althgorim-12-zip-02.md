@@ -559,7 +559,7 @@ HCLEN：4比特，记录Huffman码表3中码长序列（CCL）个数的一个变
 
 # 拓展阅读
 
-[香农信息论]()
+[香农信息论](http://www.ituring.com.cn/book/1185)
 
 《A Universal Algorithm for Sequential Data Compression》
 
@@ -572,8 +572,6 @@ Huffman 树
 算数编码
 
 游程编码
-
-
 
 # 个人收获
 

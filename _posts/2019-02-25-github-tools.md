@@ -37,7 +37,7 @@ paradise 的接班人。
 
 # 测试相关
 
-- Eunit
+- Data-Factory
 
 为单元测试提供初始化数据。
 
@@ -46,8 +46,6 @@ paradise 的接班人。
 - JunitPerf
 
 性能测试框架
-
-
 
 # Maven 
 
