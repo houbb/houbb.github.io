@@ -3,7 +3,7 @@ layout: post
 title:  Schematron 
 date:  2017-7-3 17:33:25 +0800
 categories: [XML]
-tags: [schematron]
+tags: [xml]
 published: true
 ---
 
