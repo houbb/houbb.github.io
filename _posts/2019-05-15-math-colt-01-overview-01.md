@@ -4,7 +4,7 @@ title: Colt-数学计算库
 date:  2019-5-10 11:08:59 +0800
 categories: [Math]
 tags: [math, sh]
-published: false
+published: true
 ---
 
 # colt
