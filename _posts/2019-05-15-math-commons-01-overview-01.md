@@ -127,7 +127,7 @@ Commons Math根据Apache License 2.0版的条款分发：。
 
 [Colt]()
 
-[]()
+[Numpy]()
 
 # 参考资料
 
