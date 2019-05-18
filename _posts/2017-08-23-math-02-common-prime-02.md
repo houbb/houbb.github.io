@@ -129,26 +129,27 @@ bool isPrime_2( int num )
 
 代码如下：
 
-```c
-bool isPrime_3(int num)
-{
-    //两个较小数另外处理
-    if(num == 2 || num==3 )
-         return 1;
+```java
+public static boolean isPrime(final int num) {
+    //1. 特殊值的判断
+    if (num <= 3) {
+        return num > 1;
+    }
+    //6x+1 6x+5
+    if (num % 6 != 1 && num % 6 != 5) {
+        return false;
+    }
 
-    //不在6的倍数两侧的一定不是质数
-    if(num %6!= 1&&num %6!= 5)
-        return 0;
-
-    int tmp = sqrt(num);
-
+    int tmp = (int) Math.sqrt(num);
     //在6的倍数两侧的也可能不是质数
-    for(int i= 5;i <=tmp; i+=6 )
-        if(num %i== 0||num %(i+ 2)==0 )
-            return 0 ;
-
+    for (int i = 5; i <= tmp; i += 6) {
+        //可能会被两侧的数分解。
+        if (num % i == 0 || num % (i + 2) == 0) {
+            return false;
+        }
+    }
     //排除所有，剩余的是质数
-    return 1 ;
+    return true;
 }
 ```
 
@@ -161,7 +162,6 @@ bool isPrime_3(int num)
 与前提相矛盾，因此x不可以被6n+2除尽同理，x不可以被6n+3，6n+4除尽 
 
 证毕
-
 
 
 ## 个人的优化方案
@@ -178,73 +178,153 @@ bool isPrime_3(int num)
 
 # 素数筛法
 
-## 准备工作
+## 问题
 
-素数筛法是这样的：
+埃式筛法：给定一个正整数n(n<=10^6)，问n以内有多少个素数？
 
-1. 开一个大的bool型数组prime[]，大小就是n+1就可以了.先把所有的下标为奇数的标为true,下标为偶数的标为false.
+## 做法
 
-2. 然后全部初始化为 false
+做法其实很简单，首先将2到n范围内的整数写下来，其中2是最小的素数。
 
-3. 最后输出bool数组中的值为true的单元的下标，就是所求的n以内的素数了。
+将表中所有的2的倍数划去，表中剩下的最小的数字就是3，他不能被更小的数整除，所以3是素数。
 
-## 基本原理
+再将表中所有的3的倍数划去……
 
-原理很简单，就是当i是质(素)数的时候，i的所有的倍数必然是合数。
+以此类推，如果表中剩余的最小的数是m，那么m就是素数。
 
-如果i已经被判断不是质数了，那么再找到i后面的质数来把这个质数的倍数筛掉。
+然后将表中所有m的倍数划去，像这样反复操作，就能依次枚举n以内的素数，这样的时间复杂度是 `O(nloglogn)`。
 
-- 数据的重复利用
+## 题解
 
-出了这样的优化以外，另外在每一次用当前已得出的素数筛选后面的数的时候可以一步跳到已经被判定不是素数的
-
-数后面，这样就减少了大量的重复计算。（比如我们看到的，i=0与i=1时都标了[6],这个就是重复的计算。）
-
-我们可以发现一个规律，那就是3（即i=0）是从下标为[3]的开始筛的，5（即i=1）是从下标为[11]开始筛的（因为[6]
-
-已经被3筛过了）。然后如果n很大的话，继续筛。7（i=2）本来应该从下标为[9]开始筛，但是由于[9]被筛过了，而
-
-[16]也已经被5（i=1）筛过了。于是7（i=2）从[23]（就是2*23+3=49）开始筛。
-
-于是外围循环为i时，内存循环的筛法是从 i+(2*i+3)*(i+1)即i*(2*i+6)+3开始筛的。
+如果要是按照一个一个判断是否是素数然后把ans+1，时间复杂度为O(n√n)，对于10^6的数据时间复杂度就是O(10^9)，必定会超时，但此时埃氏筛法的时间复杂度只有O(nloglogn)。
 
 ## 示例代码
 
-```c
-#include<stdio.h>
-#include<math.h>
-#define N 10000001
+任意给定一个整数，返回从2-整数范围内的所有整数。
 
-bool prime[N];
-
-int main()
-{
-
-   int i, j;
-   for(i=2; i<N; i++)
-      if(i%2) 
-        prime[i]=true;
-      else 
-        prime[i]=false;
-
-   for(i=3; i<=sqrt(N); i++)
-   {   
-        if(prime[i])
-           for(j=i+i; j<N; j+=i) 
-                prime[i]=false;
-   }
-
-   for(i=2; i<100; i++)//由于输出将占用太多io时间，所以只输出2-100内的素数。可以把100改为N
-   if( prime[i] )printf("%d ",i);
-   return 0;
+```java
+/**
+ * 获取对应的素数列表
+ *
+ * @param limit 最大数值
+ * @return 素数列表
+ */
+public static List<Integer> primeList(final int limit) {
+    if (limit <= 1) {
+        return Collections.emptyList();
+    }
+    // 存储素数结果的列表
+    List<Integer> resultList = new ArrayList<>();
+    // 初始化是否为素数列表
+    List<Boolean> isPrimeList = new ArrayList<>(limit);
+    for(int i = 0; i <= limit; i++) {
+        isPrimeList.add(true);
+    }
+    isPrimeList.set(0, false);
+    isPrimeList.set(1, false);
+    for (int i = 2; i <= limit; i++) {
+        if (isPrimeList.get(i)) {
+            // 加入素数列表
+            resultList.add(i);
+            // 将其对应的所有倍数，都设置为 false.
+            for (int j = 2 * i; j <= limit; j += i) {
+                isPrimeList.set(j, false);
+            }
+        }
+    }
+    return resultList;
 }
 ```
 
+## 算法分析
 
-# 其他算法
+- 缺点
 
-米勒罗宾
+存在重复筛选，比如6既可以被2筛掉，又可以被3筛掉。
 
+原因：任意一个整数可以写成一些素数的乘积 `n=p1^a * p2^b * p3^c`，其中p1 < p2 < p3，这样这个数n就能被p1,p2和p3筛掉
+
+- 解决方法
+
+按照一个数的最小素因子筛去(也就是这里的p1)就可以啦，这也就有了线性筛素数
+
+上个图，可能更好理解，这是普通筛法每次循环分别筛掉的数
+
+![重复筛选](https://upload-images.jianshu.io/upload_images/4173887-5856eaa827ed0f2f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
+
+
+# 线性筛选
+
+## 基本思想
+
+当前数字是 `n=p1^a * p2^b * p3^c` (p1 < p2 < p3且均为素数)，一次循环筛除小于等于p1的素数乘以n得到的数。
+
+比如p1之前有pi,pj和pk三个素数，则此次循环筛掉pi*n,pj*n,pk*n和p1*n ，
+
+实现见代码的标注一，prime 里的素数都是升序排列的，break时的prime[j] 就是这里的p1。
+
+## 优点
+
+没有重复筛同一个数
+
+## 原因
+
+按照一个数的最小素因子筛选，比如6只按2筛去
+
+![线性筛选](https://upload-images.jianshu.io/upload_images/4173887-4e1c28d9e9651453.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp)
+
+从图上我们看到，第一列筛掉的是最小素因子是2的数，第二列筛掉的是最小素因子为3的数，依次类推，可以把所有的合数都筛掉
+
+因为是按照最小素因子筛选，所以可以保证每个数都只会被筛一遍
+
+## 示例代码
+
+```java
+    /**
+     * 线性筛选(欧拉筛选)
+     *
+     * @param limit 最大数值
+     * @return 结果列表
+     */
+    public static List<Integer> primeList(final int limit) {
+        if (limit <= 1) {
+            return Collections.emptyList();
+        }
+
+        // 存储素数结果的列表
+        List<Integer> resultList = new ArrayList<>();
+        // 初始化是否为素数列表
+        List<Boolean> isPrimeList = CollectionUtils.fill(limit, true);
+        for (int i = 0; i < limit; i++) {
+            isPrimeList.add(true);
+        }
+
+        for (int i = 2; i < limit; i++) {
+            if (isPrimeList.get(i)) {
+                // 加入素数列表
+                resultList.add(i);
+            }
+
+            final int pos = resultList.size();
+            for (int j = 0; j < pos && i * resultList.get(j) < limit; j++) {
+                int notPrimeIndex = i * resultList.get(j);
+                isPrimeList.set(notPrimeIndex, false);
+                //标注一
+                if (i % resultList.get(j) == 0) {
+                    break;
+                }
+            }
+        }
+
+        return resultList;
+    }
+```
+
+# 总结
+
+1. 最好的算法都是线性的
+
+2. 一般都需要数学作为基础。
 
 # 参考资料
  
@@ -265,9 +345,25 @@ int main()
 
 ## 经典算法
 
+- 埃氏筛法
+
 [埃氏筛法搜寻1亿以内素数](http://fcode.cn/algorithm-144-1.html)
 
 [筛法求素数(埃氏筛法+线性筛法+6倍数判别法)](https://blog.csdn.net/u011590573/article/details/81451542)
+
+- 线性筛选(欧拉筛选)
+
+[线性筛选(欧拉筛选)](https://www.cnblogs.com/grubbyskyer/p/3852421.html)
+
+[线性筛法(欧拉筛法)求素数](https://www.cnblogs.com/tmzbot/p/4006032.html)
+
+[关于线性素数筛](https://blog.csdn.net/qq_38515845/article/details/82322774)
+
+[线性筛素数 证明详解](https://blog.csdn.net/sdz20172133/article/details/81323662)
+
+[这只菜鸟总算搞懂了线性筛素数](https://www.jianshu.com/p/f16d318efe9b)
+
+[线性筛法](https://www.cnblogs.com/war1111/p/7401426.html)
 
 * any list
 {:toc}
