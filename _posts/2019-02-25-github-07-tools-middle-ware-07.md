@@ -21,7 +21,6 @@ web-services
 
 可参考：rocketmq kafka pulsar
 
-
 2 次 RPC+broker
 
 # Cache
