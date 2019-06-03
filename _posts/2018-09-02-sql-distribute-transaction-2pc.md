@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  SQL 2PC
+title:  SQL 2PC-两阶段提交
 date:  2018-09-02 11:03:38 +0800
 categories: [SQL]
 tags: [sql, transaction, distributed, sh]
