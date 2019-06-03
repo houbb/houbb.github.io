@@ -8,11 +8,15 @@ published: true
 ---
 
 
+# math 数学库
+ 
 # Compress 压缩算法
 
 # Secrect 加密算法
 
 # CheckSum 验签
+
+v0.0.1 基础实现 Done
 
 # Sisyphus 重试框架
 
@@ -22,9 +26,13 @@ doc
 
 test
 
+v0.0.2 基础功能 Done
+
 # Babel
 
 语言翻译工具
+
+v0.0.1 基础实现 Done
 
 * any list
 {:toc}
