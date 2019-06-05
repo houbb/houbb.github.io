@@ -131,6 +131,35 @@ Query OK, 0 rows affected (0.01 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 ```
 
+# 使用工具连接
+
+使用 data-grip 成功访问
+
+## 代码访问失败
+
+Method threw 'com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException' exception.
+
+
+### 原因
+
+[mysql 8.0 Druid连接时调用getServerCharset报空指针异常解决方法](https://www.cnblogs.com/zhjh256/p/9020049.html)
+
+最新版的 mysql 版本变化了。
+
+### 关闭最新版本
+
+```
+docker container stop mysql
+```
+
+# 安装 mysql:5.7
+
+## 下载
+
+```
+docker pull mysql:5.7
+```
+
 # 参考资料
 
 [docker windows 7 mysql安装使用教程](https://www.cnblogs.com/jjg0519/p/6070241.html)
