@@ -131,6 +131,15 @@ Query OK, 0 rows affected (0.01 sec)
 Records: 0  Duplicates: 0  Warnings: 0
 ```
 
+## 退出 exec
+
+```
+root@52907595fed0:/# exit
+exit
+```
+
+或者使用 `CRTL+D`
+
 # 使用工具连接
 
 使用 data-grip 成功访问
@@ -160,6 +169,174 @@ docker container stop mysql
 docker pull mysql:5.7
 ```
 
+
+# 无法显示中文问题
+
+## 现象
+
+所有的中文都会消失。
+
+-  额外信息
+
+使用工具也看不到注释等中文信息，确信是丢失了。
+
+确切的说是变成了 `""` 空白的信息。
+
+## 排查过程
+
+- 连接软件
+
+使用的 SecureCRT 软件，看了编码设置是没问题的。
+
+- 查看 mysql 数据库编码配置
+
+```
+mysql> show variables like 'character_set_database';
++------------------------+---------+
+| Variable_name          | Value   |
++------------------------+---------+
+| character_set_database | utf8mb4 |
++------------------------+---------+
+1 row in set (0.00 sec)
+```
+
+- 查看表的编码配置
+
+```
+mysql> show create table meta_field;
+
+ENGINE=InnoDB AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 
+```
+
+发现都是指定编码了。
+
+## 容器本身
+
+是否需要在进入容器的时候指定编码呢？
+
+
+### 直接登录
+
+```
+docker@default:~$ docker exec -it mysql bash
+root@52907595fed0:/# locale
+LANG=
+LANGUAGE=
+LC_CTYPE="POSIX"
+LC_NUMERIC="POSIX"
+LC_TIME="POSIX"
+LC_COLLATE="POSIX"
+LC_MONETARY="POSIX"
+LC_MESSAGES="POSIX"
+LC_PAPER="POSIX"
+LC_NAME="POSIX"
+LC_ADDRESS="POSIX"
+LC_TELEPHONE="POSIX"
+LC_MEASUREMENT="POSIX"
+LC_IDENTIFICATION="POSIX"
+LC_ALL=
+```
+
+会导致编码环境的不正确性。
+
+### 指定编码登录
+
+```
+docker run -it mysql env LANG=C.UTF-8 /bin/bash
+```
+
+剩下就是解决 locale 的问题了。
+
+也很简单，只需要启动或者进入容器的时候添加个参数 `env LANG=C.UTF-8` 即可。 
+
+```
+docker@default:~$ docker run -it mysql env LANG=C.UTF-8 /bin/bash
+root@c3a39ae5121b:/# locale
+LANG=C.UTF-8
+LANGUAGE=
+LC_CTYPE="C.UTF-8"
+LC_NUMERIC="C.UTF-8"
+LC_TIME="C.UTF-8"
+LC_COLLATE="C.UTF-8"
+LC_MONETARY="C.UTF-8"
+LC_MESSAGES="C.UTF-8"
+LC_PAPER="C.UTF-8"
+LC_NAME="C.UTF-8"
+LC_ADDRESS="C.UTF-8"
+LC_TELEPHONE="C.UTF-8"
+LC_MEASUREMENT="C.UTF-8"
+LC_IDENTIFICATION="C.UTF-8"
+LC_ALL=
+```
+
+- 登录尝试
+
+```
+root@c3a39ae5121b:/# mysql -root -p
+Enter password: 
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+```
+
+发现登录失败。
+
+- 重启服务测试
+
+```
+
+```
+
+## 连接报错
+
+结果连接报错
+
+```
+root@42433c238c70:/# mysql -uroot -p
+Enter password: 
+
+ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)
+```
+
+### 重启服务测试
+
+重启服务提示没这个服务
+
+### 建立软连接
+
+- 查找对应的 mysql.sock
+
+```
+# find / -name mysql.sock
+/tmp/mysql.sock
+```
+
+是可以找到的。
+
+- 这个文件的作用 
+
+在这之前，需要明白mysql.sock这个文件有什么用？
+
+连接localhost通常通过一个Unix域套接字文件进行，一般是/tmp/mysql.sock。
+
+如果套接字文件被删除了，本地客户就不能连接。这可能发生在你的系统运行一个cron任务删除了/tmp下的临时文件。
+
+如果你因为丢失套接字文件而不能连接，你可以简单地通过重启服务器重新创建得到它。因为服务器在启动时重新创建它。
+
+- 建立软连接
+
+```
+ $  ln -s /var/lib/mysql/mysql.sock /tmp/mysql.sock
+```
+
+发现还是不行
+
+只用把my.cnf的socket原先是 /uer/local/mysql/tmp/mysql.sock 改为 /tmp/mysql.sock 一步就解决了
+
+意思是一样的。
+
+- 直接复制过去
+
+
+
 # 参考资料
 
 [docker windows 7 mysql安装使用教程](https://www.cnblogs.com/jjg0519/p/6070241.html)
@@ -167,6 +344,16 @@ docker pull mysql:5.7
 [在Windows上体验Docker（四）运行mysql镜像](https://blog.csdn.net/maxwoods/article/details/81329953)
 
 [Docker为什么刚运行就退出了?](https://blog.csdn.net/meegomeego/article/details/50707532)
+
+## 中文无法输入问题
+
+[docker下终端无法输入中文问题](https://blog.csdn.net/wen3qin/article/details/78386654)
+
+## mysql 无法启动问题
+
+[亲测有效，解决Can 't connect to local MySQL server through socket '/tmp/mysql.sock '(2) ";](https://blog.csdn.net/hjf161105/article/details/78850658)
+
+[Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock](https://blog.csdn.net/weixin_43445841/article/details/85040252)
 
 * any list
 {:toc}
