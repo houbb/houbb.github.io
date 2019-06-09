@@ -324,7 +324,11 @@ ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run
 - 建立软连接
 
 ```
- $  ln -s /var/lib/mysql/mysql.sock /tmp/mysql.sock
+ $  ln -s /var/run/mysqld/mysqld.sock /tmp/mysql.sock
+```
+
+```
+$  ln -s /tmp/mysql.sock /var/run/mysqld/mysqld.sock 
 ```
 
 发现还是不行
@@ -333,7 +337,88 @@ ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run
 
 意思是一样的。
 
-- 直接复制过去
+### 初始化指定的方式
+
+```
+1、先创建好mysql容器
+$   docker run -p 13306:3306 --name mysql7   -v /opt/mysql/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
+2、进入容器
+$   docker exec -it mysql7 env LANG=C.UTF-8  /bin/bash
+3、登陆容器内数据库
+mysql -u root -p 设置的密码
+```
+
+按照上面的方式成功启动。
+
+# 数据库执行流程
+
+## 数据库
+
+```
+mysql> create database jdbc;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use jdbc
+Database changed
+```
+
+## 脚本
+
+```sql
+drop table if exists meta_field;
+
+drop table if exists meta_model;
+
+/*==============================================================*/
+/* Table: meta_field                                            */
+/*==============================================================*/
+create table meta_field
+(
+   ID                   int not null auto_increment comment '自增长主键',
+   uid                  varchar(36) comment '唯一标识',
+   name                 varchar(125) comment '名称',
+   dbName         varchar(36) comment '数据库表名',
+   alias                varchar(125) comment '别名',
+   comment          varchar(255) comment '描述',
+   isNullable           bool comment '是否可为空',
+   dataType             varchar(36) comment '数据类型',
+   createTime           datetime comment '创建时间',
+   updateTime           datetime comment '更新时间',
+   primary key (ID)
+)
+auto_increment = 1000
+DEFAULT CHARSET=utf8;
+
+alter table meta_field comment '元数据字段表';
+
+/*==============================================================*/
+/* Table: meta_model                                            */
+/*==============================================================*/
+create table meta_model
+(
+   ID                   int not null auto_increment comment '自增长主键',
+   uid                  varchar(36) comment '唯一标识',
+   name                 varchar(125) comment '名称',
+   dbName         varchar(36) comment '数据库表名',
+   alias                varchar(125) comment '别名',
+   comment          varchar(255) comment '描述',
+   category             varchar(36) comment '分类',
+   isVisible            bool comment '是否可查询',
+   isEditable           bool comment '是否可编辑',
+   createTime           datetime comment '创建时间',
+   updateTime           datetime comment '更新时间',
+   primary key (ID)
+)
+DEFAULT CHARSET=utf8;
+
+alter table meta_model comment '元数据实体表';
+```
+
+## 测试查询
+
+```
+
+```
 
 
 
