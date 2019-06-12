@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Java Bit Operation
+title: Java Bit Operation-位运算-01
 date:  2018-09-13 13:09:36 +0800
 categories: [Java]
 tags: [java, java-base, TODO, sf]
 published: true
-excerpt: java 位运算
 ---
 
 # 进制
