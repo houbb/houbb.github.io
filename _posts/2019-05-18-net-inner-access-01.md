@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 怎样从外网访问内网服务器
-date:  2019-06-14 08:06:08
+date:  2019-5-10 11:08:59 +0800
 categories: [Net]
 tags: [net, sh]
 published: true
