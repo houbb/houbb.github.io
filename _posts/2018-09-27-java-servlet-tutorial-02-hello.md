@@ -111,6 +111,22 @@ excerpt: Java Servlet 教程之入门案例 hello world
             </plugin>
         </plugins>
     </build>
+
+    <build>
+        <finalName>servlet</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>${plugin.tomcat.version}</version>
+                <configuration>
+                    <port>8081</port>
+                    <path>/</path>
+                    <uriEncoding>${project.build.sourceEncoding}</uriEncoding>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
 ```
 
