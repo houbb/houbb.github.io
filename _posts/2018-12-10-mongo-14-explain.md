@@ -552,6 +552,40 @@ PROJECTION
 
 限定返回字段时候stage的返回
 
+
+# 聚合查询
+
+## 对于聚合的查询
+
+```sql
+{ aggregate: "xxx", 
+pipeline: [ { $unwind: "$xxx" }, 
+{ $match: { key1: "value1", key2: "value2", merId: "xxx", time: { $gt: 20190701000000000, $lte: 20190701143451346 } } }, 
+{ $group: { _id: "xxx", totalAmount: { $sum: "xxx" } } } ] }
+```
+
+## 不同的查询计划方式
+
+- 直接 
+
+```
+db.getCollection('xxx').aggregate(XXX).explain()
+```
+
+可以看到命中的索引
+
+- 使用 find
+
+但是下面的语句，却是全文扫描。
+
+```
+db.getCollection('xxx').aggregate(XXX).explain()
+```
+
+## mongoTempalate
+
+对于 redis 提供的模板，直接使用 mongoTempalate.executeCommand(XXX) 经验证是可以命中索引的。
+
 # 参考资料
 
 [Indexes](https://docs.mongodb.com/manual/indexes/)

@@ -284,7 +284,7 @@ class   constantPoolKlass;
 而在堆上创建的这个instanceOopDesc所对应的地址会被用来创建一个引用，赋给当前线程运行时栈上的一个变量。
 
 
-# 关于Mark Word
+# 关于 Mark Word
 
 mark word 是对象头中较为神秘的一部分，也是本文讲述的重点，JDK oop.hpp源码文件中，有几行重要的注释，
 
@@ -330,13 +330,265 @@ class oopDesc {
 }
 ```
 
+其中的mark word即上述 _mark字段，它在JVM中的表示类型是markOop, 
 
+部分关键源码如下所示，源码中展示了markWord各个字段的意义及占用大小(与机器字宽有关系)，如GC分代年龄、锁状态标记、哈希码、epoch、是否可偏向等信息：
 
+```c
+...
+class markOopDesc: public oopDesc {
+ private:
+  // Conversion
+  uintptr_t value() const { return (uintptr_t) this; }
+ 
+ public:
+  // Constants
+  enum { age_bits                 = 4,
+         lock_bits                = 2,
+         biased_lock_bits         = 1,
+         max_hash_bits            = BitsPerWord - age_bits - lock_bits - biased_lock_bits,
+         hash_bits                = max_hash_bits > 31 ? 31 : max_hash_bits,
+         cms_bits                 = LP64_ONLY(1) NOT_LP64(0),
+         epoch_bits               = 2
+  };
+ 
+  // The biased locking code currently requires that the age bits be
+  // contiguous to the lock bits.
+  enum { lock_shift               = 0,
+         biased_lock_shift        = lock_bits,
+         age_shift                = lock_bits + biased_lock_bits,
+         cms_shift                = age_shift + age_bits,
+         hash_shift               = cms_shift + cms_bits,
+         epoch_shift              = hash_shift
+  };
+...
+```
 
+因为对象头信息只是对象运行时自身的一部分数据，相比实例数据部分，头部分属于与业务无关的额外存储成功。
 
+为了提高对象对堆空间的复用效率，Mark Word被设计成一个非固定的数据结构以便在极小的空间内存储尽量多的信息，它会根据对象的状态复用自己的存储空间。
 
+## 字段枚举值
 
+对于上述源码，mark word中字段枚举意义解释如下：
 
+```
+hash： 保存对象的哈希码
+age： 保存对象的分代年龄
+biased_lock： 偏向锁标识位
+lock： 锁状态标识位
+JavaThread*： 保存持有偏向锁的线程ID
+epoch： 保存偏向时间戳
+```
+
+## 锁标记枚举的意义解释如下：
+
+```
+locked_value             = 0,//00 轻量级锁
+unlocked_value           = 1,//01 无锁
+monitor_value            = 2,//10 监视器锁，也叫膨胀锁，也叫重量级锁
+marked_value             = 3,//11 GC标记
+biased_lock_pattern      = 5 //101 偏向锁
+```
+
+实际上，markword的设计非常像网络协议报文头：将mark word划分为多个比特位区间，并在不同的对象状态下赋予不同的含义。
+
+下图是来自网络上的一张协议图。
+
+![协议图](https://img-blog.csdn.net/20180524112731364)
+
+上述协议字段正对应着源码中所列的枚举字段，这里简要进行说明一下。
+
+### hash
+
+对象的hash码，hash代表的并不一定是对象的（虚拟）内存地址，但依赖于内存地址，具体取决于运行时库和JVM的具体实现，底层由C++实现，实现细节参考OpenJDK源码。但可以简单的理解为对象的内存地址的整型值。
+
+### age
+
+对象分代GC的年龄。
+
+分代GC的年龄是指Java对象在分代垃圾回收模型下(现在JVM实现基本都使用的这种模型)，对象上标记的分代年龄，当该年轻代内存区域空间满后，或者到达GC最达年龄时，会被扔进老年代等待老年代区域满后被FullGC收集掉，这里的最大年龄是通过JVM参数设定的：-XX:MaxTenuringThreshold ，默认值是15。
+
+那这个年龄具体是怎么计算的呢？
+
+下图展示了该年龄递增的过程：
+
+1、 首先，在对象被new出来后，放在Eden区，年龄都是0
+
+![放在Eden区](https://img-blog.csdn.net/20180524112823369)
+
+2、经过一轮GC后，B0和F0被回收，其它对象被拷贝到S1区，年龄增加1，
+
+注：如果S1不能同时容纳A0,C0,D0,E0和G0，将被直接丢入Old区
+
+![经过一轮GC后](https://img-blog.csdn.net/20180524112902116)
+
+3、再经一轮GC，Eden区中新生的对象M0,P0及S1中的B1,E1,G1不被引用将被回收，而H0,K0,N0及S1中的A1,D1被拷贝到S2区中，对应年龄增加1
+
+![再经一轮GC](https://img-blog.csdn.net/20180524112926348)
+
+4、 如此经过2、3过滤循环进行，当S1或S2满，或者对象的年龄达到最大年龄(15)后仍然有引用存在，则对象将被转移至Old区。
+
+# 锁标记：lock/biased_lock/epoch/JavaThread*
+
+锁标记位，此锁为重量级锁，即对象监视器锁。
+
+Java在使用synchronized关键字对方法或块进行加锁时，会触发一个名为“objectMonitor”的监视器对目标代码块执行加锁的操作。
+
+当然synchronized方法和synchronized代码块的底层处理机制稍有不同。synchronized方法编译后，会被打上“ACC_SYNCHRONIZED”标记符。
+
+而synchronized代码块编译之后，会在同步代码的前后分别加上“monitorenter”和“monitorexit”的指令。
+
+当程序执行时遇到到monitorenter或ACC_SYNCHRONIZED时，会检测对象头上的lock标记位，该标记位被如果被线程初次成功访问并设值，则置为1，表示取锁成功，如果再次取锁再执行++操作。
+
+在代码块执行结束等待返回或遇到异常等待抛出时，会执行monitorexit或相应的放锁操作，锁标记位执行--操作，如果减到0，则锁被完全释放掉。
+
+关于objectMonitor的实现细节，参考 [JDK源码](https://github.com/openjdk-mirror/jdk7u-hotspot/blob/50bdefc3afe944ca74c3093e7448d6b889cd20d1/src/share/vm/runtime/objectMonitor.hpp#L193)
+
+注意，在jdk1.6之前，synchronized加锁或取锁等待操作最终会被转换为操作系统中线程操作原语，如激活、阻塞等。
+
+这些操作会导致CPU线程上下文的切换，开销较大，因此称之为重量级锁。
+
+但后续JDK版本中对其实现做了大幅优化，相继出现了轻量级锁，偏向锁，自旋锁，自适应自旋锁，锁粗化及锁消除等策略。
+
+这里仅做简单介绍，不进行展开。
+
+![常见锁](https://img-blog.csdn.net/20180524113050900)
+
+轻量级锁，如上图所示，是当某个资源在没有竞争或极少竞争的情况下，JVM会优先使用CAS操作，让线程在用户态去尝试修改对象头上的锁标记位，从而避免进入内核态。
+
+这里CAS尝试修改锁标记是指尝试对指向当前栈中保存的lock record的线程指针的修改，即对biased_lock标记做CAS修改操作。
+
+如果发现存在多个线程竞争(表现为CAS多次失败)，则膨胀为重量级锁，修改对应的lock标记位并进入内核态执行锁操作。
+
+注意，这种膨胀并非属于性能的恶化，相反，如果竞争较多时，CAS方式的弊端就很明显，因为它会占用较长的CPU时间做无谓的操作。
+
+此时重量级锁的优势更明显。
+
+偏向锁，是针对只会有一个线程执行同步代码块时的优化，如果一个同步块只会被一个线程访问，则偏向锁标记会记录该线程id，当该线程进入时，只用check 线程id是否一致，而无须进行同步。锁偏向后，会依据epoch(偏向时间戳)及设定的最大epoch判断是否撤销锁偏向。
+
+自旋锁大意是指线程不进入阻塞等待，而只是做自旋等待前一个线程释放锁。不在对象头讨论范围之列，这里不做讨论。
+
+# 实例数据
+
+实例数据instance Data是占用堆内存的主要部分，它们都是对象的实例字段。
+
+那么计算这些字段的大小，主要思路就是根据这些字段的类型大小进行求和的。
+
+字段类型的标准大小，如Java对象格式概述中表格描述的，除了引用类型会受CPU架构及是否开启指针压缩影响外，其它都是固定的。
+
+因此计算起来比较简单。但实际情其实并不这么简单，例如如下对象：
+
+```java
+class People{
+   int age = 20;
+   String name = "Xiaoming";
+}
+class Person extends People{
+    boolean married = false;
+    long birthday = 128902093242L;
+    char tag = 'c';
+    double sallary = 1200.00d;
+}
+```
+
+Person对象实例数据的大小应该是多少呢？
+
+这里假设使用64位机器，采用指针压缩，则对象头的大小为：8(_mark)+4(_klass) = 12
+
+然后实例数据的大小为： 4(age)+4(name) + 8(birthday) + 8(sallary) + 2(tag) + 1(married) = 27
+
+因此最终的对象本身大小为：12+27+1(padding) = 40字节
+
+## 规则
+
+注意，为了尽量减少内存空间的占用，这里在计算的过程中需要遵循以下几个规则：
+
+1: 除了对象整体需要按8字节对齐外，每个成员变量都尽量使本身的大小在内存中尽量对齐。比如 int 按 4 位对齐，long 按 8 位对齐。
+
+2：类属性按照如下优先级进行排列：长整型和双精度类型；整型和浮点型；字符和短整型；字节类型和布尔类型，最后是引用类型。这些属性都按照各自的单位对齐。
+
+3：优先按照规则一和二处理父类中的成员，接着才是子类的成员。
+
+4：当父类中最后一个成员和子类第一个成员的间隔如果不够4个字节的话，就必须扩展到4个字节的基本单位。
+
+5：如果子类第一个成员是一个双精度或者长整型，并且父类并没有用完8个字节，JVM会破坏规则2，按照整形（int），短整型（short），字节型（byte），引用类型（reference）的顺序，向未填满的空间填充。
+
+最后计算引用类型字段的实际大小："Xiaoming"，按字符串对象的字段进行计算，对象头12字节，hash字段4字节，char[] 4字节，共12+4+4+4(padding) = 24字节，其中char[]又是引用类型，且是数组类型，其大小为：对象头12+4(length) + 9(arrLength) * 2(char) +4(padding) = 40字节。
+
+所以综上所述，一个Person对象占用内存的大小为104字节。
+
+# 关于指针压缩
+
+一个比较明显的问题是，在64位机器上，如果开启了指针压缩后，则引用只占用4个字节，4字节的最大寻址空间为2^32=4GB, 那么如何保证能满足寻址空间大于4G的需求呢？
+
+开启指针压缩后，实际上会压缩的对象包括：每个Class的属性指针(静态成员变量)及每个引用类型的字段(包括数组)指针，而本地变量，堆栈元素，入参，返回值，NULL这些指针不会被压缩。在开启指针压缩后，如前文源码所述，markWord中的存储指针将是_compressed_klass，对应的类型是narrowOop，不再是wideKlassOop了，有什么区别呢？
+
+wideKlassOop和narrowOop都指向InstanceKlass对象，其中narrowOop指向的是经过压缩的对象。
+
+简单来说，wideKlassOop可以达到整个寻址空间。
+
+而narrowOop虽然达不到整个寻址空间，但它面对也不再是个单纯的byte地址，而是一个object，也就是说使用narrowOop后，压缩后的这4个字节表示的4GB实际上是4G个对象的指针，大概是32GB。
+
+JVM会对对应的指针对象进行解码, JDK源码中，[oop.hpp](https://github.com/openjdk-mirror/jdk7u-hotspot/blob/50bdefc3afe944ca74c3093e7448d6b889cd20d1/src/share/vm/oops/oop.hpp) 源码文件中定义了抽象的编解码方法，用于将narrowOop解码为一个正常的引用指针，或将一下正常的引用指针编码为narrowOop：
+
+```c
+  // Decode an oop pointer from a narrowOop if compressed.
+  // These are overloaded for oop and narrowOop as are the other functions
+  // below so that they can be called in template functions.
+  static oop decode_heap_oop_not_null(oop v);
+  static oop decode_heap_oop_not_null(narrowOop v);
+  static oop decode_heap_oop(oop v);
+  static oop decode_heap_oop(narrowOop v);
+ 
+  // Encode an oop pointer to a narrow oop.  The or_null versions accept
+  // null oop pointer, others do not in order to eliminate the
+  // null checking branches.
+  static narrowOop encode_heap_oop_not_null(oop v);
+  static narrowOop encode_heap_oop(oop v);
+```
+
+# 对齐填充
+
+对齐填充是底层CPU数据总线读取内存数据时的要求。
+
+例如，通常CPU按照字单位读取，如果一个完整的数据体不需要对齐，那么在内存中存储时，其地址有极大可能横跨两个字，例如某数据块地址未对齐，存储为1-4，而cpu按字读取，需要把0-3字块读取出来，再把4-7字块读出来，最后合并舍弃掉多余的部分。
+
+这种操作会很多很多，且很频繁，但如果进行了对齐，则一次性即可取出目标数据，将会大大节省CPU资源。
+
+在hotSpot虚拟机中，默认的对齐位数是8，与CPU架构无关，如下代码中的objectAlignment：
+
+```c
+// Try to get the object alignment (the default seems to be 8 on Hotspot, 
+  // regardless of the architecture).
+  int objectAlignment = 8;
+  try {
+    final Class<?> beanClazz = Class.forName("com.sun.management.HotSpotDiagnosticMXBean");
+    final Object hotSpotBean = ManagementFactory.newPlatformMXBeanProxy(
+      ManagementFactory.getPlatformMBeanServer(),
+      "com.sun.management:type=HotSpotDiagnostic",
+      beanClazz
+    );
+    final Method getVMOptionMethod = beanClazz.getMethod("getVMOption", String.class);
+    final Object vmOption = getVMOptionMethod.invoke(hotSpotBean, "ObjectAlignmentInBytes");
+    objectAlignment = Integer.parseInt(
+        vmOption.getClass().getMethod("getValue").invoke(vmOption).toString()
+    );
+    supportedFeatures.add(JvmFeature.OBJECT_ALIGNMENT);
+  } catch (Exception e) {
+    // Ignore.
+  }
+
+  NUM_BYTES_OBJECT_ALIGNMENT = objectAlignment;
+```
+
+可以看出，通过HotSpotDiagnosticMXBean.getVMOption("ObjectAlignmentBytes").getValue()方法可以拿到当前JVM环境下的对齐位数。
+
+注意，这里的HotSpotDiagnosticMXBean是JVM提供的JMX中一种可被管理的资源，即HotSpot信息资源。
+
+# 总结
+
+知识的表面看起来都是简单的，实际底层都很多巧妙的设计。
 
 # 参考资料 
 
