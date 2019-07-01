@@ -3,7 +3,7 @@ layout: post
 title: Java Random 随机详解
 date:  2019-2-26 09:48:47 +0800
 categories: [Java]
-tags: [java, sh]
+tags: [java, java-base, sh]
 published: true
 excerpt: Java Random 随机详解
 ---
