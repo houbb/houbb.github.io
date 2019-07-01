@@ -57,6 +57,13 @@ $   less XXx.log | grep "keyword" | grep -v "excludes"
 
 `-v` 可以指定排除的字段。
 
+## 超时的查询
+
+利用正则表达式查看相关的耗时
+
+```
+grep npay application.2019-06-27-0.log | egrep 'ELAPSED:[1-9][0-9][0-9][0-9]'
+```
 
 # Windows 可用命令行工具
 
