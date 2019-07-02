@@ -506,30 +506,6 @@ MonetDB Paper中宣称在In-Memory模式下，单核可以每秒处理多达GB�
 
 查询列的个数对查询性能影响不大。
 
-# 拓展阅读
-
-## 列式数据库
-
-[列式数据库 info-bright](https://houbb.github.io/2018/12/27/info-bright)
-
-ClickHouse
-
-Vertica
-
-Hyper 实时编译 JIT 寄存器流水线
-
-IBM Netezza 计算下压
-
-## 其他
-
-[大宽表]()
-
-- 可以根据这本 pdf 整理一些列的博客。
-
-[内存相关知识](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf)
-
-[MMAP 内存映射](https://houbb.github.io/2018/09/21/java-io-08-mmap-08)
-
 # 参考资料的学习方法
 
 ## 背景
