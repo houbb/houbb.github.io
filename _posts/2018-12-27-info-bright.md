@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Infobright
+title: 列式数据库 Infobright
 date: 2018-12-27 09:04:34 +0800
 categories: [SQL]
 tags: [sql, big-data, sh]
