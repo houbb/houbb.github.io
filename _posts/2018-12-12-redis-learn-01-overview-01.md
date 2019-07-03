@@ -91,5 +91,7 @@ published: true
 
 [https://github.com/antirez/redis](https://github.com/antirez/redis)
 
+[https://github.com/huangz1990/redis-3.0-annotated](https://github.com/huangz1990/redis-3.0-annotated)
+
 * any list
 {:toc}
