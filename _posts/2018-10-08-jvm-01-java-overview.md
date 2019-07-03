@@ -1,11 +1,10 @@
 ---
 layout: post
-title: JVM-01-Java
+title: JVM-01-jvm index
 date:  2018-10-08 07:19:52 +0800
 categories: [Java]
-tags: [sql, java, jdbc, sf]
+tags: [sql, java, index, sf]
 published: true
-excerpt: JVM 学习笔记之走近 Java
 ---
 
 # Java 技术体系
