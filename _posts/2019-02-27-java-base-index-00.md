@@ -30,7 +30,7 @@ java 基础知识整理汇总。
 
 [try-catch-finally](https://houbb.github.io/2019/04/16/java-try-catch-finally)
 
-[finalize]()
+[finalize](https://houbb.github.io/2019/04/16/java-base-03-finalize-03)
 
 - 04 引用
 
