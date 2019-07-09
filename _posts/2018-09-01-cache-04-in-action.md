@@ -1,12 +1,11 @@
 ---
 layout: post
-title: 框架实战-01-缓存优化篇
-date:  2019-5-10 11:08:59 +0800
-categories: [InAction]
-tags: [in-action, cache, sh]
+title:  Cache Travel-04-in action
+date:  2018-09-01 12:24:42 +0800
+categories: [Cache]
+tags: [cache, redis, in-action, sh]
 published: true
 ---
-
 
 # 优化方案
 
