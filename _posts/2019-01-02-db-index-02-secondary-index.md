@@ -184,7 +184,7 @@ CDH Search 是 Hadoop 发行商 Cloudera 公司开发的基于 solr 的 HBase �
 
 数据查询流程：
 
-![数据查询流程：](https://pic3.zhimg.com/80/v2-7beec7808daec7cb4fd7845d758d915a_hd.jpg)
+![数据查询流程](https://pic3.zhimg.com/80/v2-7beec7808daec7cb4fd7845d758d915a_hd.jpg)
 
 # 拓展阅读
 
