@@ -1,11 +1,31 @@
 ---
 layout: post
-title: Redis Learn-07-RDF 持久化
+title: Redis Learn-07-RDB 持久化
 date: 2018-12-12 11:35:23 +0800
 categories: [Redis]
 tags: [redis, cache, sh]
 published: true
 ---
+
+# REDIS数据存储模式
+
+Redis中数据存储模式有2种：cache-only,persistence;
+
+## cache-only
+
+cache-only即只做为“缓存”服务，不持久数据，数据在服务终止后将消失，此模式下也将不存在“数据恢复”的手段，是一种安全性低/效率高/容易扩展的方式；
+
+## persistence
+
+persistence 即为内存中的数据持久备份到磁盘文件，在服务重启后可以恢复，此模式下数据相对安全。
+
+对于 persistence 持久化存储，Redis提供了两种持久化方法：
+
+Redis DataBase(简称RDB)
+
+Append-only file (简称AOF)
+
+除了这两种方法，Redis在早起的版本还存在虚拟内存的方法，现在已经被废弃。
 
 # RDB持久化
 
@@ -349,6 +369,27 @@ dir ./
 但是我关闭redis，然后把RDB文件移动到另一个A路径，再启动redis，就没有数据了，因为找不到RDB文件。然后我再修改redis的配置文件将dir配置修改为A路径，然后再启动redis，数据又有了，按照这个思路可以使用指定的RDB文件恢复redis的数据。
 
 ps: 这也很好理解，redis 只是从固定的文件恢复数据。
+
+## 其他常见配置
+
+```
+#dbfilename：持久化数据存储在本地的文件
+dbfilename dump.rdb
+#dir：持久化数据存储在本地的路径，如果是在/redis/redis-3.0.6/src下启动的redis-cli，则数据会存储在当前src目录下
+dir ./
+##snapshot触发的时机，save <seconds> <changes>  
+##如下为900秒后，至少有一个变更操作，才会snapshot  
+##对于此值的设置，需要谨慎，评估系统的变更操作密集程度  
+##可以通过“save “””来关闭snapshot功能  
+#save时间，以下分别表示更改了1个key时间隔900s进行持久化存储；更改了10个key300s进行存储；更改10000个key60s进行存储。
+save 900 1
+save 300 10
+save 60 10000
+##当snapshot时出现错误无法继续时，是否阻塞客户端“变更操作”，“错误”可能因为磁盘已满/磁盘故障/OS级别异常等  
+stop-writes-on-bgsave-error yes  
+##是否启用rdb文件压缩，默认为“yes”，压缩往往意味着“额外的cpu消耗”，同时也意味这较小的文件尺寸以及较短的网络传输时间  
+rdbcompression yes  
+```
 
 # 优缺点
 
