@@ -21,6 +21,10 @@ published: true
 
 # 相关知识整合
 
+## 官方文档
+
+[官方文档](https://redis.io/documentation)
+
 ## 入门系列教程
 
 [Redis 入门教程](https://houbb.github.io/2016/10/23/redis)
