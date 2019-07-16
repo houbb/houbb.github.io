@@ -83,6 +83,43 @@ def subscribe(*all_input_channels):
         server.pubsub_channels[channel].append(client)
 ```
 
+## 源码
+
+```c
+/* 订阅模式命令的实现 */
+void psubscribeCommand(client *c) {
+    int j;
+    // 遍历模式串
+    for (j = 1; j < c->argc; j++)
+        pubsubSubscribePattern(c,c->argv[j]);
+    c->flags |= CLIENT_PUBSUB;
+}
+/* 订阅模式的底层实现 */
+int pubsubSubscribePattern(client *c, robj *pattern) {
+    int retval = 0;
+	// 查看链表中该模式是否存在，如存在不做处理，反之则添加
+    if (listSearchKey(c->pubsub_patterns,pattern) == NULL) {
+        retval = 1;
+        pubsubPattern *pat;
+        // 添加模式串到client->pubsub_patterns链表的尾部
+        listAddNodeTail(c->pubsub_patterns,pattern);
+        incrRefCount(pattern);
+        // 构造pubsubPattern结构体并赋值
+        pat = zmalloc(sizeof(*pat));
+        pat->pattern = getDecodedObject(pattern);
+        pat->client = c;
+        // 添加pubsubPattern结构体到链表尾部
+        listAddNodeTail(server.pubsub_patterns,pat);
+    }
+    // 回复客户端
+    addReply(c,shared.mbulkhdr[3]);
+    addReply(c,shared.psubscribebulk);
+    addReplyBulk(c,pattern);
+    addReplyLongLong(c,clientSubscriptionsCount(c));
+    return retval;
+}
+```
+
 # 退订频道
 
 ## UNSUBSCRIBE 命令
@@ -130,9 +167,171 @@ def unsubscribe(*all_input_channels):
             server.pubsub_channels.remove(channel)
 ```
 
+## 源码
+
+退订的操作就放在一节里面讲了，无非就是从结构体中删除一些节点，事实就是如此，以退订频道为例：
+
+```c
+/* 退订频道的命令实现 */
+void unsubscribeCommand(client *c) {
+    if (c->argc == 1) {
+        // 退订所有频道
+        pubsubUnsubscribeAllChannels(c,1);
+    } else {
+        int j;
+        // 遍历频道，一一退订
+        for (j = 1; j < c->argc; j++)
+            // 退订频道
+            pubsubUnsubscribeChannel(c,c->argv[j],1);
+    }
+    if (clientSubscriptionsCount(c) == 0) c->flags &= ~CLIENT_PUBSUB;
+}
+
+/* 退订频道的底层实现 */
+int pubsubUnsubscribeChannel(client *c, robj *channel, int notify) {
+    dictEntry *de;
+    list *clients;
+    listNode *ln;
+    int retval = 0;
+    // 该指针可能指向字典结构中的同一个对象，此处需要保护它
+    incrRefCount(channel); 
+    // 在客户端的pubsub_channels字典中删除
+    if (dictDelete(c->pubsub_channels,channel) == DICT_OK) {
+        retval = 1;
+        // 在服务器的pubsub_channels中删除
+        de = dictFind(server.pubsub_channels,channel);
+        serverAssertWithInfo(c,NULL,de != NULL);
+        clients = dictGetVal(de); // 获取客户端链表
+        ln = listSearchKey(clients,c); // 找到该客户端对应的节点
+        serverAssertWithInfo(c,NULL,ln != NULL);
+        listDelNode(clients,ln); // 删除节点
+        if (listLength(clients) == 0) {
+            // 如果该频道下没有客户端了，就删除字典中的该频道节点
+            dictDelete(server.pubsub_channels,channel);
+        }
+    }
+    // 通知客户端
+    if (notify) {
+        addReply(c,shared.mbulkhdr[3]);
+        addReply(c,shared.unsubscribebulk);
+        addReplyBulk(c,channel);
+        addReplyLongLong(c,dictSize(c->pubsub_channels)+
+                       listLength(c->pubsub_patterns));
+
+    }
+    // 到了这里可以安全的删除了
+    decrRefCount(channel);
+    return retval;
+}
+```
+
+其他的退订操作也是如此，下面仅罗列出它们的函数声明和功能，有兴趣的可以去源码中查看。
+
+```c
+/* 退订所有频道 */
+pubsubUnsubscribeAllChannels(client *c, int notify);
+/* 退订所有模式 */
+pubsubUnsubscribeAllPatterns(client *c, int notify);
+/* 退订一个或多个频道 */
+pubsubUnsubscribeChannel(client *c, robj *channel, int notify);
+/* 退订一个或多个模式 */
+pubsubUnsubscribePattern(client *c, robj *pattern, int notify);
+/* 退订模式的命令实现 */
+punsubscribeCommand(client *c);
+/* 退订频道的命令实现 */
+subscribeCommand(client *c);
+```
+
+# 发布消息
+
+当客户端调用发布消息的命令时，需要进行如下两个操作：
+
+1. 查找服务器的pubsub_channels字典下该频道对应的客户端链表，然后遍历，一一发送
+
+2. 查找服务器的pubsub_patterns链表，遍历模式串，如果匹配就发送，反之不作处理
+
+## publishCommand
+
+发布消息的命令由 publishCommand 函数实现，其源码如下：
+
+```c
+/* 发布消息命令的实现 */
+void publishCommand(client *c) {
+    int receivers = pubsubPublishMessage(c->argv[1],c->argv[2]);
+    // 如果开启了集群，需要向集群中的客户端发送消息
+    // 现阶段不讨论集群
+  	if (server.cluster_enabled)
+        clusterPropagatePublish(c->argv[1],c->argv[2]);
+    else
+        forceCommandPropagation(c,PROPAGATE_REPL);
+    addReplyLongLong(c,receivers);
+}
+/* 发布消息的底层实现 */
+int pubsubPublishMessage(robj *channel, robj *message) {
+    int receivers = 0;
+    dictEntry *de;
+    listNode *ln;
+    listIter li;
+
+    // 发送到订阅该频道的所有客户端
+    de = dictFind(server.pubsub_channels,channel);
+    if (de) {
+        // 如果存在该频道，则获取客户端链表
+        list *list = dictGetVal(de);
+        listNode *ln;
+        listIter li;
+		// 获取迭代器
+        listRewind(list,&li);
+        // 遍历，发送消息
+        while ((ln = listNext(&li)) != NULL) {
+            client *c = ln->value;
+			// 发送消息
+            addReply(c,shared.mbulkhdr[3]);
+            addReply(c,shared.messagebulk);
+            addReplyBulk(c,channel);
+            addReplyBulk(c,message);
+            receivers++;
+        }
+    }
+    // 发送到所有模式能与该频道匹配上的客户端
+    if (listLength(server.pubsub_patterns)) {
+        // 获取迭代器
+        listRewind(server.pubsub_patterns,&li);
+        // 解码频道
+        channel = getDecodedObject(channel);
+        // 遍历该链表
+        while ((ln = listNext(&li)) != NULL) {
+            pubsubPattern *pat = ln->value;
+            // 判断是否能匹配上
+            if (stringmatchlen((char*)pat->pattern->ptr,
+                                sdslen(pat->pattern->ptr),
+                                (char*)channel->ptr,
+                                sdslen(channel->ptr),0)) {
+                // 能匹配上，发送消息
+                addReply(pat->client,shared.mbulkhdr[4]);
+                addReply(pat->client,shared.pmessagebulk);
+                addReplyBulk(pat->client,pat->pattern);
+                addReplyBulk(pat->client,channel);
+                addReplyBulk(pat->client,message);
+                receivers++;
+            }
+        }
+        // 执行完之后，引用计数减1
+        decrRefCount(channel);
+    }
+    // 返回收到消息的客户端个数
+    return receivers;
+}
+```
+
+
+
+
 # 参考资料
 
 [频道的订阅与退订](http://redisbook.com/preview/pubsub/channel.html)
+
+[Redis源码剖析--发布与订阅Pubsub](https://zcheng.ren/redis/theannotatedredissourcepubsub/)
 
 * any list
 {:toc}
