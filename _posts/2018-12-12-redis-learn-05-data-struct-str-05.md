@@ -356,7 +356,7 @@ C 字符串中的字符必须符合某种编码（比如 ASCII）， 并且除�
 
 ![2-19](http://redisbook.com/_images/graphviz-82a01911a9b47725ee97416aac875752fa3bdd2b.png)
 
-举个例子， 如图 2-19 所示， 如果我们有一个保存文本数据的 SDS 值 sds ， 那么我们就可以重用 <string.h>/strcasecmp 函数， 使用它来对比 SDS 保存的字符串和另一个 C 字符串：
+举个例子， 如图 2-19 所示， 如果我们有一个保存文本数据的 SDS 值 sds ， 那么我们就可以重用 `<string.h>/strcasecmp` 函数， 使用它来对比 SDS 保存的字符串和另一个 C 字符串：
 
 ```c
 strcasecmp(sds->buf, "hello world");
