@@ -244,7 +244,9 @@ The allocator is basically trying to reuse the 2GB of memory previously (logical
 
 4）Because of all this, the fragmentation（碎片） ratio is not reliable when you had a memory usage that at peak（顶峰） is much larger than the currently used memory. 
 
-The fragmentation is calculated as the amount of memory currently in use (as the sum of all the allocations performed by Redis) divided by the physical memory actually used (the RSS value). Because the RSS reflects the peak memory, when the (virtually) used memory is low since a lot of keys / values were freed, but the RSS is high, the ratio mem_used / RSS will be very high.
+The fragmentation is calculated as the amount of memory currently in use (as the sum of all the allocations performed by Redis) divided by the physical memory actually used (the RSS value). 
+
+Because the RSS reflects the peak memory, when the (virtually) used memory is low since a lot of keys/values were freed, but the RSS is high, the ratio mem_used/RSS will be very high.
 
 If `maxmemory` is not set Redis will keep allocating memory as it finds fit and thus it can (gradually) eat up all your free memory. Therefore it is generally advisable to configure some limit. You may also want to set maxmemory-policy to noeviction (which is not the default value in some older versions of Redis).
 
