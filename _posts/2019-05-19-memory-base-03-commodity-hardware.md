@@ -178,16 +178,62 @@ we will not dig deeper into this technology here.
 
 There are disadvantages to this architecture, too. 
 
-First of all, because the machine still has to make all the memory of the system accessible to all processors, the memory is not uniform anymore (hence the name NUMA - Non-Uniform Memory Architecture - for such an architecture). Local memory (memory attached to a processor) can be accessed with the usual speed. 
+First of all, because the machine still has to make all the memory of the system accessible to all processors, the memory is not uniform anymore (hence the name NUMA - Non-Uniform Memory Architecture - for such an architecture). 
+
+Local memory (memory attached to a processor) can be accessed with the usual speed. 
 
 The situation is different when memory attached to another processor is accessed. 
 
-In this case the interconnects between the processors have to be used. 
+In this case the interconnects（互联） between the processors have to be used. 
 
 To access memory attached to CPU2 from CPU1 requires communication across one interconnect. 
 
 When the same CPU accesses memory attached to CPU4 two interconnects have to be crossed.
 
+## NUMA factors
+
+Each such communication has an associated cost. 
+
+We talk about “NUMA factors” when we describe the extra time needed to access remote memory. 
+
+The example architecture in Figure 2.3 has two levels for each CPU:
+
+immediately adjacent CPUs and one CPU which is two interconnects away. 
+
+With more complicated machines the number of levels can grow significantly. 
+
+There are also machine architectures (for instance IBM’s x445 and SGI’s Altix series) where there is more than one type
+of connection. 
+
+CPUs are organized into nodes; within a node the time to access the memory might be uniform or have only small NUMA factors. 
+
+The connection between nodes can be very expensive, though, and the NUMA factor can be quite high.
+
+Commodity NUMA machines exist today and will likely play an even greater role in the future. 
+
+It is expected that, from late 2008 on, every SMP machine will use NUMA.
+
+The costs associated with NUMA make it important to recognize when a program is running on a NUMA machine. 
+
+In section 5 we will discuss more machine architectures and some technologies the Linux kernel provides for these programs.
+
+Beyond the technical details described in the remainder（剩余） of this section, there are several additional factors which
+influence the performance of RAM. 
+
+## 其他影响因素
+
+They are not controllable by software, which is why they are not covered in this section. 
+
+The interested reader can learn about some of these factors in section 2.1. 
+
+They are really only needed to get a more complete picture of RAM technology and possibly to make better decisions when purchasing（购买） computers.
+
+The following two sections discuss hardware details at the gate level and the access protocol between the memory controller and the DRAM chips. 
+
+Programmers will likely find this information enlightening since these details explain why RAM access works the way it does. 
+
+It is optional knowledge, though, and the reader anxious to get to topics with more immediate relevance for everyday
+life can jump ahead to section 2.2.5.
 
 # 参考资料
 
