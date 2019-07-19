@@ -178,12 +178,15 @@ we will not dig deeper into this technology here.
 
 There are disadvantages to this architecture, too. 
 
-First of all, because the machine still has to make all the memory of the system accessible to all processors, the memory is not uniform anymore (hence the name NUMA - Non-Uniform Memory Architecture - for such an architecture). Local memory (memory attached to a processor) can be accessed with the usual speed. The situation
-is different when memory attached to another processor
-is accessed. In this case the interconnects between the
-processors have to be used. To access memory attached
-to CPU2 from CPU1 requires communication across one
-interconnect. When the same CPU accesses memory attached to CPU4 two interconnects have to be crossed.
+First of all, because the machine still has to make all the memory of the system accessible to all processors, the memory is not uniform anymore (hence the name NUMA - Non-Uniform Memory Architecture - for such an architecture). Local memory (memory attached to a processor) can be accessed with the usual speed. 
+
+The situation is different when memory attached to another processor is accessed. 
+
+In this case the interconnects between the processors have to be used. 
+
+To access memory attached to CPU2 from CPU1 requires communication across one interconnect. 
+
+When the same CPU accesses memory attached to CPU4 two interconnects have to be crossed.
 
 
 # 参考资料
