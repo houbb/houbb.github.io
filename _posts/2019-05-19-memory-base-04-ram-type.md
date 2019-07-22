@@ -307,6 +307,36 @@ This address multiplexing brings its own set of problems, though.
 
 We will discuss them in section 2.2.
 
+# Conclusions
+
+Do not worry if the details in this section are a bit overwhelming（压倒）. 
+
+## 主要内容
+
+The important things to take away from this section are:
+
+- there are reasons why not all memory is SRAM
+
+- memory cells need to be individually selected to be used
+
+- the number of address lines is directly responsible（主管） for the cost of the memory controller, motherboards, DRAM module, and DRAM chip
+
+- it takes a while before the results of the read or write operation are available
+
+## 下期内容
+
+The following section will go into more details about the actual process of accessing DRAM memory. 
+
+We are not going into more details of accessing SRAM, which is usually directly addressed. 
+
+This happens for speed and because the SRAM memory is limited in size. 
+
+SRAM is currently used in CPU caches and on-die（片上） where the connections are small and fully under control of the CPU designer. 
+
+CPU caches are a topic which we discuss later but all we need to know is that SRAM cells have a certain maximum speed which depends on the effort spent on the SRAM. 
+
+The speed can vary from only slightly slower than the CPU core to one or two orders of magnitude（大小） slower.
+
 # 参考资料
 
 [cpumemory.pdf-5](https://people.freebsd.org/~lstewart/articles/cpumemory.pdf)
