@@ -197,6 +197,8 @@ The SRAM cells also need individual power for the transistors maintaining the st
 The structure of the DRAM cell is also simpler and more regular which means packing many of them close together on a die is
 simpler.
 
+## 总结
+
 Overall, the (quite dramatic) difference in cost wins. 
 
 Except in specialized hardware – network routers, for example – we have to live with main memory which is based on DRAM. 
@@ -204,6 +206,106 @@ Except in specialized hardware – network routers, for example – we have to l
 This has huge implications on the programmer which we will discuss in the remainder of this paper.
 
 But first we need to look into a few more details of the actual use of DRAM cells.
+
+# DRAM Access
+
+A program selects a memory location using a virtual address. 
+
+The processor translates this into a physical address and finally the memory controller selects the RAM chip corresponding to that address. 
+
+To select the individual（个人） memory cell on the RAM chip, parts of the physical address are passed on in the form of a number of address lines.
+
+It would be completely impractical（不切实际的） to address memory locations individually from the memory controller: 
+
+4GB of RAM would require 232 address lines. 
+
+Instead the address is passed encoded as a binary number using a smaller set of address lines. 
+
+The address passed to the DRAM chip this way must be demultiplexed（解复用） first. 
+
+A demultiplexer with N address lines will have 2N output lines. 
+
+These output lines can be used to select the memory cell. 
+
+Using this direct approach is no big problem for chips with small capacities.
+
+But if the number of cells grows this approach is not suitable anymore. 
+
+A chip with 1Gbit6 capacity would need 30 address lines and 230 select lines. 
+
+The size of a demultiplexer increases exponentially with the number of input lines when speed is not to be sacrificed. 
+
+A demultiplexer for 30 address lines needs a whole lot of chip real estate in addition to the complexity (size and time) of
+the demultiplexer. 
+
+Even more importantly, transmitting 30 impulses on the address lines synchronously is much harder than transmitting “only” 15 impulses. 
+
+Fewer lines have to be laid out at exactly the same length or timed appropriately.
+
+![image](https://user-images.githubusercontent.com/18375710/61608149-3ec0e400-ac84-11e9-9a84-8a638367b944.png)
+
+Figure 2.7 shows a DRAM chip at a very high level. 
+
+The DRAM cells are organized in rows and columns. 
+
+They could all be aligned in one row but then the DRAM chip would need a huge demultiplexer. 
+
+With the array approach the design can get by with one demultiplexer and one multiplexer of half the size.8 This is a huge saving
+on all fronts. 
+
+In the example the address lines a0 and a1 through the **row address selection (RAS)9** demultiplexer select the address lines of a whole row of cells. 
+
+When reading, the content of all cells is thusly made available to the **column address selection (CAS)9** multiplexer. 
+
+Based on the address lines a2 and a3 the content of one column is then made available to the data pin of the DRAM chip. 
+
+This happens many times in parallel on a number of DRAM chips to produce a total number of bits corresponding to the width of the data bus
+
+For writing, the new cell value is put on the data bus and, when the cell is selected using the RAS and CAS, it is stored in the cell. 
+
+A pretty straightforward design. 
+
+There are in reality – obviously（明显） – many more complications（并发症）. 
+
+There need to be specifications for how much delay there is after the signal before the data will be available on the data bus for reading. 
+
+The capacitors（电容器） do not unload instantaneously（瞬间）, as described in the previous section. 
+
+The signal from the cells is so weak that it needs to be amplified（放大）.
+
+For writing it must be specified how long the data must be available on the bus after the RAS and CAS is done to successfully store the new value in the cell (again, capacitors do not fill or drain instantaneously). 
+
+These timing constants are crucial（关键） for the performance of the DRAM chip. 
+
+We will talk about this in the next section.
+
+A secondary scalability（可扩展性） problem is that having 30 address lines connected to every RAM chip is not feasible（可行） either.
+
+Pins of a chip are precious resources. 
+
+It is “bad” enough that the data must be transferred as much as possible in parallel (e.g., in 64 bit batches). 
+
+The memory controller must be able to address each RAM module (collection of RAM chips). 
+
+If parallel access to multiple RAM modules is required for performance reasons and each RAM module requires its own set of 30 or more address lines, then the memory controller needs to have, for 8 RAM modules, a whopping（高达） 240+ pins only for the address handling.
+
+To counter these secondary scalability problems DRAM chips have, for a long time, multiplexed the address itself. 
+
+That means the address is transferred in two parts. 
+
+The first part consisting of address bits (a0 and a1 in the example in Figure 2.7) select the row. 
+
+This selection remains active until revoked. 
+
+Then the second part, address bits a2 and a3 , select the column. 
+
+The crucial difference is that only two external address lines are needed. 
+
+A few more lines are needed to indicate when the RAS and CAS signals are available but this is a small price to pay for cutting the number of address lines in half. 
+
+This address multiplexing brings its own set of problems, though. 
+
+We will discuss them in section 2.2.
 
 # 参考资料
 
