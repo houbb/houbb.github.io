@@ -1,14 +1,12 @@
 ---
 layout: post
-title: Design Pattern-02
+title: Design Pattern-02-代理模式 策略模式 proxy strategy
 date:  2016-7-18 12:26:11 +0800
 categories: [Design Pattern]
 tags: [design pattern]
 published: true
 ---
 
-* any list
-{:toc}
 
 # Proxy
 
@@ -359,15 +357,5 @@ VIP has the count of 0.7
 Process finished with exit code 0
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
+* any list
+{:toc}

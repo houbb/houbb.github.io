@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Design Pattern-04 Singleton 单例模式
+title: Design Pattern-04-单例模式 singleton 
 date:  2017-03-14 19:52:28 +0800
 categories: [Design Pattern]
-tags: [design pattern, observer]
+tags: [design-pattern]
 published: true
 ---
 

@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Design Pattern-03 observer
+title: Design Pattern-03-观察者模式 observer 
 date:  2017-03-14 19:52:28 +0800
 categories: [Design Pattern]
-tags: [design pattern, observer]
+tags: [design-pattern, sf]
 published: true
 ---
 

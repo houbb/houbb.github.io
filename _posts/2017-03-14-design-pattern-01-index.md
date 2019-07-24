@@ -1,14 +1,13 @@
 ---
 layout: post
-title: Design Pattern-01
+title: Design Pattern-01-工厂模式 原型模式 factory prototype 
 date:  2016-7-15 12:22:04 +0800
 categories: [Design Pattern]
 tags: [design pattern]
 published: true
 ---
 
-* any list
-{:toc}
+
 
 # Design Pattern
 
@@ -678,9 +677,5 @@ Vehicle boat...
 Process finished with exit code 0
 ```
 
-
-
-
-
-
-
+* any list
+{:toc}
