@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  Vector Lock 时钟向量-一致性算范
+title:  Vector Lock 时钟向量-一致性算法
 date:  2018-08-31 13:44:07 +0800
-categories: [SQL]
+categories: [Distributed]
 tags: [sql, distributed, lock, sh]
 published: true
 ---

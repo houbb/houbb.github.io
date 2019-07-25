@@ -891,9 +891,6 @@ str.replace("%USER%", user, false);               // Qt 3
 str.replace("%USER%", user, Qt::CaseInsensitive); // Qt 4
 ```
 
-
-
-
 # 参考资料
 
 [API设计原则 – QT官网的设计实践总结](https://coolshell.cn/articles/18024.html)

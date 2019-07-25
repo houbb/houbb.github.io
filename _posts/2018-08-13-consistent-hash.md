@@ -1,19 +1,96 @@
 ---
 layout: post
-title:  Consistent Hash
+title:  Consistent Hash 一致性 hash
 date:  2018-08-13 17:41:51 +0800
 categories: [Distributed]
 tags: [sql, nosql, distributed, sf]
 published: true
 ---
 
-# 一致性 hash
 
-分布式过程中我们将服务分散到若干的节点上，以此通过集体的力量提升服务的目的。然而，对于一个客户端来说，该由哪个节点服务呢？或者说对某个节点来说他分配到哪些任务呢？
+# 概念
+
+一致哈希是一种特殊的哈希算法。
+
+在使用一致哈希算法后，哈希表槽位数（大小）的改变平均只需要对 K/n个关键字重新映射，其中K是关键字的数量， n是槽位数量。
+
+然而在传统的哈希表中，添加或删除一个槽位的几乎需要对所有关键字进行重新映射。
+
+# 有什么用
+
+现在想来，很多分布式中间件，在增删节点的时候都需要进行 re-balance。
+
+借助一致性 hash，感觉可以避免这一步坑。
+
+# 业务场景
+
+假设有1000w个数据项，100个存储节点，请设计一种算法合理地将他们存储在这些节点上。
+
 
 # 强哈希
 
-考虑到单服务器不能承载，因此使用了分布式架构，最初的算法为 hash() mod n, hash()通常取用户ID，n为节点数。此方法容易实现且能够满足运营要求。缺点是当单点发生故障时，系统无法自动恢复。同样不也不能进行动态增加节点。
+考虑到单服务器不能承载，因此使用了分布式架构，最初的算法为 hash() mod n, hash()通常取用户ID，n为节点数。
+
+此方法容易实现且能够满足运营要求。缺点是当单点发生故障时，系统无法自动恢复。同样不也不能进行动态增加节点。
+
+## 原理图
+
+看一看普通 Hash 算法的原理：
+
+![common-hash](https://cloud.githubusercontent.com/assets/1736354/16341297/fe155f98-3a5e-11e6-834d-193e6f85afcd.png)
+
+## 核心计算如下
+
+```py
+for item in range(ITEMS):
+    k = md5(str(item)).digest()
+    h = unpack_from(">I", k)[0]
+    # 通过取余的方式进行映射
+    n = h % NODES
+    node_stat[n] += 1
+```
+
+输出
+
+```
+Ave: 100000
+Max: 100695 (0.69%)
+Min: 99073 (0.93%)
+```
+
+从上述结果可以发现，普通的Hash算法均匀地将这些数据项打散到了这些节点上，并且分布最少和最多的存储节点数据项数目小于1%。
+
+之所以分布均匀，主要是依赖Hash算法（实现使用的MD5算法）能够比较随机的分布。
+
+## 缺点
+
+然而，我们看看存在一个问题，由于该算法使用节点数取余的方法，强依赖node的数目。
+
+因此，当是node数发生变化的时候，item所对应的node发生剧烈变化，而发生变化的成本就是我们需要在node数发生变化的时候，数据需要迁移，这对存储产品来说显然是不能忍的，我们观察一下增加node后，数据项移动的情况：
+
+```py
+for item in range(ITEMS):
+    k = md5(str(item)).digest()
+    h = unpack_from(">I", k)[0]
+    # 原映射结果
+    n = h % NODES
+    # 现映射结果
+    n_new = h % NEW_NODES
+    if n_new != n:
+        change += 1
+```
+
+输出
+
+```
+Change: 9900989 (99.01%)
+```
+
+翻译一下就是，如果有100个item，当增加一个node，之前99%的数据都需要重新移动。
+
+这显然是不能忍的，普通哈希算法的问题我们已经发现了，如何对其进行改进呢？
+
+没错，我们的一致性哈希算法闪亮登场。
 
 # 弱哈希
 
@@ -62,7 +139,6 @@ published: true
 普通的哈希算法（也称硬哈希）采用简单取模的方式，将机器进行散列，这在cache环境不变的情况下能取得让人满意的结果，但是当cache环境动态变化时，
 这种静态取模的方式显然就不满足单调性的要求（当增加或减少一台机子时，几乎所有的存储内容都要被重新散列到别的缓冲区中）。
 
-
 # 代码实现
 
 ## 实现逻辑
@@ -99,6 +175,142 @@ published: true
 ## 实现代码
 
 [consitent-hashing](https://github.com/houbb/consitent-hashing)
+
+
+## 原理图
+
+![原理图](https://cloud.githubusercontent.com/assets/1736354/16341311/0e8fea32-3a5f-11e6-84b5-ff101495cf49.png)
+
+## 核心代码
+
+```py
+for n in range(NODES):
+    h = _hash(n)
+    ring.append(h)
+    ring.sort()
+    hash2node[h] = n
+for item in range(ITEMS):
+    h = _hash(item)
+    n = bisect_left(ring, h) % NODES
+    node_stat[hash2node[ring[n]]] += 1
+
+```
+
+## 均匀性
+
+虽然一致性Hash算法解决了节点变化导致的数据迁移问题，但是，我们回过头来再看看数据项分布的均匀性，进行了一致性Hash算法的实现
+
+```
+Ave: 100000
+Max: 596413 (496.41%)
+Min: 103 (99.90%)
+```
+
+这结果简直是简直了，确实非常结果差，分配的很不均匀。
+
+我们思考一下，一致性哈希算法分布不均匀的原因是什么？
+
+从最初的1000w个数据项经过一般的哈希算法的模拟来看，这些数据项“打散”后，是可以比较均匀分布的。
+
+但是引入一致性哈希算法后，为什么就不均匀呢？
+
+数据项本身的哈希值并未发生变化，变化的是判断数据项哈希应该落到哪个节点的算法变了。
+
+![理想与现实](https://cloud.githubusercontent.com/assets/1736354/16341426/8c9e6caa-3a5f-11e6-87ad-fdb462b76aef.png)
+
+因此，主要是因为这100个节点Hash后，在环上分布不均匀，导致了每个节点实际占据环上的区间大小不一造成的。
+
+
+# 改进-虚节点
+
+当我们将node进行哈希后，这些值并没有均匀地落在环上，因此，最终会导致，这些节点所管辖的范围并不均匀，最终导致了数据分布的不均匀。
+
+## 原理图
+
+![virtual-node](https://cloud.githubusercontent.com/assets/1736354/16341445/a0e32fde-3a5f-11e6-969d-085f64220e63.png)
+
+## 实现代码
+
+```py
+for n in range(NODES):
+    for v in range(VNODES):
+        h = _hash(str(n) + str(v))
+        # 构造ring
+        ring.append(h)
+        # 记录hash所对应节点
+        hash2node[h] = n
+ring.sort()
+for item in range(ITEMS):
+    h = _hash(str(item))
+    # 搜索ring上最近的hash
+    n = bisect_left(ring, h) % (NODES*VNODES)
+    node_stat[hash2node[ring[n]]] += 1
+```
+
+## 增加节点
+
+因此，通过增加虚节点的方法，使得每个节点在环上所“管辖”更加均匀。
+
+这样就既保证了在节点变化时，尽可能小的影响数据分布的变化，而同时又保证了数据分布的均匀。
+
+也就是靠增加“节点数量”加强管辖区间的均匀。
+
+同时，观察增加节点后数据变动情况
+
+```py
+for item in range(ITEMS):
+    h = _hash(str(item))
+    n = bisect_left(ring, h) % (NODES*VNODES)
+    n2 = bisect_left(ring2, h) % (NODES2*VNODES)
+    if hash2node[ring[n]] != hash2node2[ring2[n2]]:
+        change += 1
+```
+
+# 另一种改进
+
+然而，虚节点这种靠数量取胜的策略增加了存储这些虚节点信息所需要的空间。
+
+在OpenStack的Swift组件中，使用了一种比较特殊的方法来解决分布不均的问题，改进了这些数据分布的算法，将环上的空间均匀的映射到一个线性空间，这样，就保证分布的均匀性。
+
+## 原理图
+
+![另一种改进](https://cloud.githubusercontent.com/assets/1736354/16341455/b01139ec-3a5f-11e6-965a-070f5c4c0afa.png)
+
+## 核心代码
+
+```py
+for part in range(2 ** LOG_NODE):
+    ring.append(part)
+    part2node[part] = part % NODES
+for item in range(ITEMS):
+    h = _hash(item) >> PARTITION
+    part = bisect_left(ring, h)
+    n = part % NODES
+    node_stat[n] += 1
+```
+
+可以看到，数据分布是比较理想的。如果节点数刚好和分区数相等，理论上是可以均匀分布的。
+
+## 增加节点
+
+而观察下增加节点后的数据移动比例
+
+```py
+for part in range(2 ** LOG_NODE):
+    ring.append(part)
+    part2node[part] = part % NODES
+    part2node2[part] = part % NODES2
+change = 0
+for item in range(ITEMS):
+    h = _hash(item) >> PARTITION
+    p = bisect_left(ring, h)
+    p2 = bisect_left(ring, h)
+    n = part2node[p] % NODES
+    n2 = part2node2[p] % NODES2
+    if n2 != n:
+        change += 1
+```
+
 
 # 参考资料
 
