@@ -23,6 +23,40 @@ published: true
 
 - 内存知识（磁盘硬件）
 
+# 查看 linux 机器缓存大小
+
+```
+$   lscpu
+```
+
+如下：
+
+```
+Architecture:          x86_64
+CPU op-mode(s):        32-bit, 64-bit
+Byte Order:            Little Endian
+CPU(s):                2
+On-line CPU(s) list:   0,1
+Thread(s) per core:    2
+Core(s) per socket:    1
+Socket(s):             1
+NUMA node(s):          1
+Vendor ID:             GenuineIntel
+CPU family:            6
+Model:                 79
+Model name:            Intel(R) Xeon(R) CPU E5-2682 v4 @ 2.50GHz
+Stepping:              1
+CPU MHz:               2494.224
+BogoMIPS:              4988.44
+Hypervisor vendor:     KVM
+Virtualization type:   full
+L1d cache:             32K
+L1i cache:             32K
+L2 cache:              256K
+L3 cache:              40960K
+NUMA node0 CPU(s):     0,1
+```
+
 # 前言
 
 As CPU cores become both faster and more numerous, the limiting factor for most programs isnow, 
