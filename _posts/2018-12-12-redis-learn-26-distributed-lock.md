@@ -331,5 +331,7 @@ However this does not technically change the algorithm, so the maximum number of
 
 [distlock](https://redis.io/topics/distlock)
 
+[Redis 分布式锁进化史解读+缺陷分析](https://mp.weixin.qq.com/s/8FYMUpaBcgOZ9lEqt-0PKg)
+
 * any list
 {:toc}
