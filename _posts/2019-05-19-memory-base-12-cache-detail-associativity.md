@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Memory 内存知识-12-缓存实现的细节
+title: Memory 内存知识-12-缓存实现的细节之关联性
 date:  2019-5-10 11:08:59 +0800
 categories: [Memory]
 tags: [memory, cache, sh]
