@@ -510,42 +510,12 @@ CONFIG SET watchdog-period 500
 ------
 ```
 
-注意：例子中 DEBUG SLEEP 命令是用于阻塞服务器的。在不同的阻塞背景下，堆栈信息会有不同。
+注意：例子中 DEBUG SLEEP 命令是用于阻塞服务器的。
+
+在不同的阻塞背景下，堆栈信息会有不同。
 
 如果收集到多个看门狗的监测堆栈信息，我们鼓励你把这些信息发送到Redis Google Group：我们获得越多的信息，我们就越容易分析得到你的服务器到底有什么问题。
 
-附录A：大内存页的实验
-
-fork产生的延迟，可以通过大内存页来减缓，只是需要耗费更大的内存。下面的附录将详细描述在Linux内核中实现的这个功能。
-
-虽然某些CPU会使用不同大小的页面。AMD和Intel CPU可以支持2MB的页面大小。这些页面有个别名，叫做“大页面”。某些操作系统可以实时地优化页面大小，透明地把小页面聚合成大页面。
-
-在Linux系统，显式的huge page管理在2.6.16中得到支持，并且隐式透明的huge page管理也在2.6.38中得到支持。如果你的是最近的Linux发行版本（例如 RH6或者其派生版本），透明的huge page可以被开启，并且你可以使用包含这项够能的Redis版本。
-
-这个是在Linux中，实验/使用huge page的最佳方法。
-
-现在，如果运行旧版本的Linux（RH5, SLES 10-11, 或者其派生版本），不要害怕使用一些技巧，Redis可以通过补丁来支持huge page。
-
-第一步，阅读Mel Gorman's primer on huge pages
-
-现在有两个方法给Redis打补丁，让它支持huge page
-
-对于Redis 2.4，内置的jemalloc 分配器需要打上补丁。Pieter Noordhuis的补丁patch 。需要注意，这个补丁依赖于匿名mmap huge page的支持，这项功能只能从2.6.32之后才得到支持，所以这个方法不能用于旧的版本（RH5 ,SLES 10, 和其派生版本）
-对于Redis 2.2 或者2.4，附带libc分配器，必须修改redis makefile，使Redis和the libhugetlbfs library进行连接。这个是最直接的更改
-然后，系统必须配置为支持huge page
-
-以下命令分配和创建 N个huge page：
-
-$ sudo sysctl -w vm.nr_hugepages=<N>
-以下命令挂载huge page到文件系统
-
-$ sudo mount -t hugetlbfs none /mnt/hugetlbfs
-在所有的情况下，一旦Redis运行huge page（透明或者非透明），将会得到如下的好处：
-
-由于fork引起的延迟将得到缓解。尤其是对超大的实例，尤其是在VM上运行的实例。
-Redis速度得到提够，是因为CPU的转换旁视缓冲(TLB)更有效的缓存页面（例如命中率会更高）。不要期望有奇迹发生，性能至多只能提高一点。
- Redis内存不会再被换走，这样就能避免由于虚拟内存造成的不必的延迟。
-很不幸，除了更多的复杂操作，还有redis使用huge page会带来一个明显的缺陷。COW机制的粒度是页面。伴随2MB页面，页面被后台存储操作修改的可能性是4KB页面的512倍。实际的内存需要后台存储，所以可能性会增加很多，尤其是，当写操作很随机，并且伴随很差的定位。通过huge page，使用两倍的内存，而存储将不再是理论的突发事件。它真的会发生。
 
 # 参考资料
 
