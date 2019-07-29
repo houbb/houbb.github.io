@@ -32,6 +32,22 @@ $ docker images | grep redis
 redis                            latest              c5355f8853e4        5 weeks ago         107MB
 ```
 
+## 指定下载的版本
+
+默认是下载最新的版本。
+
+有时候你可能希望指定下载的版本。
+
+- 查看版本
+
+访问 [https://hub.docker.com/_/redis?tab=tags](https://hub.docker.com/_/redis?tab=tags)
+
+- 指定版本
+
+```
+$   docker pull redis:4.0
+```
+
 ## 运行 image
 
 ```
