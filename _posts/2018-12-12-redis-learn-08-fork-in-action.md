@@ -1,12 +1,69 @@
 ---
 layout: post
-title: Redis Learn-29-Redis 延迟分析实战
+title: Redis Learn-08-Redis 延迟分析实战
 date: 2018-12-12 11:35:23 +0800
 categories: [Redis]
 tags: [redis, cache, in-action, sh]
 published: true
 ---
 
+# 分析的方向
+
+## 内在原因
+
+不合理地使用API或数据结构、CPU饱和、持久化阻塞
+
+## 外在原因
+
+CPU竞争、内存交换、网络问题等。
+
+# 内在原因
+
+## 不合理地使用API或数据结构
+
+可能会有一些很慢的操作。
+
+比如 O(n) 的操作。
+
+## cpu 饱和
+
+```
+$   top
+```
+
+查看内存等占用信息
+
+## 持久化阻塞
+
+aof rdb 的 fork 持久化。
+
+## 慢操作
+
+`info commandstats` 可以查看操作的平均时间。
+
+slowlog
+
+latency
+
+# 外在原因
+
+## 内存交换
+
+登录进入 redis  
+
+- 查看 redis 的 pid
+
+```
+> info server
+```
+
+process_id 对应的信息
+
+- 查看 swap 信息
+
+```
+cat /proc/${process_id}/smaps | grep Swap
+```
 
 # Redis 的登录
 
@@ -77,7 +134,6 @@ slowlog get N:列出最近N条slow log
 `info all` 可能要统计很多信息，操作一次可能要 20ms。
 
 或者是一些 `keys*` 正则匹配，这个复杂度为 O(n)。
-
 
 # 持久化配置
 
