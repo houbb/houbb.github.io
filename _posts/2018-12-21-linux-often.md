@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Linux 常用命令
+title: linux often linux 常用命令
 date: 2018-12-05 11:35:23 +0800
 categories: [Linux]
 tags: [linux, sh]
 published: true
-excerpt: Linux 常用命令
 ---
 
 # 线上常用命令
