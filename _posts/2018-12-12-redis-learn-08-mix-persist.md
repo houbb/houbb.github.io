@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Redis Learn-08-混合模式持久化
+title: Redis Learn-08-mixed 混合模式持久化
 date: 2018-12-12 11:35:23 +0800
 categories: [Redis]
 tags: [redis, cache, persist, sh]
