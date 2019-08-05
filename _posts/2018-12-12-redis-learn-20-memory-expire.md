@@ -241,7 +241,9 @@ ps: 这里 redis 没有牺牲数据的一致性。而是在 expire 的时候，�
 
 However while the replicas connected to a master will not expire keys independently (but will wait for the DEL coming from the master), they'll still take the full state of the expires existing in the dataset, so when a replica is elected to master it will be able to expire the keys independently, fully acting as a master.
 
-但是，虽然连接到主服务器的副本不会独立到期密钥（但会等待来自主服务器的DEL），但它们仍将采用数据集中存在的过期的完整状态，因此当副本被选为主服务器时 它将能够独立地使密钥到期，充分充当主人。
+但是，虽然连接到主服务器的副本不会独立到期密钥（但会等待来自主服务器的DEL），但它们仍将采用数据集中存在的过期的完整状态，因此当副本被选为主服务器时
+
+它将能够独立地使密钥到期，充分充当主人。
 
 
 ## 其他博客
