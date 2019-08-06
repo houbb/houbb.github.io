@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Redis Learn-05-数据结构之 SDS
+title: Redis Learn-05-数据结构之字符串 SDS
 date: 2018-12-12 11:35:23 +0800
 categories: [Redis]
 tags: [redis, cache, data-struct, sh]
