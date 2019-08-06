@@ -311,6 +311,43 @@ redis> EXPIRE msg 10086
 
 ![删除操作执行之后的服务器状态](http://redisbook.com/_images/graphviz-fade8035f6454ed64fa7c2d7f9f43ff40dbb8e0f.png)
 
+
+# 管理
+
+## 查看
+
+获取全部
+
+```
+slowlog get 
+```
+
+获取指定长度
+
+```
+slowlog 10
+```
+
+- 查看数量
+
+```
+>slowlog len 
+"128"
+```
+
+## 清空
+
+```
+slowlog reset
+```
+
+再次查看长度
+
+```
+>slowlog len 
+"0"
+```
+
 # 重点回顾
 
 Redis 的慢查询日志功能用于记录执行时间超过指定时长的命令。

@@ -241,13 +241,79 @@ CRITICAL: There is a critical bug affecting MOST USERS. Upgrade ASAP.
 
 如果使用定期删除，被淘汰的时间就变得不固定了。
 
+
+# 实战代码
+
+## 示例
+
+```java
+/**
+ * 刪除 BIG key
+ * 应用场景：对于 big key，可以使用 hscan 首先分批次删除，最后统一删除
+ * （1）比直接删除的耗时变长，但是不会产生慢操作。
+ * （2）新业务实现尽可能拆开，不要依赖此方法。
+ * @param key key
+ * @param scanCount 单次扫描总数（建议值：100）
+ * @param intervalMills 分批次的等待时间（建议值：5）
+ */
+void removeBigKey(final String key, final int scanCount, final long intervalMills)
+```
+
+实现
+
+```java
+JedisCluster jedisCluster = redisClusterTemplate.getJedisClusterInstance();
+// 游标初始值为0
+String cursor = ScanParams.SCAN_POINTER_START;
+ScanParams scanParams = new ScanParams();
+scanParams.count(scanCount);
+while (true) {
+	// 每次扫描后获取新的游标
+	ScanResult<Map.Entry<String, String>> scanResult = jedisCluster.hscan(key, cursor, scanParams);
+	cursor = scanResult.getStringCursor();
+	// 获取扫描结果为空
+	List<Map.Entry<String, String>> list = scanResult.getResult();
+	if (CollectionUtils.isEmpty(list)) {
+		break;
+	}
+	// 构建多个删除的 key
+	String[] fields = getFieldsKeyArray(list);
+	jedisCluster.hdel(key, fields);
+	// 游标为0时停止
+	if (ScanParams.SCAN_POINTER_START.equals(cursor)) {
+		break;
+	}
+	// 沉睡等待，避免对 redis 压力太大
+	DateUtil.sleepInterval(intervalMills, TimeUnit.MILLISECONDS);
+}
+// 执行 key 本身的删除
+jedisCluster.del(key);
+```
+
+- 构建的 key
+
+```java
+/**
+ * 获取对应的 keys 信息
+ * @param list 列表
+ * @return 结果
+ */
+private String[] getFieldsKeyArray(List<Map.Entry<String, String>> list) {
+	String[] strings = new String[list.size()];
+	for(int i = 0; i < list.size(); i++) {
+		strings[i] = list.get(i).getKey();
+	}
+	return strings;
+}
+```
+
 # 拓展阅读
 
 ## 淘汰
 
-[redis lazy free]()
+[redis lazy free](https://houbb.github.io/2018/12/12/redis-learn-20-lazy-free)
 
-[redis 淘汰策略]()
+[redis 淘汰策略](https://houbb.github.io/2018/12/12/redis-learn-20-memory-expire)
 
 [redis 设置键的过期时间](https://houbb.github.io/2018/12/12/redis-learn-06-03-set-time-expire)
 
