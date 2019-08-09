@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Memory 内存知识-21-影响缓存命中的因素之缓存替换
+title: Memory 内存知识-22-影响缓存命中的因素之缓存替换
 date:  2019-5-10 11:08:59 +0800
 categories: [Memory]
 tags: [memory, cache, sh]
