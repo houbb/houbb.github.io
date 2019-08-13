@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Memory 内存知识-25-NUMA
-date:  2019-5-10 12:08:59 +0800
+date:  2019-5-10 11:08:59 +0800
 categories: [Memory]
 tags: [memory, cache, sh]
 published: true
