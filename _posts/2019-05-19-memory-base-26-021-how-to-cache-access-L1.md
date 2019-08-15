@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Memory 内存知识-2602-实战技巧之 Cache L1 优化
+title: Memory 内存知识-26-021-实战技巧之 Cache L1 优化
 date:  2019-5-10 11:08:59 +0800
 categories: [Memory]
 tags: [memory, cache, sh]
@@ -607,11 +607,237 @@ Programs will likely fail if a caller violates the rule and alignment is needed 
 Keeping alignment intact（完整） does not come for free, though.
 
 
+## stack frame 是否需要对齐
 
+The size of a stack frame used in a function is not necessarily a multiple of the alignment. 
+
+This means padding is needed if other functions are called from this stack frame. 
+
+The big difference is that the stack frame size is, in most cases, known to the compiler and, therefore, it knows how to adjust the stack pointer to ensure alignment for any function which is called from that stack frame. 
+
+In fact, most compilers will simply round the stack frame size up and be done with it.
+
+事实上，大多数编译器只是简化堆栈帧大小并完成它。
+
+### 对齐最简单的方式
+
+This simple way to handle alignment is not possible if variable length arrays (VLAs) or alloca are used. 
+
+In that case, the total size of the stack frame is only known at runtime. 
+
+Active alignment control might be needed in this case, making the generated code (slightly) slower.
+
+## 多媒体拓展才需要严格对齐
+
+On some architectures, only the multimedia extensions require strict alignment; 
+
+stacks on those architectures are always minimally aligned for the normal data types, 
+
+usually 4 or 8 byte alignment for 32- and 64-bit architectures respectively. 
+
+On these systems, enforcing the alignment incurs unnecessary costs. 
+
+That means that, in this case, we might want to get rid of the strict alignment requirement if we know that it is never depended upon.
+
+Tail functions (those which call no other functions) which do no multimedia operations do not need alignment. 
+
+不执行多媒体操作的尾部功能（不调用其他功能的功能）不需要对齐。
+
+Neither do functions which only call functions which need no alignment. 
+
+If a large enough set of functions can be identified, a program might want to relax the alignment requirement. 
+
+ps: 如果数据集很大，那么应该放宽对于对齐的要求。
+
+
+## x86 系统
+
+For x86 binaries gcc has support for relaxed stack alignment requirements:
+
+```
+-mpreferred-stack-boundary=2
+```
+
+If this option is given a value of N, the stack alignment requirement will be set to 2N bytes. 
+
+So, if a value of 2 is used, the stack alignment requirement is reduced from the default (which is 16 bytes) to just 4 bytes. 
+
+In most cases this means no additional alignment operation is needed since normal stack push and pop operations work on four-byte boundaries anyway. 
+
+在大多数情况下，这意味着不需要额外的对齐操作，因为正常的堆栈推送和弹出操作无论如何都在四字节边界上工作。
+
+This machine-specific（机器专用） option can help to reduce code size and also improve execution speed. 
+
+可以降低代码数量，并且提升执行性能。
+
+But it cannot be applied for many other architectures. 
+
+Even for x86-64 it is generally not applicable since the x86-64 ABI requires that floating-point（浮点） parameters are passed in an SSE register and the SSE instructions require full 16 byte alignment.
+
+Nevertheless, whenever the option is usable it can make a noticeable difference.
+
+然而，只要该选项可用，它就会产生明显的差异。
+
+
+# 数组结构的影响
+
+Efficient placement of structure elements and alignment are not the only aspects of data structures which influence cache efficiency. 
+
+If an array of structures is used, the entire structure definition affects performance. 
+
+结构元素的有效放置和对齐不是影响高速缓存效率的数据结构的唯一方面。
+
+如果使用结构数组，则整个结构定义会影响性能。 
+
+Remember the results in Figure 3.11: 
+
+in this case we had increasing amounts of unused data in the elements of the array. 
+
+The result was that prefetching was increasingly less effective and the program, for large data sets, became less efficient.
+
+ps: 随着数据集合的提升，数据的预取性能会变得越来越差。
+
+For large working sets it is important to use the available cache as well as possible. 
+
+To achieve this, it might be necessary to rearrange data structures. 
+
+为此，可能需要重新排列数据结构。
+
+While it is easier for the programmer to put all the data which conceptually belongs together in the same data structure, this might not be the best approach for maximum performance. 
+
+## 数据结构
+
+Assume we have a data structure as follows:
+
+```c
+struct order {
+  double price;
+  bool paid;
+  const char *buyer[5];
+  long buyer_id;
+};
+```
+
+Further assume that these records are stored in a big array and that a frequently-run job adds up the expected payments of all the outstanding bills. 
+
+In this scenario（脚本）, the memory used for the buyer and buyer_id fields is unnecessarily loaded into the caches. 
+
+Judging from the data in Figure 3.11 the program will perform up to 5 times worse than it could.
+
+It is much better to split the order data structure in two pieces, storing the first two fields in one structure and the other fields elsewhere. 
+
+This change certainly increases the complexity of the program, but the performance gains might justify this cost.
+
+这种变化肯定会增加程序的复杂性，但性能提升可能证明这一成本是合理的。
+
+就是通过降低不必要的缓存信息，来提升数据的性能。
+
+# 缓存的冲突未命中问题
+
+Finally, let us consider another cache use optimization which, while also applying to the other caches, is primarily felt in the L1d access. 
+
+As seen in Figure 3.8 an increased associativity of the cache benefits normal operation. 
+
+The larger the cache, the higher the associativity usually is. 
+
+The L1d cache is too large to be fully associative but not large enough to have the same associativity as L2 caches. 
+
+This can be a problem if many of the objects in the working set fall into the same cache set. 
+
+If this leads to evictions due to overuse of a set, the program can experience delays even though much of the cache is unused. 
+
+These cache misses are sometimes called conflict misses. 
+
+Since the L1d addressing uses virtual addresses, this is actually something the programmer can have control over. 
+
+If variables which are used together are also stored together the likelihood of them falling into the same set is minimized. 
+
+## 问题的触发 
+
+Figure 6.5 shows how quickly the problem can hit.
+
+### 图示解释
+
+In the figure, the now familiar Follow with NPAD=15 test is measured with a special setup. 
+
+The X–axis is the distance between two list elements, measured in empty list elements. 
+
+In other words, a distance of 2 means that the next element’s address is 128 bytes after the previous one. 
+
+All elements are laid out in the virtual address space with the same distance. 
+
+The Y–axis shows the total length of the list. 
+
+Only one to 16 elements are used, meaning that the total working set size is 64 to 1024 bytes. 
+
+The z–axis shows the average number of cycles needed to traverse each list element.
+
+![image](https://user-images.githubusercontent.com/18375710/63104895-5f920600-bfb2-11e9-9e7f-fa3a8e1777e1.png)
+
+## 结果分析
+
+The result shown in the figure should not be surprising. 
+
+If few elements are used, all the data fits into L1d and the access time is only 3 cycles per list element. 
+
+The same is true for almost all arrangements of the list elements: 
+
+the virtual addresses are nicely mapped to L1d slots with almost no conflicts. 
+
+There are two (in this graph) special distance values for which the situation is different. 
+
+If the distance is a multiple of 4096 bytes (i.e., distance of 64 elements) and the length of the list is greater than eight, the average number of cycles per list element increases dramatically（显著）. 
+
+ps: 就是图中的两个高峰。
+
+In these situations all entries are in the same set and, once the list length is greater than the associativity, entries are flushed from L1d and have to be re-read from L2 the next round. 
+
+This results in the cost of about 10 cycles per list element.
+
+## 我们能得到什么结论
+
+With this graph we can determine that the processor used has an L1d cache with associativity 8 and a total size of 32kB. 
+
+That means that the test could, if necessary, be used to determine these values. 
+
+The same effects can be measured for the L2 cache but, here, it is more complex since the L2 cache is indexed using physical addresses and it is much larger.
+
+Programmers will hopefully see this data as an indication（迹象，表示） that set associativity is something worth paying attention to. 
+
+Laying out data at boundaries that are powers of two happens often enough in the real world, but this is exactly the situation which can easily lead to the above effects and degraded performance. 
+
+Unaligned accesses can increase the probability of conflict misses since each access might require an additional cache line.
+
+在现实世界中，在两个幂的边界处布置数据经常发生，但这恰好是容易导致上述效果和性能下降的情况。
+
+未对齐访问可能会增加冲突未命中的可能性，因为每次访问可能需要额外的缓存行。
+
+## AMD 
+
+- Figure 6.6: Bank Address of L1d on AMD
+
+```
+INDEX   BANK    BYTE
+14-7    6-4     3-0
+```
+
+If this optimization is performed, another related optimization is possible, too. 
+
+AMD’s processors, at least, implement the L1d as several individual banks. 
+
+The L1d can receive two data words per cycle but only if both words are stored in different banks or in a bank with the same index. 
+
+The bank address is encoded in the low bits of the virtual address as shown in Figure 6.6. 
+
+If variables which are used together are also stored together the likelihood that they are in different banks or the same bank with the same index is high.
+
+L1d每个周期可以接收两个数据字，但只有当两个字存储在不同的存储体或具有相同索引的存储体中时。
+
+如果一起使用的变量也存储在一起，那么它们在不同银行或具有相同指数的同一银行的可能性很高。
 
 # 参考资料
 
-P49
+P54
 
 * any list
 {:toc}
