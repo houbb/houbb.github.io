@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Who Called Me
+title: java 方法调用链
 date:  2017-8-24 15:33:49 +0800
 categories: [Java]
-tags: [java]
+tags: [java, thread]
 published: true
 ---
 
@@ -151,6 +151,19 @@ com.ryo.jdk.test.jdk7.old.util.MethodCallUtilTest.call
 
 Process finished with exit code 0
 ```
+
+# 获取当前执行的方法和类
+
+## 代码
+
+可以直接获得对应的类和方法信息：
+
+```java
+Thread.currentThread().getStackTrace()[1].getMethodName();
+Thread.currentThread().getStackTrace()[1].getCLass();
+```
+
+
 
 # 简单思考
 
