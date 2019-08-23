@@ -677,6 +677,105 @@ Whether or not the progress of the helper thread must be restricted depends on t
 In general it is best to make sure there is some synchronization since scheduling details could otherwise cause significant performance
 degradations.
 
+# Direct Cache Access
+
+One sources of cache misses in a modern OS is the handling of incoming data traffic. 
+
+## 直接写入内存的优缺点
+
+### 优点
+
+Modern hardware, like Network Interface Cards (NICs) and disk controllers, has the ability to write the received or read data directly into memory without involving the CPU. 
+
+This is crucial（关键） for the performance of the devices we have today, but it also causes problems. 
+
+可以直接写入主存，这样可以绕过 cache。节约时间。
+
+### 缺点
+
+Assume an incoming packet from a network: the OS has to decide how to handle it by looking at the header of the packet. 
+
+The NIC places the packet into memory and then notifies the processor about the arrival.
+
+The processor has no chance to prefetch the data since it does not know when the data will arrive, and maybe not even where exactly it will be stored. 
+
+The result is a cache miss when reading the header.
+
+假设来自网络的传入数据包：操作系统必须通过查看数据包的标头来决定如何处理它。
+
+NIC将数据包放入内存，然后通知处理器有关到达的信息。
+
+处理器没有机会预取数据，因为它不知道数据何时到达，甚至可能不知道数据的存储位置。
+
+结果是读取标题时出现缓存未命中。
+
+## Intel 处理方式
+
+Intel has added technology in their chipsets（芯片组） and CPUs to alleviate（缓解） this problem. 
+
+The idea is to populate the cache of the CPU which will be notified about the incoming packet with the packet’s data. 
+
+The payload of the packet is not critical here, this data will, in general, be handled by higher-level functions, either in the kernel or at user level. 
+
+The packet header is used to make decisions about the way the packet has to be handled and so this data is needed immediately.
+
+数据包的有效负载在这里并不重要，一般来说，这些数据将由更高级别的函数处理，无论是在内核中还是在用户层面。
+
+数据包标头用于决定数据包的处理方式，因此需要立即获取此数据。
+
+## 网络硬件
+
+The network I/O hardware already has DMA to write the packet. 
+
+That means it communicates directly with the memory controller which potentially（可能） is integrated in the Northbridge. 
+
+Another side of the memory controller is the interface to the processors through the FSB (assuming the memory controller is not integrated into the CPU itself).
+
+## 其他的想法
+
+The idea behind Direct Cache Access (DCA) is to extend the protocol between the NIC and the memory controller.
+
+In Figure 6.9 the first figure shows the beginning of the DMA transfer in a regular machine with Northand Southbridge. 
+
+![image](https://user-images.githubusercontent.com/18375710/63580865-4ac3fc80-c5c8-11e9-869b-d357263b8a6c.png)
+
+The NIC is connected to (or is part of) the Southbridge. 
+
+It initiates the DMA access but provides the new information about the packet header which should be pushed into the processor’s cache.
+
+## 传统的方式
+
+The traditional behavior would be, in step two, to simply complete the DMA transfer with the connection to the memory. 
+
+在第二步中，传统行为是通过与内存的连接简单地完成DMA传输。
+
+For the DMA transfers with the DCA flag set the Northbridge additionally sends the data on the FSB with a special, new DCA flag. 
+
+The processor always snoops the FSB and, if it recognizes the DCA flag, it tries to load the data directed to the processor into the lowest cache. 
+
+The DCA flag is, in fact, a hint; the processor can freely ignore it. After the DMA transfer is finished the processor is signaled.
+
+对于具有DCA标志设置的DMA传输，北桥还使用特殊的新DCA标志在FSB上发送数据。
+
+处理器总是监听FSB，如果它识别出DCA标志，它会尝试将指向处理器的数据加载到最低的缓存中。
+
+事实上，DCA标志是一个提示; 处理器可以自由地忽略它。 DMA传输完成后，处理器发出信号。
+
+## OS 如何处理
+
+The OS, when processing the packet, first has to determine what kind of packet it is. 
+
+If the DCA hint is not ignored, the loads the OS has to perform to identify the packet most likely hit the cache. 
+
+Multiply this saving of hundreds of cycles per packet with tens of thousands of packets which can be processed per second, and the savings
+add up to very significant numbers, especially when it comes to latency.
+
+操作系统必须判断出 packet 的种类。
+
+Without the integration of I/O hardware (a NIC in this case), chipset, and CPUs such an optimization is not possible.
+
+It is therefore necessary to make sure to select the platform wisely if this technology is needed.
+
 # 参考资料
 
 P59
