@@ -399,6 +399,284 @@ gcc手册警告说，好处在很大程度上取决于代码的形式，在某�
 
 程序员必须仔细使用此选项
 
+# Special Kind of Prefetch: Speculation（推测）
+
+The OOO(out of order) execution capability of a modern processor allows moving instructions around if they do not conflict with each other. 
+
+## IA-64 例子
+
+For instance (using this time IA-64 for the example):
+
+```
+st8 [r4] = 12
+add r5 = r6, r7;;
+st8 [r18] = r5
+```
+
+This code sequence stores 12 at the address specified by register r4, adds the content of registers r6 and r7 and stores it in register r5. 
+
+Finally it stores the sum at the address specified by register r18. 
+
+The point here is that the add instruction can be executed before–or at the same time as–the first st8 instruction since there is no data
+dependency. 
+
+But what happens if one of the addends（加数） has to be loaded?
+
+```
+st8 [r4] = 12
+ld8 r6 = [r8];;
+add r5 = r6, r7;;
+st8 [r18] = r5
+```
+
+The extra ld8 instruction loads the value from the address specified by the register r8. 
+
+There is an obvious data dependency between this load instruction and the following add instruction (this is the reason for the ;; after the instruction, thanks for asking). 
+
+What is critical here is that the new ld8 instruction–unlike the add instruction–cannot be moved in front of the first st8.
+
+The processor cannot determine quickly enough during the instruction decoding whether the store and load conflict, i.e., whether r4 and r8 might have same value. 
+
+If they do have the same value, the st8 instruction would determine the value loaded into r6. 
+
+What is worse, the ld8 might also bring with it a large latency in case the load misses the caches. 
+
+The IA-64 architecture supports speculative（投机） loads for this case:
+
+```
+ld8.a r6 = [r8];;
+[... other instructions ...]
+st8 [r4] = 12
+ld8.c.clr r6 = [r8];;
+add r5 = r6, r7;;
+st8 [r18] = r5
+```
+
+The new ld8.a and ld8.c.clr instructions belong together and replace the ld8 instruction in the previous code sequence. 
+
+The ld8.a instruction is the speculative load. 
+
+The value cannot be used directly but the processor can start the work. 
+
+At the time when the ld8.c.clr instruction is reached the content might have been loaded already (given there is a sufficient number of instructions in the gap). 
+
+The arguments for this instruction must match that for the ld8.a instruction. 
+
+If the preceding st8 instruction does not overwrite the value (i.e., r4 and r8 are the same), nothing has to be done. 
+
+The speculative load does its job and the latency of the load is hidden. 
+
+If the store and load do conflict the ld8.c.clr reloads the value from memory and we end up with the semantics of a normal ld8 instruction.
+
+该指令的参数必须与ld8.a指令的参数匹配。
+
+如果前面的st8指令没有覆盖该值（即r4和r8是相同的），则不需要做任何事情。
+
+推测性负载完成其工作并隐藏负载的延迟。
+
+如果存储和加载发生冲突，则ld8.c.clr会从内存中重新加载该值，最后我们会得到正常的ld8指令的语义。
+
+## 投机加载
+
+Speculative（投机） loads are not (yet?) widely used. 
+
+But as the example shows it is a very simple yet effective way to hide latencies. 
+
+Prefetching is basically equivalent and, for processors with few registers, speculative loads probably do not make much sense. 
+
+Speculative loads have the (sometimes big) advantage of loading the value directly into the register and not into the cache line where
+it might be evicted again (for instance, when the thread is descheduled). 
+
+If speculation is available it should be used.
+
+# Helper Threads
+
+## 代码的复杂性
+
+When one tries to use software prefetching one often runs into problems with the complexity（复杂性） of the code. 
+
+If the code has to iterate over a data structure (a list in our case) one has to implement two independent iterations in the same loop: 
+
+the normal iteration doing the work and the second iteration, which looks ahead, to use prefetching.
+
+This easily gets complex enough that mistakes are likely.
+
+执行工作的正常迭代和向前看的第二次迭代，以使用预取。
+
+这很容易变得足够复杂，可能会出错。
+
+## 确定要看多远
+
+Furthermore, it is necessary to determine how far to look ahead. 
+
+Too little and the memory will not be loaded in time. 
+
+Too far and the just loaded data might have been evicted again. 
+
+太少的数据加载可能导致不及时，太多的加载可能导致被驱除。
+
+## 预取也是需要时间的
+
+Another problem is that prefetch instructions, although they do not block and wait for the memory to be loaded, take time. 
+
+The instruction has to be decoded, which might be noticeable if the decoder is too busy, for instance, due to well written/generated code.
+
+Finally, the code size of the loop is increased. 
+
+This decreases the L1i efficiency. 
+
+预取数据也需要解码，这会占用 L1i 的资源，降低其性能。
+
+If one tries to avoid parts of this cost by issuing multiple prefetch requests in a row (in case the second load does not depend on the result of the first) one runs into problems with the number of outstanding prefetch requests.
+
+## 可选的方案：分开执行正常操作和预取。
+
+An alternative approach is to perform the normal operation and the prefetch completely separately. 
+
+This can happen using two normal threads. 
+
+The threads must obviously be scheduled so that the prefetch thread is populating a cache accessed by both threads. 
+
+There are two special solutions worth mentioning:
+
+（1）Use hyper-threads (see page 29) on the same core. 
+
+In this case the prefetch can go into L2 (or even L1d).
+
+（2）Use “dumber”（笨） threads than SMT threads which can do nothing but prefetch and other simple operations.
+
+This is an option processor manufacturers（处理器制造商） might explore.
+
+## 超级线程的使用
+
+The use of hyper-threads is particularly intriguing（特别有趣）. 
+
+As we have seen on page 29, the sharing of caches is a problem if the hyper-threads execute independent code. 
+
+If, instead, one thread is used as a prefetch helper thread this is not a problem. 
+
+To the contrary, it is the desired effect since the lowest level cache is preloaded. 
+
+相反，由于最低级高速缓存被预加载，因此是期望的效果。
+
+Furthermore, since the prefetch thread is mostly idle or waiting for memory, the normal operation of the other hyperthread is not disturbed much if it does not have to access main memory itself. 
+
+The latter is exactly what the prefetch helper thread prevents.
+
+此外，由于预取线程主要是空闲或等待内存，因此如果不必访问主存储器本身，则其他超线程的正常操作不会受到太多干扰。
+
+后者正是预取助手线程所阻止的。
+
+## 确保不要太超前
+
+The only tricky（狡猾） part is to ensure that the helper thread is not running too far ahead. 
+
+It must not completely pollute the cache so that the oldest prefetched values are evicted again. 
+
+On Linux, synchronization is easily done using the `futex` system call  or, at a little bit higher cost, using the POSIX thread synchronization primitives.
+
+![image](https://user-images.githubusercontent.com/18375710/63567794-826d7d00-c5a5-11e9-9460-689d43c0b393.png)
+
+The benefits of the approach can be seen in Figure 6.8. 
+
+This is the same test as in Figure 6.7 only with the additional result added. 
+
+The new test creates an additional helper thread which runs about 100 list entries ahead and reads (not only prefetches) all the cache lines of each list element. 
+
+In this case we have two cache lines per list element (NPAD=31 on a 32-bit machine with 64 byte cache line size).
+
+The two threads are scheduled on two hyper-threads of the same core. 
+
+The test machine has only one core but the results should be about the same if there is more than one core. 
+
+The affinity（亲和力） functions, which we will introduce in section 6.4.3, are used to tie the threads down to the appropriate hyper-thread.
+
+## 确认哪一个处理器是超线程
+
+To determine which two (or more) processors the OS knows are hyper-threads, the NUMA_cpu_level_mask interface from libNUMA can be used (see Appendix D).
+
+```c
+#include <libNUMA.h>
+ssize_t NUMA_cpu_level_mask(size_t destsize,
+cpu_set_t *dest,
+size_t srcsize,
+const cpu_set_t*src,
+unsigned int level);
+```
+
+This interface can be used to determine the hierarchy（等级制度） of CPUs as they are connected through caches and memory.
+
+Of interest here is level 1 which corresponds to hyper-threads. 
+
+To schedule two threads on two hyperthreads the libNUMA functions can be used (error handling dropped for brevity):
+
+```c
+cpu_set_t self;
+NUMA_cpu_self_current_mask(sizeof(self),
+&self);
+cpu_set_t hts;
+NUMA_cpu_level_mask(sizeof(hts), &hts,
+sizeof(self), &self, 1);
+CPU_XOR(&hts, &hts, &self);
+```
+
+After this code is executed we have two CPU bit sets.
+
+self can be used to set the affinity of the current thread and the mask in hts can be used to set the affinity of the helper thread. 
+
+This should ideally happen before the thread is created. 
+
+In section 6.4.3 we will introduce the interface to set the affinity. 
+
+If there is no hyper-thread available the NUMA_cpu_level_mask function will return 1. 
+
+This can be used as a sign to avoid this optimization.
+
+## 性能测试报告
+
+The result of this benchmark might be surprising (or perhaps not). 
+
+If the working set fits into L2, the overhead of the helper thread reduces the performance by between 10% and 60% (mostly at the lower end, ignore the smallest working set sizes again, the noise is too high). 
+
+This should be expected since, if all the data is already in the L2 cache, the prefetch helper thread only uses system resources without contributing to the execution.
+
+Once the L2 size is not sufficient is exhausted the picture changes, though. 
+
+The prefetch helper thread helps to reduce the runtime by about 25%. 
+
+We still see a rising curve simply because the prefetches cannot be processed fast enough. 
+
+The arithmetic（算数） operations performed by the main thread and the memory load operations of the helper thread do complement each other, though. 
+
+The resource collisions are minimal which causes this synergistic effect.
+
+资源冲突很小，这会产生这种协同效应。
+
+## 其他情况的推广
+
+The results of this test should be transferable（转让） to many other situations. 
+
+Hyper-threads, often not useful due to cache pollution, shine in these situations and should be taken advantage of. 
+
+The NUMA library introduced in Appendix D makes finding thread siblings very easy (see the example in that appendix). 
+
+If the library is not available the sys file system allows a program to find the thread siblings (see the thread_siblings column in Table 5.3). 
+
+Once this information is available the program just has to define the affinity of the threads and then run the loop in two modes: normal operation and prefetching. 
+
+The amount of memory prefetched should depend on the size of the shared cache. 
+
+In this example the L2 size is relevant（响应的） and the program can query the size using
+
+```
+sysconf(_SC_LEVEL2_CACHE_SIZE)
+```
+
+Whether or not the progress of the helper thread must be restricted depends on the program. 
+
+In general it is best to make sure there is some synchronization since scheduling details could otherwise cause significant performance
+degradations.
+
 # 参考资料
 
 P59
