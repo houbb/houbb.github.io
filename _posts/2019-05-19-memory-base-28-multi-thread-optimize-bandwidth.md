@@ -241,16 +241,177 @@ If more dynamic size handling is needed an extended set of macros should be used
 
 These interfaces take an additional parameter with the size. 
 
+## 如何动态配置 cpu 大小
+
 To be able to allocate dynamically sized CPU sets three macros are provided:
 
-TODO::..
+```c
+#define _GNU_SOURCE
+#include <sched.h>
+#define CPU_ALLOC_SIZE(count)
+#define CPU_ALLOC(count)
+#define CPU_FREE(cpuset)
+```
+
+The return value of the CPU_ALLOC_SIZE macro is the number of bytes which have to be allocated for a cpu_set_t structure which can handle count CPUs. 
+
+To allocate such a block the CPU_ALLOC macro can be used.
+
+The memory allocated this way must be freed with a call to CPU_FREE. 
+
+These macros will likely use malloc and free behind the scenes but this does not necessarily have to remain this way.
+
+## 一些 cpu 的相关操作
+
+Finally, a number of operations on CPU set objects are defined:
+
+```c
+#define _GNU_SOURCE
+#include <sched.h>
+#define CPU_EQUAL(cpuset1, cpuset2)
+#define CPU_AND(destset, cpuset1, cpuset2)
+#define CPU_OR(destset, cpuset1, cpuset2)
+#define CPU_XOR(destset, cpuset1, cpuset2)
+#define CPU_EQUAL_S(setsize, cpuset1, cpuset2)
+#define CPU_AND_S(setsize, destset, cpuset1,cpuset2)
+#define CPU_OR_S(setsize, destset, cpuset1,cpuset2)
+#define CPU_XOR_S(setsize, destset, cpuset1,cpuset2)
+```
+
+These two sets of four macros can check two sets for equality and perform logical AND, OR, and XOR operations on sets. 
+
+These operations come in handy when using some of the libNUMA functions (see Appendix D).
+
+## sched_getcpu
+
+A process can determine on which processor it is currently running using the sched_getcpu interface:
+
+```c
+#define _GNU_SOURCE
+#include <sched.h>
+int sched_getcpu(void);
+```
+
+The result is the index of the CPU in the CPU set. 
+
+Due to the nature of scheduling this number cannot always be 100% correct. 
+
+The thread might have been moved to a different CPU between the time the result was returned and when the thread returns to userlevel. 
+
+Programs always have to take this possibility of inaccuracy into account.
+
+More important is, in any case, the set of CPUs the thread is allowed to run on. 
+
+This set can be retrieved using sched_getaffinity. 
+
+The set is inherited by child threads and processes. 
+
+Threads cannot rely on the set to be stable over the lifetime. 
+
+The affinity mask can be set from the outside (see the pid parameter in the prototypes above); 
+
+Linux also supports CPU hot-plugging which means CPUs can vanish from the system–and, therefore, also from the affinity（亲和力） CPU set.
 
 
+# 多线程程序
 
+In multi-threaded programs, the individual threads officially have no process ID as defined by POSIX and, therefore, the two functions above cannot be used. 
+
+Instead `<pthread.h>` declares four different interfaces:
+
+```c
+#define _GNU_SOURCE
+#include <pthread.h>
+int pthread_setaffinity_np(pthread_t th, size_t size, const cpu_set_t *cpuset);
+int pthread_getaffinity_np(pthread_t th, size_t size, cpu_set_t *cpuset);
+int pthread_attr_setaffinity_np(pthread_attr_t *at, size_t size, const cpu_set_t *cpuset);
+int pthread_attr_getaffinity_np(pthread_attr_t *at, size_t size, cpu_set_t *cpuset);
+```
+
+## 处理进程中的各个线程
+
+The first two interfaces are basically equivalent to the two we have already seen, except that they take a thread handle in the first parameter instead of a process ID. 
+
+前两个接口基本上等同于我们已经看到的两个接口，除了它们在第一个参数而不是进程ID中使用线程句柄。
+
+This allows addressing individual threads in a process. 
+
+It also means that these interfaces cannot be used from another process, they are strictly for intra-process use. 
+
+这些意味着这些接口不能被其他进程使用，被严格地限制在当前进程内使用。
+
+## 显示指定目标处理器
+
+The third and fourth interfaces use a thread attribute. 
+
+These attributes are used when creating a new thread. 
+
+By setting the attribute, a thread can be scheduled from the start on a specific set of CPUs. 
+
+Selecting the target processors this early–instead of after the thread already started–can be of advantage on many different levels, including (and especially) memory allocation (see NUMA in section 6.5).
+
+尽早选择目标处理器 - 而不是在线程已经启动之后 - 在许多不同的级别上都是有利的，包括（尤其是）内存分配（参见6.5节中的NUMA）。
+
+
+# NUMA 编程中的作用
+
+Speaking of NUMA, the affinity interfaces play a big role in NUMA programming, too. 
+
+We will come back to that case shortly.
+
+So far, we have talked about the case where the working set of two threads overlaps（重叠） such that having both threads on the same core makes sense. 
+
+The opposite can be true, too. 
+
+If two threads work on separate data sets, having them scheduled on the same core can be a problem. 
+
+Both threads fight for the same cache, thereby reducing each others effective use of the cache. 
+
+Second, both data sets have to be loaded into the same cache; 
+
+in effect this increases the amount of data that has to be loaded and, therefore, the available bandwidth is cut in half.
+
+如果两个线程在不同的数据集上工作，那么将它们安排在同一个核心上可能会有问题。
+
+两个线程争用相同的缓存，从而减少彼此对缓存的有效使用。
+
+其次，两个数据集都必须加载到同一个缓存中;
+
+实际上，这增加了必须加载的数据量，因此可用带宽减少了一半。
+
+## 解决方案
+
+The solution in this case is to set the affinity of the threads so that they cannot be scheduled on the same core. 
+
+This is the opposite from the previous situation, so it is important to understand the situation one tries to optimize before making any changes.
+
+Optimizing for cache sharing to optimize bandwidth is in reality an aspect of NUMA programming which is covered in the next section. 
+
+One only has to extend the notion of “memory” to the caches. 
+
+This will become ever more important once the number of levels of cache increases.
+
+For this reason, a solution to multi-core scheduling is available in the NUMA support library. 
+
+See the code samples in Appendix D for ways to determine the affinity masks without hardcoding system details or diving into the depth of the /sys filesystem.
+
+在这种情况下，解决方案是设置线程的亲和性，以便它们不能在同一核心上进行调度。
+
+这与之前的情况相反，因此了解在进行任何更改之前尝试优化的情况非常重要。
+
+优化高速缓存共享以优化带宽实际上是NUMA编程的一个方面，将在下一节中介绍。
+
+人们只需要将“Memory”的概念扩展到缓存。
+
+一旦缓存级别增加，这将变得越来越重要。
+
+因此，NUMA支持库中提供了多核调度解决方案。
+
+有关确定关联掩码的方法，请参阅附录D中的代码示例，无需硬编码系统详细信息或深入了解/ sys文件系统。
 
 # 参考资料
 
-P68
+P72
 
 * any list
 {:toc}
