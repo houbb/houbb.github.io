@@ -135,9 +135,40 @@ This cost has to be amortized.
 
 该成本必须摊销。
 
+# 利用所有的带宽
+
+The numbers in Figure 5.4 show that access to remote memory when the caches are ineffective is not measurably（不用测量的） slower than access to local memory. 
+
+因为有网络传输。
+
+前端时间看了一个 RDMA-Rmote Direct Memory Access 觉得很有趣。
+
+This means a program could possibly save bandwidth to the local memory by writing data it does not have to read again into memory attached to another processor. 
+
+The bandwidth of the connection to the DRAM modules and the bandwidth of the interconnects are mostly independent, so parallel use could improve overall performance.
+
+并行可以提升互相之间不依赖的性能。
+
+## 影响的因素
+
+Whether this is really possible depends on many factors.
+
+One really has to be sure that caches are ineffective since otherwise the slowdown related to remote accesses is measurable. 
+
+Another big problem is whether the remote node has any needs for its own memory band-width. 
+
+This possibility must be examined in detail before the approach is taken. 
+
+In theory, using all the bandwidth available to a processor can have positive effects（积极的影响）. 
+
+A family 10h Opteron processor can be directly connected to up to four other processors. 
+
+Utilizing all that additional bandwidth, perhaps coupled with appropriate prefetches (especially prefetchw) could lead to improvements if
+the rest of the system plays along.
+
 # 参考资料
 
-P76
+P77
 
 * any list
 {:toc}
