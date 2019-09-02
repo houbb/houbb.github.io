@@ -196,12 +196,238 @@ The fact that the L1d and L2 miss rates are the same shows that all L1d cache mi
 
 This is the ideal case for all programs but it is, of course, hardly ever achievable.
 
-TODO...
+### data TLB 
 
+The fourth line in both graphs is the DTLB miss rate (Intel has separate TLBs for code and data, DTLB is the data TLB). 
+
+将指令和数据分开，是一种很棒的优化思路。
+
+For the random access case, the DTLB miss rate is significant and contributes（重要且有贡献） to the delays. 
+
+What is interesting is that the DTLB penalties（处罚） set in before the L2 misses. 
+
+For the sequential access case the DTLB costs are basically zero.
+
+顺序访问会使得预取可以工作的很好。
+
+
+# 回顾历史例子
+
+Going back to the matrix multiplication（矩阵乘法） example in section 6.2.1 and the example code in section A.1, we can make use of three more counters. 
+
+The SSE_HIT_PRE, SSE_PRE_MISS, and LOAD_PRE_EXEC counters can be used to see how effective the software prefetching is. 
+
+If the code in section A.1 is run we get the following results:
+
+| Description |   Ratio |
+|:---|:---|
+| Useful NTA prefetches | 2.84% |
+| Late NTA prefetches |   2.65% |
+
+
+## NTA 预取比例信息
+
+The low late NTA prefetch ratio is misleading. 
+
+The ratio means that 2.65% of all prefetch instructions are issued too late. 
+
+The instruction which needs the data is executed before the data could be prefetched into the cache.
+
+It must be kept in mind that only 2:84% + 2:65% = 5:5% of the prefetch instructions were of any use. 
+
+Of the NTA prefetch instructions which are useful, 48% did not finish in time. 
+
+The code therefore can be optimized further:
+
+（1）most of the prefetch instructions are not needed.
+
+（2） the use of the prefetch instruction can be adjusted to match the hardware better.
+
+It is left as an exercise to the reader to determine the best solution for the available hardware. 
+
+The exact hardware specification plays a big role. 
+
+On Core 2 processors the latency of the SSE arithmetic operations is 1 cycle. 
+
+Older versions had a latency of 2 cycles, meaning that the hardware prefetcher and the prefetch instructions had more time to bring in the data.
+
+在Core 2处理器上，SSE算术运算的延迟为1个周期。
+
+旧版本的延迟为2个周期，这意味着硬件预取器和预取指令有更多时间来引入数据。
+
+# 如何判断是否需要预取
+
+To determine where prefetches might be needed–or are unnecessary–one can use the opannotate program. 
+
+It lists the source or assembler code of the program and shows the instructions where the event was recognized. 
+
+## 两点注意点
+
+Note that there are two sources of vagueness（暧昧，含糊；茫然;）:
+
+
+（1） Oprofile performs stochastic profiling. （随机的资料收集）
+
+Only every Nth event (where N is a per-event threshold with an enforced minimum) is recorded to avoid slowing down operation of the system too much. 
+
+There might be lines which cause 100 events and yet they might not show up in the report.
+
+仅记录每个第N个事件（其中N是具有强制最小值的每事件阈值）以避免过多地减慢系统的操作。
+
+可能存在导致100个事件的行，但它们可能不会显示在报告中。
+
+ps: 这是一种采样的统计思想，避免统计对于性能的过渡消耗。
+
+（2） Not all events are recorded accurately（记录准确）. 
+
+For example, the instruction counter at the time a specific event was recorded might be incorrect. 
+
+Processors being multi-scalar（多标量） makes it hard to give a 100% correct answer. 
+
+A few events on some processors are exact, though.
+
+多标量的执行环境，会导致结果的不准确性。
+
+
+# 预取的注意列表
+
+The annotated listings are useful for more than determining the prefetching information. 
+
+Every event is recorded with the instruction pointer; it is therefore also possible to pinpoint other hot spots in the program. 
+
+每个事件都用指令指针记录; 因此，也可以确定程序中的其他热点。
+
+Locations which are the source of many INST_RETIRED events are executed frequently and deserve to be tuned. 
+
+Locations where many cache misses are reported might warrant（保证） a prefetch instruction to avoid the cache miss.
+
+One type of event which can be measured without hardware support is page faults. 
+
+The OS is responsible for resolving page faults and, on those occasions, it also counts them. 
+
+操作系统负责解决页面错误，在这种情况下，它也会对它们进行计数。
+
+## 缺页类型
+
+It distinguishes（区分） two kinds of page faults:
+
+### Minor Page Faults 
+
+For anonymous (i.e., not backed by a file) pages which have not been used so far, for copy-on-write pages, and for other pages whose
+content is already in memory somewhere.
+
+### Major Page Faults 
+
+Resolving them requires access to disk to retrieve the file-backed (or swapped-out) data.
+
+解析它们需要访问磁盘以检索文件支持（或换出）的数据。
+
+Obviously, major page faults are significantly more expensive than minor page faults. 
+
+But the latter are not cheap either. 
+
+这两种缺页的代价都非常的大。
+
+In either case an entry into the kernel is necessary, a new page must be found, the page must be cleared or populated with the appropriate data, and the page table tree must be modified accordingly（从尔，于是）. 
+
+The last step requires synchronization with other tasks reading or modifying the page table tree, which might introduce further
+delays.
+
+一旦需要把明细加载到内核，那就需要去更新数据，以及 page table tree。
+
+更新的过程又涉及到锁，保证并发的数据安全。
+
+# 获取缺页统计的工具
+
+The easiest way to retrieve（取回，恢复） information about the page fault counts is to use the time tool. 
+
+Note: use the real tool, not the shell builtin. 
+
+The output can be seen as following.
+
+```
+$ \time ls /etc
+[...]
+0.00user 0.00system 0:00.02elapsed 17%CPU (0avgtext+0avgdata 0maxresident)k
+0inputs+0outputs (1major+335minor)pagefaults 0swaps
+```
+
+The interesting part here is the last line. 
+
+The time tool reports one major and 335 minor page faults. 
+
+The exact numbers vary; in particular, repeating the run immediately will likely show that there are now no major page faults at all. 
+
+If the program performs the same action, and nothing changes in the environment, the total page fault count will be stable.
+
+具体数字各不相同; 特别是，立即重复运行可能会显示现在根本没有主要的缺页。
+
+如果程序执行相同的操作，并且环境中没有任何更改，则总缺页计数将保持稳定。
+
+
+## 程序启动阶段
+
+An especially sensitive phase with respect to page faults is program start-up. 
+
+Each page which is used will produce a page fault; the visible effect (especially for GUI applications) is that the more pages that are used, the longer it takes for the program to start working. 
+
+In section 7.5 we will see a tool to measure this effect specifically.
+
+## 时间统计工具类
+
+Under the hood, the time tool uses the rusage functionality. 
+
+The *wait4* system call fills in a struct rusage object when the parent waits for a child to terminate;
+
+that is exactly what is needed for the time tool. 
+
+# 开发者如何指定
+
+But it is also possible for a process to request information about its own resource usage (that is where the name rusage comes from) or the resource usage of its terminated children.
+
+## 函数
+
+```c
+#include <sys/resource.h>
+int getrusage(__rusage_who_t who,
+struct rusage *usage)
+```
+
+### 参数简介
+
+The who parameter specifies which process the information is requested for. 
+
+Currently, only RUSAGE_SELF and RUSAGE_CHILDREN are defined. 
+
+The resource usage of the child processes is accumulated when each child terminates.
+
+It is a total value, not the usage of an individual child process. 
+
+Proposals to allow requesting thread specific information exist, so it is likely that we will see RUSAGE_THREAD in the near future. 
+
+The rusage structure is defined to contain all kinds of metrics, including execution time, the number of IPC messages sent and memory used, and the number of page faults. 
+
+The latter information is available in the *ru_minflt* and *ru_majflt* members of the structure.
+
+
+A programmer who tries to determine where her program loses performance due to page faults could regularly request the information and then compare the returned values with the previous results.
+
+程序员试图确定程序因页面错误而失去性能的位置，可以定期请求信息，然后将返回的值与之前的结果进行比较。
+
+From the outside, the information is also visible if the requester has the necessary privileges. 
+
+The pseudo file `/proc/<PID>/stat`, where `<PID>` is the process ID of the process we are interested in, contains the page fault
+numbers in the tenth to fourteenth fields. 
+
+They are pairs of the process’s and its children’s cumulative minor and major page faults, respectively.
 
 # 参考资料
 
 P77
+
+- other
+
+[Linux代码性能检测利器（四）- 获取分析结果](https://blog.csdn.net/fenghaibo00/article/details/17249833)
 
 * any list
 {:toc}
