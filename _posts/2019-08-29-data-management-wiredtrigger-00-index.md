@@ -29,7 +29,6 @@ WiredTiger should be generally portable to any 64-bit system supporting the ANSI
 
 [LSM 索引](https://houbb.github.io/2018/09/06/index-lsm)
 
-
 ## 持久化引擎
 
 [LevelDB](https://houbb.github.io/2018/09/06/cache-leveldb-01-start)

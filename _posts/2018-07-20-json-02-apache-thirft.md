@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Thirft
+title: 跨语言传输协议-Thirft
 date:  2018-09-20 10:06:48 +0800
 categories: [Protocol]
 tags: [protocol, google, sh]
 published: true
-excerpt: 跨语言传输协议 Thirft 入门学习
 ---
 
 # Apache Thrift
