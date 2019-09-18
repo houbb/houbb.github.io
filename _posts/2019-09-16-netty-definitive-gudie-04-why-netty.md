@@ -127,6 +127,18 @@ Netty经过精心设计，具有丰富的协议实施经验，如FTP，SMTP，HT
 
 此外，请不要犹豫与Netty项目社区联系，如果有任何不正确的信息，语法或拼写错误，以及您是否有任何好的想法来帮助改进文档，请告诉我们。
 
+## maven 引入
+
+```xml
+<dependency>
+    <groupId>io.netty</groupId>
+    <artifactId>netty-all</artifactId>
+    <version>4.1.17.Final</version>
+</dependency>
+```
+
+# 实例代码
+
 ## 编写丢弃服务器
 
 世界上最简单的协议不是'Hello，World！'，而是丢弃。 
@@ -137,7 +149,336 @@ Netty经过精心设计，具有丰富的协议实施经验，如FTP，SMTP，HT
 
 让我们直接从处理程序实现开始，它处理由Netty生成的I/O事件。
 
+- DiscardServerHandler.java
 
+
+```java
+package com.github.houbb.netty.learn.four.discard;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+
+/**
+ * <p> 信息处理器 </p>
+ *
+ * <pre> Created: 2019/9/18 8:24 PM  </pre>
+ * <pre> Project: netty-learn  </pre>
+ *
+ * @author houbinbin
+ */
+public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        // 直接丢弃信息
+        ((ByteBuf) msg).release();
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+}
+```
+
+- DiscardServer.java
+
+核心启动流程。
+
+```java
+package com.github.houbb.netty.learn.four.discard;
+
+import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioServerSocketChannel;
+
+public class DiscardServer {
+
+    public static void main(String[] args) {
+        EventLoopGroup bossGroup = new NioEventLoopGroup();
+        EventLoopGroup workGroup = new NioEventLoopGroup();
+
+        try {
+            ServerBootstrap serverBootstrap = new ServerBootstrap();
+            serverBootstrap.group(bossGroup, workGroup)
+                    //在这里，我们指定使用NioServerSocketChannel类，该类用于实例化新Channel以接受传入连接。
+                    .channel(NioServerSocketChannel.class)
+                    //此处指定的处理程序将始终由新接受的Channel评估。
+                    .childHandler(new DiscardServerHandler())
+                    // 设置套接字选项信息
+                    .option(ChannelOption.SO_BACKLOG, 128)
+//            option（）用于接受传入连接的NioServerSocketChannel。
+//            childOption（）用于父ServerChannel接受的Channels，在这种情况下是NioServerSocketChannel。
+                    .childOption(ChannelOption.SO_KEEPALIVE, true);
+
+            //bind
+            ChannelFuture channelFuture = serverBootstrap.bind(8888).syncUninterruptibly();
+
+            // Wait until the server socket is closed.
+            // In this example, this does not happen, but you can do that to gracefully
+            // shut down your server.
+            channelFuture.channel().closeFuture().syncUninterruptibly();
+        } finally {
+            workGroup.shutdownGracefully();
+            bossGroup.shutdownGracefully();
+        }
+    }
+}
+```
+
+EventLoopGroup 可以理解为线程池。
+
+## 打印信息
+
+我们如果启动程序，最简单的方式是使用 `telnet localhost 8888` 进行验证。
+
+- ReceivedByteServerHandler.java
+
+```java
+package com.github.houbb.netty.learn.four.discard;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.util.ReferenceCountUtil;
+
+/**
+ * <p> 打印收到的字节信息 </p>
+ *
+ * <pre> Created: 2019/9/18 8:24 PM  </pre>
+ * <pre> Project: netty-learn  </pre>
+ *
+ * @author houbinbin
+ */
+public class ReceivedByteServerHandler extends ChannelInboundHandlerAdapter {
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        ByteBuf in = (ByteBuf) msg;
+
+        try {
+            while (in.isReadable()) {
+                System.out.println(in.readChar());
+                System.out.flush();
+            }
+        } finally {
+            // 这个是可选的
+            ReferenceCountUtil.release(in);
+        }
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
+}
+```
+
+我们将 Server 中的 handler 换成这个，进行试验。
+
+### 测试验证
+
+- 命令行
+
+```
+192:~ houbinbin$ telnet localhost 8888
+Trying ::1...
+Connected to localhost.
+Escape character is '^]'.
+5
+1234
+```
+
+- 服务端日志
+
+```
+5
+
+1
+2
+3
+4
+```
+
+## Echo Server
+
+将客户端的信息，直接返回给客户端。
+
+```java
+public class EchoServerHandler extends ChannelInboundHandlerAdapter {
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        // 写入并且刷新
+        ctx.writeAndFlush(msg);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+}
+```
+
+### 测试验证
+
+将 server 的 handler 换成这个类。
+
+启动服务端。
+
+- 命令行
+
+```
+192:~ houbinbin$ telnet localhost 8888
+Trying ::1...
+Connected to localhost.
+Escape character is '^]'.
+1
+1
+2
+2
+3
+3
+4
+4
+```
+
+每次输入一个字符，都会得到相同的反馈信息。
+
+## 时间服务端
+
+```java
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+
+/**
+ * <p> 时间戳响应服务端 </p>
+ *
+ * @author houbinbin
+ */
+public class TimeServerHandler extends ChannelInboundHandlerAdapter {
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        final ByteBuf byteBuf = ctx.alloc().buffer(4);
+        final long time = System.currentTimeMillis();
+
+        // 将时间戳写入 buffer
+        byteBuf.writeLong(time);
+
+        // 将 buffer 写入到 ctx
+        ChannelFuture channelFuture = ctx.writeAndFlush(byteBuf);
+        // 监听事件完成事件
+        channelFuture.addListener((ChannelFutureListener) future -> {
+            ctx.close();
+        });
+        // 也可以使用下面更加优雅的方式。
+//        channelFuture.addListener(ChannelFutureListener.CLOSE);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+}
+```
+
+## 时间客户端
+
+```java
+import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.socket.nio.NioSocketChannel;
+
+public class TimeClient {
+
+    public static void main(String[] args) {
+        EventLoopGroup workGroup = new NioEventLoopGroup();
+
+        try {
+            Bootstrap bootstrap = new Bootstrap();
+            ChannelFuture channelFuture = bootstrap.group(workGroup)
+                    .channel(NioSocketChannel.class)
+                    .handler(new TimeClientHandler())
+                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    .connect("localhost", 8888)
+                    .syncUninterruptibly();
+
+            // 关闭客户端
+            channelFuture.channel().closeFuture().syncUninterruptibly();
+        } finally {
+            workGroup.shutdownGracefully();
+        }
+    }
+}
+```
+
+- TimeClientHandler.java
+
+```java
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+
+/**
+ * <p> 时间戳响应客户端 </p>
+ */
+public class TimeClientHandler extends ChannelInboundHandlerAdapter {
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        ByteBuf byteBuf = (ByteBuf) msg;
+        long value = byteBuf.readLong();
+        System.out.println("Client receive time: " + value);
+
+        ctx.close();
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+}
+```
+
+### 测试验证
+
+启动服务端
+
+启动客户端
+
+- 客户端日志
+
+```
+Client receive time: 1568812068058
+
+Process finished with exit code 0
+```
+
+# 感受
+
+Netty 真的是非常的强大，api 也封装的非常优雅。
+
+很值得深入学习。
 
 # 拓展阅读
 
