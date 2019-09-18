@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Netty 权威指南-01-JDK 实现发展之路
+title: Netty 权威指南-01-BIO 案例
 date:  2019-5-10 11:08:59 +0800
 categories: [Netty]
-tags: [netty, overview, sh]
+tags: [netty, sh]
 published: true
 ---
 
