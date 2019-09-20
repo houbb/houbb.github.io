@@ -424,6 +424,276 @@ LineBasedFrameDecoder 的工作原理是依次遍历ByteBuf中的可读字节，
 
 StringDecoder 就是将接收到的对象转换成字符串，然后继续调用后面的Handler。
 
+
+# 指定分隔符方案
+
+通过约定的分隔符进行拆分，也是一种很常见的解决方案。
+
+## 服务端
+
+- DelimiterTimeServerHandler.java
+
+```java
+package com.github.houbb.netty.learn.four.pack.delimiter;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+public class DelimiterTimeServerHandler extends ChannelInboundHandlerAdapter {
+
+    private AtomicInteger atomicInteger = new AtomicInteger(0);
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        // 获取客户端的信息
+        String info = (String)msg;
+        int count = atomicInteger.incrementAndGet();
+        System.out.println("Server receive from client " + info + ", count " + count);
+
+        // 信息输出到客户端
+        String timeInfo = System.currentTimeMillis()+"$";
+        ByteBuf byteBuf = Unpooled.copiedBuffer(timeInfo.getBytes());
+        ctx.writeAndFlush(byteBuf);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+}
+```
+
+注意这一句 `String timeInfo = System.currentTimeMillis()+"$";`
+
+我们直接指定以 `$` 符号作为分隔符号。
+
+- 服务端代码
+
+```java
+.childHandler(new ChannelInitializer<SocketChannel>() {
+    @Override
+    protected void initChannel(SocketChannel ch) throws Exception {
+        ch.pipeline()
+                .addLast(new DelimiterBasedFrameDecoder(1024,
+                        Unpooled.copiedBuffer("$".getBytes())))
+                .addLast(new StringDecoder())
+                .addLast(new DelimiterTimeServerHandler());
+    }
+})
+```
+
+其中：
+
+```java
+DelimiterBasedFrameDecoder(1024, Unpooled.copiedBuffer("$".getBytes())
+```
+
+我们这里指定使用分隔符的方式，去处理我们的拆包/黏包问题。
+
+
+## 客户端
+
+- DelimiterTimeClientHandler.java
+
+```java
+package com.github.houbb.netty.learn.four.pack.delimiter;
+
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+public class DelimiterTimeClientHandler extends ChannelInboundHandlerAdapter {
+
+    private AtomicInteger atomicInteger = new AtomicInteger(0);
+
+    @Override
+    public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        // channel 激活是，调用 server 端 20 次
+        String queryInfo = "ask for time $";
+        ByteBuf byteBuf;
+        for(int i = 0; i < 20; i++) {
+            byteBuf = Unpooled.copiedBuffer(queryInfo.getBytes());
+            ctx.writeAndFlush(byteBuf);
+        }
+    }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        // 获取客户端的信息
+        String info = (String)msg;
+        int count = atomicInteger.incrementAndGet();
+        System.out.println("Client receive from server " + info + ", count " + count);
+    }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        ctx.close();
+    }
+
+}
+```
+
+`String queryInfo = "ask for time $";`
+
+这里客户端调用的时候，也是以 `$` 分隔符作为结尾。
+
+为了整理日志简单。本次将调用次数降低为 20 次。
+
+- 客户端
+
+启动代码 handler 也做如下的初始化：
+
+```java
+.handler(new ChannelInitializer<SocketChannel>() {
+    @Override
+    protected void initChannel(SocketChannel ch) throws Exception {
+        ch.pipeline()
+                .addLast(new DelimiterBasedFrameDecoder(1024,
+                        Unpooled.copiedBuffer("$".getBytes())))
+                .addLast(new StringDecoder())
+                .addLast(new DelimiterTimeClientHandler());
+    }
+})
+```
+
+## 测试验证
+
+（1）启动服务端
+
+（2）启动客户端
+
+- 服务端日志
+
+```
+Server receive from client ask for time , count 1
+Server receive from client ask for time , count 2
+Server receive from client ask for time , count 3
+Server receive from client ask for time , count 4
+Server receive from client ask for time , count 5
+Server receive from client ask for time , count 6
+Server receive from client ask for time , count 7
+Server receive from client ask for time , count 8
+Server receive from client ask for time , count 9
+Server receive from client ask for time , count 10
+Server receive from client ask for time , count 11
+Server receive from client ask for time , count 12
+Server receive from client ask for time , count 13
+Server receive from client ask for time , count 14
+Server receive from client ask for time , count 15
+Server receive from client ask for time , count 16
+Server receive from client ask for time , count 17
+Server receive from client ask for time , count 18
+Server receive from client ask for time , count 19
+Server receive from client ask for time , count 20
+```
+
+- 客户端日志
+
+```
+Client receive from server 1568961677739, count 1
+Client receive from server 1568961677741, count 2
+Client receive from server 1568961677742, count 3
+Client receive from server 1568961677742, count 4
+Client receive from server 1568961677743, count 5
+Client receive from server 1568961677743, count 6
+Client receive from server 1568961677743, count 7
+Client receive from server 1568961677743, count 8
+Client receive from server 1568961677744, count 9
+Client receive from server 1568961677744, count 10
+Client receive from server 1568961677744, count 11
+Client receive from server 1568961677745, count 12
+Client receive from server 1568961677745, count 13
+Client receive from server 1568961677745, count 14
+Client receive from server 1568961677745, count 15
+Client receive from server 1568961677746, count 16
+Client receive from server 1568961677746, count 17
+Client receive from server 1568961677746, count 18
+Client receive from server 1568961677746, count 19
+Client receive from server 1568961677747, count 20
+```
+
+# 定长解决方案
+
+## 方案说明
+
+有时候直接指定长度，根据长度进行截取也是一种常见的方式。
+
+## Netty 解决方案
+
+Netty 中提供了类 `FixedLengthFrameDecoder`
+
+## netty 设计的有优点
+
+netty 的这种泳道式设计，使得后期的拓展变得非常简单。
+
+而且提供了大量丰富而强大的类库，极大的降低了重复开发的成本。
+
+## 服务端
+
+- FixedLengthServerHandler.java
+
+非常简单，直接输出。
+
+```java
+public class FixedLengthServerHandler extends ChannelInboundHandlerAdapter {
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        // 直接打印信息
+        String info = (String)msg;
+        System.out.println(info);
+    }
+
+}
+```
+
+- 服务器 handler 指定
+
+```java
+.childHandler(new ChannelInitializer<SocketChannel>() {
+    @Override
+    protected void initChannel(SocketChannel ch) throws Exception {
+        ch.pipeline().addLast(new FixedLengthFrameDecoder(20))
+                .addLast(new StringDecoder())
+                .addLast(new FixedLengthServerHandler());
+    }
+})
+```
+
+## 测试
+
+直接使用命令行 `telnet localhost 8888`
+
+然后输入信息，打印得到
+
+```
+123
+
+asdfasdf
+asd
+fasdf
+asdfasdf
+12a
+```
+
 # 参考资料
 
 《Netty 权威指南》
