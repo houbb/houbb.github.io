@@ -2,8 +2,8 @@
 layout: post
 title:  Mina
 date:  2017-11-15 22:25:15 +0800
-categories: [Apache]
-tags: [apache, net]
+categories: [Net]
+tags: [apache, net, framework, sh]
 published: true
 ---
 
