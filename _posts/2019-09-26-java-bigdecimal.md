@@ -117,6 +117,55 @@ public static void main(String[] args) {
     }
 ```
 
+# doubleValue()
+
+## 源码
+
+```java
+    /**
+     * Converts this {@code BigDecimal} to a {@code double}.
+     * This conversion is similar to the
+     * <i>narrowing primitive conversion</i> from {@code double} to
+     * {@code float} as defined in section 5.1.3 of
+     * <cite>The Java&trade; Language Specification</cite>:
+     * if this {@code BigDecimal} has too great a
+     * magnitude represent as a {@code double}, it will be
+     * converted to {@link Double#NEGATIVE_INFINITY} or {@link
+     * Double#POSITIVE_INFINITY} as appropriate.  Note that even when
+     * the return value is finite, this conversion can lose
+     * information about the precision of the {@code BigDecimal}
+     * value.
+     *
+     * @return this {@code BigDecimal} converted to a {@code double}.
+     */
+    public double doubleValue(){
+        if(intCompact != INFLATED) {
+            if (scale == 0) {
+                return (double)intCompact;
+            } else {
+                /*
+                 * If both intCompact and the scale can be exactly
+                 * represented as double values, perform a single
+                 * double multiply or divide to compute the (properly
+                 * rounded) result.
+                 */
+                if (Math.abs(intCompact) < 1L<<52 ) {
+                    // Don't have too guard against
+                    // Math.abs(MIN_VALUE) because of outer check
+                    // against INFLATED.
+                    if (scale > 0 && scale < double10pow.length) {
+                        return (double)intCompact / double10pow[scale];
+                    } else if (scale < 0 && scale > -double10pow.length) {
+                        return (double)intCompact * double10pow[-scale];
+                    }
+                }
+            }
+        }
+        // Somewhat inefficient, but guaranteed to work.
+        return Double.parseDouble(this.toString());
+    }
+```
+
 
 # 个人收获
 
