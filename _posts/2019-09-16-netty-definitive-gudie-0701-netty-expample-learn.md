@@ -57,16 +57,6 @@ io.netty.example.http.websocketx.server
 
 下面的系列，学习完成后，全部替换为学习的笔记。
 
-[websocket](https://blog.csdn.net/yinbucheng/article/details/77344028)
-
-## 后续学习
-
-[使用netty自定义推送](https://blog.csdn.net/yinbucheng/article/details/77094973)
-
-[使用netty实现网络推送](https://blog.csdn.net/yinbucheng/article/details/77076302)
-
-[使用netty开发私有栈协议](https://blog.csdn.net/yinbucheng/article/details/77439878)
-
 ## 实战
 
 [rpc](https://blog.csdn.net/yinbucheng/article/details/77095229)
