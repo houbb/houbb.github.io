@@ -22,6 +22,17 @@ Java VisualVM使开发人员能够生成和分析堆转储，跟踪内存泄漏�
 
 您可以通过选择Tools，然后选择Java VisualVM菜单中的Plugins，从标准Ja​​va VisualVM插件目录中进行选择
 
+
+# 使用方式
+
+直接命令行输入
+
+```
+jvisualvm
+```
+
+即可。
+
 # 参考资料
 
 https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jvisualvm.html
