@@ -51,8 +51,143 @@ com.github.houbb has been prepared, now user(s) houbbEcho can:
 
 ## Generate GPG
 
+
+### windows 安装
+
 PS: Windows 请下载 [gpg4win](https://www.gpg4win.org/download.html)
 
+
+ps: 从官方下载有点慢，我直接从华军软件园下载的。
+
+[V2.3.1](http://www.onlinedown.net/soft/56460.htm)
+
+- 安装检测
+
+```
+λ gpg --version
+gpg (GnuPG) 2.0.30 (Gpg4win 2.3.1)
+libgcrypt 1.6.5
+Copyright (C) 2015 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Home: C:/Users/Administrator/AppData/Roaming/gnupg
+Supported algorithms:
+Pubkey: RSA, RSA, RSA, ELG, DSA
+Cipher: IDEA, 3DES, CAST5, BLOWFISH, AES, AES192, AES256, TWOFISH,
+        CAMELLIA128, CAMELLIA192, CAMELLIA256
+Hash: MD5, SHA1, RIPEMD160, SHA256, SHA384, SHA512, SHA224
+Compression: Uncompressed, ZIP, ZLIB, BZIP2
+```
+
+- 生成密匙
+
+```
+λ gpg --gen-key                                          
+gpg (GnuPG) 2.0.30; Copyright (C) 2015 Free Software Foun
+This is free software: you are free to change and redistr
+There is NO WARRANTY, to the extent permitted by law.    
+                                                         
+gpg: keyring `C:/Users/Administrator/AppData/Roaming/gnup
+gpg: keyring `C:/Users/Administrator/AppData/Roaming/gnup
+Please select what kind of key you want:                 
+   (1) RSA and RSA (default)                             
+   (2) DSA and Elgamal                                   
+   (3) DSA (sign only)                                   
+   (4) RSA (sign only)                                   
+Your selection?                                          
+RSA keys may be between 1024 and 4096 bits long.         
+What keysize do you want? (2048)                         
+Requested keysize is 2048 bits                           
+Please specify how long the key should be valid.         
+         0 = key does not expire                         
+      <n>  = key expires in n days                       
+      <n>w = key expires in n weeks                      
+      <n>m = key expires in n months                     
+      <n>y = key expires in n years                      
+Key is valid for? (0)                                    
+Key does not expire at all                               
+Is this correct? (y/N) y                                 
+                                                         
+GnuPG needs to construct a user ID to identify your key. 
+                                                         
+Real name:                                               
+```
+
+全部选择默认，然后让输入名称。
+
+- 输入基本信息
+
+```
+Real name: houbb
+Email address: 1060732496@qq.com
+Comment: houbb
+You selected this USER-ID:
+    "houbb (houbb) <1060732496@qq.com>"
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? O
+You need a Passphrase to protect your secret key.
+
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+gpg: C:/Users/Administrator/AppData/Roaming/gnupg/trustdb.gpg: trustdb created
+gpg: key 93A5D37E marked as ultimately trusted
+public and secret key created and signed.
+
+gpg: checking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+pub   2048R/93A5D37E 2019-11-05
+      Key fingerprint = 9937 FCD0 3381 7A78 5835  0BFA FF95 C30D 93A5 D37E
+uid       [ultimate] houbb (houbb) <1060732496@qq.com>
+sub   2048R/5F300F72 2019-11-05
+```
+
+- 查看公匙
+
+```
+$    gpg --list-keys
+
+C:/Users/Administrator/AppData/Roaming/gnupg/pubring.gpg
+--------------------------------------------------------
+pub   2048R/93A5D37E 2019-11-05
+uid       [ultimate] houbb (houbb) <1060732496@qq.com>
+sub   2048R/5F300F72 2019-11-05
+```
+
+
+`9937 FCD0 3381 7A78 5835  0BFA FF95 C30D 93A5 D37E` 这个就是公钥ID。
+
+
+- 将公钥发布到 PGP 密钥服务器
+ 
+```
+λ gpg --keyserver hkp://keyserver.ubuntu.com:11371 --send-keys 9937FCD033817A7858350BFAFF95C30D93A5D37E
+gpg: sending key 93A5D37E to hkp server keyserver.ubuntu.com
+```
+
+
+- 验证是否上传成功
+
+```
+λ gpg --keyserver hkp://keyserver.ubuntu.com:11371 --recv-keys 9937FCD033817A7858350BFAFF95C30D93A5D37E
+gpg: requesting key 93A5D37E from hkp server keyserver.ubuntu.com
+gpg: key 93A5D37E: "houbb (houbb) <1060732496@qq.com>" not changed
+gpg: Total number processed: 1
+gpg:              unchanged: 1
+```
+
+搞定，上传成功。
+
+
+### Mac 安装
 
 Mac 系统。安装 [GPG](http://www.ruanyifeng.com/blog/2013/07/gpg.html)
 
