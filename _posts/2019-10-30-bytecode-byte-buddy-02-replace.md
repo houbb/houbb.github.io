@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Byte Buddy-02-替换类实现
-date:  2019-10-30 11:18:472 +0800
+date:  2019-10-30 11:18:00 +0800
 categories: [Java]
 tags: [java, bytecode, sf]
 published: true

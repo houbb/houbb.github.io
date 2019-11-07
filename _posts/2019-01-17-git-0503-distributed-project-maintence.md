@@ -417,6 +417,24 @@ Tom Preston-Werner (4):
 
 这份整洁的总结包括了自 v1.0.1 以来的所有提交，并且已经按照作者分好组，你可以通过电子邮件将其直接发送到列表中。
 
+# 中央仓库访问很慢的问题 
+
+## 站长直接测试
+
+直接 https://oss.sonatype.org/ 站长之家全国测速.
+
+## 选择较快的一个修改 hosts 文件
+
+```
+3.222.227.3 https://oss.sonatype.org/ 
+```
+
+- Windows
+
+```
+ipconfig /flushdns
+```
+
 # 参考资料
 
 [5.3 分布式 Git - 维护项目](https://git-scm.com/book/zh/v2/%E5%88%86%E5%B8%83%E5%BC%8F-Git-%E7%BB%B4%E6%8A%A4%E9%A1%B9%E7%9B%AE)
