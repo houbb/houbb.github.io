@@ -1028,23 +1028,30 @@ gpg:              unchanged: 1
 
 有时候 idea 指定 的 xml 好像没有用，建议使用 setting.xml 进行相关的修改。
 
+
+# 访问 maven 太慢
+
+## 测速
+
+直接站长工具测速，[http://tool.chinaz.com/speedtest/oss.sonatype.org](http://tool.chinaz.com/speedtest/oss.sonatype.org)
+
+## 修改 hosts
+
+```
+35.169.48.141 https://oss.sonatype.org/
+```
+
+## 立刻生效
+
+cmd 执行命令：
+
+```
+ipconfig /flushdns
+```
+
 # 参考资料
 
 http://blog.csdn.net/hj7jay/article/details/51130398
 
 * any list
 {:toc}
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
