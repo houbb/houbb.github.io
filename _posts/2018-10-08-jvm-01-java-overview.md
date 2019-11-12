@@ -130,6 +130,14 @@ JRL比OpenJDK多一些受license影响而无法以GPLv2开放的内容。
 
 与其说OpenJDK7是“不完整的JDK”，还不如说Oracle JDK7在OpenJDK7的基础上带了一些value-add，其中很多还没啥用（例如browser plugin）。
 
+## 相关书籍
+
+《深入Java虚拟机》
+
+《深入理解Java虚拟机JVM高级特性与最佳实践》
+
+《Java虚拟机规范》
+
 # 参考资料
 
 《深入理解 jvm》
