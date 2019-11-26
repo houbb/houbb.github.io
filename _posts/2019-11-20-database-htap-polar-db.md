@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Ocean Base
+title: POLARDB
 date:  2019-11-20 11:18:30 +0800
 categories: [Database]
-tags: [database, olap, oltp, htap, sh]
+tags: [database, distributed-database, olap, oltp, htap, sh]
 published: true
 ---
 
-# 云数据库POLARDB  视频简介
+# 云数据库 POLARDB  视频简介
 
 POLARDB 是阿里巴巴自主研发的下一代关系型分布式云原生数据库，目前兼容三种数据库引擎：MySQL、PostgreSQL、高度兼容Oracle语法。 
 

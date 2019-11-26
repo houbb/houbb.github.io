@@ -3,7 +3,7 @@ layout: post
 title: Ocean Base
 date:  2019-11-20 11:18:30 +0800
 categories: [Database]
-tags: [database, olap, oltp, htap, sh]
+tags: [database, distributed-database, olap, oltp, htap, sh]
 published: true
 ---
 
