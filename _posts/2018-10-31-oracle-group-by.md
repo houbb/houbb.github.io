@@ -61,6 +61,35 @@ GROUP BY user_id;
 
 可以参考：[基于 guava 的内存分组](https://houbb.github.io/2018/10/25/guava-group-sort)
 
+
+# 删除重复配置
+
+## 场景描述
+
+有时候我们需要移除重复的配置，并且删除掉重复的配置，并且只保留一个需要的配置。
+
+## 分析
+
+需要根据判定是否重复的字段
+
+```sql
+group by XXX, XXX having count(0) > 1;
+```
+
+## 示例 sql
+
+```sql
+DELETE MY_CONFIG t
+where exists (
+select * from (
+select max(rowid) rowid_, xxx,count(0) cnt
+from MY_CONFIG group by xxx
+) b where cnt >1 and t.rowid = b.rowid_
+);
+```
+
+这里就是把分组后得到 cnt > 1（有重复的配置）选取出第一条，然后进行删除。
+
 # 拓展阅读
 
 [TreeMap](https://houbb.github.io/2019/03/28/data-struct-treemap)
