@@ -1,10 +1,10 @@
 ---
 layout: post
-title: Ocean Base-02-install
+title: Ocean Base-11-install
 date:  2019-11-20 11:18:30 +0800
 categories: [Database]
 tags: [database, distributed-database, olap, oltp, htap, sh]
-published: true
+published: false
 ---
 
 # 下载地址
