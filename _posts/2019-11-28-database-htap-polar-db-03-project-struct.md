@@ -125,9 +125,9 @@ POLARDB主节点所在可用区。
 
 # 拓展阅读
 
-[RDMA 协议]()
+[RDMA 协议](https://houbb.github.io/2019/11/20/rdma-00-overview)
 
-[共享分布式存储]()
+[共享分布式存储](https://houbb.github.io/2019/11/20/dsm-00-overview)
 
 # 参考资料
 
