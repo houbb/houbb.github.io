@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  ASM-02-classes
+title:  ASM-02-classes Structure
 date:  2018-07-20 13:43:31 +0800
 categories: [Java]
 tags: [java, asm, sh]
@@ -73,8 +73,65 @@ published: true
 
 下一节将解释它们在编译类中的表示形式。
 
-TODO...
+## 内部名称
 
+在许多情况下，类型被约束为类或接口类型。
+
+例如，类的超类，由类实现的接口或方法引发的异常不能是原始类型或数组类型，而必须是类或接口类型。
+
+这些类型在带有内部名称的已编译类中表示。 
+
+一个类的内部名称就是该类的完全限定名称，其中点用斜杠替换。
+
+例如，字符串的内部名称是 java/lang/String。
+
+## 类型描述符
+
+内部名称仅用于约束为类或接口类型的类型。
+
+在所有其他情况下，例如字段类型，Java类型都在带有类型描述符的已编译类中表示（参见图2.2）。
+
+| Java type | Type descriptor |
+| boolean    | Z |
+| char       | C |
+| byte       | B |
+| short      | S |
+| int        | I |
+| float      | F |
+| long       | J |
+| double     | D |
+| Object     | Ljava/lang/Object; |
+| int[]      | [I |
+| Object[][] |  [[Ljava/lang/Object; |
+
+基本类型的描述符是单个字符：Z表示布尔值，C表示字符，B表示字节，S表示简短，I表示整数，F表示浮点数，J表示长整数，D表示双精度字符。
+
+类类型的描述符是该类的内部名称，前面是L，然后是分号。 
+
+例如，String的类型描述符是 `Ljava/lang/ String;`。
+
+最后，数组类型的描述符是方括号，后跟数组元素类型的描述符。
+
+## 方法描述符
+
+方法描述符是类型描述符的列表，这些类型描述符在单个字符串中描述方法的参数类型和返回类型。 
+
+方法描述符以左括号开头，然后是每个形式参数的类型描述符，然后是右括号，然后是返回类型的类型描述符，如果该方法返回void，则返回V（方法描述符不包含方法名称或参数名称）。
+
+- 图 2.3
+
+| 源代码 | 描述符 |
+|:---|:---|
+| void m(int i, float f) | (IF)V |
+| int m(Object o)         | (Ljava/lang/Object;)I |
+| int[] m(int i, String s) | (ILjava/lang/String;)[I |
+| Object m(int[] i) | ([I)Ljava/lang/Object; |
+
+一旦知道了类型描述符的工作原理，就很容易理解方法描述符。
+
+例如 `(I)I` 描述了一个采用一个类型为实参的方法 int，并返回一个int。
+
+图2.3给出了几个方法描述符示例。
 
 # 拓展学习 
 
