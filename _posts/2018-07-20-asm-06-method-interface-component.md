@@ -396,7 +396,10 @@ public class C {
 
 ps: 这里就是一种代码增强。如果能结合编译时注解，可以做到很强的功能。
 
+下面的这种流程，我们自己进行编程的时候也可以学习。
+
 ## 比较区别
+
 
 `TraceClassVisitor` 这个类可以告诉我们怎么用 ASM 实现这个功能，非常的好用。
 
@@ -427,7 +430,9 @@ MAXLOCALS = 1
 
 我们还需要更新最大操作数堆栈大小。
 
-该方法代码的开头是通过visitCode方法访问的。
+### visitcode 修改
+
+该方法代码的开头是通过 visitCode 方法访问的。
 
 因此，我们可以通过在方法适配器中重写此方法来添加前四个指令：
 
@@ -446,6 +451,8 @@ public void visitCode() {
 
 现在，我们必须在任何RETURN之前，任何xRETURN或ATHROW之前添加其他四条指令，它们都是终止该方法执行的所有指令。
 
+### visitInsn 修改
+
 这些指令没有任何参数，因此可以在visitInsn方法中进行访问。
 
 然后，我们可以覆盖此方法以添加我们的说明：
@@ -463,7 +470,436 @@ public void visitInsn(int opcode) {
 }
 ```
 
-TODO...
+### 更新最大操作数堆栈大小
+
+最后，我们必须更新最大操作数堆栈大小。
+
+我们添加的指令会推入两个long值，因此在操作数堆栈上需要四个插槽。
+
+在方法开始时，操作数堆栈最初为空，因此我们知道在开始处添加的四条指令需要一叠大小为4。
+
+我们也知道，插入的代码使堆栈状态保持不变（因为它弹出的次数与所推送的一样多）。
+
+结果，如果原始代码需要一个大小为s的堆栈，则转换后的方法所需的最大堆栈大小为 max(4, s)。
+
+不幸的是，我们还在返回指令之前添加了四个指令，并且在这里我们不知道这些指令之前的操作数堆栈的大小。
+
+我们只知道它小于或等于s。
+
+因此，我们只能说在返回指令之前添加的代码可能需要最大为 `s + 4` 的操作数堆栈。
+
+这种最坏情况在实践中很少发生：
+
+对于普通的编译器，在RETURN之前的操作数堆栈仅包含返回值，即，其大小最大为0、1或2。
+
+但是，如果我们想处理所有可能的情况，则需要使用最坏情况方案2。
+
+然后，我们必须按如下方式重写visitMaxs方法：
+
+```java
+public void visitMaxs(int maxStack, int maxLocals) {
+    mv.visitMaxs(maxStack + 4, maxLocals);
+}
+```
+
+当然，可以不用担心最大堆栈大小，而可以依靠 COMPUTE_MAXS 选项来计算最佳值，而不是最坏情况的值。
+
+但是对于这样简单的转换，手动更新 maxStack 不需要花费太多精力。
+
+ps: 简单的计算自己做，如果依赖选项当然也简单，可是性能的损耗上面也说了。
+
+## 堆栈映射帧（Frame）如何？
+
+现在一个有趣的问题是：堆栈映射 Frame 如何？
+
+原始代码不包含任何 Frame，也没有转换的 Frame，但这是由于我们用作示例的特定代码吗？
+
+在某些情况下必须更新 Frame？
+
+答案是否定的，因为
+
+1）插入的代码使操作数堆栈保持不变，
+
+2）插入的代码不包含跳转指令，并且
+
+3）原始代码的跳转指令（或更正式的说是控制流程图）没有被修改。
+
+这意味着原始帧不会更改，并且由于不必为插入的代码存储任何新帧，因此压缩的原始帧也不会更改。
+
+## 将一切连接起来
+
+```java
+public class AddTimerAdapter extends ClassVisitor {
+
+    private String owner;
+    private boolean isInterface;
+    
+    public AddTimerAdapter(ClassVisitor cv) {
+        super(ASM4, cv);
+    }
+
+
+    @Override 
+    public void visit(int version, int access, String name,
+        String signature, String superName, String[] interfaces) {
+        cv.visit(version, access, name, signature, superName, interfaces);
+        owner = name;
+        isInterface = (access & ACC_INTERFACE) != 0;
+    }
+
+    @Override 
+    public MethodVisitor visitMethod(int access, String name,
+        String desc, String signature, String[] exceptions) {
+        MethodVisitor mv = cv.visitMethod(access, name, desc, signature,
+        exceptions);
+        if (!isInterface && mv != null && !name.equals("<init>")) {
+            mv = new AddTimerMethodAdapter(mv);
+        }
+        return mv;
+    }
+
+    @Override 
+    public void visitEnd() {
+        if (!isInterface) {
+            FieldVisitor fv = cv.visitField(ACC_PUBLIC + ACC_STATIC, "timer", "J", null, null);
+            if (fv != null) {
+                fv.visitEnd();
+            }
+        }
+        cv.visitEnd();
+    }
+
+
+    class AddTimerMethodAdapter extends MethodVisitor {
+        
+        public AddTimerMethodAdapter(MethodVisitor mv) {
+            super(ASM4, mv);
+        }
+
+        @Override 
+        public void visitCode() {
+            mv.visitCode();
+            mv.visitFieldInsn(GETSTATIC, owner, "timer", "J");
+            mv.visitMethodInsn(INVOKESTATIC, "java/lang/System",
+            "currentTimeMillis", "()J");
+            mv.visitInsn(LSUB);
+            mv.visitFieldInsn(PUTSTATIC, owner, "timer", "J");
+        }
+
+        @Override 
+        public void visitInsn(int opcode) {
+            if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
+                mv.visitFieldInsn(GETSTATIC, owner, "timer", "J");
+                mv.visitMethodInsn(INVOKESTATIC, "java/lang/System",
+                "currentTimeMillis", "()J");
+                mv.visitInsn(LADD);
+                mv.visitFieldInsn(PUTSTATIC, owner, "timer", "J");
+            }
+            mv.visitInsn(opcode);
+        }
+
+        @Override 
+        public void visitMaxs(int maxStack, int maxLocals) {
+            mv.visitMaxs(maxStack + 4, maxLocals);
+        }
+    }
+}
+```
+
+类适配器用于实例化方法适配器（构造函数除外），还用于添加计时器字段并将要转换的类的名称存储在可从方法适配器访问的字段中。
+
+# 有状态转换（Statefull transformations）
+
+## 无状态转换
+
+上一节中看到的转换是局部的，并且不依赖于当前指令之前已访问的指令：
+
+开头添加的代码始终相同并且始终会添加，同样，对于每个RETURN指令之前插入的代码 。
+
+这种转换称为无状态转换。
+
+它们很容易实现，但是只有最简单的转换才能验证此属性。
+
+更复杂的转换需要记住有关当前指令之前已访问的指令的某种状态。
+
+## 有状态转换
+
+例如，考虑一个删除所有出现的ICONST_0 IADD序列的转换，其空效果为加0。
+
+很明显，当访问IADD指令时，只有最后访问的指令是ICONST_0时，才必须删除它。
+
+这需要将状态存储在方法适配器内部。因此，这种转换称为**有状态转换**。
+
+让我们在此示例中查看更多详细信息。 
+
+当访问ICONST_0时，仅当下一条指令为IADD时，才必须将其删除。
+
+问题在于下一条指令尚不知道。
+
+解决方案是将该决定推迟到下一条指令：
+
+如果是IADD，则删除两条指令，否则发出ICONST_0和当前指令。
+
+为了实现删除或替换某些指令序列的转换，可以方便地引入MethodVisitor子类，该子类的visitXxx Insn方法调用通用的 visitInsn() 方法：
+
+```java
+public abstract class PatternMethodAdapter extends MethodVisitor {
+    protected final static int SEEN_NOTHING = 0;
+    protected int state;
+
+    public PatternMethodAdapter(int api, MethodVisitor mv) {
+        super(api, mv);
+    }
+
+    @Overrid 
+    public void visitInsn(int opcode) {
+        visitInsn();
+        mv.visitInsn(opcode);
+    }
+
+    @Override 
+    public void visitIntInsn(int opcode, int operand) {
+        visitInsn();
+        mv.visitIntInsn(opcode, operand);
+    }
+
+    ...
+    protected abstract void visitInsn();
+}
+```
+
+上面的转换接口可以实现如下：
+
+```java
+public class RemoveAddZeroAdapter extends PatternMethodAdapter {
+
+    private static int SEEN_ICONST_0 = 1;
+    
+    public RemoveAddZeroAdapter(MethodVisitor mv) {
+        super(ASM4, mv);
+    }
+
+    @Override 
+    public void visitInsn(int opcode) {
+        if (state == SEEN_ICONST_0) {
+            if (opcode == IADD) {
+                state = SEEN_NOTHING;
+                return;
+            }
+        }
+        visitInsn();
+        if (opcode == ICONST_0) {
+            state = SEEN_ICONST_0;
+            return;
+        }
+        mv.visitInsn(opcode);
+    }
+
+    @Override 
+    protected void visitInsn() {
+        if (state == SEEN_ICONST_0) {
+            mv.visitInsn(ICONST_0);
+        }
+        state = SEEN_NOTHING;
+    }
+}
+```
+
+`visitInsn(int)` 方法首先测试是否已检测到序列。
+
+在这种情况下，它将重新初始化状态并立即返回，这具有删除序列的作用。
+
+在其他情况下，它调用公共visitInsn方法，如果这是最后访问的指令，则该方法将发出一个ICONST_0。
+
+然后，如果当前指令是ICONST_0，它将记住该事实并返回，以推迟有关该指令的决定。 
+
+在所有其他情况下，当前指令将转发给下一位访客。
+
+## 标签(Label)和 帧(Frames)
+
+如前几节所述，标签和 Frame 在它们相关的指令之前被访问。
+
+换句话说，尽管它们本身不是指令，但它们与指令同时访问。
+
+这对检测指令序列的转换有影响，但是这种影响实际上是一个优势。
+
+确实，如果我们删除的指令之一是跳转指令的目标，将会发生什么？
+
+如果某些指令可能跳转到ICONST_0，则意味着有一个标签指定该指令。
+
+删除这两个说明后，此标签将指定删除的IADD之后的指令，这就是我们想要的。
+
+但是，如果某些指令可能跳转到IADD，则无法删除指令序列（我们无法确定在此跳转之前将0压入堆栈）。
+
+希望在这种情况下，ICONST_0之间必须有标签IADD，这很容易被发现。
+
+### 堆栈映射
+
+堆栈映射 Frames 的推理是相同的：
+
+如果在两条指令之间访问了堆栈映射框架，我们将无法删除它们。
+
+两种情况都可以通过将标签和帧视为模式匹配算法中的指令来处理。
+
+这可以在 PatternMethodAdapter 中完成（请注意，visitMaxs还会调用通用的visitInsn方法；这用于处理方法的结尾是必须检测到的序列的前缀的情况）：
+
+```java
+public abstract class PatternMethodAdapter extends MethodVisitor {
+    ...
+    @Override 
+    public void visitFrame(int type, int nLocal, Object[] local,
+        int nStack, Object[] stack) {
+        visitInsn();
+        mv.visitFrame(type, nLocal, local, nStack, stack);
+    }
+
+    @Override 
+    public void visitLabel(Label label) {
+        visitInsn();
+        mv.visitLabel(label);
+    }
+
+    @Override 
+    public void visitMaxs(int maxStack, int maxLocals) {
+        visitInsn();
+        mv.visitMaxs(maxStack, maxLocals);
+    }
+}
+```
+
+正如我们将在下一章中看到的那样，编译后的方法可能包含信息有关源文件行号的信息，例如在异常堆栈跟踪中使用。
+
+使用visitLineNumber方法访问此信息，该方法也与指令同时调用。
+
+但是，在此，指令序列中间的行号对转换或删除它的可能性没有任何影响。
+
+因此，解决方案是在模式匹配算法中完全忽略它们。
+
+
+## 一个更复杂的例子
+
+前面的示例可以轻松地推广到更复杂的指令序列。
+
+例如，考虑一个转换，该转换通常由于输入错误而删除了自身字段分配，
+
+例如f = f；或以字节码表示，ALOAD 0 ALOAD 0 GETFIELD f PUTFIELD f。
+
+在执行此转换之前，最好设计状态机以识别此序列（请参见图3.6）。
+
+![image](https://user-images.githubusercontent.com/18375710/70499757-c84e5100-1b54-11ea-9b17-55d7a3c8115d.png)
+
+每个转换都用条件（当前指令的值）和操作（必须发出的指令序列，以粗体显示）标记。
+
+例如，如果当前指令不是ALOAD 0，则会发生从S1到S0的转换。
+
+在这种情况下，将发出被访问以达到此状态的ALOAD 0。
+
+注意从S2到自身的过渡：当发现三个或更多连续的ALOAD 0时，就会发生这种情况。
+
+在这种情况下，我们保持访问两个ALOAD 0的状态，然后发出第三个ALOAD 0。
+
+找到状态机后，编写相应的方法适配器
+
+一旦找到状态机，就可以直接编写相应的方法适配器（8个切换用例对应于图中的8个转换）：
+
+```java
+class RemoveGetFieldPutFieldAdapter extends PatternMethodAdapter {
+
+    private final static int SEEN_ALOAD_0 = 1;
+    private final static int SEEN_ALOAD_0ALOAD_0 = 2;
+    private final static int SEEN_ALOAD_0ALOAD_0GETFIELD = 3;
+
+    private String fieldOwner;
+    private String fieldName;
+    private String fieldDesc;
+
+    public RemoveGetFieldPutFieldAdapter(MethodVisitor mv) {
+        super(mv);
+    }
+
+    @Override
+    public void visitVarInsn(int opcode, int var) {
+        switch (state) {
+            case SEEN_NOTHING: // S0 -> S1
+                if (opcode == ALOAD && var == 0) {
+                state = SEEN_ALOAD_0;
+                return;
+                }
+                break;
+
+            case SEEN_ALOAD_0: // S1 -> S2
+                if (opcode == ALOAD && var == 0) {
+                    state = SEEN_ALOAD_0ALOAD_0;
+                    return;
+                }
+                break;
+            case SEEN_ALOAD_0ALOAD_0: // S2 -> S2
+                if (opcode == ALOAD && var == 0) {
+                    mv.visitVarInsn(ALOAD, 0);
+                    return;
+                }
+                break;
+        }
+        visitInsn();
+        mv.visitVarInsn(opcode, var);
+    }
+
+    @Override
+    public void visitFieldInsn(int opcode, String owner, String name,
+        String desc) {
+        switch (state) {
+            case SEEN_ALOAD_0ALOAD_0: // S2 -> S3
+                if (opcode == GETFIELD) {
+                    state = SEEN_ALOAD_0ALOAD_0GETFIELD;
+                    fieldOwner = owner;
+                    fieldName = name;
+                    fieldDesc = desc;
+                    return; 
+                }
+                break;
+                
+            case SEEN_ALOAD_0ALOAD_0GETFIELD: // S3 -> S0
+                if (opcode == PUTFIELD && name.equals(fieldName)) {
+                    state = SEEN_NOTHING;
+                    return;
+                }
+                break;
+        }
+        visitInsn();
+        mv.visitFieldInsn(opcode, owner, name, desc);
+    }
+
+    @Override protected void visitInsn() {
+        switch (state) {
+            case SEEN_ALOAD_0: // S1 -> S0
+                mv.visitVarInsn(ALOAD, 0);
+                break;
+            case SEEN_ALOAD_0ALOAD_0: // S2 -> S0
+                mv.visitVarInsn(ALOAD, 0);
+                mv.visitVarInsn(ALOAD, 0);
+                break;
+            case SEEN_ALOAD_0ALOAD_0GETFIELD: // S3 -> S0
+                mv.visitVarInsn(ALOAD, 0);
+                mv.visitVarInsn(ALOAD, 0);
+                mv.visitFieldInsn(GETFIELD, fieldOwner, fieldName, fieldDesc);
+                break;
+        }
+        state = SEEN_NOTHING;
+    }
+}
+```
+
+请注意，出于与第3.2.4节中的AddTimerAdapter情况相同的原因，本节中介绍的有状态转换无需转换堆栈映射帧：
+
+原始帧在转换后仍然有效。
+
+他们甚至不需要转换局部变量和操作数堆栈大小。
+
+最后，必须注意的是，状态转换不限于检测和转换指令序列的转换。
+
+许多其他类型的转换也是全状态的。
+
+例如，下一节中介绍的方法适配器就是这种情况。
 
 # 参考文档
 
