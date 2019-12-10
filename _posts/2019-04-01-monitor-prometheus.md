@@ -81,5 +81,7 @@ Prometheus以高效的自定义格式将时间序列存储在内存和本地磁�
 
 [Opentsdb Document](http://opentsdb.net/docs/build/html/index.html)
 
+[为什么说Prometheus是足以取代Zabbix的监控神器？](https://mp.weixin.qq.com/s/zM4BHk4aPaCbpbndhwIbxg)
+
 * any list
 {:toc}
