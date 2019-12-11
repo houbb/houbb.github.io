@@ -167,6 +167,8 @@ Linux 中提供类似的系统调用主要有 mmap()，sendfile() 以及 splice(
 
 [DMA]()
 
+[RDMA]()
+
 # 参考资料
 
 https://www.ibm.com/developerworks/cn/linux/l-cn-zerocopy1/
