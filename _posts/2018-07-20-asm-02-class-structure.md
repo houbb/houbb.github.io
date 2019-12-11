@@ -7,6 +7,67 @@ tags: [java, asm, sh]
 published: true
 ---
 
+
+# Java 类文件
+
+所谓 Java 类文件，就是通常用 javac 编译器产生的 .class 文件。
+
+这些文件具有严格定义的格式。
+
+为了更好的理解 ASM，首先对 Java 类文件格式作一点简单的介绍。
+
+Java 源文件经过 javac 编译器编译之后，将会生成对应的二进制文件（如下图所示）。
+
+![javac](https://www.ibm.com/developerworks/cn/java/j-lo-asm30/fig002.jpg)
+
+每个合法的 Java 类文件都具备精确的定义，而正是这种精确的定义，才使得 Java 虚拟机得以正确读取和解释所有的 Java 类文件。
+
+Java 类文件是 8 位字节的二进制流。
+
+数据项按顺序存储在 class 文件中，相邻的项之间没有间隔，这使得 class 文件变得紧凑，减少存储空间。
+
+在 Java 类文件中包含了许多大小不同的项，由于每一项的结构都有严格规定，这使得 class 文件能够从头到尾被顺利地解析。下面让我们来看一下 Java 类文件的内部结构，以便对此有个大致的认识。
+
+## 例子
+
+例如，一个最简单的 Hello World 程序：
+
+```java
+public class HelloWorld { 
+    public static void main(String[] args) { 
+        System.out.println("Hello world"); 
+    } 
+}
+```
+
+经过 javac 编译后，得到的类文件大致是：
+
+![class files](https://www.ibm.com/developerworks/cn/java/j-lo-asm30/fig003.jpg)
+
+从上图中可以看到，一个 Java 类文件大致可以归为 10 个项：
+
+Magic：该项存放了一个 Java 类文件的魔数（magic number）和版本信息。一个 Java 类文件的前 4 个字节被称为它的魔数。每个正确的 Java 类文件都是以 0xCAFEBABE 开头的，这样保证了 Java 虚拟机能很轻松的分辨出 Java 文件和非 Java 文件。
+
+Version：该项存放了 Java 类文件的版本信息，它对于一个 Java 文件具有重要的意义。因为 Java 技术一直在发展，所以类文件的格式也处在不断变化之中。类文件的版本信息让虚拟机知道如何去读取并处理该类文件。
+
+Constant Pool：该项存放了类中各种文字字符串、类名、方法名和接口名称、final 变量以及对外部类的引用信息等常量。虚拟机必须为每一个被装载的类维护一个常量池，常量池中存储了相应类型所用到的所有类型、字段和方法的符号引用，因此它在 Java 的动态链接中起到了核心的作用。常量池的大小平均占到了整个类大小的 60% 左右。
+
+Access_flag：该项指明了该文件中定义的是类还是接口（一个 class 文件中只能有一个类或接口），同时还指名了类或接口的访问标志，如 public，private, abstract 等信息。
+
+This Class：指向表示该类全限定名称的字符串常量的指针。
+
+Super Class：指向表示父类全限定名称的字符串常量的指针。
+
+Interfaces：一个指针数组，存放了该类或父类实现的所有接口名称的字符串常量的指针。以上三项所指向的常量，特别是前两项，在我们用 ASM 从已有类派生新类时一般需要修改：将类名称改为子类名称；将父类改为派生前的类名称；如果有必要，增加新的实现接口。
+
+Fields：该项对类或接口中声明的字段进行了细致的描述。需要注意的是，fields 列表中仅列出了本类或接口中的字段，并不包括从超类和父接口继承而来的字段。
+
+Methods：该项对类或接口中声明的方法进行了细致的描述。例如方法的名称、参数和返回值类型等。需要注意的是，methods 列表里仅存放了本类或本接口中的方法，并不包括从超类和父接口继承而来的方法。使用 ASM 进行 AOP 编程，通常是通过调整 Method 中的指令来实现的。
+
+Class attributes：该项存放了在该文件中类或接口所定义的属性的基本信息。
+
+事实上，使用 ASM 动态生成类，不需要像早年的 class hacker 一样，熟知 class 文件的每一段，以及它们的功能、长度、偏移量以及编码方式。ASM 会给我们照顾好这一切的，我们只要告诉 ASM 要改动什么就可以了 —— 当然，我们首先得知道要改什么：对类文件格式了解的越多，我们就能更好地使用 ASM 这个利器。
+
 # Class
 
 本章介绍如何使用核心ASM API生成和转换已编译的Java类。
@@ -140,6 +201,8 @@ JVM class 文件信息
 # 参考文档
 
 [https://asm.ow2.io/asm4-guide.pdf](https://asm.ow2.io/asm4-guide.pdf)
+
+https://www.ibm.com/developerworks/cn/java/j-lo-asm30/index.html
 
 * any list
 {:toc}

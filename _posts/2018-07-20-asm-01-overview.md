@@ -189,6 +189,21 @@ asm-util.jar存档中的org.objectweb.asm.util包，提供了基于核心API的�
 
 因此，建议按顺序阅读本文档。
 
+
+# 整体时序图
+
+![整体时序图](https://www.ibm.com/developerworks/cn/java/j-lo-asm30/fig004.jpg)
+
+
+# AOP 技术对比
+
+| AOP 底层技术	| 功能	| 性能	| 面向接口编程	| 编程难度 |  
+|:---|:---|:---|:---|:---|
+| 直接改写 class 文件	 | 完全控制类	        | 无明显性能代价	                 |           不要求	高，要求对 class 文件结构和 Java 字节码有深刻了解 |
+| JDK Instrument	|    完全控制类	    |    无论是否改写，每个类装入时都要执行 hook| 程序	 不要求	 高，要求对 class 文件结构和 Java 字节码有深刻了解 |
+| JDK Proxy	     |   只能改写 method| 	   反射引入性能代价	            |                要求	低 |
+| ASM	           |     几乎能完全控制类 |    无明显性能代价	              |              不要求	中，能操纵需要改写部分的 Java 字节码 |
+
 # 参考文档
 
 [https://asm.ow2.io/asm4-guide.pdf](https://asm.ow2.io/asm4-guide.pdf)
