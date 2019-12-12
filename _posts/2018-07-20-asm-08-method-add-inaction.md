@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  ASM-08-Method 新增方法实战
+title:  ASM-08-Method 方法增强实战
 date:  2018-07-20 13:43:31 +0800
 categories: [Java]
-tags: [java, asm, in-action, sh]
+tags: [java, asm, in-action, aop, sh]
 published: true
 ---
 
@@ -241,7 +241,11 @@ hello asm method!
 
 ## 反射基本信息
 
+TODO: 下面的可以抽象为工具方法。
+
 [Java通过ASM运行时读取方法参数名称](https://blog.csdn.net/weixin_34335458/article/details/89413530)
+
+[java1.8中ASM获取接口和抽象类以及类函数参数名称](https://blog.csdn.net/chy2z/article/details/81773142)
 
 [ReflectASM详解](https://www.jianshu.com/p/ca7bdf8b7718)
 
@@ -250,6 +254,14 @@ hello asm method!
 [JAVA通过ASM字节码为成员方法前后添加其他代码](https://blog.csdn.net/wjy160925/article/details/85332998)
 
 [AOP 的利器：ASM 3.0 介绍](https://www.ibm.com/developerworks/cn/java/j-lo-asm30/index.html)
+
+## 引用拓展
+
+[使用reflectasm实现bean快速复制（缓存了生成的class对象](https://blog.csdn.net/wyyrockking/article/details/84525440)
+
+所有原来基于反射去做的，都可以基于 asm 反射在做一次。
+
+提升性能。
 
 ## Tree API
 
