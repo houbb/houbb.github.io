@@ -2,8 +2,8 @@
 layout: post
 title: Jenkins Plugin
 date:  2016-10-14 23:51:50 +0800
-categories: [Tools]
-tags: [jenkins plugin]
+categories: [Devops]
+tags: [Devops, ci, plugin]
 published: true
 ---
 
