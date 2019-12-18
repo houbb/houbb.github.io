@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Rancher
-date:  2016-10-26 13:59:45 +0800
-categories: [Tools]
-tags: [docker]
+title: Docker-05-Rancher
+date:  2016-10-15 22:41:45 +0800
+categories: [Devops]
+tags: [docker, devops, sh]
 published: true
 ---
 
