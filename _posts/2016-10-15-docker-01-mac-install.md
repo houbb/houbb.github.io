@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Docker
+title: Docker-01-install for mac
 date:  2016-10-15 22:41:45 +0800
-categories: [Tools]
-tags: [docker]
+categories: [Devops]
+tags: [docker, devops, ci, sh]
 published: true
 ---
 
