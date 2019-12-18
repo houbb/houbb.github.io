@@ -53,6 +53,8 @@ published: true
 
 《Docker 基础与实战》
 
+《第一本 Docker 书》
+
 （4）github
 
 上面有一些优秀的资源。
