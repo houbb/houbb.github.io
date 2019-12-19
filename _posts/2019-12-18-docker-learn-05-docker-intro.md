@@ -98,7 +98,7 @@ Docker的出现让人们意识到了容器的价值，使得一直以来长期�
 
 # 拓展阅读
 
-[生命周期管理机制（Application Lifecycle Management，ALM）]()
+[生命周期管理机制（Application Lifecycle Management，ALM）](https://houbb.github.io/2019/12/18/docker-learn-07-ALM-12-factor)
 
 # 参考资料
 
