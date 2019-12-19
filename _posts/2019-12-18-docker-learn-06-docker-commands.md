@@ -19,6 +19,10 @@ published: true
 
 为了了解Docker命令行工具的概况，我们可以使用docker命令或docker help命令来获取docker的命令清单。
 
+## 通用 api
+
+![image](https://user-images.githubusercontent.com/18375710/71147040-7d25f380-2262-11ea-92ed-de68c50ecedd.png)
+
 ## 查看命令
 
 ```
