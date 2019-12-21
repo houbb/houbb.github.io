@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Docker learn-04-Linux Container 
+title:  Docker learn-04-Docker 与 Linux 之间的关系
 date:  2019-12-18 10:50:21 +0800
 categories: [Devpos]
 tags: [devops, docker, learn-note,  sh]

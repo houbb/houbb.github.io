@@ -15,8 +15,6 @@ published: true
 
 It runs completely from RAM, is a ~45MB download and boots quickly.
 
-
-
 ## 为什么需要
 
 在 Ubuntu 等环境，我们可以一键安装Docker(服务端、客户端)，但是在 Mac、Windows 环境却无法直接安装 Docker 服务端。

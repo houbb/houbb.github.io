@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Docker learn-01-overview
+title:  Docker learn-01-学习历程回顾
 date:  2019-12-18 10:50:21 +0800
 categories: [Devpos]
 tags: [devops, docker,learn-note,  sh]
@@ -45,15 +45,17 @@ published: true
 
 一手资料，自主学习。
 
+这个放在最后，直接学习会比较吃力。
+
 （3）书籍
 
 系统学习
 
-[《Docker 全攻略》](https://max.book118.com/html/2019/0217/6022011242002010.shtm)
+《Docker 全攻略》
 
 《Docker 实战》
 
-[《Docker 从入门到实战》](https://max.book118.com/html/2019/0327/5140004200002022.shtm)
+《Docker 从入门到实战》
 
 《Docker 基础与实战》
 
@@ -115,23 +117,25 @@ CI/CD：Jenkines/TeamCity
 
 代码仓库：Gitlab/Github
 
-jar 包仓库：Maven/Gradle
+jar 包仓库：Maven/Gradle/Nexus
 
 测试：Junit/Mock/TestNG
 
 代码质量：Sonar/FindBugs
 
-文档：Swagger/ IDoc
+文档：Swagger/IDoc
 
 # 拓展阅读
 
-[]()
+[go-lang](https://houbb.github.io/2018/09/07/lang-go-01-hello-01)
+
+[DevOps](https://houbb.github.io/2018/03/16/devops)
 
 ## 公众号
 
 更多技术文章，生活趣事，尽在【老马啸西风】。
 
-![image](https://user-images.githubusercontent.com/18375710/71187778-b427f380-22ba-11ea-8b72-cab863753533.png)
+![老马啸西风](https://user-images.githubusercontent.com/18375710/71305502-3d9d0a00-2410-11ea-8cb1-da60a584785b.jpg)
 
 * any list
 {:toc}
