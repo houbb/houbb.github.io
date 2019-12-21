@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  ASM
+title:  ASM-00-入门教程
 date:  2018-07-20 13:43:31 +0800
 categories: [Java]
 tags: [java, asm, sh]
@@ -139,6 +139,12 @@ public class Bean extends ClassLoader implements Opcodes {
 
 }
 ```
+
+# 拓展阅读
+
+更多技术文章，生活趣事，尽在【老马啸西风】。
+
+![老马啸西风](https://user-images.githubusercontent.com/18375710/71305502-3d9d0a00-2410-11ea-8cb1-da60a584785b.jpg)
 
 # 参考文档
 

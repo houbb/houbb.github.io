@@ -247,6 +247,12 @@ public class AddFieldTransformer extends ClassTransformer {
 
 一次计算原始名称和混淆名称之间的映射（一个简单的哈希表，比所有类的完整对象表示所需的内存少得多），以及一次转换基于此映射的类。
 
+# 拓展阅读
+
+更多技术文章，生活趣事，尽在【老马啸西风】。
+
+![老马啸西风](https://user-images.githubusercontent.com/18375710/71305502-3d9d0a00-2410-11ea-8cb1-da60a584785b.jpg)
+
 # 参考文档
 
 [https://asm.ow2.io/asm4-guide.pdf](https://asm.ow2.io/asm4-guide.pdf)

@@ -123,6 +123,12 @@ visitLocalVariable("i", "I", null, l3, end, 1);
 
 与泛型类型和注释一样，您可以使用TraceClassVisitor，CheckClassAdapter和ASMifier类来查找如何使用调试信息。
 
+# 拓展阅读
+
+更多技术文章，生活趣事，尽在【老马啸西风】。
+
+![老马啸西风](https://user-images.githubusercontent.com/18375710/71305502-3d9d0a00-2410-11ea-8cb1-da60a584785b.jpg)
+
 # 参考文档
 
 [https://asm.ow2.io/asm4-guide.pdf](https://asm.ow2.io/asm4-guide.pdf)

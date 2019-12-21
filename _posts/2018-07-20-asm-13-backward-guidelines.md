@@ -178,6 +178,12 @@ ClassReader将始终调用每个访问方法的最新版本。因此，如果我
 
 仍然，使层次结构的叶类成为最终类（除非它们也不会覆盖任何visit方法；在这种情况下，请提供一个构造器，以ASM版本作为参数，以便子类可以指定为其编写的版本）。
 
+# 拓展阅读
+
+更多技术文章，生活趣事，尽在【老马啸西风】。
+
+![老马啸西风](https://user-images.githubusercontent.com/18375710/71305502-3d9d0a00-2410-11ea-8cb1-da60a584785b.jpg)
+
 # 参考文档
 
 [https://asm.ow2.io/asm4-guide.pdf](https://asm.ow2.io/asm4-guide.pdf)

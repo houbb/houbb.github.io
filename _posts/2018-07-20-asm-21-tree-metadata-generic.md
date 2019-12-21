@@ -64,6 +64,12 @@ public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
 
 最后，源局部变量的名称和类型存储在MethodNode的localVariables字段中，该字段是LocalVariableNode对象的列表。
 
+# 拓展阅读
+
+更多技术文章，生活趣事，尽在【老马啸西风】。
+
+![老马啸西风](https://user-images.githubusercontent.com/18375710/71305502-3d9d0a00-2410-11ea-8cb1-da60a584785b.jpg)
+
 # 参考文档
 
 [https://asm.ow2.io/asm4-guide.pdf](https://asm.ow2.io/asm4-guide.pdf)

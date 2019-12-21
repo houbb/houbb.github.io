@@ -229,6 +229,11 @@ public class DeprecatedDump implements Opcodes {
 
 这段代码显示了两个如何使用ACC_ANNOTATION标志创建注解类，并显示了如何创建两个类注解，一个没有值，一个带有枚举值。 可以用类似的方法来创建方法和参数注解，方法是在MethodVisitor类中定义了visitAnnotation和visitParameterAnnotation方法。
 
+# 拓展阅读
+
+更多技术文章，生活趣事，尽在【老马啸西风】。
+
+![老马啸西风](https://user-images.githubusercontent.com/18375710/71305502-3d9d0a00-2410-11ea-8cb1-da60a584785b.jpg)
 
 
 
