@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Docker 在 Mac 环境安装教程
+title: Docker 在 Windows7 环境安装教程
 date:  2016-10-15 22:41:45 +0800
 categories: [Docker]
 tags: [docker, windows, sf]
