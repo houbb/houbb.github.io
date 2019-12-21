@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Docker ActiveMQ
+title: Docker 安装 activeMQ 入门介绍
 date:  2018-09-17 11:34:23 +0800
 categories: [JMS]
 tags: [java, docker, mq, sh]
 published: true
-excerpt: Docker 安装 activeMQ 入门介绍
 ---
 
 # Docker ActiveMQ

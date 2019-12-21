@@ -23,6 +23,10 @@ published: true
 
 （2）GoLang 协程等语言优势
 
+（3）微服务相关
+
+这些后期都将进行系统的学习和整理。
+
 ## 学习途径
 
 其次主要是学习途径。
@@ -70,6 +74,64 @@ published: true
 这里有第二种学习的思路，那就是目录也是一种学习大纲。
 
 我们可以只看目录，然后跟着目录系统的学习一遍。
+
+## 自己的理解
+
+**结合故事进行系统的学习。**
+
+比如集装箱在工业的发展之路。
+
+DevOps 的发展历程，这种思想的重要性。
+
+带来了什么？会产生多少新的机遇，同时又会导致多少失业？
+
+故事是为了学习的趣味性，系统是为了学习的系统性。
+
+- 思考
+
+- 总结
+
+- 拓展
+
+## 相关理念
+
+瀑布式开发
+
+敏捷开发
+
+DevOps
+
+IaaS/PaaS/DaaS/PaaS
+
+Cloud-与云之间的结合
+
+## 相关知识
+
+比如 Devops 的相关知识：
+
+CI/CD：Jenkines/TeamCity
+
+版本控制: SVN/GIT
+
+代码仓库：Gitlab/Github
+
+jar 包仓库：Maven/Gradle
+
+测试：Junit/Mock/TestNG
+
+代码质量：Sonar/FindBugs
+
+文档：Swagger/ IDoc
+
+# 拓展阅读
+
+[]()
+
+## 公众号
+
+更多技术文章，生活趣事，尽在【老马啸西风】。
+
+![image](https://user-images.githubusercontent.com/18375710/71187778-b427f380-22ba-11ea-8b72-cab863753533.png)
 
 * any list
 {:toc}

@@ -13,6 +13,12 @@ published: true
 With Rancher, organizations no longer have to build a container services platform from scratch using a distinct set of open source technologies.
 Rancher supplies the entire software stack needed to manage containers in production.
 
+[Rancher](http://rancher.com/) 是一个开放源代码软件平台，使组织可以在生产中运行容器。
+
+使用Rancher，组织不再需要使用一套独特的开源技术从头开始构建容器服务平台。
+
+Rancher提供了管理生产中的容器所需的整个软件堆栈。
+
 # Quick Start
 
 <uml>

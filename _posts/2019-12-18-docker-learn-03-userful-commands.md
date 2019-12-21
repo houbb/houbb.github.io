@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Docker learn-03-有用的技巧
+title:  Docker learn-03-有用的技巧和命令
 date:  2019-12-18 10:50:21 +0800
 categories: [Devpos]
 tags: [devops, docker, learn-note,  sh]

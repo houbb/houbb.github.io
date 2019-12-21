@@ -8,11 +8,6 @@ published: true
 excerpt: Docker 概览
 ---
 
-# Docker 概览
-
-[Docker 入门介绍](https://houbb.github.io/2018/09/05/container-docker-hello)
-
-
 # 本文的问题
 
 带着问题学习，共计 10 个问题。

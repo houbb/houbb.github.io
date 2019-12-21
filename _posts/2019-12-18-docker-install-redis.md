@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Docker Redis
+title:  Docker 安装 Redis 教程笔记
 date:  2018-05-06 20:11:55 +0800
 categories: [Docker]
 tags: [docker, redis]

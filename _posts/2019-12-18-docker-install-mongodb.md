@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Docker Mongodb
+title: Docker 安装 Mongodb
 date: 2018-11-22 8:01:55 +0800
 categories: [Docker]
 tags: [docker, sql, sh]
 published: true
-excerpt: Docker Mongodb
 ---
 
 # Docker 与 mongodb

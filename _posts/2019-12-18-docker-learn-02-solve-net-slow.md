@@ -1,17 +1,15 @@
 ---
 layout: post
-title: Docker-04-slow Docker 国内较慢的问题
+title: Docker Learn-02-解决 Docker 国内较慢的问题
 date:  2016-10-15 22:41:45 +0800
 categories: [Docker]
 tags: [docker, windows, mysql, sf]
 published: true
 ---
 
-
 # 背景
 
 有时候国内访问 docker 下载速度 K 为单位，写一个 image 几G 的要等很久。
-
 
 # 临时解决方案
 
