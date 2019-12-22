@@ -146,6 +146,10 @@ public class Bean extends ClassLoader implements Opcodes {
 
 ![老马啸西风](https://user-images.githubusercontent.com/18375710/71305502-3d9d0a00-2410-11ea-8cb1-da60a584785b.jpg)
 
+## 应用实战
+
+[ASM-Tool](https://github.com/houbb/asm-tool)
+
 # 参考文档
 
 > [快速入门](https://blog.csdn.net/mn960mn/article/details/51418236)
