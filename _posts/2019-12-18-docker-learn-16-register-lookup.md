@@ -245,8 +245,6 @@ registrator的其他详细设定可以通过修改启动命令来修改。
 
 这次更新带来了很多新特性有待我们进一步去探索。
 
-
-
 # 拓展阅读
 
 [k8s](https://houbb.github.io/2018/08/18/docker-k8-01-overview-01)

@@ -151,6 +151,14 @@ docker swarm leave --force
 
 注意：这样的撰写文件用于使用Docker定义应用程序，可以使用Docker Cloud或使用Docker Enterprise Edition选择的任何硬件或云提供程序上载到云提供程序。
 
+# 拓展阅读
+
+[k8s](https://houbb.github.io/2018/08/18/docker-k8-01-overview-01)
+
+更多前沿技术，生活趣事，尽在【老马啸西风】。
+
+![image](https://user-images.githubusercontent.com/18375710/71187778-b427f380-22ba-11ea-8b72-cab863753533.png)
+
 # 参考资料
 
 https://docs.docker.com/get-started/part3/
