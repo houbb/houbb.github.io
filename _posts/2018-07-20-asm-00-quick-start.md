@@ -150,6 +150,8 @@ public class Bean extends ClassLoader implements Opcodes {
 
 [ASM-Tool](https://github.com/houbb/asm-tool)
 
+[基于 ASM 实现比 Spring BeanUtil.copyProperties 性能更好的拷贝框架](https://github.com/houbb/bean-mapping)
+
 # 参考文档
 
 > [快速入门](https://blog.csdn.net/mn960mn/article/details/51418236)

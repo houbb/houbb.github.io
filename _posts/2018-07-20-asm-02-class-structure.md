@@ -153,6 +153,7 @@ Class attributes：该项存放了在该文件中类或接口所定义的属性�
 在所有其他情况下，例如字段类型，Java类型都在带有类型描述符的已编译类中表示（参见图2.2）。
 
 | Java type | Type descriptor |
+|:---|:---|
 | boolean    | Z |
 | char       | C |
 | byte       | B |
