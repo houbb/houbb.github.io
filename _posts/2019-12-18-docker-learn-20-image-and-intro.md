@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Docker learn-19-Docker 镜像与仓库
+title: Docker learn-20-Docker 镜像详解
 date:  2019-12-18 10:50:21 +0800
 categories: [Devpos]
 tags: [docker, windows, devops, ci, sh]
 published: true
 ---
 
-# 前沿
+# 前言
 
 对于 docker 我们不要把他简单的看做是容器，就像是 Maven 一样，我们也不能简单的只认为是一个管理 jar 包的工具。
 
@@ -186,6 +186,8 @@ Digest: sha256:250cc6f3f3ffc5cdaa9d8f4946ac79821aafb4d3afc93928f0de9336eba21aa4
 Status: Downloaded newer image for ubuntu:latest
 ```
 
+默认会拉取官方镜像 `library`
+
 ## 查看拉取的镜像
 
 ```
@@ -195,7 +197,56 @@ REPOSITORY          TAG                 IMAGE ID            CREATED             
 ubuntu              latest              549b9b86cb8d        4 days ago          64.2MB
 ```
 
-TODO:....
+# 查找镜像
+
+## 命令
+
+我们可以通过 `docker search` 命令来查找所有 Docker Hub 上公共可用的镜像，如下
+
+```
+$ docker search ubuntu
+NAME                                                      DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+ubuntu                                                    Ubuntu is a Debian-based Linux operating sys…   10294               [OK]                
+dorowu/ubuntu-desktop-lxde-vnc                            Docker image to provide HTML5 VNC interface …   375                                     [OK]
+rastasheep/ubuntu-sshd                                    Dockerized SSH service, built on top of offi…   237                                     [OK]
+consol/ubuntu-xfce-vnc                                    Ubuntu container with "headless" VNC session…   199                                     [OK]
+ubuntu-upstart                                            Upstart is an event-based replacement for th…   102                 [OK]                
+ansible/ubuntu14.04-ansible                               Ubuntu 14.04 LTS with ansible                   98                                      [OK]
+neurodebian                                               NeuroDebian provides neuroscience research s…   63                  [OK]                
+1and1internet/ubuntu-16-nginx-php-phpmyadmin-mysql-5      ubuntu-16-nginx-php-phpmyadmin-mysql-5          50                                      [OK]
+ubuntu-debootstrap                                        debootstrap --variant=minbase --components=m…   41                  [OK]                
+nuagebec/ubuntu                                           Simple always updated Ubuntu docker images w…   24                                      [OK]
+i386/ubuntu                                               Ubuntu is a Debian-based Linux operating sys…   18                                      
+1and1internet/ubuntu-16-apache-php-5.6                    ubuntu-16-apache-php-5.6                        14                                      [OK]
+1and1internet/ubuntu-16-apache-php-7.0                    ubuntu-16-apache-php-7.0                        13                                      [OK]
+eclipse/ubuntu_jdk8                                       Ubuntu, JDK8, Maven 3, git, curl, nmap, mc, …   12                                      [OK]
+1and1internet/ubuntu-16-nginx-php-phpmyadmin-mariadb-10   ubuntu-16-nginx-php-phpmyadmin-mariadb-10       11                                      [OK]
+1and1internet/ubuntu-16-nginx-php-5.6                     ubuntu-16-nginx-php-5.6                         8                                       [OK]
+1and1internet/ubuntu-16-nginx-php-5.6-wordpress-4         ubuntu-16-nginx-php-5.6-wordpress-4             7                                       [OK]
+1and1internet/ubuntu-16-apache-php-7.1                    ubuntu-16-apache-php-7.1                        6                                       [OK]
+darksheer/ubuntu                                          Base Ubuntu Image -- Updated hourly             5                                       [OK]
+1and1internet/ubuntu-16-nginx-php-7.0                     ubuntu-16-nginx-php-7.0                         4                                       [OK]
+pivotaldata/ubuntu                                        A quick freshening-up of the base Ubuntu doc…   2                                       
+smartentry/ubuntu                                         ubuntu with smartentry                          1                                       [OK]
+1and1internet/ubuntu-16-sshd                              ubuntu-16-sshd                                  1                                       [OK]
+pivotaldata/ubuntu-gpdb-dev                               Ubuntu images for GPDB development              1                                       
+1and1internet/ubuntu-16-php-7.1                           ubuntu-16-php-7.1                               1                                       [OK]
+```
+
+## 返回字段说明
+
+
+我们主要看一下每条镜像都返回了哪些内容
+
+| 字段 | 说明 |
+|:---|:---|
+| NAME | 仓库名称 |
+| DESCRIPTION | 镜像描述 |
+| STARS | 反应一个镜像的受欢迎程度 |
+| OFFICIAL | 是否由 Docker 公司及其指定厂商开发的镜像 |
+| AUTOMATED | 表示这个镜像是由 Docker Hub 自动构建的 |
+
+这里也有个类似 github 的 STARS 标识，一般越高的越好。建议使用官方镜像。
 
 # 拓展阅读
 
@@ -229,7 +280,7 @@ TODO:....
 
 [Docker镜像是什么、包含什么、能做什么](https://blog.csdn.net/xfyimengweima1314/article/details/79046873)
 
-[Docker之使用Docker 镜像和仓库](https://www.cnblogs.com/cxuanBlog/p/11370739.html)
+[Docker之使用 Docker 镜像和仓库](https://www.cnblogs.com/cxuanBlog/p/11370739.html)
 
 [Docker 镜像进阶篇](https://www.cnblogs.com/sparkdev/p/9092082.html)
 

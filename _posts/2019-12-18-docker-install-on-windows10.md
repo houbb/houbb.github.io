@@ -452,6 +452,18 @@ part2: digest: sha256:f8d76901924a48e01b40ff4d1cad676df04d7eb9a9ad403cf1f3850189
 
 直接登录 [docker hub](https://hub.docker.com) 可以查看对应的镜像信息。
 
+# 个人使用 SecureCRT 登录
+
+直接输入信息
+
+ip: 192.168.99.100
+
+port: 22
+
+用户名：docker 
+
+密码： tcuser
+
 # 参考资料
 
 [docker 小白 windows 学习坑点记录](https://www.jianshu.com/p/b677c1f80e43)
