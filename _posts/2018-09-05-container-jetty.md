@@ -71,6 +71,43 @@ Jetty更灵活，体现在其可插拔性和可扩展性，更易于开发者对
 
 Jetty更满足公有云的分布式环境的需求，而Tomcat更符合企业级环境。
 
+# 指定启动端口号
+
+## maven 命令
+
+- Tomcat
+
+```
+-Dmaven.tomcat.port=8080 tomcat:run
+```
+
+- Jetty
+
+```
+-Djetty.port=8081 jetty:run
+
+mvn -Djetty.port=8081 jetty:run
+mvn jetty:run
+```
+
+## maven 插件
+
+```xml
+<plugin>
+    <groupId>org.mortbay.jetty</groupId>
+    <artifactId>maven-jetty-plugin</artifactId>
+    <version>6.1.26</version>
+    <configuration>            
+        <scanIntervalSeconds>3</scanIntervalSeconds>
+        <connectors>
+            <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+                <port>10086</port>
+            </connector>
+        </connectors>                  
+    </configuration>
+</plugin>
+```
+
 # 常见问题
 
 # 参考资料
@@ -82,6 +119,10 @@ https://www.eclipse.org/jetty/
 - 对比 tomcat
 
 [Jetty 的工作原理以及与 Tomcat 的比较](https://www.ibm.com/developerworks/cn/java/j-lo-jetty/index.html)
+
+https://www.iteye.com/blog/jackyrong-2342065
+
+https://www.jianshu.com/p/1d5235b1cc3b
 
 * any list
 {:toc}
