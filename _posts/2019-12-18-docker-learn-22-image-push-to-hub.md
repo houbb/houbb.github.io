@@ -83,6 +83,8 @@ TODO: 通过 API+GC 的方式还挺复杂，等待后续实战。
 
 [Container 的基本生命周期管理](https://houbb.github.io/2019/12/18/docker-learn-19-container-manager)
 
+[Maven 代码发布到 maven 中央仓库]()
+
 ## 更多学习
 
 关注公众号：老马啸西风
