@@ -245,14 +245,14 @@ Dockerfile 使用基于 DSL 语法的指令来构建一个 Docker 镜像，之�
 $ pwd
 /home/docker
 
-$ mkdir static_web
-$ cd static_web
+$ mkdir static-web
+$ cd static-web
 $ touch Dockerfile
 ```
 
-我们在 docker 的默认路径下创建一个文件夹 **static_web**，并在其中创建一个文件 `Dockerfile`
+我们在 docker 的默认路径下创建一个文件夹 **static-web**，并在其中创建一个文件 `Dockerfile`
 
-static_web 目录就是我们的构建环境。
+static-web 目录就是我们的构建环境。
 
 Docker 称此环境为上下文(context)或者 构建上下文(build context)，Docker 会在构建镜像时将构建上下文和该上下文中的文件和目录上传到 Docker 守护进程。
 
@@ -339,7 +339,7 @@ RUN["apt-get", "install", "-y", "nginx"]
 
 ```
 $ pwd
-/home/docker/static_web
+/home/docker/static-web
 
 $ docker build -t="houbinbin/static-web" .
 ```
@@ -637,6 +637,10 @@ RUN apt-get -qq update
 commit 只是提交到本地，push 才会将 images 提交到中央仓库。
 
 我们下一节就一起来学习下如何将镜像提交到 hub 仓库。
+
+## Dockerfile 命令
+
+相关的命令较多，本节直接暂时省略。
 
 # 拓展阅读
 
