@@ -138,6 +138,8 @@ sudo service docker restart
 
 ## windows 解决办法
 
+下面包含一次失败的记录，建议直接跳到 [windows重新上传解决方案](#windows重新上传解决方案)
+
 1、启动 Docker Quickstart
 
 2、进入 default   
@@ -252,7 +254,7 @@ docker-machine create -d virtualbox default
 
 不过有一个不幸运的消息，所有东西都不见了。
 
-## 重新上传
+# windows重新上传解决方案
 
 ### 获取我们自己的镜像
 
