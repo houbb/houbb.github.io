@@ -42,15 +42,15 @@ registry/docker-register-web：容器页面
 ## 运行
 
 ```
-docker run -d -p 8002:8080 -v /var/jenkins_home:/var/jenkins_home --name devops-jenkins --restart=always jenkins
+docker run -d -p 8080:8080 -p 50000:50000 -v /var/jenkins_home:/var/jenkins_home --name devops-jenkins --restart=always jenkins
 ```
 
 - 查看运行
 
 ```
-$ docker ps -l                                                                                                                      
-CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS                         PORTS               NAMES
-a6daf6ed2de9        jenkins             "/bin/tini -- /usr/l…"   18 seconds ago      Restarting (1) 3 seconds ago                       devops-jenkins
+$ docker ps -l
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                              NAMES
+0e7fd22035a9        jenkins             "/bin/tini -- /usr/l…"   9 seconds ago       Up 8 seconds        0.0.0.0:50000->50000/tcp, 0.0.0.0:8080->8080/tcp   devops-jenkins
 ```
 
 ## 异常
@@ -88,8 +88,13 @@ chown -R 1000 /var/jenkins_home
 
 ```
 $ docker ps -l
-CONTAINER ID        IMAGE               COMMAND                  CREATED              STATUS              PORTS                               NAMES
-8bc738ac79a3        jenkins             "/bin/tini -- /usr/l…"   About a minute ago   Up About a minute   50000/tcp, 0.0.0.0:8002->8080/tcp   devops-jenkins
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                                              NAMES
+0e7fd22035a9        jenkins             "/bin/tini -- /usr/l…"   9 seconds ago       Up 8 seconds        0.0.0.0:50000->50000/tcp, 0.0.0.0:8080->8080/tcp   devops-jenkins
+```
+
+
+```
+$ docker restart 0e7fd22035a9
 ```
 
 日志如下:
@@ -114,7 +119,41 @@ java.net.SocketTimeoutException: connect timed out
 
 ## 访问
 
-界面访问 [http://127.0.0.1:8002](http://127.0.0.1:8002), 自动跳转至登录界面
+界面访问 [http://192.168.99.100:8080](http://192.168.99.100:8080), 自动跳转至登录界面
+
+- 初始界面
+
+![image](https://user-images.githubusercontent.com/18375710/71441575-05ae0380-273d-11ea-9c4c-61ff8ef552d3.png)
+
+- 密码
+
+这里的日志在刚才的日志中 `de747efd31ca40509294aa24114cf6ac`
+
+- 离线安装
+
+![image](https://user-images.githubusercontent.com/18375710/71441813-0c894600-273e-11ea-8c27-9cf372f91ba8.png)
+
+可参考 [离线安装文档](https://wiki.jenkins.io/display/JENKINS/Offline+Jenkins+Installation)
+
+我选择跳过插件安装，点击【skipping plugin installation】
+
+## 创建 admin
+
+直接创建一个 admin 用户。
+
+![image](https://user-images.githubusercontent.com/18375710/71441889-730e6400-273e-11ea-92a1-f2d2087f8acb.png)
+
+此处直接保存并结束，点击【save and finish】
+
+## 开始使用
+
+直接进入如下界面，我们就可以开始自己的 Jenkins 之旅了。
+
+登录页面如下：
+
+![image](https://user-images.githubusercontent.com/18375710/71443392-9ab4fa80-2745-11ea-919f-61115d9f6e0d.png)
+
+直接输入 admin 的信息登录即可。
 
 # 拓展阅读
 
