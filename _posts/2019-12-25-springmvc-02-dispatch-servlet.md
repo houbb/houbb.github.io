@@ -687,6 +687,10 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
 还是直接实现来的实在。
 
+## 翻译
+
+这种直白的翻译比较适合知道有哪些特性，便于系统的学习。但是对于深刻的理解基本没有帮助。
+
 # 拓展阅读
 
 # 参考资料
@@ -694,6 +698,8 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 [mvc-servlet](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-servlet)
 
 [DispatcherServlet详解](http://sishuok.com/forum/blogPost/list/5188.html)
+
+[DispatcherServlet的初始化过程](https://www.jianshu.com/p/9865f749e550)
 
 * any list
 {:toc}
