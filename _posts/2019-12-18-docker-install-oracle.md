@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Docker 安装 Oracle 数据库教程笔记
+title:  Docker install Oracle 数据库教程笔记
 date:  2018-04-21 10:17:16 +0800
 categories: [Docker]
 tags: [docker, oracle, sql]

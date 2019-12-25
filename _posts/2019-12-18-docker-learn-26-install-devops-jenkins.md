@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Docker learn-25-docker 安装 jenkins
+title: Docker learn-26-docker 安装 jenkins
 date:  2019-12-18 10:50:21 +0800
 categories: [Devpos]
 tags: [docker, devops, in-action, sh]
@@ -20,6 +20,8 @@ nexus: jar 私有仓库
 jenkins: 持续集成利器
 
 registry/docker-register-web：容器页面
+
+sonar: 代码质量检测
 
 ## 流程
 
@@ -192,6 +194,8 @@ java.net.SocketTimeoutException: connect timed out
 [使用docker搭建持续集成(CI)环境](https://blog.csdn.net/u014647285/article/details/82728236)
 
 [Docker 之 Jenkins自动化部署](https://www.jianshu.com/p/a1aef2f7da56)
+
+[GitLab、Jenkins 、SonarQube、Nexus 搭建 CI/CD、代码质量检查](https://hacpai.com/article/1557292536979)
 
 * any list
 {:toc}
