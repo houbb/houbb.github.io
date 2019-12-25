@@ -1,14 +1,12 @@
 ---
 layout: post
-title: Spring Web MVC
-date:  2016-06-19 16:57:12 +0800
+title: Spring Web MVC-01-quick start
+date:  2019-12-25 16:57:12 +0800
 categories: [Spring]
 tags: [spring mvc]
 published: true
 ---
 
-* any list
-{:toc}
 
 # Web MVC
 
@@ -348,3 +346,6 @@ public class ControllerLogInterceptor {
     }
 }
 ```
+
+* any list
+{:toc}
