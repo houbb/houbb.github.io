@@ -151,7 +151,7 @@ FROM houbinbin/ubuntu:14.04
 ```
 FROM houbinbin/ubuntu:14.04
 MAINTAINER houbinbin "houbinbin.echo@gmail.com"
-ENV REFRESHED_AT 2017-05-25
+ENV REFRESHED_AT 2019-12-25
 RUN apt-get update
 RUN apt-get -y -q install nginx
 RUN mkdir -p /var/www/html
