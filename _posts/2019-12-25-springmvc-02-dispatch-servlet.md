@@ -693,5 +693,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
 [mvc-servlet](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-servlet)
 
+[DispatcherServlet详解](http://sishuok.com/forum/blogPost/list/5188.html)
+
 * any list
 {:toc}
