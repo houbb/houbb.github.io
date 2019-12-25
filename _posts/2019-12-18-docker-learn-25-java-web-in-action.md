@@ -219,7 +219,7 @@ docker push houbinbin/javaweb:v1
 
 # 拓展阅读
 
-[docker 实战之静态网站](https://houbb.github.io/2019/12/18/docker-learn-24-static-web-for-test)
+[docker 实战之静态网站](https://houbb.github.io/2019/12/18/docker-learn-24-static-web-in-action)
 
 [docker 推送到中央仓库](https://houbb.github.io/2019/12/18/docker-learn-22-image-push-to-hub)
 
