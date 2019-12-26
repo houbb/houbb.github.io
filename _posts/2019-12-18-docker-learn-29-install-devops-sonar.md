@@ -65,6 +65,20 @@ mysql> FLUSH PRIVILEGES;
 
 # 安装 sonarQube
 
+## 文件准备
+
+- 创建文件
+
+```
+mkdir -p /opt/sonarqube
+```
+
+- 赋权
+
+```
+sudo chmod -R 777 /opt/sonarqube
+```
+
 ## 运行镜像
 
 ```
@@ -74,10 +88,34 @@ docker run -d --name devops-sonarqube \
 -e sonar.jdbc.username=sonar \
 -e sonar.jdbc.password=sonar \
 -e "sonar.jdbc.url=jdbc:mysql://192.168.99.100:3306/sonar?useUnicode=true&characterEncoding=utf8&rewriteBatchedStatements=true&useConfigs=maxPerformance" \
+-v /opt/sonarqube/conf:/opt/sonarqube/conf \
+-v /opt/sonarqube/data:/opt/sonarqube/data \
+-v /opt/sonarqube/logs:/opt/sonarqube/logs \
+-v /opt/sonarqube/extensions:/opt/sonarqube/extensions \
 sonarqube:7.6-community
 ```
 
 主要是指定了一个 mysql 的连接信息。
+
+- 状态查看
+
+```
+$ docker ps -l
+CONTAINER ID        IMAGE                     COMMAND             CREATED             STATUS                      PORTS               NAMES
+4f88e667241e        sonarqube:7.6-community   "./bin/run.sh"      30 seconds ago      Exited (0) 25 seconds ago                       devops-sonarqube
+```
+
+### 报错说明
+
+```
+$ docker logs -f devops-sonarqube
+```
+
+异常如下：
+
+```
+ERROR Unable to create file /opt/sonarqube/logs/es.log java.io.IOException: Permission denied
+```
 
 ## 配置说明
 
@@ -133,7 +171,7 @@ sonar.web.context=/sonarqube
 
 默认情况下，Elasticsearch数据存储在 `$SONARQUBE-HOME/data` 中，但不建议用于生产实例。
 
-相反，您应该将此数据存储在其他位置，最好是在具有快速I / O的专用卷中。
+相反，您应该将此数据存储在其他位置，最好是在具有快速I/O的专用卷中。
 
 除了保持可接受的性能之外，这样做还可以简化SonarQube的升级。
 
@@ -143,6 +181,20 @@ sonar.web.context=/sonarqube
 sonar.path.data=/var/sonarqube/data
 sonar.path.temp=/var/sonarqube/temp
 ```
+
+## 异常 
+
+```
+docker logs -f devops-sonarqube
+```
+
+可以看到异常日志：
+
+```
+ERROR Unable to create file /opt/sonarqube/logs/es.log java.io.IOException: Permission denied
+```
+
+
 
 ## 登录访问
 
