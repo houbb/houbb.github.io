@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Kubernetes-01-快速开始
+title:  Kubernetes-01-快速开始 k8s
 date:  2018-08-18 10:30:43 +0800
 categories: [Docker]
 tags: [docker, k8, devops, overview, sh]

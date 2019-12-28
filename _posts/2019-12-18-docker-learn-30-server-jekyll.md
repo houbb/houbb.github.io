@@ -7,7 +7,9 @@ tags: [docker, devops, in-action, sh]
 published: true
 ---
 
-# 要构建的是使用Jekyll框架的自定义网站.会构建两个镜像.
+# 构建 jekyll 镜像
+
+要构建的是使用Jekyll框架的自定义网站.会构建两个镜像.
 
 一个镜像安装了Jekyll及其他用于构建Jekyll网站必要的软件包
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Kubernetes-02-为什么选择 k8
+title:  Kubernetes-02-为什么选择 k8s
 date:  2018-08-18 10:30:43 +0800
 categories: [Docker]
 tags: [docker, k8, why, sh]
