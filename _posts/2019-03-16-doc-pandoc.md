@@ -142,5 +142,71 @@ System.out.println(cmd);
 Runtime.getRuntime().exec(cmd);
 ```
 
+## 循环生成代码
+
+```java
+package com.github.houbb.test;
+
+import com.lowagie.text.DocumentException;
+import com.qkyrie.markdown2pdf.internal.exceptions.ConversionException;
+import com.qkyrie.markdown2pdf.internal.exceptions.Markdown2PdfLogicException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * <p> project: markdown-transfer-Main </p>
+ * <p> create on 2019/12/29 11:01 </p>
+ *
+ * @author Administrator
+ * @since 1.0.0
+ */
+public class Main {
+
+    public static void main(String[] args) throws Markdown2PdfLogicException, ConversionException, IOException, DocumentException {
+        List<String> stringList = getFiles();
+        for(String md : stringList) {
+            if(md.endsWith("md")) {
+                execute(md);
+            }
+        }
+    }
+
+    public static void execute(final String path) {
+        try {
+            final String dirPath = "D:\\_github\\write\\blogs\\";
+            String original = dirPath+path;
+            String target = dirPath+path.split("\\.")[0]+".docx";
+            String cmd = String.format("C:\\Program Files\\Pandoc\\pandoc -i \"%s\" -o \"%s\"",
+                    original, target);
+
+            System.out.println(cmd);
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static List<String> getFiles() {
+        final String dirPath = "D:\\_github\\write\\blogs\\";
+
+        File dir = new File(dirPath);
+
+        File[] files = dir.listFiles();
+
+        List<String> stringList = new ArrayList<>(files.length);
+
+        for(File file : files) {
+            stringList.add(file.getName());
+        }
+
+        return stringList;
+    }
+
+}
+```
+
 * any list
 {:toc}
