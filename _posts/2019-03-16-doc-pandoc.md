@@ -83,5 +83,64 @@ $   pandoc -i XXX.md -o XXX.docx
 
 社会分工协作，方能完成大事。
 
+
+# Windows 使用
+
+## 安装
+
+```
+pandoc -h
+```
+
+有提示说明安装成功。
+
+## pandoc 添加到 path
+
+rcc不是内部或外部命令
+搜索下rcc.exe二进制文件的位置，
+然后将该路径添加到path环境变量中。
+
+在cmd中输入path，显示当前的环境变量。
+
+然后 
+
+```
+path = %path%;C:\Program Files\Pandoc;
+```
+
+回车即可。
+
+
+## 测试
+
+```
+λ pandoc -i "D:\_github\write\blogs\比 spring BeanUtils 性能更好的属性拷贝框架.md" -o "D:\_github\write\blogs\比 spring
+ BeanUtils 性能更好的属性拷贝框架.pdf"
+pdflatex not found. Please select a different --pdf-engine or install pdflatex
+```
+
+缺少 pdflatex
+
+# bat 脚本乱码
+
+bat脚本在批处理的时候被经常用到，但是有时候不正确的使用，会导致在bat脚本中的中文，运行起来的时候显示为乱码，这个让人很不爽，下面分享下自己解决这个问题的方法。
+
+好吧，其实造成这个问题的原因很简单。
+
+编辑批处理文件时，以ANSI方式编辑即可。若以别的方式（如UTF-8）编辑了批处理，转换成ANSI格式即可。
+
+windows自带的记事本保存文件时即可选择编码方式
+
+可以看到中文都可以显示正常了。
+
+## java 执行
+
+```java
+String cmd = String.format("C:\\Program Files\\Pandoc\\pandoc -i \"%s\" -o \"%s\"",
+                    original, target);
+System.out.println(cmd);
+Runtime.getRuntime().exec(cmd);
+```
+
 * any list
 {:toc}
