@@ -204,11 +204,6 @@ asm-util.jar存档中的org.objectweb.asm.util包，提供了基于核心API的�
 | JDK Proxy	     |   只能改写 method| 	   反射引入性能代价	            |                要求	低 |
 | ASM	           |     几乎能完全控制类 |    无明显性能代价	              |              不要求	中，能操纵需要改写部分的 Java 字节码 |
 
-# 拓展阅读
-
-更多技术文章，生活趣事，尽在【老马啸西风】。
-
-![老马啸西风](https://user-images.githubusercontent.com/18375710/71305502-3d9d0a00-2410-11ea-8cb1-da60a584785b.jpg)
 
 
 # 参考文档

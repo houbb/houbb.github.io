@@ -249,9 +249,7 @@ registrator的其他详细设定可以通过修改启动命令来修改。
 
 [k8s](https://houbb.github.io/2018/08/18/docker-k8-01-overview-01)
 
-关注公众号：老马啸西风
 
-![image](https://user-images.githubusercontent.com/18375710/71187778-b427f380-22ba-11ea-8b72-cab863753533.png)
 
 # 参考资料
 

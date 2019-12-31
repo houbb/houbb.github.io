@@ -403,9 +403,7 @@ tar cvf /backup/hiekay_blog_backup.tar /var/www/html
 
 ## 更多学习
 
-关注公众号：老马啸西风
 
-![image](https://user-images.githubusercontent.com/18375710/71187778-b427f380-22ba-11ea-8b72-cab863753533.png)
 
 # 参考资料
 

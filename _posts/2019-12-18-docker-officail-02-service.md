@@ -155,10 +155,6 @@ docker swarm leave --force
 
 [k8s](https://houbb.github.io/2018/08/18/docker-k8-01-overview-01)
 
-更多前沿技术，生活趣事，尽在【老马啸西风】。
-
-![image](https://user-images.githubusercontent.com/18375710/71187778-b427f380-22ba-11ea-8b72-cab863753533.png)
-
 # 参考资料
 
 https://docs.docker.com/get-started/part3/

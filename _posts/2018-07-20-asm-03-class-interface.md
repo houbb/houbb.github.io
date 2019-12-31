@@ -748,11 +748,6 @@ public class MultiClassAdapter extends ClassVisitor {
 ![image](https://user-images.githubusercontent.com/18375710/70375619-a8dbdc00-193a-11ea-96dd-0e7fad934ad2.png)
 
 
-# 拓展阅读
-
-更多技术文章，生活趣事，尽在【老马啸西风】。
-
-![老马啸西风](https://user-images.githubusercontent.com/18375710/71305502-3d9d0a00-2410-11ea-8cb1-da60a584785b.jpg)
 
 # 参考文档
 

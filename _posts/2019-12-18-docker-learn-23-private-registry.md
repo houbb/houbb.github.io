@@ -385,9 +385,7 @@ latest: digest: sha256:7fc189ab6b930269df2357d2e9a418cc03a3c5c31b4a364bb6b0973d8
 
 ## 更多学习
 
-关注公众号：老马啸西风
 
-![image](https://user-images.githubusercontent.com/18375710/71187778-b427f380-22ba-11ea-8b72-cab863753533.png)
 
 # 参考资料
 

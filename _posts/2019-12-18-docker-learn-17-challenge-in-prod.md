@@ -325,9 +325,7 @@ flannel
 
 [SCM 系统]()
 
-关注公众号：老马啸西风
 
-![image](https://user-images.githubusercontent.com/18375710/71187778-b427f380-22ba-11ea-8b72-cab863753533.png)
 
 # 参考资料
 

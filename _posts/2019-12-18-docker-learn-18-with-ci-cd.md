@@ -91,9 +91,7 @@ Notification：负责job完成之后的通知，email，github status 设置
 
 [SCM 系统](https://houbb.github.io/2019/12/18/scm)
 
-关注公众号：老马啸西风
 
-![image](https://user-images.githubusercontent.com/18375710/71187778-b427f380-22ba-11ea-8b72-cab863753533.png)
 
 # 参考资料
 
