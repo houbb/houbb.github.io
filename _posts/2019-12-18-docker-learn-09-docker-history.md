@@ -13,8 +13,7 @@ published: false
 
 # 参考资料
 
-
-
+[Docker技术原理之Linux Namespace（容器隔离）](https://blog.csdn.net/songcf_faith/article/details/82748987)
 
 * any list
 {:toc}
