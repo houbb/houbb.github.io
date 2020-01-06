@@ -367,6 +367,28 @@ latest: digest: sha256:7fc189ab6b930269df2357d2e9a418cc03a3c5c31b4a364bb6b0973d8
 
 成功。
 
+# 自己搭建Docker镜像服务的考虑
+
+既然是私服，同样需要考虑用户、安全认证、搜索等问题，可以说，Docker的开发者在设计镜像服务时就考虑了这些问题，把Web这块留给每个私服的开发者自己去实现，并把后端存储抽象成接口来调用。
+
+docker-registry的源代码放在这里。
+
+为了保证后续的正常开发使用，我决定先阅读一下这个源码，不过碰上了不少问题，具体如下：
+
+docker-registry是用Python实现的，我对python的了解仅仅限于简单的脚本，对Python的包、模块、类都不大懂，所以我学习了Python 。
+
+docker-registry使用了egg打包发布，Gunicorn作为应用服务器（类似Tomcat），Flask作为MVC框架（类似Spring），后面还有SQLAlchemy作为搜索后端。这些技术都需要做简单的了解，在需要的时候深入学习。
+
+后端存储，因为镜像最终是以tar.gz的方式静态存储在服务端，不需要实时读或者写，所以适用于对象存储而不是块存储，于是问题就转化成找一个或写一个私有的存储驱动，官方支持的驱动有亚马逊AWS S3、Ceph-s3、Google gcs、OpenStack swift、Glance等等，国内的七牛也写了自己的驱动。
+
+搜索，这块我还没涉及，后续再看……
+
+Web UI的实现，现在GitHub上已经有好几个项目了，例如docker-registry-web 、docker-registry-frontend，后续再看……
+
+# 企业级的仓库
+
+Harbor
+
 # 拓展阅读
 
 ## docker 的安装
@@ -383,15 +405,13 @@ latest: digest: sha256:7fc189ab6b930269df2357d2e9a418cc03a3c5c31b4a364bb6b0973d8
 
 [Nexus-搭建属于自己的 Maven 仓库](https://houbb.github.io/2016/08/06/Nexus)
 
-## 更多学习
-
-
-
 # 参考资料
 
 [Orientation and setup](https://docs.docker.com/get-started/)
 
 《第一本 Docker 书》
+
+[Docker私有仓库 Harbor 介绍和部署记录](https://www.cnblogs.com/kevingrace/p/6547616.html)
 
 ## 异常1
 
