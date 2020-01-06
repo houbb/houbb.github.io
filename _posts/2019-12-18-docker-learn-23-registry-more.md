@@ -177,11 +177,425 @@ docker pull ubuntu指示docker从官方Docker Hub提取名为ubuntu的映像。
 
 ## 要求
 
-您绝对需要熟悉Docker，尤其是在推送和拉取映像方面。 您必须了解守护程序和cli之间的区别，并且至少要掌握有关联网的基本概念。
+您绝对需要熟悉Docker，尤其是在推送和拉取映像方面。 
 
-同样，虽然启动注册表非常容易，但在生产环境中对其进行操作就需要操作技能，就像其他任何服务一样。 您应该熟悉系统可用性和可伸缩性，日志记录和日志处理，系统监视以及安全性101。对http和整个网络通信的深入了解以及对golang的熟悉对于高级操作或黑客入侵当然也很有用。
+您必须了解守护程序和cli之间的区别，并且至少要掌握有关联网的基本概念。
+
+同样，虽然启动注册表非常容易，但在生产环境中对其进行操作就需要操作技能，就像其他任何服务一样。 
+
+您应该熟悉系统可用性和可伸缩性，日志记录和日志处理，系统监视以及安全性101。
+
+对http和整个网络通信的深入了解以及对golang的熟悉对于高级操作或黑客入侵当然也很有用。
 
 # 仓库 API
+
+[HTTP API V2](https://docs.docker.com/registry/spec/api/?spm=a2c4g.11186623.2.7.77394c07yPxaHK)
+
+[Docker Registry Token Authentication](https://docs.docker.com/registry/spec/auth/?spm=a2c4g.11186623.2.8.77394c07yPxaHK)
+
+这里主要是通过 HTTP/HTTPS 对镜像进行管理，基于 [JWT 进行相关鉴权操作](https://houbb.github.io/2018/03/25/jwt)
+
+## API清单
+
+| Method	| Path	| Entity	| Description | 
+|:--|:--|:--|:--|
+| GET	    | /v2/	| Base	    | Check that the endpoint implements Docker Registry API V2. |
+| GET	    | `/v2/<image>/tags/list`	| Tags	| Fetch the tags under the repository identified by name.| 
+| GET	    | `/v2/<image>/manifests/<referevce>`	| Manifest	| Fetch the manifest identified by nameand referencewhere referencecan be a tag or digest. A HEADrequest can also be issued to this endpoint to obtain resource information without receiving all data. |
+| PUT	    | `/v2/<image>/manifests/<referevce>` |	Manifest	| Put the manifest identified by nameand referencewhere referencecan be a tag or digest. |
+| DELETE	| `/v2/<image>/manifests/<reference>` | Manifest	| Delete the manifest identified by nameand reference. Note that a manifest can only be deleted by digest. |
+| GET	| `/v2/<image>/blobs/<digest>`	| Blob	| Retrieve the blob from the registry identified bydigest. A HEADrequest can also be issued to this endpoint to obtain resource information without receiving all data.|
+| DELETE	| `/v2/<image>/blobs/<digest>`	| Blob	| Delete the blob identified by nameand digest |
+| POST	| `/v2/<image>/blobs/uploads/`	| Initiate Blob Upload	| Initiate a resumable blob upload. If successful, an upload location will be provided to complete the upload. Optionally, if thedigest parameter is present, the request body will be used to complete the upload in a single request.|
+| GET	| `/v2/<image>/blobs/uploads/<uuid>`	| Blob Upload	| Retrieve status of upload identified byuuid. The primary purpose of this endpoint is to resolve the current status of a resumable upload. |
+| PATCH	| `/v2/<image>/blobs/uploads/<uuid>`	| Blob Upload	| Upload a chunk of data for the specified upload.|
+| PUT	| `/v2/<image>/blobs/uploads/<uuid>`	| Blob Upload	| Complete the upload specified by uuid, optionally appending the body as the final chunk.|
+| DELETE	| `/v2/<image>/blobs/uploads/<uuid>`	| Blob Upload	| Cancel outstanding upload processes, releasing associated resources. If this is not called, the unfinished uploads will eventually timeout.|
+| GET	| /v2/_catalog | 	Catalog	| Retrieve a sorted, json list of repositories available in the registry.|
+
+## 名词解释
+
+### repository name(存储库名词)
+
+存储库指在库中存储的镜像。
+
+```
+/project/redis:latest
+```
+
+- 语法：
+
+经典存储库名称由2级路径构成，每级路径小于30个字符，V2的api不强制要求这样的格式。
+
+每级路径名至少有一个小写字母或者数字，使用句号，破折号和下划线分割。
+
+更严格来说，它必须符合正则表达式：`[a-z0-9]+[._-][a-z0-9]+)`，多级路径用`/`分隔，存储库名称总长度（包括/）不能超过256个字符。
+
+### digest(摘要)
+
+摘要是镜像每个层的唯一标示。
+
+虽然算法允许使用任意算法，但是为了兼容性应该使用sha256。
+
+例如sha256:6c3c624b58dbbcd3c0dd82b4c53f04194d1247c6eebdaab7c610cf7d66709b3b
+
+```py
+import hashlib
+C = 'a small string'
+B = hashlib.sha256(C)
+D = 'sha256:' + B.hexdigest()
+```
+
+## 镜像pull过程
+
+镜像由一个json清单和层叠文件组成，pull镜像的过程就是检索这两个组件的过程。
+
+拉去镜像的第一步就是获取清单，清单由下面几个字段组成: registry:5000/v2/redis/manifests/latest(获取redis:latest清单文件)
+
+| 字段	    | 描述 |
+|:--|:--|
+| name	    | 镜像名称 |
+| tag	        | 镜像当前版本的tag |
+| fsLayers	| 层描述列表(包括摘要) |
+| signature	| 一个JWS签名，用来验证清单内容 |
+
+当获取清单之后，客户端需要验证前面(signature)，以确保名称和fsLayers层是有效的。
+
+确认后，客户端可以使用digest去下载各个fs层。在V2api中，层存储在blobs中已digest作为键值.
+
+1、 首先拉取镜像清单(pulling an Image Manifest)
+
+```  
+$ HEAD /v2/<image/manifests/<reference>#检查镜像清单是否存在
+$ GET /v2/<image>/manifests/<reference>#拉取镜像清单
+```
+
+提示：reference可是是tag或者是digest
+  
+2、 开始拉取每个层(pulling a Layer)
+
+```
+$ GET /v2/<image>/blobs/<digest>
+```
+
+提示：digest是镜像每个fsLayer层的唯一标识。存在于清单的fsLayers里面。
+
+## Push 镜像过程
+
+推送镜像和拉取镜像过程相反,先推各个层到registry仓库，然后上传清单.
+
+### Pushing a Layer(上传层)
+
+上传层分为2步,第一步使用post请求在registry仓库启动上传服务,
+返回一个url，这个url用来上传数据和检查状态。
+
+- 首先Existing Layers(检查层是否存在)
+
+```
+$ HEAD /v2/image/blobs/<digest>
+```
+
+若返回200 OK 则表示存在，不用上传
+
+- 开始上传服务(Starting An Upload)
+
+```
+$POST /v2/image/blobs/uploads/
+```
+
+如果post请求返回202 accepted，一个url会在location字段返回.
+
+```
+202 Accepted
+Location: /v2/\<image>/blobs/uploads/\<uuid>
+Range: bytes=0-<offset>
+Content-Length: 0
+Docker-Upload-UUID: <uuid> # 可以用来查看上传状态和实现断点续传
+```
+
+- 开始上传层(Uploging the Layer)
+
+1、上传进度(Upload Progress)
+
+```
+$ GET /v2/<image>/blobs/uploads/<uuid>
+```
+
+返回：
+
+```
+204 No Content
+Location: /v2/<name>/blobs/uploads/<uuid>
+Range: bytes=0-<offset>
+Docker-Upload-UUID: <uuid>
+```
+
+2、整块上传(Monolithic Upload)
+
+```
+> PUT /v2/<name>/blobs/uploads/<uuid>?digest=\<digest>
+
+> Content-Length: \<size of layer>
+
+> Content-Type: application/octet-stream
+```
+
+3、分块上传(Chunked Upload)
+
+```      
+> PATCH /v2/\<name>/blobs/uploads/\<uuid>
+
+> Content-Length: \<size of chunk>
+
+> Content-Range: \<start of range>-\<end of range>
+
+> Content-Type: application/octet-stream
+<Layer Chunk Binary Data>
+```
+
+如果服务器不接受这个块，则返回:
+
+```
+416 Requested Range Not Satisfiable
+Location: /v2/<name>/blobs/uploads/<uuid>
+Range: 0-<last valid range>
+Content-Length: 0
+Docker-Upload-UUID: <uuid>
+```
+
+成功则返回：
+
+```         
+202 Accepted
+Location: /v2/<name>/blobs/uploads/<uuid>
+Range: bytes=0-<offset>
+Content-Length: 0
+Docker-Upload-UUID: <uuid>
+```
+
+- 上传完成(Completed Upload)
+
+分块上传在最后一块上传完毕后，需要提交一个上传完成的请求
+
+```
+> PUT /v2/<name>/blob/uploads/<uuid>?digest=<digest>
+> Content-Length: <size of chunk>
+> Content-Range: <start of range>-<end of range>
+> Content-Type: application/octet-stream
+<Last Layer Chunk Binary Data>
+```
+
+返回
+
+```
+201 Created
+Location: /v2/<name>/blobs/<digest>
+Content-Length: 0
+Docker-Content-Digest: <digest>
+```
+
+- 取消上传(Canceling an Upload)
+
+这个请求执行后UUID将失效，当上传超时或者没有完成，客户端都应该发送这个请求。
+
+```
+DELETE /v2/image/blobs/uploads/<uuid>
+```
+
+- 交叉上传(Cross Repository Blob Mount)
+
+可以把客户端有访问权限的已有存储库中的层挂载到当前存储库中
+
+```
+POST /v2/<name>/blobs/uploads/?mount=<digest>&from=<repository name>
+Content-Length: 0
+```
+
+成功返回：
+
+```
+201 Created
+Location: /v2/<name>/blobs/<digest>
+Content-Length: 0
+Docker-Content-Digest: <digest>
+```
+
+失败返回：
+
+```
+202 Accepted
+Location: /v2/<name>/blobs/uploads/<uuid>
+Range: bytes=0-<offset>
+Content-Length: 0
+Docker-Upload-UUID: <uuid>
+```
+
+### 删除层(Deleting a Layer)
+
+```
+DELETE /v2/<image>/blobs/<digest>
+```
+
+成功返回:
+
+```
+202 Accepted
+Content-Length: None
+```
+
+失败返回404错误
+
+### 上传镜像清单(Pushing an Image Manifest)
+
+我们上传完镜像层之后，就开始上传镜像清单
+
+```
+ PUT /v2/<name>/manifests/<reference>
+ Content-Type: <manifest media type>
+ {
+ "name": <name>,
+ "tag": <tag>,
+ "fsLayers": [
+   {
+      "blobSum": <digest>
+   },
+   ...
+ ]
+ ],
+ "history": <v1 images>,
+ "signature": <JWS>,
+ ...
+ }
+```
+
+如果清单中有层(`"blobSum":<digest>`)是未知的，则返回
+
+```json
+{
+  "errors:" [{
+          "code": "BLOB_UNKNOWN",
+          "message": "blob unknown to registry",
+          "detail": {
+              "digest": <digest>
+          }
+      },
+      ...
+   ]
+ }
+```
+
+# 检索功能
+
+## 列出所有存储库(Listing Repositories)
+
+```
+GET /v2/_catalog
+```
+
+返回
+
+```
+ 200 OK
+ Content-Type: application/json
+ {
+   "repositories": [
+     <name>,
+     ...
+   ]
+ }
+```
+
+## 列出部分存储库(Pagination)
+
+```
+GET /v2/_catalog?n=<integer>
+```
+
+Note： integer表示要列出库的个数
+
+返回：
+
+```
+ 200 OK
+ Content-Type: application/json
+ Link: <<url>?n=<n from the request>&last=<last repository in response>>; rel="next"
+ {
+   "repositories": [
+     <name>,
+     ...
+   ]
+ }
+```
+
+## 列出镜像所有tags(Listing Image Tags)
+
+```
+GET /v2/image/tags/list
+```
+
+返回
+
+```
+ 200 OK
+ Content-Type: application/json
+ {
+     "name": <name>,
+     "tags": [
+         <tag>,
+         ...
+     ]
+ }
+```
+
+## 列出镜像部分tags(Pagination)
+
+```
+GET /v2/image/tags/list?n=<integer>
+```
+
+返回
+
+```
+ 200 OK
+ Content-Type: application/json
+ Link: <<url>?n=<n from the request>&last=<last tag value from previous response>>; rel="next"
+ {
+   "name": <name>,
+   "tags": [
+     <tag>,
+     ...
+   ]
+ }
+```
+
+## 删除镜像(Deleting an Image)
+
+```
+DELETE /v2/image/manifests/<reference>
+```
+
+返回
+
+```
+202 Accepted
+Content-Length: None
+```
+
+失败返回404错误
+
+注意：默认情况下，registry不允许删除镜像操作，需要在启动registry时指定环境变量REGISTRY_STORAGE_DELETE_ENABLED=true,或者修改其配置文件即可。reference必须是digest,否则删除将失败。
+
+在registry2.3或更高版本删除清单时，必须在HEAD或GET获取清单以获取要删除的正确digest携带以下头：
+
+```
+Accept: application/vnd.docker.distribution.manifest.v2+json
+```
+
+# 个人收获
+
+docker 仓库本身的设计是非常巧妙的，值得我们学习和借鉴。
+
+这些 API 不建议去记忆，直接查阅使用即可。
 
 # 参考资料
 
@@ -194,6 +608,12 @@ docker pull ubuntu指示docker从官方Docker Hub提取名为ubuntu的映像。
 [DockerHub 使用简介](https://www.cnblogs.com/rgqancy/p/9627207.html)
 
 [从Docker Hub和docker-registry的关系与区别](https://blog.csdn.net/huakai_sun/article/details/79897085)
+
+[docker registry v2 api](https://www.jianshu.com/p/6a7b80122602)
+
+[docker registry v2 API的使用](https://blog.csdn.net/kan2016/article/details/86105354)
+
+[Docker registry V2 推送镜像、拉取镜像、搜索镜像、删除镜像和垃圾回收](https://blog.csdn.net/nklinsirui/article/details/80705306)
 
 * any list
 {:toc}

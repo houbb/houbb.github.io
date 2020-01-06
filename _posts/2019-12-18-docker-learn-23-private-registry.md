@@ -385,6 +385,84 @@ docker-registry使用了egg打包发布，Gunicorn作为应用服务器（类似
 
 Web UI的实现，现在GitHub上已经有好几个项目了，例如docker-registry-web 、docker-registry-frontend，后续再看……
 
+# Docker Index 管理
+
+index顾名思义“索引”，index服务主要提供镜像索引以及用户认证的功能。
+
+当下载一个镜像的时候，如下图所示，首先会去index服务上做认证，然后查找镜像所在的registry的地址并放回给docker客户端，最终docker客户端再从registry下载镜像，当然在下载过程中 registry会去index校验客户端token的合法性。
+
+不同镜像可以保存在不同的registry服务上，其索引信息都放在index服务上。
+
+![image](https://user-images.githubusercontent.com/18375710/71793688-da021600-3078-11ea-8c67-d6be3698f377.png)
+
+## 运行模式
+
+[docker-registry](https://github.com/docker/docker-registry) 的实现，有两种运行模式
+
+（1）standalone=true：在这种模式下，仓库自身提供了简单的index服务，在实现过程中index只是实现了简单的索引功能，没有实现用户认证功能
+
+（2）standalone=false：在这种模式下，需要配置index的服务访问点，需自行实现index服务
+
+## index服务对外提供的接口
+
+index 对外提供的REST API接口如下：
+
+```
+PUT /v1/repositories/(namespace)/(repo_name)/
+```
+
+在docker push的流程中会调用到，其作用是创建一个repository。
+
+创建之前会对用户密码以及权限进行验证，如果合法，则最终会返回一个token至docker客户端
+
+```
+DELETE /v1/repositories/(namespace)/(repo_name)/
+```
+
+删除一个repository，删除之前会对用户密码以及权限进行验
+
+```
+PUT /v1/repositories/(namespace)/(repo_name)/images
+```
+
+在docker push流程中会调用到，其作用是更新repository对应的image列表，更新之前会校验携带的token
+
+```
+GET /v1/repositories/(namespace)/(repo_name)/images
+```
+
+在docker pull流程中会调用到，其作用是获取repository对应的image列表。获取之前会对用户密码以及权限进行验证
+
+```
+PUT /v1/repositories/(namespace)/(repo_name)/auth
+```
+
+校验token的合法性
+
+```
+GET /v1/users/
+```
+
+docker login会调用到此接口，用来验证用户的合法性
+
+```
+POST /v1/users/
+```
+
+docker login会调用到此接口，可用来创建一个用户
+
+```
+PUT /v1/users/username/
+```
+
+用来更新用户信息
+
+各个接口的请求的具体Header、Action、Response，可参考 这里
+
+## index服务已有的开源实现
+
+[https://github.com/ekristen/docker-index](https://github.com/ekristen/docker-index)，采用node js实现，其中实现了一套简单的用户管理。
+
 # 企业级的仓库
 
 Harbor
@@ -411,7 +489,15 @@ Harbor
 
 《第一本 Docker 书》
 
+## Habor
+
+[Docker Registry & Harbor](https://www.jianshu.com/p/dc0eeede677b)
+
 [Docker私有仓库 Harbor 介绍和部署记录](https://www.cnblogs.com/kevingrace/p/6547616.html)
+
+## Docker Index
+
+[docker index 服务概述](https://www.jianshu.com/p/9e23d7fd4adc)
 
 ## 异常1
 
