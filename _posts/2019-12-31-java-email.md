@@ -2,24 +2,16 @@
 layout: post
 title: java 发送邮件
 date:  2019-12-25 16:57:12 +0800
-categories: [Spring]
-tags: [spring mvc]
-published: false
+categories: [Java]
+tags: [java, sf]
+published: true
 ---
 
-# 开启 SMTP
-
-## QQ邮箱
-
-【设置】-【账户】-【POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务】
-
-最下边开启
-
-- POP3/SMTP 服务
-
-- IMAP/SMTP 服务
-
 # 如何使用IMAP服务？
+
+首先介绍一些邮件发送的基础知识，如果你已经知道可以跳过。
+
+直接到 [Email](#email) 邮件发送实现的部分。
 
 ## IMAP是什么？
 
@@ -41,40 +33,106 @@ POP允许电子邮件客户端下载服务器上的邮件，但是您在电子�
 
 使用IMAP很简单，首先，您需要先在QQ邮箱中启用IMAP功能，然后，配置好客户端，就可以使用了。
 
-# 网易代码实现
+# 开启 SMTP 服务
+ 
+## QQ 邮箱
+
+【设置】-【账户】-【POP3/IMAP/SMTP/Exchange/CardDAV/CalDAV服务】
+
+最下边开启
+
+- POP3/SMTP 服务
+
+- IMAP/SMTP 服务
+
+## 网易 163 邮箱
+
+![image](https://user-images.githubusercontent.com/18375710/71801983-7804d900-3097-11ea-871d-8a26501e15b0.png)
 
 网易相对比较简单，直接开启【授权码】
 
-## maven
+# Email
+
+[Email](https://github.com/houbb/email) 是基于 java 实现的发送邮件的工具包，力求简单优雅。
+
+## 创作缘由
+
+看了各种 email 工具感觉没有想象中方便。
+
+就自己实现一个，后续会陆续加入新的特性。
+
+## 特性
+
+- Fluent 流式语法
+
+- 网易 163 邮箱的发送支持
+
+- 支持发送给多个收件人，多个（秘密）抄送者
+
+# 快速开始
+
+## 环境要求
+
+jdk7+
+
+maven 3.x+
+
+## 引入
 
 ```xml
-<dependencies>
-    <dependency>
-        <groupId>com.sun.mail</groupId>
-        <artifactId>javax.mail</artifactId>
-        <version>1.6.2</version>
-    </dependency>
-    <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.12</version>
-        <scope>test</scope>
-    </dependency>
-</dependencies>
+<plugin>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>email</artifactId>
+    <version>0.0.2</version>
+</plugin>
 ```
 
+## 发送邮件
 
-# 后期特性
+此处密码为网易邮箱对应的授权码。
 
-## 模板支持
+```java
+EmailBs.auth("xxx@163.com", "xxx")
+        .content("自定义内容")
+        .sendTo("xxx@yy.com");
+```
 
-## 读取
+这里会通过 `xxx@163.com` 发送给 `xxx@yy.com` 一封邮件。
 
-对于登录信箱的支持。
+邮件标题默认为无标题，内容为你的自定义内容。
 
-可以获取邮箱中的各种信息。
+你可以通过指定，配置更多丰富的特性。
 
-## 避免进入垃圾箱
+## 方法列表
+
+| 方法 | 说明 |
+|:---|:---|
+| auth(username, password) | username 为邮箱名称，password 为对应密码 |
+| content(subject, content) | subject 为邮件标题，content 为邮件内容 |
+| content(content) | subject 默认为 "无标题"，content 为邮件内容 |
+| sendTo(toArray) | toArray 为收件人列表 |
+| cc(ccArray) | ccArray 为抄送人列表 |
+| bcc(bccArray) | bccArray 为秘密抄送人列表 |
+
+### 使用的例子
+
+你可以指定多个收件人以及抄送人。
+
+示例代码如下：
+
+```java
+EmailBs.auth("xxx@163.com", "xxx")
+       .content("自定义主题", "自定义内容")
+       .cc("抄送者1@xx.com", "抄送者2@xx.com")
+       .bcc("秘密抄送者1@xx.com", "秘密抄送者2@xx.com")
+       .sendTo("收件人1@xx.com", "收件人2@xx.com");
+```
+
+# 后续特性
+
+- 支持常见邮箱
+
+- 支持邮件模板
 
 # 参考资料
 
