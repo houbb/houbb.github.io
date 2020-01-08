@@ -4,7 +4,7 @@ title: java 敏感词工具实现
 date:  2020-1-7 10:09:32 +0800
 categories: [Java]
 tags: [java, github, sensitive, sf]
-published: true
+published: false
 ---
 
 # 敏感词
@@ -39,6 +39,8 @@ qq
 
 - 流言蜚语（造谣）
 
+- 诈骗
+
 - 其他
 
 最好可以对敏感词进行分类。
@@ -55,9 +57,9 @@ FindAll, Validate, Filter and Replace words.
 
 ## 是否包含
 
-isValid() 是否合法，这个和是否包含敏感词恰恰相反。
+valid() 是否合法，这个和是否包含敏感词恰恰相反。
 
-isContains() 是否包含敏感词
+contains() 是否包含敏感词
 
 findAll() 发现所有
 
@@ -209,7 +211,7 @@ fffuuuucccckkk 重复词
 
 ## AC 自动机
 
-新增分支Aho-Corasick以支持AC自动机
+AC自动机
 
 ## Trie 树
 
@@ -219,16 +221,23 @@ fffuuuucccckkk 重复词
 
 典型应用是用于统计，排序和保存大量的字符串（但不仅限于字符串），所以经常被搜索引擎系统用于文本词频统计。
 
-它的优点是：利用字符串的公共前缀来减少查询时间，最大限度地减少无谓的字符串比较，查询效率比哈希树高。
+它的优点是：
+
+**利用字符串的公共前缀来减少查询时间，最大限度地减少无谓的字符串比较，查询效率比哈希树高。**
 
 关于trie树详细信息请自行baidu
 
-
 ## 其他框架-拓展功能
+
+[opencc4j-繁简体转换框架](https://github.com/houbb/opencc4j)
 
 pinyin 转换框架
 
-繁简体转换框架。（opencc4j）
+全角半角之间的转换。
+
+# 拓展阅读
+
+[DFA 算法学习]()
 
 # 参考资料
 

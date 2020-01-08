@@ -1,0 +1,155 @@
+---
+layout: post
+title: java 敏感词之 DFA 算法(Tire Tree 算法)详解
+date:  2020-1-7 10:09:32 +0800
+categories: [Java]
+tags: [java, github, sensitive, sf]
+published: false
+---
+
+# 背景
+
+想实现一个基于敏感词库的敏感词工具。
+
+## 遍历匹配
+
+发现如果是逐个字符遍历的话，效率实在是太低。
+
+这里我首先想到了两种算法：
+
+[KMP 算法]()
+
+[Brute-Force 算法]()
+
+当然单纯只是匹配，其实性能依然非常的低。
+
+## 正则表达式
+
+当然还有一种方式就是基于正则表达式，个人感觉这种性能也比较差。
+
+[正则表达式](https://houbb.github.io/2017/07/24/regex)
+
+直接查了下资料，可以使用 DFA 算法来解决这个问题。
+
+# DFA 算法
+
+在实现文字过滤的算法中，DFA是比较好的实现算法。
+
+DFA 即 Deterministic Finite Automaton，也就是确定有穷自动机，它是是通过event和当前的state得到下一个state，即event+state=nextstate。
+
+## 流程图示
+
+下图展示了其状态的转换
+
+![image](https://user-images.githubusercontent.com/18375710/71892910-2fc3e480-3185-11ea-808e-b49141f121a5.png)
+
+在这幅图中大写字母（S、U、V、Q）都是状态，小写字母a、b为动作。
+
+通过上图我们可以看到如下关系
+
+```
+            a b b
+S -----> U S -----> V U -----> V
+```
+
+ps: 说到有穷状态机，又让我想起了正则表达式。感觉冥冥之中，这些东西还是相通的。
+
+在实现敏感词过滤的算法中，我们必须要减少运算，而DFA在DFA算法中几乎没有什么计算，有的只是状态的转换。
+
+# java 实现
+
+## 词库准备
+
+敏感词库就是一行行敏感词，比如【黄色】
+
+虽然说这个词可能是中性的，但是我们只是举一个比较和谐的例子。
+
+## 流程梳理
+
+我们根据上面的图，可以将状态图整理如下：
+
+![image](https://user-images.githubusercontent.com/18375710/71893158-c4c6dd80-3185-11ea-96c9-b258d40475ff.png)
+
+同时这里没有状态转换，没有动作，有的只是Query（查找）。
+
+我们可以认为，通过S query U、V，通过U query V、P，通过V query U P。
+
+通过这样的转变我们可以将状态的转换转变为使用Java集合的查找。
+
+## 例子
+
+诚然，加入在我们的敏感词库中存在如下几个敏感词：日本人、日本鬼子。
+
+那么我需要构建成一个什么样的结构呢？
+
+首先：
+
+```
+query 日 ---> {本}、query 本 --->{人、鬼子}、query 人 --->{null}、query 鬼 ---> {子}
+```
+
+形如下结构：
+
+![image](https://user-images.githubusercontent.com/18375710/71893222-f344b880-3185-11ea-9f2b-7157194429b6.png)
+
+这样我们就将我们的敏感词库构建成了一个类似与一颗一颗的树，这样我们判断一个词是否为敏感词时就大大减少了检索的匹配范围。比如我们要判断日本人，根据第一个字我们就可以确认需要检索的是那棵树，然后再在这棵树中进行检索。
+
+## 如何判断结束
+
+但是如何来判断一个敏感词已经结束了呢？
+
+利用标识位来判断。
+
+所以对于这个关键是如何来构建一棵棵这样的敏感词树。
+
+### 具体流程
+
+下面我已Java中的HashMap为例来实现DFA算法。
+
+具体过程如下：
+
+日本人，日本鬼子为例
+
+1、在hashMap中查询“日”看其是否在hashMap中存在，如果不存在，则证明已“日”开头的敏感词还不存在，则我们直接构建这样的一棵树。跳至3。
+
+2、如果在hashMap中查找到了，表明存在以“日”开头的敏感词，设置hashMap = hashMap.get("日")，跳至1，依次匹配“本”、“人”。
+
+3、判断该字是否为该词中的最后一个字。若是表示敏感词结束，设置标志位 isEnd = 1，否则设置标志位 isEnd = 0；
+
+![image](https://user-images.githubusercontent.com/18375710/71893863-b24da380-3187-11ea-8f5c-874c30b69266.png)
+
+# java 程序实现
+
+## DFA 树的初始化
+
+```java
+
+```
+
+## DFA 树的使用
+
+```java
+
+```
+
+
+# DFA 算法的思考
+
+虽说性能上没有任何问题。
+
+但是 DFA 有一个缺点，那就是占用的内存和敏感词字典的大小成正比。
+
+# 开源框架
+
+> 参考 [sensitive-word](https://github.com/houbb/sensitive-word)
+
+# 参考资料
+
+[Java实现敏感词过滤](https://blog.csdn.net/chenssy/article/details/26961957)
+
+[使用 DFA 实现文字过滤](https://www.iteye.com/topic/336577)
+
+[java实现敏感词过滤（DFA算法）](https://www.cnblogs.com/AlanLee/p/5329555.html)
+
+* any list
+{:toc}
