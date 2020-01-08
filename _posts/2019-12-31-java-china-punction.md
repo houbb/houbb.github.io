@@ -162,11 +162,13 @@ static boolean isSymbol(char ch) {
     if (ch == 0x0020 || ch == 0x3000) return true;
     return false;
 }
+
 static boolean isCnSymbol(char ch) {
     if (0x3004 <= ch && ch <= 0x301C) return true;
     if (0x3020 <= ch && ch <= 0x303F) return true;
     return false;
 }
+
 static boolean isEnSymbol(char ch) {
     if (ch == 0x40) return true;
     if (ch == 0x2D || ch == 0x2F) return true;
@@ -177,6 +179,7 @@ static boolean isEnSymbol(char ch) {
     if (0x7B <= ch && ch <= 0x7E) return true;
     return false;
 }
+
 static boolean isPunctuation(char ch) {
     if (isCjkPunc(ch)) return true;
     if (isEnPunc(ch)) return true;
@@ -189,6 +192,7 @@ static boolean isPunctuation(char ch) {
     if (ch == 0xFF65) return true;
     return false;
 }
+
 static boolean isEnPunc(char ch) {
     if (0x21 <= ch && ch <= 0x22) return true;
     if (ch == 0x27 || ch == 0x2C) return true;
@@ -196,6 +200,7 @@ static boolean isEnPunc(char ch) {
     if (ch == 0x3B || ch == 0x3F) return true;
     return false;
 }
+
 static boolean isCjkPunc(char ch) {
     if (0x3001 <= ch && ch <= 0x3003) return true;
     if (0x301D <= ch && ch <= 0x301F) return true;
