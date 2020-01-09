@@ -123,15 +123,109 @@ query 日 ---> {本}、query 本 --->{人、鬼子}、query 人 --->{null}、que
 ## DFA 树的初始化
 
 ```java
-
+@SuppressWarnings("unchecked")
+public void initWordMap(Collection<String> collection) {
+    // 避免重复加载
+    if (MapUtil.isNotEmpty(innerWordMap)) {
+        return;
+    }
+    long startTime = System.currentTimeMillis();
+    // 避免扩容带来的消耗
+    innerWordMap = new HashMap(collection.size());
+    for (String key : collection) {
+        if (StringUtil.isEmpty(key)) {
+            continue;
+        }
+        // 用来按照相应的格式保存敏感词库数据
+        char[] chars = key.toCharArray();
+        final int size = chars.length;
+        // 每一个新词的循环，直接将结果设置为当前 map，所有变化都会体现在结果的 map 中
+        Map currentMap = innerWordMap;
+        for (int i = 0; i < size; i++) {
+            // 截取敏感词当中的字，在敏感词库中字为HashMap对象的Key键值
+            char charKey = chars[i];
+            // 如果集合存在
+            Object wordMap = currentMap.get(charKey);
+            // 如果集合存在
+            if (ObjectUtil.isNotNull(wordMap)) {
+                // 直接将获取到的 map 当前当前 map 进行继续的操作
+                currentMap = (Map) wordMap;
+            } else {
+                //不存在则，则构建一个新的map，同时将isEnd设置为0，因为他不是最后一
+                Map<String, Boolean> newWordMap = new HashMap<>(8);
+                newWordMap.put(AppConst.IS_END, false);
+                // 将新的节点放入当前 map 中
+                currentMap.put(charKey, newWordMap);
+                // 将新节点设置为当前节点，方便下一次节点的循环。
+                currentMap = newWordMap;
+            }
+            // 判断是否为最后一个，添加是否结束的标识。
+            if (i == size - 1) {
+                currentMap.put(AppConst.IS_END, true);
+            }
+        }
+    }
+    long endTime = System.currentTimeMillis();
+    System.out.println("Init sensitive word map end! Cost time: " + (endTime - startTime) + "ms");
+}
 ```
 
 ## DFA 树的使用
 
 ```java
-
+/**
+ * 检查敏感词
+ * <p>
+ * （1）如果未命中敏感词，直接返回 0
+ * （2）命中敏感词，则返回敏感词的长度。
+ *
+ * ps: 这里结果进行优化，
+ * 1. 是否包含敏感词。
+ * 2. 敏感词的长度
+ * 3. 正常走过字段的长度（便于后期替换优化，避免不必要的循环重复）
+ *
+ * @param txt           文本信息
+ * @param beginIndex    开始下标
+ * @param validModeEnum 验证模式
+ * @param context 执行上下文
+ * @return 敏感词对应的长度
+ * @since 0.0.1
+ */
+private int checkSensitiveWord(final String txt, final int beginIndex,
+                               final ValidModeEnum validModeEnum,
+                               final IWordContext context) {
+    Map nowMap = innerWordMap;
+    // 记录敏感词的长度
+    int lengthCount = 0;
+    int actualLength = 0;
+    for (int i = beginIndex; i < txt.length(); i++) {
+        char c = txt.charAt(i);
+        char charKey = getActualChar(c, context);
+        // 判断该字是否存在于敏感词库中
+        // 并且将 nowMap 替换为新的 map，进入下一层的循环。
+        nowMap = (Map) nowMap.get(charKey);
+        if (ObjectUtil.isNotNull(nowMap)) {
+            lengthCount++;
+            // 判断是否是敏感词的结尾字，如果是结尾字则判断是否继续检测
+            boolean isEnd = (boolean) nowMap.get(AppConst.IS_END);
+            if (isEnd) {
+                // 只在匹配到结束的时候才记录长度，避免不完全匹配导致的问题。
+                // eg: 敏感词 敏感词xxx
+                // 如果是 【敏感词x】也会被匹配。
+                actualLength = lengthCount;
+                // 这里确实需要一种验证模式，主要是为了最大匹配从而达到最佳匹配的效果。
+                if (ValidModeEnum.FAIL_FAST.equals(validModeEnum)) {
+                    break;
+                }
+            }
+        } else {
+            // 直接跳出循环
+            break;
+        }
+    }
+    return actualLength;
+}
 ```
-
 
 # DFA 算法的思考
 
