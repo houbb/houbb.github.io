@@ -1,6 +1,6 @@
 ---
 layout: post
-title: java 敏感词工具实现
+title: java 敏感词工具实现思路
 date:  2020-1-7 10:09:32 +0800
 categories: [Java]
 tags: [java, github, sensitive, sf]
@@ -237,7 +237,7 @@ pinyin 转换框架
 
 # 拓展阅读
 
-[DFA 算法学习]()
+[DFA 算法学习](https://houbb.github.io/2020/01/07/sensitive-word-dfa)
 
 # 参考资料
 
