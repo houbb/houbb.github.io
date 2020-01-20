@@ -438,6 +438,8 @@ startSet是入参条件，只有一个值为2，即在图中找寻2的有效路�
 
 基于上面的问题，我们要做一个寻找有向环的程序，这个程序还是依赖DFS深度优先搜索算法，如果找不到，则说明这个有向图是 DAG。
 
+ps: 这里可以从入度去遍历，如果没有任何一个为0，则存在环。
+
 - 栈
 
 先来补个坑，其实前面包括背包我在之前都写过，但因为前面那篇文章是我第一篇博文，我还太稚嫩，没有掌握好的编辑器，也没有粘贴代码，所以这里有必要重新填坑。
@@ -631,7 +633,7 @@ public class DirectedCycle {
 DAG
 ```
 
-# DAG与BlockChain
+# DAG 与 BlockChain
 
 上面一章节我们将DAG深挖了挖，我想到这里您已经和我一样对DAG的算法层面非常了解，那么它和如今沸沸扬扬的区块链有什么关联呢？
 
@@ -672,9 +674,19 @@ DAG作为一种谣言传播算法，其异步通讯机制在提高了扩展性�
 DAG技术作为区块链的一个有益补充，其异步通讯机制在提高扩展性、缩短确认时间和降低支付费用方面优势明显，未来在去中心化技术领域将来也会有一席之地。但其安全性和一致性的问题也亟待解决。相信随着以后技术的发展，这些问题也会得到逐步改善。
 
 
+# 其他应用场景
+
+很久以前看过 spark 的任务调度是基于 DAG 模式，也就是第四代的任务调度。
+
+上一代是 map-reduce 模式。
+
+DAG 也可以用于管理任务调度，值得学习。
+
 # 拓展阅读
 
-[]()
+[结巴分词原理](https://houbb.github.io/2020/01/08/jieba-source)
+
+[数据结构之背包，栈，队列，链表](https://houbb.github.io/2020/01/20/data-struct-base-type)
 
 [DAG 与任务调度]()
 
@@ -683,6 +695,10 @@ DAG技术作为区块链的一个有益补充，其异步通讯机制在提高�
 [DAG有向无环图](https://www.cnblogs.com/Evsward/p/dag.html)
 
 [拓扑排序-有向无环图（DAG, Directed Acyclic Graph）](https://www.cnblogs.com/shoulinniao/p/10395815.html)
+
+[Java实现有向图去环得到DAG](https://blog.csdn.net/xiedelong/article/details/80308000)
+
+https://blog.csdn.net/omnispace/article/details/80381329
 
 * any list
 {:toc}
