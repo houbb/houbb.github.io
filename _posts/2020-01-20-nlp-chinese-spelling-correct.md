@@ -246,7 +246,7 @@ le->al
 
 b) 在信道中结合发音(Toutanova and Moore 2003)
 
-c）在计算信道概率P(x|w)时考虑更多的影响因素
+c）在计算信道概率 `P(x|w)` 时考虑更多的影响因素
 
 - The source letter 
 
