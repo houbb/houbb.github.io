@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 利用有向无环图（DAG）进行任务调度 
-date:  2020-1-20 10:09:32 +0800
+date:  2020-1-23 10:09:32 +0800
 categories: [Data-Struct]
 tags: [data-struct, dag, schedule, sh]
 published: true
