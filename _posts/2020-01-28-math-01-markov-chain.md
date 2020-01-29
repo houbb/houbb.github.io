@@ -33,6 +33,53 @@ published: true
 
 在马尔可夫链的每一步，系统根据概率分布，可以从一个状态变到另一个状态，也可以保持当前状态。状态的改变叫做转移，与不同的状态改变相关的概率叫做转移概率。随机漫步就是马尔可夫链的例子。随机漫步中每一步的状态是在图形中的点，每一步可以移动到任何一个相邻的点，在这里移动到每一个点的概率都是相同的（无论之前漫步路径是如何的）。
 
+# 快速入门
+
+[数学表达](https://huangweiran.club/2018/01/29/Introduction%20to%20Markov%20chain/)
+
+马克科夫链是一个随机系统，必须满足两个条件：
+
+（1）系统任意时刻可以用有限个可能状态之一来描述
+
+（2）系统无后效性，即某阶段的状态一旦确定，则此后过程的演变不再受此前各种状态及决策的影响无后效性(附录有详细描述)
+
+## 条件1-概率向量(状态向量)
+
+![image](https://user-images.githubusercontent.com/18375710/73323928-1c87ce80-4284-11ea-8e4d-ce8915b5d3dc.png)
+
+## 条件2-转移概率矩阵
+
+![image](https://user-images.githubusercontent.com/18375710/73324116-ce26ff80-4284-11ea-9b88-2ea050f660bb.png)
+
+## 简单例子
+
+有一个大的汽车租赁公司，有三家门店，你租的时候可以选择任何一个门店，还的时候也可以选择任何一家门店， 从不同门店借出和归还的概率如下表:
+
+| 归还\借出 | 1	|   2	|   3 |
+|:---|:---|:---|:---|
+| 1	       | 0.5	| 0.3	| 0.3 |
+| 2	       | 0.2	| 0.1	| 0.6 |
+| 3	       | 0.3	| 0.6	| 0.1 |
+
+问题: 一辆车出2号门店借出，公司前三次应该从哪家店找最快捷?
+
+那么初始状态 `X(0)=(0,1,0)^T`,转移矩阵 P为：
+
+```
+| 0.5	| 0.3	| 0.3 |
+| 0.2	| 0.1	| 0.6 |
+| 0.3	| 0.6	| 0.1 |
+```
+
+接下来要做的其实就是矩阵乘法：
+
+- 第1次计算
+
+- 第2次计算
+
+- 第3次计算
+
+
 # 马尔可夫模型（Markov model）
 
 马尔可夫链或马尔可夫过程不是唯一以马尔可夫性质为基础建立的随机过程，事实上，隐马尔可夫模型、马尔可夫决策过程、马尔可夫随机场等随机过程/随机模型都具有马尔可夫性质并被统称为马尔可夫模型。这里对马尔可夫模型的其它成员做简要介绍：
@@ -141,6 +188,8 @@ def markov():
 
 markov()
 ```
+
+`np.dot()` 执行了矩阵的乘法。
 
 输出的结果：
 
@@ -436,6 +485,10 @@ x_n ∈ E, 任意 n ∈ N
 
 还要注意，上面给出的马尔可夫性质的定义是非常简单的：真正的数学定义涉及过滤的概念，这远远超出了这个适度介绍的范围。
 
+# java 实现
+
+
+
 # 拓展阅读
 
 [Vertibi 算法]()
@@ -462,17 +515,31 @@ x_n ∈ E, 任意 n ∈ N
 
 [知乎-马尔可夫链蒙特卡罗算法（MCMC）](https://zhuanlan.zhihu.com/p/37121528)
 
+[马尔科夫链(Markov chain)5分钟简单入门](https://blog.csdn.net/renhaofan/article/details/82186858)
+
 [MBA 智库-马尔可夫链模型（Markov Chain Model）](https://wiki.mbalib.com/wiki/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E9%93%BE%E6%A8%A1%E5%9E%8B)
 
 [百度百科-马尔科夫链](https://baike.baidu.com/item/%E9%A9%AC%E5%B0%94%E5%8F%AF%E5%A4%AB%E9%93%BE/6171383?fromtitle=%E9%A9%AC%E5%B0%94%E7%A7%91%E5%A4%AB%E9%93%BE&fromid=4688932&fr=aladdin)
 
 [知网空间-马尔科夫链分析](http://wiki.cnki.com.cn/HotWord/1232673.htm)
 
+[马尔科夫链 算法](https://blog.csdn.net/xiamaocheng/article/details/100598565)
+
 [小白都能看懂的马尔可夫链详解](https://blog.csdn.net/bitcarmanlee/article/details/82819860)
 
 [一文读懂：什么是马尔可夫链？可以做什么？](https://baijiahao.baidu.com/s?id=1627905710491947582&wfr=spider&for=pc)
 
 [马尔科夫链](http://www.360doc.com/content/19/0319/08/32196507_822586429.shtml)
+
+## 吸收xx
+
+[吸收马尔科夫链图解](https://blog.csdn.net/evecho/article/details/80656381)
+
+## java 实现
+
+[马尔科夫链算法的JAVA实现](https://blog.csdn.net/dearbaba_8520/article/details/80432146)
+
+[隐马尔科夫模型java实现](https://blog.csdn.net/luoyexuge/article/details/70920710)
 
 * any list
 {:toc}
