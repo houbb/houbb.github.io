@@ -132,14 +132,50 @@ return pow(k/2).pow(2);
 }
 ```
 
+
+# java 一维数组*二维数组实现
+
+为了简单（其实原理差不多），我们用 Java 实现最简单的的一维数组*二维数组的 java 实现。
+
+```java
+/**
+ * m*p × p*n
+ * 结果：m*n 的数组
+ * 这里是一个特例，m=1;
+ *
+ * @param arrayOne 一维数组 m*p
+ * @param arrayTwo 二维数组 p*n
+ * @return 一维数组
+ */
+public static double[] dot(double[] arrayOne, double[][] arrayTwo) {
+    // 结果：行=one.行，列= two.列
+    double[] result = new double[arrayTwo.length];
+    // 要求：one.列=two.行
+    assert arrayOne.length == arrayTwo[0].length;
+    // 计算
+    //one.i=0; 只有一行
+    for (int i = 0; i < 1; i++) {
+        //two.j 的列
+        for (int j = 0; j < arrayTwo.length; j++) {
+            // p=one.列=two.行
+            double item = 0.0;
+            for (int p = 0; p < arrayOne.length; p++) {
+                item += arrayOne[p] * arrayTwo[p][j];
+            }
+            // i,j 的数据存储
+            result[j] = item;
+        }
+    }
+    return result;
+}
+```
+
+
 ## 个人感受
 
 首先不关心这些实现的过程，我们要理解的是整个矩阵乘法的过程。
 
 因为各种计算的流程是固定的，原本对于人而言的复杂计算，一旦流程固定，就可以通过代码去实现。
-
-
-
 
 # 拓展阅读
 
