@@ -123,7 +123,7 @@ published: true
 
 [HMM]()
 
-[卡尔曼滤波]()
+[卡尔曼滤波](https://houbb.github.io/2020/01/28/math-09-kalman-filtering)
 
 [白噪声-white noise]()
 
