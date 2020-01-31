@@ -1,16 +1,13 @@
 ---
 layout: post
-title: 隐马尔可夫（HMM）向前/向后算法 Forward/Backward
+title: 隐马尔可夫（HMM）前向算法 Forward
 date:  2020-1-28 10:09:32 +0800
 categories: [Math]
 tags: [math, ml, ai, nlp, sh]
 published: false
 ---
 
-# 前向算法/后向算法
-
-前向概率-后向概率
-
+# 前向算法
 
 
 # 拓展阅读
@@ -33,6 +30,14 @@ published: false
 
 [LVQ]()
 
+## 应用
+
+[HMM 实现中文分词]()
+
+[HMM 实现实体识别](http://read.pudn.com/downloads132/doc/fileformat/561577/CHMM/%BB%F9%D3%DA%B2%E3%B5%FE%D2%FE%C2%ED%B6%FB%BF%C9%B7%F2%C4%A3%D0%CD%B5%C4%D6%D0%CE%C4%C3%FC%C3%FB%CA%B5%CC%E5%CA%B6%B1%F0.pdf)
+
+[HMM 实现词性标注]()
+
 # 参考资料
 
 《统计学习方法》，李航
@@ -47,7 +52,7 @@ published: false
 
 [HMM超详细讲解+代码](https://blog.csdn.net/continueOo/article/details/77893587)
 
-[HMM-向前向后算法](https://www.cnblogs.com/sddai/p/8475424.html)
+[HMM-前向后向算法](https://www.cnblogs.com/sddai/p/8475424.html)
 
 * any list
 {:toc}
