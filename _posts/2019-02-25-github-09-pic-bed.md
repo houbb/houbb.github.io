@@ -193,10 +193,90 @@ result{"code":"A20001","data":{"count":-4,"data":"eyJ1aWQiOjY4Njk4NzAyODAsImFwcC
 
 这就很尴尬了，没有返回对应的 pid。
 
+# 上传源码学习
 
+## js 部分源码
+
+```js
+var i = {
+    base64form: null,
+    upload: function(b) {
+    	var d, e = b,
+    		h = "weibo.com/",
+    		j = window.$CONFIG,
+    		k = c.type;
+    	if (k === "common") d = c.form;
+    	else if (k === "base64") {
+    		d = a.C("form");
+    		i.base64form = d;
+    		d.method = "POST";
+    		var l = a.C("input");
+    		l.name = "b64_data";
+    		l.type = "hidden";
+    		l.value = c.base64Str;
+    		d.appendChild(l);
+    		document.body.appendChild(d)
+    	}
+    	var m = {
+    		marks: 1,
+    		app: "miniblog",
+    		s: "rdxt"
+	};
+	c.type === "common" || c.type === "base64" ? m = a.lib.kit.extra.merge({
+		url: e.domain == "1" ? h + (j && j.watermark || j.domain) : 0,
+		markpos: e.position || "",
+		logo: e.logo || "",
+		nick: e.nickname == "1" ? "@" + (j && j.nick) : 0
+	}, m) : c.type === "custom" && (m = a.lib.kit.extra.merge(c.uploadArgs, m));
+	k === "base64" && (m = a.lib.kit.extra.merge({
+		mime: "image/jpeg",
+		data: "base64"
+	}, m));
+	g = new Date;
+	f = a.core.io.ijax({
+		url: "http://picupload.service.weibo.com/interface/pic_upload.php",
+		form: d,
+		abaurl: "http://" + document.domain + "/aj/static/upimgback.html?_wv=5",
+		abakey: "cb",
+		timeout: 18e5,
+		onComplete: i.handle,
+		onTimeout: i.handle,
+		args: m
+	})
+},
+```
+
+## 完成之后
+
+```
+
+```
+
+## 成功之后的操作
+
+```js
+sendSucc: function(b) {
+	var d = new Date - g,
+		e = new Image,
+		f = encodeURIComponent(navigator.userAgent),
+		h = window.$CONFIG,
+		i = a.lib.kit.extra.merge(b, {
+			ct: "1",
+			rnd: (new Date).getTime(),
+			el: d,
+			uid: h ? h.uid : 0,
+			cl: f,
+			tm: +(new Date),
+			ip: "",
+			app: c.app
+		});
+	i = a.core.json.jsonToQuery(i);
+	i = "http://ww1.sinaimg.cn/do_not_delete/fc.html?" + i;
+	e.setAttribute("src", i)
+},
+```
 
 # 图片转 base64
-
 
 # 微博图床 403 解决方法
 
@@ -218,6 +298,8 @@ result{"code":"A20001","data":{"count":-4,"data":"eyJ1aWQiOjY4Njk4NzAyODAsImFwcC
 
 [github-页面管理-Tbed](https://github.com/Hello-hao/Tbed)
 
+[github-PicUploader](https://github.com/xiebruce/PicUploader)
+
 ## 资料
 
 [最小化微博上传图片](https://weibo.com/minipublish)
@@ -237,6 +319,8 @@ result{"code":"A20001","data":{"count":-4,"data":"eyJ1aWQiOjY4Njk4NzAyODAsImFwcC
 ## blogs
 
 [利用微博当图床-php语言实现](https://mkblog.cn/854/)
+
+[新浪图床API接口及源码](http://blog.kkksos.com/2018/09/21/12.html)
 
 * any list
 {:toc}
