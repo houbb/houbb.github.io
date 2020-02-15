@@ -7,7 +7,23 @@ tags: [nlp, ml, ai, sh]
 published: true
 ---
 
-# 
+# 基础的词库
+
+[笠翁对韵](https://hanyu.baidu.com/s?wd=%E7%AC%A0%E7%BF%81%E5%AF%B9%E9%9F%B5&from=poem) 全部韵脚系列
+
+
+# 整体思路
+
+词库中优先使用
+
+结合算法：无论这个算法是深度学习还是其他。
+
+
+# 平仄
+
+文字的平仄可以简单的按照拼音来处理，当然这样不够准确。
+
+
 
 # Github 参考资料
 
