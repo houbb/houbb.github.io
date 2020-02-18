@@ -61,6 +61,8 @@ P(gender=男|name=本山)
 
 不用算, 在算概率的时候会互相约去
 
+原因是对于男女而言，这个概率是一样的。所以直接忽略即可。
+
 ## 坑
 
 ```
@@ -146,11 +148,19 @@ ps: 这可以不用爬虫，自己实现一套根据【出生年月】推断出�
 
 [ngender-性别推测](https://github.com/observerss/ngender)
 
+[chinese-name-gender-analyse-性别相关性分析](https://github.com/cyy0523xc/chinese-name-gender-analyse)
+
 [java-testdata-generator-姓名自动生成](https://github.com/binarywang/java-testdata-generator)
+
+[随机名称实现](https://github.com/Donghaopeng/robotframework-RandomName/blob/master/random_name.py)
 
 [如何做一个取名产品](https://github.com/wainshine/Chinese-Names-Corpus/issues/23)
 
 [怎样借助Python爬虫给宝宝起个好名字](http://www.crazyant.net/2076.html)
+
+## 风水
+
+[易经-风水八卦](https://github.com/vandh/yijing)
 
 * any list
 {:toc}
