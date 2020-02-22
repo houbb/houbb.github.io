@@ -409,6 +409,18 @@ ps: 这两个字可真不容易==！
 
 周易：去 github 下载一个八卦的变化
 
+# 开源框架
+
+[好好起名，宝宝起名，三才五格起名，喜用神起名](https://github.com/JakLiao/GoodGoodName)
+
+[姓名五格三才剖析、八字五行分析、五格数理姓名测试打分、姓名八字测试打分](https://github.com/peiss/chinese-name-score)
+
+[三才五格评分高的那种。](https://github.com/pylee/GoodName)
+
+[根据三才五格计算名字笔画数的最佳组合](https://github.com/zlykan/ChineseName_Counting)
+
+[由不断学习的神经网络大师（ LSTM 模型），结合生辰八字、喜用神，五行命理、五格三才，字音字形、诗词内涵等要素进行评分，帮助新生代父母取名。](https://github.com/holmesian/AI-intitle)
+
 # 参考文章
 
 [姓名分数测算系统的原理](http://www.gcwmp3.com/news/mingzi/201909/5685.html)
