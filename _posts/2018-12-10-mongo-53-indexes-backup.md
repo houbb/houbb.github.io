@@ -13,7 +13,7 @@ MongoDB索引的元信息（描述信息）存储在local数据库的集合syste
 
 system.indexes 集合中包含了每个索引的详细信息，可以通过下面的命令查询已经存在的索引，例如：
 
-```
+```js
 db.system.indexes.find()
 ```
 
