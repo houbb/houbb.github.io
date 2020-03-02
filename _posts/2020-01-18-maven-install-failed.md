@@ -101,9 +101,72 @@ $   mvn clean install -Dhttps.protocols=TLSv1.2
 
 重新构建，打包成功。
 
+# 连接超时
+
+## 场景
+
+直接打包报错如下：
+
+```
+[ERROR] Failed to execute goal on project json: Could not resolve dependencies for project com.github.houb
+b:json:jar:0.1.9-SNAPSHOT: Failed to collect dependencies at com.github.houbb:heaven:jar:0.1.86: Failed to
+ read artifact descriptor for com.github.houbb:heaven:jar:0.1.86: Could not transfer artifact com.github.h
+oubb:heaven:pom:0.1.86 from/to repo1 (http://repo1.maven.org/maven2): Connect to repo1.maven.org:80 [repo1
+.maven.org/151.101.52.209] failed: Connection timed out: connect -> [Help 1]
+```
+
+## 原因 
+
+因为 maven 打包，所以需要访问 maven 仓库，国外的仓库镜像访问可能比较慢，所以可以设置为国内镜像。
+
+在 maven 的配置文件中， `<mirrors>` 里面添加
+
+```xml
+<mirror>
+    <id>nexus-aliyun</id>
+    <mirrorOf>*</mirrorOf>
+    <name>Nexus aliyun</name>
+    <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+</mirror>
+```
+
+完整版本的 mirrors 如下：
+
+```xml
+<mirrors>
+    <!-- mirror
+     | Specifies a repository mirror site to use instead of a given repository. The repository that
+     | this mirror serves has an ID that matches the mirrorOf element of this mirror. IDs are used
+     | for inheritance and direct lookup purposes, and must be unique across the set of mirrors.
+     |
+    <mirror>
+      <id>mirrorId</id>
+      <mirrorOf>repositoryId</mirrorOf>
+      <name>Human Readable Name for this Mirror.</name>
+      <url>http://my.repository.com/repo/path</url>
+    </mirror>
+     -->
+    <mirror>
+        <id>nexus-aliyun</id>
+        <mirrorOf>*</mirrorOf>
+        <name>Nexus aliyun</name>
+        <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+    </mirror>
+
+    <mirror>
+      <id>repo1</id>
+      <mirrorOf>central</mirrorOf>
+      <url>https://repo1.maven.org/maven2/</url>
+    </mirror>	
+    
+</mirrors>
+```
+
 # 参考资料
 
-[关于maven打包时的报错： Return code is: 501 , ReasonPhrase:HTTPS Required.](https://www.cnblogs.com/flashfish/p/12202305.html)
+[关于 maven 打包时的报错： Return code is: 501 , ReasonPhrase:HTTPS Required.](https://www.cnblogs.com/flashfish/p/12202305.html)
+
+[maven 配置以及设置国内镜像](https://blog.csdn.net/boywcx/article/details/82628703)
 
 * any list
 {:toc}
