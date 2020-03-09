@@ -1028,6 +1028,18 @@ gpg:              unchanged: 1
 
 有时候 idea 指定 的 xml 好像没有用，建议使用 setting.xml 进行相关的修改。
 
+## 过期报错
+
+时隔一段时间之后，发现 gpg 验证时报错。
+
+大概意思就是【17f0276c401804c3】在 http://pool.sks-keyservers.net:11371 找不到。
+
+```
+gpg --keyserver hkp://pool.sks-keyservers.net:11371 --send-keys 17f0276c401804c3
+gpg --keyserver hkp://pool.sks-keyservers.net:11371 --recv-keys 17f0276c401804c3
+```
+
+这个直接重新上传，然后等待一段时间即可
 
 # 访问 maven 太慢
 
