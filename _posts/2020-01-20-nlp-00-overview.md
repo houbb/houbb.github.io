@@ -235,7 +235,7 @@ TTS 文本转语音（反过来）
 
 ## 分词
 
-sentence 断句
+sentence-segment 断句
 
 segment 分词
 

@@ -38,5 +38,7 @@ published: true
 
 [servlet](https://houbb.github.io/2018/09/27/java-servlet-tutorial-01-overview)
 
+[手写 mvc 简单实现](https://houbb.github.io/2018/09/27/java-servlet-tutorial-21-fake-mvc-simple)
+
 * any list
 {:toc}
