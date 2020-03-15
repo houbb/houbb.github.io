@@ -4,7 +4,7 @@ title: 隐马尔可夫（HMM）实现中文分词
 date:  2020-1-28 10:09:32 +0800
 categories: [Math]
 tags: [math, ml, ai, nlp, sh]
-published: false
+published: true
 ---
 
 # 中文分词

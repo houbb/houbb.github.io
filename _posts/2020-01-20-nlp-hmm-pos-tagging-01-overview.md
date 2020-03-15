@@ -4,7 +4,7 @@ title: 隐马尔可夫（HMM）实现中文词性标注
 date:  2020-1-28 10:09:32 +0800
 categories: [Math]
 tags: [math, ml, ai, nlp, sh]
-published: false
+published: true
 ---
 
 # 词性标注
