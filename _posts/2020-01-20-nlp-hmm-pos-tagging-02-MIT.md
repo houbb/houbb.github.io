@@ -261,7 +261,7 @@ ii. 决策树（Decision Trees）
 　ii.　
 
 ```
-P({T}delim{|}{S}{})={P(T,S)}/{sum{T}{}{P(T,S)}}
+P({T}delim{|}{S}{})={P(T,S)}/{sum{T}{}{P(T,S)】
 　Tagger(S)= argmax_{T in T^n}logP({T}delim{|}{S}{})
 　　　　　　= argmax_{T in T^n}logP({T,S}{})
 ```
@@ -271,15 +271,15 @@ P({T}delim{|}{S}{})={P(T,S)}/{sum{T}{}{P(T,S)}}
 i. 应用链式法则（Apply chain rule）:
 
 ```
-　P(T,S)={prod{j=1}{n}{P({T_j}delim{|}{S_1,...S_{j-1},T_1,...,T_{j-1}}{})}}*
-　　　　　　　　　　P({S_j}delim{|}{S_1,...S_{j-1}T_1,...,T_{j}}{})
+　P(T,S)={prod{j=1}{n}{P({T_j}delim{|}{S_1,...S_{j-1},T_1,...,T_{j-1】{})】*
+　　　　　　　　　　P({S_j}delim{|}{S_1,...S_{j-1}T_1,...,T_{j】{})
 ```
 
 　ii. 独立性假设（马尔科夫假设）
 
 ```
 （Assume independence (Markov assumption)）:
-　　　　　={prod{j=1}{n}{P({T_j}delim{|}{T_{j-2},T_{j-1}}{})}}*P({S_j}delim{|}{T_j}{})
+　　　　　={prod{j=1}{n}{P({T_j}delim{|}{T_{j-2},T_{j-1】{})】*P({S_j}delim{|}{T_j}{})
 ```
 
 ## c) 举例（Example）
@@ -295,10 +295,10 @@ ii. `P(T, S)=P(PRP|S, S)∗P(They|PRP)∗P(RB|S, PRP)∗P(never|RB)∗`...
 ## d) 估计转移概率（Estimating Transition Probabilities）
 
 ```
-P({T_j}delim{|}{T_{j-2},T_{j-1}}{})=
-　　　{lambda_1}*{{Count(T_{j-2},T_{j-1},T_j)}/{Count(T_{j-2},T_{j-1})}}
-　　　+{lambda_2}*{{Count(T_{j-1},T_j)}/{Count(T_{j-1})}}
-　　　+{lambda_3}*{{Count(T_j)}/{Count(sum{i}{}{T_i})}}
+P({T_j}delim{|}{T_{j-2},T_{j-1】{})=
+　　　{lambda_1}*【Count(T_{j-2},T_{j-1},T_j)}/{Count(T_{j-2},T_{j-1})】
+　　　+{lambda_2}*【Count(T_{j-1},T_j)}/{Count(T_{j-1})】
+　　　+{lambda_3}*【Count(T_j)}/{Count(sum{i}{}{T_i})】
 ```
 
 ## e) 估计发射概率（Estimating Emission Probabilities）
@@ -345,7 +345,7 @@ i. 初始情况（Base case）:
 
 ```
 pi delim{[}{0, START}{]} = log 1 = 0
-pi delim{[}{0, t_{-1}}{]} = log 0 = infty
+pi delim{[}{0, t_{-1】{]} = log 0 = infty
 ```
 
 对所有其他的t_{-1}(for all other t_{-1})
@@ -355,13 +355,13 @@ pi delim{[}{0, t_{-1}}{]} = log 0 = infty
 1. 对于i = 1...S.length及对于所有的t_{-1} in T:
 
 ```
-pi delim{[}{i, t_{-1}}{]} = {max}under{t in T union START}{ pi delim{[}{i-1, t}{]} + log P(t_{-1}delim{|}{t}{}) + log P(S_i delim{|}{t_{-1}}{})}
+pi delim{[}{i, t_{-1】{]} = {max}under{t in T union START}{ pi delim{[}{i-1, t}{]} + log P(t_{-1}delim{|}{t}{}) + log P(S_i delim{|}{t_{-1】{})}
 ```
 
 2. 回朔指针允许我们找出最大概率序列（Backpointers allow us to recover the max probability sequence）:
 
 ```
-BP delim{[}{i, t_{-1}}{]} = {argmax}under{t in T union START}{ pi delim{[}{i-1, t}{]} + log P(t_{-1}delim{|}{t}{}) + log P(S_i delim{|}{t_{-1}}{})}
+BP delim{[}{i, t_{-1】{]} = {argmax}under{t in T union START}{ pi delim{[}{i-1, t}{]} + log P(t_{-1}delim{|}{t}{}) + log P(S_i delim{|}{t_{-1】{})}
 ```
 
 ## i) 性能（Performance）
