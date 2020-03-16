@@ -4,7 +4,7 @@ title: 最大熵和对数线性模型-实现中文词性标注
 date:  2020-1-28 10:09:32 +0800
 categories: [Math]
 tags: [math, ml, ai, nlp, sh]
-published: false
+published: true
 ---
 
 # 上一讲主要内容回顾（Last time）：
