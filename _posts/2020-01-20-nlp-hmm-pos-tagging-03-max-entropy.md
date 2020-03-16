@@ -306,7 +306,7 @@ GIS 算法每次迭代的时间都很长，需要迭代很多次才能收敛，�
 
 ii. 目标（Goal）：
 
-寻找遵循如下约束条件的此种形式pi prod{j=1}{k}{{alpha_j}^{f_j}(x)}的分布（Find distribution of the form pi prod{j=1}{k}{{alpha_j}^{f_j}(x)}that obeys the following constraints）：E_p f_j = E_{p prime}{f_j}
+寻找遵循如下约束条件的此种形式pi prod{j=1}{k}【alpha_j}^{f_j}(x)}的分布（Find distribution of the form pi prod{j=1}{k}【alpha_j}^{f_j}(x)}that obeys the following constraints）：E_p f_j = E_{p prime}{f_j}
 
 iii. GIS 约束条件（GIS constraints）：
 
