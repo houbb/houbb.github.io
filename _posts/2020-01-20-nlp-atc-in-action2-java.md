@@ -15,7 +15,9 @@ published: true
 
 类型：包括类别数目（Binary、multi-class）、每篇文章赋予的标签数目（Single label、Multi label）
 
-# 一. 概率论基础
+# 基础知识
+
+## 一. 概率论基础
 
 1. 条件概率公式：
 
@@ -29,11 +31,45 @@ published: true
 
 ![image](https://user-images.githubusercontent.com/18375710/76868187-80e90680-68a1-11ea-99bc-4507684c3b7e.png)
 
-# 二. 文本分类
+## 二. 文本分类
 
 要计算一篇文章D所属的类别c(D)，相当于计算生成D的可能性最大的类别 Ci(Ci属于C)，即：
 
 ![image](https://user-images.githubusercontent.com/18375710/76868305-a9710080-68a1-11ea-9b64-69cf51527290.png)
+
+其中 P(D) 与 C 无关，故：
+
+```
+c(D) = argmax P(D|C_i) * P(C_i)
+```
+
+## 三. 朴素贝叶斯分类模型
+
+朴素贝叶斯假设：在给定类别C的条件下，所有属性Di相互独立，即，
+
+`P(D|C, D_j) = P(D_i|C)`
+
+根据朴素贝叶斯假设，可得
+
+![image](https://user-images.githubusercontent.com/18375710/76872287-32d70180-68a7-11ea-9c6f-9107a1d45029.png)
+
+其中，
+
+![image](https://user-images.githubusercontent.com/18375710/76872336-43877780-68a7-11ea-91bd-651515db1d7f.png)
+
+`count(c|D)`：类别c中的训练文本数
+
+`count(D)`：总训练文本数
+
+![image](https://user-images.githubusercontent.com/18375710/76872425-5dc15580-68a7-11ea-896d-db866aa39fa3.png)
+
+![image](https://user-images.githubusercontent.com/18375710/76872459-687bea80-68a7-11ea-925a-c01ccd9f3a9c.png) 单词di在类别c中出现的次数
+
+综上可得，
+
+![image](https://user-images.githubusercontent.com/18375710/76872497-7598d980-68a7-11ea-95f8-4d65e18e547b.png)
+
+这个是最核心的公式，直接根据这个计算的结果就可以推断出最大的概率了。
 
 # 朴素贝叶斯理论：
 
@@ -177,7 +213,6 @@ T_ct 是训练集中类别 c 中的词条 t 的个数（多次出现要计算多
 
 ![image](https://user-images.githubusercontent.com/18375710/76869888-edfd9b80-68a3-11ea-8983-54b09ba64b0a.png)
 
-
 B是不同词语个数（这种情况下 `|V| = B` ）,利用加1平滑从训练集中估计参数
 
 ## 6. 训练过程 & 测试应用：
@@ -186,13 +221,9 @@ B是不同词语个数（这种情况下 `|V| = B` ）,利用加1平滑从训练
 
 先验的对数值之和以及词项条件概率的对数之和
 
-伪代码如下：
-
-
 ## 7. 时间复杂度分析:
 
 朴素贝叶斯对训练集的大小和测试文档的大小而言是线性的，这在某种意义上是最优的
-
 
 # 文本分类器评估(Classifier Evaluation)
 
@@ -220,15 +251,282 @@ F_1 也就是P和R的调和平均值:
 
 如果我们希望得到所有类别上的综合性能。则可以用宏平均（macro-averaging）和微平均（Micro-averaging）
 
+# 实现方式
+
+## 训练数据
+
+可以从资源数据中获取，以搜狗实验室的新闻分类为例。
+
+## 数据的处理
+
+（1）数据预处理
+
+针对原始数据的分类
+
+根据 url 可以判断对应的分类。
+
+可以跳过一些空内容。
+
+（2）特征数据
+
+对原始的文章进行分词、停顿词移除、key-word（基于 TI-DF 算法）得到每一篇文章的关键词及对应的权重。
+
+（3）直接根据贝叶斯计算
+
+使用拉普拉斯平滑，避免零概率
+
+使用 log 将乘法转换为加法，避免计算溢出 。
+
+# 参考代码
+
+## 核心分类代码
+
+```java
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
+
+public class TrainDataManager {
+    private static final String dirName = "trainingData/Sample"; // 训练集所在目录
+    CountDirectory countDir = new CountDirectory();
+    private int zoomFactor = 5; // 放大倍数
+
+    /**
+     * 计算先验概率 p(ci)=某个类别文章数/训练文本总数
+     * 
+     * @param className 类别名称
+     *            
+     * @return 类别的先验概率
+     */
+    public double priorProbability(String className) {
+        double probability = 0.0;
+        probability = (double) countDir.countClass(className) / countDir.countSum();
+        return probability;
+    }
+
+    public void execute(String article) throws IOException {
+        // 进行分词
+        Vector<String> strs = ChineseSpliter.splitWords(article);
+
+        File dir = new File(dirName);
+        File[] files = dir.listFiles(); // 目录下的所有文件
+        String className;
+        double countc;
+        double product = 1;
+        Vector<Double> probability = new Vector<Double>();
+        double temp;
+        // 计算文本属于每个类别的概率
+        for (File f : files) {
+            className = f.getName();
+            countc = countDir.countClass(className);
+            // 计算文本中某个词属于特定类别中的概率
+            for (String word : strs) {
+                temp = (countDir.countWordInClass(word, className) + 1)
+                        / countc * zoomFactor;// 避免所得结果过小，对结果进行放大
+                product *= temp;
+            }
+            probability.add(priorProbability(className) * product);
+            product = 1;
+        }
+
+        double max = 0;
+        int maxId = 0;
+        for (int i = 0; i < files.length; i++) {
+            if (max < probability.get(i)) {
+                max = probability.get(i);
+                maxId = i;
+            }
+        }
+        System.out.println("文章所属分类为：" + files[maxId].getName());
+    }
+}
+```
+
+## 用于计算训练集中的各种频次
+
+```java
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
+/**
+ * 计算各种频次
+ * 
+ * @author Administrator
+ * 
+ */
+public class CountDirectory {
+    private static final String dirName = "trainingData/Sample"; // 训练集所在目录
+
+    public int countSum() {
+        File dir = new File(dirName);
+        File[] files = dir.listFiles(); // 目录下的所有文件
+        String subName = ""; // 子目录的路径名称
+        int sum = 0; // 训练集中所有类别的总文本数
+
+        // 计算所有文件的总数
+        for (int i = 0; i < files.length; i++) {
+            subName = files[i].getName();
+            sum += countClass(subName);
+        }
+        return sum;
+    }
+
+    /**
+     * 用于计算某个类别下的文章总数
+     * 
+     * @param className
+     *            类别名称
+     * @return 给定类别目录下的文件总数
+     */
+    public int countClass(String className) {
+        String classPath = dirName + "/" + className;
+        File subDir = new File(classPath);// 子目录
+        File[] subFiles = subDir.listFiles(); // 子目录下的所有文件
+        return subFiles.length;
+    }
+
+    /**
+     * 计算某个类别中包含给定词的文章数目
+     * 
+     * @param word
+     *            给定的词
+     * @param className
+     *            类别名称
+     * @return className中包含word的文章数
+     */
+    public int countWordInClass(String word, String className)
+            throws IOException {
+        int count = 0;// 总数
+        String classPath = dirName + "/" + className;
+        File subDir = new File(classPath);
+        File[] subFiles = subDir.listFiles();
+        String filePath = "";
+        // 计算word在各篇文章中出现的次数
+        for (int i = 0; i < subFiles.length; i++) {
+            // 读取文章
+            filePath = subFiles[i].getAbsolutePath();
+            InputStreamReader is = new InputStreamReader(new FileInputStream(
+                    filePath), "gbk");
+            BufferedReader br = new BufferedReader(is);
+            String temp = br.readLine();
+            String line = "";
+            while (temp != null) {
+                line += temp;
+                temp = br.readLine();
+
+            }
+            br.close();
+
+            if (line.contains(word))
+                count++;
+        }
+        return count;
+    }
+
+}
+```
+
+# 个人的实现思路
+
+## 数据整理 + 训练
+
+将相同类别的文章放在一起。
+
+计算出每一个词对应的 TF-DF 频率，做好持久化。
+
+先验概率，就是 = 某个类别的文章数/总的文章数量。
+
+将数据整理的过程，变为训练的过程：
+
+训练的结果，将先验概率+TF-DF 放在一个固定的文件中。每一个词的的权重已经提前计算好。
+
+结果可以放在一个文件中，每个词按照类别分别计算好概率（可能比较稀疏）
+
+结果按照类别放在不同的文件中。
+
+## 测试验证
+
+新的文本需要归类时：
+
+（1）分词
+
+（2）去停顿词
+
+（3）循环计算每一个的权重
+
+（4）选出最大的概率
+
+（5）可以计算当前概率占总概率的百分比，输出每一个。
+
+抽象，进一步抽象。
+
+能否做成一个模板，只需要提供数据即可
+
+当然文件的格式必须固定。
+
 # 资源数据
 
 [新闻数据](http://www.sogou.com/labs/resource/list_news.php)
 
 [新闻数据-文本分类](http://www.sogou.com/labs/resource/tce.php)
 
+
+# 拓展阅读
+
+## 常见方法
+
+90年代以来，随着信息存储技术和通讯技术的发展，大量的信息呈爆炸式增长，信息自动分类己经成为人们获取有用信息不可或缺的工具。
+
+文本分类是中文信息处理的一个重要的研究领域。
+
+其目标是在分析文本内容的基础上，给文本分配一个或多个比较合适的类别，从而提高文本检索等应用的处理效率。
+
+目前已经有许多方法应用到该领域，如**支持向量机方法(SVM)、K近邻方法(KNN)、朴素贝叶斯方法(NaiveBayes)、决策树方法(DecisionTree)**等等。 
+
+朴素贝叶斯分类以其坚实的数学基础和丰富的概率表达能力，尤其是它能充分利用先验信息的特性越来越受到人们的重视，是目前公认的一种简单有效的概率分类方法，在某些领域中表现出很好的性能。
+
+贝叶斯方法的一大优点是利用了先验信息，能够在不确定性的推理中提供一种模式和处理方法。
+
+朴素贝叶斯与其他分类法相比，具有更小的出错率、健壮性和效率。 
+
+## 贝叶斯常见优化思路
+
+但方法的数据稀疏的问题以及所采用的laplace平滑方法还存在一定的缺陷还不是最优。
+
+因此，我们提出用uni-gram的平滑方法来改进数据稀疏状况，通过对贝叶斯分类的平滑方法进行改进提高其分类效果。 
+
+本文利用了贝叶斯理论对文本进行了分类。
+
+主要完成了以下几个方面的任务：
+
+1. 描述了文本分类系统的一般过程，包括文本信息的表示、提取，文本分类的方法，介绍了贝叶斯理论。 
+
+2. 分析了朴素贝叶斯文本分类方法的特点及缺陷，并提出用一元统计语言模型的平滑技术对其数据稀疏问题引起的零概率进行改进的可行性。 
+
+3. 用uni-gram模型的三种平滑方法即Jelinek-Mercer平滑方法、Dirichiet平滑方法、绝对折扣法对贝叶斯分类器进行改进，提出了具体的算法和实现框图，这是本文的核心内容。
+
+4. 通过实验分析确定平滑算法的参数取值，比较改进了的贝叶斯分类器与原来采用laplace平滑的分类器的性能，提高了分类准确率和召回率。 
+
+今后，应该用统计语言模型的二元、三元模型来更好的改善贝叶斯的分类效果。同时可以考虑将贝叶斯分类系统的特征提取方法中将tf.idf和MI两种标准结合以提高分类器性能。
+
+## 遗传算法
+
+最接近神的算法，也可以和贝叶斯进行结合。
+
+参考 [基于贝叶斯分类器的中文文本分类](https://wenku.baidu.com/view/557d9e5a657d27284b73f242336c1eb91b37333a.html)
+
 # 参考资料
 
 [知乎-文本分类及朴素贝叶斯分类器](https://zhuanlan.zhihu.com/p/32091937)
+
+[文本分类（基于朴素贝叶斯分类器）](https://www.cnblogs.com/jiajia920716/p/3135407.html)
+
+[机器学习 学习笔记（一） 基于朴素贝叶斯的文本分类 （Python 实现）](https://www.jianshu.com/p/5fd446efefe9)
+
+[基于贝叶斯的文本分类方法研究](http://www.wanfangdata.com.cn/details/detail.do?_type=degree&id=Y916630#)
 
 * any list
 {:toc}
