@@ -140,8 +140,11 @@ WHERE (key_col1 > 10 OR key_col2 = 20) AND nonkey_col = 30;
 
 # 配置Index Merge优化
 
-可以通过optimizer_switch系统参数中的index_merge、index_merge_intersection、index_merge_union以及index_merge_sort_union标识控制Index Merge的使用。默认配置下，这些标识都是启用状态-on。如果只想启用特定的某种算法，则可以设置index_merge为off，然后将相应启用算法的标识设置为on即可。
+可以通过optimizer_switch系统参数中的index_merge、index_merge_intersection、index_merge_union以及index_merge_sort_union标识控制Index Merge的使用。
 
+默认配置下，这些标识都是启用状态-on。
+
+如果只想启用特定的某种算法，则可以设置index_merge为off，然后将相应启用算法的标识设置为on即可。
 
 # 个人收获
 
