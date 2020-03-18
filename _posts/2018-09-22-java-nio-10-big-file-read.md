@@ -65,6 +65,21 @@ while ((str = br.readLine()) != null) {
 br.close();
 ```
 
+## 中文乱码问题
+
+中文会被默认转换为 `ISO-8859-1`，所以对于中文需要处理。
+
+比如我读取的文本为 GBK 编码格式
+
+```java
+RandomAccessFile raf = new RandomAccessFile(new File(p),"r");
+String s ;
+while((s = raf.readLine())!=null){
+    String result = new String(s.getBytes("ISO-8859-1") , "GBK");
+    System.out.println(result);
+}
+```
+
 # 大文件读取
 
 ```java
