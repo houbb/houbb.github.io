@@ -54,5 +54,9 @@ done
 
 [shell实现读取两个相同行的文件并根据指定分隔符拼接成一个文件](https://blog.csdn.net/qq_35001776/article/details/82792069)
 
+[shell脚本读取文件行的四种方法](https://blog.csdn.net/Luqing1123570994/article/details/94637371)
+
+[shell读取文件的指定行字符串 -sed](https://www.cnblogs.com/aggavara/archive/2012/11/12/2765938.html)
+
 * any list
 {:toc}
