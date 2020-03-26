@@ -9,7 +9,7 @@ GEM
     coffee-script-source (1.11.1)
     colorator (1.1.0)
     execjs (2.7.0)
-    ffi (1.9.18)
+    ffi (1.12.1)
     forwardable-extended (2.6.0)
     jekyll (3.6.2)
       addressable (~> 2.4)
