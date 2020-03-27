@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 前端 JQuery 简介
+title: 前端 JQuery 入门使用简介
 date:  2018-04-22 09:19:44 +0800
 categories: [Web]
 tags: [web, js, nodejs, sh]
