@@ -1,6 +1,6 @@
 ---
 layout: post
-title: js 实现简单版本的 jquery
+title: js 手写实现简单版本的 jquery
 date:  2020-3-27 17:53:59 +0800
 categories: [HTML]
 tags: [html, js, sh]
