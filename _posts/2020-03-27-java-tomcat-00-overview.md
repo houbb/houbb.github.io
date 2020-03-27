@@ -260,10 +260,286 @@ Wrapper负责管理一个Servlet的装载、初始化、执行以及资源回收
 
 3. 读取文件，不存在构建响应报文头、HTML正文内容，存在则写到浏览器端。
 
-## 实现自己的Tomcat
+## 代码结构
 
-工程文件结构和 pom.xml 文件：
+```
+├─bs
+│      ColaBs.java
+│
+├─constant
+│      ColaConst.java
+│
+├─domain
+│      Request.java
+│      Response.java
+│
+└─exception
+        ColaException.java
+```
 
+其中常量和异常类可以不做关心。
+
+
+## 代码
+
+- ColaBs.java
+
+```java
+package com.github.houbb.cola.bs;
+
+import com.github.houbb.cola.domain.Request;
+import com.github.houbb.cola.domain.Response;
+import com.github.houbb.cola.exception.ColaException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+/**
+ * @author binbin.hou
+ * @since 0.0.1
+ */
+public final class ColaBs {
+
+    /**
+     * 用于判断是否需要关闭容器
+     *
+     * @since 0.0.1
+     */
+    private static volatile boolean shutdown = false;
+
+    /**
+     * 接受信息等待
+     *
+     * @since 0.0.1
+     */
+    private static void acceptWait() throws UnknownHostException {
+        final int port = 8080;
+        final InetAddress inetAddress = InetAddress.getByName("127.0.0.1");
+        try(ServerSocket serverSocket = new ServerSocket(port, 1, inetAddress)) {
+            System.out.println("Server start and listen on " + port);
+            // 等待用户发请求
+            while (!shutdown) {
+                Socket socket = serverSocket.accept();
+                InputStream is = socket.getInputStream();
+                OutputStream os = socket.getOutputStream();
+
+                // 接受请求参数
+                Request request = new Request(is);
+
+                // 创建用于返回浏览器的对象
+                Response response = new Response(request, os);
+                response.flush();
+
+                //关闭一次请求的socket,因为http请求就是采用短连接的方式
+                socket.close();
+
+                //如果请求地址是/shutdown  则关闭容器
+                shutdown = request.getUrl().equals("/shutdown");
+            }
+
+            System.out.println("Server shut down!");
+        } catch (IOException e) {
+            throw new ColaException(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            ColaBs.acceptWait();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
+```
+
+- Request.java
+
+```java
+package com.github.houbb.cola.domain;
+
+import com.github.houbb.cola.constant.ColaConst;
+import com.github.houbb.cola.exception.ColaException;
+import com.github.houbb.heaven.util.lang.StringUtil;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
+/**
+ * 请求入参
+ * @author binbin.hou
+ * @since 0.0.1
+ */
+public class Request {
+
+    /**
+     * 输入流
+     * @since 0.0.1
+     */
+    private String url;
+
+    /**
+     * 新建请求对象
+     * @param is 输入流
+     * @since 0.0.1
+     */
+    public Request(InputStream is) {
+        try {
+            // 只读取固定长度的内容。
+            byte[] bytes = new byte[ColaConst.BUFFER_SIZE];
+            int readSize = is.read(bytes);
+            final String requestString = new String(bytes, StandardCharsets.UTF_8);
+
+            System.out.println("[Request] received request " + requestString);
+            // 处理请求头信息
+            this.url = parseUrL(requestString);
+        } catch (IOException e) {
+            throw new ColaException(e);
+        }
+    }
+
+    /**
+     * 获取 url 信息
+     * @since 0.0.1
+     */
+    public String getUrl() {
+        return this.url;
+    }
+
+    /**
+     * 转换 url
+     *
+     * 1. 直接根据 http 请求头进行截取。
+     * @param requestString 请求字符串
+     * @return 结果
+     * @since 0.0.1
+     */
+    private String parseUrL(String requestString) {
+        try {
+            int index1, index2;
+            //看socket获取请求头是否有值
+            index1 = requestString.indexOf(' ');
+            if (index1 != -1) {
+                // 截取 GET 之后的内容
+                index2 = requestString.indexOf(' ', index1 + 1);
+                if (index2 > index1) {
+                    String url = requestString.substring(index1 + 1, index2);
+                    // 进行一次反转义，避免中文等被处理
+                    return URLDecoder.decode(url, "UTF-8");
+                }
+            }
+
+            return StringUtil.EMPTY;
+        } catch (UnsupportedEncodingException e) {
+            throw new ColaException(e);
+        }
+    }
+
+}
+```
+
+- Response.java
+
+```java
+package com.github.houbb.cola.domain;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
+
+/**
+ * 请求出参
+ * @author binbin.hou
+ * @since 0.0.1
+ */
+public class Response {
+
+    /**
+     * 请求信息
+     *
+     * @since 0.0.1
+     */
+    private Request request;
+
+    /**
+     * 输出流
+     *
+     * @since 0.0.1
+     */
+    private OutputStream outputStream;
+
+    public Response(Request request, OutputStream outputStream) {
+        this.request = request;
+        this.outputStream = outputStream;
+    }
+
+    /**
+     * 刷回文件内容到页面
+     *
+     * @throws IOException 浏览器
+     * @since 0.0.1
+     */
+    public void flush() throws IOException {
+        final String url = request.getUrl();
+        //返回给浏览器响应提示,这里可以拼接HTML任何元素
+        String returnMessage = "HTTP/1.1 200\r\n" +
+                "Content-Type: text/html;charset=UTF-8\r\n" +
+                "Content-Length: " + url.length() + "\r\n" +
+                "\r\n" +
+                url;
+        outputStream.write(returnMessage.getBytes(StandardCharsets.UTF_8));
+    }
+
+}
+```
+
+# 入门例子
+
+## 启动服务端
+
+直接运行 ColaBs.main() 方法启动应用
+
+## 页面访问
+
+浏览器访问 [http://127.0.0.1:8080/dd](http://127.0.0.1:8080/dd)
+
+页面返回
+
+```
+/dd
+```
+
+## 后台日志
+
+其实每次页面请求，对应的都是一个 Http 请求如下：
+
+```
+[Request] received request 
+GET /dd HTTP/1.1
+Host: 127.0.0.1:8080
+Connection: keep-alive
+Cache-Control: max-age=0
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36
+Sec-Fetch-Dest: document
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+Sec-Fetch-Site: none
+Sec-Fetch-Mode: navigate
+Sec-Fetch-User: ?1
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9,en;q=0.8
+```
+
+这里是标准的 Http 协议，我们可以通过解析获取对应的信息。
 
 # 拓展思路
 
@@ -285,6 +561,9 @@ Wrapper负责管理一个Servlet的装载、初始化、执行以及资源回收
 
 这里其实应该是使用 NIO，建议后期直接采用 netty 重写。
 
+# 完整代码地址
+
+> [cola](https://github.com/houbb/cola)
 
 # 参考资料
 
