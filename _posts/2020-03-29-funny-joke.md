@@ -66,7 +66,7 @@ https://api.getweapp.com/thirdparty/joke/img
 
 历史上的今天
 
-豆瓣书
+豆瓣书籍
 
 豆瓣音乐
 
