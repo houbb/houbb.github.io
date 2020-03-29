@@ -49,6 +49,29 @@ https://api.getweapp.com/thirdparty/joke/img
 
 可以学习【聚合数据】平台，将收集到的信息 api 化，然后进行售卖。当然这个比较难做，需要很大的数据量+服务器。
 
+
+# 拓展应用
+
+图片
+
+二维码
+
+美女/风景/se图/表情包/壁纸
+
+字体
+
+## 已有数据
+
+整个小说网站
+
+历史上的今天
+
+豆瓣书
+
+豆瓣音乐
+
+豆瓣电影
+
 # 参考资料
 
 [微信小程序—笑话大全](https://github.com/zhijieeeeee/wechat-app-joke)
