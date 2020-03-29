@@ -4,7 +4,7 @@ title: NLP 骂人夸人+jsoup 爬虫代理
 date:  2020-1-20 10:09:32 +0800
 categories: [NLP]
 tags: [nlp, ml, ai, sh]
-published: false
+published: true
 ---
 
 # 骂人
@@ -58,6 +58,14 @@ published: false
 [給 Rails Developer 的基本SEO](http://gogojimmy.net/2013/09/26/basic-seo-for-rails-developer/)
 
 [免费代理 IP](https://www.xicidaili.com/)
+
+## 笑话
+
+[猪猪笑话](https://github.com/LiveXY/ionic-joke)
+
+## 情话
+
+
 
 * any list
 {:toc}
