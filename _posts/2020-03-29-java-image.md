@@ -177,5 +177,19 @@ ImageIO.write(thumbnail,"jpg",newFile("c:/a380_1280x1024_BufferedImage.jpg"));
 -Xms1G
 ```
 
+# 个人思考
+
+所有的工具都应该尽可能的如此简化。
+
+图片的处理还有很多，比如如何将文字与图片结合（表情包，配图，分享图等）
+
+普天的色彩处理等。
+
+需要学习一些 2D 的基本知识。
+
+# 参考资料
+
+[使用说明](https://www.jb51.net/article/113461.htm)
+
 * any list
 {:toc}
