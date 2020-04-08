@@ -75,6 +75,8 @@ javax.sound.sampled.UnsupportedAudioFileException: could not get audio input str
 
 [使用jave2将音频wav转换成mp3格式](https://www.cnblogs.com/fanblogs/p/11001731.html)
 
+[java wav文件转换为mp3](https://blog.csdn.net/qq_33129625/article/details/78550691)
+
 ## 速度调整
 
 [音频变速、变调Java示例](https://github.com/apomelo/voice-velocity-demo)
