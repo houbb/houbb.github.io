@@ -47,6 +47,8 @@ javax.sound.sampled.UnsupportedAudioFileException: could not get audio input str
 
 [sox-音频处理的瑞士军刀](http://sox.sourceforge.net/)
 
+[音速变换](https://github.com/search?q=%E9%9F%B3%E5%8F%98%E9%80%9F)
+
 # 参考资料
 
 [oracle-sound api](https://docs.oracle.com/javase/tutorial/sound/TOC.html?spm=a2c4e.10696291.0.0.5d1519a4D0Rz2B)
@@ -72,6 +74,14 @@ javax.sound.sampled.UnsupportedAudioFileException: could not get audio input str
 [（JAVA）将（acc/m4a）音频转换成Mp3格式](https://my.oschina.net/simpleton/blog/1581907)
 
 [使用jave2将音频wav转换成mp3格式](https://www.cnblogs.com/fanblogs/p/11001731.html)
+
+## 速度调整
+
+[音频变速、变调Java示例](https://github.com/apomelo/voice-velocity-demo)
+
+[JavaAPI方式语音识别mp3转换为pcm](https://ai.baidu.com/forum/topic/show/496972)
+
+[javaMP3转pcm 百度语音识别](https://segmentfault.com/a/1190000013383967)
 
 * any list
 {:toc}
