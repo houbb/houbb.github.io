@@ -26,7 +26,26 @@ fatal: index-pack failed
 
 在这里，笔者把postBuffer的值配置成500M，对笔者来说已经够了。
 
-## 解决方案
+
+## 解决方案 1
+
+clone https方式换成SSH的方式，把 https:// 改为 git://
+
+```
+git clone  https://github.com/houbb/tts-data.git
+```
+
+改为
+
+```
+git clone git://github.com/houbb/tts-data.git
+```
+
+## 解决方案 2
+
+增大 buffer
+
+### 设置 Buffer
 
 可以根据你需要下载的文件大小，将postBuffer值配置成合适的大小。
 
@@ -46,9 +65,27 @@ git config --list
 http.postbuffer=524288000
 ```
 
+### 设置压缩配置
+
+```
+git config --global core.compression -1 
+```
+
+### 修改配置文件
+
+```
+export GIT_TRACE_PACKET=1
+export GIT_TRACE=1
+export GIT_CURL_VERBOSE=1
+```
+
 # 参考资料
 
 [git clone 失败](https://blog.csdn.net/dzhongjie/article/details/81152983)
+
+[Error：RPC failed; curl 18 transfer closed with outstanding read data remaining](https://blog.csdn.net/wangxiandou/article/details/91344763)
+
+[error: RPC failed; curl 18 transfer closed with outstanding read data remaining的解决方法](https://blog.csdn.net/ainizaitianyahai/article/details/104487403/)
 
 * any list
 {:toc}
