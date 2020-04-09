@@ -29,6 +29,10 @@ javax.sound.sampled.UnsupportedAudioFileException: could not get audio input str
 
 首先进行音频的格式转换-wav。
 
+# 开源工具
+
+[audacity-开源跨平台](https://www.audacityteam.org/)
+
 # 开源框架
 
 [github-mp3](https://github.com/search?l=Java&p=1&q=mp3&type=Repositories)
