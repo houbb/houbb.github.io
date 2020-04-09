@@ -53,6 +53,34 @@ ffmpeg -i test.wav -f mp3 -acodec libmp3lame -y wav2mp3.mp3
 
 # 移除静音帧
 
+## 命令模板
+
+```
+ffmpeg -i in.mp3 -af silenceremove=start_periods=1:start_threshold=-30dB:stop_periods=0:stop_threshold=-50dB:start_silence=0.2:stop_silence=1 -y out.mp3
+```
+
+## 删除 50 分贝以下的读音
+
+```
+ffmpeg -i input.mp3 -af silenceremove=1:0:-50dB output.mp3
+```
+
+这消除了沉默
+
+在开头(由第一个参数1表示)
+
+最小长度为零(由第二个参数0表示)
+
+静音被归类为-50分贝以下的任何值(以-50dB表示).
+
+官方文档：[ffmpeg-filters](https://ffmpeg.org/ffmpeg-filters.html)
+
+## 实际例子
+
+```
+ffmpeg -i bài.mp3 -af silenceremove=start_periods=1:start_threshold=-30dB:stop_periods=0:stop_threshold=-50dB:start_silence=0.2:stop_silence=1 -y a_2.mp3
+```
+
 # 代码处理
 
 # 拓展阅读
@@ -70,6 +98,8 @@ ffmpeg -i test.wav -f mp3 -acodec libmp3lame -y wav2mp3.mp3
 [FFmpeg 示例音频转码为AAC](https://www.jianshu.com/p/e25d56a67c2e)
 
 [使用ffmpeg 操作音频文件前后部分静音移除.](https://www.cnblogs.com/cainiaodage/p/10234724.html)
+
+[java – 使用FFMPEG和silencedetect删除音频静音](http://www.voidcn.com/article/p-hfvlfpco-btm.html)
 
 * any list
 {:toc}
