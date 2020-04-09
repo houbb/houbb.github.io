@@ -177,6 +177,14 @@ ps: 真实有效。
 ffmpeg -i abandons.mp3 -af silenceremove=stop_periods=-1:stop_duration=0.01:stop_threshold=-40dB abandons_last3.mp3
 ```
 
+声音的处理：
+
+有时候一个声音很轻，可能也是有用的。比如：nice 的尾音。
+
+```
+ffmpeg -i nice.mp3 -af silenceremove=stop_periods=-1:stop_duration=0.01:stop_threshold=-40dB nice_40.mp3
+```
+
 - 同时指定开头
 
 从音频开始修剪静音时，start_periods将为1，但可以将其增大为更高的值，以将所有音频修剪到特定的非静音周期数。
