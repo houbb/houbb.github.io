@@ -90,5 +90,7 @@ published: true
 
 [中文工具，支持中文数字和英文数字互转和中文时间实体识别](https://github.com/luoxuefeng01/mandarintools-1)
 
+[中文数字转换器](https://github.com/fengcone/chinese_number_converter)
+
 * any list
 {:toc}

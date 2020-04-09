@@ -41,6 +41,10 @@ ffmpeg -i out.ogv -vcodec h264 out.mp4
 ffmpeg -i DING.mp3 -f wav test.wav
 ```
 
+```
+ffmpeg -i test.mp3 -f wav test.wav
+```
+
 - 转换wav到mp3：
 
 ```
