@@ -182,7 +182,7 @@ ffmpeg -i abandons.mp3 -af silenceremove=stop_periods=-1:stop_duration=0.01:stop
 有时候一个声音很轻，可能也是有用的。比如：nice 的尾音。
 
 ```
-ffmpeg -i nice.mp3 -af silenceremove=stop_periods=-1:stop_duration=0.01:stop_threshold=-40dB nice_40.mp3
+ffmpeg -i nice.mp3 -af silenceremove=stop_periods=-1:stop_duration=0.01:stop_threshold=-44dB nice_44.mp3
 ```
 
 - 同时指定开头
@@ -190,10 +190,17 @@ ffmpeg -i nice.mp3 -af silenceremove=stop_periods=-1:stop_duration=0.01:stop_thr
 从音频开始修剪静音时，start_periods将为1，但可以将其增大为更高的值，以将所有音频修剪到特定的非静音周期数。
 
 ```
-ffmpeg -i āo.mp3 -af silenceremove=start_periods=1:start_duration=0.05:start_threshold=0.02 ao_08.mp3
+ffmpeg -i a.mp3 -af silenceremove=start_periods=1:start_duration=0.05:start_threshold=0.02 a2.mp3
 ```
 
 这里移除的是开始的播放延迟。
+
+- 移除开头的信息
+
+
+```
+ffmpeg -i a.mp3 -af silenceremove=start_periods=1:start_duration=0.1:start_threshold=-20dB a4.mp3
+```
 
 # 音呗大小
 
