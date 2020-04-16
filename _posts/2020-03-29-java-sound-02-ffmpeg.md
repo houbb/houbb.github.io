@@ -62,7 +62,7 @@ ffmpeg -i in.mp3 -af silenceremove=start_periods=1:start_threshold=-30dB:stop_pe
 ## 删除 50 分贝以下的读音
 
 ```
-ffmpeg -i input.mp3 -af silenceremove=1:0:-50dB output.mp3
+ffmpeg -i a.mp3 -af silenceremove=1:0:-50dB a_50.mp3
 ```
 
 这消除了沉默
