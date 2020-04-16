@@ -24,7 +24,7 @@ path = %path%;C:\Qt\4.8.1\bin;
 `C:\Users\binbin.hou\Downloads\ffmpeg-20200403-52523b6-win64-static\bin`
 
 ```
-path = %path%;C:\Users\binbin.hou\Downloads\ffmpeg-20200403-52523b6-win64-static\bin;
+path = %path%;D:\tool\video\ffmpeg\bin;
 ```
 
 # 参考资料
