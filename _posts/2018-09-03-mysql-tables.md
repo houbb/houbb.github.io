@@ -42,7 +42,7 @@ table_rows desc;
 # oracle 的条数查看
 
 ```sql
-select table_name, num_rows from user_tables t order by t.number;
+select table_name, num_rows from user_tables order by num_rows desc;
 ```
 
 # 拓展阅读
