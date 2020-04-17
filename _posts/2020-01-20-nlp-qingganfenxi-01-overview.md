@@ -188,6 +188,73 @@ print 'SVM average accuary: %f' %svc_accuracy.mean()
 
 这种方法的重点在于特征选取。
 
+
+# 整体流程
+
+## 数据抓取
+
+爬虫获取基本数据
+
+## 数据处理
+
+分词
+
+词性标注
+
+移除停顿词
+
+## 情感词典
+
+- 知网 HOW NET
+
+[OpenHowNet](https://github.com/thunlp/OpenHowNet/blob/master/README_ZH.md)
+
+- 同义词词林拓展版
+
+[Final_word_Similarity](https://github.com/yaleimeng/Final_word_Similarity)
+
+- 大连理工大学中文情感词汇本体库
+
+# 褒贬与权重
+
+## 基础情感词典
+
+不同词语的褒贬不同
+
+不同词语的权重也不同
+
+### 程度副词
+
+### 否定词
+
+## 网络情感词典
+
+## 领域情感词典
+
+# 短文本情感分析
+
+## 分词+移除停顿词+词性标注
+
+## 权重
+
+（1）否定词
+
+(-1)^times * Ei
+
+（2）程度副词
+
+(Wi 累计) * Ei
+
+# 长文本情感分析
+
+可以将长文本拆分为多个短文本，然后处理。
+
+
+
+
+
+
+
 # 参考资料
 
 [paper](http://www.doc88.com/p-0166481469464.html)
@@ -195,6 +262,8 @@ print 'SVM average accuary: %f' %svc_accuracy.mean()
 [paper-基于LSTM和注意力机制的情感分析服务设计与实现](http://m.51papers.com/lw/69/31/wz3441821.htm)
 
 [paper-基于深度学习的情感分析研究与应用](http://cdmd.cnki.com.cn/Article/CDMD-10614-1019850210.htm)
+
+[Stanford NLP学习笔记：7. 情感分析（Sentiment）](https://www.cnblogs.com/arkenstone/p/6064196.html)
 
 [NLP情感分析|流程概述(一)](https://zhuanlan.zhihu.com/p/25065579)
 
