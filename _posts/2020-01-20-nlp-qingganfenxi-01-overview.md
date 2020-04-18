@@ -253,6 +253,28 @@ print 'SVM average accuary: %f' %svc_accuracy.mean()
 
 这里缺少了一个条件概率，不同的前置条件，决定了不同的修饰词正负也是完全不同的。
 
+# 实现参考
+
+## github
+
+[python-基于情感词典、k-NN、Bayes、最大熵、SVM的情感极性分析。](https://github.com/chaoming0625/SentimentPolarityAnalysis)
+
+[java-基于情感词典和朴素贝叶斯算法实现中文文本情感分类](https://github.com/Glacier759/Sentiment)
+
+[评论上的情感分析：主题与情感词抽取](https://github.com/wavewangyue/opinion-extraction)
+
+[Social media (Weibo) comments analyzing toolbox in Chinese 微博评论分析工具, 实现功能: 1.微博评论数据爬取; 2.分词与关键词提取; 3.词云与词频统计; 4.情感分析; 5.主题聚类](https://github.com/KimMeen/Weibo-Analyst)
+
+[中文语料库：包括情感词典 情感分析 文本分类 单轮对话 中文词典 知乎](https://github.com/GeneralZh/Chinese_Corpus)
+
+[在Python中利用情感词典做情感分析](https://github.com/jeffmxh/emotion_analyse_py)
+
+[Jiagu深度学习自然语言处理工具 知识图谱关系抽取 中文分词 词性标注 命名实体识别 情感分析 新词发现 关键词 文本摘要 文本聚类](https://github.com/ownthink/Jiagu)
+
+[提供中文分词, 词性标注, 拼写检查，文本转拼音，情感分析，文本摘要，偏旁部首](https://github.com/SeanLee97/xmnlp)
+
+[自然语言处理实验（sougou数据集），TF-IDF，文本分类、聚类、词向量、情感识别、关系抽取等](https://github.com/Roshanson/TextInfoExp)
+
 # 参考资料
 
 [paper](http://www.doc88.com/p-0166481469464.html)
