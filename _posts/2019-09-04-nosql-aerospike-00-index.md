@@ -1,9 +1,9 @@
 ---
 layout: post
-title: aerospike-00-index
+title: aerospike-00-数据库间接
 date:  2019-5-10 11:08:59 +0800
 categories: [Data-Management]
-tags: [data-management, mongo, sh]
+tags: [data-management, database, sh]
 published: true
 ---
 

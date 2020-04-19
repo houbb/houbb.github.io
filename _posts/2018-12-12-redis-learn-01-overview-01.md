@@ -97,5 +97,9 @@ published: true
 
 [https://github.com/huangz1990/redis-3.0-annotated](https://github.com/huangz1990/redis-3.0-annotated)
 
+# Redis 工具
+
+[Try Redis-在线体验 redis](http://try.redis.io/)
+
 * any list
 {:toc}

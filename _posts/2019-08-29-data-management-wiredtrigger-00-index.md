@@ -1,6 +1,6 @@
 ---
 layout: post
-title: wiredtiger-00-index
+title: wiredtiger-00-数据管理引擎简介
 date:  2019-5-10 11:08:59 +0800
 categories: [Data-Management]
 tags: [data-management, mongo, sh]
@@ -11,17 +11,17 @@ published: true
 
 [WiredTiger](http://source.wiredtiger.com/) is an high performance, scalable, production quality, NoSQL, Open Source extensible platform for data management.
 
-# 是什么
+## 简介
 
-WiredTiger is an high performance, scalable, production quality, NoSQL, Open Source extensible platform for data management.
+WiredTiger是用于数据管理的高性能，可扩展，生产质量的NoSQL，开源可扩展平台。
 
-WiredTiger supports row-oriented storage (where all columns of a row are stored together), column-oriented storage (where columns are stored in groups, allowing for more efficient access and storage of column subsets) and log-structured merge trees (LSM), for sustained throughput under random insert workloads.
+WiredTiger支持面向行的存储（将一行的所有列存储在一起），面向列的存储（将列按组存储，从而可以更有效地访问和存储列子集）以及日志结构的合并树（LSM） ，以在随机插入工作负载下保持稳定的吞吐量。
 
-WiredTiger includes ACID transactions with standard isolation levels and durability at both checkpoint and fine-grained granularity.
+WiredTiger包括ACID事务，该事务具有标准的隔离级别以及在检查点和细粒度下的持久性。
 
-WiredTiger can be used as a simple key/value store, but also has a complete schema layer, including indices and projections.
+WiredTiger可以用作简单的键/值存储，但也具有完整的架构层，包括索引和投影。
 
-WiredTiger should be generally portable to any 64-bit system supporting the ANSI C99, POSIX 1003.1 and POSIX 1003.1c (threads extension) standards.
+WiredTiger通常应可移植到支持ANSI C99，POSIX 1003.1和POSIX 1003.1c（线程扩展）标准的任何64位系统中。
 
 # 拓展阅读
 
