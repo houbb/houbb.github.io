@@ -161,13 +161,31 @@ published: true
 
 # 致谢
 
-该文本在不断发展，我得到许多人的感谢，对此我深表感谢。 Salil Vadhan与我共同学习了该课程的第一版，并在此过程中为我提供了大量有用的反馈和见解。 Michele Amoretti和Marika Swanberg仔细阅读了本文的几章，并给出了非常有帮助的详细评论。戴夫·埃文斯（Dave Evans）和理查德·许（Richard Xu）提出了许多请求请求，以修复错误并改善措辞。感谢Anil Ada，Venkat Guruswami和Ryan O’Donnell在教学CMU 15-251方面的经验提供了有用的提示。
+该文本在不断发展，我得到许多人的感谢，对此我深表感谢。 
 
-感谢所有向我发送评论，错别字报告，发布问题或在GitHub存储库https://github.com/boazbk/tcs上发出请求的人。特别要感谢Scott Aaronson，Michele Amoretti，Aadi Bajpai，Marguerite Basta，Anindya Basu，Sam Benkelman，JarosławBłasiok，Emily Chan，Christy Cheng，Michelle Chiang，Daniel Chiu，Chou-Ning Chou，Michael Colavita的有用反馈，罗德里戈·达博因·桑切斯（Rodrigo Daboin Sanchez），罗伯特·达利·瓦迪洛夫（Robert Darley Waddilove），安兰·杜（Annan Du），胡安·埃斯特勒（Juan Esteller），大卫·埃文斯（David Evans），迈克尔·菲恩（Michael Fine），西蒙·菲舍尔（Simon Fischer），利奥·菲什曼（Leor Fishman），扎伊蒙·福克斯库克（Zaymon Foulds-Cook），威廉·傅（William Fu），肯特·古鲁伊（Piotr Galuszka），卡洛琳·葛（Carolyn Ge），马克·戈德斯坦（Mark Goldstein），亚历山大·戈洛夫涅夫（Alexander Golovnev） Sayan Goswami，Michael Haak，Rebecca Hao，Joosep Hook，Thomas HUET，Emily Jia，Chan Kang，Nina Katz-Christy，Vidak Kazic，Eddie Kohler，Estefania Lahera，Allison Lee，Benjamin Lee，OndřejLengál，Raymond Lin，Emma Ling， Alex Lombardi，Lisa Lu，Aditya Mahadevan，Christian May，Jacob Meyerson，Leon Mlodzian，George Moe，Glenn Moss，Hamish Nicholson，Owen Niles，Sandip Nirmel，Sebastian Oberhoff，Thomas Orton，Joshua Pan，Pablo Parrilo，Juan Perdomo，Banks Pickett ，亚伦·萨克斯（Aaron Sachs），阿卜杜勒·阿曼（Abdelrhman） Saleh，Brian Sapozhnikov，Anthony Scemama，PeterSchäfer，Josh Seides，Alaisha Sharma，Haneul Shin，Noah Singer，Matthew Smedberg，Miguel Solano，Hikari Sorensen，David Steurer，Alec Sun，Amol Surati，Everett Sussman，Marika Swanberg，Garrett Tanzer，埃里克·托马斯（Eric Thomas），莎拉·特尼尔（Sarah Turnill），萨利尔·瓦丹（Salil Vadhan），帕特里克·沃茨（Patrick Watts），乔纳·韦斯曼（Jonah Weissman），瑞安·威廉姆斯（Ryan Williams），徐立成，理查德·许，杨万千，伊丽莎白·杨-王，乔什·泽林斯基，弗雷德·张，格蕾丝·张和杰西卡·朱。
+Salil Vadhan与我共同学习了该课程的第一版，并在此过程中为我提供了大量有用的反馈和见解。 
 
-我很高兴在这些注释的制作中使用许多开源软件包。我特别感谢Donald Knuth和Leslie Lamport的LaTeX，以及John MacFarlane的Pandoc。 David Steurer编写了原始脚本来生成此文本。当前版本使用的是Sergio Correia的长笛。 LaTeX和HTML版本的模板来自Tufte LaTeX，Gitbook和Bookdown。感谢Amy Hendrickson提供的LaTeX咨询。 Juan Esteller和Gabe Montague最初使用OCaml和Javascript实现了NAND​​ *编程语言。我使用Jupyter项目编写了补充代码段。
+Michele Amoretti和Marika Swanberg仔细阅读了本文的几章，并给出了非常有帮助的详细评论。
 
-最后，我要感谢我的家人：我的妻子拉维特（Ravit）和我的孩子阿尔玛（Alma）和戈伦（Goren）。编写本书（以及相应的课程）花费了我很多时间，以至于阿尔玛为她的五年级班级写了一篇论文，她说：“大学不应该给教授们过多的工作压力。”恐怕我要做的就是显示600页的超无聊数学文字。
+戴夫·埃文斯（Dave Evans）和理查德·许（Richard Xu）提出了许多请求请求，以修复错误并改善措辞。
+
+感谢Anil Ada，Venkat Guruswami和Ryan O’Donnell在教学CMU 15-251方面的经验提供了有用的提示。
+
+感谢所有向我发送评论，错别字报告，发布问题或在GitHub存储库https://github.com/boazbk/tcs上发出请求的人。
+
+我很高兴在这些注释的制作中使用许多开源软件包。
+
+我特别感谢Donald Knuth和Leslie Lamport的LaTeX，以及John MacFarlane的Pandoc。 
+
+David Steurer编写了原始脚本来生成此文本。当前版本使用的是Sergio Correia的长笛。 LaTeX和HTML版本的模板来自Tufte LaTeX，Gitbook和Bookdown。
+
+感谢Amy Hendrickson提供的LaTeX咨询。
+
+ Juan Esteller和Gabe Montague最初使用OCaml和Javascript实现了NAND​​ *编程语言。我使用Jupyter项目编写了补充代码段。
+
+最后，我要感谢我的家人：我的妻子拉维特（Ravit）和我的孩子阿尔玛（Alma）和戈伦（Goren）。
+
+编写本书（以及相应的课程）花费了我很多时间，以至于阿尔玛为她的五年级班级写了一篇论文，她说：“大学不应该给教授们过多的工作压力。”恐怕我要做的就是显示600页的超无聊数学文字。
 
 # 参考资料
 
