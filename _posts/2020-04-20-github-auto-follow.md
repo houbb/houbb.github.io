@@ -265,6 +265,26 @@ curl 'https://api.github.com/user/repos?page=2&per_page=100'
 
 超出的部分会被限流。
 
+# 如何获取 token 
+
+其中用户名加密码的用户方式不是很安全，需要将登录的用户名和密码暴露在代码中。
+
+所以一般采取Token的认证方式比较多。其中token是在Github官网上生成的。
+
+```
+settings → Developersettings → Personal access tokens → Generate new token。
+```
+
+# url 查看
+
+```
+https://api.github.com/search/users?q=houbb%20in:name
+```
+
+可以查看 name 中有 `houbb` 的字符串。
+
+name 和 url 应该是严格一一对应的。
+
 # 拓展阅读
 
 [https://developer.github.com/v3/](https://developer.github.com/v3/)
