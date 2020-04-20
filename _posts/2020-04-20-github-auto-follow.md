@@ -278,12 +278,14 @@ settings → Developersettings → Personal access tokens → Generate new to
 # url 查看
 
 ```
-https://api.github.com/search/users?q=houbb%20in:name
+https://api.github.com/search/users?q=houbb%20in:url
 ```
 
-可以查看 name 中有 `houbb` 的字符串。
+可以查看 url 中有 `houbb` 的字符串。
 
 name 和 url 应该是严格一一对应的。
+
+ps: 直接查询 in:name 查不到结果。
 
 # 拓展阅读
 
