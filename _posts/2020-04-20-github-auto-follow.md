@@ -243,6 +243,28 @@ System.out.println(json);
 
 如此就可以拿到对应的 email 信息。
 
+# 分页处理
+
+## api
+
+[分页](https://developer.github.com/v3/#pagination)
+
+## 例子
+
+```
+curl 'https://api.github.com/user/repos?page=2&per_page=100'
+```
+
+默认返回 30 个，最多可以设置为 100 个。
+
+## 时间限制
+
+最多 1min 不登录可以查询 10 次。
+
+1min 登录有可以查询 30 次。
+
+超出的部分会被限流。
+
 # 拓展阅读
 
 [https://developer.github.com/v3/](https://developer.github.com/v3/)
