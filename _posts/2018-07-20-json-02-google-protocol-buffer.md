@@ -24,6 +24,14 @@ protobuf是google提供的一个开源序列化框架，类似于XML，JSON这�
 
 protobuf号称也有service，可以基于其service的接口和回调，来完成客户端和服务器的逻辑但是，目前版本service还仅仅停留在接口层，其底层的通讯，还需要自己实现，这点确实远不如thrift完备。
 
+# 入门案例
+
+## maven 引入
+
+```xml
+
+```
+
 # 参考资料
 
 [原理解密](http://blog.csdn.net/carson_ho/article/details/70568606)

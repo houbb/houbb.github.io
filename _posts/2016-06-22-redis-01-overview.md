@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Redis
+title: Redis-01-入门使用简介
 date:  2016-10-23 09:35:04 +0800
 categories: [SQL]
 tags: [redis, cache, nosql]
