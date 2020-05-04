@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Kotlin-06-接口
+title: Kotlin-08-接口
 date:  2020-5-2 16:28:32 +0800
 categories: [Kotlin]
 tags: [kotlin, sh]
