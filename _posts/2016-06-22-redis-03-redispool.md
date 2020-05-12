@@ -238,5 +238,39 @@ spring 的依赖一般，根据项目已有的引入即可。
 
 根据自己的实际需求选择即可。
 
+# 使用注意
+
+## 错误的使用方式
+
+```java
+try {
+    return jedisPool.getResource.get(key);
+} catch(Exception ex) {
+    // 输出异常
+}
+```
+
+这个会导致有时候异常资源无法回收，如果次数多了会有如下的异常：
+
+```
+NoSuchElementException: Timeout waiting for idle object
+```
+
+## 改进后的写法
+
+对于资源的关闭应该放在 finally 中，当然 JDK7+ 直接使用 TWR 即可。
+
+```java
+try(Jedis jedis = jedisPool.getResource()) {
+    return jedis.get(key);
+} catch (Exception e) {
+	// 异常信息
+}
+```
+
+# 参考资料
+
+[jedis异常：NoSuchElementException: Timeout waiting for idle object](https://www.liangzl.com/get-article-detail-8157.html)
+
 * any list
 {:toc}
