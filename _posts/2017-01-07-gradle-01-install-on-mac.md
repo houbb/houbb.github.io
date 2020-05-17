@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Gradle
+title:  Gradle-01-gradle install on mac
 date:  2018-06-28 16:23:34 +0800
 categories: [Tool]
 tags: [gradle]
