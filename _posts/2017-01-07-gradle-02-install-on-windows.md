@@ -73,9 +73,22 @@ OS:           Windows 7 6.1 x86
 
 搞定~
 
+## 设置 GRADLE_HOME
+
+后续使用中，发现这个变量也需要设置下。
+
+新建系统变量 **GRADLE_HOME**，对应的值：
+
+```
+D:\tool\gradle\gradle-6.4.1
+```
+
+
 # 参考资料
 
 [install](https://gradle.org/install/)
+
+[Windows下gradle的安装与配置](https://blog.csdn.net/zhaokai0130/article/details/81008719)
 
 * any list
 {:toc}
