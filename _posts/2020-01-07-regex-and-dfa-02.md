@@ -131,6 +131,16 @@ ps: 这里将表达式和图联系起来。一个或，就是两条路径都可�
 
 ![a_or_b](https://img-blog.csdnimg.cn/20200501170921328.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3hpbmRvbw==,size_16,color_FFFFFF,t_70#pic_center)
 
+# 代码实现
+
+## 建图
+
+看完上文之后相信你一直知道如果将一个正则表达式转化为状态机的方法了，这里我们要将理论转化为代码。
+
+首先我们要将图转化为代码标识，我用State表示一个节点，其中用了 `Map<MatchStrategy, List>` next表示其后继节点，next中有个key-value就是一条边，MatchStrategy用来描述边的信息。
+
+
+
 # 拓展阅读
 
 [Regex 正则表达式入门](https://houbb.github.io/2017/07/24/regex)
