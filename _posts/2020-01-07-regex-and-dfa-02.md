@@ -137,9 +137,262 @@ ps: 这里将表达式和图联系起来。一个或，就是两条路径都可�
 
 看完上文之后相信你一直知道如果将一个正则表达式转化为状态机的方法了，这里我们要将理论转化为代码。
 
-首先我们要将图转化为代码标识，我用State表示一个节点，其中用了 `Map<MatchStrategy, List>` next表示其后继节点，next中有个key-value就是一条边，MatchStrategy用来描述边的信息。
+首先我们要将图转化为代码标识，我用State表示一个节点，其中用了 `Map<MatchStrategy, List> next` 表示其后继节点，next中有个key-value就是一条边，MatchStrategy用来描述边的信息。
+
+```java
+public class State {
+    private static int idCnt = 0;
+    private int id;
+    private int stateType;
+
+    public State() {
+        this.id = idCnt++;
+    }
+
+    Map<MatchStrategy, List<State>> next = new HashMap<>();
+
+    public void addNext(MatchStrategy path, State state) {
+        List<State> list = next.get(path);
+        if (list == null) {
+            list = new ArrayList<>();
+            next.put(path, list);
+        }
+        list.add(state);
+    }
+    protected void setStateType() {
+        stateType = 1;
+    }
+    protected boolean isEndState() {
+        return stateType == 1;
+    }
+}
+```
+
+NFAGraph表示一个完整的图，其中封装了对图的操作，比如其中就实现了上文中图串并联和重复的操作（注意我没有实现 `{}` ）。
+
+```java
+public class NFAGraph {
+    public State start;
+    public State end;
+    public NFAGraph(State start, State end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    // |
+    public void addParallelGraph(NFAGraph NFAGraph) {
+        State newStart = new State();
+        State newEnd = new State();
+        MatchStrategy path = new EpsilonMatchStrategy();
+        newStart.addNext(path, this.start);
+        newStart.addNext(path, NFAGraph.start);
+        this.end.addNext(path, newEnd);
+        NFAGraph.end.addNext(path, newEnd);
+        this.start = newStart;
+        this.end = newEnd;
+    }
+
+    //
+    public void addSeriesGraph(NFAGraph NFAGraph) {
+        MatchStrategy path = new EpsilonMatchStrategy();
+        this.end.addNext(path, NFAGraph.start);
+        this.end = NFAGraph.end;
+    }
+
+    // * 重复0-n次
+    public void repeatStar() {
+        repeatPlus();
+        addSToE(); // 重复0
+    }
+
+    // ? 重复0次哦
+    public void addSToE() {
+        MatchStrategy path = new EpsilonMatchStrategy();
+        start.addNext(path, end);
+    }
+
+    // + 重复1-n次
+    public void repeatPlus() {
+        State newStart = new State();
+        State newEnd = new State();
+        MatchStrategy path = new EpsilonMatchStrategy();
+        newStart.addNext(path, this.start);
+        end.addNext(path, newEnd);
+        end.addNext(path, start);
+        this.start = newStart;
+        this.end = newEnd;
+    }
+
+}
+```
+
+整个建图的过程就是依照输入的字符建立边和节点之间的关系，并完成图的拼接。
+
+```java
+private static NFAGraph regex2nfa(String regex) {
+    Reader reader = new Reader(regex);
+    NFAGraph nfaGraph = null;
+    while (reader.hasNext()) {
+        char ch = reader.next();
+        String edge = null;
+        switch (ch) {
+            // 子表达式特殊处理
+            case '(' : {
+                String subRegex = reader.getSubRegex(reader);
+                NFAGraph newNFAGraph = regex2nfa(subRegex);
+                checkRepeat(reader, newNFAGraph);
+                if (nfaGraph == null) {
+                    nfaGraph = newNFAGraph;
+                } else {
+                    nfaGraph.addSeriesGraph(newNFAGraph);
+                }
+                break;
+            }
+            // 或表达式特殊处理
+            case '|' : {
+                String remainRegex = reader.getRemainRegex(reader);
+                NFAGraph newNFAGraph = regex2nfa(remainRegex);
+                if (nfaGraph == null) {
+                    nfaGraph = newNFAGraph;
+                } else {
+                    nfaGraph.addParallelGraph(newNFAGraph);
+                }
+                break;
+            }
+            case '[' : {
+                edge = getCharSetMatch(reader);
+                break;
+            }
+            case '^' : {
+                break;
+            }
+            case '$' : {
+                break;
+            }
+            case '.' : {
+                edge = ".";
+                break;
+            }
+            // 处理特殊占位符
+            case '\\' : {
+                char nextCh = reader.next();
+                switch (nextCh) {
+                    case 'd': {
+                        edge = "\\d";
+                        break;
+                    }
+                    case 'D': {
+                        edge = "\\D";
+                        break;
+                    }
+                    case 'w': {
+                        edge = "\\w";
+                        break;
+                    }
+                    case 'W': {
+                        edge = "\\W";
+                        break;
+                    }
+                    case 's': {
+                        edge = "\\s";
+                        break;
+                    }
+                    case 'S': {
+                        edge = "\\S";
+                        break;
+                    }
+                    // 转义后的字符匹配
+                    default:{
+                        edge = String.valueOf(nextCh);
+                        break;
+                    }
+                }
+                break;
+            }
+            default : {  // 处理普通字符
+                edge = String.valueOf(ch);
+                break;
+            }
+        }
+        if (edge != null) {
+            NFAState start = new NFAState();
+            NFAState end = new NFAState();
+            start.addNext(edge, end);
+            NFAGraph newNFAGraph = new NFAGraph(start, end);
+            checkRepeat(reader, newNFAGraph);
+            if (nfaGraph == null) {
+                nfaGraph = newNFAGraph;
+            } else {
+                nfaGraph.addSeriesGraph(newNFAGraph);
+            }
+        }
+    }
+    return nfaGraph;
+}
+```
+
+这里我用了设计模式中的策略模式将不同的匹配规则封装到不同的MatchStrategy类里，目前我实现了 `. \d \D \s \S \w \w`，具体细节请参考代码。
+
+这么设计的好处就是简化了匹配策略的添加，比如如果我想加一个 `\x` 只匹配16进制字符，我只需要加个策略类就好了，不必改很多代码。
+
+# 匹配
+
+其实匹配的过程就出从起始态开始，用输入作为边，一直往后走，如果能走到终止态就说明可以匹配，代码主要依赖于递归和回溯，代码如下。
+
+```java
+public boolean isMatch(String text) {
+    return isMatch(text, 0, nfaGraph.start);
+}
+
+private boolean isMatch(String text, int pos, State curState) {
+    if (pos == text.length()) {
+        if (curState.isEndState()) {
+            return true;
+        }
+        return false;
+    }
+    for (Map.Entry<MatchStrategy, List<State>> entry : curState.next.entrySet()) {
+        MatchStrategy matchStrategy = entry.getKey();
+        if (matchStrategy instanceof EpsilonMatchStrategy) {
+            for (State nextState : entry.getValue()) {
+                if (isMatch(text, pos, nextState)) {
+                    return true;
+                }
+            }
+        } else {
+            if (!matchStrategy.isMatch(text.charAt(pos))) {
+                continue;
+            }
+            // 遍历匹配策略
+            for (State nextState : entry.getValue()) {
+                if (isMatch(text, pos + 1, nextState)) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+```
+
+# DFA引擎
+
+上文只是实现了NFA引擎，NFA的引擎建图时间复杂度是O(n)，但匹配一个长度为m的字符串时因为涉及到大量的递归和回溯，最坏时间复杂度是O(mn)。
+
+与之对比DFA引擎的建图时间复杂度O(n^2)，但匹配时没有回溯，所以匹配复杂度只有O(m)，性能差距还是挺大的。
+
+DFA引擎实现的大体流程是先构造NFA(本文内容)，然后用子集构造法将NFA转化为DFA，预计未来我会出一篇博客讲解细节和具体实现。
+
+# 正则引擎优化
+
+首先DFA引擎是可以继续优化的，使用Hopcroft算法可以进一步将DFA图压缩，更少的状态节点更少的转移边可以实现更好的性能。
+
+其次，目前生产级的正则引擎很多都不是单纯用NFA或者DFA实现的，而是二者的结合，不同正则表达式下用不同的引擎可以达到更好的综合性能，简单说NFA图小但要回溯，DFA不需要回溯但有些情况图会特别大。
 
 
+# 个人收获
+
+Regex 是一个用起来觉得很简单，实际上我们又没有深入思考其中原理的知识点。
 
 # 拓展阅读
 
@@ -153,7 +406,7 @@ ps: 这里将表达式和图联系起来。一个或，就是两条路径都可�
 
 [自己动手写一个轻巧，高效的正则表达式引擎](https://blog.csdn.net/kingoverthecloud/article/details/41621557)
 
-[Java实现的正则表达式引擎](https://github.com/xindoo/regex)
+[Java实现的正则表达式引擎-Regex](https://github.com/xindoo/regex)
 
 * any list
 {:toc}
