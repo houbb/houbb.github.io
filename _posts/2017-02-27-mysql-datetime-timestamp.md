@@ -263,6 +263,8 @@ mysql 的这种特性其实更加类似于一个原理应该就是触发器。
 
 # 参考资料
 
+[mysql 8.0 官方文档](https://dev.mysql.com/doc/refman/8.0/en/truncate-table.html)
+
 [mysql更新时设置ON UPDATE CURRENT_TIMESTAMP保存数据库的时间](https://blog.csdn.net/dongzhouzhou/article/details/80367551)
 
 [MySQL中datetime和timestamp的区别及使用](https://www.cnblogs.com/mxwz/p/7520309.html)
