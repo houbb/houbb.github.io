@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 规则引擎框架-03-RETE 算法
+title: 规则引擎-03-RETE 算法
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
 tags: [design, engine, sf]

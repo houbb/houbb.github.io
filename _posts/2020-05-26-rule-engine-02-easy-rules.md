@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 规则引擎框架-02-easy rules
+title: 规则引擎-02-easy rules
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
 tags: [design, engine, sf]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: drools-规则引擎框架入门
+title: 规则引擎-01-drools 框架入门
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
 tags: [design, engine, sf]
