@@ -115,6 +115,39 @@ where DATE_FORMAT(update_time, '%Y%m%d%T')) >= #{dateTime}
 
 大量配置导入是小概率事件，数据缺失基本是不可忍受的，所以我们一般选择数据冗余加载。
 
+
+# 性能优化
+
+## 上述的不足
+
+上面的查询其实存在一个性能问题。
+
+因为 mysql 如果我们针对列使用 `DATE_FORMAT`，实际上会导致全表扫。
+
+## 改进
+
+1. 直接给 update_time 字段加一个索引。
+
+2. 比较的语句调整。
+
+- 时间
+
+```java
+String dateTime = LocalDateTime.now()
+                .minus(timeWindowMins, ChronoUnit.MINUTES)
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+```
+
+- sql 
+
+你可以在待加载的配置表中设置一个 on update current_timestamp 的字段，然后根据这个字段判断是否有信息变更。
+
+```sql
+where update_time >= #{dateTime}
+```
+
+这样在 explain 的时候就可以发现走到索引了。
+
 # 其他方案
 
 ## redis
