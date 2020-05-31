@@ -35,6 +35,19 @@ Rewrite、JavaParser 等开源工具可以帮助你更简单的操作AST。
 
 3. 最后，语法树会被分析并转化成类文件。
 
+# 个人愿景
+
+通过学习 AST 和 javaParser 等优秀框架的精华，提炼一个可以非常方便生成 class 文件的工具。
+
+## 思路
+
+源文件==》拓展后的文件==》AST 语法树==》class 文件覆盖
+
+## 其他
+
+后续学习下 java-sandbox 的思想和实现方式，拓展一下 AOP 的实现种类。
+
+灵活强大。
 
 # 拓展阅读
 
@@ -44,12 +57,9 @@ Rewrite、JavaParser 等开源工具可以帮助你更简单的操作AST。
 
 [cglib]()
 
-
 ## java 源码
 
 [java poet]()
-
-
 
 
 # 参考资料
