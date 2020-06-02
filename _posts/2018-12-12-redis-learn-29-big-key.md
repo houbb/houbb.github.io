@@ -307,6 +307,88 @@ private String[] getFieldsKeyArray(List<Map.Entry<String, String>> list) {
 }
 ```
 
+# 针对 redisTemplate 的写法
+
+## 语法
+
+估计是 redis 进行了一次封装，发现还是存在很多坑。
+
+语法如下：
+
+```java
+/**
+ * 获取集合的游标。通过游标可以遍历整个集合。
+ * ScanOptions 这个类中使用了构造者 工厂方法 单例。 通过它可以配置返回的元素
+ * 个数 count  与正则匹配元素 match. 不过count设置后不代表一定返回的就是count个。这个只是参考
+ * 意义
+ *
+ * @param key
+ * @param options 
+ * @return
+ * @since 1.4
+ */
+Cursor<V> scan(K key, ScanOptions options);
+```
+
+## 注意的坑
+
+实际上这个方法存在很多需要注意的坑：
+
+（1）cursor 要关闭，否则会内存泄漏
+
+（2）cursor 不要重复关闭，或者会报错
+
+（3）cursor 经测试，直接指定的 count 设置后，返回的结果其实是全部，所以需要自己额外处理
+
+## 参考代码如下：
+
+- 声明
+
+```java
+@Autowired
+private StringRedisTemplate template;
+```
+
+- 核心代码
+
+```java
+public void removeBigKey(String key, int scanCount, long intervalMills) throws CacheException {
+    final ScanOptions scanOptions = ScanOptions.scanOptions().count(scanCount).build();
+    //TRW 避免内存泄漏
+	try(Cursor<Map.Entry<Object,Object>> cursor =
+                template.opsForHash().scan(key, scanOptions)) {
+	    if(ObjectUtil.isNotNull(cursor)) {
+            // 执行循环删除
+            List<String> fieldKeyList = new ArrayList<>();
+            while (cursor.hasNext()) {
+                String fieldKey = String.valueOf(cursor.next().getKey());
+                fieldKeyList.add(fieldKey);
+                if(fieldKeyList.size() >= scanCount) {
+                    // 批量删除
+                    Object[] fields = fieldKeyList.toArray();
+                    template.opsForHash().delete(key, fields);
+                    logger.info("[Big key] remove key: {}, fields size: {}",
+                            key, fields.length);
+                    // 清空列表，重置操作
+                    fieldKeyList.clear();
+                    // 沉睡等待，避免对 redis 压力太大
+                    DateUtil.sleepInterval(intervalMills, TimeUnit.MILLISECONDS);
+                }
+            }
+        }
+        // 最后 fieldKeyList 中可能还有剩余，不过一般数量不大，直接删除速度不会很慢
+		// 执行 key 本身的删除
+		this.opsForValueDelete(key);
+	} catch (Exception e) {
+		// log.error();
+	}
+}
+```
+
+这里我们使用 TRW 保证 cursor 被关闭，自己实现 scanCount 一次进行删除，避免 1 个 1 个删除网络交互较多。
+
+使用睡眠保证对 Redis 压力不要过大。
+
 # 拓展阅读
 
 ## 淘汰
@@ -338,6 +420,8 @@ private String[] getFieldsKeyArray(List<Map.Entry<String, String>> list) {
 # 参考资料
 
 [从实现角度看redis lazy free的使用和注意事项](https://www.jianshu.com/p/47243770be53)
+
+[spring-data-redis SetOperations](https://blog.csdn.net/pengdandezhi/article/details/78909041)
 
 * any list
 {:toc}

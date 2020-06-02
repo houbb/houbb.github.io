@@ -314,6 +314,17 @@ redis> EXPIRE msg 10086
 
 # 管理
 
+## 指定慢日志
+
+单位是微秒
+
+```
+redis> CONFIG SET slowlog-log-slower-than 1000
+OK
+```
+
+超过 5ms 的都认为是慢日志。
+
 ## 查看
 
 获取全部
