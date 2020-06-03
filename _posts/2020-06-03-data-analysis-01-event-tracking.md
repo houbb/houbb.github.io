@@ -19,8 +19,7 @@ published: true
 
 埋点是数据的来源，采集的数据可以分析网站/APP的使用情况，用户行为习惯等，是建立用户画像、用户行为路径等数据产品的基础。
 
-![埋点](https://upload-images.jianshu.io/upload_images/7179125-032228d455e0e3d1.png?imageMogr2/auto-orient/strip|imageView2/2/w/810/format/webp)
-
+![埋点](https://upload-images.jianshu.io/upload_images/7179125-032228d455e0e3d1.png)
 
 # 埋点的作用
 
@@ -162,7 +161,7 @@ ps: 有一次使用 100 offer，注册了一半我放弃了，后来收到了对
 
 2）频繁上线或更新的H5类型的运营活动。
 
-![一览](https://upload-images.jianshu.io/upload_images/7179125-6cc6a77f1d54a725.png?imageMogr2/auto-orient/strip|imageView2/2/w/676/format/webp)
+![一览](https://upload-images.jianshu.io/upload_images/7179125-6cc6a77f1d54a725.png)
 
 # 埋点事件
 

@@ -97,7 +97,7 @@ published: true
 
 ### 4、图例：
 
-![事件分析](https://upload-images.jianshu.io/upload_images/7179125-dc1485d8626896b4.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![事件分析](https://upload-images.jianshu.io/upload_images/7179125-dc1485d8626896b4.png)
 
 
 ## 2.2 留存分析
@@ -138,7 +138,7 @@ Facebook平台流传出留存率“40–20–10”规则，规则中的数字表
 
 ### 4、图例
 
-![](https://upload-images.jianshu.io/upload_images/7179125-5b13bcd73d1ec1e6.png?imageMogr2/auto-orient/strip|imageView2/2/w/1154/format/webp)
+![](https://upload-images.jianshu.io/upload_images/7179125-5b13bcd73d1ec1e6.png)
 
 ## 2.3 漏斗分析
 
@@ -148,7 +148,7 @@ Facebook平台流传出留存率“40–20–10”规则，规则中的数字表
 
 AARRR是Acquisition、Activation、Retention、Revenue、Refer，这个五个单词的缩写，分别对应用户生命周期中的5个重要环节。
 
-![AARRR](https://upload-images.jianshu.io/upload_images/7179125-50e8e443711393d0.png?imageMogr2/auto-orient/strip|imageView2/2/w/640/format/webp)
+![AARRR](https://upload-images.jianshu.io/upload_images/7179125-50e8e443711393d0.png)
 
 ### 2、作用
 
@@ -166,7 +166,7 @@ AARRR是Acquisition、Activation、Retention、Revenue、Refer，这个五个单
 
 ### 4、图例
 
-![实际例子](https://upload-images.jianshu.io/upload_images/7179125-e768e980bc84f22e.png?imageMogr2/auto-orient/strip|imageView2/2/w/593/format/webp)
+![实际例子](https://upload-images.jianshu.io/upload_images/7179125-e768e980bc84f22e.png)
 
 ## 2.4 路径分析
 
@@ -198,11 +198,11 @@ AARRR是Acquisition、Activation、Retention、Revenue、Refer，这个五个单
 
 ### 4、图例
 
-![图例](https://upload-images.jianshu.io/upload_images/7179125-12273f0d3bf56f10.png?imageMogr2/auto-orient/strip|imageView2/2/w/746/format/webp)
+![图例](https://upload-images.jianshu.io/upload_images/7179125-12273f0d3bf56f10.png)
 
-![4、图例](https://upload-images.jianshu.io/upload_images/7179125-5ee3ad0c88e12861.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![图例](https://upload-images.jianshu.io/upload_images/7179125-5ee3ad0c88e12861.png)
 
-![图例](https://upload-images.jianshu.io/upload_images/7179125-6ecba5fbb5b5f508.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![图例](https://upload-images.jianshu.io/upload_images/7179125-6ecba5fbb5b5f508.png)
 
 # 参考资料
 

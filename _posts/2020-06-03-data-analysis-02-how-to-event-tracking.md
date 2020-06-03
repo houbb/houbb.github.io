@@ -9,7 +9,7 @@ published: true
 
 # 数据分析流程
 
-![数据分析流程](https://upload-images.jianshu.io/upload_images/7179125-a3bb6b8ad93bcd4a.png?imageMogr2/auto-orient/strip|imageView2/2/w/976/format/webp)
+![数据分析流程](https://upload-images.jianshu.io/upload_images/7179125-a3bb6b8ad93bcd4a.png)
 
 对于数据分析来说，**好的数据源才是数据分析的基础**。
 
@@ -33,7 +33,7 @@ ps: 埋点是一种收集方式，爬虫也是。
 
 应用场景如下图：
 
-![埋点的几种类型](https://upload-images.jianshu.io/upload_images/7179125-6cc6a77f1d54a725.png?imageMogr2/auto-orient/strip|imageView2/2/w/676/format/webp)
+![埋点的几种类型](https://upload-images.jianshu.io/upload_images/7179125-6cc6a77f1d54a725.png)
 
 # 选择需要埋点的数据
 
@@ -93,13 +93,13 @@ ps: 埋点是一种收集方式，爬虫也是。
 
 对于埋点而言，整个过程会涉及到多个角色，比如如下图的工作模式。
 
-![工作模式](https://upload-images.jianshu.io/upload_images/7179125-b9ac40939ca0d9d7.png?imageMogr2/auto-orient/strip|imageView2/2/w/1157/format/webp)
+![工作模式](https://upload-images.jianshu.io/upload_images/7179125-b9ac40939ca0d9d7.png)
 
 # 埋点流程
 
 从埋点数据分析角度来看，数据分析流程可以这样梳理：
 
-![埋点流程](https://upload-images.jianshu.io/upload_images/7179125-2b270c025780735a.png?imageMogr2/auto-orient/strip|imageView2/2/w/969/format/webp)
+![埋点流程](https://upload-images.jianshu.io/upload_images/7179125-2b270c025780735a.png)
 
 ## 1、梳理产品逻辑和需求
 
