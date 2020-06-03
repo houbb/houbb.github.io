@@ -323,7 +323,7 @@ redis> CONFIG SET slowlog-log-slower-than 1000
 OK
 ```
 
-超过 5ms 的都认为是慢日志。
+超过 1ms 的都认为是慢日志。
 
 ## 查看
 

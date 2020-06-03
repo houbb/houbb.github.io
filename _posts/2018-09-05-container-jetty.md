@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Jetty
+title:  Jetty 入门使用
 date:  2018-09-05 15:48:38 +0800
 categories: [Container]
 tags: [tomcat, servlet, apache, container, sh]
 published: true
-excerpt: Jetty 入门介绍
 ---
 
 # Jetty
