@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 编译原理系列-01-概述 mini java
+title: 编译原理系列-01-概述
 date:  2020-6-4 13:34:28 +0800
 categories: [Java]
 tags: [java, compiling-principle, sf]
@@ -307,7 +307,7 @@ public class IntAndTable {
 
 # 拓展阅读
 
-[mini java]()
+[mini java](https://houbb.github.io/2020/06/04/compile-principle-02-mini-java)
 
 # 参考资料
 
