@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 数据结构与算法学习-00-概览
+title: 从零开始的数据结构与算法-00-概览
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [Algorithm, data-struct, sf]
