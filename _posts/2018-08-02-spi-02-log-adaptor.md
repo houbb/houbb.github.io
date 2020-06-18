@@ -1,15 +1,11 @@
 ---
 layout: post
-title:  SPI
+title:  java SPI 02-slf4j 版本冲突解决方案
 date:  2018-08-02 09:47:43 +0800
 categories: [JVM]
-tags: [java, log, jvm, sf]
+tags: [java, jvm, sf]
 published: true
 ---
-
-# SPI
-
-[Java SPI - ServiceLoader 使用简介](https://www.jianshu.com/p/d816737bfc06)
 
 # 实际应用
 
@@ -872,6 +868,10 @@ public final class Logger implements org.slf4j.Logger, LocationAwareLogger, Appe
     }
 }
 ```
+
+# 参考资料
+
+[Java SPI - ServiceLoader 使用简介](https://www.jianshu.com/p/d816737bfc06)
 
 * any list
 {:toc}
