@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  java SPI 04-dubbo adaptive extension 自适应拓展
+title:  java SPI 05-dubbo adaptive extension 自适应拓展
 date:  2018-08-02 09:47:43 +0800
 categories: [JVM]
 tags: [java, jvm, source-code, dubbo, sf]
