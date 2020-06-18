@@ -17,9 +17,23 @@ published: true
 
 ### 类实现
 
+- Say.java
+
+定义接口
+
+```java
+@SPI
+public interface Say {
+
+    void say();
+
+}
+```
+
 - SayBad.java
 
 ```java
+@SPIAuto("bad")
 public class SayBad implements Say {
 
     @Override
@@ -33,6 +47,7 @@ public class SayBad implements Say {
 - SayGood.java
 
 ```java
+@SPIAuto("good")
 public class SayGood implements Say {
 
     @Override
@@ -43,9 +58,11 @@ public class SayGood implements Say {
 }
 ```
 
-### 文件配置
+### 执行效果
 
-在 `META-INF/services/` 文件夹下定义文件 `com.github.houbb.spi.bs.spi.Say`
+执行 `mvn clean install` 之后。
+
+在 `META-INF/services/` 文件夹下自动生成文件 `com.github.houbb.spi.bs.spi.Say`
 
 内容如下：
 
