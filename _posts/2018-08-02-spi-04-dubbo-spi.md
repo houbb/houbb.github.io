@@ -7,6 +7,24 @@ tags: [java, jvm, source-code, dubbo, sf]
 published: true
 ---
 
+
+## 系列目录
+
+[spi 01-spi 是什么？入门使用](https://houbb.github.io/2018/08/02/spi-01-intro)
+
+[spi 02-spi 的实战解决 slf4j 包冲突问题](https://houbb.github.io/2018/08/02/spi-02-log-adaptor)
+
+[spi 03-spi jdk 实现源码解析](https://houbb.github.io/2018/08/02/spi-03-java-source-code)
+
+[spi 04-spi dubbo 实现源码解析](https://houbb.github.io/2018/08/02/spi-04-dubbo-spi)
+
+[spi 05-dubbo adaptive extension 自适应拓展](https://houbb.github.io/2018/08/02/spi-05-dubbo-adaptive-extension)
+
+[spi 06-自己从零手写实现 SPI 框架](https://houbb.github.io/2018/08/02/spi-06-hand-write)
+
+[spi 07-自动生成 SPI 配置文件实现方式](https://houbb.github.io/2018/08/02/spi-07-auto-generate)
+
+
 ## dubbo spi
 
 而Dubbo中最核心的一点就是SPI和自适应扩展，Dubbo的高扩展性以及其它功能都是在这个基础上实现的，理解掌握其原理才能看懂后面的一系列功能的实现原理，对我们平时实现高扩展性也非常有帮助。

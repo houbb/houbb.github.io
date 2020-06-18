@@ -7,6 +7,24 @@ tags: [java, jvm, source-code, sf]
 published: true
 ---
 
+
+## 系列目录
+
+[spi 01-spi 是什么？入门使用](https://houbb.github.io/2018/08/02/spi-01-intro)
+
+[spi 02-spi 的实战解决 slf4j 包冲突问题](https://houbb.github.io/2018/08/02/spi-02-log-adaptor)
+
+[spi 03-spi jdk 实现源码解析](https://houbb.github.io/2018/08/02/spi-03-java-source-code)
+
+[spi 04-spi dubbo 实现源码解析](https://houbb.github.io/2018/08/02/spi-04-dubbo-spi)
+
+[spi 05-dubbo adaptive extension 自适应拓展](https://houbb.github.io/2018/08/02/spi-05-dubbo-adaptive-extension)
+
+[spi 06-自己从零手写实现 SPI 框架](https://houbb.github.io/2018/08/02/spi-06-hand-write)
+
+[spi 07-自动生成 SPI 配置文件实现方式](https://houbb.github.io/2018/08/02/spi-07-auto-generate)
+
+
 ## java SPI 加载流程
 
 ### 1 应用程序调用ServiceLoader.load方法
@@ -378,12 +396,6 @@ public Iterator<S> iterator() {
 实际上 hibernate-validator/dubbo 等常见框架，都有用到 SPI。
 
 后续我们将一起来看一下 dubbo 中的实现，看看 dubbo 是如何解决这些不足之处的。
-
-# 拓展阅读
-
-[java SPI 使用入门]()
-
-[java SPI 解决 slf4j 冲突问题]()
 
 # 参考资料
 
