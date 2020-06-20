@@ -21,7 +21,7 @@ published: true
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>rate-limit-core</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
 </dependency>
 ```
 
@@ -37,8 +37,11 @@ public class GlobalLimitFrequencyTest {
     /**
      * 2S 访问一次
      */
-    private static Limit LIMIT = new GlobalLimitFrequency(TimeUnit.SECONDS, 2);
-
+    private static final ILimit LIMIT = LimitBs.newInstance()
+            .interval(2)
+            .limit(GlobalLimitFrequency.class)
+            .build();
+            
     static class LimitRunnable implements Runnable {
 
         @Override
@@ -69,64 +72,6 @@ public class GlobalLimitFrequencyTest {
 23:18:56.480 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitFrequencyTest - Thread-1-2
 23:18:58.484 [Thread-2] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitFrequencyTest - Thread-2-3
 23:19:00.487 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitFrequencyTest - Thread-1-3
-```
-
-### 全局限次
-
-- 测试
-
-```java
-public class GlobalLimitCountTest {
-
-    private static final Log log = LogFactory.getLog(GlobalLimitCountTest.class);
-
-    /**
-     * 2S 内最多运行 5 次
-     */
-    private static final Limit LIMIT = new GlobalLimitCount(TimeUnit.SECONDS, 2, 5);
-
-    static class LimitRunnable implements Runnable {
-
-        @Override
-        public void run() {
-            for(int i = 0; i < 10; i++) {
-                LIMIT.limit();
-                log.info("{}-{}", Thread.currentThread().getName(), i);
-            }
-        }
-    }
-
-    public static void main(String[] args) {
-        new Thread(new LimitRunnable()).start();
-        new Thread(new LimitRunnable()).start();
-    }
-
-}
-```
-
-- 日志
-
-```
-18:54:29.618 [Thread-2] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-2-0
-18:54:29.618 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-1-0
-18:54:29.619 [Thread-2] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-2-1
-18:54:29.619 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-1-1
-18:54:29.619 [Thread-2] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-2-2
-18:54:31.613 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-1-2
-18:54:31.613 [Thread-2] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-2-3
-18:54:31.618 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-1-3
-18:54:31.618 [Thread-2] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-2-4
-18:54:31.619 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-1-4
-18:54:33.613 [Thread-2] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-2-5
-18:54:33.613 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-1-5
-18:54:33.618 [Thread-2] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-2-6
-18:54:33.618 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-1-6
-18:54:33.619 [Thread-2] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-2-7
-18:54:35.613 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-1-7
-18:54:35.613 [Thread-2] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-2-8
-18:54:35.618 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-1-8
-18:54:35.618 [Thread-2] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-2-9
-18:54:35.619 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-1-9
 ```
 
 ## 核心源码
