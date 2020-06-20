@@ -129,7 +129,7 @@ public class GlobalLimitCountTest {
 18:54:35.619 [Thread-1] INFO  com.github.houbb.rate.limit.test.core.GlobalLimitCountTest - Thread-1-9
 ```
 
-## 源码
+## 核心源码
 
 ### 接口定义
 
