@@ -2,10 +2,20 @@
 layout: post
 title:  load balance 01-负载均衡基础知识
 date:  2020-6-19 09:26:03 +0800
-categories: [Java]
+categories: [Distributed]
 tags: [java, open-source, distributed, sh]
 published: true
 ---
+
+## 负载均衡系列专题
+
+[01-负载均衡基础知识](https://houbb.github.io/2020/06/19/load-balance-01-basic)
+
+[02-一致性 hash 原理](https://houbb.github.io/2020/06/19/load-balance-02-consistent-hash-in-java)
+
+[03-一致性哈希算法 java 实现](https://houbb.github.io/2020/06/19/load-balance-03-consistent-hash-in-java)
+
+[04-负载均衡算法 java 实现](https://houbb.github.io/2020/06/19/load-balance-03-load-balance)
 
 # 负载均衡
 

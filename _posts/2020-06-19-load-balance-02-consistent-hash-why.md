@@ -1,12 +1,22 @@
 ---
 layout: post
-title:  Consistent Hash 一致性 hash
+title:  load balance 02-consistent hash algorithm 一致性哈希算法原理详解
 date:  2018-08-13 17:41:51 +0800
 categories: [Distributed]
-tags: [sql, nosql, distributed, sf]
+tags: [distributed, hash, sf]
 published: true
 ---
 
+
+## 负载均衡系列专题
+
+[01-负载均衡基础知识](https://houbb.github.io/2020/06/19/load-balance-01-basic)
+
+[02-一致性 hash 原理](https://houbb.github.io/2020/06/19/load-balance-02-consistent-hash-in-java)
+
+[03-一致性哈希算法 java 实现](https://houbb.github.io/2020/06/19/load-balance-03-consistent-hash-in-java)
+
+[04-负载均衡算法 java 实现](https://houbb.github.io/2020/06/19/load-balance-03-load-balance)
 
 # 概念
 

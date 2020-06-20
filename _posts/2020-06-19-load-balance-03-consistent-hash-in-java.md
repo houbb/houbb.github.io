@@ -1,15 +1,21 @@
 ---
 layout: post
-title:  load balance 02-consistent hash algorithm 一致性哈希算法 java 实现
+title:  load balance 03-consistent hash algorithm 一致性哈希算法 java 实现
 date:  2020-6-19 09:26:03 +0800
-categories: [Java]
+categories: [Distributed]
 tags: [java, open-source, distributed, hash, sh]
 published: true
 ---
 
-## 基础知识回顾
+## 负载均衡系列专题
 
-以前我们学习过 [Consistent Hash 一致性 hash](https://houbb.github.io/2018/08/13/consistent-hash)，讲述了一致性 hash 的原理。
+[01-负载均衡基础知识](https://houbb.github.io/2020/06/19/load-balance-01-basic)
+
+[02-一致性 hash 原理](https://houbb.github.io/2020/06/19/load-balance-02-consistent-hash-in-java)
+
+[03-一致性哈希算法 java 实现](https://houbb.github.io/2020/06/19/load-balance-03-consistent-hash-in-java)
+
+[04-负载均衡算法 java 实现](https://houbb.github.io/2020/06/19/load-balance-03-load-balance)
 
 本节我们来看一下如何实现一个一致性 hash 框架。
 

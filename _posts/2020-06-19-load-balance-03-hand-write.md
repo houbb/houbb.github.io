@@ -2,7 +2,7 @@
 layout: post
 title:  load balance 04-java 从零手写实现负载均衡
 date:  2020-6-19 09:26:03 +0800
-categories: [Java]
+categories: [Distributed]
 tags: [java, open-source, distributed, hash, sh]
 published: true
 ---
@@ -11,9 +11,9 @@ published: true
 
 [01-负载均衡基础知识](https://houbb.github.io/2020/06/19/load-balance-01-basic)
 
-[02-一致性 hash 原理](https://houbb.github.io/2018/08/13/consistent-hash)
+[02-一致性 hash 原理](https://houbb.github.io/2020/06/19/load-balance-02-consistent-hash-in-java)
 
-[03-一致性哈希算法 java 实现](https://houbb.github.io/2020/06/19/load-balance-02-consist-hash)
+[03-一致性哈希算法 java 实现](https://houbb.github.io/2020/06/19/load-balance-03-consistent-hash-in-java)
 
 [04-负载均衡算法 java 实现](https://houbb.github.io/2020/06/19/load-balance-03-load-balance)
 
