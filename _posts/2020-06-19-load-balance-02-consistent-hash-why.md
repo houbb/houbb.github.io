@@ -356,8 +356,6 @@ https://github.com/netharis/Chord-Implementation/blob/master/Chord/Chord.java
 
 https://github.com/TitasNandi/Chord-JAVA
 
-
-
 - kademlia
 
 http://www.yeolar.com/note/2010/03/21/kademlia/
