@@ -1,11 +1,10 @@
 ---
 layout: post
-title: 高可用之限流
+title: 高可用之限流-01-入门介绍
 date: 2018-12-23 13:55:13 +0800
 categories: [Distributed]
 tags: [distributed, ha, sh]
 published: true
-excerpt: 高可用之限流
 ---
 
 # 背景
@@ -53,7 +52,7 @@ excerpt: 高可用之限流
 
 直到进入下一个周期后，计数器清零，流量接收恢复正常状态。
 
-![固定窗口](https://mmbiz.qpic.cn/mmbiz_png/oB5bd6W6hI142ibzyfZPU00JK8UFz1fsPF3B1icFMImuct7ChOibT7FB52xHLjx50SV5Wp2ramUFEzoojCIzdD9Tg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![固定窗口](https://user-images.githubusercontent.com/18375710/85197940-110e7000-b317-11ea-90c6-d2301c067bc4.png)
 
 这个策略最简单，写起代码来也没几行。
 
@@ -89,9 +88,11 @@ totalCount++;
 
 然后统计的时间范围随着时间的推移同步后移。
 
-![滑动窗口](https://mmbiz.qpic.cn/mmbiz_png/oB5bd6W6hI142ibzyfZPU00JK8UFz1fsPD0kicBOKmWFVWa2B1bUdsicG4jWjQmicmicGve45fBj3sd4z1YedfwLiaSQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![滑动窗口](https://user-images.githubusercontent.com/18375710/85197958-34391f80-b317-11ea-861f-cbb99e4696c0.png)
 
-同时，我们还可以得出一个结论是：如果固定窗口的「固定周期」已经很小了，那么使用滑动窗口的意义也就没有了。举个例子，
+同时，我们还可以得出一个结论是：如果固定窗口的「固定周期」已经很小了，那么使用滑动窗口的意义也就没有了。
+
+举个例子，
 
 现在的固定窗口周期已经是1秒了，再切分到毫秒级别能反而得不偿失，会带来巨大的性能和资源损耗。
 
@@ -112,15 +113,19 @@ counterList[当前索引]++;
 
 虽然说滑动窗口可以改善这个问题，但是本质上还是预先划定时间片的方式，属于一种“预测”，意味着几乎肯定无法做到100%的物尽其用。
 
+![image](https://user-images.githubusercontent.com/18375710/85197972-5894fc00-b317-11ea-9349-e255f577854a.png)
+
 但是，「桶」模式可以做的更好，因为「桶」模式中多了一个缓冲区（桶本身）。
 
 ### 漏桶
 
-首先聊聊「漏桶」吧。漏桶模式的核心是固定“出口”的速率，不管进来多少量，出去的速率一直是这么多。
+首先聊聊「漏桶」吧。
+
+漏桶模式的核心是固定“出口”的速率，不管进来多少量，出去的速率一直是这么多。
 
 如果涌入的量多到桶都装不下了，那么就进行「流量干预」。
 
-![漏桶](https://mmbiz.qpic.cn/mmbiz_png/oB5bd6W6hI142ibzyfZPU00JK8UFz1fsPNtRqSN6cauo2hFJiaPUpTp2s0wUvDOvIjbhuwuXZ1icWmO8Mr6D3LtRg/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![image](https://user-images.githubusercontent.com/18375710/85197992-7eba9c00-b317-11ea-8fca-dcbc9cd96f01.png)
 
 整个实现过程我们来分解一下。
 
@@ -131,6 +136,8 @@ counterList[当前索引]++;
 3. 最后控制桶中的水位不超过最大水位。这个很简单，就是一个全局计数器，进行加加减减。
 
 这样一来，你会发现本质就是：通过一个缓冲区将不平滑的流量“整形”成平滑的（高于均值的流量暂存下来补足到低于均值的时期），以此最大化计算处理资源的利用率。
+
+![image](https://user-images.githubusercontent.com/18375710/85197998-94c85c80-b317-11ea-938e-361ea11e2194.png)
 
 实现代码的简化表示如下：
 
@@ -178,14 +185,13 @@ if(unitSpeed < 速率阈值) {
 
 因此，当大量的流量进入时，只要令牌的生成速度大于等于请求被处理的速度，那么此刻的程序处理能力就是极限。
 
-![令牌桶](https://mmbiz.qpic.cn/mmbiz_png/oB5bd6W6hI142ibzyfZPU00JK8UFz1fsP8Ph3CBaV29muMviaOTnAN2eBAOaZ13205ILknBqEd2AWWw2hAibATzbA/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![image](https://user-images.githubusercontent.com/18375710/85198029-ea9d0480-b317-11ea-903a-d2fdfac184f8.png)
 
 也来分解一下它的实现过程。
 
 1. 控制令牌生成的速率，并放入桶中。这个其实就是单独一个线程在不断的生成令牌。
 
 2. 控制桶中待领取的令牌水位不超过最大水位。这个和「漏桶」一样，就是一个全局计数器，进行加加减减。
-
 
 大致的代码简化表示如下（看上去像「固定窗口」的反向逻辑）：
 
@@ -219,7 +225,7 @@ tokenCount--;
 
 # 分布式系统中带来的新挑战
 
-![新挑战](https://mmbiz.qpic.cn/mmbiz_png/oB5bd6W6hI142ibzyfZPU00JK8UFz1fsP8rbbhVbdaYicJhBW0pQOJQTH8pSQw8wfV27g7Veq273ICKq8QicCen3A/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![image](https://user-images.githubusercontent.com/18375710/85198329-6b5d0000-b31a-11ea-84a7-bbc1e0aa0091.png)
 
 每一个上游系统都可以理解为是其下游系统的客户端。
 
