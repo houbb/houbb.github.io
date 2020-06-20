@@ -24,7 +24,6 @@ published: true
 
 [spi 07-自动生成 SPI 配置文件实现方式](https://houbb.github.io/2018/08/02/spi-07-auto-generate)
 
-
 ## dubbo 自适应拓展
 
 ### 原理

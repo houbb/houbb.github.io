@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Load Balance 01-负载均衡基础知识
+title:  load balance 01-负载均衡基础知识
 date:  2020-6-19 09:26:03 +0800
 categories: [Java]
 tags: [java, open-source, distributed, sh]
