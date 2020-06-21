@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Thread 多线程线程入门
-date:  2016-7-1 14:13:31 +0800
-categories: [Java]
-tags: [thread]
+title:  轻松学习多线程 01-多线程入门基础知识
+date:  2019-1-19 11:21:15 +0800
+categories: [Thread]
+tags: [thread, java, overview, sh]
 published: true
 ---
 

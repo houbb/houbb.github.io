@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Thread-02-thread 源码分析
-date:  2016-07-02 16:57:06 +0800
-categories: [Java]
-tags: [thread, source-code, sf]
+title: 轻松学习多线程 02-thread 源码分析
+date:  2019-1-19 11:21:15 +0800
+categories: [Thread]
+tags: [thread, java, source-code, sh]
 published: true
 ---
 

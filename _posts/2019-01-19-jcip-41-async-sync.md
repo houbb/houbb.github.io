@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Asynchronous
-date:  2018-08-10 17:50:08 +0800
-categories: [Java]
-tags: [thread, java]
+title:  java 异步查询转同步多种实现方式：循环等待，CountDownLatch，Spring EventListener，超时处理和空循环性能优化
+date:  2019-1-18 11:21:15 +0800
+categories: [Concurrency]
+tags: [concurrency, java, async, sync, sh]
 published: true
 ---
 

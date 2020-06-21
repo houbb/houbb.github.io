@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Thread Advanced 多线程进阶
-date:  2016-07-02 16:57:06 +0800
-categories: [Java]
-tags: [thread]
+title: 轻松学习多线程 01-多线程进阶
+date:  2019-1-19 11:21:15 +0800
+categories: [Thread]
+tags: [thread, java, sh]
 published: true
 ---
 
