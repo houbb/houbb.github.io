@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Quartz-01-overview quartz 入门使用
+title:  Quartz 01-quartz 入门使用介绍
 date:  2017-12-19 14:43:25 +0800
-categories: [Quartz]
-tags: [quartz, sf]
+categories: [Java]
+tags: [java, java-tool, sh]
 published: true
 ---
 
