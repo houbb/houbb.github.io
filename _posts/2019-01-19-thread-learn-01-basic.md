@@ -3,7 +3,7 @@ layout: post
 title:  轻松学习多线程 01-多线程入门基础知识
 date:  2019-1-19 11:21:15 +0800
 categories: [Thread]
-tags: [thread, java, overview, sh]
+tags: [thread, java, sh]
 published: true
 ---
 
