@@ -77,7 +77,7 @@ published: true
 
 这篇文章主要参考 CMEGroup 里面公开的服务模块， 当然最终我们的系统里面有些部分会简化或者丰富，先30000英尺高空俯视他们系统提供了哪些服务 （链接）：
 
-![服务模块](https://upload-images.jianshu.io/upload_images/2842122-757e5ff439dc8c3c.png?imageMogr2/auto-orient/strip|imageView2/2/format/webp)
+![服务模块](https://upload-images.jianshu.io/upload_images/2842122-757e5ff439dc8c3c.png)
 
 ## 清分 Clearing
 
@@ -115,7 +115,7 @@ CMEGroup 里面说了他们 clearing 系统每年处理金额大概在 $1,000 tr
 
 比如市场现行情如下， S&P500， 最高买价（BID）, 2041.00； 最低卖价（ASK）2041.25， 点差0.25（记得，还有上文说的做市商）， 如下你现在下个 在2041.25 买 100 的委单。  
 
-![撮合](https://upload-images.jianshu.io/upload_images/2842122-6a215b24c687eca2.png?imageMogr2/auto-orient/strip|imageView2/2/w/448/format/webp)
+![撮合](https://upload-images.jianshu.io/upload_images/2842122-6a215b24c687eca2.png)
 
 ps: 这个一般在股票，期货等软件中很常见。这个过程一般称之为【撮合报价】，一般应该还是上清所，CFETS 这些国有的机构完成。其他人只是接入接口而已。
 
@@ -127,7 +127,7 @@ ps: 这个一般在股票，期货等软件中很常见。这个过程一般称�
 
 如下面的市场深度图可以看出那方更强：
 
-![深度图](https://upload-images.jianshu.io/upload_images/2842122-4950f700d0a66c3f.png?imageMogr2/auto-orient/strip|imageView2/2/w/766/format/webp)
+![深度图](https://upload-images.jianshu.io/upload_images/2842122-4950f700d0a66c3f.png)
 
 ### 价格
 
@@ -187,7 +187,7 @@ ps：这段时间在读一般书《生命 3.0》，其实里面也提到了普�
 
 很久以前没有电脑时候大家是这样玩的:
 
-![竞价](https://upload-images.jianshu.io/upload_images/2842122-b3009d972a9a5398.png?imageMogr2/auto-orient/strip|imageView2/2/w/640/format/webp)
+![竞价](https://upload-images.jianshu.io/upload_images/2842122-b3009d972a9a5398.png)
 
 可以想象大家济济一堂，熙熙攘攘，吵吵闹闹，对着黑板数字口若悬河，眉飞色舞；和现在对着k线大谈一通其实没有什么差别， 只不过过去人与人更近点。
 
@@ -246,7 +246,7 @@ PS:  对于某些细节过分的追求，可能是大部分技术出生的工�
 
 ## DDD: 领域驱动设计
 
-![DDD](https://upload-images.jianshu.io/upload_images/2842122-1f4f7e0da60158e8.png?imageMogr2/auto-orient/strip|imageView2/2/w/660/format/webp)
+![DDD](https://upload-images.jianshu.io/upload_images/2842122-1f4f7e0da60158e8.png)
 
 DDD: Domain-driven Design，领域驱动设计; 在软件设计领域有各种各样的pattern； 领域驱动设计， 也是一种设计的套路；Domain 领域； Design 设计； Driven 驱动；DDD 理念提出者是 Eric Evans， 可以参考他的书 《Domain-Driven Design: Tackling Complexity in the Heart of Software》； 中文亦已出版 《领域驱动设计 软件核心复杂性应对之道》， 上面的截图也是来自此书。 
 
@@ -318,7 +318,7 @@ Greg Young 是提出来此概念，布道者人之一，  Eric Evans on How Tec
 
 下图来自 Martin Fowler CQRS
 
-![CQRS](https://upload-images.jianshu.io/upload_images/2842122-a0dcc71b1e01fd0a.png?imageMogr2/auto-orient/strip|imageView2/2/w/637/format/webp)
+![CQRS](https://upload-images.jianshu.io/upload_images/2842122-a0dcc71b1e01fd0a.png)
 
 ### 命令（Command）
 
@@ -338,7 +338,7 @@ Greg Young 把领域模型分为两种：状态校验，以及状态转换，维
 
 在传统意义上， 我们设计一个系统，对于数据的操作， 无非CRUD, 就是下面的模型：
 
-![Query](https://upload-images.jianshu.io/upload_images/2842122-0ee2a3cc4a9bb880.png?imageMogr2/auto-orient/strip|imageView2/2/w/637/format/webp)
+![Query](https://upload-images.jianshu.io/upload_images/2842122-0ee2a3cc4a9bb880.png)
 
 
 对于简单的应用， 这个已经非常够用，但是随着业务的复杂度增加，往往更多的过程和信息需要披露， 我们需要知道整个状态变化的历程， 同时需要回溯到某个点的某个状态。
@@ -381,7 +381,7 @@ Partition tolerance（分区容错性）：两个复制系统之间，如果发�
 
 CAP 理论，任何分布式系统只可同时满足二点，没法三者兼顾，架构师不要将精力浪费在如何设计能满足三者的完美分布式系统，而是应该进行取舍。
 
-![CAP](https://upload-images.jianshu.io/upload_images/2842122-08effde22937761a.png?imageMogr2/auto-orient/strip|imageView2/2/w/601/format/webp)
+![CAP](https://upload-images.jianshu.io/upload_images/2842122-08effde22937761a.png)
 
 大家比较熟悉的一般是针对我们关系数据库的ACID模型，满足高可用性和强一致性，也就是上面的CA部分，而对于分布式事务一般采用2PC(two-phase commit)，比如J2EE 中的JTA来实现， 但是2PC is the anti-scalability pattern (Pat Helland) 是反可伸缩模式；而对于web 2.0 时代，对于数据强一致性需求没有那么突出， 部分牺牲高强一致性， 换取可用性或可靠性，于是有了BASE模型：
 
@@ -485,7 +485,7 @@ Book Domain 需要传递的信息（Event 方式）
 
 表面看来 book 业务非常简单明了， 从代码层面看， 就是两棵树（Tree数据结构）， 每次打单往两个树上面添枝加叶， 如果最高的买价，高于最低的卖价格， 那么两棵树都会被削掉顶端，直到平衡。
 
-![Tree](https://upload-images.jianshu.io/upload_images/2842122-f22a5507e9c48a1d.png?imageMogr2/auto-orient/strip|imageView2/2/w/480/format/webp)
+![Tree](https://upload-images.jianshu.io/upload_images/2842122-f22a5507e9c48a1d.png)
 
 Booker Aggregate Root 同时还有自身的状态需要维护， 比如临时关闭 booker,还有部分参考和调整参数： 
 
@@ -574,7 +574,7 @@ Portfolio 状态的变更,同样以Event 方式传递出去； 以供下游系�
 
 从 aggregate root 中生成的 event 通过 ESB， 感兴趣的模块可以选择监听接受， 也就是我们的Query 端, query 端，可以进一步对数据进行丰富、demoralization、缓存、落地到查询数据库。
 
-![Query](https://upload-images.jianshu.io/upload_images/2842122-2a023176bf1d6079.png?imageMogr2/auto-orient/strip|imageView2/2/w/846/format/webp)
+![Query](https://upload-images.jianshu.io/upload_images/2842122-2a023176bf1d6079.png)
 
 ## Order
 
@@ -757,7 +757,7 @@ CFD 是一种能够很好对冲你现有投资资产的工具。
 
 AxonFramework是我们交易系统选择的架构基础， 使用CQRS/EventSource 不拘泥于框架使用，其实不套用任何的框架，自己构建可能有更多的调整和细化的余地， 选用一个框架， 可以加快开发的速度-至少是前期， 但是也有很多框架上面的掣肘, 得失在于自己使用中的权衡，此篇主要讲讲 CQRS 中基础的 domain 中 event storage.
 
-![Command vs Query](https://upload-images.jianshu.io/upload_images/2842122-2a023176bf1d6079.png?imageMogr2/auto-orient/strip|imageView2/2/w/846/format/webp)
+![Command vs Query](https://upload-images.jianshu.io/upload_images/2842122-2a023176bf1d6079.png)
 
 Axonframework, 现在到3.0 版本， 由 Allard Buijze, 作为主要贡献者， 后面有一个商业化咨询团队支持：AxonIQ 的开源项目， 在JAVA 中是历史比较长的开源CQRS项目, 其实不久前有一个 reveno, 在一些存储落地方面采用更激进的方案， 但是现在好像不怎么维护， 既然要上production， 还是选择比较成熟， 社区比较活跃的开源项目。 
 
@@ -773,7 +773,7 @@ Event source 不是一个新的概念， 由 Martin Fowler 十几年前就提出
 
 但是这个当时只是一个小众的技术， 现如今变成了主流，大概因为这样的理念更适合当下的几大应用：
 
-![数据挖掘](https://upload-images.jianshu.io/upload_images/2842122-050724d2b77ce75f.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![数据挖掘](https://upload-images.jianshu.io/upload_images/2842122-050724d2b77ce75f.jpg)
 
 大数据， 机器学习，人工智能等告诉我们历史数据非常重要， 里面可能隐藏着宝贵的矿藏，有效的分析利用他们，可以揭示很有商业后面的秘密，这些都基于你积累了这些历史数据， 在传统的应用中，我们可能很少或者没有记录这里历史的数据和转变过程。而Event source 架构下， 需要记录所有历史状态，这样可以恢复到过去的任何一个状态。
 
@@ -809,7 +809,7 @@ Event source 不是一个新的概念， 由 Martin Fowler 十几年前就提出
 
 很多公司开始时候趋向于选择他们， 一个是公司本来就在用， 带入成本低，经验比较丰富， 当扩展性渐渐变成瓶颈后，可能大家发现关系数据库和event source 不是最佳搭配，现在的数据库主要为随机的CRUD, 还有很多高级的sql 语法上面的功能， 但是对于event source这些不是必要的，而去有点多余， 他仅仅是为快速的批量读写事件信息，当今的关系数据库集群的代价还是比较大；而比起后起之秀的 MongoDB, 和ElasticSearch等等天然的集群和易扩展性就逊色不少。
 
-![MongoDB](https://upload-images.jianshu.io/upload_images/2842122-197a760c5c50eb66.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![MongoDB](https://upload-images.jianshu.io/upload_images/2842122-197a760c5c50eb66.png)
 
 MongoDB 是文档型DB, 可以以集群方式工作，很方便横向扩展，很适合做Event source, 每个事件可以做为一个文档， 但是基本弊端： 事务一致性， MongoDB事务是单个文档范围， 对于多个并发的事件不能保证事务一致性， 需要做些工作，而且对于事件源，需要保证读事件的顺序一致性， 而要做到这一点， MongoDB, 需要添加额外的索引来保证这一切，这些都需要额外的开支，在事件增加的情况下， 会带来更多的性能开销。
 
@@ -831,7 +831,7 @@ Cassandra 同样是Apache下项目， 是一个分布式高可用的DB, 通过�
 
 内存中读写需要最终还是要落地，这里我们选择了apache 的ignite(下面会有更多的一篇独立讲解）。 过来事件保持一定的replicate（bakcup 2 ） 到cluster几点， 落地由ignite 批量输入到mysql. snapshot 也是以同样的方式。
 
-![Apache Ignite](https://upload-images.jianshu.io/upload_images/2842122-64928cec809ba7b4.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![Apache Ignite](https://upload-images.jianshu.io/upload_images/2842122-64928cec809ba7b4.png)
 
 ignite 有自己的落地方案， 不一定需要一个关系数据库， 直接以自己的格式序列化到磁盘中，但是这部分功能缺乏基本的purge,archive,migrate 功能， 需要在商业版中才有, 所以现在只能放到传统的mysql db中。
 
@@ -855,7 +855,7 @@ ignite 天生的良好集群解决方案，可以很好的保证高可用性， 
 
 这个协议（标准）诞生于1992， 大概有25年（2017）之久的历史， 基本没有太大的调整和变动（除去由此演化其它协议如FAST Protocal, NYSE、CME Group在用）。
 
-![各种协议，FIX 还是多数](https://upload-images.jianshu.io/upload_images/2842122-6547b4b5d289ad70.png?imageMogr2/auto-orient/strip|imageView2/2/w/406/format/webp)
+![各种协议，FIX 还是多数](https://upload-images.jianshu.io/upload_images/2842122-6547b4b5d289ad70.png)
 
 ## 历史
 
@@ -915,7 +915,7 @@ FIX已经从最初的买方-到-卖方的证券交易中得到发展。
 
 可以说FIX 消息很傻白甜，非常简单就是一个tag=value 的组合。
 
-![FIX 消息](https://upload-images.jianshu.io/upload_images/2842122-768a147bc3dace8d.png?imageMogr2/auto-orient/strip|imageView2/2/w/558/format/webp)
+![FIX 消息](https://upload-images.jianshu.io/upload_images/2842122-768a147bc3dace8d.png)
 
 如果把SOH(0x01) 换成 | 或者逗号(,)，完全可以道出为个excel 格式。
 
@@ -981,7 +981,7 @@ FIX 消息的格式、业务背景都知道了，到实现层面上就是一个F
 
 - 解压缩等。
 
-![FIX 引擎角色](https://upload-images.jianshu.io/upload_images/2842122-6502b9039c628994.png?imageMogr2/auto-orient/strip|imageView2/2/w/894/format/webp)
+![FIX 引擎角色](https://upload-images.jianshu.io/upload_images/2842122-6502b9039c628994.png)
 
 ## Session
 
@@ -995,7 +995,7 @@ Acceptor ：接收方 FIX会话的接收方。负责执行第一层次的认证�
 
 每个FIX 消息都需要个sequence number（MsgSeqNum <34> ） 标识，这个sequence 需要在一个session中保持唯一性， 序列号在session启动时候初始化为1， 在消息的不断交互中有序增长，发起端和接收端各自维护一个sequence, 互相协调同步，这个由于发送和接受段的消息数量是不一样的， 比如发起端已经发送了100个消息，但是接受可能到200个消息； 反过来这100个消息就是接收方接受的sequence, 200为接受方发送的消息序列。
 
-![一个 session 周期](https://upload-images.jianshu.io/upload_images/2842122-faae2bd3f06f8351.png?imageMogr2/auto-orient/strip|imageView2/2/w/840/format/webp)
+![一个 session 周期](https://upload-images.jianshu.io/upload_images/2842122-faae2bd3f06f8351.png)
 
 ### 流程
 
@@ -1013,7 +1013,7 @@ Acceptor ：接收方 FIX会话的接收方。负责执行第一层次的认证�
 
 - 登出
 
-![一个最简单流程](https://upload-images.jianshu.io/upload_images/2842122-fed0c7f5d44ec422.png?imageMogr2/auto-orient/strip|imageView2/2/w/514/format/webp)
+![一个最简单流程](https://upload-images.jianshu.io/upload_images/2842122-fed0c7f5d44ec422.png)
 
 ## 实现
 
@@ -1146,7 +1146,7 @@ pipeline.addLast(workerGroup, "app", new FixApplication()); // process applicati
 
 在内存中存放和管理数据是降低延迟最有效的方法之一，现如今内存的价格大大的下降，现在几十G的上T的服务器非常常见， 使得这样的操作方法的以可行； 内存中保证高可用性， 势必涉及partition 和 replication, 分布式计算、backup， 再平衡等等， 和外围语言的交互，借用ignite 图大概这个样子：
 
-![一个内存网格工具需要具备功能](https://upload-images.jianshu.io/upload_images/2842122-2dd685d337665a30.jpg?imageMogr2/auto-orient/strip|imageView2/2/w/503/format/webp)
+![一个内存网格工具需要具备功能](https://upload-images.jianshu.io/upload_images/2842122-2dd685d337665a30.jpg)
 
 IMDG 提供一个完全基于内存的架构， 理论上可能给你应用提升几倍或者几十倍的性能提升， 可以将上T的数据载入内存， 能够很好满足现如今大数据处理的需求。
 
@@ -1156,17 +1156,17 @@ IMDG和其他一些产品， 比如NoSql， IMDB, NewSql 数据库，一个现�
 
 在IMDG 使用需要注意点，应该让你的运算尽量靠近数据--类似于Map-Reduce, Hadoop 中思想， 因为在网络世界中，移动计算比移动数据更省事，当整个网络拓扑图稳定后，大部分时间数据是待在固定的节点， 只有在加入，或者有节点退出情况下，产生re-partition 才会导致数据在节点的移动。
 
-![Partition & Replication](https://upload-images.jianshu.io/upload_images/2842122-6105b07b8dfc797d.png?imageMogr2/auto-orient/strip|imageView2/2/w/500/format/webp)
+![Partition & Replication](https://upload-images.jianshu.io/upload_images/2842122-6105b07b8dfc797d.pn)
 
 在我们的运用中有一个必不可少的步骤，就是数据持久化，将数据存储到外部界质，下图的ignite使用方法,这里也可以实现自己的cache storage, 比如通过write/read through保存到数据库。
 
-![缓存落地](https://upload-images.jianshu.io/upload_images/2842122-4330e2f57e0eee94.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![缓存落地](https://upload-images.jianshu.io/upload_images/2842122-4330e2f57e0eee94.png)
 
 分布式计算是通过以并行的方式执行来获得高性能、低延迟和线性可扩展。
 
 在集群内的多台计算机上执行分布式计算和数据处理。分布式并行处理是基于在任何集群节点集合上进行计算和执行然后将结果返回实现的。
 
-![内存计算](https://upload-images.jianshu.io/upload_images/2842122-051a797b4bfd0204.png?imageMogr2/auto-orient/strip|imageView2/2/w/504/format/webp)
+![内存计算](https://upload-images.jianshu.io/upload_images/2842122-051a797b4bfd0204.png)
 
 上面是根据我们业务场景， 需要基于内存的解决方案， 最终选择 apache ignite作为IMDG解决方案， 当然业界有很多其他的IMDG 产品比如：
 
@@ -1320,11 +1320,11 @@ Word Aligned Access：当word以非word大小边界访问时，多CPU架构表�
 
 SBE 一个消息（Frame）包含哪些内容：
 
-![sbe frame](https://upload-images.jianshu.io/upload_images/2842122-015c75d75d400d8b.png?imageMogr2/auto-orient/strip|imageView2/2/w/709/format/webp)
+![sbe frame](https://upload-images.jianshu.io/upload_images/2842122-015c75d75d400d8b.png)
 
 在HTTP中涉及久了大家基本都记得一些这样的图形， 基本就是个header + payload 设计手法：
 
-![WebSocket frame](https://upload-images.jianshu.io/upload_images/2842122-762d0501a0412b2f.png?imageMogr2/auto-orient/strip|imageView2/2/w/967/format/webp)
+![WebSocket frame](https://upload-images.jianshu.io/upload_images/2842122-762d0501a0412b2f.png)
 
 当然SBE 属于第六层(OSI)， 也就是表示层（Presentation Layer）， 最终还需要上面的应用也就是你的业务逻辑层来处理这些数据的。
 
@@ -1412,7 +1412,7 @@ buffer.getDouble(offset + 12, java.nio.ByteOrder.LITTLE_ENDIAN)
 
 机器之间的交流和人与人之间的交流一样，诸多的问题就会扑面而来。
 
-![简单的交流模型](https://upload-images.jianshu.io/upload_images/2842122-cb43d5243ff9a340.png?imageMogr2/auto-orient/strip|imageView2/2/w/720/format/webp)
+![简单的交流模型](https://upload-images.jianshu.io/upload_images/2842122-cb43d5243ff9a340.png)
 
 从一个发送者（客户端）到接受者（服务器），之间会掺和进各种因素， 比如人与人之间交流的噪音，不同文化背景等等，在进程间进行通讯有同样的问题：
 
@@ -1650,7 +1650,7 @@ MQ, redis, Mysql，Nginx etc
 
 这部分的都有非常成熟的解决方案， 这里不再描述， 可以查询网上很多的解决方案， 比如 Zabbix, Nagios,Pandora 等等
 
-![开源工具](https://upload-images.jianshu.io/upload_images/2842122-e845c848c9ca0f9a.png?imageMogr2/auto-orient/strip|imageView2/2/w/1200/format/webp)
+![开源工具](https://upload-images.jianshu.io/upload_images/2842122-e845c848c9ca0f9a.png)
 
 这套系统， 如果在云上， 一般都成套的工具帮你实现， 如果自己搭建，需要一个经验比较丰富的运维团队。
 
