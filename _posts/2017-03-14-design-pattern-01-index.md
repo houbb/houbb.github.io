@@ -1,13 +1,11 @@
 ---
 layout: post
-title: Design Pattern-01-工厂模式 原型模式 factory prototype 
-date:  2016-7-15 12:22:04 +0800
+title: Design Pattern 01-入门案例
+date:  2017-03-14 19:52:28 +0800
 categories: [Design Pattern]
-tags: [design pattern]
+tags: [design pattern, sf]
 published: true
 ---
-
-
 
 # Design Pattern
 
