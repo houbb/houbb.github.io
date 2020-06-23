@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leecode 精选 01-Manacher Algorithm 马拉车算法
+title: leecode 详解 03-Manacher Algorithm 马拉车算法
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [Algorithm, data-struct, leetcode, sf]

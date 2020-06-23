@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leecode 精选 02-regex match 正则表达式匹配
+title: leecode 详解 04-regex match 正则表达式匹配
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [Algorithm, data-struct, leetcode, sf]

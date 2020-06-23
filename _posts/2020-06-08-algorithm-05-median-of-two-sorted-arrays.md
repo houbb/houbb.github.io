@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leecode 精选 03-median of two sorted arrays 寻找两个正序数组的中位数
+title: leecode 详解  05-median of two sorted arrays 寻找两个正序数组的中位数
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [Algorithm, data-struct, leetcode, sf]
