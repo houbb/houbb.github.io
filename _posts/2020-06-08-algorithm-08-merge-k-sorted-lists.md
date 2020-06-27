@@ -431,8 +431,6 @@ Memory Usage: 41.5 MB, less than 35.98% of Java online submissions for Merge k S
 
 ## 拓展阅读
 
-
-
 [优先级队列 Priority Queue](https://houbb.github.io/2019/01/18/jcip-10-priority-queue)
 
 [优先级队列与堆排序](https://houbb.github.io/2019/01/04/prority-queue)
