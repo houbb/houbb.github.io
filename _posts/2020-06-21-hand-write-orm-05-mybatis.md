@@ -17,7 +17,6 @@ MyBatis 可以使用简单的 XML 或注解来配置和映射原生信息，将�
 
 # MyBatis 运行原理
 
-
 ![MyBatis 运行原理](https://segmentfault.com/img/remote/1460000015117931?w=400&h=343)
 
 当框架启动时，通过configuration解析config.xml配置文件和mapper.xml映射文件，映射文件可以使用xml方式或者注解方式，然后由configuration获得sqlsessionfactory对象，再由sqlsessionfactory获得sqlsession数据库访问会话对象，通过会话对象获得对应DAO层的mapper对象，通过调用mapper对象相应方法，框架就会自动执行SQL语句从而获得结果。
