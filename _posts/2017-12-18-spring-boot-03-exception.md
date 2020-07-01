@@ -3,7 +3,7 @@ layout: post
 title:  Spring Boot-03-异常汇总
 date:  2017-12-19 14:43:25 +0800
 categories: [Spring]
-tags: [spring, exception, sf]
+tags: [spring, exception, spring, springboot]
 published: true
 ---
 

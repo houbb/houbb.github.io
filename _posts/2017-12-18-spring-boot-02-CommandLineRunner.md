@@ -3,7 +3,7 @@ layout: post
 title:  Spring Boot-02-启动时执行任务 CommandLineRunner
 date:  2017-12-19 14:43:25 +0800
 categories: [Spring]
-tags: [spring]
+tags: [spring, spring, springboot]
 published: true
 ---
 
