@@ -7,7 +7,7 @@ tags: [Algorithm, data-struct, leetcode, sf]
 published: true
 ---
 
-# 题目
+## 题目
 
 给你一个字符串 s 和一个字符规律 p，请你来实现一个支持 '.' 和 '*' 的正则表达式匹配。
 
@@ -21,7 +21,7 @@ s 可能为空，且只包含从 a-z 的小写字母。
 
 p 可能为空，且只包含从 a-z 的小写字母，以及字符 . 和 *。
 
-## 个人分析
+### 个人分析
 
 拿到题目的第一反应就是这是一个 regex 表达式解析引擎，但是过于复杂。
 
@@ -29,9 +29,9 @@ p 可能为空，且只包含从 a-z 的小写字母，以及字符 . 和 
 
 下面来逐步看一下这个题目的解答过程。
 
-# v1 标准库实现版本
+## v1 标准库实现版本
 
-## 代码
+### 代码
 
 ```java
 public boolean isMatch(String s, String p) {
@@ -39,7 +39,7 @@ public boolean isMatch(String s, String p) {
 }
 ```
 
-## 性能
+### 性能
 
 ```
 Runtime: 64 ms, faster than 24.57% of Java online submissions for Regular Expression Matching.
@@ -50,15 +50,15 @@ Memory Usage: 40.3 MB, less than 7.95% of Java online submissions for Regular Ex
 
 也没有体会到 regex 解析过程的快乐，而且性能也不怎么样。
 
-# v2 递归实现
+## v2 递归实现
 
-## 实现思路
+### 实现思路
 
 如果 p 中没有任何 `*` 号，那么对比起来其实比较简单，就是文本 s 和 p 一一对应。
 
 `.` 对应任意单个字符，也不难。
 
-## 如果存在 * 号
+### 如果存在 * 号
 
 如果存在 `*`，这个问题就会难那么一些。
 
@@ -83,7 +83,7 @@ public boolean isMatch(String s, String p) {
 }
 ```
 
-## 效果
+### 效果
 
 这个用到了递归，性能如下：
 
@@ -94,9 +94,9 @@ Memory Usage: 39.8 MB, less than 27.13% of Java online submissions for Regular E
 
 一个字，惨~
 
-# v3 动态规划
+## v3 动态规划
 
-## 对于递归的思考
+### 对于递归的思考
 
 你也许发现了，原来的代码中
 
@@ -112,11 +112,11 @@ isMatch(s.substring(1), p.substring(1))
 
 DP 无敌。
 
-## 解题思路
+### 解题思路
 
 我们用递归中同样的回溯方法，除此之外，因为函数 `match(text[i:], pattern[j:])` 只会被调用一次，我们用 dp(i, j) 来应对剩余相同参数的函数调用，这帮助我们节省了字符串建立操作所需要的时间，也让我们可以将中间结果进行保存。
 
-## 自顶向下的方法
+### 自顶向下的方法
 
 这里的核心区别就是不对 text/pattern 做 substring 的操作，而是从前往后处理。
 
@@ -163,7 +163,7 @@ class Solution {
 }
 ```
 
-### 效果
+#### 效果
 
 ```
 Runtime: 3 ms, faster than 83.97% of Java online submissions for Regular Expression Matching.
@@ -175,7 +175,7 @@ Memory Usage: 39.9 MB, less than 22.69% of Java online submissions for Regular E
 实际上这个性能是比实现一个 regex 引擎要好的，因为 regex 的编译构建 DFA/NFA 非常的耗时。
 
 
-## 自上而下
+### 自上而下
 
 理解了上面的解法，下面的解法就比较简单了。
 
@@ -208,7 +208,7 @@ public boolean isMatch(String s, String p) {
 }
 ```
 
-### 效果
+#### 效果
 
 还算比较优雅，性能还算满意。
 
@@ -217,7 +217,13 @@ Runtime: 2 ms, faster than 92.84% of Java online submissions for Regular Express
 Memory Usage: 38.3 MB, less than 73.31% of Java online submissions for Regular Expression Matching.
 ```
 
-# 拓展阅读
+## 小结
+
+虽然我们使用过很多次 Regex 正则表达式，但是实际上实现起来可能没有使用那么简单。
+
+后续有机会我们可以讲述写如何实现一个相对完整的正则表达式引擎。
+
+## 拓展阅读
 
 [从零实现一个 regex 解析引擎](https://houbb.github.io/2020/01/07/regex-and-dfa-02)
 
