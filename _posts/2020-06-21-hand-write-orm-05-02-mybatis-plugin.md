@@ -1,13 +1,23 @@
 ---
 layout: post
-title:  手写 Hibernate ORM 框架 07-mybatis plugin 插件机制详解
+title:  手写 mybatis 系列（二）mybatis interceptor 插件机制详解
 date:  2020-6-21 15:11:16 +0800
 categories: [Java]
 tags: [java, hand-write, middleware, orm, mybatis, sql, sh]
 published: true
 ---
 
-# 插件的作用
+## 前景回顾
+
+第一节 [从零开始手写 mybatis（一）MVP 版本](https://mp.weixin.qq.com/s/8eF7oFxgLsilqLYGOVtkGg) 中我们实现了一个最基本的可以运行的 mybatis。
+
+常言道，万事开头难，然后中间难。
+
+mybatis 的插件机制是 mybatis 除却动态代理之外的第二大灵魂。
+
+下面我们一起来体验一下这有趣的灵魂带来的痛苦与快乐~
+
+## 插件的作用
 
 在实际开发过程中,我们经常使用的Mybaits插件就是分页插件了，通过分页插件我们可以在不用写count语句和limit的情况下就可以获取分页后的数据,给我们开发带来很大
 
@@ -15,13 +25,13 @@ published: true
 
 这篇博客主要讲Mybatis插件原理,下一篇博客会设计一个Mybatis插件实现的功能就是每当新增数据的时候不用数据库自增ID而是通过该插件生成雪花ID,作为每条数据的主键。
 
-# JDK动态代理+责任链设计模式
+## JDK动态代理+责任链设计模式
 
 Mybatis的插件其实就是个拦截器功能。它利用JDK动态代理和责任链设计模式的综合运用。采用责任链模式，通过动态代理组织多个拦截器,通过这些拦截器你可以做一些你想做的事。
 
 所以在讲Mybatis拦截器之前我们先说说JDK动态代理+责任链设计模式。
 
-## JDK 动态代理案例
+### JDK 动态代理案例
 
 ```java
 package com.github.houbb.mybatis.plugin;
@@ -93,13 +103,13 @@ sayHello......
 ------插入后置处理代码-------------
 ```
 
-# 优化1：面向对象
+## 优化1：面向对象
 
 上面代理的功能是实现了,但是有个很明显的缺陷，就是 HelloInvocationHandler 是动态代理类，也可以理解成是个工具类，我们不可能会把业务代码写到写到到invoke方法里，
 
 不符合面向对象的思想，可以抽象一下处理。
 
-## 定义接口
+### 定义接口
 
 可以设计一个Interceptor接口，需要做什么拦截处理实现接口就行了。
 
@@ -114,7 +124,7 @@ public interface Interceptor {
 }
 ```
 
-## 实现接口
+### 实现接口
 
 ```java
 public class LogInterceptor implements Interceptor{
@@ -140,7 +150,7 @@ public class TransactionInterceptor implements Interceptor{
 }
 ```
 
-## 实现代理
+### 实现代理
 
 ```java
 public class InterfaceProxy implements InvocationHandler {
@@ -174,7 +184,7 @@ public class InterfaceProxy implements InvocationHandler {
 }
 ```
 
-## 测试验证
+### 测试验证
 
 ```java
 public static void main(String[] args) {
@@ -200,7 +210,7 @@ sayHello......
 
 
 
-# 优化 2：灵活指定前后
+## 优化 2：灵活指定前后
 
 上面的动态代理确实可以把代理类中的业务逻辑抽离出来，但是我们注意到，只有前置代理，无法做到前后代理，所以还需要在优化下。
 
@@ -209,9 +219,9 @@ sayHello......
 **把拦截对象信息进行封装，作为拦截器拦截方法的参数，把拦截目标对象真正的执行方法放到Interceptor中完成，这样就可以实现前后拦截，并且还能对拦截对象的参数等做修改。**
 
 
-## 实现思路
+### 实现思路
 
-### 代理类上下文
+#### 代理类上下文
 
 设计一个 Invocation 对象。
 
@@ -249,7 +259,7 @@ public class Invocation {
 }
 ```
 
-### 调整接口
+#### 调整接口
 
 - Interceptor.java
 
@@ -280,7 +290,7 @@ public class MyLogInterceptor implements Interceptor {
 }
 ```
 
-### 重新实现代理类
+#### 重新实现代理类
 
 ```java
 public class MyInvocationHandler implements InvocationHandler {
@@ -313,7 +323,7 @@ public class MyInvocationHandler implements InvocationHandler {
 
 最核心的就在于构建了 invocation，然后执行对应的方法。
 
-## 测试
+### 测试
 
 - 代码
 
@@ -334,7 +344,7 @@ sayHello......
 ------插入后置处理代码-------------
 ```
 
-# 优化 3：划清界限
+## 优化 3：划清界限
 
 上面这样就能实现前后拦截，并且拦截器能获取拦截对象信息。
 
@@ -342,9 +352,9 @@ sayHello......
 
 再修改一下，在拦截器增加一个插入目标类的方法。
 
-## 实现
+### 实现
 
-### 接口调整
+#### 接口调整
 
 ```java
 public interface Interceptor {
@@ -368,7 +378,7 @@ public interface Interceptor {
 }
 ```
 
-### 实现调整
+#### 实现调整
 
 可以理解为把静态方法调整为对象方法。
 
@@ -391,7 +401,7 @@ public class MyLogInterceptor implements Interceptor {
 }
 ```
 
-## 测试
+### 测试
 
 - 代码
 
@@ -412,11 +422,11 @@ sayHello......
 ------插入后置处理代码-------------
 ```
 
-# 责任链模式
+## 责任链模式
 
-## 多个拦截器如何处理?
+### 多个拦截器如何处理?
 
-### 测试代码
+#### 测试代码
 
 ```java
 public static void main(String[] args) {
@@ -466,9 +476,9 @@ sayHello......
 
 当然很多小伙伴看到这里其实已经想到使用责任链模式，下面我们一起来看一下责任链模式。
 
-# 责任链模式
-
 ## 责任链模式
+
+### 责任链模式
 
 ```java
 public class InterceptorChain {
@@ -498,7 +508,7 @@ public class InterceptorChain {
 }
 ```
 
-## 测试
+### 测试
 
 ```java
 public static void main(String[] args) {
@@ -526,9 +536,9 @@ sayHello......
 ------tx end-------------
 ```
 
-# 个人的思考
+## 个人的思考
 
-## 拦截器是否可以改进？
+### 拦截器是否可以改进？
 
 实际上个人感觉这里可以换一种角度，比如定义拦截器接口时，改为：
 
@@ -550,6 +560,8 @@ public interface Interceptor {
 }
 ```
 
+不过这样也有一个缺点，那就是对于 process 执行的部分不可见，丧失了一部分灵活性。
+
 ## 抽象实现
 
 对于 plugin() 这个方法，实际上实现非常固定。
@@ -557,6 +569,220 @@ public interface Interceptor {
 应该对于接口不可见，直接放在 chain 中统一处理即可。
 
 
+## 手写 mybatis 引入插件
+
+说了这么多，如果你理解之后，那么接下来的插件实现部分就是小菜一碟。
+
+只是将上面的思想做一个简单的实现而已。
+
+### 快速体验
+
+#### config.xml
+
+引入插件，其他部分省略。
+
+```xml
+<plugins>
+    <plugin interceptor="com.github.houbb.mybatis.plugin.SimpleLogInterceptor"/>
+</plugins>
+```
+
+#### SimpleLogInterceptor.java
+
+我们就是简单的输出一下入参和出参。
+
+```java
+public class SimpleLogInterceptor implements Interceptor{
+    @Override
+    public void before(Invocation invocation) {
+        System.out.println("----param: " + Arrays.toString(invocation.getArgs()));
+    }
+
+    @Override
+    public void after(Invocation invocation, Object result) {
+        System.out.println("----result: " + result);
+    }
+
+}
+```
+
+#### 执行测试方法
+
+输出日志如下。
+
+```
+----param: [com.github.houbb.mybatis.config.impl.XmlConfig@3b76982e, MapperMethod{type='select', sql='select * from user where id = ?', methodName='selectById', resultType=class com.github.houbb.mybatis.domain.User, paramType=class java.lang.Long}, [Ljava.lang.Object;@67011281]
+----result: User{id=1, name='luna', password='123456'}
+User{id=1, name='luna', password='123456'}
+```
+
+是不是灰常的简单，那么是怎么实现的呢？
+
+## 核心实现
+
+### 接口定义
+
+```java
+public interface Interceptor {
+
+    /**
+     * 前置拦截
+     * @param invocation 上下文
+     * @since 0.0.2
+     */
+    void before(Invocation invocation);
+
+    /**
+     * 后置拦截
+     * @param invocation 上下文
+     * @param result 执行结果
+     * @since 0.0.2
+     */
+    void after(Invocation invocation, Object result);
+
+}
+```
+
+### 启动插件
+
+在 openSession() 的时候，我们启动插件：
+
+```java
+public SqlSession openSession() {
+    Executor executor = new SimpleExecutor();
+    //1. 插件
+    InterceptorChain interceptorChain = new InterceptorChain();
+    List<Interceptor> interceptors = config.getInterceptorList();
+    interceptorChain.add(interceptors);
+    executor = (Executor) interceptorChain.pluginAll(executor);
+
+    //2. 创建
+    return new DefaultSqlSession(config, executor);
+}
+```
+
+这里我们就看到了一个责任链，实现如下。
+
+### 责任链
+
+```java
+public class InterceptorChain {
+
+    /**
+     * 拦截器列表
+     * @since 0.0.2
+     */
+    private final List<Interceptor> interceptorList = new ArrayList<>();
+
+    /**
+     * 添加拦截器
+     * @param interceptor 拦截器
+     * @return this
+     * @since 0.0.2
+     */
+    public synchronized InterceptorChain add(Interceptor interceptor) {
+        interceptorList.add(interceptor);
+
+        return this;
+    }
+
+    /**
+     * 添加拦截器
+     * @param interceptorList 拦截器列表
+     * @return this
+     * @since 0.0.2
+     */
+    public synchronized InterceptorChain add(List<Interceptor> interceptorList) {
+        for(Interceptor interceptor : interceptorList) {
+            this.add(interceptor);
+        }
+
+        return this;
+    }
+
+    /**
+     * 代理所有
+     * @param target 目标类
+     * @return 结果
+     * @since 0.0.2
+     */
+    public Object pluginAll(Object target) {
+        for(Interceptor interceptor : interceptorList) {
+            target = DefaultInvocationHandler.proxy(target, interceptor);
+        }
+
+        return target;
+    }
+
+}
+```
+
+其中的 DefaultInvocationHandler 实现如下：
+
+```java
+/**
+ * 默认的代理实现
+ * @since 0.0.2
+ */
+public class DefaultInvocationHandler implements InvocationHandler {
+
+    /**
+     * 代理类
+     * @since 0.0.2
+     */
+    private final Object target;
+
+    /**
+     * 拦截器
+     * @since 0.0.2
+     */
+    private final Interceptor interceptor;
+
+    public DefaultInvocationHandler(Object target, Interceptor interceptor) {
+        this.target = target;
+        this.interceptor = interceptor;
+    }
+
+    @Override
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        Invocation invocation = new Invocation(target, method, args);
+
+        interceptor.before(invocation);
+
+        // invoke
+        Object result = method.invoke(target, args);
+
+        interceptor.after(invocation, result);
+
+        return result;
+    }
+
+    /**
+     * 构建代理
+     * @param target 目标对象
+     * @param interceptor 拦截器
+     * @return 代理
+     * @since 0.0.2
+     */
+    public static Object proxy(Object target, Interceptor interceptor) {
+        DefaultInvocationHandler targetProxy = new DefaultInvocationHandler(target, interceptor);
+        return Proxy.newProxyInstance(target.getClass().getClassLoader(),
+                target.getClass().getInterfaces(),
+                targetProxy);
+    }
+
+}
+```
+
+## 小结
+
+本节的实现并不难，难在要理解 mybatis 整体对于插件的设计理念，技术层面还是动态代理，结合了责任链的设计模式。
+
+这种套路学会之后，其实很多类似的框架，我们自己在实现的时候都可以借鉴这种思想。
+
+## 拓展阅读
+
+[从零开始手写 mybatis（一）MVP 版本](https://mp.weixin.qq.com/s/8eF7oFxgLsilqLYGOVtkGg)
 
 # 参考资料
 
