@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  java 封神技能树
-date:  2020-7-17 16:52:15 +0800
+date:  2022-7-17 16:52:15 +0800
 categories: [Database]
 tags: [database, sql, sh]
 published: true
@@ -29,9 +29,11 @@ published: true
 
 ## 什么是面向对象
 
-面向对象与面向过程 && 面向对象的三大基本特征(封装/继承/多态)
+[面向对象与面向过程 && 面向对象的三大基本特征(封装/继承/多态)](https://houbb.github.io/2020/07/19/basic-01-what-is-oo)
 
-### 面向对象的基本原则
+[其他编程范式](https://houbb.github.io/2020/07/19/basic-02-what-is-pp)
+
+## 面向对象的基本原则
 
 [open close 开闭原则](https://houbb.github.io/2017/03/14/design-pattern-33-open-close)
 
@@ -53,7 +55,7 @@ published: true
 
 为什么说Java中只有值传递
 
-## 基本数据类型
+# 基本数据类型
 
 8种基本数据类型
 整型中byte、short、int、long的取值范围
@@ -127,7 +129,6 @@ java.lang.reflect.*
 Java中常用注解使用
 注解与反射的结合
 如何自定义一个注解？
-Spring常用注解
 
 # 动态代理
 静态代理
