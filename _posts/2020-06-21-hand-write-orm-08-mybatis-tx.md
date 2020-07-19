@@ -1,13 +1,23 @@
 ---
 layout: post
-title:  手写 mybatis 07-mybatis 事务管理机制详解
+title:  从零开始手写 mybatis（四）- mybatis 事务管理机制详解
 date:  2020-6-21 15:11:16 +0800
 categories: [Java]
 tags: [java, hand-write, middleware, orm, mybatis, sql, sh]
 published: true
 ---
 
-# mybatis 中的事务管理
+## 前景回顾
+
+第一节 [从零开始手写 mybatis（一）MVP 版本](https://mp.weixin.qq.com/s/8eF7oFxgLsilqLYGOVtkGg) 中我们实现了一个最基本的可以运行的 mybatis。
+
+第二节 [从零开始手写 mybatis（二）mybatis interceptor 插件机制详解](https://mp.weixin.qq.com/s/83GzYTQCrWiEowN0gjll0Q)
+
+第三节 [从零开始手写 mybatis（三）jdbc pool 从零实现数据库连接池](https://mp.weixin.qq.com/s/pO1XU_PD2pHyq-bBWMAP2w)
+
+本节我们一起来学习一下 mybatis 中的事务管理。
+
+## mybatis 中的事务管理
 
 mybatis 事务有两种使用方式：
 
@@ -15,10 +25,9 @@ mybatis 事务有两种使用方式：
 
 2. 使用MANAGED的事务管理机制：mybatis本身不会去实现事务管理的相关操作，而是交个外部容器来管理事务。当与spring整合使用后，一般使用spring来管理事务。
 
+## 事务工厂 TransactionFactory
 
-# 事务工厂 TransactionFactory
-
-## 接口定义
+### 接口定义
 
 这个是对事务的一个工厂，接口如下：
 
@@ -58,7 +67,7 @@ public interface TransactionFactory {
 
 最核心的还是要看一下 Transaction 的实现。
 
-## Transaction 接口
+### Transaction 接口
 
 ```java
 public interface Transaction {
@@ -101,7 +110,7 @@ public interface Transaction {
 
 针对 getTimeout() 我们就可以为 mybatis 提供一个操作的超时机制。
 
-## JdbcTransaction 实现
+### JdbcTransaction 实现
 
 基于 jdbc 机制的一些处理。
 
@@ -223,7 +232,7 @@ public class JdbcTransaction implements Transaction {
 
 这里整体的实现实际上非常简单，就是主动设置了一下自动提交的属性。
 
-## ManagedDataSource
+### ManagedDataSource
 
 这个是另一个实现，实际上更加简单。
 
@@ -326,6 +335,207 @@ try{
 用于使用 connection 时，实际上得到的是 mybatis 事务管理器封装之后的 connection。
 
 实际上 spring 的整合，可能适用性更强一些。
+
+## 个人实现
+
+看完了 mybatis 的实现原理之后，我们的实现就变得非常简单。
+
+我们可以简化上面的一些实现，保留核心的部分即可。
+
+### 接口定义
+
+我们只保留核心的 3 个接口。
+
+```java
+/**
+ * 事务管理
+ */
+public interface Transaction {
+
+    /**
+     * Retrieve inner database connection
+     * @return DataBase connection
+     */
+    Connection getConnection();
+
+    /**
+     * Commit inner database connection.
+     */
+    void commit();
+
+    /**
+     * Rollback inner database connection.
+     */
+    void rollback();
+
+}
+```
+
+### ManageTransaction
+
+这个实现，我们的 commit 和 rollback 什么都不做。
+
+```java
+/**
+ * 事务管理
+ *
+ * @since 0.0.18
+ */
+public class ManageTransaction implements Transaction {
+
+    /**
+     * 数据信息
+     * @since 0.0.18
+     */
+    private final DataSource dataSource;
+
+    /**
+     * 隔离级别
+     * @since 0.0.18
+     */
+    private final TransactionIsolationLevel isolationLevel;
+
+    /**
+     * 连接信息
+     * @since 0.0.18
+     */
+    private Connection connection;
+
+    public ManageTransaction(DataSource dataSource, TransactionIsolationLevel isolationLevel) {
+        this.dataSource = dataSource;
+        this.isolationLevel = isolationLevel;
+    }
+
+    public ManageTransaction(DataSource dataSource) {
+        this(dataSource, TransactionIsolationLevel.READ_COMMITTED);
+    }
+
+    @Override
+    public Connection getConnection() {
+        try {
+            if(this.connection == null) {
+                Connection connection = dataSource.getConnection();
+                connection.setTransactionIsolation(isolationLevel.getLevel());
+                this.connection = connection;
+            }
+
+            return connection;
+        } catch (SQLException throwables) {
+            throw new MybatisException(throwables);
+        }
+    }
+
+    @Override
+    public void commit() {
+        //nothing
+    }
+
+    @Override
+    public void rollback() {
+        //nothing
+    }
+
+}
+```
+
+### JdbcTransaction.java
+
+这里和上面的相比较，多出了 commit 和 rollback 的逻辑处理。
+
+```java
+package com.github.houbb.mybatis.transaction.impl;
+
+import com.github.houbb.mybatis.constant.enums.TransactionIsolationLevel;
+import com.github.houbb.mybatis.exception.MybatisException;
+import com.github.houbb.mybatis.transaction.Transaction;
+
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+
+/**
+ * 事务管理
+ *
+ * @since 0.0.18
+ */
+public class JdbcTransaction implements Transaction {
+
+    /**
+     * 数据信息
+     * @since 0.0.18
+     */
+    private final DataSource dataSource;
+
+    /**
+     * 隔离级别
+     * @since 0.0.18
+     */
+    private final TransactionIsolationLevel isolationLevel;
+
+    /**
+     * 自动提交
+     * @since 0.0.18
+     */
+    private final boolean autoCommit;
+
+    /**
+     * 连接信息
+     * @since 0.0.18
+     */
+    private Connection connection;
+
+    public JdbcTransaction(DataSource dataSource, TransactionIsolationLevel isolationLevel, boolean autoCommit) {
+        this.dataSource = dataSource;
+        this.isolationLevel = isolationLevel;
+        this.autoCommit = autoCommit;
+    }
+
+    public JdbcTransaction(DataSource dataSource) {
+        this(dataSource, TransactionIsolationLevel.READ_COMMITTED, true);
+    }
+
+    @Override
+    public Connection getConnection(){
+        try {
+            if(this.connection == null) {
+                Connection connection = dataSource.getConnection();
+                connection.setTransactionIsolation(isolationLevel.getLevel());
+                connection.setAutoCommit(autoCommit);
+                this.connection = connection;
+            }
+
+            return connection;
+        } catch (SQLException throwables) {
+            throw new MybatisException(throwables);
+        }
+    }
+
+    @Override
+    public void commit() {
+        try {
+            //非自动提交，才执行 commit 操作
+            if(connection != null && !this.autoCommit) {
+                connection.commit();
+            }
+        } catch (SQLException throwables) {
+            throw new MybatisException(throwables);
+        }
+    }
+
+    @Override
+    public void rollback() {
+        try {
+            //非自动提交，才执行 commit 操作
+            if(connection != null && !this.autoCommit) {
+                connection.rollback();
+            }
+        } catch (SQLException throwables) {
+            throw new MybatisException(throwables);
+        }
+    }
+
+}
+```
 
 # 参考资料
 
