@@ -2,12 +2,12 @@
 layout: post
 title:  java 封神技能树
 date:  2022-7-17 16:52:15 +0800
-categories: [Database]
-tags: [database, sql, sh]
+categories: [Java]
+tags: [java, skill, sh]
 published: true
 ---
 
-# 不知道的东西
+# 盘古计划
 
 就像每一位读书的人一样，书单都有读过的书和没读过的书。
 
@@ -21,19 +21,17 @@ published: true
 
 自己没学过的要保持对知识的渴望，全部查缺补漏。
 
-# 盘古计划
-
 我称之为这次差缺补漏环节为【盘古计划】。希望自己在学习完之后，可以开天辟地，让知识体系清晰起来。
 
 # 面向对象
 
-## 什么是面向对象
+- 什么是面向对象
 
 [面向对象与面向过程 && 面向对象的三大基本特征(封装/继承/多态)](https://houbb.github.io/2020/07/19/basic-01-what-is-oo)
 
 [其他编程范式](https://houbb.github.io/2020/07/19/basic-02-what-is-pp)
 
-## 面向对象的基本原则
+- 面向对象的基本原则
 
 [open close 开闭原则](https://houbb.github.io/2017/03/14/design-pattern-33-open-close)
 
@@ -49,11 +47,9 @@ published: true
 
 [合成复用原则（Composite Reuse Principle，CRP）](https://houbb.github.io/2017/03/14/design-pattern-39-crp)
 
-## 值传递
+- 值传递
 
-值传递、引用传递
-
-为什么说Java中只有值传递
+[为什么说 Java 中只有值传递](https://houbb.github.io/2020/07/19/basic-03-value-pass-ref-pass)
 
 # 基本数据类型
 
@@ -84,6 +80,7 @@ intern
 
 # Java中各种关键字
 
+native
 transient
 instanceof
 volatile
@@ -91,8 +88,6 @@ synchronized
 final
 static
 const
-
-
 
 # 枚举
 
