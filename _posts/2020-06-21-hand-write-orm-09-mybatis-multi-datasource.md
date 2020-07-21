@@ -401,5 +401,9 @@ TODO..
 
 [项目模板丨多数据源搭建 maven+spring-boot+druid+mybatis-plus+分页插件+分包](https://blog.csdn.net/qq_36134369/article/details/95036273)
 
+[springboot mybatis plus多数据源轻松搞定 （上）](https://www.cnblogs.com/bbird/p/13164536.html)
+
+[Mybatis plus 配置多数据源](https://www.cnblogs.com/CryOnMyShoulder/p/12218876.html)
+
 * any list
 {:toc}
