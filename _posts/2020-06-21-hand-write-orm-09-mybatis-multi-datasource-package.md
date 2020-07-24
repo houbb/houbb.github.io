@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  springboot + mybatis-plus 多数据源配置记录
+title:  springboot + mybatis-plus 分包实现多数据源配置
 date:  2020-6-21 15:11:16 +0800
 categories: [Java]
 tags: [java, hand-write, middleware, orm, mybatis, sql, sh]
@@ -393,9 +393,6 @@ public class SecondDataSourceConfig {
 
 我在测试过程中为了复用，一开始将分页插件，全局配置等设置为公用，后来发现会导致数据源的混乱。
 
-## 注解 
-
-TODO..
 
 ## 参考资料
 
