@@ -19,6 +19,8 @@ Quartz 又是其中十分优秀的框架。
 
 # 目录导航
 
+## 入门
+
 [Quartz 入门系列教程-00-序章](https://blog.csdn.net/ryo1060732496/article/details/79794802)
 
 [Quartz 入门系列教程-01-入门案例](https://blog.csdn.net/ryo1060732496/article/details/79794843)
@@ -44,6 +46,32 @@ Quartz 又是其中十分优秀的框架。
 [Quartz 入门系列教程-11-高级特性](https://blog.csdn.net/ryo1060732496/article/details/79854345)
 
 [Quartz 入门系列教程-12-其他特性](https://blog.csdn.net/ryo1060732496/article/details/79854370)
+
+## 精进
+
+页面的管理
+
+## 源码
+
+## 创造
+
+单机任务调度
+
+基于 MQ 的分布式任务调度
+
+分布式任务调度
+
+
+
+# 参考资料
+
+[精进 Quartz](https://blog.csdn.net/u010648555/article/details/54863394)
+
+[how-can-i-use-jdbc-jobstore-in-quartz-scheduler](https://stackoverflow.com/questions/56588000/how-can-i-use-jdbc-jobstore-in-quartz-scheduler)
+
+[Mule Quartz Connector: How to Use JDBC-JobStore Instead of RAMJobStore.](https://dzone.com/articles/mule-quartz-connector-how-to-use-jdbc-jobstore-ins)
+
+[quartz - JobStore 存储方式](https://my.oschina.net/thinwonton/blog/896638)
 
 * any list
 {:toc}
