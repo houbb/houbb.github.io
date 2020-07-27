@@ -287,6 +287,95 @@ public class CronTest {
 ========================================= my job
 ```
 
+# spring 整合的另一种方式
+
+## Job 的实现方式
+
+上面我们展示了继承 Job 接口的实现方式，实际上也可以不继承接口。
+
+这样我们的任务实现更加灵活。
+
+```java
+public class AnotherJob  {
+
+    public void run() {
+        System.out.println("========================================= my job");
+    }
+
+}
+```
+
+## xml 配置
+
+这里我们需要在配置中指定对应的执行方法：
+
+- applicationContext-simple-invoke.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <!-- 要执行任务的任务类。 -->
+    <bean id="testQuartz" class="com.github.houbb.quartz.spring.job.AnotherJob">
+    </bean>
+
+    <!-- 将需要执行的定时任务注入JOB中。 -->
+    <bean id="testJob" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="testQuartz"/>
+        <!-- 任务类中需要执行的方法 -->
+        <property name="targetMethod" value="run"/>
+        <!-- 上一次未执行完成的，要等待有再执行。 -->
+        <property name="concurrent" value="false"/>
+    </bean>
+
+    <!-- 基本的定时器，会绑定具体的任务。 -->
+    <bean id="testTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="jobDetail" ref="testJob"/>
+        <property name="startDelay" value="3000"/>
+        <property name="repeatInterval" value="2000"/>
+    </bean>
+
+    <bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="testTrigger"/>
+            </list>
+        </property>
+    </bean>
+
+</beans>
+```
+
+## 测试代码
+
+```java
+public class SimpleInvokeTest {
+
+    public static void main(String[] args) {
+        ApplicationContext ac = new ClassPathXmlApplicationContext(
+                "applicationContext-simple-invoke.xml");
+    }
+
+}
+```
+
+## 日志
+
+主要日志如下：
+
+```
+20:18:46.637 [schedulerFactoryBean_QuartzSchedulerThread] DEBUG o.quartz.core.QuartzSchedulerThread - batch acquisition of 1 triggers
+20:18:48.636 [schedulerFactoryBean_QuartzSchedulerThread] DEBUG o.quartz.core.QuartzSchedulerThread - batch acquisition of 0 triggers
+20:18:48.636 [schedulerFactoryBean_Worker-4] DEBUG org.quartz.core.JobRunShell - Calling execute on job DEFAULT.testJob
+========================================= my job
+20:18:48.637 [schedulerFactoryBean_QuartzSchedulerThread] DEBUG o.quartz.core.QuartzSchedulerThread - batch acquisition of 1 triggers
+20:18:50.636 [schedulerFactoryBean_QuartzSchedulerThread] DEBUG o.quartz.core.QuartzSchedulerThread - batch acquisition of 0 triggers
+20:18:50.636 [schedulerFactoryBean_Worker-5] DEBUG org.quartz.core.JobRunShell - Calling execute on job DEFAULT.testJob
+========================================= my job
+```
+
 # 小结
 
 这里基于 RAM 的执行方式就和 spring 整合完成了，但是我们希望更加灵活的话，可以参考前面的与 jdbc 的整合。
@@ -303,15 +392,7 @@ public class CronTest {
 
 [精进 Quartz—Quartz大致介绍（一）](https://blog.csdn.net/u010648555/article/details/54863144)
 
-[通过maven添加quartz-spring 整合](https://www.cnblogs.com/jgig11/p/4383302.html )
-
-[开源框架-PowerJob](https://github.com/KFCFans/PowerJob)
-
-[Establishing SSL connection without server's identit](https://blog.csdn.net/weixin_44779019/article/details/93342054)
-
-[不执行的问题](https://blog.52itstyle.vip/archives/155/)
-
-[quartz中设置Job不并发执行](https://www.cnblogs.com/wpcnblog/p/9354806.html)
+[Quartz 集成Spring的2种方法](https://www.jianshu.com/p/9835b86e188e)
 
 * any list
 {:toc}
