@@ -2,7 +2,7 @@
 layout: post
 title:  Vue-02-系列学习之 vue.js 是什么？
 date:  2017-09-04 20:38:53 +0800
-categories: [UI]
+categories: [Vue]
 tags: [ui, vue, learn-note, sh]
 published: true
 ---
