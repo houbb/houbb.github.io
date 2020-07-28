@@ -3,7 +3,7 @@ layout: post
 title: 前端 Boostrap 简介
 date:  2018-04-22 09:19:44 +0800
 categories: [Web]
-tags: [web, js, nodejs, sh]
+tags: [web, js, nodejs, front, sh]
 published: true
 ---
 
