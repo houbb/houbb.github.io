@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  Quartz 17-quartz springboot 整合使用
+title:  Quartz 17-quartz+springboot+vue 整合
 date:  2017-12-19 14:43:25 +0800
 categories: [Java]
 tags: [java, java-tool, sh]
-published: false
+published: true
 ---
 
 # 序言
@@ -227,8 +227,168 @@ mysql> show tables;
 ## 代码整体结构
 
 ```
-
+├─java
+│  └─com
+│      └─github
+│          └─houbb
+│              └─quartz
+│                  └─vue
+│                      │  QuartzVueApplication.java
+│                      │
+│                      ├─controller
+│                      │      JobController.java
+│                      │
+│                      ├─entity
+│                      │      QuartzJob.java
+│                      │
+│                      ├─job
+│                      │      MyJob.java
+│                      │
+│                      ├─mapper
+│                      │      JobMapper.java
+│                      │
+│                      ├─service
+│                      │  │  IJobService.java
+│                      │  │
+│                      │  └─impl
+│                      │          JobServiceImpl.java
+│                      │
+│                      └─vo
+│                              Result.java
+│
+└─resources
+    │  application.yml
+    │  logback.xml
+    │
+    ├─mapper
+    │      JobMapper.xml
+    │
+    └─static
+        │  job.html
+        │
+        ├─css
+        │  │  index.css
+        │  │
+        │  └─fonts
+        │          element-icons.woff
+        │
+        └─js
+                index.js
+                vue-resource.js
+                vue.js
 ```
+
+# 核心后台代码
+
+## 数据库查询
+
+```sql
+<select id="listJob" resultType="com.github.houbb.quartz.vue.entity.QuartzJob">
+    SELECT
+    job.JOB_NAME as jobName,job.JOB_GROUP as jobGroup,job.DESCRIPTION as description,job.JOB_CLASS_NAME as jobClassName,
+    cron.CRON_EXPRESSION as cronExpression,tri.TRIGGER_NAME as triggerName,tri.TRIGGER_STATE as triggerState,
+    job.JOB_NAME as oldJobName,job.JOB_GROUP as oldJobGroup
+    FROM qrtz_job_details AS job LEFT JOIN qrtz_triggers AS tri ON job.JOB_NAME = tri.JOB_NAME
+    LEFT JOIN qrtz_cron_triggers AS cron ON cron.TRIGGER_NAME = tri.TRIGGER_NAME
+    WHERE tri.TRIGGER_TYPE = 'CRON'
+    <if test="jobName != null and jobName != '' ">
+        AND job.JOB_NAME = #{jobName}
+    </if>
+</select>
+```
+
+## 任务的 CRUD
+
+```java
+import com.github.houbb.quartz.vue.entity.QuartzJob;
+import com.github.houbb.quartz.vue.service.IJobService;
+import com.github.houbb.quartz.vue.vo.Result;
+import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/job")
+public class JobController {
+
+	private final static Logger LOGGER = LoggerFactory.getLogger(JobController.class);
+
+    @Autowired
+    private IJobService jobService;
+    
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@PostMapping("/add")
+	public Result save(@RequestBody QuartzJob quartz){
+		LOGGER.info("新增任务: {}", quartz.toString());
+		return jobService.saveJob(quartz);
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@PostMapping("/update")
+	public Result update(@RequestBody QuartzJob quartz){
+		LOGGER.info("更新任务: {}", quartz.toString());
+		return jobService.saveJob(quartz);
+	}
+
+	/**
+	 * 页面查询
+	 * @param pageNum 页码
+	 * @param pageSize 结果
+	 * @return 结果
+	 * @since 1.0.0
+	 */
+	@GetMapping("/list")
+	public PageInfo list(Integer pageNum, Integer pageSize){
+		LOGGER.info("任务列表");
+		return jobService.listQuartzJob("", pageNum, pageSize);
+	}
+
+	@PostMapping("/trigger")
+	public  Result trigger(String jobName, String jobGroup) {
+		LOGGER.info("触发任务");
+		return jobService.triggerJob(jobName, jobGroup);
+	}
+
+	@PostMapping("/pause")
+	public  Result pause(String jobName, String jobGroup) {
+		LOGGER.info("停止任务");
+		return jobService.pauseJob(jobName, jobGroup);
+	}
+
+	@PostMapping("/resume")
+	public  Result resume(String jobName, String jobGroup) {
+		LOGGER.info("恢复任务");
+		return jobService.resumeJob(jobName, jobGroup);
+	}
+
+	@PostMapping("/remove")
+	public  Result remove(String jobName, String jobGroup) {
+		LOGGER.info("移除任务");
+		return jobService.removeJob(jobName, jobGroup);
+	}
+
+}
+```
+
+# 核心前端代码
+
+前端使用 vue + element-ui 实现。
+
+# 后续
+
+单独抽离对应的应用，使其开箱即用。
+
+## springboot-starter
+
+类似于 druid，将页面管理整合到应用之中。
+
+## 实现优化
+
+添加版本迭代
+
+更新特性
 
 # 导航目录
 
