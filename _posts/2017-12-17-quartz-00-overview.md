@@ -47,9 +47,19 @@ Quartz 又是其中十分优秀的框架。
 
 [Quartz 入门系列教程-12-其他特性](https://blog.csdn.net/ryo1060732496/article/details/79854370)
 
+[Quartz 15-JDBCJobStore 模式介绍](https://houbb.github.io/2017/12/19/quartz-15-jdbc-hello)
+
+[Quartz 16-spring 整合使用](https://houbb.github.io/2017/12/19/quartz-16-spring)
+
+[Quartz 17-springboot+vue+mybatis+mysql](https://houbb.github.io/2017/12/19/quartz-17-spring-boot)
+
 ## 精进
 
 页面的管理
+
+[Timer 实现任务调度](https://houbb.github.io/2019/01/18/jcip-24-executor-timer)
+
+[ScheduledThreadPoolExecutor 实现任务调度](https://houbb.github.io/2019/01/18/jcip-25-executor-scheduledThreadPoolExecutor)
 
 ## 源码
 
@@ -60,8 +70,6 @@ Quartz 又是其中十分优秀的框架。
 基于 MQ 的分布式任务调度
 
 分布式任务调度
-
-
 
 # 参考资料
 
