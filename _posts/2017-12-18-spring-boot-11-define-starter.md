@@ -39,6 +39,10 @@ SpringBoot提供了针对日常企业应用研发各种场景的spring-boot-star
 
 - [async](https://github.com/houbb/async)
 
+- [quartz-admin](https://github.com/houbb/quartz-admin)
+
+- [metadata](https://github.com/houbb/metadata)
+
 
 ## 命名规则
 
