@@ -1,11 +1,24 @@
 ---
 layout: post
-title:  mybatis 与 spring 整合实现原理
+title:  从零开始手写 mybatis（五）mybatis 与 spring 整合原理详解
 date:  2020-6-21 15:11:16 +0800
 categories: [Java]
 tags: [java, hand-write, middleware, orm, mybatis, sql, sh]
 published: true
 ---
+
+
+# 系列文章
+
+第一节 [从零开始手写 mybatis（一）MVP 版本](https://mp.weixin.qq.com/s/8eF7oFxgLsilqLYGOVtkGg) 中我们实现了一个最基本的可以运行的 mybatis。
+
+第二节 [从零开始手写 mybatis（二）mybatis interceptor 插件机制详解](https://mp.weixin.qq.com/s/83GzYTQCrWiEowN0gjll0Q)
+
+第三节 [从零开始手写 mybatis（三）jdbc pool 从零实现数据库连接池](https://mp.weixin.qq.com/s/pO1XU_PD2pHyq-bBWMAP2w)
+
+第四节 [从零开始手写 mybatis（四）mybatis 事务机制详解](https://mp.weixin.qq.com/s/6Wa5AbOrg4MhRbZL674t8Q)
+
+本节我们一起来学习下如何实现 mybatis 与 spring 的整合。
 
 # 前言
 
@@ -15,13 +28,13 @@ published: true
 
 长文预警：本文内容较多，建议收藏后再看。
 
-自己关注的公众号讲技术的越来越少，讲解底层原理的更少，但是个人还是希望可以看到一点真正有价值的东西。这篇文章就是简单粗暴的源码阅读，也不再做内容拆分。
+关注的公众号讲技术的越来越少，讲解底层原理的更少，但是个人还是希望可以看到一点真正有价值的东西。
 
-我写的技术博客，因为能力有限，大部分觉得挺枯燥的，但是技术原理本身往往是枯燥的，乐趣应该来自于对于技术的运用。
+如果没有人来做，那就让我来做吧。
+
+个人的技术博客，因为能力有限，大部分都是挺枯燥的，但是技术原理本身往往如此，乐趣应该来自于对于技术的运用。
 
 本次以 mybatis-spring v1.3.1 版本为例，简单的看一下源码实现。主要是对于实现流程的梳理，引导如何阅读源码，方法比内容更加重要，愿你有所收获。
-
-闲话休说，上代码！
 
 ## 带着问题学习
 
@@ -30,6 +43,9 @@ SqlSessionFactory，SqlSession 如何生成?
 Mapper 代理如何生成？如何运行？
 
 # 配置示例
+
+闲话休说，上代码！
+
 
 为了便于大家理解，此处给出一个配置的例子作为参考。
 
@@ -719,7 +735,7 @@ public class MapperScannerRegistrar implements ImportBeanDefinitionRegistrar, Re
 
 这两个接口都是 spring 中的，有一个属性  ResourceLoader。
 
-ImportBeanDefinitionRegistrar 接口中的 registerBeanDefinitions 方法比较重要，spring 容器在启动的时候，会调用该防范。
+ImportBeanDefinitionRegistrar 接口中的 registerBeanDefinitions 方法比较重要，spring 容器在启动的时候，会调用该方法。
 
 ### registerBeanDefinitions 方法
 
@@ -1068,7 +1084,9 @@ public abstract class SqlSessionDaoSupport extends DaoSupport {
 
 springboot 整合的实现并不难，但是可以提供很大的便利性，如果有机会的话，可以开一篇讲解下如何实现 springboot 的自动配置。
 
-这篇文章的篇幅较长，与大师的对话总是这样，漫长无垠，收获颇丰。
+与大师的对话总是这样，仰之弥高，钻之弥坚。
+
+让源码飞一会儿~
 
 如果对你有帮助，也欢迎点个赞，鼓励一下作者。
 
