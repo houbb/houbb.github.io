@@ -21,41 +21,57 @@ published: true
 
 # 主要内容
 
-sql 注入，
+[01-SQL 注入](https://houbb.github.io/2020/08/09/web-safe-01-sql-injection)
 
-XSS（跨站脚本攻击）
+[02-XSS 跨站脚本攻击](https://houbb.github.io/2020/08/09/web-safe-02-xss)
 
-CRLF 回车换行攻击 
+[03-CRLF 回车换行攻击](https://houbb.github.io/2020/08/09/web-safe-03-crlf)
 
-CSRF（跨站请求伪造）
+[04-CSRF 跨站请求伪造](https://houbb.github.io/2020/08/09/web-safe-04-csrf)
 
-XML 外部实体（XXE）
+[05-weak password 弱口令](https://houbb.github.io/2020/08/09/web-safe-05-weak-password)
 
-开放重定向漏洞
+[06-URL redirect 开放重定向漏洞](https://houbb.github.io/2020/08/09/web-safe-06-redirect)
 
-子域劫持
+[07-XXE XML 外部实体](https://houbb.github.io/2020/08/09/web-safe-07-xxe)
 
-内存溢出
+[08-SSRF 服务端请求伪造](https://houbb.github.io/2020/08/09/web-safe-08-ssrf)
 
-服务端请求伪造，或者 SSRF
+[09-OS 命令注入](https://houbb.github.io/2020/08/09/web-safe-09-command)
+
+webshell 攻击，
+
+Xpath 注入
 
 模板注入
 
-代码执行攻击，
+序列化漏洞
+
+目录穿越
+
+文件读取&文件上传&文件包含
 
 本地文件包含攻击，
 
 远程文件包含攻击，
 
-webshell 攻击，
+子域劫持
+
+内存溢出
+
+配置安全
+
+中间件
+
+web cache 欺骗共计
+
+HTTP 请求走私
+
+代码执行攻击，
 
 [ddos 攻击](https://houbb.github.io/2020/07/19/acp-learn-08-DDos)
 
-不安全的反序列化攻击
-
 敏感信息泄露：加密+脱敏
-
-弱口令攻击+验证码+QPS限制
 
 CFCA 加密签名
 

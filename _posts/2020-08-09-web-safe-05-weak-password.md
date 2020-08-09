@@ -4,7 +4,7 @@ title:  web 安全系列-05-weak password 弱口令
 date:  2020-08-09 10:37:20 +0800
 categories: [web]
 tags: [web, web-safe, sf]
-published: false
+published: true
 ---
 
 # 弱口令
@@ -25,6 +25,8 @@ published: false
 
 严谨暴力重试，比如一次失败之后，就需要输入验证码。
 
+ps: 第一次输入错误之后，才弹出验证码，这样用户体验比较好。验证码，滑块的用户体验是最好的。
+
 一天错误 3 次，直接冻结。
 
 监控报警等等。
@@ -40,8 +42,6 @@ published: false
 # 拓展阅读 
 
 [web 安全系列](https://houbb.github.io/2020/08/09/web-safe-00-overview)
-
-# 参考资料
 
 * any list
 {:toc}

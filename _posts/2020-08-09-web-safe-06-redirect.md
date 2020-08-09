@@ -4,7 +4,7 @@ title:  web 安全系列-06-URL Redirect 开放重定向漏洞
 date:  2020-08-09 10:37:20 +0800
 categories: [web]
 tags: [web, web-safe, sf]
-published: false
+published: true
 ---
 
 # 漏洞描述
