@@ -21,27 +21,31 @@ published: true
 
 # 主要内容
 
-sql注入，
+sql 注入，
 
-跨站脚本，
+XSS（跨站脚本攻击）
 
-关于XSS（跨站脚本攻击）和CSRF（跨站请求伪造）
+CRLF 回车换行攻击 
 
-代码执行，
+CSRF（跨站请求伪造）
 
-CRLF，
+代码执行攻击，
 
-本地文件包含，
+本地文件包含攻击，
 
-远程文件包含，
+远程文件包含攻击，
 
-webshell，
+webshell 攻击，
 
-CFCA
+[ddos 攻击](https://houbb.github.io/2020/07/19/acp-learn-08-DDos)
 
-ddos
+不安全的反序列化攻击
 
-用户非法输入 js 字符
+敏感信息泄露：加密+脱敏
+
+弱口令攻击+验证码+QPS限制
+
+CFCA 加密签名
 
 跨域问题
 
@@ -75,7 +79,11 @@ oauth2
 
 # 前景规划
 
-专门设计一个项目：web-safe  针对上面的每一个点，专门设计一个模块，处理对应的安全问题。
+专门设计一个项目：websafe  针对上面的每一个点，专门设计一个模块，处理对应的安全问题。
+
+websafe-sql
+
+websafe-xss
 
 # 参考资料
 
