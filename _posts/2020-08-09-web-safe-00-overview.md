@@ -39,7 +39,7 @@ published: true
 
 [09-OS 命令注入](https://houbb.github.io/2020/08/09/web-safe-09-command)
 
-webshell 攻击，
+[10-webshell 攻击](https://houbb.github.io/2020/08/09/web-safe-10-webshell)
 
 Xpath 注入
 
