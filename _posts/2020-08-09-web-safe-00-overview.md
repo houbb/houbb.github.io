@@ -41,9 +41,9 @@ published: true
 
 [10-webshell 攻击](https://houbb.github.io/2020/08/09/web-safe-10-webshell)
 
-Xpath 注入
+[11-xpath 注入](https://houbb.github.io/2020/08/09/web-safe-11-xpath)
 
-模板注入
+[12-SSTI 模板注入](https://houbb.github.io/2020/08/09/web-safe-12-ssti)
 
 序列化漏洞
 
@@ -61,13 +61,13 @@ Xpath 注入
 
 配置安全
 
-中间件
-
 web cache 欺骗共计
 
 HTTP 请求走私
 
 代码执行攻击，
+
+中间件
 
 [ddos 攻击](https://houbb.github.io/2020/07/19/acp-learn-08-DDos)
 
