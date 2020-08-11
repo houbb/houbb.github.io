@@ -39,7 +39,7 @@ published: true
 ## 题型
 
 | 题目类型 | 题目数量  |  分值 |
-|:----|:----|
+|:----|:----|:----|
 | 单选题   | 50 题     | 每题 1 分 |
 | 多选题   | 30 题     | 每题 1 分 |
 | 判断题   | 20 题     | 每题 1 分 |
@@ -138,7 +138,21 @@ published: true
 
 # 拓展阅读
 
+[ACP 学习-01-阿里云云计算专业认证学习范围概览](https://houbb.github.io/2020/07/19/acp-learn-01-overview)
 
+[ACP 学习-02-云服务器（Elastic Compute Service，简称ECS）](https://houbb.github.io/2020/07/19/acp-learn-02-ecs)
+
+[ACP 学习-03-弹性伸缩（Auto Scaling）](https://houbb.github.io/2020/07/19/acp-learn-03-auto-scaling)
+
+[ACP 学习-04-负载均衡（Server Load Balancer）](https://houbb.github.io/2020/07/19/acp-learn-04-slb)
+
+[ACP 学习-05-专有网络 VPC](https://houbb.github.io/2020/07/19/acp-learn-05-vpc)
+
+[ACP 学习-06-对象存储 OSS](https://houbb.github.io/2020/07/19/acp-learn-06-oss)
+
+[ACP 学习-07-CDN](https://houbb.github.io/2020/07/19/acp-learn-07-cdn)
+
+[ACP 学习-08-DDoS 防护](https://houbb.github.io/2020/07/19/acp-learn-08-DDos)
 
 # 参考资料
 
