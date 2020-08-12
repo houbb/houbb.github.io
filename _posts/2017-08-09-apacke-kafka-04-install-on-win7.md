@@ -417,7 +417,7 @@ chicken dinner
 
 [spring kafka](https://houbb.github.io/2018/09/19/spring-kafka)
 
-[springboot 整合 kafka]()
+[springboot 整合 kafka](https://houbb.github.io/2017/08/09/apacke-kafka-05-springboot)
 
 # 参考资料
 
