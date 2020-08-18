@@ -51,9 +51,9 @@ published: true
 
 [15-ddos 攻击](https://houbb.github.io/2020/07/19/acp-learn-08-DDos)
 
-子域劫持
+[16-子域劫持](https://houbb.github.io/2020/08/09/web-safe-15-subdomain-takeover)
 
-内存溢出
+[17-缓冲区溢出](https://houbb.github.io/2020/08/09/web-safe-16-buffer-overflow)
 
 配置安全
 
