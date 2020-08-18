@@ -204,9 +204,13 @@ streams API构建在Kafka提供的核心基元基础上:它使用生产者和消
 
 # 使用场景
 
+
+
 ## 用例
 
-这是一个描述的一些流行的用例Apache卡夫卡®。要了解这些领域的运作概况，请参阅这篇[博客文章](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)。
+这是一个描述的一些流行的用例Apache卡夫卡®。
+
+要了解这些领域的运作概况，请参阅这篇[博客文章](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying)。
 
 ## 消息传递
 

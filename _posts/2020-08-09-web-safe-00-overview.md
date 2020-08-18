@@ -45,15 +45,11 @@ published: true
 
 [12-SSTI 模板注入](https://houbb.github.io/2020/08/09/web-safe-12-ssti)
 
-序列化漏洞
+[13-序列化漏洞](https://houbb.github.io/2020/08/09/web-safe-13-serial)
 
-目录穿越
+[14-目录穿越](https://houbb.github.io/2020/08/09/web-safe-14-path-travel)
 
-文件读取&文件上传&文件包含
-
-本地文件包含攻击，
-
-远程文件包含攻击，
+[15-ddos 攻击](https://houbb.github.io/2020/07/19/acp-learn-08-DDos)
 
 子域劫持
 
@@ -61,15 +57,19 @@ published: true
 
 配置安全
 
-web cache 欺骗共计
+web cache 欺骗攻击
 
 HTTP 请求走私
 
 代码执行攻击，
 
-中间件
+文件读取&文件上传&文件包含
 
-[ddos 攻击](https://houbb.github.io/2020/07/19/acp-learn-08-DDos)
+本地文件包含攻击，
+
+远程文件包含攻击，
+
+中间件
 
 敏感信息泄露：加密+脱敏
 
