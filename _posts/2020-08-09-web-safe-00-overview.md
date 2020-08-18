@@ -63,19 +63,27 @@ HTTP 请求走私
 
 中间件
 
-代码执行攻击
-
 文件读取&文件上传&文件包含
 
-本地文件包含攻击，
-
-远程文件包含攻击，
+代码执行攻击
 
 敏感信息泄露：加密+脱敏
 
 CFCA 加密签名
 
 跨域问题
+
+# 认证方式
+
+SSO
+
+OAUTH
+
+JWT
+
+Kerberos
+
+SAML
 
 # TOP10
 
@@ -116,6 +124,8 @@ websafe-xss
 # 参考资料
 
 [从OWASP Top10简要分析Web安全漏洞的趋势](https://www.jianshu.com/p/a88e0f8ff89a)
+
+[Web安全学习笔记](https://www.bookstack.cn/read/LyleMi-Learn-Web-Hacking/3f79e2c413ce452f.md)
 
 * any list
 {:toc}
