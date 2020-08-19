@@ -29,6 +29,16 @@ tessdata 文件夹中：
 C:\Program Files (x86)\Tesseract-OCR\tessdata
 ```
 
+## maven 引入
+
+```xml
+<dependency>
+    <groupId>net.sourceforge.tess4j</groupId>
+    <artifactId>tess4j</artifactId>
+    <version>4.5.1</version>
+</dependency>
+```
+
 ## 编码
 
 ```java
@@ -87,6 +97,8 @@ OCR Result:
 [Java OCR 图像智能字符识别技术，可识别中文](https://www.cnblogs.com/pejsidney/p/9487888.html)
 
 [Java 实现OCR 识别图像文字(手写中文)----tess4j](https://blog.csdn.net/weixin_37794901/article/details/83343092)
+
+[Java使用OCR技术识别图形图像文本信息](https://www.jianshu.com/p/c2ddd2e411af)
 
 * any list
 {:toc}
