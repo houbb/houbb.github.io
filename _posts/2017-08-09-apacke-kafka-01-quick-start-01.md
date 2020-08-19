@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Apache Kafka
+title:  Apache Kafka-01-kafka 快速开始
 date:  2017-8-9 09:32:36 +0800
 categories: [Apache]
 tags: [apache, kafka, mq]
