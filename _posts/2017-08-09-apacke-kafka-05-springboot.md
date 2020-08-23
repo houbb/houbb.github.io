@@ -9,9 +9,13 @@ published: true
 
 # 背景
 
+[Kafka 实战（一）kafka 入门介绍](https://mp.weixin.qq.com/s/g4PVjwFI0FHoY_te9AD-9A)
+
+[Kafka 实战（二）kafka 入门介绍](https://mp.weixin.qq.com/s/YIiPxE5aDTfyAHWxKLIhVA)
+
 安装好了 kafka，于是想使用 springboot 整合一把。
 
-留作以后使用翻阅。
+便于以后使用翻阅。
 
 # 快速开始
 
@@ -340,6 +344,12 @@ public class KafkaConsumer {
 
 }
 ```
+
+# 小结
+
+本文主要讲解了如何让 kafka 与 spring 进行整合。
+
+后续将对生产者和消费者进行深入讲解。
 
 # 拓展阅读
 
