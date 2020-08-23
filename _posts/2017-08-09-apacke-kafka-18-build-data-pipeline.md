@@ -624,7 +624,7 @@ Confluent提供了一个可用的连接器清单(http//www.confluent.io/product/
 
 关于构建连接器的更多细节已经超出了本章的讨论范围，不过可以参考官方文档学习如何构建连接器(http://docs.confluent.io/3.0.1/connect/devguide.html)。
 
-建议将已有的连接器作为人门参考，或者从使用mavenarchtype(https://github.com/jcustenborder/kafka-connect-archtype)开始。另外，可以在Kafka的社区邮件组(users@kafka.apache.org)寻求帮助，或者在邮件组里展示自己的连接器。
+建议将已有的连接器作为人门参考，或者从使用mavenarchtype(https：/github.com/jcustenborder/kafka-connect-archtype)开始。另外，可以在Kafka的社区邮件组(users@kafka.apache.org)寻求帮助，或者在邮件组里展示自己的连接器。
 
 # 深入理解Connect
 
