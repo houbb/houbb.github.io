@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  java 自定义注解，spring 增强之后无法获取注解属性
+title:  spring 增强之后无法获取自定义注解属性及解决方案
 date:  2020-08-09 10:37:20 +0800
 categories: [web]
 tags: [web, http, sf]
