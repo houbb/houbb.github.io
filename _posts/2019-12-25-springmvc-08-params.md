@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Spring Web MVC-08-springmvc 如何接收各种参数（普通参数，对象，JSON, URL）
+title: Spring Web MVC-08-springmvc 接收请求参数（普通参数，对象，JSON, URL）
 date:  2019-12-25 16:57:12 +0800
 categories: [Spring]
 tags: [spring mvc, http, spring, sf]
