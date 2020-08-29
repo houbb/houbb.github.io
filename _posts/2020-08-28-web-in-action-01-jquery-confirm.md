@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  JQuery 如何实现弹出确认框
-date:  2020-08-09 10:37:20 +0800
+title:  web 实战-01-JQuery 如何实现弹出确认框
+date:  2020-08-28 10:37:20 +0800
 categories: [web]
 tags: [web, http, sf]
 published: true
@@ -39,15 +39,16 @@ published: true
 
 # jquery confirm 删除框
 
-
 ## 依赖
+
+此处还依赖 jquery 
 
 ```html
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.css"></link>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.0/jquery-confirm.min.js"></script>
 ```
 
-## 提示框
+## 确认框
 
 
 ```java
@@ -77,7 +78,28 @@ $(".btn").on("click", function () {
 });
 ```
 
+### 确认框太宽的问题
+
+这个弹出框默认的宽度特别宽，也没有看到直接修改宽度的地方。
+
+生产的就是一个 div，有一个 class 属性，于是我们指定一下宽度即可。
+
+```css
+.jconfirm-box {
+	margin: auto;
+	width: 350px;
+}
+```
+
 ## 确认框
+
+`$.alert()`, `$.confirm()` & `$.dialog()` 都是其对应的别名。
+
+也就是这个可以做对话框，确认框，和提示框。
+
+# 拓展阅读
+
+layer 相关的弹窗实现
 
 # 参考资料
 
