@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  jsp 学习笔记-13-response 响应
+title:  jsp 学习笔记-14-response 响应
 date:  2020-08-09 10:37:20 +0800
 categories: [web]
 tags: [web, http, jsp, sf]
