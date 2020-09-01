@@ -97,6 +97,12 @@ $(".btn").on("click", function () {
 
 也就是这个可以做对话框，确认框，和提示框。
 
+## 想显示多行
+
+看网上的说法都是添加 `\r\n` 之类的。亲测无效。
+
+后来测试下来应该使用 `<br/>` 来实现换行。
+
 # 拓展阅读
 
 layer 相关的弹窗实现
@@ -108,6 +114,8 @@ layer 相关的弹窗实现
 [JQuery Confirm 确认框](https://blog.csdn.net/jnx1142410525/article/details/79271314)
 
 [jqueryConfirm使用教程](https://www.jianshu.com/p/c25da8e83852)
+
+[实现$(messager).confirm换行](https://blog.csdn.net/whm18322394724/article/details/79145353)
 
 https://github.com/craftpip/jquery-confirm
 
