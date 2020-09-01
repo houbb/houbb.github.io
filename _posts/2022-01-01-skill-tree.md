@@ -1164,6 +1164,27 @@ IoT
 量子计算
 AR & VR
 
+# 一些值得学习的技术
+
+云原生学习 + CLOUD
+
+ES Luence
+
+AI 深度学习
+
+- 比特币 
+
+《精通比特币》
+
+《从区块链到信用社会》
+
+《区块链原理设计与应用》
+
+IOT
+
+Security  安全
+
+
 # 其他语言
 
 Groovy
@@ -1174,6 +1195,9 @@ NodeJs
 Swift
 Rust
 
+# 工具
+
+[jetbrains-agent.zip](https://github.com/houbb/resource/files/5156552/jetbrains-agent.zip)
 
 # 参考资料
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: js 手写实现简单版本的 jquery
+title: js 手写实现简单版本的 jquery-01-入门教程
 date:  2020-3-27 17:53:59 +0800
 categories: [HTML]
 tags: [html, js, sh]
@@ -12,6 +12,138 @@ published: true
 [jquery](https://jquery.com/download/) 作为一名功成身退的老将，实际上个人觉得所有的新框架都是换汤不换药。
 
 所以还是觉得可以尝试下，自己实现简单版本的 JQuery。
+
+## 设计目的
+
+jQuery可以分解为JavaScript + Query。即JavaScript查询的意思。所以jQuery的核心目标就是JavaScript查询，通过选择DOM元素再对DOM元素进行操作。并解决了跨浏览器兼容问题，使DOM操作趋于统一。
+
+## 如何实现
+
+选择DOM是为了对其进行进一步的操作。
+
+这些操作主要包括以下几个部分
+
+- 属性操作
+
+如class,style,attribute等
+
+- 元素操作
+
+如元素的创建、添加、移动、复制、删除等
+
+- 内容操作
+
+通过innerHTML等获取或设置元素的内容
+
+- 样式操作
+
+如对元素的width、height、position、display等样式进行获取或修改
+
+- 事件操作
+
+Event是用户与浏览器进行动态交互的重要模块。如添加、删除事件等
+
+- 通信操作
+
+Ajax技术用于客户端和服务器端进行异步通信，实现页面的局部刷新。
+
+
+# jQuery 核心特性
+
+## 1、jQuery()或$()
+
+jQuery把所有的操作都包含在一个jQuery()函数中，提供了一个统一的操作入口jQuery()或$()。
+
+jQuery框架的基础是查询，即查询文档元素对象。因此我们可以认为jQuery函数对象就是一个选择器，并在此基础上构建和运行查询过滤器。
+
+需要注意的是：jQuery对象的方法都是针对DOM元素对象进行操作的。
+
+## 2、jQuery构造函数
+
+jQuery把所有操作都包装在一个jQuery()函数中，形成了统一(也是唯一)的操作入口。能够解析任意的数据类型，但是能够解析的参数包括以下四种类型
+
+- $(expression,context)
+
+expression可以是一个ID，DOM元素名，CSS表达式，XPath表达式。
+
+context表示查找的上下文环境，若不写，则表示在整个document中查找
+
+- $(html)
+
+html表示一个HTML结构字符串，此时jQuery将创建一个对应结构的html文档片段。
+
+```js
+$("div").append($("<p>hello world</p>"))
+```
+
+- jQuery(element)
+
+element表示一个DOM对象或集合，把DOM元素或集合当中的DOM元素转换为jQuery对象。
+
+```js
+$(document).ready(function () {
+    alert("hello world");
+})
+//将document文档对象转换为jQuery对象，然后调用ready方法，ready处理函数为document绑定一个事件，当页面初始化之后，弹出弹出框。
+```
+
+- $(fn)
+
+fn是一个处理函数，由于$(document).ready()使用频繁，所以jQuery使用$()来代替。表示在DOM元素解析完成后就执行代码
+
+## 3、链式写法
+
+核心就是通过return语句返回jQuery对象。
+
+## 4、选择器
+
+jQuery选择器支持ID,TagName,CSS1-CSS3的表达式(即支持用CSS选择器来选择元素)。
+
+只需要将字符串传入jQuery()构造函数，就可以选择不同的DOM对象，然后处理成jQuery对象返回。
+
+## 5、扩展性
+
+为什么jQuery需要扩展性？
+
+简单的说就是为了满足不同的开发需求。
+
+为了保证jQuery的通用性并同时保证代码简洁性（就是体积越小越好），jQuery仅实现了基础的方法和函数。
+
+但为了满足不同开发需求，留下了易于扩展的方法和接口。
+
+# 整体概览
+
+```js
+(function(){
+
+//替换全局的$,jQuery变量
+var 
+    _jQuery = window.jQuery,
+    _$ = window.$,
+
+    //jQuery实现
+    jQuery = window.jQuery = window.$ = function( selector, context ) {
+        return new jQuery.fn.init( selector, context );
+    };
+
+    //jQuery原型方法
+    jQuery.fn = jQuery.prototype = {
+        init: function( selector, context ) {},    
+        //一些原型的属性和方法
+    };
+
+    //原型替换
+    jQuery.fn.init.prototype = jQuery.fn;
+
+    //原型扩展
+    jQuery.extend = jQuery.fn.extend = function() {};
+    jQuery.extend({
+        // 一堆静态属性和方法
+    });
+})();
+```
+
+
 
 # 定义类型
 
@@ -768,7 +900,35 @@ window.jQuery = window.$ = jQuery;
 至此，jQuery 框架的设计模型就初见端倪了，后面的工作就是根据需要使用 extend() 函数扩展 jQuery 功能。
 
 
-## 拓展
+## 命名冲突
+
+同时，为了防止同其他框架协作时发生 `$` 简写的冲突，我们可以封装一个noConflict()方法解决$简写冲突。
+
+思路分析：在匿名执行jQuery框架的最前面，先用_$，_jQuery两个变量存储外部的$，jQuery的值。
+
+执行noConflict()函数时再恢复外部变量$，jQuery的值。
+
+```js
+(function(){
+    var 
+        window = this,
+        _jQuery = window.jQuery,//存储外部jQuery变量
+        _$ = window.$,//存储外部$变量
+        jQuery = window.jQuery = window.$ = function( selector, context ) {
+            return new jQuery.fn.init( selector, context );
+        };
+        jQuery.noConflict = function( deep ) {
+            window.$ = _$;//将外部变量又重新赋值给$
+            if ( deep )
+                window.jQuery = _jQuery;//将外部变量又重新赋值给jQuery
+            return jQuery;
+        },
+})();
+```
+
+至此，我们已经模拟实现了一个简单的jQuery框架。以后就可以根据x项目需要不断的扩展jQUery的方法即可。
+
+# 拓展
 
 例如，在闭包体外，直接引用 jQuery.fn.extend() 函数为 jQuery 扩展 fontStyle 插件。
 
@@ -813,13 +973,27 @@ window.onload = function () {
 
 类似于 mvp.css 自己实现一套比较适合个人的前端小框架。
 
+手写一个 bootstrap 或者 semantic 样式，设计属于自己的样式框架。
+
 上传到 github 并且发布到 npm，上传到 CDN 便于使用。
 
 # 参考资料
 
+《JavaScript高级程序设计》和《悟透JavaScript》
+
 [JS实现简单的 jQuery 框架（非常详细）](http://c.biancheng.net/view/5826.html)
 
 [简单实现 jQuery](https://www.jianshu.com/p/813216c7e9b2)
+
+[从零实现一个简易jQuery框架之一—jQuery框架概述](https://www.cnblogs.com/yuliangbin/p/9281252.html)
+
+[从零实现一个简易的jQuery框架之二—核心思路详解](https://www.cnblogs.com/yuliangbin/p/9286575.html)
+
+[jQuery：从零开始，DIY一个jQuery（1）](https://www.cnblogs.com/vajoy/p/5510743.html)
+
+[jQuery：从零开始，DIY一个jQuery（2）](https://www.cnblogs.com/vajoy/p/5728755.html)
+
+[jQuery：从零开始，DIY一个jQuery（3）](https://www.cnblogs.com/vajoy/p/5748815.html)
 
 * any list
 {:toc}
