@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Redis 分布式锁设计
+title: redis 分布式锁设计 redis lock
 date: 2019-1-7 19:29:47 +0800
 categories: [Distributed]
 tags: [redis, lock, sh]

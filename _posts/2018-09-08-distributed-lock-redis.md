@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Redis 分布式锁
+title:  Redis 分布式锁 redis lock
 date:  2018-09-08 11:07:16 +0800
 categories: [Distributed]
 tags: [distributed, redis, lock, sql, zookeeper, sh]
@@ -35,6 +35,119 @@ excerpt: Redis 分布式锁原理及其代码实现。
 即没有获取到锁将直接返回获取锁失败。
 
 - 高性能 & 高可用
+
+# 知识准备
+
+谈起redis锁，下面三个，算是出现最多的高频词汇：
+
+setnx
+
+redLock
+
+redisson
+
+## setnx
+
+其实目前通常所说的setnx命令，并非单指redis的 `setnx key value` 这条命令。
+
+一般代指redis中对set命令加上nx参数进行使用 set 这个命令，目前已经支持这么多参数可选：
+
+```
+SET key value [EX seconds|PX milliseconds] [NX|XX] [KEEPTTL]
+```
+
+当然了，就不在文章中默写Api了，基础参数还有不清晰的，可以蹦到官网。
+
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0902/093732_a57625a9_508704.png)
+
+上图是setnx大致原理，主要依托了它的**key不存在才能set成功的特性**，进程A拿到锁，在没有删除锁的Key时，进程B自然获取锁就失败了。
+
+### 为什么设置超时时间？
+
+那么为什么要使用 PX 30000 去设置一个超时时间？
+
+是怕进程A不讲道理啊，锁没等释放呢，万一崩了，直接原地把锁带走了，导致系统中谁也拿不到锁。
+
+就算这样，还是不能保证万无一失。
+
+### 如何保证只能操作自己的锁？
+
+如果进程A又不讲道理，操作锁内资源超过设置的超时时间，那么就会导致其他进程拿到锁，等进程A回来了，回手就是把其他进程的锁删了，如图：
+
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0902/094007_1a9e7104_508704.png)
+
+还是刚才那张图，将T5时刻改成了锁超时，被redis释放。
+
+进程B在T6开开心心拿到锁不到一会，进程A操作完成，回手一个del，就把锁释放了。
+
+当进程B操作完成，去释放锁的时候（图中T8时刻），发现自己锁没了。
+
+找不到锁其实还算好的，万一T7时刻有个进程C过来加锁成功，那么进程B就把进程C的锁释放了。
+
+以此类推，进程C可能释放进程D的锁，进程D....(禁止套娃)，具体什么后果就不得而知了。
+
+所以在用setnx的时候，key虽然是主要作用，但是value也不能闲着，可以设置一个唯一的客户端ID，或者用UUID这种随机数。
+
+当解锁的时候，先获取value判断是否是当前进程加的锁，再去删除。
+
+伪代码：
+
+```
+String uuid = xxxx;
+// 伪代码，具体实现看项目中用的连接工具
+// 有的提供的方法名为set 有的叫setIfAbsent
+set Test uuid NX PX 3000
+try{
+// biz handle....
+} finally {
+    // unlock
+    if(uuid.equals(redisTool.get('Test')){
+        redisTool.del('Test');
+    }
+}
+```
+
+这回看起来是不是稳了。
+
+相反，这回的问题更明显了，在finally代码块中，get和del并非原子操作，还是有进程安全问题。
+
+## 原子性问题
+
+为什么有问题还说这么多呢？
+
+第一，搞清劣势所在，才能更好的完善。
+
+第二点，其实上文中最后这段代码，还是有很多公司在用的。
+
+那么删除锁的正确姿势之一，就是可以使用lua脚本，通过redis的eval/evalsha命令来运行：
+
+目的：保证查询和删除的原子性。
+
+### 伪代码
+
+```
+-- lua删除锁：
+-- KEYS和ARGV分别是以集合方式传入的参数，对应上文的Test和uuid。
+-- 如果对应的value等于传入的uuid。
+if redis.call('get', KEYS[1]) == ARGV[1]
+    then
+ -- 执行删除操作
+        return redis.call('del', KEYS[1])
+    else
+ -- 不成功，返回0
+        return 0
+end
+```
+
+通过lua脚本能保证原子性的原因说的通俗一点：
+
+就算你在lua里写出花，执行也是一个命令(eval/evalsha)去执行的，一条命令没执行完，其他客户端是看不到的。
+
+
+
+
+
+
 
 # jedis 实现一
 
@@ -281,9 +394,72 @@ public static void wrongReleaseLock2(Jedis jedis, String lockKey, String request
 
 [lua](https://houbb.github.io/2018/09/09/lua)
 
+[redis lock 实现](https://houbb.github.io/2019/01/07/redis-lock)
+
 # jedis 实现二
 
 # redlock
+
+# Redisson
+
+那么既然这么麻烦，有没有比较好的工具呢？
+
+就要说到redisson了。
+
+介绍redisson之前，笔者简单解释一下为什么现在的setnx默认是指set命令带上nx参数，而不是直接说是setnx这个命令。
+
+因为redis版本在2.6.12之前，set是不支持nx参数的，如果想要完成一个锁，那么需要两条命令：
+
+```
+1. setnx Test uuid
+2. expire Test 30
+```
+
+即放入Key和设置有效期，是分开的两步，理论上会出现1刚执行完，程序挂掉，无法保证原子性。
+
+但是早在2013年，也就是7年前，Redis就发布了2.6.12版本，并且官网(set命令页)，也早早就说明了“SETNX, SETEX, PSETEX可能在未来的版本中，会弃用并永久删除”。
+
+曾阅读过一位大佬的文章，其中就有一句指导入门者的面试小套路，具体文字忘记了，大概意思如下：
+
+说到redis锁的时候，可以先从setnx讲起，最后慢慢引出set命令的可以加参数，可以体现出自己的知识面。
+
+如果有缘你也阅读过这篇文章，并且学到了这个套路，作为本文的笔者我要加一句提醒：
+
+请注意你的工作年限！首先回答官网表明即将废弃的命令，再引出set命令七年前的“新特性”，如果是刚毕业不久的人这么说，面试官会以为自己穿越了。
+
+你套路面试官，面试官也会套路你。  -- vt・沃兹基硕德
+
+## 特性
+
+Redisson是java的redis客户端之一，提供了一些api方便操作redis。
+
+但是redisson这个客户端可有点厉害，笔者在官网截了仅仅是一部分的图：
+
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0902/094652_aa414fd0_508704.png)
+
+这个特性列表可以说是太多了，是不是还看到了一些JUC包下面的类名，redisson帮我们搞了分布式的版本，比如AtomicLong，直接用RedissonAtomicLong就行了，连类名都不用去新记，很人性化了。
+
+锁只是它的冰山一角，并且从它的wiki页面看到，对主从，哨兵，集群等模式都支持，当然了，单节点模式肯定是支持的。
+
+本文还是以锁为主，其他的不过多介绍。
+
+Redisson普通的锁实现源码主要是RedissonLock这个类，还没有看过它源码的盆友，不妨去瞧一瞧。
+
+源码中加锁/释放锁操作都是用lua脚本完成的，封装的非常完善，开箱即用。
+
+这里有个小细节，加锁使用setnx就能实现，也采用lua脚本是不是多此一举？
+
+笔者也非常严谨的思考了一下：这么厉害的东西哪能写废代码？
+
+其实仔细看了一下，加锁解锁的lua脚本考虑的非常全面，其中就包括锁的重入性，这点可以说是考虑非常周全。
+
+## 源码浅析
+
+
+
+
+
+
 
 # 拓展阅读
 
