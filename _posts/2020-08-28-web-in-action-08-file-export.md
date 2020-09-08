@@ -66,6 +66,28 @@ public String download(@RequestParam(value = "fileToken") String fileToken, Http
 
 （2）从 FTP 等文件服务器下载文件
 
+## 报错
+
+这个页面我在自测的时候是正常的，后来发现有时候会报错
+
+```
+UT010029: Stream is closed
+java.io.IOException: UT010029: Stream is closed
+        at io.undertow.servlet.spec.ServletOutputStreamImpl.write(ServletOutputStreamImpl.java:132)
+        at sun.nio.cs.StreamEncoder.writeBytes(StreamEncoder.java:221)
+        at sun.nio.cs.StreamEncoder.implFlushBuffer(StreamEncoder.java:291)
+        at sun.nio.cs.StreamEncoder.implFlush(StreamEncoder.java:295)
+        at sun.nio.cs.StreamEncoder.flush(StreamEncoder.java:141)
+        at java.io.OutputStreamWriter.flush(OutputStreamWriter.java:229)
+        at org.springframework.util.StreamUtils.copy(StreamUtils.java:119)
+```
+
+原因：
+
+在写入文件时调用requestOutputStream.write()方法已将response发出，再在Controller中return时被认为是再发送一次，因而会报错，解决这个问题只需返回null即可。
+
+所以最后还是决定移除返回值，直接返回 void。
+
 # 方式2：返回页面的方式
 
 这是一种比较秀的方式，以前没接触过，估计只有一些老项目会用到。
@@ -172,6 +194,10 @@ response.setHeader("Content-Disposition", String.format("attachment; filename=\"
 # 参考资料
 
 [导出excel (返回页面方式)](https://www.cnblogs.com/forever2h/p/6836938.html)
+
+[java.io.IOException:stream closed 异常的原因及处理](https://www.cnblogs.com/mabaishui/archive/2011/07/26/2116987.html)
+
+[Action请求后台出现Response already commited异常解决方法](https://www.cnblogs.com/seedling/p/10011551.html)
 
 * any list
 {:toc}
