@@ -350,25 +350,6 @@ void uploadFile(MultipartFile file, HttpServletResponse response, HttpServletReq
 ## 前端页面回调
 
 
-# 中文乱码问题
-
-## http 响应乱码
-
-```java
-BufferedReader reader = new BufferedReader(new InputStreamReader(
-                    conn.getInputStream(), "UTF-8"));
-```
-
-这样指定之后，获取可以保证接受的中文不再乱码。
-
-
-## 页面提交，后端接受乱码
-
-mvc 项目接受其他的信息不乱码，猜测还是请求的参数有问题导致的。
-
-尝试下对中文进行编码。
-
-
 
 # 参考资料
 
@@ -386,9 +367,6 @@ mvc 项目接受其他的信息不乱码，猜测还是请求的参数有问题�
 
 [Content type ‘multipart/form-data；boundary=---- ；charset=UTF-8‘ not support 异常](https://blog.csdn.net/zjhcxdj/article/details/107819168)
 
-## 中文乱码
-
-[关于http请求返回数据中文乱码解决方法](https://blog.csdn.net/qq_29332467/article/details/75006884)
 
 * any list
 {:toc}
