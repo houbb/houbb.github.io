@@ -140,9 +140,40 @@ Assert.assertEquals("001", value);
 
 ok，测试通过~
 
+# 一点报错
+
+## 报错
+
+```
+redis.clients.jedis.exceptions.JedisDataException: MISCONF Redis is configured to save RDB snapshots, but it is currently not able to persist on disk. Commands that may modify the data set are disabled, because this instance is configured to report errors during writes if RDB snapshotting fails (stop-writes-on-bgsave-error option). Please check the Redis logs for details about the RDB error.
+```
+
+看了一下后台日志
+
+```
+[24264] 10 Sep 13:50:40.737 # Background saving error
+[24264] 10 Sep 13:50:46.073 * 1 changes in 900 seconds. Saving...
+[24264] 10 Sep 13:50:46.393 * Background saving started by pid 13380
+[13380] 10 Sep 13:50:46.751 # Failed opening the RDB file dump.rdb (in server root dir C:\Program Files\Redis) for saving: 数据无效。
+[13380] 10 Sep 13:50:46.752 # rdbSave failed in qfork: Permission denied
+[24264] 10 Sep 13:50:46.796 # fork operation complete
+```
+
+应该是权限不足导致的
+
+### 解决方式
+
+重新以管理员权限启动服务器。
+
+重新发布，测试通过。
+
+
+
 # 参考资料
 
 [Redis 安装](https://www.runoob.com/redis/redis-install.html)
+
+[Redis之MISCONF Redis is configured to save RDB snapshots错误](https://cloud.tencent.com/developer/article/1387728)
 
 * any list
 {:toc}
