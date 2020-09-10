@@ -25,6 +25,8 @@ published: true
 
 # 参考资料
 
+[Boostrap & jQuery 分页插件](https://github.com/lyonlai/bootstrap-paginator)
+
 [Pagination 分页](http://amazeui.clouddeep.cn/1.x/widgets/pagination/)
 
 [github amazeui-pagination](https://github.com/q545244819/amazeui-pagination)
