@@ -81,7 +81,7 @@ RedLock的实现步骤可以看成下面几步：
 
 Martin首先说明，在没有fencing token的保证之下，锁服务可能出现的问题，他给出了下面的图：
 
-![Martin的分析](https://mmbiz.qpic.cn/mmbiz/fEsWkVrSk56ItN7kosjYp6yO1tsFuS3cDzH16QgOJOPr52WlAowAYkcw8fKIncmQzCO6Bq5aONtQpWA1zjzygQ/640?wx_fmt=other&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0910/211358_78694d65_508704.png)
 
 ## 客户端停顿导致锁失效
 
@@ -101,8 +101,7 @@ Martin首先说明，在没有fencing token的保证之下，锁服务可能出�
 
 这样就可以从资源侧确定client所携带锁的获取先后顺序了。
 
-![fencing token机制](https://mmbiz.qpic.cn/mmbiz_png/fEsWkVrSk56ItN7kosjYp6yO1tsFuS3cxPY3RMssHYkdbJGMhyRtosIYuNjvbbv393Ta6M02YWUzQGVBkRiaVfQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)
-
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0910/211634_6a5d23d9_508704.png)
 
 ## fencing token机制
 
@@ -142,7 +141,7 @@ Martin还指出，引入锁的主要目的无非以下两个：
 
 2. 其次，antirez认为分布式系统中的物理时钟可以通过良好的运维来保证；
 
-# 个人简介
+# 个人理解
 
 在整个论证的过程中，个人比较倾向于Martin的看法，antirez的反驳在我看来是没有真正说明RedLock安全性问题的。
 
