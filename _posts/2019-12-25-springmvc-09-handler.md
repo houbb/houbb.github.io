@@ -400,6 +400,103 @@ public class MyFileter implements Filter {
 }
 ```
 
+# 日志拦截器的例子
+
+## 应该统一处理的事情
+
+1. 统一设置编码
+
+2. 设置 TraceId
+
+3. 输出参数
+
+4. 输出请求地址
+
+5. 输出耗时
+
+6. 输出 IP 信息
+
+## 代码
+
+```java
+package com.github.houbb.springboot.learn.interceptor.interceptor;
+
+import org.springframework.util.StringUtils;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Enumeration;
+
+/**
+ * 日志拦截器
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+public class LogInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest req, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        // 设置编码
+        req.setCharacterEncoding("UTF-8");
+
+        // 设置 TraceId
+
+        // 参数输出
+        Enumeration<String> paramNames = req.getParameterNames();
+        while (paramNames.hasMoreElements()) {
+            String paramName = paramNames.nextElement();
+            Object value = req.getParameter(paramName);
+            System.out.println(paramName+": " + value);
+        }
+
+        // IP 信息获取
+        String ip = getRequestIp(req);
+
+        // 耗时统计
+
+        return true;
+    }
+
+    /**
+     * 获取请求的 IP 地址
+     * @param req 请求信息
+     * @return 结果
+     * @since 0.0.1
+     */
+    private String getRequestIp(HttpServletRequest req) {
+        String ip = req.getHeader("X-Forwarded-For");
+        if (StringUtils.isEmpty(ip)) {
+            ip = req.getHeader("Proxy-Client-IP");
+        }
+        if (StringUtils.isEmpty(ip)) {
+            ip = req.getHeader("WL-Proxy-Client-IP");
+        }
+        if (StringUtils.isEmpty(ip)) {
+            ip = req.getRemoteAddr();
+        }
+
+        return ip;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+        // 移除 TraceId
+    }
+
+}
+```
+
+# 拓展阅读
+
+session
+
 # 参考资料
 
 [springmvc 过滤器和拦截器](https://www.cnblogs.com/LiuOOP/p/11208830.html)
