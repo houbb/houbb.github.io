@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Junit @Parameters junit 参数化测试
+title: test 系统学习-02-Junit @Parameters junit 参数化测试
 date:  2018-06-23 23:43:46 +0800
 categories: [Test]
 tags: [test, sh]
