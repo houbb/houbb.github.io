@@ -1,8 +1,8 @@
 ---
 layout: post
-title:  Oracle Jar Maven
+title:  Oracle 系统学习-01-oracle java 客户端包上传到 maven 仓库
 date:  2018-06-20 11:31:36 +0800
-categories: [SQL]
+categories: [Oracle]
 tags: [oracle, maven]
 published: true
 ---
@@ -16,7 +16,6 @@ published: true
 选择合适的版本下载
 
 ## Maven 配置
-
 
 可以将项目导入到本地的 maven 仓库，然后即可正常引入。
 

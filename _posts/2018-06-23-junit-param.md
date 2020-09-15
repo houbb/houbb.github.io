@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Junit @Parameters
+title:  Junit @Parameters junit 参数化测试
 date:  2018-06-23 23:43:46 +0800
 categories: [Test]
 tags: [test, sh]
@@ -157,10 +157,3 @@ Junit5 这些方式变得非常易用+强大。
 
 * any list
 {:toc}
-
-
-
-
-
-
-

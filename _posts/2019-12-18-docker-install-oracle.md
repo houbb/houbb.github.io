@@ -190,21 +190,47 @@ NAME
 XE
 ```
 
+# 小技巧
+
+直接使用 docker terminal 可能不是很好使用。
+
+可以使用 SecureCRT 等工具连接到 192.168.99.100 这个地址操作。
+
+# 请求失败
+
+## pull 镜像
+
+```
+$ docker pull alexeiled/docker-oracle-xe-11g                                                                                                
+Using default tag: latest
+Error response from daemon: pull access denied for alexeiled/docker-oracle-xe-11g, repository does not exist or may require 'docker login': denied: requested access to the resource is denied
+docker@default:~$ docker query docker-oracle-xe-11g
+```
+
+## 查看对应的镜像
+
+```
+$ docker search docker-oracle-xe-11g                                                                                                        
+NAME                                 DESCRIPTION                                     STARS               OFFICIAL            AUTOMATED
+deepdiver/docker-oracle-xe-11g                                                       33                                      [OK]
+epiclabs/docker-oracle-xe-11g        Customized Oracle XE 11g build for CI and de…   16                                      [OK]
+arahman/docker-oracle-xe-11g         phusion/baseimage based spin off of alexei-l…   9                                       [OK]
+pengbai/docker-oracle-xe-11g-r2      oracle xe 11g r2 with sql initdb and web con…   8                                       [OK]
+konnecteam/docker-oracle-xe-11g      Fork of https://github.com/wnameless/docker-…   3                                       [OK]
+rafaelri/docker-oracle-xe-11g        Fork from wnameless/docker-oracle-xe-11g        3                                       [OK]
+ignatov/docker-oracle-xe-11g         Dockerfile of Oracle Database Express Editio…   3                                       [OK]
+```
+
+我们只看有星星的。
+
+此处就选第一个好了。
+
+## 重新拉取
+
+```
+$ docker pull deepdiver/docker-oracle-xe-11g
+```
+
 
 * any list
 {:toc}
-
-
-
-
-
-
-
-
-
- 
-
-
-
-
-
