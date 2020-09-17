@@ -276,7 +276,7 @@ Jedis连接就是连接池中JedisPool管理的资源，JedisPool保证资源在
 
 - 表2. 空闲资源检测相关参数
 
-| 名称	                      |  说明	| 默认值	| 建议 |
+| 名称 |  说明	| 默认值	| 建议 |
 |:---|:---|:---|:---|
 | testWhileIdle	              |  是否开启空闲资源检测。| 	false| 	true |
 | timeBetweenEvictionRunsMillis| 空闲资源的检测周期（单位为毫秒）| 	-1（不检测）	| 建议设置，周期自行选择，也可以默认也可以使用下方JedisPoolConfig 中的配置。  |
@@ -336,9 +336,9 @@ spring 的依赖一般，根据项目已有的引入即可。
 
 ```xml
 <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
-    <property name="maxTotal" value="${redis.maxTotal}"/>
-    <property name="minIdle" value="${redis_minIdle}"/>
-    <property name="maxIdle" value="${redis_maxIdle}"/>
+    <property name="maxTotal" value="${redis.maxTotal:200}"/>
+    <property name="minIdle" value="${redis_minIdle:20}"/>
+    <property name="maxIdle" value="${redis_maxIdle:40}"/>
     <property name="maxWaitMillis" value="${redis_maxWaitMillis}"/>
 </bean>
 <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
@@ -350,6 +350,7 @@ spring 的依赖一般，根据项目已有的引入即可。
     <constructor-arg index="4" value="${redis_password}"/>
 </bean>
 ```
+
 
 这里的初始化也可以替换为基于 name 的等都可以。
 
