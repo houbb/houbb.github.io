@@ -433,5 +433,7 @@ redispool 实现原理
 
 [jedisPool的使用](https://blog.csdn.net/dreamzuora/article/details/84942009)
 
+[JedisPool的实现](https://zhuanlan.zhihu.com/p/37590195)
+
 * any list
 {:toc}
