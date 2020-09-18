@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Redis-04-redis windows 10 install windows 安装笔记
+title: Redis-04-redis install on windows 10 redis windows10 安装笔记
 date:  2016-10-23 09:35:04 +0800
 categories: [SQL]
 tags: [redis, cache, nosql]
