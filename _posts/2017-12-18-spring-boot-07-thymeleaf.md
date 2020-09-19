@@ -211,6 +211,44 @@ spring.thymeleaf.mode=LEGACYHTML5
 Hello！, 爱开源的小叶同学!
 ```
 
+# 遇到的报错
+
+## HTML 已配置
+
+```
+org.thymeleaf.exceptions.TemplateInputException: Template mode \\\"HTML\\\" has not been configured
+```
+
+- 解决方式
+
+```
+mode: HTML
+```
+
+我直接把这个 mode 注释掉了。
+
+## meta 报错
+
+```
+org.xml.sax.SAXParseException: 元素类型 "meta" 必须由匹配的结束标记 "" 终止。
+```
+
+这个就是原来的 html 写的不够规范：
+
+```html
+<meta charset="utf-8">
+```
+
+我加了一个结尾：
+
+```html
+<meta charset="utf-8"/>
+```
+
+# 拓展阅读
+
+[springboot 整合 jsp](https://houbb.github.io/2020/08/09/jsp-learn-01-springboot)
+
 # 参考资料
 
 [what-is-thymeleaf](https://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html#what-is-thymeleaf)
