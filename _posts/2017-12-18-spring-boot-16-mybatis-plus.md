@@ -165,7 +165,95 @@ public BasePageInfo<User> pageQueryList(CommonPageReq pageReq) {
 
 ## 不生效的情况
 
+```java
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.baomidou.mybatisplus.mapper.Wrapper;
+import com.baomidou.mybatisplus.plugins.pagination.PageHelper;
+import com.github.houbb.heaven.util.lang.StringUtil;
+import com.github.houbb.privilege.admin.common.dto.BasePageInfo;
+import com.github.houbb.privilege.admin.common.dto.common.CommonPageReq;
+import com.github.houbb.privilege.admin.dal.entity.Role;
+import com.github.houbb.privilege.admin.dal.mapper.RoleMapper;
+import com.github.houbb.privilege.admin.service.service.RoleService;
+import com.baomidou.mybatisplus.service.impl.ServiceImpl;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+@Service
+public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
+
+    @Override
+    public BasePageInfo<Role> pageQueryList(CommonPageReq pageReq) {
+        PageHelper.startPage(pageReq.getPageNum(), pageReq.getPageSize());
+
+        Wrapper<Role> roleWrapper = new EntityWrapper<>();
+
+        List<Role> userList = baseMapper.selectList(roleWrapper);
+        long total = PageHelper.getTotal();
+
+        BasePageInfo<Role> pageInfo = new BasePageInfo<>();
+        pageInfo.setList(userList);
+        pageInfo.setTotal(total);
+        return pageInfo;
+    }
+
+}
+```
+
+一开始以为是 PageHelper.startPage 后面不是紧跟查询方法，后来调整顺序发现也不行。
+
+## 问题原因
+
+然后 debug 了一下源码。
+
+mybatis-plus 的 PaginationInterceptor 类
+
+```java
+// 先判断是不是SELECT操作
+MappedStatement mappedStatement = (MappedStatement) metaObject.getValue("delegate.mappedStatement");
+if (!SqlCommandType.SELECT.equals(mappedStatement.getSqlCommandType())) {
+    return invocation.proceed();
+}
+RowBounds rowBounds = (RowBounds) metaObject.getValue("delegate.rowBounds");
+/* 不需要分页的场合 */
+if (rowBounds == null || rowBounds == RowBounds.DEFAULT) {
+    // 本地线程分页
+    if (localPage) {
+        // 采用ThreadLocal变量处理的分页
+        rowBounds = PageHelper.getPagination();
+        if (rowBounds == null) {
+            return invocation.proceed();
+        }
+    } else {
+        // 无需分页
+        return invocation.proceed();
+    }
+}
+```
+
+发现属性 localPage 没有启动，于是调整一下分页的配置：
+
+```java
+@Bean
+public PaginationInterceptor paginationInterceptor(){
+    PaginationInterceptor page = new PaginationInterceptor();
+    //设置方言类型
+    page.setDialectType("mysql");
+    page.setLocalPage(true);
+    return page;
+}
+```
+
+然后分页就正常了。
+
+# 小结
+
+myabtis-plus 个人使用的版本可能相对比较靠前，这种基于 ThreadLocal 的分页方式没有默认开启。
+
+有时候去网上查也很难查到类似的问题。
+
+因为不同的版本，问题可能完全不同，所以还是需要看源码。
 
 # 参考资料
 
