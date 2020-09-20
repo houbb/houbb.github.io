@@ -245,6 +245,41 @@ org.xml.sax.SAXParseException: 元素类型 "meta" 必须由匹配的结束标�
 <meta charset="utf-8"/>
 ```
 
+## 彻底解决
+
+springboot 使用thymeleaf 模板引擎时报错org.xml.sax.SAXParseException: 元素类型 “link” 必须由匹配的结束标记 “” 终止，org.xml.sax.SAXParseException: 元素类型 “meta” 必须由匹配的结束标记 “” 终止，出现这类问题的时候，解决方法如下
+
+在pom.xml中添加
+
+```xml
+<properties>
+    <java.version>1.8</java.version>
+    <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
+    <thymeleaf-layout-dialect.version>2.0.5</thymeleaf-layout-dialect.version>
+</properties>
+
+<!--启用不严格检查html-->
+<dependency>
+    <groupId>net.sourceforge.nekohtml</groupId>
+    <artifactId>nekohtml</artifactId>
+    <version>1.9.22</version>
+</dependency>
+```
+
+
+在properties.yml添加如下内容
+
+```yml
+thymeleaf:
+  cache: false
+  mode: LEGACYHTML5
+  content-type: text/html
+  encoding: UTF-8
+```
+
+
+
+
 # 拓展阅读
 
 [springboot 整合 jsp](https://houbb.github.io/2020/08/09/jsp-learn-01-springboot)
@@ -255,6 +290,7 @@ org.xml.sax.SAXParseException: 元素类型 "meta" 必须由匹配的结束标�
 
 [Thymeleaf入门（一）——入门与基本概述](Thymeleaf入门（一）——入门与基本概述)
 
+[springboot中thymeleaf严格检查问题](https://blog.csdn.net/qq_29663299/article/details/89362283)
 
 * any list
 {:toc}
