@@ -210,7 +210,52 @@ public String result(@Valid User user, BindingResult bindingResult) {
 
 解决思路：通过 springboot 统一异常拦截进行处理。
 
-这一种感觉还没有直接使用 aop 方便。
+```java
+package com.github.houbb.springboot.learn.validator.controller;
+
+import com.github.houbb.springboot.learn.validator.dto.ValidVo;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+
+/**
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+@ControllerAdvice
+public class ValidInterceptor {
+
+
+    /**
+     * Validator 参数校验异常处理
+     *
+     * @param ex 异常
+     * @return 结果
+     */
+    @ExceptionHandler(value = BindException.class)
+    public ResponseEntity<Object> handleMethodVoArgumentNotValidException(BindException ex) {
+        FieldError err = ex.getFieldError();
+        String message = "参数{".concat(err.getField()).concat("}").concat(err.getDefaultMessage());
+        ValidVo validVo = new ValidVo();
+        validVo.setCode("400");
+        validVo.setMsg(message);
+
+        return ResponseEntity.ok(validVo);
+    }
+
+}
+```
+
+- 报错提示
+
+```json
+{
+    "code": "400",
+    "msg": "参数{username}用户名称不可为空"
+}
+```
 
 # 参考资料
 
