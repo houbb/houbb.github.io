@@ -245,6 +245,20 @@ public class ValidInterceptor {
         return ResponseEntity.ok(validVo);
     }
 
+    /**
+     * Validator 参数校验异常处理
+     *
+     * @param ex 异常
+     * @return 结果
+     */
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    @ResponseBody
+    public ResponseEntity<Object> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        FieldError err = ex.getBindingResult().getFieldError();
+        String message = "参数{".concat(err.getField()).concat("}").concat(err.getDefaultMessage());
+        return ResponseEntity.ok(RespUtil.fail(message));
+    }
+
 }
 ```
 
