@@ -333,6 +333,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+@Component
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
@@ -367,6 +368,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+@Component
 public class MyFileter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -397,6 +399,36 @@ public class MyFileter implements Filter {
     public void destroy() {
 
     }
+}
+```
+
+## 使用的拦截器不生效问题
+
+使用的 springboot 版本为 1.5.x
+
+晚上说直解指定 component 就行，但是实际测试不生效。
+
+所以加了一下拦截器的指定。
+
+```java
+import com.github.houbb.privilege.admin.web.interceptor.SessionRequestInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+
+@Configuration
+public class WebMvcConfig extends WebMvcConfigurationSupport {
+
+    @Autowired
+    private SessionRequestInterceptor sessionRequestInterceptor;
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(sessionRequestInterceptor).addPathPatterns("/**");
+        super.addInterceptors(registry);
+    }
+
 }
 ```
 
