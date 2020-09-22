@@ -62,6 +62,8 @@ topic各分区都存在已提交的offset时，从offset后开始消费；只要
 
 [Kafka auto.offset.reset值详解](https://blog.csdn.net/lishuangzhe7047/article/details/74530417)
 
+[kafka的auto.offset.reset详解](https://blog.csdn.net/xianpanjia4616/article/details/84347087)
+
 * amy list
 {:toc}
 
