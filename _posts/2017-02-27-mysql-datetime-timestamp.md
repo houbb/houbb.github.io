@@ -1,6 +1,6 @@
 ---
 layout: post
-title: MySQL datetime timestamp 以及如何自动更新
+title: MySQL datetime timestamp 以及如何自动更新，如何实现范围查询
 date:  2017-02-27 21:44:46 +0800
 categories: [sql]
 tags: [mysql, sql]
@@ -253,6 +253,54 @@ By default, the first TIMESTAMP column has both DEFAULT CURRENT_TIMESTAMP and ON
 
 从MySQL 5.6.5 开始，Automatic Initialization and Updating同时适用于TIMESTAMP和DATETIME，且不限制数量。
 
+# 如何实现范围查询
+
+如果想查询最近一段时间操作的记录，可使用如下查询语句（-60*10的单位是秒）：
+
+```sql
+SELECT * FROM table
+WHERE  unix_timestamp(时间字段)>unix_timestamp(NOW())-60*10 
+ORDER BY 时间字段 desc
+LIMIT 1000
+```
+
+## java 实战
+
+我想查询最近一段时间内的错误次数，使用 java 结合 mybatis 实现：
+
+```java
+long unixTimeSeconds = System.currentTimeMillis()/1000 - timeSeconds;
+long errorCount = baseMapper.selectErrorCount(ip, unixTimeSeconds);
+```
+
+- Mapper.java
+
+定义如下：
+
+```java
+/**
+ * 错误的次数统计
+ * @param ip ip 信息
+ * @param timeSeconds 毫秒数
+ * @return 错误的次数
+ * @since 0.0.13
+ */
+long selectErrorCount(@Param("ip") String ip,
+                          @Param("timeSeconds") long timeSeconds);
+```
+
+- 对应的 xml sql
+
+```sql
+<select id="selectErrorCount" resultType="java.lang.Long">
+    SELECT count(*)
+    FROM LOGIN_LOG
+    WHERE IP = #{ip}
+    AND login_status = 'F'
+    AND unix_timestamp(create_time) > #{timeSeconds}
+</select>
+```
+
 # 个人收获 
 
 mysql 的这种特性其实更加类似于一个原理应该就是触发器。
@@ -262,9 +310,13 @@ mysql 的这种特性其实更加类似于一个原理应该就是触发器。
 缺点可能是有些 sql 没有提供这种特性，不过常见的应该都提供了。
 
 
+# 参考资料
+
 [mysql更新时设置ON UPDATE CURRENT_TIMESTAMP保存数据库的时间](https://blog.csdn.net/dongzhouzhou/article/details/80367551)
 
 [MySQL中datetime和timestamp的区别及使用](https://www.cnblogs.com/mxwz/p/7520309.html)
+
+[mysql TIMESTAMP（时间戳）详解——查询最近一段时间操作的记录](https://www.cnblogs.com/XL-Liang/archive/2012/05/15/2501242.html)
 
 * any list
 {:toc}
