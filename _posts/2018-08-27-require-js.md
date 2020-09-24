@@ -519,6 +519,93 @@ define([
 类似的插件还有json和mdown，用于加载json文件和markdown文件
 
 
+# 实战入门例子
+
+## requuire js 引入
+
+（1）使用 npm
+
+```
+npm install –g requirejs
+```
+
+（2）使用CDN
+
+```html
+<script src="https://cdn.bootcss.com/require.js/2.3.5/require.js"></script>
+```
+
+（3）使用本地文件
+
+<script src="scripts/require.js"></script>
+
+## 文件编写
+
+- hello.js
+
+```js
+alert("hello");
+```
+
+在相同目录下创建：
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>require-js</title>
+    <script src="https://cdn.bootcss.com/require.js/2.3.5/require.js" defer async="true"></script>
+    <script data-main="hello" src="https://cdn.bootcss.com/require.js/2.3.5/require.js"></script>
+</head>
+<body>
+</body>
+</html>
+```
+
+直接打开页面，弹出 alert 窗口。
+
+## config 引入
+
+使用 js 的方式引入：
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>require-js</title>
+    <script src="https://cdn.bootcss.com/require.js/2.3.5/require.js"></script>
+<body>
+</body>
+<script>
+    requirejs(["hello"], function(hello) {
+        //This function is called when scripts/helper/util.js is loaded.
+        //If util.js calls define(), then this function is not fired until
+        //util's dependencies have loaded, and the util argument will hold
+        //the module value for "helper/util".
+    });
+</script>
+</html>
+```
+
+这里，requirejs 引入必须移除异步，同步加载。
+
+通过 下面的方式去实现：
+
+```js
+requirejs(["hello"], function(hello) {
+});
+```
+
+直接打开页面即可。
+
+# 拓展阅读
+
+[requirejs-text](https://github.com/requirejs/text)
+
+[requirejs-css](https://github.com/guybedford/require-css)
+
 # 参考资料
 
 https://requirejs.org/
@@ -530,6 +617,12 @@ http://www.ruanyifeng.com/blog/2012/10/javascript_module.html
 http://www.ruanyifeng.com/blog/2012/10/asynchronous_module_definition.html
 
 http://www.ruanyifeng.com/blog/2012/11/require_js.html
+
+- 其他
+
+[requirejs如何导入html模板](https://segmentfault.com/q/1010000000721573)
+
+[JS模块化工具 requirejs 学习文档](https://segmentfault.com/a/1190000015667113)
 
 * any list
 {:toc}

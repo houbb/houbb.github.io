@@ -153,7 +153,7 @@ include 引入(涉及到一个从网上扒的封装函数,下面有)（head和bo
     <div id="">
         <p>你没有看错，我在这！</p>
     </div>
-    <include src="fotter.html"></include>
+    <include src="footer.html"></include>
 </body>
 ```
 
