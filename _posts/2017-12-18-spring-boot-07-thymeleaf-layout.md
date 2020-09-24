@@ -134,6 +134,8 @@ layout:fragment="content"  ：指定页面正文内容 content要与layout2.html
 
 # 拓展阅读
 
+jsp include
+
 freemarker include
 
 webpack 打包
