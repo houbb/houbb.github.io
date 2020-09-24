@@ -79,10 +79,89 @@ oDownload.startDownload('import.htm',onDownloadDone)
 </script>
 ```
 
-# include.js
+# import 引入
+
+href链接引入的html文件，id可以看做页面引导，在script中用到
+
+```html
+<head>
+    <meta charset="utf-8" />
+    <title>主页面</title>
+    <!--import引入-->
+    <link rel="import" href="top.html" id="page1"/>
+    <link rel="import" href="fotter.html" id="page2"/>
+</head>
+```
+
+- js 写入
+
+```js
+!--注意顺序-->
+<!--import在头部引入，里面是啥就是啥-->
+<script type="text/javascript">
+    document.write(page1.import.body.innerHTML);
+</script>
+你好呀！    <!--本页面写入内容-->
+<script type="text/javascript">
+    document.write(page2.import.body.innerHTML);
+</script>
+```
+
+由上图可以看出，import引入除开script标签，在其他html body中写入什么就引入什么，完全的内容格式.
+
+# JS 引入
+
+```js
+<!--注意顺序-->
+<!--使用js引入，引入整个文档，但是没有html和body，相当于body里面的数据-->
+<div class="top"></div>
+<div class="center">
+    <p>你好，我在中间！</p>
+</div>
+<div class="footer"></div>
+
+<script src="js/jq/jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+    //在js中引入
+    $(document).ready(function () {
+        $('.top').load('top.html');
+        $('.footer').load('fotter.html');
+    });
+</script>
+```
+
+使用js引入，相当于把引入的html中head和body标签中的数据拖出来，在外面包了一个你自己写的标签，比如说上面代码中的
+
+`<div class="top"></div>`
+
+运行结果同import相同，这里不再展示
+
+注意：是head和body标签中的数据，不带标签，下图是浏览器显示代码
 
 
 
+# include.js 引入
+
+include 引入(涉及到一个从网上扒的封装函数,下面有)（head和body标签中的数据直接引入）
+
+```html
+<body>
+    <!--include引入，顺序很重要-->
+    <script src="js/include.js"></script>
+    <include src="top.html"></include>
+    <include src="center.html"></include>
+    <div id="">
+        <p>你没有看错，我在这！</p>
+    </div>
+    <include src="fotter.html"></include>
+</body>
+```
+
+include.js 压缩代码：
+
+```js
+(function(window,document,undefined){var Include39485748323=function(){};Include39485748323.prototype={forEach:function(array,callback){var size=array.length;for(var i=size-1;i>=0;i-=1){callback.apply(array[i],[i])}},getFilePath:function(){var curWwwPath=window.document.location.href;var pathName=window.document.location.pathname;var localhostPaht=curWwwPath.substring(0,curWwwPath.indexOf(pathName));var projectName=pathName.substring(0,pathName.substr(1).lastIndexOf('/')+1);return localhostPaht+projectName},getFileContent:function(url){var ie=navigator.userAgent.indexOf('MSIE')>0;var o=ie?new ActiveXObject('Microsoft.XMLHTTP'):new XMLHttpRequest();o.open('get',url,false);o.send(null);return o.responseText},parseNode:function(content){var objE=document.createElement("div");objE.innerHTML=content;return objE.childNodes},executeScript:function(content){var mac=/<script>([\s\S]*?)<\/script>/g;var r="";while(r=mac.exec(content)){eval(r[1])}},getHtml:function(content){var mac=/<script>([\s\S]*?)<\/script>/g;content.replace(mac,"");return content},getPrevCount:function(src){var mac=/\.\.\//g;var count=0;while(mac.exec(src)){count+=1}return count},getRequestUrl:function(filePath,src){if(/http:\/\//g.test(src)){return src}var prevCount=this.getPrevCount(src);while(prevCount--){filePath=filePath.substring(0,filePath.substr(1).lastIndexOf('/')+1)}return filePath+"/"+src.replace(/\.\.\//g,"")},replaceIncludeElements:function(){var $this=this;var filePath=$this.getFilePath();var includeTals=document.getElementsByTagName("include");this.forEach(includeTals,function(){var src=this.getAttribute("src");var content=$this.getFileContent($this.getRequestUrl(filePath,src));var parent=this.parentNode;var includeNodes=$this.parseNode($this.getHtml(content));var size=includeNodes.length;for(var i=0;i<size;i+=1){parent.insertBefore(includeNodes[0],this)}$this.executeScript(content);parent.removeChild(this);})}};window.onload=function(){new Include39485748323().replaceIncludeElements()}})(window,document);
+```
 
 # 参考资料
 
