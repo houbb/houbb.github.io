@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Cache Travel-09-从零开始手写缓存框架（三）redis rdb 持久化模式模拟
+title:  Cache Travel-09-从零开始手写 redis（三）内存数据重启后如何不丢失？
 date:  2018-09-01 12:24:42 +0800
 categories: [Cache]
 tags: [cache, sh]
