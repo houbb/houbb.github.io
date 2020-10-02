@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Cache Travel-09-从零开始手写 redis（五）过期策略的另一种实现思路
+title:  Cache Travel-09-java 从零开始手写 redis（五）过期策略的另一种实现思路
 date:  2018-09-01 12:24:42 +0800
 categories: [Cache]
 tags: [cache, sh]
