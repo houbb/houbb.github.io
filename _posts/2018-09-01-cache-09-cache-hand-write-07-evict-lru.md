@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Cache Travel-09-java 从零开始手写 redis（七）redis LRU 驱除策略详解及实现
+title:  Cache Travel-09-java 从零开始手写 redis（七）LRU 缓存淘汰策略详解
 date:  2018-09-01 12:24:42 +0800
 categories: [Cache]
 tags: [cache, redis, lru, sh]
