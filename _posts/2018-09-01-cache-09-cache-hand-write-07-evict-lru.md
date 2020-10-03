@@ -19,6 +19,8 @@ published: true
 
 [java从零手写实现redis（五）过期策略的另一种实现思路](https://mp.weixin.qq.com/s/Atrd36UGds9_w_NFQDoEQg)
 
+[java从零手写实现redis（六）AOF 持久化原理详解及实现](https://mp.weixin.qq.com/s/rFuSjNF43Ybxy-qBCtgasQ)
+
 我们前面简单实现了 redis 的几个特性，[java从零手写实现redis（一）如何实现固定大小的缓存？](https://mp.weixin.qq.com/s/6J2K2k4Db_20eGU6xGYVTw) 中实现了先进先出的驱除策略。
 
 但是实际工作实践中，一般推荐使用 LRU/LFU 的驱除策略。
@@ -335,6 +337,8 @@ LRU 有一个比较大的问题，就是每次 O(n) 去查找，这个在 keys �
 个人的理解是可以用空间换取时间，比如添加一个 `Map<String, Integer>` 存储在 list 中的 keys 和下标，O(1) 的速度去查找，但是空间复杂度翻倍了。
 
 不过这个牺牲还是值得的。这种后续统一做下优化，将各种优化点统一考虑，这样可以统筹全局，也便于后期统一调整。
+
+下一节我们将一起来实现以下改进版的 LRU。
 
 Redis 做的事情，就是将看起来的简单的事情，做到一种极致，这一点值得每一个开源软件学习。
 
