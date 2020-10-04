@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Cache Travel-09-java 从零开始手写 redis（八）朴素 LRU 算法改进
+title:  Cache Travel-09-从零开始手写 redis（八）朴素 LRU 淘汰算法性能优化
 date:  2018-09-01 12:24:42 +0800
 categories: [Cache]
 tags: [cache, redis, lru, sh]
