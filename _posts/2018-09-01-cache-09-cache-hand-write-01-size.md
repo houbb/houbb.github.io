@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Cache Travel-09-从零手写 cache 之限定大小
+title:  Cache Travel-09-从零手写 redis（一）FIFO 淘汰策略原理详解及实现
 date:  2018-09-01 12:24:42 +0800
 categories: [Cache]
 tags: [cache, sh]
@@ -386,6 +386,14 @@ System.out.println(cache.keySet());
 ```
 [3, 4]
 ```
+
+# FIFO 淘汰策略的不足
+
+## Belady现象
+
+Belady现象：在采用FIFO算法时，有时会出现的物理页面数增加，缺页率反而提高的异常现象。
+
+Belady现象原因：FIFO算法的置换特征与进程访问内存的动态特征是矛盾的，与置换算法的目标是不一致的（即替换较少使用的页面），因此，被它置换出去的页面不一定是进程不会访问的。
 
 # 小结
 

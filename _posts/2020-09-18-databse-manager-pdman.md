@@ -2,8 +2,8 @@
 layout: post
 title:  Database design tool 数据库管理工具 PDMAN
 date:  2020-08-28 10:37:20 +0800
-categories: [web]
-tags: [web, http, sf]
+categories: [Tool]
+tags: [web, http, tool, sf]
 published: true
 ---
 

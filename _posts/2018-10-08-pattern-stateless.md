@@ -5,7 +5,6 @@ date:  2018-10-08 17:55:28 +0800
 categories: [Pattern]
 tags: [sql, java, pattern, thread-safe, sh]
 published: true
-excerpt: java 线程安全之无状态类
 ---
 
 # 无状态类
