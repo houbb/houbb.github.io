@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Redis Learn-04-热点数据的处理
+title: Redis Learn-04-热点数据处理最佳实践
 date: 2018-12-12 11:35:23 +0800
 categories: [Redis]
 tags: [redis, cache, sh]
