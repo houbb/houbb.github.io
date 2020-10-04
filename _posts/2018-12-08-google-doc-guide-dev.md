@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Google Doc Guide
+title: Google 开发人员文档编写规范
 date: 2018-12-06 11:35:23 +0800
-categories: [Doc]
+categories: [DevOps]
 tags: [google, doc, sh]
 published: true
-excerpt: Google 开发人员文档编写规范
 ---
 
 # 目标和观众
