@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Cache Travel-09-java 从零开始手写 redis（九）缓存淘汰算法 LRU 进一步改进
+title:  Cache Travel-09-java 从零开始手写 redis（九）LRU 缓存淘汰算法如何避免缓存污染
 date:  2018-09-01 12:24:42 +0800
 categories: [Cache]
 tags: [cache, redis, lru, sh]
@@ -21,9 +21,13 @@ published: true
 
 [java从零手写实现redis（六）AOF 持久化原理详解及实现](https://mp.weixin.qq.com/s/rFuSjNF43Ybxy-qBCtgasQ)
 
-我们前面简单实现了 redis 的几个特性，[java从零手写实现redis（一）如何实现固定大小的缓存？](https://mp.weixin.qq.com/s/6J2K2k4Db_20eGU6xGYVTw) 中实现了先进先出的驱除策略。
+[java从零手写实现redis（七）LRU 缓存淘汰策略详解](https://mp.weixin.qq.com/s/X-OIqu_rgLskvbF2rZMP6Q)
 
-但是实际工作实践中，一般推荐使用 LRU/LFU 的驱除策略。
+[从零开始手写 redis（八）朴素 LRU 淘汰算法性能优化](https://mp.weixin.qq.com/s/H8gOujnlTinctjVQqW0ITA)
+
+前两节我们分别实现了 LRU 算法，并且进行了性能优化。
+
+本节作为 LRU 算法的最后一节，主要解决一下缓存污染的问题。
 
 # LRU 基础知识
 
@@ -767,9 +771,11 @@ A 数据被访问了 10 次，B 数据被访问了 2 次。那么二者谁是热
 
 > 开源地址：[https://github.com/houbb/cache](https://github.com/houbb/cache)
 
-觉得本文对你有帮助的话，欢迎点赞评论收藏关注一波~
+觉得本文对你有帮助的话，欢迎点赞评论收藏关注一波，你的鼓励，是我最大的动力~
 
-你的鼓励，是我最大的动力~
+目前我们通过两次优化，解决了性能问题，和批量导致的缓存污染问题。
+
+不知道你有哪些收获呢？或者有其他更多的想法，欢迎留言区和我一起讨论，期待与你的思考相遇。
 
 # 参考资料
 

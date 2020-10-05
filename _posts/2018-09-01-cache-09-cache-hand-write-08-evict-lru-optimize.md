@@ -21,9 +21,9 @@ published: true
 
 [java从零手写实现redis（六）AOF 持久化原理详解及实现](https://mp.weixin.qq.com/s/rFuSjNF43Ybxy-qBCtgasQ)
 
-我们前面简单实现了 redis 的几个特性，[java从零手写实现redis（一）如何实现固定大小的缓存？](https://mp.weixin.qq.com/s/6J2K2k4Db_20eGU6xGYVTw) 中实现了先进先出的驱除策略。
+[java从零手写实现redis（七）LRU 缓存淘汰策略详解](https://mp.weixin.qq.com/s/X-OIqu_rgLskvbF2rZMP6Q)
 
-但是实际工作实践中，一般推荐使用 LRU/LFU 的驱除策略。
+前面我们共同实现了 LRU 基本的算法，但是性能存在一定的问题，本节一起来看一下如何解决性能问题。
 
 # LRU 基础知识
 
@@ -380,9 +380,9 @@ System.out.println(cache.keySet());
 
 > 开源地址：[https://github.com/houbb/cache](https://github.com/houbb/cache)
 
-觉得本文对你有帮助的话，欢迎点赞评论收藏关注一波~
+觉得本文对你有帮助的话，欢迎点赞评论收藏关注一波。你的鼓励，是我最大的动力~
 
-你的鼓励，是我最大的动力~
+不知道你有哪些收获呢？或者有其他更好的想法，欢迎留言区和我一起讨论，期待与你的思考相遇。
 
 # 参考资料
 
