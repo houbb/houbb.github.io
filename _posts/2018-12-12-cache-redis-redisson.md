@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Redisson
+title:  Redisson 入门教程
 date:  2018-05-24 23:03:04 +0800
-categories: [Redis]
-tags: [redis, redis]
+categories: [Cache]
+tags: [redis, sf]
 published: true
 ---
 

@@ -1,192 +1,260 @@
 ---
 layout: post
-title: Redis-01-入门使用简介
-date:  2016-10-23 09:35:04 +0800
-categories: [SQL]
-tags: [redis, cache, nosql]
+title:  Jedis
+date:  2018-09-07 07:44:19 +0800
+categories: [Cache]
+tags: [cache, redis, sh]
 published: true
+excerpt: Jedis 入门教程
 ---
 
-* any list
-{:toc}
+# Jedis
+
+[Jedis](https://github.com/xetorthio/jedis) is a blazingly small and sane redis java client.
+
+## 功能
+
+- Sorting
+
+- Connection handling
+
+- Commands operating on any kind of values
+
+- Commands operating on string values
+
+- Commands operating on hashes
+
+- Commands operating on lists
+
+- Commands operating on sets
+
+- Commands operating on sorted sets
+
+- Transactions
+
+- Pipelining
+
+- Publish/Subscribe
+
+- Persistence control commands
+
+- Remote server control commands
+
+- Connection pooling
+
+- Sharding (MD5, MurmurHash)
+
+- Key-tags for sharding
+
+- Sharding with pipelining
+
+- Scripting with pipelining
+
+- Redis Cluster
 
 
-# Redis
+# Docker 安装 Redis
 
-[Redis](http://redis.io/) is an open source (BSD licensed), in-memory data structure store, used as database, cache and message broker.
-It supports data structures such as strings, hashes, lists, sets, sorted sets with range queries, bitmaps, hyperloglogs 
-and geospatial indexes with radius queries. 
+## 基础知识
 
-> [zh_CN](http://www.redis.cn/)
+[docker 入门](https://houbb.github.io/2018/09/05/container-docker-hello)
 
+[redis](https://houbb.github.io/2016/10/23/redis)
 
-# Install in Mac
+[docker redis](https://houbb.github.io/2018/05/06/docker-redis)
 
-1、Download and Install
+## 删除原始的
 
-```
-$ wget http://download.redis.io/releases/redis-3.0.6.tar.gz
-$ tar xzf redis-3.0.6.tar.gz
-$ mv redis-3.0.6 redis
-$ cd redis
-$ make
-$ make test
-$ make install
-```
+一条命令实现停用并删除容器：
 
-2、Edit ```redis.conf```
+ps: 危险操作，切勿模仿。
 
-Open the ```redis.conf``` file, and find this line ```dir ./```, set it the path you want redis to save data. Here is my
-
-```
-dir /Users/houbinbin/redis/redis_data
-
-bind 127.0.0.1      //本地访问
-requirepass 123456  //访问密码
-```
-
-3、 Start redis-server
-
-```
-$   src/redis-server redis.conf
-
-$   src/redis-server redis.conf &   //后台-配置文件运行
-```
-
-after start you can see
-
-```
-houbinbindeMacBook-Pro:redis-3.2.3 houbinbin$ 17137:M 23 Oct 09:46:21.924 * Increased maximum number of open files to 10032 (it was originally set to 256).
-                _._
-           _.-``__ ''-._
-      _.-``    `.  `_.  ''-._           Redis 3.2.3 (00000000/0) 64 bit
-  .-`` .-```.  ```\/    _.,_ ''-._
- (    '      ,       .-`  | `,    )     Running in standalone mode
- |`-._`-...-` __...-.``-._|'` _.-'|     Port: 6379
- |    `-._   `._    /     _.-'    |     PID: 17137
-  `-._    `-._  `-./  _.-'    _.-'
- |`-._`-._    `-.__.-'    _.-'_.-'|
- |    `-._`-._        _.-'_.-'    |           http://redis.io
-  `-._    `-._`-.__.-'_.-'    _.-'
- |`-._`-._    `-.__.-'    _.-'_.-'|
- |    `-._`-._        _.-'_.-'    |
-  `-._    `-._`-.__.-'_.-'    _.-'
-      `-._    `-.__.-'    _.-'
-          `-._        _.-'
-              `-.__.-'
-
-17137:M 23 Oct 09:46:21.929 # Server started, Redis version 3.2.3
-17137:M 23 Oct 09:46:21.930 * The server is now ready to accept connections on port 6379
+```sh
+docker stop $(docker ps -a -q) & docker rm $(docker ps -a -q)
 ```
 
-test is connect success
+## 实际安装
+
+- 验证是否存在
 
 ```
-$   redis-cli -a 123456 ping
-
-PONG
+$ docker images | grep redis
 ```
 
-<label class="label label-danger">Error</label>
+发现没有了，也许是刚更新了 Docker 的原因。
 
-**redis-cli** Could not connect to Redis at 127.0.0.1:6379: Connection refused
-
-```
-$   redis-server /Users/houbinbin/redis/redis-3.2.3/redis.conf
-$   redis-cli
-```
-
-
-
-4、 Test connection
-
-Use redis-client to connect to redis-server.
+- 下载
 
 ```
-$   cd /Users/houbinbin/redis/redis-3.0.6
-$   src/redis-cli -a 123456
+$ docker pull redis
 ```
 
-```
-127.0.0.1:6379> set houbinbin hi
-OK
-127.0.0.1:6379> get houbinbin
-"hi"
-```
-
-5、 Shutdown redis-server
-
-> [(error) NOAUTH Authentication required.](http://www.mamicode.com/info-detail-1610601.html)
-
-无奈之下,杀进程。
+- 再次查看
 
 ```
-
+$ docker images | grep redis
+redis                            latest              e1a73233e3be        40 hours ago        83.4MB
 ```
 
-常规关闭方式:
-
-
-```
-$   127.0.0.1:6379> shutdown
-not connected>
-
-
-$   redis-cli -a 123456 shutdown    //关闭后台
-```
-
-6、 Set password
-
-> [set](http://blog.csdn.net/zyz511919766/article/details/42268219)
-
-find ```#requirepass foobared``` in file ```redis.conf```, change like this
+- 启动
 
 ```
-requirepass redis
+docker run -p 6379:6379 --name out-redis -d redis
 ```
 
-7、 Uninstall redis
-
-- remove redis-* package under ```/usr/local/bin```
+- 状态查看
 
 ```
-$   sudo rm -rf redis-*
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+b8dfa9422adb        redis               "docker-entrypoint.s…"   14 seconds ago      Up 13 seconds       0.0.0.0:6379->6379/tcp   out-redis
+```
+
+# Jedis
+
+使用 java 语言测试，结合 maven 进行 jar 管理。
+
+jdk8 + junit4
+
+## jar 引入
+
+```xml
+<dependency>
+    <groupId>redis.clients</groupId>
+    <artifactId>jedis</artifactId>
+    <version>2.8.1</version>
+</dependency>
+```
+
+## 测试代码
+
+```java
+public class RedisTest {
+
+    private Jedis jedis;
+
+    @BeforeEach
+    public void setUp() {
+        jedis = new Jedis("127.0.0.1", 6379);
+//        jedis.auth("123456");
+    }
+
+    /**
+     * 初始化测试
+     */
+    @Test
+    public void initTest() {
+        jedis.set("key", "test");
+        System.out.println(jedis.get("key"));
+    }
+}
+```
+
+- 输出日志
+
+```
+test
+```
+
+## 常见例子
+
+为了测试的自动化，使用断言。
+
+- crud
+
+```java
+@Test
+public void testCrudString() {
+    jedis.set("name", "ryo");
+    assertEquals("ryo", jedis.get("name"));
+
+    jedis.append("name", " is whose name?");
+    assertEquals("ryo is whose name?", jedis.get("name"));
+
+    jedis.del("name");
+    assertNull(jedis.get("name"));
+
+    jedis.mset("name", "ryo", "age", "22");
+    assertEquals("ryo", jedis.get("name"));
+
+    jedis.incr("age");
+    assertEquals("23", jedis.get("age"));
+}
+```
+
+- map
+
+```java
+@Test
+public void testMap() {
+    Map<String, String> map = new HashMap<>();
+    map.put("name", "ryo");
+    map.put("age", "22");
+    jedis.hmset("map", map);
+
+    assertEquals("[ryo, 22]", jedis.hmget("map", "name", "age").toString());
+    assertEquals("2", jedis.hlen("map").toString());
+    assertEquals("true", jedis.exists("map").toString());
+    assertEquals("[name, age]", jedis.hkeys("map").toString());
+
+    jedis.hdel("map", "name");
+    assertEquals("1", jedis.hlen("map").toString());
+}
+```
+
+- list
+
+```java
+@Test
+public void testList() {
+    jedis.del("list");
+    jedis.lpush("list", "apple");
+    jedis.lpush("list", "eat");
+    jedis.lpush("list", "ryo");
+    assertEquals("apple", jedis.lindex("list", 2));
+
+    jedis.lset("list", 2, "orange");
+    assertEquals("[ryo, eat, orange]", jedis.lrange("list", 0, -1).toString());
+}
+```
+
+- set
+
+```java
+@Test
+public void testSet() {
+    jedis.del("name");
+    jedis.sadd("name", "ryo");
+    jedis.sadd("name", "apple");
+    jedis.sadd("name", "orange");
+    assertEquals("[orange, apple, ryo]", jedis.smembers("name").toString());    //show all members.
+    assertEquals("3", jedis.scard("name").toString()); //get number
+
+    jedis.srem("name", "orange");   //remove
+    assertEquals("[apple, ryo]", jedis.smembers("name").toString());
+    assertEquals("false", jedis.sismember("name", "banana").toString());
+    assertEquals("[ryo, apple]", jedis.srandmember("name", 2).toString());
+}
+```
+
+- sort
+
+```java
+@Test
+public void testSort() {
+    jedis.del("sort");
+    jedis.lpush("sort", "3");
+    jedis.lpush("sort", "5");
+    jedis.lpush("sort", "2");
+    jedis.lpush("sort", "7");
+
+    assertEquals("[7, 2, 5, 3]", jedis.lrange("sort", 0, -1).toString());
+    assertEquals("[2, 3, 5, 7]", jedis.sort("sort").toString());
+    assertEquals("[7, 2, 5, 3]", jedis.lrange("sort", 0, -1).toString());
+}
 ```
 
 
-# Install in windows
-
-## 下载
-
-直接 [github](https://github.com/MicrosoftArchive/redis/releases) 下载合适的版本。
-
-比如 `Redis-x64-3.2.100.msi` 
-
-## 安装
-
-双击安装，比较简单。
-
-可以选择将 add path 那个勾选上。
-
-## 状态查询
-
-```
-C:\Users\Administrator>redis-cli -v
-redis-cli 3.2.100
-```
-
-或者命令行输入
-
-```
-services.msc
-```
-
-查看 **Redis** 服务的状态，状态为**已启动**则说明正常。
-
-
-## windows 可视化界面
-
-[https://redisdesktop.com/](https://redisdesktop.com/) 直接下载安装即可。
 
 # Jedis
 
@@ -805,3 +873,10 @@ public class RedisCacheConfig {
 # 分布式
 
 > [blog](blog.csdn.net/a67474506/article/details/51418728)
+
+# 参考资料
+
+https://github.com/xetorthio/jedis
+
+* any list
+{:toc}

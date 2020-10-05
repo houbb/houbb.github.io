@@ -1,20 +1,26 @@
 ---
 layout: post
-title: Redis 应用场景
+title: Redis 是什么？redis 的应用场景有哪些？
 date: 2019-1-14 18:29:09 +0800
-categories: [SQL]
-tags: [sql, nosql, cache, redis, sh]
+categories: [Cache]
+tags: [nosql, cache, redis, sh]
 published: true
-excerpt: Redis 应用场景
 ---
 
-# 场景使用场景
 
+# Redis 是什么？
+
+[Redis](http://redis.io/)是一种开放源代码（BSD许可）的内存中数据结构存储，用作数据库，缓存和消息代理。
+
+它支持数据结构，例如字符串，哈希，列表，集合，带范围查询的排序集合，位图，超日志和半径查询的地理空间索引。
+
+> [中文官网](http://www.redis.cn/)
+
+# Redis 使用场景
 
 ## 分布式锁
 
 [Redis 分布式锁设计](https://houbb.github.io/2019/01/07/redis-lock)
-
 
 ## 计数器（string）
 

@@ -1,13 +1,47 @@
 ---
 layout: post
-title: Redis-04-redis install on windows 10 redis windows10 安装笔记
-date:  2016-10-23 09:35:04 +0800
-categories: [SQL]
+title: Redis learn-04-redis windows10 安装笔记
+date:  2018-12-12 10:11:55 +0800
+categories: [Cache]
 tags: [redis, cache, nosql]
 published: true
 ---
 
-# 安装
+# windows 安装实战
+
+## 下载
+
+直接 [github](https://github.com/MicrosoftArchive/redis/releases) 下载合适的版本。
+
+比如 `Redis-x64-3.2.100.msi` 
+
+## 安装
+
+双击安装，比较简单。
+
+可以选择将 add path 那个勾选上。
+
+## 状态查询
+
+```
+C:\Users\Administrator>redis-cli -v
+redis-cli 3.2.100
+```
+
+或者命令行输入
+
+```
+services.msc
+```
+
+查看 **Redis** 服务的状态，状态为**已启动**则说明正常。
+
+
+## windows 可视化界面
+
+[https://redisdesktop.com/](https://redisdesktop.com/) 直接下载安装即可。
+
+# windows 10 安装
 
 ## 下载
 

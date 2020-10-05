@@ -1,17 +1,11 @@
 ---
 layout: post
-title:  Docker install Redis 教程笔记
-date:  2018-05-06 20:11:55 +0800
-categories: [Docker]
-tags: [docker, redis]
+title:  Docker 安装 Redis 实战笔记
+date:  2018-12-12 10:11:55 +0800
+categories: [Cache]
+tags: [docker, redis, install, cache, in-action]
 published: true
 ---
-
-# Redis
-
-[Redis](https://redis.io/) is an open source (BSD licensed), in-memory data structure store, used as a database, cache and message broker. 
-
-> [中文网站](http://www.redis.cn/)
 
 # Docker Redis
 

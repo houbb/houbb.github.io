@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Redis 登录命令 & redis password 密码设置
-date:  2016-10-23 09:35:04 +0800
-categories: [SQL]
+title: Redis 登录命令和 redis password 密码设置
+date:  2018-12-12 10:11:55 +0800
+categories: [Cache]
 tags: [redis, cache, nosql]
 published: true
 ---
