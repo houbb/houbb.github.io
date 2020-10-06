@@ -21,9 +21,11 @@ published: true
 
 [java从零手写实现redis（六）AOF 持久化原理详解及实现](https://mp.weixin.qq.com/s/rFuSjNF43Ybxy-qBCtgasQ)
 
-我们前面简单实现了 redis 的几个特性，[java从零手写实现redis（一）如何实现固定大小的缓存？](https://mp.weixin.qq.com/s/6J2K2k4Db_20eGU6xGYVTw) 中实现了先进先出的驱除策略。
+[java从零手写实现redis（七）LRU 缓存淘汰策略详解](https://mp.weixin.qq.com/s/X-OIqu_rgLskvbF2rZMP6Q)
 
-但是实际工作实践中，一般推荐使用 LRU/LFU 的驱除策略。
+[从零开始手写 redis（八）朴素 LRU 淘汰算法性能优化](https://mp.weixin.qq.com/s/H8gOujnlTinctjVQqW0ITA)
+
+本节一起来学习下另一个常用的缓存淘汰算法，LFU 最少使用频次算法。
 
 # LFU 基础知识
 
@@ -480,17 +482,13 @@ LFU是基于访问频次的模式，而LRU是基于访问时间的模式。
 
 因为真实的数据都是有倾斜的，热点数据才是常态，所以 LRU 的性能一般情况下优于 LFU。
 
-操作系统中，也有过各种对于置换页的缓存淘汰，你猜一猜用的是什么算法？
-
-答案是时钟算法，你猜对了吗？
-
-我们下一节一起来学习一下这个被操作系统青睐的算法。
-
 > 开源地址：[https://github.com/houbb/cache](https://github.com/houbb/cache)
 
-觉得本文对你有帮助的话，欢迎点赞评论收藏关注一波~
+觉得本文对你有帮助的话，欢迎点赞评论收藏关注一波，你的鼓励，是我最大的动力~
 
-你的鼓励，是我最大的动力~
+目前我们实现了性能比较优异的 LRU 和 LFU 算法，但是操作系统实际采用的却不是这两种算法，我们下一节将一起学习下操作系统青睐的 clock 淘汰算法。
+
+不知道你有哪些收获呢？或者有其他更多的想法，欢迎留言区和我一起讨论，期待与你的思考相遇。
 
 # 拓展阅读
 
