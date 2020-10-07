@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Cache Travel-09-java 从零开始手写 redis（11）clock时钟页面置换算法详解及实现
+title:  Cache Travel-09-java 从零开始手写 redis（11）clock时钟淘汰算法详解及实现
 date:  2018-09-01 12:24:42 +0800
 categories: [Cache]
 tags: [cache, redis, lru, sh]
