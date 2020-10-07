@@ -179,10 +179,363 @@ ps: 这个有点类似于简化版本的 LFU，统计了对应的出现次数。
 
 # java 实现 clock 算法
 
+## 说明
 
-# java 实现 enhanced clock 算法
+本文主要实现一个简单版本的 clock 算法，并对常规的实现加上一定的性能优化。（全网可能是独家的，或者说第一个这么实现的）
+
+优化主要是基于性能的考虑，类似于前面对于 LRU 的性能优化，将查询操作从 O(N) 优化到 O(1)。
+
+## 实现思路
+
+我们定义一个符合当前业务场景的循环链表（这个后期也可以独立出去，有时间单独写一个数据结构项目，便于复用）
+
+定义包含 accessFlag 的节点。
+
+我们使用双向链表，而不是单向链表，这样删除的性能是最好的。
+
+使用 map 保存 key 的信息，避免循环整个链表判断 key 是否存在，用空间换取时间。
+
+好了，接下来就是快乐的编码阶段了。
+
+# 代码实现
+
+## 节点定义
+
+```java
+/**
+ * 循环链表节点
+ * @author binbin.hou
+ * @since 0.0.15
+ * @param <K> key
+ * @param <V> value
+ */
+public class CircleListNode<K,V> {
+
+    /**
+     * 键
+     * @since 0.0.15
+     */
+    private K key;
+
+    /**
+     * 值
+     * @since 0.0.15
+     */
+    private V value = null;
+
+    /**
+     * 是否被访问过
+     * @since 0.0.15
+     */
+    private boolean accessFlag = false;
+
+    /**
+     * 后一个节点
+     * @since 0.0.15
+     */
+    private CircleListNode<K, V> pre;
+
+    /**
+     * 后一个节点
+     * @since 0.0.15
+     */
+    private CircleListNode<K, V> next;
+
+    //getter & setter
+}
+```
+
+这里很简单的几个元素：key, value, accessFlag（是否访问过的标识），然后就是 next, pre 用户实现双向链表。
+
+## 双向链表实现
+
+### 基本属性
+
+为了和原来的 Lru 双向链表保持一致，我们实现原来的额接口。
+
+```java
+public class LruMapCircleList<K,V> implements ILruMap<K,V> {
+
+    private static final Log log = LogFactory.getLog(LruMapCircleList.class);
+
+    /**
+     * 头结点
+     * @since 0.0.15
+     */
+    private CircleListNode<K,V> head;
+
+    /**
+     * 映射 map
+     * @since 0.0.15
+     */
+    private Map<K, CircleListNode<K,V>> indexMap;
+
+    public LruMapCircleList() {
+        // 双向循环链表
+        this.head = new CircleListNode<>(null);
+        this.head.next(this.head);
+        this.head.pre(this.head);
+
+        indexMap = new HashMap<>();
+    }
+
+}
+```
+
+初始化 Head 节点，indexMap 用户保存 key 和双向节点之间的关系。
+
+### 删除元素
+
+```java
+/**
+ * 移除元素
+ *
+ * 1. 是否存在，不存在则忽略
+ * 2. 存在则移除，从链表+map中移除
+ *
+ * head==>1==>2==>head
+ *
+ * 删除 2 之后：
+ * head==>1==>head
+ * @param key 元素
+ * @since 0.0.15
+ */
+@Override
+public void removeKey(final K key) {
+    CircleListNode<K,V> node = indexMap.get(key);
+    if(ObjectUtil.isNull(node)) {
+        log.warn("对应的删除信息不存在：{}", key);
+        return;
+    }
+    CircleListNode<K,V> pre = node.pre();
+    CircleListNode<K,V> next = node.next();
+    //1-->(x2)-->3  直接移除2
+    pre.next(next);
+    next.pre(pre);
+    indexMap.remove(key);
+    log.debug("Key: {} 从循环链表中移除", key);
+}
+```
+
+节点的删除不难，直接从循环链表中移除节点即可，同时移除 indexMap 中的信息。
+
+### 更新
+
+此处对于 put/get 用的是同一个方法，实际上如果想实现增强版本的 clock 算法，二者还是区分开比较好，不过个人感觉原理差不多，此处就不再实现了，估计这就是淘汰算法的最后一个小节。
+
+```java
+/**
+ * 放入元素
+ *
+ * 类似于 FIFO，直接放在队列的最后
+ * 
+ * head==>1==>head
+ * 加入元素：
+ *
+ * head==>1==>2==>head
+ *
+ * （1）如果元素不存在，则直接插入。
+ * 默认 accessFlag = 0;
+ * （2）如果已经存在，则更新 accessFlag=1;
+ *
+ * @param key 元素
+ * @since 0.0.15
+ */
+@Override
+public void updateKey(final K key) {
+    CircleListNode<K,V> node = indexMap.get(key);
+    // 存在
+    if(ObjectUtil.isNotNull(node)) {
+        node.accessFlag(true);
+        log.debug("节点已存在，设置节点访问标识为 true, key: {}", key);
+    } else {
+        // 不存在，则插入到最后
+        node = new CircleListNode<>(key);
+        CircleListNode<K,V> tail = head.pre();
+        tail.next(node);
+        node.pre(tail);
+        node.next(head);
+        head.pre(node);
+        // 放入 indexMap 中，便于快速定位
+        indexMap.put(key, node);
+        log.debug("节点不存在，新增节点到链表中：{}", key);
+    }
+}
+```
+
+这里主要就是区分下节点是否已经存在。
+
+（1）已存在，直接获取节点，更新 accessFlag=true;
+
+（2）不存在：插入新的节点，accessFlag = false
+
+### 淘汰数据
+
+```java
+/**
+ * 删除最老的元素
+ *
+ * （1）从 head.next 开始遍历，如果元素 accessFlag = 0，则直接移除
+ * （2）如果 accessFlag=1，则设置其值为0，循环下一个节点。
+ *
+ * @return 结果
+ * @since 0.0.15
+ */
+@Override
+public ICacheEntry<K, V> removeEldest() {
+    //fast-fail
+    if(isEmpty()) {
+        log.error("当前列表为空，无法进行删除");
+        throw new CacheRuntimeException("不可删除头结点!");
+    }
+    // 从最老的元素开始，此处直接从 head.next 开始，后续可以考虑优化记录这个 key
+    CircleListNode<K,V> node = this.head;
+    while (node.next() != this.head) {
+        // 下一个元素
+        node = node.next();
+        if(!node.accessFlag()) {
+            // 未访问，直接淘汰
+            K key = node.key();
+            this.removeKey(key);
+            return CacheEntry.of(key, node.value());
+        } else {
+            // 设置当前 accessFlag = 0,继续下一个
+            node.accessFlag(false);
+        }
+    }
+    // 如果循环一遍都没找到，直接取第一个元素即可。
+    CircleListNode<K,V> firstNode = this.head.next();
+    return CacheEntry.of(firstNode.key(), firstNode.value());
+}
+```
+
+直接遍历节点，遇到 accessFlag=0 的直接淘汰即可。
+
+如果 accessFlag=1，则设置其值为0，然后继续下一个。（这里有点免死金牌只能用一次的感觉）
+
+循环一遍都没有找到，实际上直接取 head.next 即可，降级为 FIFO。当然因为我们已经更新 accessFlag=0 了，实际上继续循环也可以。
+
+- 实现的不足之处
+
+这里有一个待改进点：我们不见得每次都从开始循环。这样实际上缺点比较明显，导致越先入队的元素第二次一定被淘汰，其他未被访问的元素可能会一直存在，可以用一个元素记住这个位置。（上一次被淘汰的节点的 next 节点），感觉这样才更加符合 clock 算法的思想。
+
+还有一种方法就是不把访问过的 accessFlag 置为0，循环一圈都找不到元素直接降级为 FIFO，不过这个在大部分元素被访问之后，性能会变差。所以还是建议标记一下上次循环的位置。
+
+## 调用
+
+我们在 cache 满的时候，调用下当前循环链表即可：
+
+```java
+import com.github.houbb.cache.api.ICache;
+import com.github.houbb.cache.api.ICacheEntry;
+import com.github.houbb.cache.api.ICacheEvictContext;
+import com.github.houbb.cache.core.model.CacheEntry;
+import com.github.houbb.cache.core.support.struct.lru.ILruMap;
+import com.github.houbb.cache.core.support.struct.lru.impl.LruMapCircleList;
+import com.github.houbb.log.integration.core.Log;
+import com.github.houbb.log.integration.core.LogFactory;
+
+/**
+ * 淘汰策略-clock 算法
+ *
+ * @author binbin.hou
+ * @since 0.0.15
+ */
+public class CacheEvictClock<K,V> extends AbstractCacheEvict<K,V> {
+
+    private static final Log log = LogFactory.getLog(CacheEvictClock.class);
+
+    /**
+     * 循环链表
+     * @since 0.0.15
+     */
+    private final ILruMap<K,V> circleList;
+
+    public CacheEvictClock() {
+        this.circleList = new LruMapCircleList<>();
+    }
+
+    @Override
+    protected ICacheEntry<K, V> doEvict(ICacheEvictContext<K, V> context) {
+        ICacheEntry<K, V> result = null;
+        final ICache<K,V> cache = context.cache();
+        // 超过限制，移除队尾的元素
+        if(cache.size() >= context.size()) {
+            ICacheEntry<K,V>  evictEntry = circleList.removeEldest();;
+            // 执行缓存移除操作
+            final K evictKey = evictEntry.key();
+            V evictValue = cache.remove(evictKey);
+
+            log.debug("基于 clock 算法淘汰 key：{}, value: {}", evictKey, evictValue);
+            result = new CacheEntry<>(evictKey, evictValue);
+        }
+
+        return result;
+    }
 
 
+    /**
+     * 更新信息
+     * @param key 元素
+     * @since 0.0.15
+     */
+    @Override
+    public void updateKey(final K key) {
+        this.circleList.updateKey(key);
+    }
+
+    /**
+     * 移除元素
+     *
+     * @param key 元素
+     * @since 0.0.15
+     */
+    @Override
+    public void removeKey(final K key) {
+        this.circleList.removeKey(key);
+    }
+
+}
+```
+
+其实调用的地方没什么难度，就是直接调用下方法即可。
+
+## 测试
+
+好的，代码写完我们来简单的验证一下。
+
+### 测试代码
+
+```java
+ICache<String, String> cache = CacheBs.<String,String>newInstance()
+        .size(3)
+        .evict(CacheEvicts.<String, String>clock())
+        .build();
+cache.put("A", "hello");
+cache.put("B", "world");
+cache.put("C", "FIFO");
+// 访问一次A
+cache.get("A");
+cache.put("D", "LRU");
+Assert.assertEquals(3, cache.size());
+System.out.println(cache.keySet());
+```
+
+### 日志
+
+```
+[DEBUG] [2020-10-07 11:32:55.396] [main] [c.g.h.c.c.s.s.l.i.LruMapCircleList.updateKey] - 节点不存在，新增节点到链表中：A
+[DEBUG] [2020-10-07 11:32:55.398] [main] [c.g.h.c.c.s.s.l.i.LruMapCircleList.updateKey] - 节点不存在，新增节点到链表中：B
+[DEBUG] [2020-10-07 11:32:55.401] [main] [c.g.h.c.c.s.s.l.i.LruMapCircleList.updateKey] - 节点不存在，新增节点到链表中：C
+[DEBUG] [2020-10-07 11:32:55.403] [main] [c.g.h.c.c.s.s.l.i.LruMapCircleList.updateKey] - 节点已存在，设置节点访问标识为 true, key: A
+[DEBUG] [2020-10-07 11:32:55.404] [main] [c.g.h.c.c.s.s.l.i.LruMapCircleList.removeKey] - Key: B 从循环链表中移除
+[DEBUG] [2020-10-07 11:32:55.406] [main] [c.g.h.c.c.s.e.CacheEvictClock.doEvict] - 基于 clock 算法淘汰 key：B, value: world
+[DEBUG] [2020-10-07 11:32:55.410] [main] [c.g.h.c.c.s.l.r.CacheRemoveListener.listen] - Remove key: B, value: world, type: evict
+[DEBUG] [2020-10-07 11:32:55.411] [main] [c.g.h.c.c.s.s.l.i.LruMapCircleList.updateKey] - 节点不存在，新增节点到链表中：D
+[D, A, C]
+```
+
+符合我们的预期。
 
 # LRU、FIFO与Clock的比较
 
@@ -267,29 +620,13 @@ clock 算法算是一种权衡，在实际的实践应用中，操作系统选�
 
 个人理解clock 的好处就是**不用频繁地每次访问都去更新元素的位置**，只需要淘汰的时候进行一次更新即可，我们在 LRU 中虽然使用双向链表优化，时间复杂度为 O(1)，但是还是比较浪费的。
 
+缓存的淘汰算法到这里基本是告一段落了，感谢你的支持，愿你有所收获。
+
 > 开源地址：[https://github.com/houbb/cache](https://github.com/houbb/cache)
 
-觉得本文对你有帮助的话，欢迎点赞评论收藏关注一波~
+觉得本文对你有帮助的话，欢迎点赞评论收藏关注一波。你的鼓励，是我最大的动力~
 
-你的鼓励，是我最大的动力~
-
-# 拓展阅读
-
-淘汰算法有:
-
-FIFO
-
-LRU
-
-LFU
-
-OPT 算法
-
-SC 二次机会
-
-老化算法
-
-时钟工作集算法
+不知道你有哪些收获呢？或者有其他更多的想法，欢迎留言区和我一起讨论，期待与你的思考相遇。
 
 # 参考资料
 
