@@ -34,6 +34,22 @@ published: true
 3. 结果返回之后，异步操作结果统一返回
 
 
+# 常见的实现方式
+
+（1）循环等待
+
+（2）CountDownLatch
+
+（3）Spring EventListener
+
+（4）wait & notify
+
+（5）使用条件锁
+
+（6）Future
+
+（7）使用 CyclicBarrier
+
 # 循环等待
 
 - LoopQuery.java
