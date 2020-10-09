@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Cache Travel-09-从零开始手写缓存框架（二）redis expire 过期原理及实现优化实现
+title:  Cache Travel-09-从零开始手写缓存框架（12）redis expire 过期的随机特性详解及实现 
 date:  2018-09-01 12:24:42 +0800
 categories: [Cache]
 tags: [cache, sh]
@@ -25,9 +25,16 @@ published: true
 
 [java从零开始手写redis（八）朴素 LRU 淘汰算法性能优化](https://mp.weixin.qq.com/s/H8gOujnlTinctjVQqW0ITA)
 
+
 第二节中我们已经初步实现了类似 redis 中的 expire 过期功能，不过存在一个问题没有解决，那就是遍历的时候不是随机返回的，会导致每次遍历从头开始，可能导致很多 Keys 处于“饥饿”状态。
 
-本节我们一起来实现一个随机过期，更近一步领会一下 redis 的巧妙之处。
+可以回顾：
+
+[java从零手写实现redis（二）redis expire 过期原理](https://mp.weixin.qq.com/s/BWfBc98oLqhAPLN2Hgkwow)
+
+[java从零手写实现redis（五）过期策略的另一种实现思路](https://mp.weixin.qq.com/s/Atrd36UGds9_w_NFQDoEQg)
+
+本节我们一起来实现一个过期的随机性版本，更近一步领会一下 redis 的巧妙之处。
 
 # 以前的实现回顾
 
