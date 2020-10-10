@@ -21,6 +21,8 @@ published: true
 
 [java 手写并发框架（二）异步转同步框架封装锁策略](https://houbb.github.io/2019/01/18/jcip-43-async-to-sync-02-lock)
 
+[java 手写并发框架（三）异步转同步框架注解和字节码增强](https://houbb.github.io/2019/01/18/jcip-43-async-to-sync-03-annotation-cglib)
+
 # 异步转同步的锁调用
 
 ## 同步锁策略
