@@ -5,8 +5,32 @@ date:  2018-09-12 11:44:23 +0800
 categories: [Java]
 tags: [source-code, hash, cache, data-struct, java, TODO, sf]
 published: true
-excerpt: HashMap 源码解析
 ---
+
+
+# 为什么学习 HashMap 源码？
+
+作为一名 java 开发，基本上最常用的数据结构就是 HashMap 和 List，jdk 的 HashMap 设计还是非常值得深入学习的。
+
+无论是在面试还是工作中，知道原理都对会我们有很大的帮助。
+
+本篇的内容较长，建议先收藏，再细细品味。不同于网上简单的源码分析，更多的是为什么要这么实现。
+
+涉及的内容比较广泛，从统计学中的泊松分布，到计算机基础的位运算，经典的红黑树、链表、数组等数据结构，也谈到了 Hash 函数的相关介绍，文末也引入了美团对于 HashMap 的源码分析，所以整体深度和广度都比较大。
+
+本文是**两年前整理的**，文中不免有疏漏过时的地方，欢迎大家提出宝贵的意见。
+
+之所以这里拿出来，有以下几个目的：
+
+（1）让读者理解 HashMap 的设计思想，知道 rehash 的过程。下一节我们将自己实现一个 HashMap
+
+（2）为什么要自己实现 HashMap?
+
+最近在手写 redis 框架，都说 redis 是一个特性更加强大的 Map，自然 HashMap 就是入门基础。Redis 高性能中一个过人之处的设计就是渐进式 rehash，和大家一起实现一个渐进式 rehash 的 map，更能体会和理解作者设计的巧妙。
+
+想把常见的数据结构独立为一个开源工具，便于后期使用。比如这次手写 redis，循环链表，LRU map 等都是从零开始写的，不利于复用，还容易有 BUG。
+
+好了，下面就让我们一起开始 HashMap 的源码之旅吧~
 
 # HashMap 源码
 
@@ -25,9 +49,7 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
 
 ## 数据结构
 
-从结构实现来讲，HashMap是数组+链表+红黑树（JDK1.8增加了[红黑树](https://houbb.github.io/2018/09/12/data-struct-red-black-tree)部分）实现的，如下如所示。
-
-![hashmap-data-struct](http://tech.meituan.com/img/java-hashmap/hashMap%E5%86%85%E5%AD%98%E7%BB%93%E6%9E%84%E5%9B%BE.png)
+从结构实现来讲，HashMap是数组+链表+红黑树（JDK1.8增加了[红黑树](https://houbb.github.io/2018/09/12/data-struct-red-black-tree)部分）实现的。
 
 ## 对于当前类的官方说明
 
@@ -545,11 +567,15 @@ n = n+1;                    0001 0000    结果：2^4 = 16;
 
 # put() 解释
 
+下面的内容出自美团博客 [Java 8系列之重新认识HashMap](https://tech.meituan.com/2016/06/24/java-hashmap.html)
+
+由于写的非常好，此处就直接复制过来了。
+
 ## 流程图解
 
 HashMap的put方法执行过程可以通过下图来理解，自己有兴趣可以去对比源码更清楚地研究学习。
 
-![hashmap-put](http://tech.meituan.com/img/java-hashmap/hashMap%20put%E6%96%B9%E6%B3%95%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B%E5%9B%BE.png)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/1010/194149_e204685b_508704.png)
 
 ①.判断键值对数组table[i]是否为空或为null，否则执行resize()进行扩容；
 
@@ -691,7 +717,7 @@ newTable[i]的引用赋给了e.next，也就是使用了单链表的头插入方
 
 接下来的三个步骤是哈希桶数组 resize成4，然后所有的Node重新rehash的过程。
 
-![resize-example](http://tech.meituan.com/img/java-hashmap/jdk1.7%E6%89%A9%E5%AE%B9%E4%BE%8B%E5%9B%BE.png)
+![输入图片说明](https://images.gitee.com/uploads/images/2020/1010/194352_47d5cc29_508704.png)
 
 ## Jdk8 优化
 
@@ -701,17 +727,19 @@ newTable[i]的引用赋给了e.next，也就是使用了单链表的头插入方
 
 图（b）表示扩容后key1和key2两种key确定索引位置的示例，其中hash1是key1对应的哈希与高位运算结果。
 
-![jdk8-resize-bit](http://tech.meituan.com/img/java-hashmap/hashMap%201.8%20%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E4%BE%8B%E5%9B%BE1.png)
+![位运算](https://images.gitee.com/uploads/images/2020/1010/194658_f7d32ef6_508704.png)
 
 元素在重新计算hash之后，因为n变为2倍，那么n-1的mask范围在高位多1bit(红色)，因此新的index就会发生这样的变化：
 
-![jdk8-resize-hash](http://tech.meituan.com/img/java-hashmap/hashMap%201.8%20%E5%93%88%E5%B8%8C%E7%AE%97%E6%B3%95%E4%BE%8B%E5%9B%BE2.png)
+![index](https://images.gitee.com/uploads/images/2020/1010/194722_4c20f60f_508704.png)
 
 因此，我们在扩充HashMap的时候，不需要像JDK1.7的实现那样重新计算hash，只需要看看原来的hash值新增的那个bit是1还是0就好了，是0的话索引没变，是1的话索引变成“原索引+oldCap”，可以看看下图为16扩充为32的resize示意图：
 
-![jdk8-resize-16-32](http://tech.meituan.com/img/java-hashmap/jdk1.8%20hashMap%E6%89%A9%E5%AE%B9%E4%BE%8B%E5%9B%BE.png)
+![rehash](https://images.gitee.com/uploads/images/2020/1010/194352_47d5cc29_508704.png)
 
-这个设计确实非常的巧妙，既省去了重新计算hash值的时间，而且同时，由于新增的1bit是0还是1可以认为是随机的，因此resize的过程，均匀的把之前的冲突的节点分散到新的bucket了。这一块就是JDK1.8新增的优化点。
+这个设计确实非常的巧妙，既省去了重新计算hash值的时间，而且同时，由于新增的1bit是0还是1可以认为是随机的，因此resize的过程，均匀的把之前的冲突的节点分散到新的bucket了。
+
+这一块就是JDK1.8新增的优化点。
 
 有一点注意区别，JDK1.7中rehash的时候，旧链表迁移新链表的时候，如果在新表的数组索引位置相同，则链表元素会倒置，但是从上图可以看出，JDK1.8不会倒置。
 
@@ -814,8 +842,6 @@ final Node<K,V>[] resize() {
 
 ## 基础知识
 
-TODO: java 位运算
-
 [oracle jdk8 doc](https://docs.oracle.com/javase/8/docs/api/)
 
 ## 常量定义
@@ -849,6 +875,8 @@ https://blog.csdn.net/wenyiqingnianiii/article/details/52204136
 ## map 源码分析
 
 [Java8系列之重新认识HashMap](http://www.importnew.com/20386.html)
+
+[Java 8系列之重新认识HashMap](https://tech.meituan.com/2016/06/24/java-hashmap.html)
 
 * any list
 {:toc}
