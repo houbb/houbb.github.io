@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  java 手写并发框架（1）异步查询转同步的 7 种实现方式
+title:  java 手写并发框架（一）异步查询转同步的 7 种实现方式
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [concurrency, java, async, sync, sh]

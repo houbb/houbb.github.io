@@ -27,9 +27,9 @@ published: true
 
 - 什么是面向对象
 
-[面向对象与面向过程 && 面向对象的三大基本特征(封装/继承/多态)](https://houbb.github.io/2020/07/19/basic-01-what-is-oo)
+[面向对象与面向过程 && 面向对象的三大基本特征(封装/继承/多态)](https://houbb.github.io/2020/07/19/java-basic-01-what-is-oo)
 
-[其他编程范式](https://houbb.github.io/2020/07/19/basic-02-what-is-pp)
+[其他编程范式](https://houbb.github.io/2020/07/19/java-basic-02-what-is-pp)
 
 - 面向对象的基本原则
 
@@ -54,28 +54,43 @@ published: true
 # 基本数据类型
 
 8种基本数据类型
+
 整型中byte、short、int、long的取值范围
-什么是浮点型？
-什么是单精度和双精度？
+
+什么是浮点型？什么是单精度和双精度？
+
 为什么不能用浮点型表示金额？
-自动拆装箱
-自动拆装箱
+
+自动拆装箱 自动拆装箱
+
 Integer的缓存机制
+
 如何正确定义接口的返回值(boolean/Boolean)类型及命名(success/Success)
 
 ## String
 
 字符串的不可变性
+
 String的长度限制
+
 JDK 6和JDK 7中substring的原理及区别
+
 replaceFirst、replaceAll、replace区别
+
 String、StringBuilder和StingBuffer之间的区别与联系
+
 String对“+”的重载
+
 字符串拼接的几种方式和区别
+
 String.valueOf和Integer.toString的区别
+
 switch对String的支持
+
 字符串池
+
 常量池（运行时常量池、Class常量池）
+
 intern
 
 # Java中各种关键字
