@@ -57,15 +57,13 @@ published: true
 
 整型中byte、short、int、long的取值范围
 
+自动拆装箱 自动拆装箱
+
+如何正确定义接口的返回值(boolean/Boolean)类型及命名(success/Success)
+
 什么是浮点型？什么是单精度和双精度？
 
 为什么不能用浮点型表示金额？
-
-自动拆装箱 自动拆装箱
-
-Integer的缓存机制
-
-如何正确定义接口的返回值(boolean/Boolean)类型及命名(success/Success)
 
 ## String
 
@@ -87,7 +85,7 @@ String.valueOf和Integer.toString的区别
 
 switch对String的支持
 
-字符串池
+字符串池、Integer的缓存机制
 
 常量池（运行时常量池、Class常量池）
 
