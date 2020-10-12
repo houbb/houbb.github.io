@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Cache Travel-09-从零手写缓存框架（13）redis渐进式rehash详解
+title:  Cache Travel-09-从零手写缓存框架（14）redis渐进式rehash详解
 date:  2018-09-01 12:24:42 +0800
 categories: [Cache]
 tags: [cache, redis, lru, sh]
