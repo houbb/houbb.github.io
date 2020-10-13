@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Java Env Prepare
+title:  windows jdk 环境配置 java 环境变量配置
 date:  2018-04-13 10:41:54 +0800
 categories: [Java]
-tags: [java, env, watch]
+tags: [java, env, jdk, sf]
 published: true
 ---
 
@@ -43,6 +43,39 @@ published: true
 ```
 $   java -version
 ```
+
+
+# windows7 安装笔记
+
+## 安装路径
+
+```
+C:\Program Files\Java\jdk1.8.0_192\
+```
+
+## 配置 java_home
+
+```
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_192
+```
+
+## 配置 CLASSPATH
+
+```
+.;%JAVA_HOME%\lib;%JAVA_HOME%\lib\tools.jar
+```
+
+## 测试
+
+```
+λ java -version
+java version "1.8.0_192"
+Java(TM) SE Runtime Environment (build 1.8.0_192-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.192-b12, mixed mode)
+```
+
+已经是 64 位的了。
+
 
 * any list
 {:toc}
