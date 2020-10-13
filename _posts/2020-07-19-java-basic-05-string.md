@@ -3,7 +3,7 @@ layout: post
 title:  java 基础篇-05-String 字符串又长度限制吗？常量池详解
 date:  2020-7-19 10:37:20 +0800
 categories: [Java]
-tags: [java, oo, sf]
+tags: [java, java-base, sf]
 published: true
 ---
 

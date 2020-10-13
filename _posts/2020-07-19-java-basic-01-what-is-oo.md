@@ -3,7 +3,7 @@ layout: post
 title:  java 基础篇-01-什么是面向对象？ OOP
 date:  2020-7-19 10:37:20 +0800
 categories: [Java]
-tags: [java, oo, sf]
+tags: [java, java-base, sf]
 published: true
 ---
 
