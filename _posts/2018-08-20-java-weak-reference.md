@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Java Reference
+title:  Java Reference 弱引用 强引用 幻引用 
 date:  2018-08-20 14:45:45 +0800
 categories: [Java]
 tags: [java, base, gc, sf]
