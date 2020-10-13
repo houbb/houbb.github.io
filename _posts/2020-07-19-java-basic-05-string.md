@@ -376,13 +376,135 @@ String str2 = new StringBuilder("a").append("a").toString();
 System.out.println(str2==str2.intern());
 ```
 
-这段代码的输出是true。可以得知，在str1变量的创建中，虽然我们用了字面量“aa”，但是我们常量池里并没有aa，所以str2==str.intern()才会返回true。如果我们去掉str3的注释，重新运行，就会输出false。
+这段代码的输出是true。
+
+可以得知，在str1变量的创建中，虽然我们用了字面量“aa”，但是我们常量池里并没有aa，所以str2==str.intern()才会返回true。
+
+如果我们去掉str3的注释，重新运行，就会输出false。
+
+# String 转换的差异
+
+## 问题
+
+String.valueOf和Integer.toString的区别
+
+## 源码
+
+jdk 版本
+
+```
+java version "1.8.0_191"
+Java(TM) SE Runtime Environment (build 1.8.0_191-b12)
+Java HotSpot(TM) 64-Bit Server VM (build 25.191-b12, mixed mode)
+```
+
+### String 源码
+
+```java
+/**
+ * Returns the string representation of the <code>int</code> argument.
+ * <p>
+ * The representation is exactly the one returned by the
+ * <code>Integer.toString</code> method of one argument.
+ *
+ * @param   i   an <code>int</code>.
+ * @return  a string representation of the <code>int</code> argument.
+ * @see     java.lang.Integer#toString(int, int)
+ */
+public static String valueOf(int i) {
+    return Integer.toString(i);
+}
+
+
+/**
+ * Returns the string representation of the <code>Object</code> argument.
+ *
+ * @param   obj   an <code>Object</code>.
+ * @return  if the argument is <code>null</code>, then a string equal to
+ *          <code>"null"</code>; otherwise, the value of
+ *          <code>obj.toString()</code> is returned.
+ * @see     java.lang.Object#toString()
+ */
+public static String valueOf(Object obj) {
+    return (obj == null) ? "null" : obj.toString();
+}
+```
+
+### Integer 源码
+
+```java
+/**
+ * Returns a {@code String} object representing this
+ * {@code Integer}'s value. The value is converted to signed
+ * decimal representation and returned as a string, exactly as if
+ * the integer value were given as an argument to the {@link
+ * java.lang.Integer#toString(int)} method.
+ *
+ * @return  a string representation of the value of this object in
+ *          base&nbsp;10.
+ */
+public String toString() {
+    return toString(value);
+}
+
+/**
+ * Returns a {@code String} object representing the
+ * specified integer. The argument is converted to signed decimal
+ * representation and returned as a string, exactly as if the
+ * argument and radix 10 were given as arguments to the {@link
+ * #toString(int, int)} method.
+ *
+ * @param   i   an integer to be converted.
+ * @return  a string representation of the argument in base&nbsp;10.
+ */
+public static String toString(int i) {
+    if (i == Integer.MIN_VALUE)
+        return "-2147483648";
+    int size = (i < 0) ? stringSize(-i) + 1 : stringSize(i);
+    char[] buf = new char[size];
+    getChars(i, size, buf);
+    return new String(buf, true);
+}
+```
+
+看源码感觉二者并没有太大的区别。
+
+null 值的处理可能值得注意一下。
 
 # 为什么需要 StringBuffer/StringBuilder 
 
-TODO...
+## 为什么需要 StringBuffer?
 
-性能差异对比
+其实归根到底，就是成也萧何败萧何。
+
+java 在设计的时候将为了提升重用性，将 String 设计为不可变对象，这样才能在常量池中使用。
+
+但是有时候场景就不适合：比如我们循环构建一个字符串，这个时候如果使用 String 的话，性能就会大打折扣。
+
+这个时候很多优点经验的都会提醒你使用 StringBuffer 替换 String。
+
+## StringBuilder
+
+既生瑜，何生亮？
+
+实际上 StringBuffer 在设计之初和 jdk 以前的很多类都是类似的。
+
+```java
+@Override
+public synchronized StringBuffer append(String str) {
+    toStringCache = null;
+    super.append(str);
+    return this;
+}
+```
+
+随便选一个方法，会发现上面都加了一个 `synchronized`。
+
+优点：StringBuffer 是多线程安全的。
+
+缺点：对于非多线程的场景，性能会比较差。所以才有了 StringBuilder。
+
+ps: 一般情况，我们使用 StringBuilder 即可。
 
 # 小结
 
