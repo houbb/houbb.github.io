@@ -107,17 +107,24 @@ intern
 
 [static](https://houbb.github.io/2018/08/30/java-static)
 
-instanceof
+[instanceof](https://houbb.github.io/2020/07/19/java-basic-07-instanceof)
 
 # 枚举
 
 枚举的用法
+
 枚举的实现
+
 枚举与单例
+
 Enum类
+
 Java枚举如何比较
+
 switch对枚举的支持
+
 枚举的序列化如何实现
+
 枚举的线程安全性问题
 
 # IO
