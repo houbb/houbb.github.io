@@ -93,14 +93,21 @@ intern
 
 # Java中各种关键字
 
-native
-transient
+[native](https://houbb.github.io/2020/07/19/java-basic-06-native)
+
+[transient](https://houbb.github.io/2018/09/13/java-transient)
+
+[volatile](https://houbb.github.io/2018/07/27/jmm-05-volatile)
+
+[synchronized](https://houbb.github.io/2018/07/25/java-concurrency-09-sync)
+
+[final](https://houbb.github.io/2018/07/29/jmm-08-final)
+
+[try...catch.finally](https://houbb.github.io/2019/04/16/java-base-try-catch-finally)
+
+[static](https://houbb.github.io/2018/08/30/java-static)
+
 instanceof
-volatile
-synchronized
-final
-static
-const
 
 # 枚举
 
