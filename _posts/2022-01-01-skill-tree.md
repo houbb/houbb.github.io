@@ -53,7 +53,7 @@ published: true
 
 # 基本数据类型
 
-8种基本数据类型
+[8种基本数据类型详解](https://houbb.github.io/2020/07/19/java-basic-04-basic-type)
 
 整型中byte、short、int、long的取值范围
 
@@ -66,6 +66,8 @@ published: true
 为什么不能用浮点型表示金额？
 
 ## String
+
+[String 字符串详解](https://houbb.github.io/2020/07/19/java-basic-05-string)
 
 字符串的不可变性
 
