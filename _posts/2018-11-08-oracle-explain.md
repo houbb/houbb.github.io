@@ -275,7 +275,6 @@ Note
 
 [通过ROWID访问表（table access by ROWID）](http://www.cnblogs.com/xqzt/p/4464205.html)
 
-
 ## 索引扫描
 
 [索引范围扫描(INDEX RANGE SCAN)](http://www.cnblogs.com/xqzt/p/4464339.html)
