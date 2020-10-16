@@ -1,15 +1,15 @@
 ---
 layout: post
-title: BloomFilter 使用最佳实践
+title: bloom filter 使用最佳实践，让你少采坑！
 date:  2019-4-1 19:24:57 +0800
 categories: [Best-Practice]
-tags: [best-practice, tool, sf]
+tags: [best-practice, redis, cache, sf]
 published: true
 ---
 
 # 缓存穿透
 
-[缓存穿透](https://houbb.github.io/2018/08/31/cache-01-talk#%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F) 是一个很常见的问题。
+[缓存穿透](https://houbb.github.io/2018/09/01/cache-01-talk#%E7%BC%93%E5%AD%98%E6%8C%96%E5%9D%91%E4%B8%89%E5%89%91%E5%AE%A2) 是一个很常见的问题。
 
 抛开恶意攻击不谈，大量的传递依然会访问的 Redis 缓存。
 
@@ -134,6 +134,10 @@ push 是推送的方式，需要考虑到每一个服务都要接收到对应的
 本地缓存，可以避免大量的网络IO消耗。毕竟 Redis 再优秀，底层也是需要网络通信的。
 
 随着业务量的激增，Redis 本身的单线程如果存在网络抖动，则会对业务产生比较大的影响。
+
+不知道在你的业务中是如何使用 bloom filter 的呢？
+
+如果你有更好的想法，欢迎在评论区与大家一起分享。
 
 # 拓展阅读
 
