@@ -1,18 +1,43 @@
 ---
 layout: post
-title: Redis Learn-35-big key 
+title: Redis Learn-35-3天时间，我是如何解决 redis bigkey 删除问题的？
 date: 2018-12-12 11:35:23 +0800
 categories: [Redis]
 tags: [redis, cache, sh]
 published: true
 ---
 
+![image](https://upload-images.jianshu.io/upload_images/5874675-23c282d73c22a934?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-# 处理bigkey
+# 问题的出现
+
+一个平坦无奇的工作日，领导到我工位和我说，“有一个 redis 慢操作，你这几天有时间帮忙解决一下。”
+
+“好的。”，管他什么问题，既然让我做，我自然觉得自己能搞定。
+
+然后我收到一封 redis 慢操作的 excel 文件，这个还挺好，每个操作的耗时都给出来了，看了下我们系统有几个操作耗时几秒钟。
+
+好家伙，对于单线程的 redis 来说，一个操作几秒钟确实是挺致命的，不过都是在凌晨左右，还好。
+
+![image](https://upload-images.jianshu.io/upload_images/5874675-faa25de3f9bdb444?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+# 慢操作分析
+
+redis 的慢操作已经有了，如果没有，我们可以自己去 redis 服务器查看历史的慢日志操作，或者有对应的慢操作监控系统也可以发现问题，这里不做展开。
+
+接下来我们就要看一看为什么这么慢。
+
+看了下项目中的实现代码，结合日志一分析，发现是一个 redis bigkey。
+
+一个 redis key，对应的是一个 map, 里面防了几十万的 key/value。删除的时候一把直接删除，自然是慢的。
+
+本文带大家一起分析下 redis bigkey 删除的解决方案，希望你工作中遇到类似问题提供一个解决思路。
+
+# 处理 bigkey
 
 bigkey是指key对应的value所占的内存空间比较大。
 
-例如一个字符串类 型的value可以最大存到512MB，一个列表类型的value最多可以存储232-1个元素。
+例如一个字符串类 型的value可以最大存到512MB，一个列表类型的value最多可以存储2^32-1个元素。
 
 如果按照数据结构来细分的话，一般分为字符串类型bigkey和非字符串类型bigkey。
 
@@ -89,7 +114,7 @@ scan+debug object：如果怀疑存在bigkey，可以使用scan命令渐进的�
 
 表12-3展示了删除512KB~10MB的字符串类型数据所花费的时间，总体来说由于字符串类型结构相对简单，删除速度比较快，但是随着value值的不断增大，删除速度也逐渐变慢。
 
-![image](https://user-images.githubusercontent.com/18375710/62443690-1d84eb00-b78e-11e9-8575-f6c6be54d702.png)
+![删除时间测试](https://images.gitee.com/uploads/images/2020/1017/123218_dea5e153_508704.png)
 
 ## 非字符串类删除测试
 
@@ -99,7 +124,7 @@ scan+debug object：如果怀疑存在bigkey，可以使用scan命令渐进的�
 
 删除hash、list、set、sorted set四种数据结构不同数量不同元素大小的耗时
 
-![image](https://user-images.githubusercontent.com/18375710/62443763-4dcc8980-b78e-11e9-96c3-10389a60e90a.png)
+![不同元素大小的耗时](https://images.gitee.com/uploads/images/2020/1017/123245_669ee7b3_508704.png)
 
 从上分析可见，除了string类型，其他四种数据结构删除的速度有可能很慢，这样增大了阻塞Redis的可能性。
 
@@ -388,6 +413,34 @@ public void removeBigKey(String key, int scanCount, long intervalMills) throws C
 这里我们使用 TRW 保证 cursor 被关闭，自己实现 scanCount 一次进行删除，避免 1 个 1 个删除网络交互较多。
 
 使用睡眠保证对 Redis 压力不要过大。
+
+# 测试验证
+
+当然上线之前需要测试充分的验证，这里我是自己做了自测，然后让测试帮我做了回归。
+
+确认不影响功能，删除性能等方面都没有问题之后，才进行了上线发布。
+
+上线之后做了连续3天的观察，一切稳定，这个问题也算是告一段落。
+
+# 小结
+
+redis 作为一个高性能的缓存服务，使用的时候确实会存在各种各样的问题。
+
+有时候使我们自己使用不留意，有时候是前人埋下的坑。（比如我这个）
+
+遇到这种问题，找到原因，并且找到合适的解决方案，才是最重要的。
+
+这个 redis bigkey 我前后分析+编码+自测+上线，差不多共计 3 天左右，还算顺利。其中两天是分析原因+讨论解决方案，编码测试反倒比较简单。
+
+希望对你有帮助。
+
+感兴趣的可以关注一下，便于实时接收最新内容。
+
+觉得本文对你有帮助的话，欢迎点赞评论收藏转发一波。你的鼓励，是我最大的动力~
+
+不知道你有哪些收获呢？或者有其他更多的想法，欢迎留言区和我一起讨论，期待与你的思考相遇。
+
+文中如果链接失效，可以点击 {阅读原文}。
 
 # 拓展阅读
 
