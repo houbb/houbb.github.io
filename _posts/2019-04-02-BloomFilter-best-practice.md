@@ -7,6 +7,8 @@ tags: [best-practice, redis, cache, sf]
 published: true
 ---
 
+![思维导图](https://p3-tt.byteimg.com/origin/pgc-image/aea5eaeb37ec4019a21d9e2e82fbfb3b?from=pc)
+
 # 缓存穿透
 
 [缓存穿透](https://houbb.github.io/2018/09/01/cache-01-talk#%E7%BC%93%E5%AD%98%E6%8C%96%E5%9D%91%E4%B8%89%E5%89%91%E5%AE%A2) 是一个很常见的问题。
@@ -24,6 +26,8 @@ published: true
 3. 如今都是分布式系统，如何保证一个地方的信息修改了，同步更新到 BloomFilter 中。
 
 下面，根据这几点，一个个进行解决。
+
+![解决方案](https://p3-tt.byteimg.com/origin/dfic-imagehandler/b980e4b4-dcd9-45fb-b0db-93da496f46d0?from=pc)
 
 # 第二个保证
 
@@ -96,6 +100,8 @@ push 是推送的方式，需要考虑到每一个服务都要接收到对应的
 比如如果我们的程序重启了数据怎么办？
 
 因为我们是采用增量的方式，下次再启动以前的信息就会丢失。
+
+![数据持久化](https://p6-tt.byteimg.com/origin/dfic-imagehandler/23db3b38-8f81-46f5-ada9-2cde39fa9a1f?from=pc)
 
 ## 持久化
 

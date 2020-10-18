@@ -138,32 +138,7 @@ C2客户要借3个资金单位，C3客户要借8个资金单位，总计20个资
 
 某一时刻的状态如图所示。
 
-<table border="1" cellspacing="0" cellpadding="0"><tbody><tr><td width="100%" height="14" align="center">C1 2(7)</td>
-</tr><tr><td width="100%" height="58" align="center">余额8</td>
-</tr></tbody></table></td>
-<td width="25%">
-<table border="1" cellspacing="0" cellpadding="0"><tbody><tr><td width="100%" height="78">
-<p> </p>
-<p style="text-indent:2em;">余额10</p>
-</td>
-</tr></tbody></table></td>
-</tr></tbody></table><table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td width="25%" height="24">
-<p> </p>
-<p style="text-indent:2em;">    (a)</p>
-</td>
-<td width="25%" height="24">
-<p> </p>
-<p style="text-indent:2em;">     (b)</p>
-</td>
-<td width="25%" height="24">
-<p> </p>
-<p style="text-indent:2em;">     (c)</p>
-</td>
-<td width="25%" height="24">
-<p> </p>
-<p style="text-indent:2em;">     (d)</p>
-</td>
-</tr></tbody></table
+![银行家算法](https://images.gitee.com/uploads/images/2020/1018/183926_72d54508_508704.png)
 
 对于a图的状态，按照安全序列的要求，我们选的第一个客户应满足该客户所需的贷款小于等于银行家当前所剩余的钱款，可以看出只有C2客户能被满足：C2客户需1个资金单位，小银行家手中的2个资金单位，于是银行家把1个资金单位借给C2客户，使之完成工作并归还所借的3个资金单位的钱，进入b图。同理，银行家把4个资金单位借给C3客户，使其完成工作，在c图中，只剩一个客户C1，它需7个资金单位，这时银行家有8个资金单位，所以C1也能顺利借到钱并完成工作。最后（见图d）银行家收回全部10个资金单位，保证不赔本。那麽客户序列{C1，C2，C3}就是个安全序列，按照这个序列贷款，银行家才是安全的。否则的话，若在图b状态时，银行家把手中的4个资金单位借给了C1，则出现不安全状态：这时C1，C3均不能完成工作，而银行家手中又没有钱了，系统陷入僵持局面，银行家也不能收回投资。
 

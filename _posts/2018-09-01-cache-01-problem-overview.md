@@ -27,6 +27,8 @@ published: true
 
 缓存雪崩是指缓存不可用或者大量缓存由于超时时间相同在同一时间段失效，大量请求直接访问数据库，数据库压力过大导致系统雪崩。
 
+![雪崩](https://p6-tt.byteimg.com/origin/dfic-imagehandler/4eacc8e2-843f-4531-b59a-219a699fa5ee?from=pc)
+
 ## 常见场景
 
 我们很多业务代码中，都喜欢在凌晨定时清空缓存，很容易导致数据库压力飙升。
@@ -56,6 +58,8 @@ published: true
 这个主要针对我们定时清空缓存的场景，推荐都是逐渐清空，而不是一把梭哈。
 
 记得给缓存一个喘气的机会，也多给自己喝咖啡的机会。
+
+![咖啡](https://p1-tt.byteimg.com/origin/pgc-image/89b49cd028a14b6d975ed3a1faf06803?from=pc)
 
 # 缓存击穿
 
@@ -96,6 +100,8 @@ ps: 说到分布式锁，我们后续将花2-3节重点讲解下。
 # 缓存穿透
 
 > 就像是丢盔卸甲的士兵立在战场之上。
+
+![战场](https://p1-tt.byteimg.com/origin/pgc-image/ef8ba9288552471885a13c4d08f7d2cb?from=pc)
 
 ## 问题描述
 
