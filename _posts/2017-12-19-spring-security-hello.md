@@ -14,13 +14,11 @@ published: true
 
 刚好最近在学习整理 Spring 相关的技术，就学习一下 [Spring Security](http://projects.spring.io/spring-security/)。
 
-
 ## 是什么？
 
-Spring Security is a framework that focuses on providing both authentication and authorization to Java applications. 
+Spring Security是一个框架，致力于为Java应用程序提供身份验证和授权。
 
-Like all Spring projects, the real power of Spring Security is found in how easily it can be extended to meet custom requirements.
-
+像所有Spring项目一样，Spring Security的真正强大之处在于可以轻松扩展以满足自定义要求。
 
 # Hello World
 

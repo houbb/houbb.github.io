@@ -90,5 +90,11 @@ StampedLock
 
 简易版本可重入读写锁
 
+## 进阶学习
+
+linux 系统中的 seqlocks 实现原理
+
+seqlock 在 jmm 如何应用？
+
 * any list
 {:toc}
