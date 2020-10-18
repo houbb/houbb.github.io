@@ -31,11 +31,17 @@ published: true
 
 [java 对象锁](https://houbb.github.io/2018/07/25/java-concurrency-07-class-object-lock)
 
-[java 读写锁](https://houbb.github.io/2019/01/18/jcip-36-read-write-lock)
+[java 可重入读写锁](https://houbb.github.io/2019/01/18/jcip-36-read-write-lock)
 
 [java StampedLock 读写锁中的性能之王](https://houbb.github.io/2019/01/18/jcip-37-stamped-lock)
 
+[java 死锁](https://houbb.github.io/2019/01/18/jcip-33-dead-lock)
+
 ## 数据库锁
+
+MVCC
+
+
 
 ## 分布式锁
 
@@ -58,15 +64,31 @@ published: true
 
 必须在以前的基础上进一步提升，主要偏重于源码学习。
 
-[Lock 和 Condition 接口源码学习]()
+[Lock 和 Condition 接口源码学习](https://houbb.github.io/2020/10/17/lock-02-lock-interface-source-code)
 
-[ReentrantLock 可重入锁源码学习]()
+AbstractOwnableSynchronizer
 
-[StampedLock 读写锁源码学习]()
+AbstractQueuedLongSynchronizer
 
-[ReadWriteLock 读写锁源码学习]()
+AbstractQueuedSynchronizer
 
-[AQS 源码学习]()
+LockSupport
+
+[ReentrantLock 源码学习](https://houbb.github.io/2020/10/17/lock-03-ReentrantLock-source-code)
+
+[ReentrantReadWriteLock 可重入读写锁源码学习](https://houbb.github.io/2019/01/18/jcip-36-read-write-lock)
+
+ReentrantReadWriteLock.ReadLock
+
+ReentrantReadWriteLock.WriteLock
+
+StampedLock
+
+## 自己实现
+
+简易版本可重入锁
+
+简易版本可重入读写锁
 
 * any list
 {:toc}

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  锁专题（3）ReentrantLock 可重入锁源码解析
+title:  锁专题（4）ReentrantReadWriteLock 可重入读写锁源码解析
 date:  2020-10-17 16:15:55 +0800
 categories: [Lock]
 tags: [lock, overview, sf]
@@ -11,9 +11,16 @@ published: true
 
 ![可重入锁源码](https://images.gitee.com/uploads/images/2020/1017/205515_dcf6ab66_508704.png)
 
-# ReentrantLock 源码
+# ReentrantReadWriteLock 简介
 
-介绍 ReentrantLock 的文章很多，今天我们来一起看一下 ReentrantLock 的源码，理解一下实现原理。
+锁的力度是越小越好，读写锁就是将读和写这两个动作拆分开。
+
+读与读是不互斥的，写和其他动作都互斥。
+
+可以理解为读锁是共享锁，写锁是互斥锁。
+
+在读多的场景下，读写锁的性能表现会比较优异。
+
 
 ## 类定义
 
