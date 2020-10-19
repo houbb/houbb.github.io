@@ -13,7 +13,7 @@ published: true
 
 思维导图如下：
 
-![异步转同步字节码增强](https://images.gitee.com/uploads/images/2020/1010/224250_0bdf7971_508704.png)
+![异步转同步字节码增强](https://upload-images.jianshu.io/upload_images/5874675-14830eea4bf60868?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 拓展阅读
 
