@@ -13,7 +13,7 @@ published: true
 
 思维导图如下：
 
-![异步转同步](https://images.gitee.com/uploads/images/2020/1010/232925_6e6ab4a8_508704.png)
+![异步转同步](https://upload-images.jianshu.io/upload_images/5874675-ca3be5d5fce5cf24.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 本节主要介绍注解框架如何整合 spring 和 springboot。
 
