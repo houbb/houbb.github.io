@@ -20,6 +20,9 @@ published: true
 ReentrantLock 实现了 Lock 接口，和序列化接口。
 
 ```java
+/**
+ * @author 老马啸西风
+ */
 public class ReentrantLock implements Lock, java.io.Serializable {
     private static final long serialVersionUID = 7373984872572414699L;
     /** Synchronizer providing all implementation mechanics */
@@ -41,6 +44,7 @@ ps：AQS 我们本节不做展开，后续会专门有一节进行讲解。
  * Base of synchronization control for this lock. Subclassed
  * into fair and nonfair versions below. Uses AQS state to
  * represent the number of holds on the lock.
+ * @author 老马啸西风
  */
 abstract static class Sync extends AbstractQueuedSynchronizer {
     private static final long serialVersionUID = -5179523762034025860L;
@@ -148,6 +152,7 @@ abstract static class Sync extends AbstractQueuedSynchronizer {
 ```java
 /**
  * Sync object for non-fair locks
+ * @author 老马啸西风
  */
 static final class NonfairSync extends Sync {
     private static final long serialVersionUID = 7316153563782823691L;
@@ -191,6 +196,7 @@ static final class NonfairSync extends Sync {
  * @param arg the acquire argument.  This value is conveyed to
  *        {@link #tryAcquire} but is otherwise uninterpreted and
  *        can represent anything you like.
+ * @author 老马啸西风
  */
 public final void acquire(int arg) {
     if (!tryAcquire(arg) &&
@@ -218,6 +224,7 @@ public final void acquire(int arg) {
 ```java
 /**
  * Sync object for fair locks
+ * @author 老马啸西风
  */
 static final class FairSync extends Sync {
     private static final long serialVersionUID = -3000897897090466540L;
@@ -268,6 +275,9 @@ static final class FairSync extends Sync {
 这个方法我们简单看一下，不是本节的重点内容：
 
 ```java
+/**
+ * @author 老马啸西风
+ */
 public final boolean hasQueuedPredecessors() {
     // The correctness of this depends on head being initialized
     // before tail and on head.next being accurate if the current
@@ -302,6 +312,7 @@ public final boolean hasQueuedPredecessors() {
 /**
  * Creates an instance of {@code ReentrantLock}.
  * This is equivalent to using {@code ReentrantLock(false)}.
+ * @author 老马啸西风
  */
 public ReentrantLock() {
     sync = new NonfairSync();
@@ -351,6 +362,9 @@ public void lockInterruptibly() throws InterruptedException {
 这个调用的也是 AQS 的方法：
 
 ```java
+/**
+ * @author 老马啸西风
+ */
 public final void acquireInterruptibly(int arg)
         throws InterruptedException {
     if (Thread.interrupted())
@@ -368,6 +382,7 @@ public final void acquireInterruptibly(int arg)
 /**
  * Acquires in exclusive interruptible mode.
  * @param arg the acquire argument
+ * @author 老马啸西风
  */
 private void doAcquireInterruptibly(int arg)
     throws InterruptedException {
@@ -421,7 +436,7 @@ ps: 这里不得不感慨一下，有些东西不看源码，是想不到的。
 
 - 我们想使用公平模式获取锁怎么办？
 
-【公平！公平！还是TMD公平！】
+[公平](https://p1.pstatp.com/origin/pgc-image/4d86a8d763934ce1962965c80dca89e8)
 
 那问题又来了，我们想使用公平锁模式获取锁怎么办？
 
@@ -447,6 +462,9 @@ ns（nanosecond）：纳秒，时间单位。一秒的十亿分之一，等于10
 - tryAcquireNanos
 
 ```java
+/**
+ * @author 老马啸西风
+ */
 public final boolean tryAcquireNanos(int arg, long nanosTimeout)
         throws InterruptedException {
     if (Thread.interrupted())
@@ -465,6 +483,7 @@ public final boolean tryAcquireNanos(int arg, long nanosTimeout)
  * @param arg the acquire argument
  * @param nanosTimeout max wait time
  * @return {@code true} if acquired
+ * @author 老马啸西风
  */
 private boolean doAcquireNanos(int arg, long nanosTimeout)
         throws InterruptedException {
@@ -517,6 +536,9 @@ public void unlock() {
 这里会调用 tryRelease，如果成功还会有一些 Node 信息的更新。
 
 ```java
+/**
+ * @author 老马啸西风
+ */
 public final boolean release(int arg) {
     if (tryRelease(arg)) {
         Node h = head;
