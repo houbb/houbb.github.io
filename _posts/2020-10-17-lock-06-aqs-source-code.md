@@ -11,102 +11,7 @@ published: true
 
 # AQS
 
-## 作用
-
 提供一个框架，用于实现依赖先进先出（FIFO）等待队列的阻塞锁和相关同步器（信号量，事件等）。 
-
-该类被设计为大多数类型的同步器的有用依据，这些同步器依赖于单个原子int值来表示状态。 
-
-子类必须定义改变此状态的受保护方法，以及根据该对象被获取或释放来定义该状态的含义。 给定这些，这个类中的其他方法执行所有排队和阻塞机制。 
-
-子类可以保持其他状态字段，但只以原子方式更新int使用方法操纵值getState() ， setState(int)和compareAndSetState(int, int)被跟踪相对于同步。
-
-子类应定义为非公共内部助手类，用于实现其封闭类的同步属性。 
-
-AbstractQueuedSynchronizer类不实现任何同步接口。 
-
-相反，它定义了一些方法，如acquireInterruptibly(int) ，可以通过具体的锁和相关同步器来调用适当履行其公共方法。
-
-此类支持默认独占模式和共享模式。 
-
-当以独占模式获取时，尝试通过其他线程获取不能成功。 多线程获取的共享模式可能（但不需要）成功。 除了在机械意义上，这个类不理解这些差异，当共享模式获取成功时，下一个等待线程（如果存在）也必须确定它是否也可以获取。 
-
-在不同模式下等待的线程共享相同的FIFO队列。 
-
-通常，实现子类只支持这些模式之一，但是两者都可以在ReadWriteLock中发挥作用。 
-
-仅支持独占或仅共享模式的子类不需要定义支持未使用模式的方法。
-
-这个类定义的嵌套AbstractQueuedSynchronizer.ConditionObject可用于作为一类Condition由子类支持独占模式用于该方法的实施isHeldExclusively()份报告是否同步排他相对于保持在当前线程，方法release(int)与当前调用getState()值完全释放此目的，和acquire(int) ，给定此保存的状态值，最终将此对象恢复到其先前获取的状态。 
-
-AbstractQueuedSynchronizer方法将创建此类条件，因此如果不能满足此约束，请勿使用该约束。 
-
-AbstractQueuedSynchronizer.ConditionObject的行为当然取决于其同步器实现的语义。
-
-该类为内部队列提供检查，检测和监控方法，以及条件对象的类似方法。 这些可以根据需要导出到类中，使用AbstractQueuedSynchronizer进行同步机制。
-
-此类的序列化仅存储底层原子整数维持状态，因此反序列化对象具有空线程队列。 需要可序列化的典型子类将定义一个readObject方法，可以将其恢复为readObject时的已知初始状态。
-
-## 用法
-
-使用这个类用作同步的基础上，重新定义以下方法，如适用，通过检查和/或修改使用所述同步状态getState() ， setState(int)和/或compareAndSetState(int, int) ：
-
-```java
-tryAcquire(int)
-tryRelease(int)
-tryAcquireShared(int)
-tryReleaseShared(int)
-isHeldExclusively()
-```
-
-每个这些方法默认抛出UnsupportedOperationException。
-
-这些方法的实现必须是线程安全的，通常应该是短的而不是阻止的。 定义这些方法是唯一支持使用此类的方法。
- 
-所有其他方法都被声明为final ，因为它们不能独立变化。
-
-您还可以找到来自继承的方法AbstractOwnableSynchronizer有用跟踪线程拥有独家同步的。 
-
-我们鼓励您使用它们 - 这样可以使监控和诊断工具帮助用户确定哪些线程持有锁定。
-
-即使这个类基于内部FIFO队列，它也不会自动执行FIFO采集策略。 
-
-排他同步的核心形式如下：
-
-```java
-Acquire:
-     while (!tryAcquire(arg)) {
-        enqueue thread if it is not already queued;
-        possibly block current thread;
-     }
-
- Release:
-     if (tryRelease(arg))
-        unblock the first queued thread; 
-```
-
-（共享模式类似，但可能包含级联信号。）
-
-因为在采集检查入队之前调用，所以新获取的线程可能闯入其他被阻塞和排队的。 
-
-但是，如果需要，您可以通过内部调用一个或多个检查方法来定义tryAcquire和/或tryAcquireShared来禁用驳船，从而提供一个合理的 FIFO采购订单。 
-
-特别地，最公平同步器可以定义tryAcquire返回false如果hasQueuedPredecessors() （具体地设计成由公平同步器中使用的方法）返回true 。 其他变化是可能的。
-
-吞吐量和可扩展性通常对于默认的驳船（也称为贪心 ， 放弃和车队避免 ）战略来说是最高的。 
-
-虽然这不能保证是公平的或无饥饿的，但较早排队的线程在稍后排队的线程之前被允许重新侦听，并且每次重新提供对于传入线程成功的机会。 
-
-此外，虽然获取在通常意义上不“旋转”，但是在阻止之前它们可以执行多个tryAcquire tryAcquire与其他计算的交互。 
-
-当独占同步只是简单地持有时，这样可以提供旋转的大部分好处，而没有大部分负债。 
-
-如果需要，您可以通过以前通过“快速路径”检查获取方法的调用进行扩充，可能预先检查hasContended()和/或hasQueuedThreads() ，以便只有在同步器可能不被竞争的情况下才能进行。
-
-该类为同步提供了一个高效和可扩展的基础，部分原因是可以依靠int状态，获取和释放参数以及内部FIFO等待队列的同步器的使用范围。 
-
-当这不足够时，您可以使用atomic类，您自己的自定义Queue类和LockSupport类阻止支持从较低级别构建同步器。
-
 
 # 源码学习
 
@@ -443,7 +348,194 @@ private final boolean compareAndSetTail(Node expect, Node update) {
 }
 ```
 
-## 添加等待着
+
+# 锁的获取
+
+AQS 中提供了丰富的方法，看的我眼花缭乱。
+
+想了想还是看最基本的锁的获取和释放即可。
+
+AQS 提供了两种基本的锁获取模式：共享锁和排他锁模式，当然也包含是否可以被打断。
+
+是否可以被打断我们不做重点讲解。
+
+## 排他锁模式
+
+也叫独占锁。
+
+就像是一个爱吃独食的小朋友，好吃的我一个人吃，其他人都要等着。
+
+源码如下：
+
+```java
+/**
+ * Acquires in exclusive mode, ignoring interrupts.  Implemented
+ * by invoking at least once {@link #tryAcquire},
+ * returning on success.  Otherwise the thread is queued, possibly
+ * repeatedly blocking and unblocking, invoking {@link
+ * #tryAcquire} until success.  This method can be used
+ * to implement method {@link Lock#lock}.
+ *
+ * @param arg the acquire argument.  This value is conveyed to
+ *        {@link #tryAcquire} but is otherwise uninterpreted and
+ *        can represent anything you like.
+ * @author 老马啸西风
+ */
+public final void acquire(int arg) {
+    if (!tryAcquire(arg) &&
+        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+        selfInterrupt();
+}
+```
+
+
+这个方法的注释说明的比较清楚。
+
+独占获取锁的模式，忽略中断。至少调用一次 `tryAcquire`，否则就会将线程入队，重试调用  tryAcquire，直到成功为止。
+
+实现只有 3 行，实际上却是有 4 个方法组成，我们来分别看下这几个方法。
+
+### tryAcquire 尝试获取锁
+
+这个默认的实现是不支持的，都是在各种子类中实现的，我们其他章节讲过，这里不做深入。
+
+```java
+protected boolean tryAcquire(int arg) {
+    throw new UnsupportedOperationException();
+}
+```
+
+### acquireQueued 线程入队
+
+这个方法是使用排他锁的模式不可中断的方式获取锁。
+
+```java
+/**
+ * Acquires in exclusive uninterruptible mode for thread already in
+ * queue. Used by condition wait methods as well as acquire.
+ *
+ * @param node the node
+ * @param arg the acquire argument
+ * @return {@code true} if interrupted while waiting
+ * @author 老马啸西风
+ */
+final boolean acquireQueued(final Node node, int arg) {
+    boolean failed = true;
+    try {
+        boolean interrupted = false;
+        for (;;) {
+            // 当前节点的前一个节点为 head，说明已经是排在最前的等待者。
+            final Node p = node.predecessor();
+            // 第一个等待者获取锁成功，则说明本次获取锁成功。
+            if (p == head && tryAcquire(arg)) {
+                setHead(node);
+                p.next = null; // help GC
+                failed = false;
+                return interrupted;
+            }
+
+            // 如果获取锁失败需要发信号 && 检测状态为中断，更新 interrupted = true;
+            // 这个值实际上只是在获取锁之后才会返回，用来记录等待过程中是否被中断。
+            // 但是中断了几次，这些细节信息实际上已经丢失了。
+            if (shouldParkAfterFailedAcquire(p, node) &&
+                parkAndCheckInterrupt())
+                interrupted = true;
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+```
+
+- shouldParkAfterFailedAcquire
+
+如果获取锁失败，则需要更新对应的状态。
+
+返回 true 则说明 thread 需要被阻塞。
+
+这是在获取锁循环中最主要的主信号控制。
+
+```java
+/**
+ * Checks and updates status for a node that failed to acquire.
+ * Returns true if thread should block. This is the main signal
+ * control in all acquire loops.  Requires that pred == node.prev.
+ *
+ * @param pred node's predecessor holding status
+ * @param node the node
+ * @return {@code true} if thread should block
+ * @author 老马啸西风
+ */
+private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
+    int ws = pred.waitStatus;
+    if (ws == Node.SIGNAL)
+        /*
+         * This node has already set status asking a release
+         * to signal it, so it can safely park.
+         *
+         * 状态已经是需要发信号，直接返回 true。
+         */
+        return true;
+    if (ws > 0) {
+        /*
+         * Predecessor was cancelled. Skip over predecessors and
+         * indicate retry.
+         * 
+         * 前继节点已经取消，这里就是循环向前找到一个状态不大于0的节点。
+         * 也就是找到一个需要发信号的节点。（非负值表示节点不需要发信号。）
+         */
+        do {
+            node.prev = pred = pred.prev;
+        } while (pred.waitStatus > 0);
+        pred.next = node;
+    } else {
+        /*
+         * waitStatus must be 0 or PROPAGATE.  Indicate that we
+         * need a signal, but don't park yet.  Caller will need to
+         * retry to make sure it cannot acquire before parking.
+         * 
+         * 这里是用 CAS 设置一个需要发信号，但是还没有发现好的节点。
+         */
+        compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
+    }
+    return false;
+}
+```
+
+- compareAndSetWaitStatus
+
+这里调用了 unsafe 的方法，将节点状态的值设置为 Node.SIGNAL。
+
+```java
+/**
+ * CAS waitStatus field of a node.
+ */
+private static final boolean compareAndSetWaitStatus(Node node,
+                                                     int expect,
+                                                     int update) {
+    return unsafe.compareAndSwapInt(node, waitStatusOffset,
+                                    expect, update);
+}
+```
+
+- parkAndCheckInterrupt
+
+这里是直接暂停，并且检查是否中断。
+
+```java
+/**
+ * Convenience method to park and then check if interrupted
+ *
+ * @return {@code true} if interrupted
+ */
+private final boolean parkAndCheckInterrupt() {
+    LockSupport.park(this);
+    return Thread.interrupted();
+}
+```
+
+### addWaiter 添加等待者
 
 Node 有排他和共享两种模式。
 
@@ -453,6 +545,7 @@ Node 有排他和共享两种模式。
  *
  * @param mode Node.EXCLUSIVE for exclusive, Node.SHARED for shared
  * @return the new node
+ * @author 老马啸西风
  */
 private Node addWaiter(Node mode) {
     Node node = new Node(Thread.currentThread(), mode);
@@ -480,8 +573,272 @@ private Node addWaiter(Node mode) {
 
 不过我想这种代码实现在后期的编译器应该会优化掉的。
 
+### selfInterrupt 我打断我自己？
 
-TODO....
+这个方法比较简单，就是执行线程中断：
+
+```java
+/**
+ * Convenience method to interrupt current thread.
+ */
+static void selfInterrupt() {
+    Thread.currentThread().interrupt();
+}
+```
+
+看了下是否可中断，和这个整理流程类似。
+
+只是在被中断的时候，会直接抛出 `InterruptedException` 异常，中断操作。
+
+### cancelAcquire 取消获取锁
+
+在 finally 中会执行取消获取锁，目的是取消正在尝试获取锁的操作。
+
+```java
+/**
+ * Cancels an ongoing attempt to acquire.
+ *
+ * @param node the node
+ */
+private void cancelAcquire(Node node) {
+    // Ignore if node doesn't exist
+    // 节点不存在，直接返回。
+    if (node == null)
+        return;
+
+
+    node.thread = null;
+
+    // 跳过所有不需要发信号的前继节点。
+    // Skip cancelled predecessors
+    Node pred = node.prev;
+    while (pred.waitStatus > 0)
+        node.prev = pred = pred.prev;
+
+    // predNext is the apparent node to unsplice. CASes below will
+    // fail if not, in which case, we lost race vs another cancel
+    // or signal, so no further action is necessary.
+    Node predNext = pred.next;
+    // Can use unconditional write instead of CAS here.
+    // After this atomic step, other Nodes can skip past us.
+    // Before, we are free of interference from other threads.
+    // 这里将节点状态设置为取消。
+    node.waitStatus = Node.CANCELLED;
+
+    // 如果是尾巴节点，而且设置前继节点为新的尾巴节点成功，直接移除自身即可。
+    // If we are the tail, remove ourselves.
+    if (node == tail && compareAndSetTail(node, pred)) {
+        compareAndSetNext(pred, predNext, null);
+    } else {
+        // 如果后继者需要信号，请尝试设置pred的下一个链接，以便获得一个信号。 否则唤醒它以传播。
+        // If successor needs signal, try to set pred's next-link
+        // so it will get one. Otherwise wake it up to propagate.
+        int ws;
+        if (pred != head &&
+            ((ws = pred.waitStatus) == Node.SIGNAL ||
+             (ws <= 0 && compareAndSetWaitStatus(pred, ws, Node.SIGNAL))) &&
+            pred.thread != null) {
+            Node next = node.next;
+            if (next != null && next.waitStatus <= 0)
+                compareAndSetNext(pred, predNext, next);
+        } else {
+            unparkSuccessor(node);
+        }
+        node.next = node; // help GC
+    }
+}
+```
+
+
+## 共享锁模式
+
+看完了排他锁模式，让我们一起来看一下共享锁模式。
+
+```java
+/**
+ * Acquires in shared mode, ignoring interrupts.  Implemented by
+ * first invoking at least once {@link #tryAcquireShared},
+ * returning on success.  Otherwise the thread is queued, possibly
+ * repeatedly blocking and unblocking, invoking {@link
+ * #tryAcquireShared} until success.
+ *
+ * @param arg the acquire argument.  This value is conveyed to
+ *        {@link #tryAcquireShared} but is otherwise uninterpreted
+ *        and can represent anything you like.
+ */
+public final void acquireShared(int arg) {
+    if (tryAcquireShared(arg) < 0)
+        doAcquireShared(arg);
+}
+```
+
+使用共享模式获取锁，忽略中断。
+
+至少调用一次 tryAcquireShared，如果不成功，则加入到队列中重复尝试，直到成功。
+
+这个感觉实际上和上面的排他锁非常类似，让我们看一下对应的方法到底有神马不同。
+
+### tryAcquireShared 
+
+尝试共享模式获取锁方法。默认是不支持的，在子类中有对应的实现，此处不做展开。
+
+返回大于 0 的值，说明获取锁成功。
+
+```java
+protected int tryAcquireShared(int arg) {
+    throw new UnsupportedOperationException();
+}
+```
+
+### doAcquireShared 
+
+这个方法流程和上面的 `acquireQueued` 方法非常类似。
+
+只不过添加的节点状态为 `Node.SHARED`。
+
+```java
+/**
+ * Acquires in shared uninterruptible mode.
+ * @param arg the acquire argument
+* @author 老马啸西风
+ */
+private void doAcquireShared(int arg) {
+    final Node node = addWaiter(Node.SHARED);
+    boolean failed = true;
+    try {
+        boolean interrupted = false;
+        for (;;) {
+            // 如果当前节点为队列最前面的元素
+            final Node p = node.predecessor();
+            if (p == head) {
+                int r = tryAcquireShared(arg);
+                // 获取锁成功，则设置头信息。
+                if (r >= 0) {
+                    setHeadAndPropagate(node, r);
+                    p.next = null; // help GC
+                    if (interrupted)
+                        selfInterrupt();
+                    failed = false;
+                    return;
+                }
+            }
+            if (shouldParkAfterFailedAcquire(p, node) &&
+                parkAndCheckInterrupt())
+                interrupted = true;
+        }
+    } finally {
+        if (failed)
+            cancelAcquire(node);
+    }
+}
+```
+
+- setHeadAndPropagate 设置头结点并传播
+
+这里主要做了两件事：
+
+（1）设置头结点信息
+
+（2）传播
+
+传播算是这个方法的核心，我们不妨问自己一下：
+
+为什么需要传播？
+
+什么时候进行传播？
+
+怎么传播？
+
+```java
+/**
+ * Sets head of queue, and checks if successor may be waiting
+ * in shared mode, if so propagating if either propagate > 0 or
+ * PROPAGATE status was set.
+ *
+ * @param node the node 节点信息
+ * @param propagate the return value from a tryAcquireShared 是否获取锁成功
+ * @author 老马啸西风
+ */
+private void setHeadAndPropagate(Node node, int propagate) {
+    Node h = head; // Record old head for check below
+    setHead(node);
+    /*
+     * Try to signal next queued node if:
+     *   Propagation was indicated by caller,
+     *     or was recorded (as h.waitStatus either before
+     *     or after setHead) by a previous operation
+     *     (note: this uses sign-check of waitStatus because
+     *      PROPAGATE status may transition to SIGNAL.)
+     * and
+     *   The next node is waiting in shared mode,
+     *     or we don't know, because it appears null
+     *
+     * The conservatism in both of these checks may cause
+     * unnecessary wake-ups, but only when there are multiple
+     * racing acquires/releases, so most need signals now or soon
+     * anyway.
+     */
+    if (propagate > 0 || h == null || h.waitStatus < 0 ||
+        (h = head) == null || h.waitStatus < 0) {
+        Node s = node.next;
+        if (s == null || s.isShared())
+            doReleaseShared();
+    }
+}
+```
+
+如果发生以下情况，请尝试向下一个排队的节点发送信号：
+
+（1）传播是由调用者指示的，或者是由上一个操作记录的（作为setHead之前或之后的h.waitStatus）（请注意：此方法使用waitStatus的符号检查，因为PROPAGATE状态可能转换为SIGNAL。）
+
+（2）下一个节点正在共享模式下等待，或者我们不知道，因为它显示为空
+
+代码里实际用的是 `||`，满足任意一个都需要发送信息。
+
+为什么要这么做呢？
+
+这两项检查中的保守性可能会导致不必要的唤醒，但是只有在有多个竞态（racing）获取/发布时，因此无论现在还是不久之后，大多数人都需要发出信号。
+
+简而言之，**可能多余，但是必要**。
+
+
+### 其他方法
+
+其他几个方法和排他锁是一样的，大家可以自行回顾一下。
+
+我们后面进入锁的释放环节。
+
+
+# 锁的释放
+
+
+
+## 独占模式
+
+```java
+/**
+ * Releases in exclusive mode.  Implemented by unblocking one or
+ * more threads if {@link #tryRelease} returns true.
+ * This method can be used to implement method {@link Lock#unlock}.
+ *
+ * @param arg the release argument.  This value is conveyed to
+ *        {@link #tryRelease} but is otherwise uninterpreted and
+ *        can represent anything you like.
+ * @return the value returned from {@link #tryRelease}
+ */
+public final boolean release(int arg) {
+    if (tryRelease(arg)) {
+        Node h = head;
+        if (h != null && h.waitStatus != 0)
+            unparkSuccessor(h);
+        return true;
+    }
+    return false;
+}
+````
+
+
+
 
 # 小结
 
