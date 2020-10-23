@@ -811,7 +811,9 @@ private void setHeadAndPropagate(Node node, int propagate) {
 
 # 锁的释放
 
+常言道，好借好还，再借不难。
 
+获取锁，一定要记得释放锁。
 
 ## 独占模式
 
@@ -835,13 +837,167 @@ public final boolean release(int arg) {
     }
     return false;
 }
-````
+```
+
+使用独占模式释放锁，我们一起来看一下几个核心方法：
+
+### tryRelease 尝试释放锁
+
+这个方法默认是不支持的：
+
+```java
+protected boolean tryRelease(int arg) {
+    throw new UnsupportedOperationException();
+}
+```
+
+### unparkSuccessor 唤醒后继节点
+
+```java
+/**
+ * Wakes up node's successor, if one exists.
+ *
+ * @param node the node
+ * @author 老马啸西风
+ */
+private void unparkSuccessor(Node node) {
+    /*
+     * If status is negative (i.e., possibly needing signal) try
+     * to clear in anticipation of signalling.  It is OK if this
+     * fails or if status is changed by waiting thread.
+     */
+    int ws = node.waitStatus;
+    // 如果状态小于0，说明需要发送信号。
+    // 会通过 CAS 设置等待的状态为 0。
+    if (ws < 0)
+        compareAndSetWaitStatus(node, ws, 0);
+
+    /*
+     * Thread to unpark is held in successor, which is normally
+     * just the next node.  
+     * But if cancelled or apparently null,
+     * traverse backwards from tail to find the actual
+     * non-cancelled successor.
+     * 如果 node.next 存在，是直接释放当前 node.next。
+     * 如果 node.next 不存在，获取 node.next 的等待状态大于 0（不需要发送信号），则从队尾一直向前遍历，找到第一个非取消的节点进行释放。
+     */
+    Node s = node.next;
+    if (s == null || s.waitStatus > 0) {
+        s = null;
+        for (Node t = tail; t != null && t != node; t = t.prev)
+            if (t.waitStatus <= 0)
+                s = t;
+    }
+    if (s != null)
+        LockSupport.unpark(s.thread);
+}
+```
+
+释放用到了 LockSupport 的 unpark 方法：
+
+```java
+public static void unpark(Thread thread) {
+    if (thread != null)
+        unsafe.unpark(thread);
+}
+```
+
+这里底层还是调用 `unsafe` 的方法，我们暂时不做展开。
+
+
+## 共享模式
+
+说完了独占模式，让我们一起看一下共享模式的锁释放。
+
+```java
+/**
+ * Releases in shared mode.  Implemented by unblocking one or more
+ * threads if {@link #tryReleaseShared} returns true.
+ *
+ * @param arg the release argument.  This value is conveyed to
+ *        {@link #tryReleaseShared} but is otherwise uninterpreted
+ *        and can represent anything you like.
+ * @return the value returned from {@link #tryReleaseShared}
+ * @author 老马啸西风
+ */
+public final boolean releaseShared(int arg) {
+    if (tryReleaseShared(arg)) {
+        doReleaseShared();
+        return true;
+    }
+    return false;
+}
+```
+
+这个方法比较有趣，主要由两个方法组成：
+
+### tryReleaseShared 尝试释放锁
+
+默认是不支持的，这个可以在后续其他如 CountDownLatch 等源码中讲解。
+
+```java
+protected boolean tryReleaseShared(int arg) {
+    throw new UnsupportedOperationException();
+}
+```
+
+
+### doReleaseShared 
+
+共享模式释放锁。
 
 
 
+```java
+/**
+ * Release action for shared mode -- signal successor and ensure
+ * propagation. (Note: For exclusive mode, release just amounts
+ * to calling unparkSuccessor of head if it needs signal.)
+ */
+private void doReleaseShared() {
+    /*
+     * Ensure that a release propagates, even if there are other
+     * in-progress acquires/releases.  This proceeds in the usual
+     * way of trying to unparkSuccessor of head if it needs
+     * signal. But if it does not, status is set to PROPAGATE to
+     * ensure that upon release, propagation continues.
+     * Additionally, we must loop in case a new node is added
+     * while we are doing this. Also, unlike other uses of
+     * unparkSuccessor, we need to know if CAS to reset status
+     * fails, if so rechecking.
+     */
+    //jdk 特别喜欢这样写，等价于 while(true)
+    for (;;) {
+        Node h = head;
+        // 如果头节点不为空 && 队列不为空
+        if (h != null && h != tail) {
+            int ws = h.waitStatus;
+            // 如果节点的状态为需要发送信号，这里会一致尝试设置节点状态为0，直到成功为止。
+            // 设置成功，则执行 unparkSuccessor 
+            if (ws == Node.SIGNAL) {
+                if (!compareAndSetWaitStatus(h, Node.SIGNAL, 0))
+                    continue;            // loop to recheck cases
+                unparkSuccessor(h);
+            }
+            // 如果节点状态已经为零，且设置为广播失败，则继续循环。
+            else if (ws == 0 &&
+                     !compareAndSetWaitStatus(h, 0, Node.PROPAGATE))
+                continue;                // loop on failed CAS
+        }
+        // 头节点不再改变时，直接跳出。
+        if (h == head)                   // loop if head changed
+            break;
+    }
+}
+```
+
+unparkSuccessor 这个方法和上面的独占模式实现完全一样。
 
 # 小结
 
+有头发的程序员，阅读源码就是这样**深入浅出且枯燥**。
+
+看的愈多，就发现需要继续阅读就越多，只怕头发会越来越少。
 
 * any list
 {:toc}

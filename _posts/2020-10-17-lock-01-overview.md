@@ -80,16 +80,6 @@ MVCC
 
 [Lock 和 Condition 接口源码学习](https://houbb.github.io/2020/10/17/lock-02-lock-interface-source-code)
 
-AbstractOwnableSynchronizer
-
-AbstractQueuedLongSynchronizer
-
-AbstractQueuedSynchronizer
-
-LockSupport
-
-Unsafe
-
 [ReentrantLock 源码学习 √](https://houbb.github.io/2020/10/17/lock-03-ReentrantLock-source-code)
 
 [ReentrantReadWriteLock 可重入读写锁源码学习](https://houbb.github.io/2019/01/18/jcip-36-read-write-lock)
@@ -98,7 +88,27 @@ ReentrantReadWriteLock.ReadLock
 
 ReentrantReadWriteLock.WriteLock
 
+AbstractOwnableSynchronizer
+
+AbstractQueuedSynchronizer
+
+AbstractQueuedLongSynchronizer
+
+LockSupport
+
+Unsafe
+
 StampedLock
+
+CountDownLatch
+
+Semaphore
+
+Phaser
+
+Exchanger
+
+CyclicBarrier
 
 ## 自己实现
 
