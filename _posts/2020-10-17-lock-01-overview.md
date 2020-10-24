@@ -39,23 +39,19 @@ published: true
 
 [java ReentrantReadWriteLock 可重入读写锁](https://houbb.github.io/2019/01/18/jcip-36-read-write-lock)
 
-[java StampedLock 读写锁中的性能之王](https://houbb.github.io/2019/01/18/jcip-37-stamped-lock)
+[StampedLock 读写锁中的最强王者](https://houbb.github.io/2019/01/18/jcip-37-stamped-lock)
 
 [java dead lock 死锁](https://houbb.github.io/2019/01/18/jcip-33-dead-lock)
 
-## 异步转同步
+## 自己实现
 
-[java 手写并发框架（一）异步查询转同步的 7 种实现方式](https://houbb.github.io/2019/01/18/jcip-42-async-to-sync)
+await+notify 实现锁
 
-[java 手写并发框架（二）异步转同步框架封装锁策略](https://houbb.github.io/2019/01/18/jcip-43-async-to-sync-02-lock)
+自旋锁
 
-[java 手写并发框架（三）异步转同步框架注解和字节码增强](https://houbb.github.io/2019/01/18/jcip-44-async-to-sync-03-annotation-cglib)
+可重入锁
 
-[java 手写并发框架（四）异步转同步框架spring整合](https://houbb.github.io/2019/01/18/jcip-45-async-to-sync-04-spring)
-
-## 数据库锁
-
-MVCC
+可重入读写锁
 
 ## 分布式锁
 
@@ -71,8 +67,19 @@ MVCC
 
 [redis 分布式锁设计 redis lock](https://houbb.github.io/2019/01/07/redis-learn-41-lock)
 
-## 相关数据结构
+## 异步转同步
 
+[java 手写并发框架（一）异步查询转同步的 7 种实现方式](https://houbb.github.io/2019/01/18/jcip-42-async-to-sync)
+
+[java 手写并发框架（二）异步转同步框架封装锁策略](https://houbb.github.io/2019/01/18/jcip-43-async-to-sync-02-lock)
+
+[java 手写并发框架（三）异步转同步框架注解和字节码增强](https://houbb.github.io/2019/01/18/jcip-44-async-to-sync-03-annotation-cglib)
+
+[java 手写并发框架（四）异步转同步框架spring整合](https://houbb.github.io/2019/01/18/jcip-45-async-to-sync-04-spring)
+
+## 数据库锁
+
+MVCC
 
 # 新篇章
 
@@ -88,19 +95,29 @@ ReentrantReadWriteLock.ReadLock
 
 ReentrantReadWriteLock.WriteLock
 
-AbstractOwnableSynchronizer
+[StampedLock 读写锁中的最强王者](http://houbb.github.io/2019/01/18/jcip-37-stamped-lock)
 
-AbstractQueuedSynchronizer
+[AtomicLong 原子性 long 详解](http://houbb.github.io/2019/01/20/juc-02-atomiclong)
 
-AbstractQueuedLongSynchronizer
+[LongAdder 更高效的原子性变量](http://houbb.github.io/2019/01/20/juc-03-longadder)
 
-LockSupport
+[AbstractQueuedSynchronizer AQS 源码详解](http://houbb.github.io/2020/10/17/lock-06-aqs-source-code)
 
-Unsafe
+AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位的 long state 而已。
 
-StampedLock
+[LockSupport](http://houbb.github.io/2019/01/20/juc-06-lock-support)
+
+[Unsafe 并发锁的基石](http://houbb.github.io/2019/01/20/juc-05-unsafe)
+
+[striped64 缓存行](http://houbb.github.io/2019/01/20/juc-04-striped64)
+
+## 工具篇
+
+[闭锁（如CountDownLatch），栅栏（如CyclicBarrier），信号量（如Semaphore）和阻塞队列（如LinkedBlockingQueue）](http://houbb.github.io/2019/01/18/jcip-19-sync-tool)
 
 CountDownLatch
+
+CyclicBarrier
 
 Semaphore
 
@@ -108,17 +125,35 @@ Phaser
 
 Exchanger
 
-CyclicBarrier
+## 并发数据结构 
 
-## 自己实现
+ArrayBlockingQueue
 
-await+notify 实现锁
+ConcurrentHashMap
 
-自旋锁
+ConcurrentLinkedDeque
 
-可重入锁
+ConcurrentLinkedQueue
 
-可重入读写锁
+ConcurrentSkipListMap
+
+ConcurrentSkipListSet
+
+CopyOnWriteArrayList
+
+CopyOnWriteArraySet
+
+DelayQueue
+
+LinkedBlockingDeque
+
+LinkedBlockingQueue
+
+LinkedTransferQueue
+
+PriorityBlockingQueue
+
+SynchronousQueue
 
 ## 进阶学习
 

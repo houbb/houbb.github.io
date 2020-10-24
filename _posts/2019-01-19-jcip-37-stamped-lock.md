@@ -1,15 +1,19 @@
 ---
 layout: post
-title:  JCIP-37-StampedLock 读写锁中的性能之王  
+title:  JCIP-37-StampedLock 读写锁中的最强王者
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [java, concurrency, lock, lock-free, sh]
 published: true
 ---
 
+![思维导图](https://p1.pstatp.com/origin/pgc-image/2da5d1f23a394b8bafd88bd68f99fc44)
+
 # StampedLock
 
 ## 简介
+
+我们前面介绍了 [ReentrantReadWriteLock可重入读写锁详解](https://www.toutiao.com/item/6886467001011831300/)，不过 jdk1.8 引入了性能更好的 StampedLock 读写锁，我愿称之为最强！
 
 一种基于能力的锁，具有三种模式用于控制读/写访问。 
 
@@ -51,28 +55,6 @@ StampedLock的状态由版本和模式组成。
 
 例如，当首次读取对象或数组引用，然后访问其字段，元素或方法之一时，通常需要这样的步骤。
 
-### 模式转换
-
-此类还支持有条件地在三种模式下提供转换的方法。
-
-例如，方法tryConvertToWriteLock(long)尝试“升级”模式，如果（1）在读取模式下已经在写入模式（2）中并且没有其他读取器或（3）处于乐观模式并且锁可用，则返回有效写入戳记。 
-
-这些方法的形式旨在帮助减少在基于重试的设计中出现的一些代码膨胀。
-
-StampedLocks设计用作线程安全组件开发中的内部实用程序。 他们的使用依赖于他们保护的数据，对象和方法的内部属性的知识。 
-
-它们不是可重入的，所以锁定的机构不应该调用其他可能尝试重新获取锁的未知方法（尽管您可以将戳记传递给可以使用或转换它的其他方法）。 
-
-读锁定模式的使用依赖于相关的代码段是无副作用的。 未经验证的乐观阅读部分不能调用不知道容忍潜在不一致的方法。 邮票使用有限表示，并且不是加密安全的（即，有效的邮票可能是可猜测的）。 
-
-邮票值可以在连续运行一年后（不早于）回收。 不超过此期限使用或验证的邮票可能无法正确验证。 StampedLocks是可序列化的，但总是反序列化为初始解锁状态，因此它们对于远程锁定无用。
-
-StampedLock的调度策略不一致优先于读者，反之亦然。 所有“尝试”方法都是尽力而为，并不一定符合任何调度或公平政策。 用于获取或转换锁定的任何“try”方法的零返回不携带关于锁的状态的任何信息; 随后的调用可能会成功。
-
-因为它支持跨多个锁模式的协调使用，所以该类不直接实现Lock或ReadWriteLock接口。 
-
-然而，StampedLock可以看作asReadLock() ， asWriteLock() ，或asReadWriteLock()中，仅需要在一组相关联的功能的应用程序。
-
 ### 核心思想
 
 StampedLock实现了不仅多个读不互相阻塞，同时在**读操作时不会阻塞写操作**。
@@ -85,6 +67,8 @@ StampedLock实现了不仅多个读不互相阻塞，同时在**读操作时不�
 
 这种操作方式决定了StampedLock在读线程非常多而写线程非常少的场景下非常适用，同时还避免了写饥饿情况的发生。
 
+![锁](https://p1.pstatp.com/origin/pgc-image/567c455acc0b460b9bbca550deedb6e9)
+
 ## 使用案例
 
 ```java
@@ -96,7 +80,6 @@ public class Point {
 	
 	//写锁的使用
 	void move(double deltaX, double deltaY){
-		
 		long stamp = stampedLock.writeLock(); //获取写锁
 		try {
 			x += deltaX;
@@ -164,37 +147,6 @@ public class Point {
 
 下面就通过对StampedLock源码的分析来一步步了解它背后是怎么解决锁饥饿问题的。
 
-## 方法列表
-
-| 返回类型	| 方法 | 方法描述 |
-|:----|:----|:----|
-| Lock	| asReadLock() | 返回此StampedLock的一个简单的Lock视图，其中Lock.lock()方法映射到readLock() ，并且类似地用于其他方法。 |
-| ReadWriteLock	 |  asReadWriteLock() | 返回此StampedLock的ReadWriteLock视图，其中ReadWriteLock.readLock()方法映射到asReadLock()，ReadWriteLock.writeLock() 转换为asWriteLock() 。 |
-| Lock | 	asWriteLock() | 返回此StampedLock的一个简单的Lock视图，其中Lock.lock()方法映射到writeLock() ，并且类似地用于其他方法。 |
-| int	| getReadLockCount() | 查询为此锁持有的读取锁的数量。 |
-| boolean	| isReadLocked() | 返回 true如果锁当前是非排他地。 |
-| boolean	| isWriteLocked() | 返回 true如果锁当前是唯一的。 |
-| long	| readLock() | 不排他地获取锁定，如有必要，阻塞。 |
-| long	| readLockInterruptibly() | 非排他性地获取锁定，如有必要，阻塞，直到可用或当前线程中断。 |
-| String	| toString() | 返回一个标识此锁的字符串以及其锁定状态。 |
-| long	| tryConvertToOptimisticRead(long stamp) | 如果锁定状态符合给定的印记，则如果印记表示持有锁定，则释放它并返回观察印记。 |
-| long	| tryConvertToReadLock(long stamp) | 如果锁定状态与给定的标记匹配，则执行以下操作之一。 |
-| long	| tryConvertToWriteLock(long stamp) | 如果锁定状态与给定的标记匹配，则执行以下操作之一。 |
-| long	| tryOptimisticRead() | 返回可以稍后验证的印记，如果专门锁定则返回零。 |
-| long	| tryReadLock() | 非专门获取锁，如果它立即可用。 |
-| long	| tryReadLock(long time, TimeUnit unit) | 如果在给定时间内可用，并且当前线程未被中断，则非排他性地获取锁。 |
-| boolean	| tryUnlockRead() | 释放读锁定的一个保持位，如果保持，而不需要戳记值。 |
-| boolean	| tryUnlockWrite() | 释放写入锁定，如果被保留，而不需要标记值。 |
-| long	| tryWriteLock() | 专门获取锁，如果它立即可用。 |
-| long	| tryWriteLock(long time, TimeUnit unit) | 如果在给定时间内可用，并且当前线程未被中断，则专门获取该锁。 |
-| void	| unlock(long stamp) | 如果锁定状态与给定的标记匹配，则释放相应的锁定模式。 |
-| void	| unlockRead(long stamp) | 如果锁定状态与给定的标记匹配，则释放非排他锁。 |
-| void	| unlockWrite(long stamp) | 如果锁定状态与给定的邮票相匹配，则释放排他锁。 |
-| boolean	| validate(long stamp) | 如果从发布给定邮票以来没有专门获取锁，则返回true。 |
-| long	| writeLock() | 专门获取锁定，如有必要，阻塞。 |
-| long	| writeLockInterruptibly() | 专门获取锁定，如有必要，阻塞，直到可用或当前线程中断。 |
-
-
 # 源码分析 
 
 ## 类定义
@@ -207,7 +159,7 @@ public class Point {
 public class StampedLock implements java.io.Serializable {}
 ```
 
-这个锁也是李大狗实现的，不过没有实现 Lock 接口。
+这个锁也是李大狗实现的，让我们一起来学习下源码吧。
 
 ## 算法笔记
 
@@ -274,6 +226,8 @@ ps: 这里可以看出，这个设计实际上是取自序列锁的设计思想�
 > https://www.hpl.hp.com/techreports/2012/HPL-2012-68.pdf  论文地址
 
 [Effective Synchronization on Linux/NUMA Systems](http://www.lameter.com/gelato2005.pdf)
+
+ps: 这两本书我本人也翻译了一遍，但是内容过于枯燥（水平有限，翻译的枯燥），且内容较多，这里就不做展开了。
 
 ## 一些常量定义
 
@@ -773,6 +727,22 @@ public boolean validate(long stamp) {
 ```
 0000 0000 0000 & 1111 1000 0000 = 0000 0000 0000   //false
 ```
+
+# 小结
+
+我们纵观整个并发锁的发展史，实际上一种思想的发展史
+
+（1）[synchronized 最常用的悲观锁](https://www.toutiao.com/item/6884966680137728526/)，使用方便，但是为非公平锁。
+
+（2）[ReentrantLock 可重入锁](https://www.toutiao.com/i6886091002042384908/)，提供了公平锁等丰富特性。
+
+（3）[ReentrantReadWriteLock 可重入读写锁](https://www.toutiao.com/i6886467001011831300/) 支持读写分离，在读多的场景中表现优异。
+
+（4）本文的读不阻塞写，是一种更加优异的思想。类似思想的实现还有 CopyOnWriteList 等。
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位**极客**的点赞收藏转发，是老马写作的最大动力！
 
 # 参考资料
 
