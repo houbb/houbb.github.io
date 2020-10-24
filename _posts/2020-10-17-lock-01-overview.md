@@ -99,6 +99,10 @@ ReentrantReadWriteLock.WriteLock
 
 [AtomicLong 原子性 long 详解](http://houbb.github.io/2019/01/20/juc-02-atomiclong)
 
+[AtomicInteger]()
+
+[AtomicReference]()
+
 [LongAdder 更高效的原子性变量](http://houbb.github.io/2019/01/20/juc-03-longadder)
 
 [AbstractQueuedSynchronizer AQS 源码详解](http://houbb.github.io/2020/10/17/lock-06-aqs-source-code)
