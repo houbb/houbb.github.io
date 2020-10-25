@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  锁专题（11） CountDownLatch 深入源码解析
+title:  锁专题（9） CountDownLatch 源码深度解析
 date:  2020-10-17 16:15:55 +0800
 categories: [Lock]
 tags: [lock, source-code, sf]
@@ -8,6 +8,8 @@ published: true
 ---
 
 # CountDownLatch 闭锁
+
+我们在 [java 手写并发框架（一）异步查询转同步的7种实现方式](https://www.toutiao.com/item/6881613033299247619/) 和 [从零手写并发框架（二）异步转同步实现4种锁策略](https://www.toutiao.com/item/6882012107857265160/) 都是用过这个类，感兴趣的小伙伴可以看一下。
 
 ## 说明 
 
@@ -286,11 +288,13 @@ public long getCount() {
 
 实际使用中很少用到。
 
-## 
+# 小结
 
+CountDownLatch 作为一个并发的控制工具，使用起来非常的方便，使用起来也并发不麻烦。
 
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
 
-
+各位**极客**的点赞收藏转发，是老马持续写作的最大动力！
 
 # 参考资料
 

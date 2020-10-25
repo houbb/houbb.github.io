@@ -23,6 +23,16 @@ published: true
 
 [java 可重入锁](https://houbb.github.io/2018/07/25/java-concurrency-08-re-lock)
 
+## 异步转同步
+
+[java 手写并发框架（一）异步查询转同步的 7 种实现方式](https://houbb.github.io/2019/01/18/jcip-42-async-to-sync)
+
+[java 手写并发框架（二）异步转同步框架封装锁策略](https://houbb.github.io/2019/01/18/jcip-43-async-to-sync-02-lock)
+
+[java 手写并发框架（三）异步转同步框架注解和字节码增强](https://houbb.github.io/2019/01/18/jcip-44-async-to-sync-03-annotation-cglib)
+
+[java 手写并发框架（四）异步转同步框架spring整合](https://houbb.github.io/2019/01/18/jcip-45-async-to-sync-04-spring)
+
 ------------------------------------------------------------------------------------------------------------------------
 
 ## 深入学习
@@ -45,39 +55,9 @@ published: true
 
 ## 自己实现
 
-await+notify 实现锁
-
 [手写 spinlock 自旋锁 & 可重入锁](http://houbb.github.io/2020/10/17/lock-07-spin-lock)
 
 [手写可重入读写锁](http://houbb.github.io/2020/10/17/lock-08-read-write-lock)
-
-## 分布式锁
-
-[sql 分布式锁](https://houbb.github.io/2018/09/08/distributed-lock-sql)
-
-[ZooKeeper 分布式锁](https://houbb.github.io/2018/09/08/distributed-lock-zookeeper)
-
-[Redis 分布式锁 redis lock](https://houbb.github.io/2018/09/08/redis-learn-42-distributed-lock-redis)
-
-[Redis Learn-26-Distributed Lock 分布式锁](https://houbb.github.io/2018/12/12/redis-learn-26-distributed-lock)
-
-[Redis Learn-27-分布式锁进化史](https://houbb.github.io/2018/12/12/redis-learn-27-distributed-lock-history)
-
-[redis 分布式锁设计 redis lock](https://houbb.github.io/2019/01/07/redis-learn-41-lock)
-
-## 异步转同步
-
-[java 手写并发框架（一）异步查询转同步的 7 种实现方式](https://houbb.github.io/2019/01/18/jcip-42-async-to-sync)
-
-[java 手写并发框架（二）异步转同步框架封装锁策略](https://houbb.github.io/2019/01/18/jcip-43-async-to-sync-02-lock)
-
-[java 手写并发框架（三）异步转同步框架注解和字节码增强](https://houbb.github.io/2019/01/18/jcip-44-async-to-sync-03-annotation-cglib)
-
-[java 手写并发框架（四）异步转同步框架spring整合](https://houbb.github.io/2019/01/18/jcip-45-async-to-sync-04-spring)
-
-## 数据库锁
-
-[MVCC Multi Version Concurrency Control 多版本控制](http://houbb.github.io/2018/08/31/sql-mvcc)
 
 # 新篇章
 
@@ -88,12 +68,6 @@ await+notify 实现锁
 [ReentrantLock 源码学习 √](https://houbb.github.io/2020/10/17/lock-03-ReentrantLock-source-code)
 
 [ReentrantReadWriteLock 可重入读写锁源码学习](https://houbb.github.io/2019/01/18/jcip-36-read-write-lock)
-
-ReentrantReadWriteLock.ReadLock
-
-ReentrantReadWriteLock.WriteLock
-
-[StampedLock 读写锁中的最强王者](http://houbb.github.io/2019/01/18/jcip-37-stamped-lock)
 
 [AtomicLong 原子性 long 详解](http://houbb.github.io/2019/01/20/juc-02-atomiclong)
 
@@ -121,9 +95,9 @@ AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位
 
 CountDownLatch 源码详解
 
-CyclicBarrier 源码详解
-
 Semaphore 源码详解
+
+CyclicBarrier 源码详解
 
 Phaser 源码详解
 
@@ -158,6 +132,24 @@ LinkedTransferQueue
 PriorityBlockingQueue
 
 SynchronousQueue
+
+## 分布式锁
+
+[sql 分布式锁](https://houbb.github.io/2018/09/08/distributed-lock-sql)
+
+[ZooKeeper 分布式锁](https://houbb.github.io/2018/09/08/distributed-lock-zookeeper)
+
+[Redis 分布式锁 redis lock](https://houbb.github.io/2018/09/08/redis-learn-42-distributed-lock-redis)
+
+[Redis Learn-26-Distributed Lock 分布式锁](https://houbb.github.io/2018/12/12/redis-learn-26-distributed-lock)
+
+[Redis Learn-27-分布式锁进化史](https://houbb.github.io/2018/12/12/redis-learn-27-distributed-lock-history)
+
+[redis 分布式锁设计 redis lock](https://houbb.github.io/2019/01/07/redis-learn-41-lock)
+
+## 数据库锁
+
+[MVCC Multi Version Concurrency Control 多版本控制](http://houbb.github.io/2018/08/31/sql-mvcc)
 
 ## 进阶学习
 
