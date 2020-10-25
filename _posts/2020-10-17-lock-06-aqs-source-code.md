@@ -3,7 +3,7 @@ layout: post
 title:  锁专题（6）AbstractQueuedSynchronizer AQS 源码详解
 date:  2020-10-17 16:15:55 +0800
 categories: [Lock]
-tags: [lock, overview, sf]
+tags: [lock, source-code, sf]
 published: true
 ---
 

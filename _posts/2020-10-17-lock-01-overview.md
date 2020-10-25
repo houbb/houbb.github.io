@@ -47,11 +47,9 @@ published: true
 
 await+notify 实现锁
 
-自旋锁
+[手写 spinlock 自旋锁 & 可重入锁](http://houbb.github.io/2020/10/17/lock-07-spin-lock)
 
-可重入锁
-
-可重入读写锁
+[手写可重入读写锁](http://houbb.github.io/2020/10/17/lock-08-read-write-lock)
 
 ## 分布式锁
 
@@ -79,7 +77,7 @@ await+notify 实现锁
 
 ## 数据库锁
 
-MVCC
+[MVCC Multi Version Concurrency Control 多版本控制](http://houbb.github.io/2018/08/31/sql-mvcc)
 
 # 新篇章
 
@@ -99,17 +97,17 @@ ReentrantReadWriteLock.WriteLock
 
 [AtomicLong 原子性 long 详解](http://houbb.github.io/2019/01/20/juc-02-atomiclong)
 
-[AtomicInteger]()
+[AtomicInteger 源码解析](http://houbb.github.io/2019/01/20/juc-02-atomicinteger)
 
-[AtomicReference]()
+[AtomicReference 源码解析](http://houbb.github.io/2019/01/20/juc-02-AtomicReference)
 
-[LongAdder 更高效的原子性变量](http://houbb.github.io/2019/01/20/juc-03-longadder)
+[LongAdder 更高效的原子性 Long 变量](http://houbb.github.io/2019/01/20/juc-03-longadder)
 
 [AbstractQueuedSynchronizer AQS 源码详解](http://houbb.github.io/2020/10/17/lock-06-aqs-source-code)
 
 AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位的 long state 而已。
 
-[LockSupport](http://houbb.github.io/2019/01/20/juc-06-lock-support)
+[LockSupport 源码解析](http://houbb.github.io/2019/01/20/juc-06-lock-support)
 
 [Unsafe 并发锁的基石](http://houbb.github.io/2019/01/20/juc-05-unsafe)
 
@@ -119,21 +117,23 @@ AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位
 
 [闭锁（如CountDownLatch），栅栏（如CyclicBarrier），信号量（如Semaphore）和阻塞队列（如LinkedBlockingQueue）](http://houbb.github.io/2019/01/18/jcip-19-sync-tool)
 
-CountDownLatch
+[java 异步查询转同步多种实现方式：循环等待，CountDownLatch，Spring EventListener，超时处理和空循环性能优化](http://houbb.github.io/2019/01/18/jcip-41-async-sync)
 
-CyclicBarrier
+CountDownLatch 源码详解
 
-Semaphore
+CyclicBarrier 源码详解
 
-Phaser
+Semaphore 源码详解
 
-Exchanger
+Phaser 源码详解
+
+Exchanger 源码详解
 
 ## 并发数据结构 
 
-ArrayBlockingQueue
+[ConcurrentHashMap](http://houbb.github.io/2018/09/12/java-concurrent-hashmap)
 
-ConcurrentHashMap
+ArrayBlockingQueue
 
 ConcurrentLinkedDeque
 
@@ -161,7 +161,7 @@ SynchronousQueue
 
 ## 进阶学习
 
-linux 系统中的 seqlocks 实现原理
+[linux 系统中的 seqlocks 实现原理](http://houbb.github.io/2020/10/17/lock-10-linux-seq-locks-01-atomic)
 
 [seqlock 在 jmm 如何应用？](https://houbb.github.io/2020/10/17/lock-05-seqlock-jmm)
 

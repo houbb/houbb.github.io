@@ -3,7 +3,7 @@ layout: post
 title:  锁专题（5）Seqlocks 在 java 中如何实现论文详解
 date:  2020-10-17 16:15:55 +0800
 categories: [Lock]
-tags: [lock, overview, sf]
+tags: [lock, paper, sf]
 published: true
 ---
 

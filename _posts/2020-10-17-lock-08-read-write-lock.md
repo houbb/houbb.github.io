@@ -3,7 +3,7 @@ layout: post
 title:  锁专题（8）java 从零手写实现ReadWriteLock读写锁 
 date:  2020-10-17 16:15:55 +0800
 categories: [Lock]
-tags: [lock, overview, sf]
+tags: [lock, hand-write, sf]
 published: true
 ---
 

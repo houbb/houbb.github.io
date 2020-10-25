@@ -3,7 +3,7 @@ layout: post
 title:  锁专题（3）ReentrantLock 可重入锁源码解析
 date:  2020-10-17 16:15:55 +0800
 categories: [Lock]
-tags: [lock, overview, sf]
+tags: [lock, source-code, sf]
 published: true
 ---
 
