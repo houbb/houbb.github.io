@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  锁专题（7）SpinLock 自旋锁实现及优化为可重入锁
+title:  锁专题（7）从零手写实现你的 SpinLock 自旋锁及可重入锁
 date:  2020-10-17 16:15:55 +0800
 categories: [Lock]
 tags: [lock, hand-write, sf]
@@ -14,6 +14,8 @@ published: true
 我们在前面的文章中详细介绍了 jdk 自带的可重入锁使用及其源码。
 
 本节就让我们一起来实现一个可重入锁。
+
+![思维导图](https://p1.pstatp.com/origin/pgc-image/ae36c63186e24b36a2162b86f1f6f74e)
 
 # 接口定义
 
@@ -168,6 +170,8 @@ public abstract class AbstractLock implements ILock {
 这里主要是实现一个默认的超时等待，基本上是通用的。
 
 前面实现 redis 的分布式锁时有介绍过。
+
+![自旋锁](https://cdn.pixabay.com/photo/2017/03/03/13/56/key-2114046_1280.jpg)
 
 # 自旋锁实现
 

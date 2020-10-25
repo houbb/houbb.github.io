@@ -93,11 +93,11 @@ AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位
 
 [java 异步查询转同步多种实现方式：循环等待，CountDownLatch，Spring EventListener，超时处理和空循环性能优化](http://houbb.github.io/2019/01/18/jcip-41-async-sync)
 
-CountDownLatch 源码详解
+[CountDownLatch 源码详解](http://houbb.github.io/2020/10/17/lock-09-CountDownLatch-source-code)
 
-Semaphore 源码详解
+[Semaphore 信号量源码深度解析](http://houbb.github.io/2020/10/17/lock-09-Semaphore-source-code)
 
-CyclicBarrier 源码详解
+[CyclicBarrier 源码详解](http://houbb.github.io/2020/10/17/lock-09-CyclicBarrier-source-code)
 
 Phaser 源码详解
 
