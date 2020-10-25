@@ -107,12 +107,6 @@ Exchanger 源码详解
 
 [ConcurrentHashMap](http://houbb.github.io/2018/09/12/java-concurrent-hashmap)
 
-ArrayBlockingQueue
-
-ConcurrentLinkedDeque
-
-ConcurrentLinkedQueue
-
 ConcurrentSkipListMap
 
 ConcurrentSkipListSet
@@ -121,11 +115,15 @@ CopyOnWriteArrayList
 
 CopyOnWriteArraySet
 
+ConcurrentLinkedDeque
+
+ConcurrentLinkedQueue
+
 DelayQueue
 
-LinkedBlockingDeque
+ArrayBlockingQueue
 
-LinkedBlockingQueue
+LinkedBlockingDeque
 
 LinkedTransferQueue
 

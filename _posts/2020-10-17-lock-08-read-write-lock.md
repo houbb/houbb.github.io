@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  锁专题（8）java 从零手写实现ReadWriteLock读写锁 
+title:  锁专题（8）java 从零手写实现 ReadWriteLock 读写锁 
 date:  2020-10-17 16:15:55 +0800
 categories: [Lock]
 tags: [lock, hand-write, sf]
@@ -14,7 +14,6 @@ published: true
 我们在前面的文章中详细介绍了 jdk 自带的可重入读写锁使用及其源码。
 
 本节就让我们一起来实现一个读写锁。
-
 
 # 最基础的版本
 
