@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JUC-02-AtomicLong
+title: JUC-02-AtomicLong 使用入门及源码详解
 date:  2019-1-20 14:10:12 +0800
 categories: [Concurrency]
 tags: [java, concurrency, juc, sh]
@@ -9,6 +9,8 @@ excerpt: JUC-02-AtomicLong
 ---
 
 # AtomicLong 介绍
+
+![AtomicLong](https://p1.pstatp.com/origin/pgc-image/df0506ee12704282a01e6ad9944c8e26)
 
 可以原子更新的 Long 值。 
 
@@ -45,6 +47,8 @@ AtomicLong用于诸如原子递增的序列号之类的应用程序中，并且�
 3. Long本身不允许线程互操作，因为两个线程都可以看到并更新相同的值，但是使用AtomicLong，在多个线程将看到的值周围有相当不错的保证。
 
 实际上，除非您曾经使用线程，否则您不需要使用AtomicLong。
+
+![原子性](https://p1.pstatp.com/origin/dfic-imagehandler/036294e0-8e4d-4967-a594-267c08f9d00f)
 
 # AtomicLong 使用
 
