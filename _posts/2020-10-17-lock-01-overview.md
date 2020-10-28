@@ -123,19 +123,23 @@ CopyOnWriteArraySet
 
 ConcurrentLinkedQueue
 
+【阻塞队列】
+
 ArrayBlockingQueue
 
 LinkedBlockingDeque
-
-
-
-LinkedTransferQueue
 
 PriorityBlockingQueue
 
 DelayQueue
 
 SynchronousQueue
+
+
+
+LinkedTransferQueue
+
+
 
 ## 分布式锁
 
