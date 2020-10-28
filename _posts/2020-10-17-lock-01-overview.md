@@ -113,23 +113,27 @@ ConcurrentSkipListSet
 
 --------------------------------
 
-CopyOnWriteArrayList
+[CopyOnWriteArrayList 源码](https://houbb.github.io/2020/10/17/lock-09-CopyOnWriteArrayList-source-code)
+
+[CopyOnWriteArrayList 详解](https://houbb.github.io/2019/01/18/jcip-07-copyonwritelist)
 
 CopyOnWriteArraySet
 
-ConcurrentLinkedDeque
+[ConcurrentLinkedDeque](https://houbb.github.io/2019/01/18/jcip-17-deque-ConcurrentLinkedDeque)
 
 ConcurrentLinkedQueue
-
-DelayQueue
 
 ArrayBlockingQueue
 
 LinkedBlockingDeque
 
+
+
 LinkedTransferQueue
 
 PriorityBlockingQueue
+
+DelayQueue
 
 SynchronousQueue
 

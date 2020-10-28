@@ -8,9 +8,11 @@ published: true
 excerpt: JUC-02-AtomicLong
 ---
 
-# AtomicLong 介绍
+# AtomicInterger 介绍
 
 可以原子性更新的 Integer 值，当然这个类并不能完全替代 Integer 对象。
+
+![AtomicInterger](https://p1.pstatp.com/origin/pgc-image/1e4ca429e5c84cfdb74c3b3df127fc90)
 
 ## 使用
 
@@ -376,6 +378,10 @@ public final native boolean weakCompareAndSet(Object... var1);
 看起来反其道而行之，实际上都是出于更高的性能考虑。
 
 文中很多方法都是 native 实现，这让我们读起来不够尽兴，说到底这个**世界上本没有高级语言，只有C语言，和对C语言的封装**。
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位**极客**的点赞收藏转发，是老马写作的最大动力！
 
 # 参考资料
 
