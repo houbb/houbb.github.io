@@ -8,9 +8,11 @@ published: true
 excerpt: ConcurrentHashMap 源码解析
 ---
 
-# HashMap
+# HashMap 的线程安全性
 
 HashMap 是线程不安全的。
+
+![HashMap 的线程安全性](https://p1.pstatp.com/origin/pgc-image/36355f204b6f465fafc86874775145ca)
 
 为了使用线程安全的数据结构，多线程条件下，可使用 `Collections.synchronizedMap` 方法构造出一个同步Map，或者直接使用线程安全的 `ConcurrentHashMap`。
 
@@ -244,6 +246,16 @@ public int size() {
             (int)n);
 }
 ```
+
+# 小结
+
+HashMap 和 List 是我最喜欢的两种数据结构，简单实用。
+
+ConcurrentHashMap 为了性能提升，都在不同的 jdk 版本中提升自己，**何况你我**呢？
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位**极客**的点赞收藏转发，是老马持续写作的最大动力！
 
 # 参考资料
 

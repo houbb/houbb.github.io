@@ -65,7 +65,7 @@ published: true
 
 [Lock 和 Condition 接口源码学习](https://houbb.github.io/2020/10/17/lock-02-lock-interface-source-code)
 
-[ReentrantLock 源码学习 √](https://houbb.github.io/2020/10/17/lock-03-ReentrantLock-source-code)
+[ReentrantLock 源码学习](https://houbb.github.io/2020/10/17/lock-03-ReentrantLock-source-code)
 
 [ReentrantReadWriteLock 可重入读写锁源码学习](https://houbb.github.io/2019/01/18/jcip-36-read-write-lock)
 
@@ -74,18 +74,6 @@ published: true
 [AtomicInteger 源码解析](http://houbb.github.io/2019/01/20/juc-02-atomicinteger)
 
 [AtomicReference 源码解析](http://houbb.github.io/2019/01/20/juc-02-AtomicReference)
-
-[LongAdder 更高效的原子性 Long 变量](http://houbb.github.io/2019/01/20/juc-03-longadder)
-
-[AbstractQueuedSynchronizer AQS 源码详解](http://houbb.github.io/2020/10/17/lock-06-aqs-source-code)
-
-AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位的 long state 而已。
-
-[LockSupport 源码解析](http://houbb.github.io/2019/01/20/juc-06-lock-support)
-
-[Unsafe 并发锁的基石](http://houbb.github.io/2019/01/20/juc-05-unsafe)
-
-[striped64 缓存行](http://houbb.github.io/2019/01/20/juc-04-striped64)
 
 ## 工具篇
 
@@ -105,7 +93,7 @@ Exchanger 源码详解
 
 ## 并发数据结构 
 
-[ConcurrentHashMap](http://houbb.github.io/2018/09/12/java-concurrent-hashmap)
+[ConcurrentHashMap 源码详解](http://houbb.github.io/2018/09/12/java-concurrent-hashmap)
 
 ConcurrentSkipListMap
 
@@ -125,9 +113,9 @@ ConcurrentLinkedQueue
 
 【阻塞队列】
 
-ArrayBlockingQueue
+[ArrayBlockingQueue 使用入门及源码讲解](https://houbb.github.io/2020/10/17/lock-09-ArrayBlockingQueue-source-code)
 
-LinkedBlockingDeque
+[LinkedBlockingDeque 使用入门及源码讲解](https://houbb.github.io/2020/10/17/lock-09-LinkedBlockingDeque-source-code)
 
 PriorityBlockingQueue
 
@@ -136,10 +124,21 @@ DelayQueue
 SynchronousQueue
 
 
-
 LinkedTransferQueue
 
+## 底层原理
 
+[LongAdder 更高效的原子性 Long 变量](http://houbb.github.io/2019/01/20/juc-03-longadder)
+
+[AbstractQueuedSynchronizer AQS 源码详解](http://houbb.github.io/2020/10/17/lock-06-aqs-source-code)
+
+AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位的 long state 而已。
+
+[LockSupport 源码解析](http://houbb.github.io/2019/01/20/juc-06-lock-support)
+
+[Unsafe 并发锁的基石](http://houbb.github.io/2019/01/20/juc-05-unsafe)
+
+[striped64 缓存行](http://houbb.github.io/2019/01/20/juc-04-striped64)
 
 ## 分布式锁
 
