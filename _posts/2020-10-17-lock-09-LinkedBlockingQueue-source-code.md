@@ -42,7 +42,89 @@ published: true
 
 ## 例子
 
+我们实现 put 和 take，分别模拟写入工作者，和取出工作者。
 
+
+```java
+package com.github.houbb.lock.test.lock;
+
+import java.util.concurrent.*;
+
+/**
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+public class LinkedBlockingQueueDemo {
+
+    private BlockingQueue<String> queue = new LinkedBlockingQueue<>(3);
+
+    public void put(final String put) throws InterruptedException {
+        System.out.println("设置开始");
+        TimeUnit.SECONDS.sleep(1);
+        queue.put(put);
+        System.out.println("设置完成: " + put);
+    }
+
+    public void take() throws InterruptedException {
+        System.out.println("获取开始");
+        String take = queue.take();
+        System.out.println("获取成功: " + take);
+    }
+    
+}
+```
+
+测试代码：
+
+```java
+public static void main(String[] args) {
+    final LinkedBlockingQueueDemo queueTest = new LinkedBlockingQueueDemo();
+    // 写入线程
+    new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                for(int i = 0; i < 3; i++) {
+                    queueTest.put(i+"T");
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }).start();
+    // 读取线程
+    new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                while (true) {
+                    queueTest.take();
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }).start();
+}
+```
+
+日志如下：
+
+```
+设置开始
+获取开始
+设置完成: 0T
+获取成功: 0T
+获取开始
+设置开始
+设置完成: 1T
+获取成功: 1T
+获取开始
+设置开始
+设置完成: 2T
+获取成功: 2T
+获取开始
+```
 
 # LinkedBlockingQueue 源码
 
@@ -95,6 +177,17 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.191-b12, mixed mode)
 我们使用链接刚刚退出队列的Node的技巧。
 
 这样的自链接意味着前进到head.next。
+
+## 类定义
+
+实现了 BlockingQueue 接口，继承自 AbstractQueue 抽象类。
+
+```java
+public class LinkedBlockingQueue<E> extends AbstractQueue<E>
+        implements BlockingQueue<E>, java.io.Serializable {
+    private static final long serialVersionUID = -6903933977591709194L;
+}
+```
 
 ## 内部变量
 
@@ -155,27 +248,301 @@ private final ReentrantLock putLock = new ReentrantLock();
 private final Condition notFull = putLock.newCondition();
 ```
 
-## 类定义
+## 构造器
 
-实现了 BlockingQueue 接口，继承自 AbstractQueue 抽象类。
+实际上这个默认容量这么大，感觉是用不到的。
+
+不过既然是 LinkedList 基于链表实现，大概是想表达长度不受限制的意思。
 
 ```java
-public class LinkedBlockingQueue<E> extends AbstractQueue<E>
-        implements BlockingQueue<E>, java.io.Serializable {
-    private static final long serialVersionUID = -6903933977591709194L;
+/**
+ * Creates a {@code LinkedBlockingQueue} with a capacity of
+ * {@link Integer#MAX_VALUE}.
+ */
+public LinkedBlockingQueue() {
+    this(Integer.MAX_VALUE);
+}
+
+
+/**
+ * Creates a {@code LinkedBlockingQueue} with the given (fixed) capacity.
+ *
+ * @param capacity the capacity of this queue
+ * @throws IllegalArgumentException if {@code capacity} is not greater
+ *         than zero
+ */
+public LinkedBlockingQueue(int capacity) {
+    if (capacity <= 0) throw new IllegalArgumentException();
+    this.capacity = capacity;
+
+    // 初始化头结点和尾巴节点
+    last = head = new Node<E>(null);
 }
 ```
 
+还有一个基于集合初始化的构造器：
+
+```java
+/**
+ * Creates a {@code LinkedBlockingQueue} with a capacity of
+ * {@link Integer#MAX_VALUE}, initially containing the elements of the
+ * given collection,
+ * added in traversal order of the collection's iterator.
+ *
+ * @param c the collection of elements to initially contain
+ * @throws NullPointerException if the specified collection or any
+ *         of its elements are null
+ */
+public LinkedBlockingQueue(Collection<? extends E> c) {
+    // 首先初始化基本属性
+    this(Integer.MAX_VALUE);
+
+    // 声明一个写入锁
+    final ReentrantLock putLock = this.putLock;
+    putLock.lock(); // Never contended, but necessary for visibility
+    try {
+        int n = 0;
+        for (E e : c) {
+            // 禁止元素为 null
+            
+            if (e == null)
+                throw new NullPointerException();
+            if (n == capacity)
+                throw new IllegalStateException("Queue full");
+            enqueue(new Node<E>(e));
+            ++n;
+        }
+        count.set(n);
+    } finally {
+        putLock.unlock();
+    }
+}
+```
+
+### 这里问一下大家，为什么禁止为 null 呢？
+
+BlockingQueue 不接受 null 值的插入，相应的方法在碰到 null 的插入时会抛出 NullPointerException 异常。
+
+null 值在这里通常用于作为特殊值返回，比如 poll() 返回 null，则代表 poll 失败。
+
+所以，如果允许插入 null 值的话，那获取的时候，就不能很好地用 null 来判断到底是代表失败，还是获取的值就是 null 值。
 
 
+### enqueue 入队
+
+```java
+/**
+ * Links node at end of queue.
+ *
+ * @param node the node
+ */
+private void enqueue(Node<E> node) {
+    // assert putLock.isHeldByCurrentThread();
+    // assert last.next == null;
+    last = last.next = node;
+}
+```
+
+这个方法写的非常的精炼。
+
+建议看不懂的同学可以分成 2 步来看：
+
+```java
+last.next = node;
+last = last.next;
+```
+
+将 node 节点放在队列的最后，将 last.next 变为新的队尾。
 
 
+## put 放入元素
 
+我们来重点看一下 put() 方法。
 
+```java
+/**
+ * Inserts the specified element at the tail of this queue, waiting if
+ * necessary for space to become available.
+ *
+ * @throws InterruptedException {@inheritDoc}
+ * @throws NullPointerException {@inheritDoc}
+ * @author 老马啸西风
+ */
+public void put(E e) throws InterruptedException {
+    if (e == null) throw new NullPointerException();
 
+    // Note: convention in all put/take/etc is to preset local var
+    // holding count negative to indicate failure unless set.
+    int c = -1;
 
+    // 创建节点
+    Node<E> node = new Node<E>(e);
 
+    // 并发控制
+    final ReentrantLock putLock = this.putLock;
+    final AtomicInteger count = this.count;
+    putLock.lockInterruptibly();
+    try {
+        /*
+         * Note that count is used in wait guard even though it is
+         * not protected by lock. This works because count can
+         * only decrease at this point (all other puts are shut
+         * out by lock), and we (or some other waiting put) are
+         * signalled if it ever changes from capacity. Similarly
+         * for all other uses of count in other wait guards.
 
+         * 如果队列已经满了，则进入等待。
+         */
+        while (count.get() == capacity) {
+            notFull.await();
+        }
+
+        // 执行入队
+        enqueue(node);
+        c = count.getAndIncrement();
+
+        // 这里挺有趣的，如果判断未满，则会唤醒 notFull
+        if (c + 1 < capacity)
+            notFull.signal();
+    } finally {
+        putLock.unlock();
+    }
+
+    // c == 0,说明的是刚才新增成功了。因为默认是-1
+    if (c == 0)
+        signalNotEmpty();
+}
+```
+
+### signalNotEmpty
+
+这个方法是通知 notEmpty，便于元素可以取出。
+
+```java
+/**
+ * Signals a waiting take. Called only from put/offer (which do not
+ * otherwise ordinarily lock takeLock.)
+ */
+private void signalNotEmpty() {
+    final ReentrantLock takeLock = this.takeLock;
+    takeLock.lock();
+    try {
+        notEmpty.signal();
+    } finally {
+        takeLock.unlock();
+    }
+}
+```
+
+当然这里的对于 notEmpty 的唤醒，是通过 takeLock 保证并发安全的。
+
+这样看来，LinkedBlockingQuue 和 ArrayBlockingQueue 实现上还是有很大差异的。
+
+## take 获取元素
+
+获取元素的实现如下：
+
+```java
+/**
+** 获取一个元素
+** @author 老马啸西风
+*/
+public E take() throws InterruptedException {
+    E x;
+
+    // 默认的 c = -1;
+    int c = -1;
+
+    // 并发控制。
+    // 注意，这里的读写锁是分离的。这个和 ArrayBlockingList 是不同的。
+    final AtomicInteger count = this.count;
+    final ReentrantLock takeLock = this.takeLock;
+    takeLock.lockInterruptibly();
+    try {
+        // 如果元素为空，则陷入等待。
+        while (count.get() == 0) {
+            notEmpty.await();
+        }
+
+        // 执行出队
+        x = dequeue();
+        c = count.getAndDecrement();
+
+        // 如果总数 > 1，则说明不再为空。
+        // 唤醒 notEmpty 等待的线程
+        if (c > 1)
+            notEmpty.signal();
+    } finally {
+        takeLock.unlock();
+    }
+
+    // 如果总数等于容量，唤醒 notFull
+    // 感觉这个唤醒微妙，因为 capacity 默认是 Integer#MAX_VALUE 最大值
+    if (c == capacity)
+        signalNotFull();
+    return x;
+}
+```
+
+### dequeue 出队方法
+
+```java
+/**
+ * Removes a node from head of queue.
+ * 从队首移除元素
+ *
+ * @author 老马啸西风
+ * @return the node
+ */
+private E dequeue() {
+    // assert takeLock.isHeldByCurrentThread();
+    // assert head.item == null;
+    Node<E> h = head;
+
+    // first 节点变为原来 head.next 节点
+    Node<E> first = h.next;
+    h.next = h; // help GC
+
+    // 更新 head 节点
+    head = first;
+    // 记录出队的元素
+    E x = first.item;
+    first.item = null;
+    return x;
+}
+```
+
+### signalNotFull 唤醒 notFull
+
+```java
+/**
+ * Signals a waiting put. Called only from take/poll.
+ * 唤醒所有等待放入的线程。
+ */
+private void signalNotFull() {
+    final ReentrantLock putLock = this.putLock;
+    putLock.lock();
+    try {
+        notFull.signal();
+    } finally {
+        putLock.unlock();
+    }
+}
+```
+
+# 小结
+
+本文从 LinkedBlockingQueue 的入门使用，逐渐深入到源码分析。
+
+实际上原理都是类似的，不过这个对比 ArrayBlockingQueeu 的锁粒度更加细致。
+
+没读源码之前，我一直以为二者只是链表和数组的区别。
+
+**很多事情，都不是我们以为的那个样子。**
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位**极客**的点赞收藏转发，是老马持续写作的最大动力！
 
 # 参考资料
 
