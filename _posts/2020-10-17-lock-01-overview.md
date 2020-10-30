@@ -98,19 +98,19 @@ ConcurrentLinkedQueue
 
 【阻塞队列】
 
-[ArrayBlockingQueue 使用入门及源码讲解](https://houbb.github.io/2020/10/17/lock-09-ArrayBlockingQueue-source-code)
+[ArrayBlockingQueue 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-ArrayBlockingQueue-source-code)
 
-[LinkedBlockingDeque 使用入门及源码讲解](https://houbb.github.io/2020/10/17/lock-09-LinkedBlockingDeque-source-code)
+[LinkedBlockingDeque 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-LinkedBlockingDeque-source-code)
 
-DelayQueue
-
-PriorityBlockingQueue
+[DelayQueue 延迟队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-DelayQueue-source-code)
 
 二叉堆
 
 优先级队列
 
 排序
+
+PriorityBlockingQueue
 
 【较难】
 
@@ -173,6 +173,8 @@ AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位
 [linux 系统中的 seqlocks 实现原理](http://houbb.github.io/2020/10/17/lock-10-linux-seq-locks-01-atomic)
 
 [seqlock 在 jmm 如何应用？](https://houbb.github.io/2020/10/17/lock-05-seqlock-jmm)
+
+paper 算法篇
 
 * any list
 {:toc}
