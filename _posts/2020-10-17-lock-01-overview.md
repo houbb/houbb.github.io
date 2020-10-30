@@ -106,6 +106,8 @@ DelayQueue
 
 PriorityBlockingQueue
 
+【较难】
+
 SynchronousQueue
 
 LinkedTransferQueue
@@ -121,6 +123,8 @@ LinkedTransferQueue
 [Semaphore 信号量源码深度解析](http://houbb.github.io/2020/10/17/lock-09-Semaphore-source-code)
 
 [CyclicBarrier 源码详解](http://houbb.github.io/2020/10/17/lock-09-CyclicBarrier-source-code)
+
+【较难】
 
 Phaser 源码详解
 
