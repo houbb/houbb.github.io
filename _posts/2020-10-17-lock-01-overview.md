@@ -75,21 +75,6 @@ published: true
 
 [AtomicReference 源码解析](http://houbb.github.io/2019/01/20/juc-02-AtomicReference)
 
-## 工具篇
-
-[闭锁（如CountDownLatch），栅栏（如CyclicBarrier），信号量（如Semaphore）和阻塞队列（如LinkedBlockingQueue）](http://houbb.github.io/2019/01/18/jcip-19-sync-tool)
-
-[java 异步查询转同步多种实现方式：循环等待，CountDownLatch，Spring EventListener，超时处理和空循环性能优化](http://houbb.github.io/2019/01/18/jcip-41-async-sync)
-
-[CountDownLatch 源码详解](http://houbb.github.io/2020/10/17/lock-09-CountDownLatch-source-code)
-
-[Semaphore 信号量源码深度解析](http://houbb.github.io/2020/10/17/lock-09-Semaphore-source-code)
-
-[CyclicBarrier 源码详解](http://houbb.github.io/2020/10/17/lock-09-CyclicBarrier-source-code)
-
-Phaser 源码详解
-
-Exchanger 源码详解
 
 ## 并发数据结构 
 
@@ -117,14 +102,29 @@ ConcurrentLinkedQueue
 
 [LinkedBlockingDeque 使用入门及源码讲解](https://houbb.github.io/2020/10/17/lock-09-LinkedBlockingDeque-source-code)
 
-PriorityBlockingQueue
-
 DelayQueue
+
+PriorityBlockingQueue
 
 SynchronousQueue
 
-
 LinkedTransferQueue
+
+## 工具篇
+
+[闭锁（如CountDownLatch），栅栏（如CyclicBarrier），信号量（如Semaphore）和阻塞队列（如LinkedBlockingQueue）](http://houbb.github.io/2019/01/18/jcip-19-sync-tool)
+
+[java 异步查询转同步多种实现方式：循环等待，CountDownLatch，Spring EventListener，超时处理和空循环性能优化](http://houbb.github.io/2019/01/18/jcip-41-async-sync)
+
+[CountDownLatch 源码详解](http://houbb.github.io/2020/10/17/lock-09-CountDownLatch-source-code)
+
+[Semaphore 信号量源码深度解析](http://houbb.github.io/2020/10/17/lock-09-Semaphore-source-code)
+
+[CyclicBarrier 源码详解](http://houbb.github.io/2020/10/17/lock-09-CyclicBarrier-source-code)
+
+Phaser 源码详解
+
+Exchanger 源码详解
 
 ## 底层原理
 
