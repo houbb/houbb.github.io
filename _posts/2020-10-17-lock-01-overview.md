@@ -106,6 +106,12 @@ DelayQueue
 
 PriorityBlockingQueue
 
+二叉堆
+
+优先级队列
+
+排序
+
 【较难】
 
 SynchronousQueue
