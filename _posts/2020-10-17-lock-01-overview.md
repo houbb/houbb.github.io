@@ -111,8 +111,6 @@ ConcurrentSkipListSet
 
 --------------------------------
 
-[CopyOnWriteArrayList 源码](https://houbb.github.io/2020/10/17/lock-09-CopyOnWriteArrayList-source-code)
-
 [CopyOnWriteArrayList 详解](https://houbb.github.io/2019/01/18/jcip-07-copyonwritelist)
 
 CopyOnWriteArraySet
@@ -133,7 +131,7 @@ CopyOnWriteArraySet
 
 [DelayQueue 延迟队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-DelayQueue-source-code)
 
-PriorityBlockingQueue
+[PriorityBlockingQueue 阻塞优先级队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-PriorityBlockingQueue-source-code)
 
 【较难】
 
