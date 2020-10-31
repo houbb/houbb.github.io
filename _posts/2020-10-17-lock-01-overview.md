@@ -113,7 +113,9 @@ ConcurrentSkipListSet
 
 [CopyOnWriteArrayList 详解](https://houbb.github.io/2019/01/18/jcip-07-copyonwritelist)
 
-CopyOnWriteArraySet
+[CopyOnWriteArraySet 入门及源码详解](https://houbb.github.io/2019/01/18/jcip-07-CopyOnWriteSet)
+
+[java 从零实现 CopyOnWriteHashMap](https://houbb.github.io/2019/01/18/jcip-07-CopyOnWriteHashMap)
 
 [双端队列之 ConcurrentLinkedDeque](https://houbb.github.io/2019/01/18/jcip-17-deque-ConcurrentLinkedDeque)
 

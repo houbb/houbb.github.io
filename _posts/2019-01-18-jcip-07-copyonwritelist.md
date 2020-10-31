@@ -5,7 +5,6 @@ date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [java, concurrency, lock, sh]
 published: true
-excerpt: JCIP-07-CopyOnWriteArrayList 详解 
 ---
 
 # 问题
@@ -182,7 +181,11 @@ public class BlackListServiceImpl {
 
 # 为什么没有并发列表？
 
-问：JDK 5在java.util.concurrent里引入了ConcurrentHashMap，在需要支持高并发的场景，我们可以使用它代替HashMap。但是为什么没有ArrayList的并发实现呢？难道在多线程场景下我们只有Vector这一种线程安全的数组实现可以选择么？为什么在java.util.concurrent 没有一个类可以代替Vector呢？
+问：JDK 5在java.util.concurrent里引入了ConcurrentHashMap，在需要支持高并发的场景，我们可以使用它代替HashMap。
+
+但是为什么没有ArrayList的并发实现呢？
+
+难道在多线程场景下我们只有Vector这一种线程安全的数组实现可以选择么？为什么在java.util.concurrent 没有一个类可以代替Vector呢？
 
 - 别人的理解
 
@@ -571,118 +574,6 @@ public void forEachRemaining(Consumer<? super E> action) {
 }
 ```
 
-# 个人启发
-
-## 思想的通用性
-
-这种读写分离的思想是通用的。
-
-比如：CopyOnWriteSet
-
-## 实践出真知
-
-这个工具包都出来几十年了，还是用的人很少。
-
-要学以致用，站在巨人的肩膀上，
-
-# 自己实现一个 copyOnWriteMap
-
-```java
-public class CopyOnWriteMap<K, V> implements Map<K, V>, Cloneable {
-private volatile Map<K, V> internalMap;
-    /** The lock protecting all mutators */
-    transient final ReentrantLock lock = new ReentrantLock();
-     
-    public CopyOnWriteMap() {
-        internalMap = new HashMap<K, V>();
-    }
-    @Override
-    public int size() {
-        return internalMap.size();
-    }
-    @Override
-    public boolean isEmpty() {
-        return internalMap.isEmpty();
-    }
-    @Override
-    public boolean containsKey(Object key) {
-        return internalMap.containsKey(key);
-    }
-    @Override
-    public boolean containsValue(Object value) {
-        return internalMap.containsValue(value);
-    }
-    @Override
-    public V get(Object key) {
-        return internalMap.get(key);
-    }
-    @Override
-    public V put(K key, V value) {
-       final ReentrantLock lock = this.lock;
-       lock.lock();
-       try {
-       Map<K, V> newMap=new HashMap<K, V>(internalMap);
-       V val = newMap.put(key, value);
-       internalMap=null;
-       internalMap = newMap;
-       return val;
-    } catch (Exception e) {
-    }finally {
-                lock.unlock();
-            }
-        return null;
-    }
-    @Override
-    public V remove(Object key) {
-        final ReentrantLock lock = this.lock;
-        lock.lock();
-    try {
-        Map<K, V> newMap = new HashMap<K, V>(internalMap);
-        V val = newMap.remove(key);
-        internalMap = null;
-        internalMap = newMap;
-        return val;
-    } finally {
-        lock.unlock();
-    }
-    }
-    @Override
-    public void putAll(Map<? extends K, ? extends V> m) {
-        final ReentrantLock lock = this.lock;
-        lock.lock();
-    try {
-        Map<K, V> newMap = new HashMap<K, V>(internalMap);
-        newMap.putAll(m);
-        internalMap = null;
-            internalMap = newMap;
-    } finally {
-    lock.unlock();
-    }
-    }
-    @Override
-    public void clear() {
-        internalMap.clear();
-    }
-    @Override
-    public Set<K> keySet() {
-        return internalMap.keySet();
-    }
-    @Override
-    public Collection<V> values() {
-        return internalMap.values();
-    }
-    @Override
-    public Set<java.util.Map.Entry<K, V>> entrySet() {
-        return internalMap.entrySet();
-    }
-    public static void main(String[] args) {
-        CopyOnWriteMap<String, String> copyOnWriteMap=new CopyOnWriteMap<String, String>();
-        copyOnWriteMap.put("test1", "Java中的Copy-On-Write容器");
-        System.out.println(copyOnWriteMap.size());
-        System.out.println(copyOnWriteMap.get("test1"));
-    }
-}
-```
 
 # 小结
 
