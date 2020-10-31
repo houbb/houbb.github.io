@@ -32,7 +32,7 @@ William Pugh同时还是FindBug（没有使用过，这是一款java的静态代
 
 # 数据结构
 
-![Skip_list.svg.png](https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Skip_list.svg/600px-Skip_list.svg.png)
+![Skip_list.svg.png](https://images.gitee.com/uploads/images/2020/1031/093429_fb08f237_508704.png)
 
 ## 结构
 

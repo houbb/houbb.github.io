@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  锁专题（1）概览
+title:  锁专题（1）概览 lock overview
 date:  2020-10-17 16:15:55 +0800
 categories: [Lock]
 tags: [lock, overview, sf]
@@ -75,6 +75,31 @@ published: true
 
 [AtomicReference 源码解析](http://houbb.github.io/2019/01/20/juc-02-AtomicReference)
 
+## 基础数据结构
+
+[JCIP-14-双端队列与工作密取](https://houbb.github.io/2019/01/18/jcip-14-deque-workstealing)
+
+[双端队列之 ArrayDeque](https://houbb.github.io/2019/01/18/jcip-15-deque-ArrayDeque)
+
+[binary heap 二叉堆介绍](https://houbb.github.io/2019/01/18/jcip-11-binary-heap)
+
+[PriorityQueue 优先级队列](https://houbb.github.io/2019/01/18/jcip-10-priority-queue)
+
+[优先级队列与堆排序](https://houbb.github.io/2019/01/04/prority-queue)
+
+[JCIP-12-环形队列 CircularQueue 与  CircularBlockingQueue](https://houbb.github.io/2019/01/18/jcip-12-circle-queue)
+
+[跳跃表(SkipList)](https://houbb.github.io/2019/02/13/datastruct-skiplist)
+
+## 并发基础知识
+
+[轻松学习多线程 00-多线程学习概览](https://houbb.github.io/2019/01/19/thread-learn-00-overview)
+
+[JCIP-00-并发概览](https://houbb.github.io/2019/01/18/jcip-00-overview)
+
+## 同步数据结构
+
+[同步类数据结构](https://houbb.github.io/2019/01/18/jcip-06-sync-collection)
 
 ## 并发数据结构 
 
@@ -92,23 +117,21 @@ ConcurrentSkipListSet
 
 CopyOnWriteArraySet
 
-[ConcurrentLinkedDeque](https://houbb.github.io/2019/01/18/jcip-17-deque-ConcurrentLinkedDeque)
+[双端队列之 ConcurrentLinkedDeque](https://houbb.github.io/2019/01/18/jcip-17-deque-ConcurrentLinkedDeque)
 
-ConcurrentLinkedQueue
+[ConcurrentLinkedQueue 入门及源码分析](https://houbb.github.io/2020/10/17/lock-09-ConcurrentLinkedQueue-source-code)
 
 【阻塞队列】
+
+[JCIP-09-阻塞队列 BlockingQueue 入门介绍](https://houbb.github.io/2019/01/18/jcip-09-blocking-queue)
 
 [ArrayBlockingQueue 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-ArrayBlockingQueue-source-code)
 
 [LinkedBlockingDeque 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-LinkedBlockingDeque-source-code)
 
+[双端队列之 LinkedBlockingDeque](https://houbb.github.io/2019/01/18/jcip-16-deque-LinkedBlockingDeque)
+
 [DelayQueue 延迟队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-DelayQueue-source-code)
-
-二叉堆
-
-优先级队列
-
-排序
 
 PriorityBlockingQueue
 
@@ -117,6 +140,10 @@ PriorityBlockingQueue
 SynchronousQueue
 
 LinkedTransferQueue
+
+### 无锁队列
+
+[无锁队列](https://houbb.github.io/2019/01/18/jcip-13-free-lock-queue)
 
 ## 工具篇
 
@@ -175,6 +202,10 @@ AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位
 [seqlock 在 jmm 如何应用？](https://houbb.github.io/2020/10/17/lock-05-seqlock-jmm)
 
 paper 算法篇
+
+
+
+
 
 * any list
 {:toc}
