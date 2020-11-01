@@ -7,7 +7,7 @@ tags: [java, concurrency, lock, sh]
 published: true
 ---
 
-# 个人启发
+# COW 的思想
 
 ## 思想的通用性
 
