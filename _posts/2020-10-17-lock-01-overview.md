@@ -89,7 +89,6 @@ published: true
 
 [JCIP-12-环形队列 CircularQueue 与  CircularBlockingQueue](https://houbb.github.io/2019/01/18/jcip-12-circle-queue)
 
-[跳跃表(SkipList)](https://houbb.github.io/2019/02/13/datastruct-skiplist)
 
 ## 并发基础知识
 
@@ -104,6 +103,8 @@ published: true
 ## 并发数据结构 
 
 [ConcurrentHashMap 源码详解](http://houbb.github.io/2018/09/12/java-concurrent-hashmap)
+
+[跳跃表(SkipList)](https://houbb.github.io/2019/02/13/datastruct-skiplist)
 
 ConcurrentSkipListMap
 
