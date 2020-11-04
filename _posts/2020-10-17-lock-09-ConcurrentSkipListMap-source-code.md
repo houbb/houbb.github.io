@@ -9,9 +9,11 @@ published: true
 
 # ConcurrentSkipListMap 
 
+![思维导图](http://p9-tt-ipv6.byteimg.com/large/pgc-image/47be0d4098074f78a0d2ab7f32ba2442)
+
 ## 简介
 
-可伸缩的并发ConcurrentNavigableMa实现。
+可伸缩的并发ConcurrentNavigableMap 实现。
 
 根据可比较的自然顺序或根据在创建 map 时提供的Comparator对 map 进行排序，具体取决于所使用的构造函数。
 

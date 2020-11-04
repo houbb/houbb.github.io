@@ -102,15 +102,7 @@ published: true
 
 ## 并发数据结构 
 
-[ConcurrentHashMap 源码详解](http://houbb.github.io/2018/09/12/java-concurrent-hashmap)
-
-[跳跃表(SkipList)](https://houbb.github.io/2019/02/13/datastruct-skiplist)
-
-ConcurrentSkipListMap
-
-ConcurrentSkipListSet
-
---------------------------------
+----------------------------------------------------------------------------------------------------------------------
 
 [CopyOnWriteArrayList 详解](https://houbb.github.io/2019/01/18/jcip-07-copyonwritelist)
 
@@ -121,6 +113,18 @@ ConcurrentSkipListSet
 [双端队列之 ConcurrentLinkedDeque](https://houbb.github.io/2019/01/18/jcip-17-deque-ConcurrentLinkedDeque)
 
 [ConcurrentLinkedQueue 入门及源码分析](https://houbb.github.io/2020/10/17/lock-09-ConcurrentLinkedQueue-source-code)
+
+----------------------------------------------------------------------------------------------------------------------
+
+[ConcurrentHashMap 源码详解](http://houbb.github.io/2018/09/12/java-concurrent-hashmap)
+
+[跳跃表(SkipList)](https://houbb.github.io/2019/02/13/datastruct-skiplist)
+
+[ConcurrentSkipListMap](https://houbb.github.io/2020/10/17/lock-09-ConcurrentSkipListMap-source-code)
+
+[ConcurrentSkipListSet](https://houbb.github.io/2020/10/17/lock-09-ConcurrentSkipListSet-source-code)
+
+----------------------------------------------------------------------------------------------------------------------
 
 【阻塞队列】
 
@@ -135,6 +139,8 @@ ConcurrentSkipListSet
 [DelayQueue 延迟队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-DelayQueue-source-code)
 
 [PriorityBlockingQueue 阻塞优先级队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-PriorityBlockingQueue-source-code)
+
+----------------------------------------------------------------------------------------------------------------------
 
 【较难】
 
