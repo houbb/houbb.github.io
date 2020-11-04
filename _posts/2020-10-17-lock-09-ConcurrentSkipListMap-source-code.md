@@ -48,6 +48,8 @@ for (String key : map.keySet()) {
 
 温馨提示：建议首先学习一下 skiplist 相关知识，参见 [java 实现跳表（skiplist）及论文解读](https://www.toutiao.com/item/6890519326613307908/)
 
+本节内容较多，建议先收藏，再细细品味。
+
 ## jdk 版本
 
 ```
