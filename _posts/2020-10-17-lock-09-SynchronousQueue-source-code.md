@@ -9,6 +9,8 @@ published: flase
 
 # SynchronousQueue 
 
+![思维导图](https://p1.pstatp.com/origin/pgc-image/f76c27ed738844d099b011022d2e054f)
+
 ## 是什么
 
 SynchronousQueue 是这样一种阻塞队列，其中每个 put 必须等待一个 take，反之亦然。
@@ -192,6 +194,8 @@ public E take() throws InterruptedException {
 
 对 `fulfill` 的调用（即，从保存数据的队列中请求元素的调用，反之亦然）使互补节点出队。
 
+![互补节点](https://p1.pstatp.com/origin/pgc-image/dfc14e8447194971a091db0b7532f7ae)
+
 这些队列最有趣的功能是，任何操作都可以弄清楚队列所处的模式，并且无需锁就可以采取相应的措施。
 
 
@@ -291,6 +295,8 @@ abstract static class Transferer<E> {
 ```
 
 这里就像算法笔记中说的，使用了队列（FIFO） 和 堆栈（FILO）
+
+![](https://p1.pstatp.com/origin/pgc-image/2983104c9993471ab898265885cb4779)
 
 ## 基于队列
 

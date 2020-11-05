@@ -139,7 +139,7 @@ published: true
 
 [PriorityBlockingQueue 阻塞优先级队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-PriorityBlockingQueue-source-code)
 
-[SynchronousQueue 使用入门及源码详解]()
+[SynchronousQueue 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-SynchronousQueue-source-code)
 
 ----------------------------------------------------------------------------------------------------------------------
 
