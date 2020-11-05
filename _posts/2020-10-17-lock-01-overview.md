@@ -89,7 +89,6 @@ published: true
 
 [JCIP-12-环形队列 CircularQueue 与  CircularBlockingQueue](https://houbb.github.io/2019/01/18/jcip-12-circle-queue)
 
-
 ## 并发基础知识
 
 [轻松学习多线程 00-多线程学习概览](https://houbb.github.io/2019/01/19/thread-learn-00-overview)
@@ -140,11 +139,11 @@ published: true
 
 [PriorityBlockingQueue 阻塞优先级队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-PriorityBlockingQueue-source-code)
 
+[SynchronousQueue 使用入门及源码详解]()
+
 ----------------------------------------------------------------------------------------------------------------------
 
 【较难】
-
-SynchronousQueue
 
 LinkedTransferQueue
 
