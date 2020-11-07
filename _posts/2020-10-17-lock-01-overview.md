@@ -127,7 +127,9 @@ published: true
 
 【阻塞队列】
 
-[阻塞队列（1）java 7 种 BlockingQueue 介绍](https://houbb.github.io/2019/01/18/jcip-09-blocking-queue)
+[已发布-阻塞队列（6）-SynchronousQueue 同步队列源码详解](https://houbb.github.io/2020/10/17/lock-09-SynchronousQueue-source-code)
+
+[阻塞队列（1）java 7 种阻塞队列 BlockingQueue 介绍](https://houbb.github.io/2019/01/18/jcip-09-blocking-queue)
 
 [阻塞队列（2）-ArrayBlockingQueue 源码详解](https://houbb.github.io/2020/10/17/lock-09-ArrayBlockingQueue-source-code)
 
@@ -137,11 +139,9 @@ published: true
 
 [阻塞队列（5）-DelayQueue 延迟队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-DelayQueue-source-code)
 
-[阻塞队列（6）-SynchronousQueue 同步队列源码详解](https://houbb.github.io/2020/10/17/lock-09-SynchronousQueue-source-code)
+[阻塞队列（6）-PriorityBlockingQueue 阻塞优先级队列源码详解](https://houbb.github.io/2020/10/17/lock-09-PriorityBlockingQueue-source-code)
 
-[阻塞队列（7）-PriorityBlockingQueue 阻塞优先级队列源码详解](https://houbb.github.io/2020/10/17/lock-09-PriorityBlockingQueue-source-code)
-
-[阻塞队列（8）-LinkedTransferQueue 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-LinkedTransferQueue-source-code)
+[阻塞队列（7）-LinkedTransferQueue 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-LinkedTransferQueue-source-code)
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -208,8 +208,13 @@ AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位
 paper 算法篇
 
 
+## 内存相关
 
+缓存行
 
+理解CPU Cache和Java对象内存布局。
+
+[Java8使用@sun.misc.Contended避免伪共享](https://www.jianshu.com/p/c3c108c3dcfd) 整理一篇
 
 * any list
 {:toc}

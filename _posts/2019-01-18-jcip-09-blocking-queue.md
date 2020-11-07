@@ -1,11 +1,13 @@
 ---
 layout: post
-title:  JCIP-09-阻塞队列 BlockingQueue 概览篇
+title:  JCIP-09-java 中 7 种阻塞队列 BlockingQueue 概览篇
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [java, concurrency, lock, sh]
 published: true
 ---
+
+![BlockingQueue+概览](https://images.gitee.com/uploads/images/2020/1107/125134_559f78a6_508704.png)
 
 # 一些值得思考的问题
 
@@ -43,6 +45,7 @@ published: true
 
 超时退出：当阻塞队列满时，队列会阻塞生产者线程一段时间，如果超过一定的时间，生产者线程就会退出。
 
+![阻塞队列](https://images.gitee.com/uploads/images/2020/1107/125617_379ce39a_508704.jpeg)
 
 # 入门例子
 
@@ -212,6 +215,10 @@ LinkedTransferQueue：一个由链表结构组成的无界阻塞队列。
 
 LinkedBlockingDeque：一个由链表结构组成的双向阻塞队列。
 
+让我们后续一起集齐 7 颗龙珠，召唤神龙吧~
+
+![7颗龙珠](https://images.gitee.com/uploads/images/2020/1107/125420_bfdffd97_508704.jpeg)
+
 ## ArrayBlockingQueue
 
 ArrayBlockingQueue是一个用数组实现的有界阻塞队列。此队列按照先进先出（FIFO）的原则对元素进行排序。默认情况下不保证访问者公平的访问队列，所谓公平访问队列是指阻塞的所有生产者线程或消费者线程，当队列可用时，可以按照阻塞的先后顺序访问队列，即先阻塞的生产者线程，可以先往队列里插入元素，先阻塞的消费者线程，可以先从队列里获取元素。
@@ -376,13 +383,17 @@ LinkedBlockingDeque是一个由链表结构组成的双向阻塞队列。所谓�
 
 作为 java 开发者，每个人都喜欢吹高并发。
 
-可是高并发就像鬼一样，吹得人多，见得人少。
+可是**高并发就像鬼一样，吹得人多，见得人少**。
 
-90% 的 java coder 估计连这 7 种阻塞队列都不清楚，包括做人本人。
+90% 的 java coder 估计连这 7 种阻塞队列都不清楚，包括老马本人。
 
 于是我痛定思痛，花了几周的时间，将上面 7 个队列的用法和源码学了一遍，将在阻塞队列系列分享给大家。
 
 让高并发见鬼去吧~
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位**极客**的点赞收藏转发，是老马持续写作的最大动力！
 
 # 参考资料
 
