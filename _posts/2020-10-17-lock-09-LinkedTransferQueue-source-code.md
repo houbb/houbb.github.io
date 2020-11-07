@@ -19,6 +19,88 @@ published: flase
 
 队列的尾部是某个生产者最短时间进入队列的元素。
 
+LinkedTransferQueue 是 LinkedBlockingQueue、SynchronousQueue（公平模式）、ConcurrentLinkedQueue三者的集合体，它综合了这三者的方法，并且提供了更加高效的实现方式。
+
+## 入门案例
+
+下面演示一个简单的例子，让大家对 LinkedTransferQueue 如何使用有一个基本的印象。
+
+### 生产者
+
+```java
+private static class Producer implements Runnable {
+    private final TransferQueue<String> queue;
+    public Producer(TransferQueue<String> queue) {
+        this.queue = queue;
+    }
+    private String produce() {
+        return Thread.currentThread().getName()+": your lucky number " + (new Random().nextInt(100));
+    }
+    @Override
+    public void run() {
+        try {
+            while (true) {
+                if (queue.hasWaitingConsumer()) {
+                    queue.transfer(produce());
+                }
+                TimeUnit.SECONDS.sleep(1);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### 消费者
+
+```java
+private static class Consumer implements Runnable {
+    private final TransferQueue<String> queue;
+    public Consumer(TransferQueue<String> queue) {
+        this.queue = queue;
+    }
+    @Override
+    public void run() {
+        try {
+            System.out.println(Thread.currentThread().getName()+": consumer 【" + queue.take()+"】");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+### 测试代码
+
+```java
+public static void main(String[] args) {
+    TransferQueue<String> queue = new LinkedTransferQueue<>();
+    Thread producer = new Thread(new Producer(queue));
+    producer.setDaemon(true); //设置为守护进程使得线程执行结束后程序自动结束运行
+    producer.start();
+    for (int i = 0; i < 5; i++) {
+        Thread consumer = new Thread(new Consumer(queue));
+        consumer.setDaemon(true);
+        consumer.start();
+        try {
+            // 消费者进程休眠一秒钟，以便以便生产者获得CPU，从而生产产品
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+测试日志如下：
+
+```
+Thread-1: consumer 【Thread-0: your lucky number 91】
+Thread-2: consumer 【Thread-0: your lucky number 33】
+Thread-3: consumer 【Thread-0: your lucky number 86】
+Thread-4: consumer 【Thread-0: your lucky number 70】
+```
 
 # 算法笔记
 
@@ -27,6 +109,23 @@ Transfer 的接口是 jdk1.7 才引入的。
 下面是一些算法笔记，不会出现在 doc 文档中。是作者设计和实现这个类的一些想法，可以帮助我们更好的理解源码，不感兴趣可以跳过。
 
 ## 具有松弛的双队列概述（Overview of Dual Queues with Slack）
+
+### 何为 dual queues
+
+dual queue，一般翻译为双重队列。
+
+放取元素使用同一个队列，队列中的节点具有两种模式，一种是数据节点，一种是非数据节点。（对应节点定义中的 Node.isData）
+
+（1）放元素时先跟队列头节点对比，如果头节点是非数据节点，就让他们匹配，如果头节点是数据节点，就生成一个数据节点放在队列尾端（入队）。
+
+（2）取元素时也是先跟队列头节点对比，如果头节点是数据节点，就让他们匹配，如果头节点是非数据节点，就生成一个非数据节点放在队列尾端（入队）。
+
+一图胜千言：
+
+![输入图片说明](https://images.gitee.com/uploads/images/2020/1107/103801_0e1f62bb_508704.png "屏幕截图.png")
+
+
+### 算法
 
 由Scherer和Scott 0（http://www.cs.rice.edu/~wns1/papers/2004-DISC-DDS.pdf）引入的双重队列是（链接的）队列，其中的节点可以表示数据或请求。
 
@@ -286,15 +385,19 @@ public class LinkedTransferQueue<E> extends AbstractQueue<E>
 */
 public interface TransferQueue<E> extends BlockingQueue<E> {
 
+    // 尝试移交元素
     boolean tryTransfer(E e);
 
+    // 移交元素
     void transfer(E e) throws InterruptedException;
-
+    // 指定超时时间的移交元素
     boolean tryTransfer(E e, long timeout, TimeUnit unit)
         throws InterruptedException;
 
+    // 判断是否有消费者
     boolean hasWaitingConsumer();
 
+    // 查看消费者的数量
     int getWaitingConsumerCount();
 
 }
@@ -344,9 +447,17 @@ static final int SWEEP_THRESHOLD = 32;
 
 ```java
 static final class Node {
+    // 生产者放入数据，则为数据
+    // 消费者获取数据，非数据节点
     final boolean isData;   // false if this is a request node
+
+    // 如果为生产者放入的数据，则为 not-null。
     volatile Object item;   // initially non-null if isData; CASed to match
+
+    // 下一个 Node 
     volatile Node next;
+
+    // 线程的持有者
     volatile Thread waiter; // null until waiting
 
     /**
@@ -357,6 +468,8 @@ static final class Node {
         UNSAFE.putObject(this, itemOffset, item); // relaxed write
         this.isData = isData;
     }
+
+}
 ```
 
 
@@ -498,7 +611,7 @@ private boolean casSweepVotes(int cmp, int val) {
 }
 ```
 
-# put 方法讲解
+# put/take 方法讲解
 
 ## 源码
 
@@ -509,88 +622,337 @@ private boolean casSweepVotes(int cmp, int val) {
 public void put(E e) {
     xfer(e, true, ASYNC, 0);
 }
+
+public E take() throws InterruptedException {
+    E e = xfer(null, false, SYNC, 0);
+    if (e != null)
+        return e;
+    Thread.interrupted();
+    throw new InterruptedException();
+}
 ```
 
-只有一行代码，是不是很简单？
+只有几行代码，是不是很简单？
+
+
 
 no no no, 下面才是重头戏。
 
-## xfer
+## xfer 方法
 
 xfer 的代码就是算法笔记中提到的，还是有点多的。
 
-TODO...
+之所以比较多，是因为把多个方法放在了这一个实现里面。
+
+一节更比 6 节强。
 
 ```java
 /**
  * 入队方法实现
  * @author 老马啸西风
- * @param e the item or null for take
- * @param haveData true if this is a put, else a take
- * @param how NOW, ASYNC, SYNC, or TIMED
- * @param nanos timeout in nanosecs, used only if mode is TIMED
+ * @param e 表示元素
+ * @param haveData haveData表示是否是数据节点
+ * @param how how表示放取元素的方式，上面提到的四种，NOW、ASYNC、SYNC、TIMED；
+ * @param nanos nanos表示超时时间；
  */
 private E xfer(E e, boolean haveData, int how, long nanos) {
+    // 禁止放入的元素为 null
     if (haveData && (e == null))
         throw new NullPointerException();
+
     Node s = null;                        // the node to append, if needed
+
+    // 用于重试的外循环
     retry:
     for (;;) {                            // restart on append race
+
+        // 下面这个for循环用于控制匹配的过程
+        // 同一时刻队列中只会存储一种类型的节点
+        // 从头节点开始尝试匹配，如果头节点被其它线程先一步匹配了
+        // 就再尝试其下一个，直到匹配到为止，或者到队列中没有元素为止
         for (Node h = head, p = h; p != null;) { // find & match first node
             boolean isData = p.isData;
             Object item = p.item;
+
+            // 没有匹配到的场景
             if (item != p && (item != null) == isData) { // unmatched
+                // isData false 表示是一个 request Node
+                // haveData 为 true 时表示的是放入元素
+                // 如果两者模式一样，则不能匹配，跳出循环后尝试入队
                 if (isData == haveData)   // can't match
                     break;
+
+                // 如果两者模式不一样，则尝试匹配
+                // 把p的值通过 CAS 设置为e（如果是取元素则e是null，如果是放元素则e是元素值）
                 if (p.casItem(item, e)) { // match
+
+                    // 这里主要用于控制并发问题
                     for (Node q = p; q != h;) {
+                        // 进入到这里可能是头节点已经被匹配，然后p会变成h的下一个节点 
                         Node n = q.next;  // update by 2 unless singleton
+
+                        // 如果head还没变，就把它更新成新的节点，并把它删除
+                        // 这时为什么要把head设为n呢？因为到这里了，肯定head本身已经被匹配掉了
+                        // 而上面的p.casItem()又成功了，说明p也被当前这个元素给匹配掉了
+                        // 所以需要把它们俩都出队列，让其它线程可以从真正的头开始，不用重复检查了
                         if (head == h && casHead(h, n == null ? q : n)) {
+                            // forgetNext()会把它的next设为自己，也就是从单链表中删除了
+                            // 算法中提到过，为什么是通过自引用的方式删除元素
                             h.forgetNext();
                             break;
                         }                 // advance and retry
+
+                        // 如果新的头节点为空，或者其 next 为空，或者其 next 未匹配，就重试
                         if ((h = head)   == null ||
                             (q = h.next) == null || !q.isMatched())
                             break;        // unless slack < 2
                     }
+
+                    // 唤醒p中等待的线程
                     LockSupport.unpark(p.waiter);
+                    // 返回匹配的元素
                     return LinkedTransferQueue.<E>cast(item);
                 }
             }
+
+            // p已经被匹配了或者尝试匹配的时候失败了
+            // 也就是其它线程先一步匹配了p
+            // 这时候又分两种情况，p的next还没来得及修改，p的next指向了自己
+            // 如果p的next已经指向了自己，就重新取head重试，否则就取其next重试
             Node n = p.next;
             p = (p != n) ? n : (h = head); // Use head if p offlist
         }
+
+        // 到这里肯定是队列中存储的节点类型和自己一样
+        // 或者队列中没有元素了
+        // 就入队（不管放元素还是取元素都得入队）
+
+        // 入队又分成四种情况：
+        // NOW，立即返回，没有匹配到立即返回，不做入队操作
+        // ASYNC，异步，元素入队但当前线程不会阻塞（相当于无界LinkedBlockingQueue的元素入队）
+        // SYNC，同步，元素入队后当前线程阻塞，等待被匹配到
+        // TIMED，有超时，元素入队后等待一段时间被匹配，时间到了还没匹配到就返回元素本身
+
+        // 如果不是立即返回
         if (how != NOW) {                 // No matches available
             if (s == null)
                 s = new Node(e, haveData);
+
+            // 尝试入队    
             Node pred = tryAppend(s, haveData);
+
+            // 入队失败，重试
             if (pred == null)
                 continue retry;           // lost race vs opposite mode
+
+            // 如果不是异步（同步或者有超时），则等待被匹配。    
             if (how != ASYNC)
                 return awaitMatch(s, pred, e, (how == TIMED), nanos);
         }
         return e; // not waiting
     }
 }
-
 ```
 
+### how 参数
+
+第三个 how 参数是一个 int，可能对应的值说明如下：
+
+```java
+// 立即返回，用于非超时的poll()和tryTransfer()方法中
+private static final int NOW   = 0; // for untimed poll, tryTransfer
+// 异步，不会阻塞，用于放元素时，因为内部使用无界单链表存储元素，不会阻塞放元素的过程
+private static final int ASYNC = 1; // for offer, put, add
+// 同步，调用的时候如果没有匹配到会阻塞直到匹配到为止
+private static final int SYNC  = 2; // for transfer, take
+// 超时，用于有超时的poll()和tryTransfer()方法中
+private static final int TIMED = 3; // for timed poll, tryTransfer
+```
+
+### tryAppend 尝试入队
+
+```java
+/**
+ * 尝试吧 Node 节点加入到队尾
+ * @param s 待入队的元素
+ * @param haveData true，表示是放入元素。
+ * @return null on failure due to losing race with append in
+ * different mode, else s's predecessor, or s itself if no
+ * predecessor
+ */
+private Node tryAppend(Node s, boolean haveData) {
+    // 从tail开始遍历，把s放到链表尾端
+    for (Node t = tail, p = t;;) {        // move p to last node and append
+        Node n, u;                        // temps for reads of next & tail
+
+        // 如果首尾都是null，说明链表为空
+        if (p == null && (p = head) == null) {
+            // 设置 head 节点为 s
+            // 注意：这里的 tail 节点并没有被初始化
+            if (casHead(null, s))
+                return s;                 // initialize
+        }
+        else if (p.cannotPrecede(haveData))
+            // 如果p无法处理，则返回null
+            // 这里无法处理的意思是，p和s节点的类型不一样，不允许s入队
+            // 比如，其它线程先入队了一个数据节点，这时候要入队一个非数据节点，就不允许，
+            // 队列中所有的元素都要保证是同一种类型的节点
+            // 返回null后外面的方法会重新尝试匹配重新入队等
+            return null;                  // lost race vs opposite mode
+        else if ((n = p.next) != null)    // not last; keep traversing
+            // 如果p的next不为空，说明不是最后一个节点
+            // 则让p重新指向最后一个节点
+            p = p != t && t != (u = tail) ? (t = u) : // stale tail
+                (p != n) ? n : null;      // restart if off list
+            // 返回 null，说明 p.next 指向自己，也就是自引用了。    
+        else if (!p.casNext(null, s))
+            // 如果CAS更新s为p的next失败
+            // 则说明有其它线程先一步更新到p的next了
+            // 就让p指向p的next，重新尝试让s入队
+            p = p.next;                   // re-read on CAS failure
+        else {
+            // 到这里说明s成功入队了
+            // 如果p不等于t，就通过 CAS 更新tail指针（前面初始化 head 的时候，并没有初始化 tail）
+            if (p != t) {                 // update if slack now >= 2
+                while ((tail != t || !casTail(t, s)) &&
+                       (t = tail)   != null &&
+                       (s = t.next) != null && // advance and retry
+                       (s = s.next) != null && s != t);
+            }
+            // 返回p，即s的前一个元素
+            return p;
+        }
+    }
+}
+```
+
+### awaitMatch 等待匹配
+
+```java
+/**
+ *
+ * 自旋/让渡/阻塞，直到节点匹配或者调用者放弃.
+ * 
+ * @author 老马啸西风
+ * @param s the waiting node 等待的节点
+ * @param pred the predecessor of s, or s itself if it has no
+ * predecessor, or null if unknown (the null case does not occur
+ * in any current calls but may in possible future extensions)
+ * @param e the comparison value for checking match
+ * @param timed if true, wait only until timeout elapses
+ * @param nanos timeout in nanosecs, used only if timed is true
+ * @return matched item, or e if unmatched on interrupt or timeout
+ */
+private E awaitMatch(Node s, Node pred, E e, boolean timed, long nanos) {
+    // 计算超时时间
+    final long deadline = timed ? System.nanoTime() + nanos : 0L;
+    // 当前线程
+    Thread w = Thread.currentThread();
+    // 自旋次数
+    int spins = -1; // initialized after first item and cancel checks
+    // 随机数，随机让一些自旋的线程让出CPU
+    ThreadLocalRandom randomYields = null; // bound if needed
+
+    for (;;) {
+        Object item = s.item;
+
+        // 如果s元素的值不等于e，说明它被匹配到了
+        if (item != e) {                  // matched
+            // assert item != s;
+            // 这里是 node 节点的方法，主要做了 2 件事情
+            // 1. 把 s 的 item 更新为 s 本身
+            // 2. 并把 s 中的 waiter 置为空
+            s.forgetContents();           // avoid garbage
+            return LinkedTransferQueue.<E>cast(item);
+        }
+        // 如果当前线程中断了，或者有超时的到期了，则应该取消尝试。
+        // 就更新s的元素值指向s本身
+        if ((w.isInterrupted() || (timed && nanos <= 0)) &&
+                s.casItem(e, s)) {        // cancel
+
+            // 尝试解除s与其前一个节点的关系
+            // 也就是删除s节点 
+            unsplice(pred, s);
+            // 返回元素的值本身，说明没匹配到
+            return e;
+        }
+        // 如果自旋次数小于0，就计算自旋次数
+        if (spins < 0) {                  // establish spins at/near front
+
+            // spinsFor() 计算自旋次数
+            // 如果前面有节点未被匹配就返回0
+            // 如果前面有节点且正在匹配中就返回一定的次数，等待
+            if ((spins = spinsFor(pred, s.isData)) > 0)
+                // 随机数初始化
+                // 这里的随机数算法笔记中也提到过，为了随机的让自旋的线程让渡。
+                randomYields = ThreadLocalRandom.current();
+        }
+        else if (spins > 0) {             // spin
+            // 自旋1次，总数就 -1;
+            --spins;
+            // 如果刚好为0，则进行让渡。
+            // 这里的概率比较低， CHAINED_SPINS = 1 << 6 = 32，也就是 1/32
+            if (randomYields.nextInt(CHAINED_SPINS) == 0)
+                Thread.yield();           // occasionally yield
+        }
+        else if (s.waiter == null) {
+            // 设置 waiter 为当前线程 
+            s.waiter = w;                 // request unpark then recheck
+        }
+        else if (timed) {
+            // 如果有超时，计算超时时间
+            nanos = deadline - System.nanoTime();
+            if (nanos > 0L)
+                // 通过 LockSupport，阻塞对应的时间即可
+                LockSupport.parkNanos(this, nanos);
+        }
+        else {
+            // 不是超时的，直接阻塞，等待被唤醒
+            // 唤醒后进入下一次循环，走第一个if的逻辑就返回匹配的元素了
+
+            // xfer 方法中，有对应的线程唤醒操作。
+            LockSupport.park(this);
+        }
+    }
+}
+```
+
+## 整体流程
+
+看到这里，可能有些小伙伴还是有些懵的状态。
+
+我们用文字简单梳理下 xfer 方法的流程：
+
+（1）来了一个元素，我们先查看队列头的节点，是否与这个元素的模式一样；
+
+（2）如果模式不一样，就尝试让他们匹配，如果头节点被别的线程先匹配走了，就尝试与头节点的下一个节点匹配，如此一直往后，直到匹配到或到链表尾为止；
+
+（3）如果模式一样，或者到链表尾了，就尝试入队；
+
+（4）入队的时候有可能链表尾修改了，那就尾指针后移，再重新尝试入队，依此往复；
+
+（5）入队成功了，就自旋或阻塞，阻塞了就等待被其它线程匹配到并唤醒；
+
+（6）唤醒之后进入下一次循环就匹配到元素了，返回匹配到的元素；
 
 
-# take 方法讲解
+LinkedTransferQueue 可以看作LinkedBlockingQueue、SynchronousQueue（公平模式）、ConcurrentLinkedQueue三者的集合体；
 
+所以要体会设计的巧妙之处，就要学会和上面 3 个集合进行对比。
 
+这个 xfer 的实现给我的感觉最直观的就是 2 点：
 
+（1）实现更加简洁
 
-
-
-
-
-
+（2）特性指定更加灵活
 
 # 小结
 
-工作学习中希望可以活学活用，提升工作效率，写出更加优异的代码。
+LinkedTransferQueue 作为阻塞队列的集大成者，是 jdk1.7 之后才引入的。
+
+每次拜读 Doug Lea 的源码，就能感觉到这种理论与实践结合的魔力。
+
+**想渊博，就要多读书；想精通，就要多实战。**
 
 希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
 
@@ -600,11 +962,9 @@ private E xfer(E e, boolean haveData, int how, long nanos) {
 
 jdk 源码
 
-[DelayQueue 的使用](https://blog.csdn.net/hsqingwei/article/details/88850835)
+[集合-LinkedTransferQueue源码解析](https://www.cnblogs.com/hiramxq/p/13293498.html)
 
-[Java延时队列DelayQueue的使用](https://my.oschina.net/lujianing/blog/705894)
-
-[SynchronousQueue 的使用](https://blog.csdn.net/zmx729618/article/details/52980158)
+[LinkedTransferQueue 用法](https://blog.csdn.net/jfengamarsoft/article/details/75218839)
 
 * any list
 {:toc}

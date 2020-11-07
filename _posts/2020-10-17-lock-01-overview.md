@@ -127,25 +127,25 @@ published: true
 
 【阻塞队列】
 
-[JCIP-09-阻塞队列 BlockingQueue 入门介绍](https://houbb.github.io/2019/01/18/jcip-09-blocking-queue)
+[x 双端队列之 LinkedBlockingDeque](https://houbb.github.io/2019/01/18/jcip-16-deque-LinkedBlockingDeque)
 
-[ArrayBlockingQueue 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-ArrayBlockingQueue-source-code)
+[阻塞队列（1）java 7 种 BlockingQueue 介绍](https://houbb.github.io/2019/01/18/jcip-09-blocking-queue)
 
-[LinkedBlockingDeque 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-LinkedBlockingDeque-source-code)
+[阻塞队列（2）-ArrayBlockingQueue 源码详解](https://houbb.github.io/2020/10/17/lock-09-ArrayBlockingQueue-source-code)
 
-[双端队列之 LinkedBlockingDeque](https://houbb.github.io/2019/01/18/jcip-16-deque-LinkedBlockingDeque)
+[阻塞队列（3）-LinkedBlockingQueue 源码详解](https://houbb.github.io/2020/10/17/lock-09-LinkedBlockingQueue-source-code)
 
-[DelayQueue 延迟队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-DelayQueue-source-code)
+[阻塞队列（4）-LinkedBlockingDeque 源码详解](https://houbb.github.io/2019/01/18/jcip-16-deque-LinkedBlockingDeque)
 
-[PriorityBlockingQueue 阻塞优先级队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-PriorityBlockingQueue-source-code)
+[阻塞队列（5）-DelayQueue 延迟队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-DelayQueue-source-code)
 
-[SynchronousQueue 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-SynchronousQueue-source-code)
+[阻塞队列（6）-SynchronousQueue 同步队列源码详解](https://houbb.github.io/2020/10/17/lock-09-SynchronousQueue-source-code)
+
+[阻塞队列（7）-PriorityBlockingQueue 阻塞优先级队列源码详解](https://houbb.github.io/2020/10/17/lock-09-PriorityBlockingQueue-source-code)
+
+[阻塞队列（8）-LinkedTransferQueue 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-LinkedTransferQueue-source-code)
 
 ----------------------------------------------------------------------------------------------------------------------
-
-【较难】
-
-LinkedTransferQueue
 
 ### 无锁队列
 

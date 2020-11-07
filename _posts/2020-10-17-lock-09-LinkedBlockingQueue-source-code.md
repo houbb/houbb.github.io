@@ -7,17 +7,39 @@ tags: [lock, source-code, sf]
 published: true
 ---
 
+# 问题
+
+- LinkedBlockingDeque 是什么？
+
+- 优缺点？
+
+- 应用场景？
+
+- 源码实现？
+
+- 个人启发？
+
 # LinkedBlockingQueue
 
-## 简介
+双向并发阻塞队列。
 
-基于链接节点的可选绑定的双端队列。
+所谓双向是指可以从队列的头和尾同时操作，并发只是线程安全的实现，阻塞允许在入队出队不满足条件时挂起线程，这里说的队列是指支持FIFO/FILO实现的链表。
 
-可选的容量绑定构造函数参数是一种防止过度扩展的方法。
+1. 要想支持阻塞功能，队列的容量一定是固定的，否则无法在入队的时候挂起线程。也就是capacity是final类型的。
 
-容量（如果未指定）等于 Integer＃MAX_VALUE。 
+2. 既然是双向链表，每一个结点就需要前后两个引用，这样才能将所有元素串联起来，支持双向遍历。也即需要prev/next两个引用。
 
-除非每次插入都会使双端队列超出容量，否则将在每次插入时动态创建链接节点。
+3. 双向链表需要头尾同时操作，所以需要first/last两个节点，当然可以参考LinkedList那样采用一个节点的双向来完成，那样实现起来就稍微麻烦点。
+
+4. 既然要支持阻塞功能，就需要锁和条件变量来挂起线程。这里使用一个锁两个条件变量来完成此功能。
+
+## 优缺点
+
+优点当然是功能足够强大，同时由于采用一个独占锁，因此实现起来也比较简单。所有对队列的操作都加锁就可以完成。同时独占锁也能够很好的支持双向阻塞的特性。
+
+凡事有利必有弊。缺点就是由于独占锁，所以不能同时进行两个操作，这样性能上就大打折扣。从性能的角度讲LinkedBlockingDeque要比LinkedQueue要低很多，比CocurrentLinkedQueue就低更多了，这在高并发情况下就比较明显了。
+
+前面分析足够多的Queue实现后，LinkedBlockingDeque的原理和实现就不值得一提了，无非是在独占锁下对一个链表的普通操作。
 
 ## 核心方法
 
@@ -188,6 +210,51 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
     private static final long serialVersionUID = -6903933977591709194L;
 }
 ```
+
+## 序列化
+
+有趣的是此类支持序列化，但是Node并不支持序列化，因此fist/last就不能序列化，那么如何完成序列化/反序列化过程呢？
+
+```java
+private void writeObject(java.io.ObjectOutputStream s)
+    throws java.io.IOException {
+    lock.lock();
+    try {
+        // Write out capacity and any hidden stuff
+        s.defaultWriteObject();
+        // Write out all elements in the proper order.
+        for (Node<E> p = first; p != null; p = p.next)
+            s.writeObject(p.item);
+        // Use trailing null as sentinel
+        s.writeObject(null);
+    } finally {
+        lock.unlock();
+    }
+}
+ 
+private void readObject(java.io.ObjectInputStream s)
+    throws java.io.IOException, ClassNotFoundException {
+    s.defaultReadObject();
+    count = 0;
+    first = null;
+    last = null;
+    // Read in all elements and place in queue
+    for (;;) {
+        E item = (E)s.readObject();
+        if (item == null)
+            break;
+        add(item);
+    }
+}
+```
+
+描述的是LinkedBlockingDeque序列化/反序列化的过程。
+
+序列化时将真正的元素写入输出流，最后还写入了一个null。
+
+读取的时候将所有对象列表读出来，如果读取到一个null就表示结束。
+
+这就是为什么写入的时候写入一个null的原因，因为没有将count写入流，所以就靠null来表示结束，省一个整数空间。
 
 ## 内部变量
 

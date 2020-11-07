@@ -296,7 +296,7 @@ abstract static class Transferer<E> {
 
 这里就像算法笔记中说的，使用了队列（FIFO） 和 堆栈（FILO）
 
-![](https://p1.pstatp.com/origin/pgc-image/2983104c9993471ab898265885cb4779)
+![阻塞队列](https://p1.pstatp.com/origin/pgc-image/2983104c9993471ab898265885cb4779)
 
 ## 基于队列
 
