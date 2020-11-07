@@ -473,6 +473,82 @@ class FIFOMutex {
 }
 ```
 
+# 底层
+
+park 方法
+
+`UNSAFE.park(false, 0L);` 是个native方法，接口如下：
+
+```java
+public native void park(boolean isAbsolute, long time);
+```
+
+park这个方法会阻塞当前线程，只有以下四种情况中的一种发生时，该方法才会返回。
+
+与park对应的unpark执行或已经执行时。注意：已经执行是指unpark先执行，然后再执行的park。
+线程被中断时。
+
+如果参数中的time不是零，等待了指定的毫秒数时。
+
+发生异常现象时。这些异常事先无法确定。
+
+我们继续看一下JVM是如何实现park方法的，park在不同的操作系统使用不同的方式实现，在linux下是使用的是系统方法pthread_cond_wait实现。
+
+实现代码在JVM源码路径 `src/os/linux/vm/os_linux.cp`p里的 `os::PlatformEvent::park` 方法，代码如下：
+ 
+```java
+void os::PlatformEvent::park() {
+	     int v ;
+    for (;;) {
+	v = _Event ;
+    if (Atomic::cmpxchg (v-1, &_Event, v) == v) break ;
+    }
+    guarantee (v >= 0, "invariant") ;
+    if (v == 0) {
+    // Do this the hard way by blocking ...
+    int status = pthread_mutex_lock(_mutex);
+    assert_status(status == 0, status, "mutex_lock");
+    guarantee (_nParked == 0, "invariant") ;
+    ++ _nParked ;
+    while (_Event < 0) {
+    status = pthread_cond_wait(_cond, _mutex);
+    // for some reason, under 2.7 lwp_cond_wait() may return ETIME ...
+    // Treat this the same as if the wait was interrupted
+    if (status == ETIME) { status = EINTR; }
+    assert_status(status == 0 || status == EINTR, status, "cond_wait");
+    }
+    -- _nParked ;
+    // In theory we could move the ST of 0 into _Event past the unlock(),
+    // but then we'd need a MEMBAR after the ST.
+    _Event = 0 ;
+    status = pthread_mutex_unlock(_mutex);
+    assert_status(status == 0, status, "mutex_unlock");
+    }
+    guarantee (_Event >= 0, "invariant") ;
+    }
+}
+```
+
+pthread_cond_wait是一个多线程的条件变量函数，cond是condition的缩写，字面意思可以理解为线程在等待一个条件发生，这个条件是一个全局变量。这个方法接收两个参数，一个共享变量_cond，一个互斥量_mutex。而unpark方法在linux下是使用pthread_cond_signal实现的。
+
+park 在windows下则是使用WaitForSingleObject实现的。
+
+## 队列满
+
+当队列满时，生产者往阻塞队列里插入一个元素，生产者线程会进入WAITING (parking)状态。我们可以使用jstack dump阻塞的生产者线程看到这点：
+
+```
+"main" prio=5 tid=0x00007fc83c000000 nid=0x10164e000 waiting on condition [0x000000010164d000]
+   java.lang.Thread.State: WAITING (parking)
+        at sun.misc.Unsafe.park(Native Method)
+        - parking to wait for  <0x0000000140559fe8> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
+        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:186)
+        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2043)
+        at java.util.concurrent.ArrayBlockingQueue.put(ArrayBlockingQueue.java:324)
+        at blockingqueue.ArrayBlockingQueueTest.main(ArrayBlockingQueueTest.java:11)
+```
+
+
 # 总结
 
 LockSupport是JDK中用来实现线程阻塞和唤醒的工具。

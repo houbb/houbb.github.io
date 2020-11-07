@@ -1,15 +1,13 @@
 ---
 layout: post
-title:  JCIP-09-阻塞队列 BlockingQueue
+title:  JCIP-09-阻塞队列 BlockingQueue 概览篇
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [java, concurrency, lock, sh]
 published: true
-excerpt: JCIP-09-阻塞队列
 ---
 
-
-# Q
+# 一些值得思考的问题
 
 - 为什么要有阻塞队列？
 
@@ -374,219 +372,17 @@ LinkedBlockingDeque是一个由链表结构组成的双向阻塞队列。所谓�
 
 所谓通知模式，就是当生产者往满的队列里添加元素时会阻塞住生产者，当消费者消费了一个队列中的元素后，会通知生产者当前队列可用。
 
-## ArrayBlockingQueue
+# 小结
 
-> 备注：基于 JDK 1.8.0_191
+作为 java 开发者，每个人都喜欢吹高并发。
 
-通过查看JDK源码发现 ArrayBlockingQueue 使用了Condition来实现，代码如下：
+可是高并发就像鬼一样，吹得人多，见得人少。
 
-```java
-    /*
-     * Concurrency control uses the classic two-condition algorithm
-     * found in any textbook.
-     */
+90% 的 java coder 估计连这 7 种阻塞队列都不清楚，包括做人本人。
 
-    /** Main lock guarding all access */
-    final ReentrantLock lock;
+于是我痛定思痛，花了几周的时间，将上面 7 个队列的用法和源码学了一遍，将在阻塞队列系列分享给大家。
 
-    /** Condition for waiting takes */
-    private final Condition notEmpty;
-
-    /** Condition for waiting puts */
-    private final Condition notFull;
-```
-
-- 集合的初始化 
-
-```java
-    /**
-     * Creates an {@code ArrayBlockingQueue} with the given (fixed)
-     * capacity and the specified access policy.
-     *
-     * @param capacity the capacity of this queue
-     * @param fair if {@code true} then queue accesses for threads blocked
-     *        on insertion or removal, are processed in FIFO order;
-     *        if {@code false} the access order is unspecified.
-     * @throws IllegalArgumentException if {@code capacity < 1}
-     */
-    public ArrayBlockingQueue(int capacity, boolean fair) {
-        if (capacity <= 0)
-            throw new IllegalArgumentException();
-        this.items = new Object[capacity];
-        lock = new ReentrantLock(fair);
-        notEmpty = lock.newCondition();
-        notFull =  lock.newCondition();
-    }
-```
-
-## put() & take()
-
-```java
-    /**
-     * Inserts the specified element at the tail of this queue, waiting
-     * for space to become available if the queue is full.
-     *
-     * @throws InterruptedException {@inheritDoc}
-     * @throws NullPointerException {@inheritDoc}
-     */
-    public void put(E e) throws InterruptedException {
-        checkNotNull(e);
-        final ReentrantLock lock = this.lock;
-        lock.lockInterruptibly();
-        try {
-            while (count == items.length)
-                notFull.await();
-            enqueue(e);
-        } finally {
-            lock.unlock();
-        }
-    }
-```
-
-```java
-public E take() throws InterruptedException {
-    final ReentrantLock lock = this.lock;
-    lock.lockInterruptibly();
-    try {
-        while (count == 0)
-            notEmpty.await();
-        return dequeue();
-    } finally {
-        lock.unlock();
-    }
-}
-```
-
-其实比较简单，就是放入的时候是否已经满；取出的时候判断是否已经空。
-
-## await()
-
-AbstractQueuedSynchronizer 类中实现如下
-
-```java
-/**
- * Implements interruptible condition wait.
- * <ol>
- * <li> If current thread is interrupted, throw InterruptedException.
- * <li> Save lock state returned by {@link #getState}.
- * <li> Invoke {@link #release} with saved state as argument,
- *      throwing IllegalMonitorStateException if it fails.
- * <li> Block until signalled or interrupted.
- * <li> Reacquire by invoking specialized version of
- *      {@link #acquire} with saved state as argument.
- * <li> If interrupted while blocked in step 4, throw InterruptedException.
- * </ol>
- */
-public final void await() throws InterruptedException {
-    if (Thread.interrupted())
-        throw new InterruptedException();
-    Node node = addConditionWaiter();
-    int savedState = fullyRelease(node);
-    int interruptMode = 0;
-    while (!isOnSyncQueue(node)) {
-        LockSupport.park(this);
-        if ((interruptMode = checkInterruptWhileWaiting(node)) != 0)
-            break;
-    }
-    if (acquireQueued(node, savedState) && interruptMode != THROW_IE)
-        interruptMode = REINTERRUPT;
-    if (node.nextWaiter != null) // clean up if cancelled
-        unlinkCancelledWaiters();
-    if (interruptMode != 0)
-        reportInterruptAfterWait(interruptMode);
-}
-```
-
-`LockSupport.park(this);` 这句话用来阻塞，继续深入源码，如下：
-
-```java
-public static void park(Object blocker) {
-    Thread t = Thread.currentThread();
-    setBlocker(t, blocker);
-    UNSAFE.park(false, 0L);
-    setBlocker(t, null);
-}
-```
-
-### park 方法
-
-`UNSAFE.park(false, 0L);` 是个native方法，接口如下：
-
-```java
-public native void park(boolean isAbsolute, long time);
-```
-
-park这个方法会阻塞当前线程，只有以下四种情况中的一种发生时，该方法才会返回。
-
-与park对应的unpark执行或已经执行时。注意：已经执行是指unpark先执行，然后再执行的park。
-线程被中断时。
-
-如果参数中的time不是零，等待了指定的毫秒数时。
-
-发生异常现象时。这些异常事先无法确定。
-
-我们继续看一下JVM是如何实现park方法的，park在不同的操作系统使用不同的方式实现，在linux下是使用的是系统方法pthread_cond_wait实现。
-
-实现代码在JVM源码路径 `src/os/linux/vm/os_linux.cp`p里的 `os::PlatformEvent::park` 方法，代码如下：
- 
-```java
-void os::PlatformEvent::park() {
-	     int v ;
-    for (;;) {
-	v = _Event ;
-    if (Atomic::cmpxchg (v-1, &_Event, v) == v) break ;
-    }
-    guarantee (v >= 0, "invariant") ;
-    if (v == 0) {
-    // Do this the hard way by blocking ...
-    int status = pthread_mutex_lock(_mutex);
-    assert_status(status == 0, status, "mutex_lock");
-    guarantee (_nParked == 0, "invariant") ;
-    ++ _nParked ;
-    while (_Event < 0) {
-    status = pthread_cond_wait(_cond, _mutex);
-    // for some reason, under 2.7 lwp_cond_wait() may return ETIME ...
-    // Treat this the same as if the wait was interrupted
-    if (status == ETIME) { status = EINTR; }
-    assert_status(status == 0 || status == EINTR, status, "cond_wait");
-    }
-    -- _nParked ;
-    // In theory we could move the ST of 0 into _Event past the unlock(),
-    // but then we'd need a MEMBAR after the ST.
-    _Event = 0 ;
-    status = pthread_mutex_unlock(_mutex);
-    assert_status(status == 0, status, "mutex_unlock");
-    }
-    guarantee (_Event >= 0, "invariant") ;
-    }
-}
-```
-
-pthread_cond_wait是一个多线程的条件变量函数，cond是condition的缩写，字面意思可以理解为线程在等待一个条件发生，这个条件是一个全局变量。这个方法接收两个参数，一个共享变量_cond，一个互斥量_mutex。而unpark方法在linux下是使用pthread_cond_signal实现的。
-
-park 在windows下则是使用WaitForSingleObject实现的。
-
-## 队列满
-
-当队列满时，生产者往阻塞队列里插入一个元素，生产者线程会进入WAITING (parking)状态。我们可以使用jstack dump阻塞的生产者线程看到这点：
-
-```
-"main" prio=5 tid=0x00007fc83c000000 nid=0x10164e000 waiting on condition [0x000000010164d000]
-   java.lang.Thread.State: WAITING (parking)
-        at sun.misc.Unsafe.park(Native Method)
-        - parking to wait for  <0x0000000140559fe8> (a java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject)
-        at java.util.concurrent.locks.LockSupport.park(LockSupport.java:186)
-        at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:2043)
-        at java.util.concurrent.ArrayBlockingQueue.put(ArrayBlockingQueue.java:324)
-        at blockingqueue.ArrayBlockingQueueTest.main(ArrayBlockingQueueTest.java:11)
-```
-
-# 个人感受
-
-- 基础知识，底层全是 C。再往下看也没啥意思了。
-
-- 网上的博客都是一样的，这很悲催。包括本篇。希望以后自己可以拓展下本系列的内容，不断完善。
-
+让高并发见鬼去吧~
 
 # 参考资料
 

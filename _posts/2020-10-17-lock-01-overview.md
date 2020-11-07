@@ -127,8 +127,6 @@ published: true
 
 【阻塞队列】
 
-[x 双端队列之 LinkedBlockingDeque](https://houbb.github.io/2019/01/18/jcip-16-deque-LinkedBlockingDeque)
-
 [阻塞队列（1）java 7 种 BlockingQueue 介绍](https://houbb.github.io/2019/01/18/jcip-09-blocking-queue)
 
 [阻塞队列（2）-ArrayBlockingQueue 源码详解](https://houbb.github.io/2020/10/17/lock-09-ArrayBlockingQueue-source-code)
