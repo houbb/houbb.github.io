@@ -19,11 +19,13 @@ published: true
 
 [常见 hash 算法](http://houbb.github.io/2018/05/30/hash-impl)
 
-> [hash 开源工具](https://github.com/houbb/hash.git)
-
 [consistent hash algorithm-一致性哈希算法 java 实现](http://houbb.github.io/2020/06/19/load-balance-03-consistent-hash-in-java)
 
+> [hash 开源工具](https://github.com/houbb/hash.git)
+
 [Bloom Filter-布隆过滤器](http://houbb.github.io/2018/12/05/bloom-filter)
+
+> [Bloom-Filter 开源工具](https://github.com/houbb/bloom-filter)
 
 ## Tree
 
@@ -31,31 +33,23 @@ published: true
 
 [B Tree](http://houbb.github.io/2018/09/12/b-tree)
 
-[java 敏感词之 DFA 算法(Tire Tree 算法)详解](http://houbb.github.io/2020/01/07/sensitive-word-dfa)
-
 [Red Black Tree-红黑树](http://houbb.github.io/2018/09/12/data-struct-red-black-tree)
 
 [Slim 战胜 Btree 索引](http://houbb.github.io/2018/09/06/index-slimtrie)
 
 [LSM 索引](http://houbb.github.io/2018/09/06/index-lsm)
 
+[java 敏感词之 DFA 算法(Tire Tree 算法)详解](http://houbb.github.io/2020/01/07/sensitive-word-dfa)
+
+> [sensitive-word 工具](https://github.com/houbb/sensitive-word)
+
 ## list
 
 [skiplist-跳表](http://houbb.github.io/2019/02/13/datastruct-skiplist)
 
-
-
-# Luence 
-
-# slor
-
-# ES
-
-
-
 # 搜索引擎
 
-## 倒排索引
+## 数据库索引
 
 [倒排索引原理与实现](http://houbb.github.io/2020/01/09/reverse-index)
 
@@ -68,6 +62,14 @@ published: true
 [数据库索引-05-倒排索引](http://houbb.github.io/2019/01/02/db-index-05-inverted-index)
 
 [数据库索引-06-索引运行不好的场景](http://houbb.github.io/2019/01/02/db-index-06-index-not-work-well)
+
+## Luence 
+
+# slor
+
+[Apache Solr 入门](http://houbb.github.io/2017/08/22/apacke-solr)
+
+## ES
 
 
 ## 理论
