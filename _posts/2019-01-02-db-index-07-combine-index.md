@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 联合索引
+title: 数据库索引-07-联合索引
 date: 2019-1-2 10:17:00 +0800
 categories: [SQL]
 tags: [sql, index, sh]

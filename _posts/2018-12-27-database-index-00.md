@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 数据库索引汇总 database index
+title: 数据库汇总 database overview
 date: 2018-12-27 09:04:34 +0800
 categories: [Database]
-tags: [database, index, sh]
+tags: [database, overview, sh]
 published: true
 ---
 

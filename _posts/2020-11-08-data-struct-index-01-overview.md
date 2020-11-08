@@ -2,8 +2,8 @@
 layout: post
 title:  索引数据结构（1）概览篇
 date:  2020-10-17 16:15:55 +0800
-categories: [Lock]
-tags: [lock, concurrency, sf]
+categories: [Index]
+tags: [index, overview, data-struct, sf]
 published: true
 ---
 
@@ -43,20 +43,49 @@ published: true
 
 [skiplist-跳表](http://houbb.github.io/2019/02/13/datastruct-skiplist)
 
-## 数据库索引知识
 
 
+# Luence 
 
-# Luence 研究
-
+# slor
 
 # ES
 
 
 
-# 自己实现一个搜索引擎
+# 搜索引擎
+
+## 倒排索引
+
+[倒排索引原理与实现](http://houbb.github.io/2020/01/09/reverse-index)
+
+[数据库索引-02-secondary index 二级索引 ](http://houbb.github.io/2019/01/02/db-index-02-secondary-index)
+
+[数据库索引-03-cluster index 聚集索引 ](http://houbb.github.io/2019/01/02/db-index-03-cluster-index)
+
+[数据库索引-04-Apache Phoenix](http://houbb.github.io/2019/01/02/db-index-04-hbase-phoenix)
+
+[数据库索引-05-倒排索引](http://houbb.github.io/2019/01/02/db-index-05-inverted-index)
+
+[数据库索引-06-索引运行不好的场景](http://houbb.github.io/2019/01/02/db-index-06-index-not-work-well)
 
 
+## 理论
+
+[搜索引擎-01-Overview](http://houbb.github.io/2017/02/24/search-engine-01-overview-01)
+
+[搜索引擎-02-分词与全文索引](http://houbb.github.io/2017/02/24/search-engine-02-fenci-fulltext-02)
+
+[搜索引擎-03-搜索引擎原理](http://houbb.github.io/2017/02/24/search-engine-03-theory-03)
+
+
+
+
+# 拓展工具
+
+排序
+
+查找
 
 
 

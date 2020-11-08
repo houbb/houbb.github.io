@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  MySQL Index Tips
+title:  数据库索引-08-MySQL Index Tips
 date:  2018-09-03 08:57:39 +0800
 categories: [SQL]
-tags: [sql, mysql, best-practise, sh]
+tags: [sql, mysql, best-practice, index, sh]
 published: true
 excerpt: MySQL 联合索引，索引覆盖，filesort 排序算法，及索引命中分析及其原理解释。
 ---

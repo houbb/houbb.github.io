@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  MySQL Index Merge 索引合并
+title:  数据库索引-09-MySQL Index Merge 索引合并
 date:  2018-09-03 08:57:39 +0800
 categories: [SQL]
 tags: [sql, mysql, index, sh]

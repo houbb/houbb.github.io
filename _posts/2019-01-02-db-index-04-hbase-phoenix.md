@@ -9,73 +9,71 @@ published: true
 
 # Phoenix
 
-[Phoenix](http://phoenix.apache.org/) is OLTP and operational analytics for Apache Hadoop.
+[Phoenix](http://phoenix.apache.org/) 是针对Apache Hadoop的OLTP和运营分析。
 
 # Overview
 
-Apache Phoenix enables OLTP and operational analytics in Hadoop for low latency applications by combining the best of both worlds:
+Apache Phoenix通过结合两个方面的优势，为低延迟应用程序启用Hadoop中的OLTP和操作分析：
 
-1. the power of standard SQL and JDBC APIs with full ACID transaction capabilities and
+1. 具有完整ACID事务功能的标准SQL和JDBC API的功能以及
 
-2. the flexibility of late-bound, schema-on-read capabilities from the NoSQL world by leveraging HBase as its backing store
+2. 通过利用HBase作为其后备存储，从NoSQL世界获得最新绑定的读取模式功能的灵活性
 
-Apache Phoenix is fully integrated with other Hadoop products such as Spark, Hive, Pig, Flume, and Map Reduce.
+Apache Phoenix与其他Hadoop产品（例如Spark，Hive，Pig，Flume和Map Reduce）完全集成。
 
 # Mission（愿景）
 
-Become the trusted data platform for OLTP and operational analytics for Hadoop through well-defined, industry standard APIs.
-
+通过定义良好的行业标准API，成为OLTP和Hadoop运营分析的受信任数据平台。
 
 # SQL Support
 
-Apache Phoenix takes your SQL query, compiles it into a series of HBase scans, and orchestrates the running of those scans to produce regular JDBC result sets. 
+Apache Phoenix接受您的SQL查询，将其编译为一系列HBase扫描，并组织这些扫描的运行以产生常规的JDBC结果集。
 
-Direct use of the HBase API, along with coprocessors and custom filters, results in performance on the order of milliseconds for small queries, or seconds for tens of millions of rows.
+直接使用HBase API以及协处理器和自定义过滤器，对于小型查询而言，其性能约为毫秒，而对于数千万行而言，其性能约为秒。
 
-To see a complete list of what is supported, go to our language reference. 
+要查看支持的内容的完整列表，请访问我们的语言参考。
 
-All standard SQL query constructs are supported, including SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY, etc. 
+支持所有标准SQL查询构造，包括SELECT，FROM，WHERE，GROUP BY，HAVING，ORDER BY等。
 
-It also supports a full set of DML commands as well as table creation and versioned incremental alterations through our DDL commands.
+它还通过我们的DDL命令支持全套DML命令以及表创建和版本化的增量更改。
 
 ## 暂时不支持的
 
-Here’s a list of what is currently not supported:
+以下是当前不支持的列表：
 
-Relational operators. Intersect, Minus.
+关系运算符。 减号相交。
 
-Miscellaneous built-in functions. These are easy to add - read this blog for step by step instructions.
-
+其他内置功能。 这些很容易添加-阅读此博客以获取逐步说明。
 
 # Connection
 
-Use JDBC to get a connection to an HBase cluster like this:
+使用JDBC来获得与HBase群集的连接，如下所示：
 
 ```java
 Connection conn = DriverManager.getConnection("jdbc:phoenix:server1,server2:3333",props);
 ```
 
-where props are optional properties which may include Phoenix and HBase configuration properties, and the connection string which is composed of:
+其中props是可选属性，可能包括Phoenix和HBase配置属性，以及由以下内容组成的连接字符串：
 
 ```
 jdbc:phoenix [ :<zookeeper quorum> [ :<port number> [ :<root node> [ :<principal> [ :<keytab file> ] ] ] ] ] 
 ```
 
-For any omitted（遗漏） parts, the relevant property value, hbase.zookeeper.quorum, hbase.zookeeper.property.clientPort, and zookeeper.znode.parent will be used from hbase-site.xml configuration file. 
+对于任何遗漏的部分，将从hbase-site.xml配置文件中使用相关的属性值hbase.zookeeper.quorum，hbase.zookeeper.property.clientPort和zookeeper.znode.parent。
 
-The optional principal and keytab file may be used to connect to a Kerberos secured cluster. 
+可选的principal和keytab文件可用于连接到受Kerberos保护的群集。
 
-If only principal is specified, then this defines the user name with each distinct user having their own dedicated HBase connection (HConnection). 
+如果仅指定了主体，则这将定义用户名，每个不同的用户都具有自己的专用HBase连接（HConnection）。
 
-This provides a means of having multiple, different connections each with different configuration properties on the same JVM.
+这提供了一种方法，可以在同一JVM上具有多个不同的连接，每个连接具有不同的配置属性。
 
-For example, the following connection string might be used for longer running queries, where the longRunningProps specifies Phoenix and HBase configuration properties with longer timeouts:
+例如，以下连接字符串可用于运行时间较长的查询，其中longRunningProps指定具有较长超时的Phoenix和HBase配置属性：
 
 ```java
 Connection conn = DriverManager.getConnection(“jdbc:phoenix:my_server:longRunning”, longRunningProps);
 ```
 
-while the following connection string might be used for shorter running queries:
+而以下连接字符串可用于运行时间较短的查询：
 
 ```java
 Connection conn = DriverManager.getConnection("jdbc:phoenix:my_server:shortRunning", shortRunningProps);
@@ -83,94 +81,93 @@ Connection conn = DriverManager.getConnection("jdbc:phoenix:my_server:shortRunni
 
 # Transactions
 
-To enable full ACID transactions, a beta feature available in the 4.7.0 release, set the `phoenix.transactions.enabled` property to true. 
+要启用完整的ACID交易（4.7.0版本中提供的beta功能），请将phoenix.transactions.enabled属性设置为true。
 
-In this case, you’ll also need to run the transaction manager that’s included in the distribution. 
+在这种情况下，您还需要运行分发中包含的交易管理器。
 
-Once enabled, a table may optionally be declared as transactional (see here for directions). 
+启用后，可以选择将表声明为事务表（有关说明，请参见此处）。
 
-Commits over transactional tables will have an all-or-none behavior - either all data will be committed (including any updates to secondary indexes) or none of it will (and an exception will be thrown). 
+事务表上的提交将具有“全有或全无”的行为-将提交所有数据（包括对二级索引的任何更新），或者不提交任何数据（并且将引发异常）。
 
 ## 事务的支持粒度
 
-Both cross table and cross row transactions are supported. 
+跨表和跨行事务均受支持。
 
-In addition, transactional tables will see their own uncommitted data when querying.（脏读） 
+另外，事务表在查询时将看到自己的未提交数据。（脏读）
 
-An optimistic concurrency model is used to detect row level conflicts with first commit wins semantics. 
+乐观并发模型用于检测具有首次提交获胜语义的行级冲突。
 
-The later commit would produce an exception indicating that a conflict was detected. 
+以后的提交将产生异常，指示检测到冲突。
 
-A transaction is started implicitly when a transactional table is referenced in a statement, at which point you will not see updates from other connections until either a commit or rollback occurs.
+在语句中引用事务表时，隐式启动事务，这时您将看不到来自其他连接的更新，直到发生提交或回滚为止。
 
-Non transactional tables have no guarantees above and beyond the HBase guarantee of row level atomicity (see here). 
+非事务表没有超出行级原子性的HBase保证的保证（请参见此处）。
 
-In addition, non transactional tables will not see their updates until after a commit has occurred. 
+此外，非事务表将在提交之后才看到其更新。
 
-The DML commands of Apache Phoenix, UPSERT VALUES, UPSERT SELECT and DELETE, batch pending changes to HBase tables on the client side. 
+Apache Phoenix的DML命令，UPSERT VALUES，UPSERT SELECT和DELETE，在客户端批量批处理对HBase表的更改。
 
-The changes are sent to the server when the transaction is committed and discarded when the transaction is rolled back. 
+提交事务后，这些更改将发送到服务器，而回滚该事务时，则将其丢弃。
 
-If auto commit is turned on for a connection, then Phoenix will, whenever possible, execute the entire DML command through a coprocessor on the server-side, so performance will improve.
+如果为连接打开了自动提交功能，那么Phoenix将在可能的情况下通过服务器端的协处理器执行整个DML命令，从而提高性能。
 
 ## Timestamps
 
-Most commonly, an application will let HBase manage timestamps. 
+最常见的是，应用程序将允许HBase管理时间戳。
 
-However, under some circumstances（情况）, an application needs to control the timestamps itself. 
+但是，在某些情况下，应用程序需要自行控制时间戳。
 
-In this case, the CurrentSCN property may be specified at connection time to control timestamps for any DDL, DML, or query. 
+在这种情况下，可以在连接时指定CurrentSCN属性，以控制任何DDL，DML或查询的时间戳。
 
-This capability may be used to run snapshot queries against prior row values, since Phoenix uses the value of this connection property as the max timestamp of scans.
+此功能可用于针对先前的行值运行快照查询，因为Phoenix将此连接属性的值用作扫描的最大时间戳。
 
-Timestamps may not be controlled for transactional tables. 
+事务表的时间戳可能不受控制。
 
-Instead, the transaction manager assigns timestamps which become the HBase cell timestamps after a commit. 
+相反，事务管理器分配时间戳，这些时间戳将在提交后成为HBase单元的时间戳。
 
-Timestamps still correspond（对应） to wall clock time, however they are multiplied by 1,000,000 to ensure enough granularity（粒度） for uniqueness across the cluster.
-
+时间戳仍与壁钟时间相对应，但是它们乘以1,000,000，以确保足够的粒度（粒度）以在整个群集中保持唯一性。
 
 # Schema
 
-Apache Phoenix supports table creation and versioned incremental alterations through DDL commands. 
+Apache Phoenix支持通过DDL命令创建表和版本化增量更改。
 
-The table metadata is stored in an HBase table and versioned, such that snapshot queries over prior versions will automatically use the correct schema.
+表元数据存储在HBase表中并进行了版本控制，因此对先前版本的快照查询将自动使用正确的架构。
 
-A Phoenix table is created through the CREATE TABLE command and can either be:
+Phoenix表是通过CREATE TABLE命令创建的，可以是：
 
-1. built from scratch, in which case the HBase table and column families will be created automatically.
+1.从头开始构建，在这种情况下，将自动创建HBase表和列系列。
 
-2. mapped to an existing HBase table, by creating either a read-write TABLE or a read-only VIEW, with the caveat（警告） that the binary representation of the row key and key values must match that of the Phoenix data types (see Data Types reference for the detail on the binary representation).
+2.通过创建读写表或只读VIEW映射到现有的HBase表，并提出警告（警告），行键和键值的二进制表示必须与Phoenix数据类型的二进制表示匹配（有关二进制表示形式的详细信息，请参见数据类型参考。
 
-For a read-write TABLE, column families will be created automatically if they don’t already exist. 
+对于可读写的TABLE，如果不存在列族，则会自动创建它们。
 
-An empty key value will be added to the first column family of each existing row to minimize the size of the projection for queries.
+空键值将添加到每个现有行的第一列族中，以最小化查询的投影大小。
 
-For a read-only VIEW, all column families must already exist. The only change made to the HBase table will be the addition of the Phoenix coprocessors（协处理器） used for query processing. 
+对于只读VIEW，所有列族必须已经存在。对HBase表的唯一更改将是增加用于查询处理的Phoenix协处理器（协处理器）。
 
-The primary use case for a VIEW is to transfer existing data into a Phoenix table, since data modification are not allowed on a VIEW and query performance will likely be less than as with a TABLE.
+VIEW的主要用例是将现有数据传输到Phoenix表中，因为不允许在VIEW上进行数据修改，并且查询性能可能会低于TABLE。
 
-All schema is versioned (with up to 1000 versions being kept). 
+所有模式均已版本化（最多保留1000个版本）。
 
-Snapshot queries over older data will pick up and use the correct schema based on the time at which you’ve connected (based on the CurrentSCN property).
+基于较旧数据的快照查询将根据您连接的时间（基于CurrentSCN属性）选择并使用正确的架构。
 
 ## Altering
 
-A Phoenix table may be altered through the ALTER TABLE command. 
+Phoenix表可以通过ALTER TABLE命令更改。
 
-When a SQL statement is run which references a table, Phoenix will by default check with the server to ensure it has the most up to date table metadata and statistics. 
+当运行引用表的SQL语句时，Phoenix默认情况下将与服务器核对以确保其具有最新的表元数据和统计信息。
 
-This RPC may not be necessary when you know in advance that the structure of a table may never change. 
+如果事先知道表的结构永远不会改变，则可能不需要此RPC。
 
-The UPDATE_CACHE_FREQUENCY property was added in Phoenix 4.7 to allow the user to declare how often the server will be checked for meta data updates (for example, the addition or removal of a table column or the updates of table statistics). 
+Phoenix 4.7中添加了UPDATE_CACHE_FREQUENCY属性，以允许用户声明检查服务器多久进行一次元数据更新（例如，添加或删除表列或更新表统计信息）。
 
-Possible values are ALWAYS (the default), NEVER, and a millisecond numeric value. 
+可能的值是ALWAYS（默认值），NEVER和毫秒值。
 
-An ALWAYS value will cause the client to check with the server each time a statement is executed that references a table (or once per commit for an UPSERT VALUES statement). 
+每次执行引用表的语句时（或对于UPSERT VALUES语句，每次提交一次），ALWAYS值将导致客户端与服务器进行检查。
 
-A millisecond value indicates how long the client will hold on to its cached version of the metadata before checking back with the server for updates.
+毫秒值表示客户端在与服务器核对更新之前将保留其元数据的缓存版本的时间。
 
-For example, the following DDL command would create table FOO and declare that a client should only check for updates to the table or its statistics every 15 minutes:
+例如，以下DDL命令将创建表FOO并声明客户端仅应每15分钟检查一次表或其统计信息的更新：
 
 ```sql
 CREATE TABLE FOO (k BIGINT PRIMARY KEY, v VARCHAR) UPDATE_CACHE_FREQUENCY=900000;
@@ -178,73 +175,73 @@ CREATE TABLE FOO (k BIGINT PRIMARY KEY, v VARCHAR) UPDATE_CACHE_FREQUENCY=900000
 
 ## Views
 
-Phoenix supports updatable views on top of tables with the unique feature leveraging the schemaless capabilities of HBase of being able to add columns to them. 
+Phoenix通过利用HBase的无模式功能（可以向其中添加列）来支持表顶部的可更新视图。
 
-All views all share the same underlying physical HBase table and may even be indexed independently. 
+所有视图都共享相同的基础物理HBase表，甚至可以独立地建立索引。
 
-For more read here.
+有关更多信息，请点击此处。
 
 ## Multi-tenancy（多租户技术）
 
-Built on top of view support, Phoenix also supports multi-tenancy. 
+Phoenix建立在视图支持之上，还支持多租户。
 
-Just as with views, a multi-tenant view may add columns which are defined solely for that user.
+与视图一样，多租户视图可能会添加专为该用户定义的列。
 
 ## Schema at Read-time
 
-Another schema-related feature allows columns to be defined dynamically at query time. 
+另一个与模式相关的功能允许在查询时动态定义列。
 
-This is useful in situations where you don’t know in advance all of the columns at create time.
+如果您在创建时不事先知道所有列，这很有用。
 
-You’ll find more details on this feature here.
+您可以在此处找到有关此功能的更多详细信息。
 
 # Mapping to an Existing HBase Table
 
-Apache Phoenix supports mapping to an existing HBase table through the CREATE TABLE and CREATE VIEW DDL statements. 
+Apache Phoenix支持通过CREATE TABLE和CREATE VIEW DDL语句映射到现有的HBase表。
 
-In both cases, the HBase metadata is left as-is, except for with CREATE TABLE the KEEP_DELETED_CELLS option is enabled to allow for flashback queries to work correctly. 
+在这两种情况下，HBase元数据都保持不变，除了使用CREATE TABLE之外，还启用了KEEP_DELETED_CELLS选项以允许闪回查询正常工作。
 
-For CREATE TABLE, any HBase metadata (table, column families) that doesn’t already exist will be created. 
+对于CREATE TABLE，将创建尚不存在的所有HBase元数据（表，列系列）。
 
-Note that the table and column family names are case sensitive, with Phoenix upper-casing all names. 
+请注意，表和列系列名称区分大小写，Phoenix的所有名称均使用大写字母。
 
-To make a name case sensitive in the DDL statement, surround it with double quotes as shown below:
+要使名称在DDL语句中区分大小写，请用双引号将其引起来，如下所示：
 
 ```sql
 CREATE VIEW “MyTable” (“a”.ID VARCHAR PRIMARY KEY)
 ```
 
-For CREATE TABLE, an empty key value will also be added for each row so that queries behave as expected (without requiring all columns to be projected during scans). 
+对于CREATE TABLE，还将为每行添加一个空键值，以使查询的行为符合预期（不需要在扫描过程中投影所有列）。
 
-For CREATE VIEW, this will not be done, nor will any HBase metadata be created. 
+对于CREATE VIEW，将不会执行此操作，也不会创建任何HBase元数据。
 
-Instead the existing HBase metadata must match the metadata specified in the DDL statement or a ERROR 505 (42000): Table is read only will be thrown.
+相反，现有的HBase元数据必须与DDL语句中指定的元数据匹配，否则将显示ERROR 505（42000）：表将被只读。
 
-The other caveat（警告） is that the way the bytes were serialized in HBase must match the way the bytes are expected to be serialized by Phoenix. 
+另一个警告（警告）是，在HBase中对字节进行序列化的方式必须与Phoenix期望对字节进行序列化的方式相匹配。
 
-For VARCHAR,CHAR, and UNSIGNED_* types, Phoenix uses the HBase Bytes utility methods to perform serialization. 
+对于VARCHAR，CHAR和UNSIGNED_ *类型，Phoenix使用HBase Bytes实用程序方法执行序列化。
 
-The CHAR type expects only single-byte characters and the UNSIGNED types expect values greater than or equal to zero.
+CHAR类型期望仅使用单字节字符，而UNSIGNED类型期望使用大于或等于零的值。
 
-Our composite row keys are formed by simply concatenating the values together, with a zero byte character used as a separator after a variable length type. 
+我们的复合行键是通过简单地将值连接在一起而形成的，在可变长度类型之后，零字节字符用作分隔符。
 
-For more information on our type system, see the Data Type.
+有关我们的类型系统的更多信息，请参见数据类型。
 
 # Salting
 
-A table could also be declared as salted to prevent HBase region hot spotting. 
+还可以将表声明为已加盐以防止HBase区域热点。
 
-You just need to declare how many salt buckets your table has, and Phoenix will transparently manage the salting for you. 
+您只需要声明桌子上有多少个盐桶，Phoenix就会为您透明地管理盐桶。
 
-You’ll find more detail on this feature here, along with a nice comparison on write throughput between salted and unsalted tables here.
+您可以在此处找到有关此功能的更多详细信息，并在此处对盐析表和未盐析表之间的写入吞吐量进行很好的比较。
 
 # APIs
 
-The catalog of tables, their columns, primary keys, and types may be retrieved via the java.sql metadata interfaces: DatabaseMetaData, ParameterMetaData, and ResultSetMetaData. 
+表的目录，它们的列，主键和类型的目录可通过java.sql元数据接口检索：DatabaseMetaData，ParameterMetaData和ResultSetMetaData。
 
-For retrieving schemas, tables, and columns through the DatabaseMetaData interface, the schema pattern, table pattern, and column pattern are specified as in a LIKE expression (i.e. % and _ are wildcards escaped through the character). 
+为了通过DatabaseMetaData接口检索模式，表和列，请像在LIKE表达式中一样指定模式，表模式和列模式（即％和_是通过字符转义的通配符）。
 
-The table catalog argument in the metadata APIs is used to filter based on the tenant ID for multi-tenant tables.
+元数据API中的表目录参数用于基于多租户表的租户ID进行过滤。
 
 # 拓展阅读
 
