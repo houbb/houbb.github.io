@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Query Plan-12
+title: Mongo Query Plan-12  Mongo 查询计划
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, explain, mongo, sh]
 published: true
-excerpt: Mongo 查询计划
 ---
 
 # 查询计划

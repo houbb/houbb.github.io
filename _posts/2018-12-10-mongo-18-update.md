@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Update-18
+title: Mongo Update-18 Mongo 更新操作
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo 更新操作
 ---
 
 # Update

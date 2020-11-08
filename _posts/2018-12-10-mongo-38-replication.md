@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Replication-38
+title: Mongo Replication-38 Mongo Replication 主从复制
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, TODO, sh]
 published: true
-excerpt: Mongo Replication 主从复制
 ---
 
 # Replication

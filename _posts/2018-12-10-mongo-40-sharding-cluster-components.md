@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo 分片组件-40
+title: Mongo 分片组件-40 Mongo 分片组件
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo 分片组件
 ---
 
 # 组件

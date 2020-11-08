@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Manage Index-10
-date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+title: Mongo Manage Index-10 Mongo 管理索引
+date: 2018-12-10 11:35:23 +0800 
+categories: [Database]
 tags: [sql, nosql, index, mongo, sh]
 published: true
-excerpt: Mongo 管理索引
 ---
 
 # Manage Index

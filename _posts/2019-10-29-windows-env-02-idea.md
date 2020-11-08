@@ -3,7 +3,7 @@ layout: post
 title: 从零开始的 windows 开发环境搭建-02-idea
 date:  2019-9-26 22:35:36 +0800
 categories: [Windows]
-tags: [windows, index, sf]
+tags: [windows, tool, sf]
 published: true
 ---
 

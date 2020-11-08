@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Aggregation Pipieline-31
+title: Mongo Aggregation Pipieline-31 Mongo 聚合函数管道篇
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, index, mongo, TODO, sh]
 published: true
-excerpt: Mongo 聚合函数管道篇
 ---
 
 # aggregation

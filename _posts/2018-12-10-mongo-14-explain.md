@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Explain-14
+title: Mongo Explain-14 Mongo Explain 执行计划
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, explain, mongo, sh]
 published: true
-excerpt: Mongo Explain 执行计划
 ---
 
 # 基础知识

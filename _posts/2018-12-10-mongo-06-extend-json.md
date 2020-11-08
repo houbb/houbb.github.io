@@ -2,10 +2,9 @@
 layout: post
 title: Mongo extend json-06
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo extend json-06
 ---
 
 # mongo extend json

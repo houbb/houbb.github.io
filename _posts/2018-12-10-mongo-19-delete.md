@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Delete-19
+title: Mongo Delete-19 Mongo 数据删除
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo 数据删除
 ---
 
 # Delete

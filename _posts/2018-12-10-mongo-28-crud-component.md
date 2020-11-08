@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo CRUD Component-28
+title: Mongo CRUD Component-28 Mongo CRUD 组件
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo CRUD 组件
 ---
 
 # Mongo CRUD Component

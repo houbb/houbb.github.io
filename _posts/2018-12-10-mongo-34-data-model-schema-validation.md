@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Data Model Schema Validation-34
+title: Mongo Data Model Schema Validation-34 Mongo 数据模型 Schema Validation
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo 数据模型 Schema Validation
 ---
 
 # Schema Validation

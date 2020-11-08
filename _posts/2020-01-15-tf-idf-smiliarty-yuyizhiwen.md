@@ -3,7 +3,7 @@ layout: post
 title: 相似文章算法之语义指纹-文本内容去重
 date:  2020-1-9 10:09:32 +0800
 categories: [NLP]
-tags: [nlp, reverse-index, index, math, sh]
+tags: [nlp, reverse-index, sh]
 published: true
 ---
 

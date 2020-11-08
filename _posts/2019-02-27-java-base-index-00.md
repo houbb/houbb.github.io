@@ -3,7 +3,7 @@ layout: post
 title: java base-00-基础知识
 date:  2019-2-27 09:48:47 +0800
 categories: [Java]
-tags: [java, java-base, index, sh]
+tags: [java, java-base, overview, sh]
 published: true
 ---
 

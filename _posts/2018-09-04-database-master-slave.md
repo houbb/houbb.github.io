@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Database Master Slave
+title:  Database Master Slave mysql 数据库集群。主从复制，主从同步，读写分离。
 date:  2018-09-04 08:05:56 +0800
 categories: [Design]
 tags: [database, sql, master-slave, design, sh]
 published: true
-excerpt: mysql 数据库集群。主从复制，主从同步，读写分离。
 ---
 
 # 数据库集群架构

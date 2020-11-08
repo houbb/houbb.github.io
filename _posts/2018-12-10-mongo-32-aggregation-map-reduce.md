@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Aggregation Map-Reduce-32
+title: Mongo Aggregation Map-Reduce-32 Mongo 聚合 Map-Reduce
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, TODO, sh]
 published: true
-excerpt: Mongo 聚合 Map-Reduce
 ---
 
 # Map-Reduce

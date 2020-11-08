@@ -2,8 +2,8 @@
 layout: post
 title: Mongo Java Driver-00-java 访问 mongo
 date: 2018-12-11 11:35:23 +0800
-categories: [sql]
-tags: [sql, nosql, mongo, sh]
+categories: [Database]
+tags: [sql, nosql, mongo, java, sh]
 published: true
 ---
 
