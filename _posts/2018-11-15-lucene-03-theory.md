@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Lucene-03-索引原理
+title: Lucene-03-lucene 索引原理
 date:  2018-11-15 08:38:35 +0800
 categories: [Search]
 tags: [apache, index, sh]
 published: true
 ---
 
-# Lucene倒排索引原理
+# Lucene 倒排索引原理
 
 Lucerne使用的是倒排文件索引结构。
 

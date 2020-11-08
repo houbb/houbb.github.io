@@ -59,9 +59,9 @@ published: true
 
 [倒排索引原理与实现](http://houbb.github.io/2020/01/09/reverse-index)
 
-[数据库索引-02-secondary index 二级索引 ](http://houbb.github.io/2019/01/02/db-index-02-secondary-index)
+[数据库索引-02-secondary index 二级索引](http://houbb.github.io/2019/01/02/db-index-02-secondary-index)
 
-[数据库索引-03-cluster index 聚集索引 ](http://houbb.github.io/2019/01/02/db-index-03-cluster-index)
+[数据库索引-03-cluster index 聚集索引](http://houbb.github.io/2019/01/02/db-index-03-cluster-index)
 
 [数据库索引-04-Apache Phoenix](http://houbb.github.io/2019/01/02/db-index-04-hbase-phoenix)
 
