@@ -11,7 +11,7 @@ published: true
 
 ![LinkedBlockingQueue](https://images.gitee.com/uploads/images/2020/1107/133519_07c2e461_508704.png)
 
-- LinkedBlockingDeque 是什么？
+- LinkedBlockingQueue 是什么？
 
 - 优缺点？
 

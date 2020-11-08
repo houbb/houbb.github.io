@@ -4,7 +4,7 @@ title:  JCIP-16-双端队列之 LinkedBlockingDeque
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [java, concurrency, lock, data-struct, sh]
-published: false
+published: true
 ---
 
 # 问题
@@ -41,6 +41,77 @@ published: false
 
 前面分析足够多的Queue实现后，LinkedBlockingDeque的原理和实现就不值得一提了，无非是在独占锁下对一个链表的普通操作。
 
+## 使用案例
+
+我们还是来看一个生产者消费者的例子。
+
+### 生产者
+
+```java
+private static class Producer implements Runnable{
+    private BlockingDeque<Integer> queue;
+    public Producer(BlockingDeque<Integer> queue) {
+        this.queue = queue;
+    }
+    @Override
+    public void run() {
+        while(true) {
+            try {
+                Integer num = ThreadLocalRandom.current().nextInt(100);
+                queue.put(num);
+                System.out.println(String.format("%s producer a num %d",Thread.currentThread().getName(),num));
+                Thread.sleep(1000);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+### 消费者
+
+```java
+private static class Consumer implements Runnable{
+    private BlockingDeque<Integer> queue;
+    public Consumer(BlockingDeque<Integer> queue) {
+        this.queue = queue;
+    }
+    @Override
+    public void run() {
+        while(true) {
+            try {
+                System.out.println(String.format("%s consume a num %d",Thread.currentThread().getName(),queue.take()));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+### 测试代码
+
+```java
+public static void main(String[] args) {
+    BlockingDeque<Integer> queue = new LinkedBlockingDeque<>(100);
+    new Thread(new Producer(queue),"Producer").start();
+    new Thread(new Consumer(queue),"Consumer").start();
+}
+```
+
+测试日志：
+
+```
+Producer producer a num 62
+Consumer consume a num 62
+Producer producer a num 19
+Consumer consume a num 19
+Producer producer a num 26
+Consumer consume a num 26
+Consumer consume a num 39
+Producer producer a num 39
+```
 
 
 # 序列化
@@ -80,10 +151,14 @@ private void readObject(java.io.ObjectInputStream s)
 }
 ```
 
-描述的是LinkedBlockingDeque序列化/反序列化的过程。序列化时将真正的元素写入输出流，最后还写入了一个null。读取的时候将所有对象列表读出来，如果读取到一个null就表示结束。这就是为什么写入的时候写入一个null的原因，因为没有将count写入流，所以就靠null来表示结束，省一个整数空间。
+描述的是LinkedBlockingDeque序列化/反序列化的过程。序列化时将真正的元素写入输出流，最后还写入了一个null。
+
+读取的时候将所有对象列表读出来，如果读取到一个null就表示结束。
+
+这就是为什么写入的时候写入一个null的原因，因为没有将count写入流，所以就靠null来表示结束，省一个整数空间。
 
 
-# 源码
+# 源码解析
 
 ## 接口
 
@@ -307,6 +382,9 @@ private final Condition notFull = lock.newCondition();
         if (e == null) throw new NullPointerException();
         Node<E> node = new Node<E>(e);
         long nanos = unit.toNanos(timeout);
+
+        // 有没有想过为什么不是直接使用 this.lock.lockInterruptibly?
+        // 在默认的 HotSpot 中，局部变量是存储在局部线程存储区中的，在这里将共享区中的变量复制到局部线程存储区中是为了加速变量的访问速度。 
         final ReentrantLock lock = this.lock;
         lock.lockInterruptibly();
         try {
@@ -618,14 +696,17 @@ private final Condition notFull = lock.newCondition();
 
 使用 Condition 保证阻塞性。
 
-
-# 个人启发
+# 小结
 
 1. 使用 ReentrantLock 保证线程安全性。可以说掌握这个就掌握了大部分的同步容器。
 
 2. 使用 Condition 保证阻塞性，掌握这个就掌握了大部分的阻塞队列容器。
 
 3. 所有的容器都有优缺点。比如双向队列，就有对应的并发容器。我们要学习原理，化为自己所用。
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位**极客**的点赞收藏转发，是老马持续写作的最大动力！
 
 # 参考资料
 
@@ -637,4 +718,3 @@ https://blog.csdn.net/qq_38293564/article/details/80592429
 
 * any list
 {:toc}
-
