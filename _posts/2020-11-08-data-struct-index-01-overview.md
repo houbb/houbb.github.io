@@ -33,6 +33,8 @@ published: true
 
 [B Tree](http://houbb.github.io/2018/09/12/b-tree)
 
+[B+ Tree]()
+
 [Red Black Tree-红黑树](http://houbb.github.io/2018/09/12/data-struct-red-black-tree)
 
 [Slim 战胜 Btree 索引](http://houbb.github.io/2018/09/06/index-slimtrie)
@@ -42,6 +44,8 @@ published: true
 [java 敏感词之 DFA 算法(Tire Tree 算法)详解](http://houbb.github.io/2020/01/07/sensitive-word-dfa)
 
 > [sensitive-word 工具](https://github.com/houbb/sensitive-word)
+
+mongodb 为什么使用 B Tree?
 
 ## list
 
@@ -61,9 +65,21 @@ published: true
 
 [数据库索引-05-倒排索引](http://houbb.github.io/2019/01/02/db-index-05-inverted-index)
 
-[数据库索引-06-索引运行不好的场景](http://houbb.github.io/2019/01/02/db-index-06-index-not-work-well)
+[数据库索引-06-索引效果不好的场景](http://houbb.github.io/2019/01/02/db-index-06-index-not-work-well)
 
-## Luence 
+[数据库索引-07-联合索引](http://houbb.github.io/2019/01/02/db-index-07-combine-index)
+
+[数据库索引-08-MySQL Index Tips](http://houbb.github.io/2019/01/02/db-index-08-mysql-index-tips)
+
+[数据库索引-09-MySQL Index Merge 索引合并](http://houbb.github.io/2019/01/02/db-index-09-mysql-index-merge)
+
+## Lucene
+
+[Lucene-01-Lucene 入门教程](http://houbb.github.io/2018/11/15/lucene-01-overview)
+
+[Lucene-02-lucene 基础知识](http://houbb.github.io/2018/11/15/lucene-02-base)
+
+[Lucene-03-lucene 索引原理](http://houbb.github.io/2018/11/15/lucene-03-theory)
 
 # slor
 
@@ -71,6 +87,9 @@ published: true
 
 ## ES
 
+[Elasticsearch-01-快速入门](http://houbb.github.io/2016/10/16/elasticsearch-01-overview-01)
+
+[Elasticsearch-02-核心概念介绍](http://houbb.github.io/2018/11/15/elasticsearch-02-intro-02)
 
 ## 理论
 
@@ -80,16 +99,11 @@ published: true
 
 [搜索引擎-03-搜索引擎原理](http://houbb.github.io/2017/02/24/search-engine-03-theory-03)
 
-
-
-
 # 拓展工具
 
 排序
 
 查找
-
-
 
 # 小结
 

@@ -9,14 +9,11 @@ published: true
 
 # Elasticsearch
 
-Search & Analyze Data in Real Time.
+实时搜索和分析数据。
 
-Elasticsearch is a distributed, open source search and analytics engine, designed for horizontal scalability, reliability, and easy management.
-
-> [Elasticsearch](https://www.elastic.co/products/elasticsearch)
+[Elasticsearch](https://www.elastic.co/products/elasticsearch) 是一个分布式的开源搜索和分析引擎，旨在实现水平可伸缩性，可靠性和易于管理。
 
 > [User Guide](https://www.elastic.co/guide/index.html)
-
 
 # Install in Mac
 

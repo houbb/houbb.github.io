@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 数据库索引-00-index
+title: 数据库索引-01-index
 date: 2019-1-2 10:17:00 +0800
 categories: [SQL]
-tags: [sql, index, sh]
+tags: [sql, index, overview, sh]
 published: true
 ---
 

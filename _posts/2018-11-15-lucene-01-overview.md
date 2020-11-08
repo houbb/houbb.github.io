@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Lucene-01-Lucene 入门教程
+title: Lucene-01-lucene 入门教程
 date:  2018-11-15 08:38:35 +0800
 categories: [Search]
 tags: [index, search, sh]

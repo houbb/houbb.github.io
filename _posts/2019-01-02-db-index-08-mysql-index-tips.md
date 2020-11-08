@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  数据库索引-08-MySQL Index Tips
+title: 数据库索引-08-MySQL Index Tips
 date:  2019-1-2 10:17:00 +0800
 categories: [SQL]
 tags: [sql, mysql, best-practice, index, sh]
