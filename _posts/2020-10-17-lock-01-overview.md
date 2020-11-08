@@ -127,7 +127,7 @@ published: true
 
 【阻塞队列】
 
-[已发布-阻塞队列（6）-SynchronousQueue 同步队列源码详解](https://houbb.github.io/2020/10/17/lock-09-SynchronousQueue-source-code)
+[已发布-阻塞队列（8）-SynchronousQueue 同步队列源码详解](https://houbb.github.io/2020/10/17/lock-09-SynchronousQueue-source-code)
 
 [阻塞队列（1）java 7 种阻塞队列 BlockingQueue 介绍](https://houbb.github.io/2019/01/18/jcip-09-blocking-queue)
 
