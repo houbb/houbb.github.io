@@ -35,6 +35,8 @@ published: true
 
 [B+ Tree]()
 
+mongodb 为什么使用 B Tree?
+
 [Red Black Tree-红黑树](http://houbb.github.io/2018/09/12/data-struct-red-black-tree)
 
 [Slim 战胜 Btree 索引](http://houbb.github.io/2018/09/06/index-slimtrie)
@@ -44,8 +46,6 @@ published: true
 [java 敏感词之 DFA 算法(Tire Tree 算法)详解](http://houbb.github.io/2020/01/07/sensitive-word-dfa)
 
 > [sensitive-word 工具](https://github.com/houbb/sensitive-word)
-
-mongodb 为什么使用 B Tree?
 
 ## list
 
