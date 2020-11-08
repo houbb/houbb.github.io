@@ -17,6 +17,10 @@ published: true
 
 [Hash 完美 hash](http://houbb.github.io/2018/05/30/hash-perfect)
 
+[常见 hash 算法](http://houbb.github.io/2018/05/30/hash-impl)
+
+> [hash 开源工具](https://github.com/houbb/hash.git)
+
 [consistent hash algorithm-一致性哈希算法 java 实现](http://houbb.github.io/2020/06/19/load-balance-03-consistent-hash-in-java)
 
 [Bloom Filter-布隆过滤器](http://houbb.github.io/2018/12/05/bloom-filter)
@@ -38,6 +42,23 @@ published: true
 ## list
 
 [skiplist-跳表](http://houbb.github.io/2019/02/13/datastruct-skiplist)
+
+## 数据库索引知识
+
+
+
+# Luence 研究
+
+
+# ES
+
+
+
+# 自己实现一个搜索引擎
+
+
+
+
 
 # 小结
 
