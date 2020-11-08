@@ -9,9 +9,11 @@ published: flase
 
 # LinkedTransferQueue 
 
+![LinkedTransferQueue](https://p1.pstatp.com/origin/pgc-image/3104b5c494dc4b2880442bd02a72f023)
+
 ## 是什么
 
-基于链接节点的无限制{@link TransferQueue}。
+基于链接节点的无限制 TransferQueue。
 
 此队列针对任何给定的生产者对元素FIFO（先进先出）进行排序。
 
@@ -106,7 +108,9 @@ Thread-4: consumer 【Thread-0: your lucky number 70】
 
 Transfer 的接口是 jdk1.7 才引入的。
 
-下面是一些算法笔记，不会出现在 doc 文档中。是作者设计和实现这个类的一些想法，可以帮助我们更好的理解源码，不感兴趣可以跳过。
+下面是一些算法笔记，不会出现在 doc 文档中。是作者设计和实现这个类的一些想法，可以帮助我们更好的理解源码.
+
+友情提示：内容较多，可以直接跳过，到源码解析部分。本节内容较难，可以先收藏，后品味。
 
 ## 具有松弛的双队列概述（Overview of Dual Queues with Slack）
 

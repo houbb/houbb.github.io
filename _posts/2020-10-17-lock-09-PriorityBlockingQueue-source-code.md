@@ -9,9 +9,11 @@ published: flase
 
 # PriorityBlockingQueue 
 
+![PriorityBlockingQueue](https://p1.pstatp.com/origin/pgc-image/0fca8edfb8954b8ab292cf7d44d7d2b3)
+
 ## 简介
 
-一个无界BlockingQue，它使用与类PriorityQueue相同的排序规则，并提供阻塞检索操作。
+一个无界BlockingQueue，它使用与类PriorityQueue相同的排序规则，并提供阻塞检索操作。
 
 尽管此队列在逻辑上是不受限制的，但是尝试添加可能由于资源耗尽 OutOfMemoryError而失败。
 
@@ -749,7 +751,7 @@ private E dequeue() {
 
 阅读完整个源码，感觉就是 jdk 的设计确实有很多过人之处，特别是扩容的设计，令我叹服。
 
-**优秀的人设计实现源码，而我阅读源码还嫌麻烦吃力。活该做一个码农。**
+**优秀的人设计实现源码，而我阅读源码还嫌麻烦吃力。要学的东西还很多！**
 
 希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
 
