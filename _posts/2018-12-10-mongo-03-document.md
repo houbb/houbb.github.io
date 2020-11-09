@@ -2,7 +2,7 @@
 layout: post
 title: Mongo Document-03
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
 excerpt: Mongo-02-Document 

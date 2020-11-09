@@ -2,7 +2,7 @@
 layout: post
 title: Mongo 54-mongo data migrate 数据迁移
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, data-migrate, sh]
 published: true
 ---

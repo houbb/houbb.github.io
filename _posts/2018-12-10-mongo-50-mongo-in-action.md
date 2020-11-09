@@ -2,10 +2,9 @@
 layout: post
 title: Mongo 分片平衡器-50-优化实战
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo 分片平衡器
 ---
 
 # 初始化

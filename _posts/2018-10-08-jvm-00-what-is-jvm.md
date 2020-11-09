@@ -3,7 +3,7 @@ layout: post
 title: JVM-00-what is jvm
 date:  2018-10-08 07:19:52 +0800
 categories: [Java]
-tags: [sql, java, index, sf]
+tags: [sql, java, ovewview, sf]
 published: true
 ---
 

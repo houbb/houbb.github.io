@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Retryable Writes-23
+title: Mongo Retryable Writes-23 Mongo 可重试写入
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo 可重试写入
 ---
 
 # Retryable Writes

@@ -807,6 +807,10 @@ private final Object arenaExchange(Object item, boolean timed, long ns) {
 
 # 小结
 
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位**极客**的点赞收藏转发，是老马持续写作的最大动力！
+
 # 参考资料
 
 [Java8使用@sun.misc.Contended避免伪共享](https://www.jianshu.com/p/c3c108c3dcfd)

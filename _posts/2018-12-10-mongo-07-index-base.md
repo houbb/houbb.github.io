@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Index-07
+title: Mongo Index-07 Mongo 索引
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, index, mongo, sh]
 published: true
-excerpt: Mongo 索引
 ---
 
 # Mongo Index

@@ -2,7 +2,7 @@
 layout: post
 title: Mongo 51-mongo expire mongo 过期索引 TTL Index
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, index, sh]
 published: true
 ---

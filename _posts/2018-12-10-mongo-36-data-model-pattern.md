@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Data Model Pattern-36
+title: Mongo Data Model Pattern-36 Mongo 数据模型案例和模式
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, TODO, sh]
 published: true
-excerpt: Mongo 数据模型案例和模式
 ---
 
 # 数据模型案例和模式

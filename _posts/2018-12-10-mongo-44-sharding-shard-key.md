@@ -2,10 +2,9 @@
 layout: post
 title: Mongo 分片 shard key-44
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, TODO, sh]
 published: true
-excerpt: Mongo 分片 分片 shard key
 ---
 
 # Shard Keys

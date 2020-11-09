@@ -3,7 +3,7 @@ layout: post
 title: 如何为 java 设计一款高性能的拼音转换工具 pinyin4j
 date:  2020-1-9 10:09:32 +0800
 categories: [Search]
-tags: [nlp, index, math, sh]
+tags: [nlp, java, pinyin, sh]
 published: true
 ---
 

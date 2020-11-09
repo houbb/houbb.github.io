@@ -3,7 +3,7 @@ layout: post
 title: pinyin4j 之中文拼音的基础知识
 date:  2020-1-9 10:09:32 +0800
 categories: [Search]
-tags: [nlp, index, math, sh]
+tags: [nlp, pinyin, sh]
 published: true
 ---
 

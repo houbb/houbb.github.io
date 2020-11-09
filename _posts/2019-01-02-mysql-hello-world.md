@@ -1,12 +1,11 @@
 ---
 layout: post
-title: MySQL
+title: MySQL 入门使用
 date: 2016-10-17 22:24:53 +0800
-categories: [SQL]
+categories: [Database]
 tags: [mysql, sql]
 published: true
 ---
-
 
 # MySQL
 

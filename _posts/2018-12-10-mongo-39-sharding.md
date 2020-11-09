@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Sharding-39
+title: Mongo Sharding-39 Mongo Sharding 分片
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo Sharding 分片
 ---
 
 # Mongo Sharding

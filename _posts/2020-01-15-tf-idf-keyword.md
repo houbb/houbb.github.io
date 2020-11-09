@@ -3,7 +3,7 @@ layout: post
 title: TF-IDF 自动提取关键词
 date:  2020-1-9 10:09:32 +0800
 categories: [Search]
-tags: [search, reverse-index, index, math, sh]
+tags: [search, reverse-index, nlp, sh]
 published: true
 ---
 

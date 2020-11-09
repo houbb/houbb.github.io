@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Text Search-24
+title: Mongo Text Search-24 Mongo 文本索引查询
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, index, mongo, sh]
 published: true
-excerpt: Mongo 文本索引查询
 ---
 
 # 概览

@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Conver Query-29
+title: Mongo Conver Query-29 Mongo 覆盖查询
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, index, mongo, sh]
 published: true
-excerpt: Mongo 覆盖查询
 ---
 
 # 覆盖查询

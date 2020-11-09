@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Bulk Write-22
+title: Mongo Bulk Write-22 Mongo 批量写操作
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo 批量写操作
 ---
 
 # 概述

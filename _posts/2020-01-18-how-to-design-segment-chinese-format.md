@@ -3,7 +3,7 @@ layout: post
 title: 如何解决分词的繁简体问题？
 date:  2020-1-9 10:09:32 +0800
 categories: [Search]
-tags: [nlp, index, math, sh]
+tags: [nlp, math, sh]
 published: true
 ---
 

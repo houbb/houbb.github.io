@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo build index-08
+title: Mongo build index-08 Mongo 构建索引
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, index, mongo, sh]
 published: true
-excerpt: Mongo 构建索引
 ---
 
 # 索引在填充集合上生成操作

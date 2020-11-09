@@ -3,7 +3,7 @@ layout: post
 title: Elasticsearch-02-核心概念介绍
 date:  2018-11-15 08:38:35 +0800
 categories: [Search]
-tags: [apache, search, sh]
+tags: [apache, search, index, sh]
 published: true
 ---
 

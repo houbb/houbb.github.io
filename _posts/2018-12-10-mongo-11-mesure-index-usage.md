@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Measure Index Usage-11
+title: Mongo Measure Index Usage-11 Mongo 测量 index 的使用
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, index, mongo, sh]
 published: true
-excerpt: Mongo 测量 index 的使用
 ---
 
 # Measure Index Usage

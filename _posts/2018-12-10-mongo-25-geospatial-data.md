@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo geospatial data-25
+title: Mongo geospatial data-25  Mongo 地理数据查询
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, sh]
 published: true
-excerpt: Mongo 地理数据查询
 ---
 
 # 地理空间数据

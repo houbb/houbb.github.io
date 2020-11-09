@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mongo Optimize-15
+title: Mongo Optimize-15 Mongo Optimize 性能优化
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, explain, mongo, sh]
 published: true
-excerpt: Mongo Optimize 性能优化
 ---
 
 # 性能优化

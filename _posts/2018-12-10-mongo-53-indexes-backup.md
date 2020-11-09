@@ -2,7 +2,7 @@
 layout: post
 title: Mongo 53-mongo indexes 索引如何备份
 date: 2018-12-10 11:35:23 +0800
-categories: [sql]
+categories: [Database]
 tags: [sql, nosql, mongo, index, sh]
 published: true
 ---
