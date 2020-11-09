@@ -127,21 +127,21 @@ published: true
 
 【阻塞队列】
 
-[已发布-阻塞队列（6）-SynchronousQueue 同步队列源码详解](https://houbb.github.io/2020/10/17/lock-09-SynchronousQueue-source-code)
-
 [阻塞队列（1）java 7 种阻塞队列 BlockingQueue 介绍](https://houbb.github.io/2019/01/18/jcip-09-blocking-queue)
 
-[阻塞队列（2）-ArrayBlockingQueue 源码详解](https://houbb.github.io/2020/10/17/lock-09-ArrayBlockingQueue-source-code)
+[阻塞队列（2）ArrayBlockingQueue 源码详解](https://houbb.github.io/2020/10/17/lock-09-ArrayBlockingQueue-source-code)
 
-[阻塞队列（3）-LinkedBlockingQueue 源码详解](https://houbb.github.io/2020/10/17/lock-09-LinkedBlockingQueue-source-code)
+[阻塞队列（3）LinkedBlockingQueue 源码详解](https://houbb.github.io/2020/10/17/lock-09-LinkedBlockingQueue-source-code)
 
-[阻塞队列（4）-LinkedBlockingDeque 源码详解](https://houbb.github.io/2019/01/18/jcip-16-deque-LinkedBlockingDeque)
+[阻塞队列（4）LinkedBlockingDeque 源码详解](https://houbb.github.io/2019/01/18/jcip-16-deque-LinkedBlockingDeque)
 
-[阻塞队列（5）-DelayQueue 延迟队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-DelayQueue-source-code)
+[阻塞队列（5）DelayQueue 延迟队列使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-DelayQueue-source-code)
 
-[阻塞队列（6）-PriorityBlockingQueue 阻塞优先级队列源码详解](https://houbb.github.io/2020/10/17/lock-09-PriorityBlockingQueue-source-code)
+[阻塞队列（6）PriorityBlockingQueue 阻塞优先级队列源码详解](https://houbb.github.io/2020/10/17/lock-09-PriorityBlockingQueue-source-code)
 
-[阻塞队列（7）-LinkedTransferQueue 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-LinkedTransferQueue-source-code)
+[阻塞队列（7）LinkedTransferQueue 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-LinkedTransferQueue-source-code)
+
+[阻塞队列（8）SynchronousQueue 同步队列源码详解](https://houbb.github.io/2020/10/17/lock-09-SynchronousQueue-source-code)
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -155,17 +155,15 @@ published: true
 
 [java 异步查询转同步多种实现方式：循环等待，CountDownLatch，Spring EventListener，超时处理和空循环性能优化](http://houbb.github.io/2019/01/18/jcip-41-async-sync)
 
-[CountDownLatch 源码详解](http://houbb.github.io/2020/10/17/lock-09-CountDownLatch-source-code)
+[闭锁 CountDownLatch 使用入门及源码详解](http://houbb.github.io/2020/10/17/lock-09-CountDownLatch-source-code)
 
 [Semaphore 信号量源码深度解析](http://houbb.github.io/2020/10/17/lock-09-Semaphore-source-code)
 
 [CyclicBarrier 源码详解](http://houbb.github.io/2020/10/17/lock-09-CyclicBarrier-source-code)
 
-【较难】
+[Phaser 源码详解](https://houbb.github.io/2020/10/17/lock-12-tool-phaser)
 
-Phaser 源码详解
-
-Exchanger 源码详解
+[Exchanger 源码详解](https://houbb.github.io/2020/10/17/lock-12-tool-exchanger)
 
 ## 底层原理
 
