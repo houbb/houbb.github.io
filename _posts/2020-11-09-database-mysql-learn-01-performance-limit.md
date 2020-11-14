@@ -1,7 +1,7 @@
 ---
 layout: post
 title: mysql learn-01-mysql limit 的分页性能很差问题及其解决方案
-date:  2020-4-19 11:43:55 +0800
+date:  2020-10-17 16:15:55 +0800
 categories: [Database]
 tags: [data, mysql, learn-note, sh]
 published: true
