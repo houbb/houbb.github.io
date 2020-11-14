@@ -3,7 +3,7 @@ layout: post
 title:  mysql（6）lock mysql 锁
 date:  2020-10-17 16:15:55 +0800
 categories: [Database]
-tags: [database, mysql, index, sf]
+tags: [database, mysql, lock, sf]
 published: true
 ---
 
