@@ -14,7 +14,7 @@ published: true
 
 【Exchange sorts】
 
-冒泡排序
+[冒泡排序]()
 
 Quicksort
 
@@ -38,8 +38,9 @@ Merge sort
 
 【Distribution sorts】
 
-Bucket sortBurstsortCounting sort
+Bucket sort
 
+Counting sort
 
 
 ## 查找
