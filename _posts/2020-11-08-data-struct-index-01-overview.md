@@ -14,9 +14,9 @@ published: true
 
 【Exchange sorts】
 
-[冒泡排序]()
+[冒泡排序 BubbleSort]()
 
-Quicksort
+[快速排序 Quicksort]()
 
 【Selection sorts】
 
