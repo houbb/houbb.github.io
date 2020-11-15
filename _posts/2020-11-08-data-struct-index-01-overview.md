@@ -7,6 +7,45 @@ tags: [index, overview, data-struct, sf]
 published: true
 ---
 
+
+# 基础知识
+
+## 排序
+
+【Exchange sorts】
+
+冒泡排序
+
+Quicksort
+
+【Selection sorts】
+
+Selection sort
+
+Heapsort
+
+【Insertion sorts】
+
+Insertion sort
+
+Shellsort
+
+Tree sort
+
+【Merge sorts】
+
+Merge sort
+
+【Distribution sorts】
+
+Bucket sortBurstsortCounting sort
+
+
+
+## 查找
+
+二分法
+
 # 索引数据结构
 
 索引可以大幅度的提升查询速度。
