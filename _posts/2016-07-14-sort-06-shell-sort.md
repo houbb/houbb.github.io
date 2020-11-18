@@ -25,9 +25,13 @@ published: true
 
 这样可以让一个元素可以一次性地朝最终位置前进一大步。然后算法再取越来越小的步长进行排序，算法的最后一步就是普通的插入排序，但是到了这步，需排序的数据几乎是已排好的了（此时插入排序较快）。
 
-假设有一个很小的数据在一个已按升序排好序的数组的末端。如果用复杂度为O(n^2)的排序（冒泡排序或插入排序），可能会进行n次的比较和交换才能将该数据移至正确位置。而希尔排序会用较大的步长移动数据，所以小数据只需进行少数比较和交换即可到正确位置。
+假设有一个很小的数据在一个已按升序排好序的数组的末端。如果用复杂度为O(n^2)的排序（冒泡排序或插入排序），可能会进行n次的比较和交换才能将该数据移至正确位置。
 
-一个更好理解的希尔排序实现：将数组列在一个表中并对列排序（用插入排序）。重复这过程，不过每次用更长的列来进行。最后整个表就只有一列了。将数组转换至表是为了更好地理解这算法，算法本身仅仅对原数组进行排序（通过增加索引的步长，例如是用i += step_size而不是i++ ）。
+而希尔排序会**用较大的步长移动数据，所以小数据只需进行少数比较和交换即可到正确位置**。
+
+一个更好理解的希尔排序实现：将数组列在一个表中并对列排序（用插入排序）。重复这过程，不过每次用更长的列来进行。最后整个表就只有一列了。
+
+将数组转换至表是为了更好地理解这算法，算法本身仅仅对原数组进行排序（通过增加索引的步长，例如是用i += step_size而不是i++）。
 
 ## 例子
 
@@ -89,8 +93,93 @@ Donald Shell 最初建议步长选择为 n/2 并且对步长取半直到步长�
 
 # java 代码实现
 
+## 实现
 
+这里为了简单，我们步长直接选择列表长度的一半，并且依次折半。
 
+```java
+import com.github.houbb.log.integration.core.Log;
+import com.github.houbb.log.integration.core.LogFactory;
+import com.github.houbb.sort.core.util.InnerSortUtil;
+
+import java.util.List;
+
+/**
+ * 希尔排序
+ *
+ * @author binbin.hou
+ * @since 0.0.6
+ */
+public class ShellSort extends AbstractSort {
+
+    private static final Log log = LogFactory.getLog(ShellSort.class);
+
+    @Override
+    @SuppressWarnings("all")
+    protected void doSort(List<?> original) {
+        // 步长从大到小
+        for(int step = original.size()/2; step > 0; step /= 2) {
+            // 从第 step 个元素，逐个执行插入排序
+            for(int i = step; i < original.size(); i++) {
+                int j = i;
+
+                while ((j-step >= 0) && InnerSortUtil.lt(original, j, j-step)) {
+                    // 执行交换
+                    InnerSortUtil.swap(original, j, j-step);
+
+                    if(log.isDebugEnabled()) {
+                        log.debug("step: {}, j: {}, j-step: {}, list: {}",
+                                step, j, j-step, original);
+                    }
+
+                    // 更新步长
+                    j -= step;
+                }
+            }
+        }
+    }
+
+}
+```
+
+整体实现也不难，大家可以回顾下 [插入排序](https://houbb.github.io/2016/07/14/sort-05-insert-sort)
+
+这里为了便于大家理解，我们特意添加了日志。
+
+## 测试
+
+### 测试代码
+
+```java
+List<Integer> list = RandomUtil.randomList(10);
+System.out.println("开始排序：" + list);
+SortHelper.shell(list);
+System.out.println("完成排序：" + list);
+```
+
+### 测试日志
+
+```
+开始排序：[28, 2, 86, 40, 86, 1, 72, 95, 92, 68]
+
+step: 5, j: 5, j-step: 0, list: [1, 2, 86, 40, 86, 28, 72, 95, 92, 68]
+step: 5, j: 9, j-step: 4, list: [1, 2, 86, 40, 68, 28, 72, 95, 92, 86]
+
+step: 2, j: 4, j-step: 2, list: [1, 2, 68, 40, 86, 28, 72, 95, 92, 86]
+step: 2, j: 5, j-step: 3, list: [1, 2, 68, 28, 86, 40, 72, 95, 92, 86]
+step: 2, j: 6, j-step: 4, list: [1, 2, 68, 28, 72, 40, 86, 95, 92, 86]
+step: 2, j: 9, j-step: 7, list: [1, 2, 68, 28, 72, 40, 86, 86, 92, 95]
+
+step: 1, j: 3, j-step: 2, list: [1, 2, 28, 68, 72, 40, 86, 86, 92, 95]
+step: 1, j: 5, j-step: 4, list: [1, 2, 28, 68, 40, 72, 86, 86, 92, 95]
+step: 1, j: 4, j-step: 3, list: [1, 2, 28, 40, 68, 72, 86, 86, 92, 95]
+
+完成排序：[1, 2, 28, 40, 68, 72, 86, 86, 92, 95]
+```
+
+常言道，步子别迈太大，容易扯到淡。
+
+但是这里就是一个反其道而行之的方式，而且效果还不错。
 
 
 # 开源地址
@@ -118,6 +207,8 @@ ps: 个人理解一般树的数据结构，时间复杂度都是 logn 级别的�
 [希尔排序](https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F)
 
 [索引数据结构（1）概览篇](http://houbb.github.io/2020/10/17/data-struct-index-01-overview)
+
+[图解排序算法(二)之希尔排序](https://www.cnblogs.com/chengxiao/p/6104371.html)
 
 * any list
 {:toc}

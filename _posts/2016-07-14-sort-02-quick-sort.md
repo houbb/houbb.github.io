@@ -1,6 +1,6 @@
 ---
 layout: post
-title: sort-02-quick sort 快速排序算法详解
+title: sort-02-QuickSort 快速排序到底快在哪里？
 date:  2016-07-14 17:22:22 +0800
 categories: [Algorithm]
 tags: [sort, exchange-sorts]
@@ -30,8 +30,6 @@ Quicksort是一种**分而治之**的算法。它通过从数组中选择一个�
 快速排序的数学分析表明，平均而言，该算法采用O（n log n）比较来对n个项目进行排序。
 
 在最坏的情况下，它会进行O（n^2）比较，尽管这种行为很少见。
-
-![QuickSort](https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Quicksort-diagram.svg/200px-Quicksort-diagram.svg.png)
 
 # 算法流程
 
