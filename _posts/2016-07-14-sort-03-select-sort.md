@@ -1,6 +1,6 @@
 ---
 layout: post
-title: sort-03-select sort 选择排序算法详解
+title: sort-03-SelectSort 选择排序算法详解
 date:  2016-07-14 17:22:22 +0800
 categories: [Algorithm]
 tags: [sort, exchange-sorts]
@@ -20,7 +20,6 @@ published: true
 在所有的完全依靠交换去移动元素的排序方法中，选择排序属于非常好的一种。
 
 ![图片](https://upload.wikimedia.org/wikipedia/commons/9/94/Selection-Sort-Animation.gif)
-
 
 原地操作几乎是选择排序的唯一优点，当空间复杂度要求较高时，可以考虑选择排序；实际适用的场合非常罕见。
 
@@ -130,6 +129,13 @@ System.out.println("完成排序：" + list);
 完成排序：[6, 11, 50, 77, 79]
 ```
 
+# 复杂度与稳定性
+
+从代码中可以看出一共遍历了n + n-1 + n-2 + … + 2 + 1 = n * (n+1) / 2 = 0.5 * n ^ 2 + 0.5 * n，那么时间复杂度是 `O(N^2)`。
+
+所以性能还是比较差的，一般不建议使用。
+
+因为在无序部分最大元素和有序部分第一个元素相等的时候，可以将无序部分最大元素放在前面，所以选择排序是**稳定**的。
 
 # 开源地址
 
@@ -153,7 +159,7 @@ System.out.println("完成排序：" + list);
 
 # 参考资料
 
-[Bubble_sort](https://zh.wikipedia.org/wiki/%E9%80%89%E6%8B%A9%E6%8E%92%E5%BA%8F#Java)
+[选择排序算法、时间复杂度和稳定](https://blog.csdn.net/Leon_cx/article/details/81487429)
 
 * any list
 {:toc}

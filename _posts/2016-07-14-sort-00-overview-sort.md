@@ -18,7 +18,7 @@ published: true
 
 【Selection sorts】
 
-Selection sort
+[Selection sort](https://houbb.github.io/2016/07/14/sort-03-select-sort)
 
 Heapsort
 
