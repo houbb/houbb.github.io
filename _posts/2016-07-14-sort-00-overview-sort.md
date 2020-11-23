@@ -10,6 +10,8 @@ published: true
 
 # 排序
 
+![排序算法](https://p9-tt-ipv6.byteimg.com/origin/pgc-image/407dc3c36843431389ed08ec9b6f1b59)
+
 【Exchange sorts】
 
 冒泡排序 BubbleSort
