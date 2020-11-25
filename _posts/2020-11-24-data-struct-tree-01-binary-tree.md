@@ -152,7 +152,7 @@ void preorder(TreeNode *root)
     if (root == NULL) return;
     printf("%d ",root->val); // visit
     preorder(root->left);
-    preorder(root)
+    preorder(root->right)
 }
 // post vist root order travel, (1):D->B->E->F->C->A
 void postorder(TreeNode *root)
@@ -1001,6 +1001,10 @@ https://www.javatpoint.com/tree
 [二叉树 - Binary Tree](https://www.jianshu.com/p/2bb52415d07e)
 
 [二叉查找树](https://www.cnblogs.com/gaochundong/p/binary_search_tree.html)
+
+[【Java】 二叉树的遍历（递归与循环+层序遍历）](https://www.cnblogs.com/yongh/p/9629940.html)
+
+[二叉树的图形显示](https://blog.csdn.net/copica/article/details/39291141)
 
 * any list
 {:toc}
