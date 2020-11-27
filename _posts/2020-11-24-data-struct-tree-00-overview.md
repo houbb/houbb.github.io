@@ -9,9 +9,11 @@ published: true
 
 # 目录
 
-Tree
+排序
 
-二叉树
+二分查找法
+
+Tree
 
 二叉查找树
 
