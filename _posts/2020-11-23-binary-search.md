@@ -7,6 +7,9 @@ tags: [algorithm, search]
 published: true
 ---
 
+
+![思维导图](https://p6-tt.byteimg.com/origin/pgc-image/e49f32c71346427b91ea575b9788a78a?from=pc)
+
 # 顺序查找
 
 如果让你在一堆书架上找到自己想要的书，你会怎么找呢？
@@ -29,7 +32,9 @@ published: true
 
 所以，顺序查找的时间复杂度为O(n)。
 
-## 代码实现
+![复杂度](https://p6-tt.byteimg.com/origin/pgc-image/34b64ee3b41b4eb79c2de98e6d7e7904?from=pc)
+
+## java 代码实现
 
 以 java  代码为例：
 
@@ -51,7 +56,7 @@ int foreachSearch(int arr[], int target, int arrLength) {
 }
 ```
 
-## java 版本实现
+## java 改进版本
 
 我们这个实现版本主要是为了弥补大部分网上实现的不足，很多实现就是一个 int 类型，适用范围不够广泛。
 
@@ -126,7 +131,7 @@ public abstract class AbstractSearch<T> implements ISearch<T> {
 
 ### 遍历实现
 
-实现和前面 c++ 版本类似。
+实现和前面基础版本类似。
 
 ```java
 package com.github.houbb.search.core;
@@ -189,6 +194,8 @@ public class ForeachSearch<T> extends AbstractSearch<T> {
 | 最优时间复杂度	| O(1) |
 | 平均时间复杂度	| O(log(n)) | 
 | 空间复杂度	| 迭代: O(1); 递归: O(log(n)) |
+
+![二分查找](https://p3-tt.byteimg.com/origin/pgc-image/94ace8605a6549f085ecb85b455ea0a8?from=pc)
 
 ## 步骤
 
@@ -354,6 +361,8 @@ Assert.assertEquals(3, SearchHelper.binary(list, "4"));
 希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
 
 各位**极客**的点赞收藏转发，是老马持续写作的最大动力！
+
+下一节我们将讲解一下二叉查询树，感兴趣的小伙伴可以关注一波，精彩内容，不容错过。
 
 # 参考资料
 

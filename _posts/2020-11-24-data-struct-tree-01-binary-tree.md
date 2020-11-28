@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  二叉树 Binary Tree 
+title:  Tree-01-二叉树 Binary Tree 
 date:  2020-10-17 16:15:55 +0800
 categories: [Data-Struct]
 tags: [data-struct, tree, sf]
