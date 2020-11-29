@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Tree-02-AVL 自平衡二叉查找树
+title:  Tree-03-AVL 自平衡二叉查找树
 date:  2020-10-17 16:15:55 +0800
 categories: [Data-Struct]
 tags: [data-struct, tree, sf]
