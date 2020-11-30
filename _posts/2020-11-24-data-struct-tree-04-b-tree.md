@@ -14,17 +14,20 @@ published: true
 
 # 参考资料
 
-[红黑树(一)之 原理和算法详细介绍](https://www.cnblogs.com/skywang12345/p/3245399.html)
+https://zh.wikipedia.org/wiki/B%E6%A0%91
 
-[红黑树(五)之 Java的实现](https://www.cnblogs.com/skywang12345/p/3624343.html)
+[索引原理-BTree讲解](https://www.jianshu.com/p/6b90a185a795)
 
-[红黑树](https://zh.wikipedia.org/wiki/%E7%BA%A2%E9%BB%91%E6%A0%91)
+[B树Java代码实现以及测试](https://www.cnblogs.com/jing99/p/11736003.html)
 
-[JAVA学习-红黑树详解](https://www.jianshu.com/p/4cd37000f4e3)
+[B-Tree/BTree 的Java实现](https://www.jianshu.com/p/d2d1181aa93d)
 
-[红黑树深入剖析及Java实现](https://tech.meituan.com/redblack_tree.html)
+[B树详细图解与Java完整实现](https://blog.csdn.net/jimo_lonely/article/details/82716142)
 
-[那些年，面试被虐过的红黑树](https://my.oschina.net/wangzhenchao/blog/1785932)
+[B树基本知识及其Java实现](http://blog.sina.com.cn/s/blog_3fe961ae0101i86y.html)
+
+https://zhuanlan.zhihu.com/p/24309634
+
 
 * any list
 {:toc}
