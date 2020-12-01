@@ -97,7 +97,13 @@ B* 树
 
 ## 字典树（Trie-Tree）
 
-后缀树，基数树，三叉查找树，快速前缀树 
+后缀树，
+
+基数树，
+
+三叉查找树，
+
+快速前缀树 
 
 ## 空间数据分割树（Spatial Data Partitioning Tree）
 
