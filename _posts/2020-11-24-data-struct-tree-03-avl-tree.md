@@ -1,11 +1,13 @@
 ---
 layout: post
-title:  Tree-03-AVL 自平衡二叉查找树
+title:  Tree-03-图解 AVL 自平衡二叉查找树及 java 实现
 date:  2020-10-17 16:15:55 +0800
 categories: [Data-Struct]
 tags: [data-struct, tree, sf]
 published: true
 ---
+
+![思维导图](https://p6-tt-ipv6.byteimg.com/origin/pgc-image/cca555274e614d54a34ea237b477d3cb)
 
 # AVL树
 
