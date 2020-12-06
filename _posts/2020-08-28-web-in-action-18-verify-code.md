@@ -164,76 +164,15 @@ CAPTCHA的目的是区分计算机和人类的一种程序算法，是一种区�
 
 当点击验证码的时候，再动态设置src属性即可（原访问地址+随机时间戳，防止同一路径浏览器不另作访问的问题）
 
-- 核心代码
-
-```html
-/*验证码输入框*/
-<input class="verifyInput"  name="verifyInput" placeholder="请输入验证码">   
- 
-/*验证码图片*/
-<img class="verifyCode" onclick="changeCode()" src="getVerifyCode">
- 
-//src的getVerifyCode是后台访问地址；项目为SSM框架。
-
-/*点击刷新验证码*/
-function changeCode(){
-    var src = " getVerifyCode?"+new Date().getTime(); //加时间戳，防止浏览器利用缓存
-    $('.verifyCode').attr("src",src);                  //jQuery写法
-}
-```
-
 ## 后端
 
 后台思路很简单，利用BufferedImage类创建一张图片，再用Graphics2D对图片进行绘制(生成随机字符，添加噪点，干扰线)即可。
 
 注意生成的验证码字符串要放到session中，用于接下来登陆的验证码验证(当然也是后台)。
 
-```java
-/* 获取验证码图片*/
+## 验证码核心实现
 
-@RequestMapping("/getVerifyCode ")
-
-public void getVerificationCode(HttpServletResponse response,HttpServletRequest request) {
- try {
- 
-                            int width=200;
- 
-                            int height=69;
- 
-         BufferedImage verifyImg=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
- 
-//生成对应宽高的初始图片
- 
-                            String randomText = VerifyCode.drawRandomText(width,height,verifyImg);
- 
-//单独的一个类方法，出于代码复用考虑，进行了封装。
- 
-//功能是生成验证码字符并加上噪点，干扰线，返回值为验证码字符                   
- 
-request.getSession().setAttribute("verifyCode", randomText);
- 
-                   response.setContentType("image/png");//必须设置响应内容类型为图片，否则前台不识别
- 
-                 OutputStream os = response.getOutputStream(); //获取文件输出流    
- 
-                 ImageIO.write(verifyImg,"png",os);//输出图片流
- 
-                 os.flush();
- 
-                 os.close();//关闭流
- 
-                   } catch (IOException e) {
- 
-                            this.logger.error(e.getMessage());
- 
-                            e.printStackTrace();
- 
-                   }
- 
-         }
-```
-
-### 图片生成实现
+验证码生成的核心是实现代码如下：
 
 ```java
 import java.awt.BasicStroke;
@@ -250,7 +189,7 @@ import javax.imageio.ImageIO;
 public class VerifyCode {
     private int w = 70;
     private int h = 35;
-     private Random r = new Random();
+    private Random r = new Random();
      // {"宋体", "华文楷体", "黑体", "华文新魏", "华文隶书", "微软雅黑", "楷体_GB2312"}
     private String[] fontNames  = {"宋体", "华文楷体", "黑体", "华文新魏", "华文隶书", "微软雅黑", "楷体_GB2312"};
     // 可选字符
@@ -258,7 +197,7 @@ public class VerifyCode {
     // 背景色
     private Color bgColor  = new Color(255, 255, 255);
     // 验证码上的文本
-    private String text ;
+    private String text;
 
     // 生成随机的颜色
     private Color randomColor () {
@@ -339,7 +278,191 @@ public class VerifyCode {
 }
 ```
 
+# 开源工具
 
+上面的实现基本可以满足我们的需求，不过缺点也是有的，不够灵活，不便于后期拓展。
+
+为了方便后期拓展，我们对上述代码封装为一个工具。
+
+## 开源地址
+
+> [https://github.com/houbb/captcha](https://github.com/houbb/captcha)
+
+## maven 引入
+
+```xml
+<dependency>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>captcha-core</artifactId>
+    <version>0.0.2</version>
+</dependency>
+```
+
+## 输出验证码到文件
+
+```java
+final String path = "1.png";
+
+String text = CaptchaHelper.toFile(path);
+System.out.println(text);
+```
+
+效果如下：
+
+![ck9k](https://images.gitee.com/uploads/images/2020/1206/124755_d2e4d3aa_508704.png "ck9k.png")
+
+## 灵活指定配置
+
+### 配置项
+
+| 配置 | 说明 | 默认值 |
+|:---|:---|:---|
+| range | 验证码的文本范围 | 23456789abcdefghjkmnopqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ |
+| num | 验证码的文本个数 | 4 |
+| width | 图片的宽度 | 100 |
+| height | 图片的高度 | 40 |
+| degree | 图片旋转度数 | 30 |
+| lineNum | 图片干扰线数量 | 5 |
+| noiseNum | 图片噪点数量 | 30 |
+
+### 配置案例
+
+```java
+final String path = "config.png";
+
+ICaptchaResult captchaResult = CaptchaBs.newInstance()
+         .range("1234567890")
+         .num(6)
+         .degree(20)
+         .noiseNum(50)
+         .lineNum(6)
+         .width(200)
+         .height(60)
+         .execute();
+String text = CaptchaHelper.toStream(captchaResult, new FileOutputStream(path));
+System.out.println(text);
+```
+
+效果如下图：
+
+![613929](https://images.gitee.com/uploads/images/2020/1206/124908_602f0a35_508704.png "613929.png")
+
+# 实战演练
+
+我们利用上面的开源工具，进行一波实战。
+
+## 后端
+
+可以看到获取验证码的地方只有 2 行代码，非常的简单。
+
+```java
+import com.github.houbb.captcha.core.constant.CaptchaConst;
+import com.github.houbb.captcha.core.util.CaptchaHelper;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * 验证码相关
+ * @author 老马啸西风
+ * @since 0.0.1
+ */
+@RequestMapping("/captcha")
+@Controller
+public class CaptchaController {
+
+    /**
+     * 测试页面
+     * @return 测试
+     */
+    @RequestMapping("/")
+    public String index() {
+        return "captcha/captcha";
+    }
+
+    /**
+     * 获取验证码
+     * @param req 请求
+     * @param resp 响应
+     * @since 0.0.1
+     */
+    @RequestMapping("/get")
+    public void get(HttpServletRequest req, HttpServletResponse resp) {
+        try {
+            // 通过ImageIO将图片输出
+            String text = CaptchaHelper.toStream(resp.getOutputStream());
+
+            // code 放入 session，用于对比
+            req.getSession().setAttribute(CaptchaConst.CAPTCHA, text);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 校验验证码
+     * @param req 请求
+     * @param resp 响应
+     * @since 0.0.1
+     */
+    @RequestMapping("/verify")
+    @ResponseBody
+    public String verify(HttpServletRequest req, HttpServletResponse resp) {
+        // 获取存放在session中的验证码
+        String code = (String) req.getSession().getAttribute(CaptchaConst.CAPTCHA);
+        // 获取页面提交的验证码
+        String inputCode = req.getParameter("captcha");
+        // 验证码不区分大小写
+        if(code.equalsIgnoreCase(inputCode)) {
+            return "验证通过";
+        } else {
+            return "验证失败";
+        }
+    }
+
+}
+```
+
+## 前端
+
+这里为了简单，我们使用原生的  js 实现。
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>注册页面</title>
+    <!-- 引入样式 -->
+</head>
+<body>
+
+<form action="/captcha/verify" method="post">
+    验证码：<input type="text" name="captcha" placeholder="请输入验证码">
+    <input type="submit" value="确定">
+</form>
+<img alt="验证码" id="captcha" src="/captcha/get" >
+<a href="#" onclick="javascript:flushCode();">点击刷新</a>
+
+<script>
+    // 为了简单，此处使用原生的 js 进行演示。
+    function flushCode() {
+        // 每次刷新的时候获取当前时间，防止浏览器缓存刷新失败
+        var time = new Date();
+        document.getElementById("captcha").src = "/captcha/get?time=" + time;
+    }
+</script>
+</body>
+</html>
+```
+
+效果如下图：
+
+![输入图片说明](https://images.gitee.com/uploads/images/2020/1206/125441_3fc2971f_508704.png "验证码.PNG")
 
 
 # 参考资料
