@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 和你一起从零实现一个数据库差异对比工具
+title: java 如何从零实现一个数据库差异对比工具？
 date:  2020-10-17 16:15:55 +0800
 categories: [Tool]
 tags: [tool, database, java, sh]
