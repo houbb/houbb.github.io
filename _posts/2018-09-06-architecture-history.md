@@ -7,6 +7,8 @@ tags: [soa, architecture, sh]
 published: true
 ---
 
+![技术架构的演进之路](https://images.gitee.com/uploads/images/2020/1212/133943_1d700819_508704.png "技术架构的演进之路.png")
+
 # 整体发展概览
 
 服务架构一直处于演变之中，为了适合自己的业务，不断的去调整。

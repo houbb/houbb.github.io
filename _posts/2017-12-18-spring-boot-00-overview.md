@@ -9,10 +9,9 @@ published: true
 
 # Spring Boot
 
-Takes an opinionated view of building production-ready Spring applications.
-Spring Boot favors convention over configuration and is designed to get you up and running as quickly as possible.
+对构建可用于生产的Spring应用程序持坚定态度。
 
-> [Spring Boot](http://projects.spring.io/spring-boot/)
+[Spring Boot](http://projects.spring.io/spring-boot/) 倾向于使用约定而非配置，它旨在使您尽快启动并运行。
 
 ## 是什么
 
