@@ -9,15 +9,9 @@ published: true
 
 # Spring Boot
 
-[Spring Boot](https://projects.spring.io/spring-boot/) is designed to get you up and running as quickly as possible, 
-with minimal upfront configuration of Spring. 
-Spring Boot takes an opinionated view of building production ready applications.
+[Spring Boot](https://projects.spring.io/spring-boot/)旨在让您尽快起步并开始运行，最少的Spring前期配置。
 
-这个一直被认为是 Spring Framework 的简易上手版本，也因为各种神奇的 BUG 而备受诟病。
-
-个人从 Spring 的官网首页及各种其他框架的支持，感觉官网更喜欢这个 Spring Boot。
-
-【构建一切】
+Spring Boot 对构建可用于生产的应用程序持坚定态度。
 
 # Hello World
 
@@ -134,12 +128,21 @@ public class SampleController {
 Hello World!
 ```
 
-## 小结
+# 小结
 
 和 spring mvc 相比，简单太多。确切的说，很多东西都被**默认配置**好了。
 
 而且我相信，这也不单单是简化版的 spring mvc 而已。
 
+本实战系列用于记录 springboot 的实际使用和学习笔记。
+
+拓展阅读：
+
+[面试官：知道 springboot 的启动原理吗？](https://www.toutiao.com/item/6905286288581100046/)
+
+希望本文对比有所帮助，如果喜欢，欢迎点赞转发收藏一波。
+
+我是老马，期待与你的下次相遇。
 
 * any list
 {:toc}
