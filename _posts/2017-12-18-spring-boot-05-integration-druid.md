@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Spring Boot-05-如何整合 Druid 数据源
+title:  Spring Boot-05-springboot整合Druid连接池实战笔记
 date:  2017-12-19 14:43:25 +0800
 categories: [Spring]
 tags: [spring, exception, spring, springboot]
@@ -9,7 +9,9 @@ published: true
 
 # 情景
 
-整合 druid 的两种方式。
+web 开发中连接数据库基本是必须的，阿里的 druid 是一款非常优秀的开源数据库连接池工具。
+
+本文将介绍一下如何使用 springboot 整合 druid 数据源。
 
 # 快速开始
 
@@ -70,7 +72,27 @@ published: true
 </project>
 ```
 
+## 基本配置
+
+这里使用了 `druid-spring-boot-starter` 引导类，所以最基本的配置只需要在 applicaiton.yml 文件中指定一下数据库连接信息就行了。
+
+以 mysql 为例：
+
+```yml
+spring:
+  datasource:
+    druid:
+      username: root
+      password: 123456
+      url: jdbc:mysql://localhost:3306/padmin?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+      driver-class-name: com.mysql.jdbc.Driver
+```
+
 ## DruidConfig.java
+
+当然 druid 还提供了其他更加强大的功能。
+
+比如数据源的各种监控，黑白名单，sql 注入拦截等等。
 
 ```java
 package com.github.houbb.spring.boot.learn;
@@ -163,8 +185,29 @@ public class Application {
 
 输入账户密码，就可以登录。
 
-页面做的还是不错的，后续值得学习一下这个页面是如何集成的。
+# 小结
 
+这里的 `druid-spring-boot-starter` 的原理，大家可以参考下 [实现你的自定义 springboot starter 实战](https://www.toutiao.com/i6905342655182684675/)。
+
+Druid 作为一款优秀的数据连接池开源工具，个人是非常喜欢的，平时工作和学习也一直在使用。
+
+当然，独木不成林。
+
+druid 和 mybatis 配合起来使用效果更好，下一节我们就介绍一下如何使用 springboot 整合 mybatis + druid，感兴趣的小伙伴不妨关注一波，不迷路~
+
+本实战系列用于记录 springboot 的实际使用和学习笔记。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
+
+## 拓展阅读
+
+[面试官：知道 springboot 的启动原理吗？](https://www.toutiao.com/i6905286288581100046/)
+
+[5 分钟入门 springboot 实战学习笔记](https://www.toutiao.com/i6905333348474896908/)
+
+[实现你的自定义 springboot starter 实战](https://www.toutiao.com/i6905342655182684675/)
 
 # 参考资料
 
