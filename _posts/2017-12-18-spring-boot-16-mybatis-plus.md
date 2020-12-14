@@ -7,6 +7,12 @@ tags: [spring, web, springboot]
 published: true
 ---
 
+# 序言
+
+springboot + mybatis-plus + druid 是如今非常好用一套组合方案，可以大大提升我们开发的效率。
+
+本文记录一下老马自己的实战使用笔记，希望给你的工作和学习提供一点帮助。
+
 # springboot 整合 mybatis-plus
 
 ## maven 依赖
@@ -249,11 +255,25 @@ public PaginationInterceptor paginationInterceptor(){
 
 # 小结
 
-myabtis-plus 个人使用的版本可能相对比较靠前，这种基于 ThreadLocal 的分页方式没有默认开启。
+myabtis-plus 个人使用的版本可能相对比较低，这种基于 ThreadLocal 的分页方式没有默认开启。
 
-有时候去网上查也很难查到类似的问题。
+有时候去网上查也很难查到类似的问题。因为不同的版本，问题可能完全不同，所以还是需要看源码。
 
-因为不同的版本，问题可能完全不同，所以还是需要看源码。
+本实战系列用于记录 springboot 的实际使用和学习笔记。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
+
+## 拓展阅读
+
+[面试官：知道 springboot 的启动原理吗？](https://www.toutiao.com/i6905286288581100046/)
+
+[5 分钟入门 springboot 实战学习笔记](https://www.toutiao.com/i6905333348474896908/)
+
+[实现你的自定义 springboot starter 实战](https://www.toutiao.com/i6905342655182684675/)
+
+[springboot 整合阿里 druid 数据库连接池实战](https://www.toutiao.com/i6905548418106819085/)
 
 # 参考资料
 

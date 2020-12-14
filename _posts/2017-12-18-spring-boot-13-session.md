@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Spring Boot-13-session 结合 redis 入门
+title:  Spring Boot-13-springboot 整合 redis 实现分布式 session 实战
 date:  2017-12-19 14:43:25 +0800
 categories: [Spring]
 tags: [spring, web, springboot]
@@ -262,6 +262,32 @@ public class SessionInterceptor implements HandlerInterceptor {
     }
 }
 ```
+
+# 小结
+
+session 是 web 登录中必备的功能，redis 存放 session 是分布式系统中比较成熟的方案。
+
+当然也并不是唯一的解决方案，使用 jwt 也可以达到类似的效果，不过二者各有优缺点，个人更加倾向于使用 redis 存储分布式 session。
+
+后续有机会打开一篇讲解下 jwt 如何实现分布式系统的登录验证。
+
+本实战系列用于记录 springboot 的实际使用和学习笔记。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
+
+## 拓展阅读
+
+[面试官：知道 springboot 的启动原理吗？](https://www.toutiao.com/i6905286288581100046/)
+
+[5 分钟入门 springboot 实战学习笔记](https://www.toutiao.com/i6905333348474896908/)
+
+[实现你的自定义 springboot starter 实战](https://www.toutiao.com/i6905342655182684675/)
+
+[springboot 整合阿里 druid 数据库连接池实战](https://www.toutiao.com/i6905548418106819085/)
+
+[springboot+mybatis+druid 整合实战](https://www.toutiao.com/i6905642830065156621/)
 
 # 参考资料
 
