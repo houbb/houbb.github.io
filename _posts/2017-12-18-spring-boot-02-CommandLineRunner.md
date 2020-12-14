@@ -17,7 +17,7 @@ published: true
 
 # CommandLineRunner
 
-SpringBoot提供的一种简单的实现方案就是添加一个model并实现CommandLineRunner接口，实现功能的代码放在实现的run方法中
+SpringBoot 提供的一种简单的实现方案就是添加一个model并实现CommandLineRunner接口，实现功能的代码放在实现的run方法中
 
 ## 接口
 
@@ -131,9 +131,21 @@ public class MyStartupRunner1 implements CommandLineRunner {
 }
 ```
 
-# 拓展阅读
+# 小结
 
-[quartz]()
+CommandLineRunner 这个特性非常的好用，老马也经常在工作中使用。
+
+用于在 springboot 启动时，初始化一些配置等操作，用起来非常方便。
+
+本实战系列用于记录 springboot 的实际使用和学习笔记。
+
+拓展阅读：
+
+面试官：知道 springboot 的启动原理吗？
+
+希望本文对比有所帮助，如果喜欢，欢迎点赞转发收藏一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 

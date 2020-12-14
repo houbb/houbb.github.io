@@ -7,7 +7,7 @@ tags: [spring, exception, spring, springboot]
 published: true
 ---
 
-#  starter 有什么用？
+# starter 有什么用？
 
 SpringBoot中的starter是一种非常重要的机制，能够抛弃以前繁杂的配置，将其统一集成进starter，应用者只需要在maven中引入starter依赖，SpringBoot就能自动扫描到要加载的信息并启动相应的默认配置。
 
@@ -42,7 +42,6 @@ SpringBoot提供了针对日常企业应用研发各种场景的spring-boot-star
 - [quartz-admin](https://github.com/houbb/quartz-admin)
 
 - [metadata](https://github.com/houbb/metadata)
-
 
 ## 命名规则
 
@@ -198,7 +197,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author binbin.hou
+ * @author 老马啸西风
  * @since 1.0.0
  */
 @Configuration
@@ -301,7 +300,7 @@ import org.springframework.core.env.Environment;
 
 /**
  * 启动项
- * @author binbin.hou
+ * @author 老马啸西风
  * @since 1.0.0
  */
 @SpringBootApplication
@@ -339,10 +338,21 @@ AutoLogProperties{enable='true', level='INFO'}
 
 说明已经获取到了配置，并且我们定义的自动日志注解也是生效的。
 
+# 小结
 
-# TODO
+springboot 的自定义 starter 功能非常的强大，让我们可以只引入一下 jar 包，就可以直接使用对应的功能，这就是是框架带来的便利性。
 
-auto-log 对于 spring 的依赖应该排除掉。
+本实战系列用于记录 springboot 的实际使用和学习笔记。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
+
+## 拓展阅读
+
+[面试官：知道 springboot 的启动原理吗？](https://www.toutiao.com/i6905286288581100046/)
+
+[5 分钟入门 springboot 实战学习笔记](https://www.toutiao.com/i6905333348474896908/)
 
 # 参考资料
 

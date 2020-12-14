@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Microservices
+title:  Microservices 微服务架构
 date:  2018-09-06 08:16:17 +0800
 categories: [Architecture]
 tags: [serverless, architecture, sh]
 published: true
-excerpt: 微服务架构。
 ---
 
 # 微服务
@@ -23,10 +22,6 @@ excerpt: 微服务架构。
 它还允许通过连续的重构来出现单个服务的体系结构。基于微服务的体系结构支持持续的交付和部署。
 
 ## 系统架构
-
-- 传统打车系统架构 
-
-![传统系统架构](http://dockone.io/uploads/article/20180306/d2219037732ef659006dad04ad0dd559.jpg)
 
 - 微服务架构图示
 
@@ -108,6 +103,23 @@ excerpt: 微服务架构。
 
 不过幸运的是，很多成熟的中间件，已经为我们解决了这些问题。
 
+# SOA vs 微服务
+
+![SOA vs 微服务](https://images.gitee.com/uploads/images/2020/1212/101955_42f91188_508704.png "soa.png")
+
+| SOA	                                       | 微服务架构 |
+|:---|:---|
+| 应用程序服务的可重用性的最大化	           |    专注于解耦 |
+| 系统性的改变需要修改整体	               |   系统性的改变是创建一个新的服务 |
+| DevOps和持续交付正在变得流行，但还不是主流 | 	  强烈关注DevOps和持续交付 |
+| 专注于业务功能重用	                       |  更重视“上下文边界”的概念 |
+| 通信使用企业服务总线ESB	                   |  对于通信而言，使用较少精细和简单的消息系统 |
+| 支持多种消息协议	                       |  使用轻量级协议，例如HTTP，REST或Thrift API |
+| 对部署到它的所有服务使用通用平台	       |    应用程序服务器不是真的被使用，通常使用云平台 |
+| 容器（如Docker）的使用不太受欢迎	       |   容器在微服务方面效果很好 |
+| SOA服务共享数据存储	                       |  每个微服务可以有一个独立的数据存储 |
+| 共同的治理和标准	                       |  轻松的治理，更加关注团队协作和选择自由 |
+
 # 第一代微服务框架
 
 [Spring Cloud](https://houbb.github.io/2018/09/06/spring-cloud)
@@ -141,6 +153,8 @@ https://microservices.io/patterns/microservices.html
 [SOA 架构和微服务架构](https://zhuanlan.zhihu.com/p/38878840)
 
 [一篇文章快速理解微服务架构](http://dockone.io/article/3687)
+
+[微服务架构 vs. SOA架构](https://blog.csdn.net/chszs/article/details/78515231)
 
 * any list
 {:toc}
