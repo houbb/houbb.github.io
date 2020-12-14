@@ -86,5 +86,11 @@ public class Application {
 }
 ```
 
+# 参考资料
+
+[基于idea的springcloud的helloworld项目搭建过程整理](https://blog.csdn.net/weixin_30727835/article/details/97653925)
+
+[SpringCloud入门使用](https://www.cnblogs.com/huangting/p/11884285.html)
+
 * any list
 {:toc}
