@@ -201,5 +201,100 @@ clientPort=2181
 ...
 ```
 
+# windows10 安装笔记
+
+## 下载
+
+从 [https://zookeeper.apache.org/releases.html](https://zookeeper.apache.org/releases.html) 选择你需要的版本。
+
+我下载的是 [https://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.6.2/apache-zookeeper-3.6.2-bin.tar.gz](https://mirror.bit.edu.cn/apache/zookeeper/zookeeper-3.6.2/apache-zookeeper-3.6.2-bin.tar.gz)
+
+这里有一个坑，一定要下载 bin.tar.gz 的，否则会报错找不到执行类。
+
+## 解压
+
+我把压缩文件直接解压到下面的路径：
+
+```
+D:\tool\zookeeper\apache-zookeeper-3.6.2-bin
+```
+
+## 配置
+
+到 D:\tool\zookeeper\apache-zookeeper-3.6.2-bin\conf 路径下，复制 `zoo_sample.cfg` 为 `zoo.cfg`，内容如下：
+
+```properties
+# The number of milliseconds of each tick  心跳间隔 毫秒每次
+tickTime=2000
+# The number of ticks that the initial 
+# synchronization phase can take
+initLimit=10
+# The number of ticks that can pass between 
+# sending a request and getting an acknowledgement
+syncLimit=5
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just 
+# example sakes.
+# 指定了日志和数据的路径
+dataDir=D:\\tool\\zookeeper\\data
+dataLogDir=D:\\tool\\zookeeper\\log
+
+# the port at which the clients will connect  客户端连接的端口
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the 
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+#autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to "0" to disable auto purge feature
+#autopurge.purgeInterval=1
+
+## Metrics Providers
+#
+# https://prometheus.io Metrics Exporter
+#metricsProvider.className=org.apache.zookeeper.metrics.prometheus.PrometheusMetricsProvider
+#metricsProvider.httpPort=7000
+#metricsProvider.exportJvmInfo=true
+```
+
+大部分配置保持原样即可，我们新增了数据和日志的路径，如下:
+
+```
+dataDir=D:\\tool\\zookeeper\\data
+dataLogDir=D:\\tool\\zookeeper\\log
+```
+
+## 启动
+
+到 D:\tool\zookeeper\apache-zookeeper-3.6.2-bin\bin 路径下，执行命令：
+
+```
+zkServer.cmd
+```
+
+## 查看
+
+```
+λ jps
+6736
+9360 QuorumPeerMain
+13012 Jps
+8828 RemoteMavenServer36
+```
+
+QuorumPeerMain 就是 zk 对应的类
+
+
+# 参考资料
+
+[zookeeper-3.5.5安装报错：找不到或无法加载主类 org.apache.zookeeper.server.quorum.QuorumPeerMain-新版本zookeeper易犯错误](https://blog.csdn.net/jiangxiulilinux/article/details/96433560)
+
 * any list
 {:toc}
