@@ -1,11 +1,10 @@
 ---
 layout: post
-title: SpringCloud Components
-date:  2018-11-12 08:38:35 +0800
+title:  Spring Cloud-03-核心组件介绍
+date:  2020-12-14 22:11:27 +0800
 categories: [Spring]
-tags: [spring, ex, sh]
+tags: [spring-cloud, micro service, sh]
 published: true
-excerpt: SpringCloud 组件简介
 ---
 
 # SpringCloud 原理

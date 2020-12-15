@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Spring Cloud open source Software
-date: 2018-11-28 19:30:44 +0800
-categories: [Distributed]
-tags: [distributed, spring-cloud, rpc, sh]
+title:  Spring Cloud-02-开源框架
+date:  2020-12-14 22:11:27 +0800
+categories: [Spring]
+tags: [spring-cloud, micro service, sh]
 published: true
-excerpt: Spring Cloud 开源框架
 ---
 
 # Spring Cloud 开源框架
