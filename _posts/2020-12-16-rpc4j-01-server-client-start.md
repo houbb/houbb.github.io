@@ -18,7 +18,7 @@ published: true
 
 懂得原理，以后哪怕遇到 GRPC 之类的，上手都会变得简单很多。
 
-【步步高点读机】
+![so easy](https://p1-tt-ipv6.byteimg.com/origin/pgc-image/9955d8dbc9b64bdaba5711635ead4801)
 
 # 知识储备
 
@@ -52,7 +52,7 @@ let's go!
 
 其实最基础的实现也可以从 java 的 socket 开始，不过原理的是类似的，netty 在网络通信方面做了很多封装和改良，我们要学会站在巨人的肩膀上。
 
-【牛顿.jpg】
+![巨人](https://p9-tt-ipv6.byteimg.com/origin/pgc-image/ba4767346d5f4cca8eee648164377392)
 
 ## 服务端核心代码
 
