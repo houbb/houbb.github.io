@@ -7,7 +7,15 @@ tags: [netty, sh]
 published: true
 ---
 
+# java 的 IO 演进之路
+
+我们在前面学习了 [linux 的 5 种 I/O 模型详解](https://www.toutiao.com/item/6908238524617785863/)
+
+下面我们一起来学习下如何使用 java 实现 BIO/NIO/AIO 这 3 种不同的网络 IO 模型编程。
+
 # BIO 编程
+
+BIO 作为最基础的 IO 版本，实现起来比较简单。
 
 ## Server
 
@@ -21,7 +29,7 @@ import java.net.Socket;
 
 /**
  * <p> BIO 服务端 </p>
- * @author houbinbin
+ * @author 老马啸西风
  */
 public class TimeServer {
 
@@ -61,7 +69,7 @@ import java.net.Socket;
 /**
  * <p> BIO 客户端 </p>
  *
- * @author houbinbin
+ * @author 老马啸西风
  */
 public class TimeClient {
 
@@ -184,6 +192,14 @@ public static void main(String[] args) throws IOException {
 ```
 
 其他代码保持不变。
+
+## 优缺点
+
+线程池版本的 BIO 又被称作伪异步 IO。
+
+属于在 NIO 还没有流行之前的一种实战解决方案。
+
+这种方式的性能和 BIO 想比较提升了很多，实现起来也比较简单，但是可靠性相对较差。
 
 # 参考资料
 

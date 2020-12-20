@@ -11,7 +11,7 @@ published: true
 
 大家好，我是老马。
 
-我们前面学习了 [5 分钟入门 spring cloud 实战笔记](https://www.toutiao.com/i6906136436756840968/) 和 [dubbo 2.7 的 3种入门案例实战](https://www.toutiao.com/i6906507244977127950/)，
+我们在前面学习了 [5 分钟入门 spring cloud 实战笔记](https://www.toutiao.com/i6906136436756840968/) 和 [dubbo 2.7 的 3种入门案例实战](https://www.toutiao.com/i6906507244977127950/)，
 小伙伴肯定对 rpc 有了基本的认识。
 
 系列目录：

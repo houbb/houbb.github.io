@@ -165,7 +165,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
  * <pre> Created: 2019/9/18 8:24 PM  </pre>
  * <pre> Project: netty-learn  </pre>
  *
- * @author houbinbin
+ * @author 老马啸西风
  */
 public class DiscardServerHandler extends ChannelInboundHandlerAdapter {
 
@@ -254,7 +254,7 @@ import io.netty.util.ReferenceCountUtil;
  * <pre> Created: 2019/9/18 8:24 PM  </pre>
  * <pre> Project: netty-learn  </pre>
  *
- * @author houbinbin
+ * @author 老马啸西风
  */
 public class ReceivedByteServerHandler extends ChannelInboundHandlerAdapter {
 
@@ -288,7 +288,7 @@ public class ReceivedByteServerHandler extends ChannelInboundHandlerAdapter {
 - 命令行
 
 ```
-192:~ houbinbin$ telnet localhost 8888
+192:~ 老马啸西风$ telnet localhost 8888
 Trying ::1...
 Connected to localhost.
 Escape character is '^]'.
@@ -338,7 +338,7 @@ public class EchoServerHandler extends ChannelInboundHandlerAdapter {
 - 命令行
 
 ```
-192:~ houbinbin$ telnet localhost 8888
+192:~ 老马啸西风$ telnet localhost 8888
 Trying ::1...
 Connected to localhost.
 Escape character is '^]'.
@@ -366,7 +366,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 /**
  * <p> 时间戳响应服务端 </p>
  *
- * @author houbinbin
+ * @author 老马啸西风
  */
 public class TimeServerHandler extends ChannelInboundHandlerAdapter {
 
