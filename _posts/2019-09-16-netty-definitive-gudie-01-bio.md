@@ -17,6 +17,8 @@ published: true
 
 BIO 作为最基础的 IO 版本，实现起来比较简单。
 
+![输入图片说明](https://images.gitee.com/uploads/images/2020/1220/182842_7947c784_508704.jpeg "bio-module.jpg")
+
 ## Server
 
 ```java

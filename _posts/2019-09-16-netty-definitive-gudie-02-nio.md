@@ -9,6 +9,8 @@ published: true
 
 # NIO 基本概念
 
+![输入图片说明](https://images.gitee.com/uploads/images/2020/1220/182907_c640e2d8_508704.jpeg "nio-module.jpg")
+
 ## Buffer
 
 Java NIO Buffers用于和NIO Channel交互。正如你已经知道的，我们从channel中读取数据到buffers里，从buffer把数据写入到channels.
