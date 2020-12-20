@@ -15,11 +15,49 @@ published: true
 
 稳定性问题，拓展性问题。
 
+## 不选择Java原生NIO编程的原因
+
+现在我们总结一下为什么不建议开发者直接使用JDK的NIO类库进行开发，具体原因如下。
+
+(1) NIO的类库和API繁杂，使用麻烦，你需要熟练掌握Selector、ServerSocketChannel、SocketChannel、ByteBuffer等
+
+(2) 需要具备其他的额外技能做铺垫，例如熟悉Java多线程编程。
+
+这是因为NIO编程涉及到Reactor模式，你必须对多线程和网路编程非常熟悉，才能编写出高质量的NIO程序。
+
+(3) 可靠性能力补齐，工作量和难度都非常大。
+
+例如客户端面临断连重连、网络闪断、半包读写、失败缓存、网络拥塞和异常码流的处理等问题，NIO编程的特点是功能开发相对容易，但是可靠性能力补齐的工作量和难度都非常大。
+
+(4) JDK NIO的BUG， 例如臭名昭著的epollbug，它会导致Selector空轮询， 最终导致CPU 100%。
+
+官方声称在JDK1.6版本的update18修复了该问题， 但是直到JDK1.7版本该问题仍旧存在， 只不过该BUG发生概率降低了一些而已，它并没有得到根本性解决。
+
+## 为什么选择 netty
+
+ Netty是业界最流行的NIO框架之一， 它的健壮性、功能、性能、可定制性和可扩展性在同类框架中都是首屈一指的， 它已经得到成百上千的商用项目验证， 例如Hadoop的RPC框架Avro就使用了Netty作为底层通信框架， 其他还有业界主流的RPC框架， 也使用Netty来构建高性能的异步通信能力。
+
+通过对Netty的分析，我们将它的优点总结如下。
+
+- API使用简单， 开发门槛低；
+
+- 功能强大，预置了多种编解码功能，支持多种主流协议；
+
+- 定制能力强， 可以通过ChannelHandler对通信框架进行灵活地扩展；
+
+- 性能高， 通过与其他业界主流的NIO框架对比，Netty的综合性能最优；
+
+- 成熟、稳定，Netty修复了已经发现的所有JDKNIOBUG， 业务开发人员不需要再为NIO的BUG而烦恼；
+
+- 社区活跃， 版本迭代周期短， 发现的BUG可以被及时修复，同时， 更多的新功能会加入；
+
+- 经历了大规模的商业应用考验， 质量得到验证。Netty在互联网、大数据、网络游戏、企业应用、电信软件等众多行业已经得到了成功商用，证明它已经完全能够满足不同行业的商业应用了。
+
+正是因为这些优点，Netty 逐渐成为了 Java NIO 编程的首选框架。
+
 # Netty
 
-[Netty](https://netty.io/) is an asynchronous event-driven network application framework for rapid development of maintainable high performance protocol servers & clients.
-
-Netty是一个NIO客户端服务器框架，可以快速轻松地开发协议服务器和客户端等网络应用程序。 
+[Netty](https://netty.io/) 是一个NIO客户端服务器框架，可以快速轻松地开发协议服务器和客户端等网络应用程序。 
 
 它极大地简化并简化了TCP和UDP套接字服务器等网络编程。
 
