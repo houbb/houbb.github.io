@@ -9,7 +9,7 @@ published: true
 
 # TCP为什么会粘包/拆包
 
-我们知道，TCP是以一种流的方式来进行网络转播的，当tcp三次握手简历通信后，客户端服务端之间就建立了一种通讯管道，我们可以想象成自来水管道，流出来的水是连城一片的，是没有分界线的。
+我们知道，TCP是以一种流的方式来进行网络转播的，当tcp三次握手建立通信后，客户端服务端之间就建立了一种通讯管道，我们可以想象成自来水管道，流出来的水是连城一片的，是没有分界线的。
 
 TCP底层并不了解上层的业务数据的具体含义，它会根据TCP缓冲区的实际情况进行包的划分。
 
@@ -444,7 +444,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author binbin.hou
+ * @author 老马啸西风
  * @since 1.0.0
  */
 public class DelimiterTimeServerHandler extends ChannelInboundHandlerAdapter {
@@ -516,7 +516,7 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * @author binbin.hou
+ * @author 老马啸西风
  * @since 1.0.0
  */
 public class DelimiterTimeClientHandler extends ChannelInboundHandlerAdapter {
@@ -693,6 +693,16 @@ fasdf
 asdfasdf
 12a
 ```
+
+# 小结
+
+本节的内容相对比较简单，但是确实非常的使用。
+
+这一节主要是参考《Netty 权威指南》中的个人学习笔记，下一节将分析一下 netty 服务端的启动源码。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 
