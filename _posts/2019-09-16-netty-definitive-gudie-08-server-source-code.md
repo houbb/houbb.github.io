@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Netty 权威指南-08-server 服务端启动源码详解
+title: Netty 权威指南-08-netty 服务端启动流程源码详解
 date:  2019-5-10 11:08:59 +0800
 categories: [Netty]
 tags: [netty, sh]
@@ -143,6 +143,8 @@ ChannelHandler 中包含了系统内置的处理类，和用户自定义的处�
 
 
 # 源码解析
+
+每一个版本的源码可能有差异，这里老马的版本是 `4.1.17.Final`。
 
 ## EventLoopGroup
 
@@ -665,6 +667,18 @@ private void invokeChannelRead(Object msg) {
 到此，客户端接入完成。
 
 可以进行网络读写等 IO 操作。
+
+# 小结
+
+读到这里的小伙伴们肯定会发现，netty 使用起来简单，实际上背后做了很多的封装。
+
+这一切封装的背后，都需要扎实的 java 基础和网络编程知识作为支撑。
+
+下一节我们将一起学习下客户端启动的源码。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 
