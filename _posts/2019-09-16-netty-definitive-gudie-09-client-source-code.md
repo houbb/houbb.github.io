@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Netty 权威指南-08-server 服务端启动源码详解
+title: Netty 权威指南-08-netty 客户端启动流程及源码详解
 date:  2019-5-10 11:08:59 +0800
 categories: [Netty]
 tags: [netty, sh]
@@ -9,7 +9,7 @@ published: true
 
 # Boostrap
 
-上一节我们学习了 [netty 服务端启动流程源码详解](https://www.toutiao.com/i6909058613290009092/)
+上一节我们学习了 [netty 服务端启动流程源码详解](https://www.toutiao.com/i6909058613290009092/)，这一节来一起学习下客户端的启动流程。
 
 客户端可以通过 Boostrap 引导创建，时序图如下：
 
@@ -354,10 +354,35 @@ private static void doConnect(
 
 我们可以通过指定 option 的 CONNECT_TIMEOUT_MILLIS 属性来指定连接到服务端的超时时间。
 
+这里配置实际上在 `AbstractNioChannel` 类中会使用到：
 
+```java
+// Schedule connect timeout.
+int connectTimeoutMillis = config().getConnectTimeoutMillis();
+if (connectTimeoutMillis > 0) {
+    connectTimeoutFuture = eventLoop().schedule(new Runnable() {
+        @Override
+        public void run() {
+            ChannelPromise connectPromise = AbstractNioChannel.this.connectPromise;
+            if (connectPromise != null && !connectPromise.isDone()
+                    && connectPromise.tryFailure(new ConnectTimeoutException(
+                            "connection timed out: " + remoteAddress))) {
+                close(voidPromise());
+            }
+        }
+    }, connectTimeoutMillis, TimeUnit.MILLISECONDS);
+}
+```
 
+这里是一个定时任务，超时的时候就会抛出对应的异常信息 ConnectTimeoutException
 
+# 小结
 
+这一节我们一起学习了 netty 客户端的启动流程，简单分析了对应的实现源码。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 
