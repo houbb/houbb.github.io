@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Netty 权威指南-07-Netty example file 文件服务器
+title: Netty 权威指南-07-Netty 实战：如何实现文件服务器？
 date:  2019-5-10 11:08:59 +0800
 categories: [Netty]
 tags: [netty, sh]
@@ -10,7 +10,6 @@ published: true
 # 文件服务器
 
 实现一个可以展示指定用户输入的文件路径，返回对应文件内容的服务器。
-
 
 # 实例代码
 
@@ -159,6 +158,29 @@ public class FileServer {
 Connection closed by foreign host.
 ```
 
+# 拓展阅读
+
+[面试经典：linux 的 5 种 I/O 模型详解](https://www.toutiao.com/item/6908238524617785863/)
+
+[java 中的 BIO/NIO/AIO 详解](https://www.toutiao.com/item/6908281789907730947/)
+
+[为什么选择 Netty？Netty 入门教程](https://www.toutiao.com/item/6908298138885603844/)
+
+[netty 解决拆包和粘包问题的 4 种方法，你会几种？](https://www.toutiao.com/item/6908695608308154894/)
+
+[netty 服务端启动流程源码详解](https://www.toutiao.com/item/6909058613290009092/)
+
+[netty 客户端启动流程及源码详解](https://www.toutiao.com/item/6909457669397168644/)
+
+# 小结
+
+可以发现基于 netty 实现一个文件的读写工具其实并不难。
+
+我当时的第一个感觉是可以实现一个日志实时刷新的界面，感兴趣的小伙伴也可以自己实现以下。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 源码阅读
 
@@ -186,6 +208,8 @@ Connection closed by foreign host.
 下面来简单学习一下。
 
 ps: 此处跳过 String 的编码器和解码器。
+
+# 拓展阅读
 
 ## LineBasedFrameDecoder
 

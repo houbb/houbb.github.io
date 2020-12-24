@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Netty 权威指南-07-Netty 自定义协议
+title: Netty 权威指南-07-Netty 实战：如何实现自定义协议消息推送？
 date:  2019-5-10 11:08:59 +0800
 categories: [Netty]
 tags: [netty, sh]
@@ -504,6 +504,34 @@ Received client heart beat : hello client
 接收到 server 响应: pong
 接收到 server 响应: pong
 ```
+
+# 小结
+
+实际上掌握这个能力，就可以实现很多想要实现的功能。
+
+比如最常见的配置中心，就是这种推拉结合的策略。也可以自己从零写一个 RPC 框架之类的。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
+
+# 拓展阅读
+
+[面试经典：linux 的 5 种 I/O 模型详解](https://www.toutiao.com/item/6908238524617785863/)
+
+[java 中的 BIO/NIO/AIO 详解](https://www.toutiao.com/item/6908281789907730947/)
+
+[为什么选择 Netty？Netty 入门教程](https://www.toutiao.com/item/6908298138885603844/)
+
+[netty 解决拆包和粘包问题的 4 种方法，你会几种？](https://www.toutiao.com/item/6908695608308154894/)
+
+[netty 服务端启动流程源码详解](https://www.toutiao.com/item/6909058613290009092/)
+
+[netty 客户端启动流程及源码详解](https://www.toutiao.com/item/6909457669397168644/)
+
+[Netty 实战：如何实现文件服务器？](https://www.toutiao.com/item/6909824595721830924/)
+
+[Netty 实战：如何实现 HTTP 服务器？](https://www.toutiao.com/item/6909827419687895555/)
 
 # 参考资料
 
