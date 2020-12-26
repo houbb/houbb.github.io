@@ -10,6 +10,10 @@ published: true
 
 # Spring Security
 
+大家好，我是老马。
+
+web 安全一直是重中之重，今天我们一起来学习下 Spring Security 是如何使用的。
+
 对于 web 安全的控制，以前接触使用过 [Shiro](https://houbb.github.io/2016/08/11/shiro)。
 
 刚好最近在学习整理 Spring 相关的技术，就学习一下 [Spring Security](http://projects.spring.io/spring-security/)。
@@ -456,10 +460,13 @@ Reason: Bad credentials
 欢迎: ryo | Logout
 ```
 
-好，到这里入门就介绍完毕。
+# 小结
 
-后续会继续学习，并记录下笔记。
+这次的 spring Security 入门案例就到这里，下一节我们将来看一下另一个权限框架 shiro。
 
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 * any list
 {:toc}

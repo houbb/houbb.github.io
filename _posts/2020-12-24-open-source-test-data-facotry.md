@@ -13,7 +13,7 @@ published: true
 
 每一位开发者大部分工作都是写代码、测试代码、修BUG。
 
-![写BUG](https://image-tt-private.toutiao.com/tos-cn-i-3003/63ee16b4394d401fafc54df2b1493c22~tplv-obj.image?policy=eyJ2bSI6MywidWlkIjoiNjM3ODU5MTk0MCJ9&traceid=202012242304240100210761610415083A&x-orig-authkey=5a21e4afda5945d9a206a695e4c78a63&x-orig-expires=9223372036854775807&x-orig-sign=Cz2V%2F8BrU2oBqKC8MCjaYAgqYLo%3D)
+![测试BUG.jpg](https://upload-images.jianshu.io/upload_images/5874675-b6bddf7eed3678b3.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 我们有很多测试代码，总是花费大量的实践去构建一个对象。
 
@@ -67,7 +67,7 @@ published: true
 
 不过我一般都是使用对象，那可以自动填充一个对象吗？
 
-![自动化](https://image-tt-private.toutiao.com/tos-cn-i-3003/a24b46b640cf4e7087740b38169b2118~tplv-obj.image?policy=eyJ2bSI6MywidWlkIjoiNjM3ODU5MTk0MCJ9&traceid=202012242309310100220752030D152328&x-orig-authkey=5a21e4afda5945d9a206a695e4c78a63&x-orig-expires=9223372036854775807&x-orig-sign=Zg2YyppM7WyzI3Tr92QWbJYEzQs%3D)
+![自动化.jpg](https://upload-images.jianshu.io/upload_images/5874675-3ec9b70a82681ec1.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ## 对象 bean 填充
 
@@ -378,7 +378,7 @@ public class UserAnnotationData {
 
 各位小伙伴也可以体验一下，让自己早点下班，享受属于自己的时光。
 
-![下班](https://image-tt-private.toutiao.com/tos-cn-i-3003/debe0a0376e1453f8b4923ec6d890682~tplv-obj.image?policy=eyJ2bSI6MywidWlkIjoiNjM3ODU5MTk0MCJ9&traceid=202012242306140101940982365D1055EC&x-orig-authkey=5a21e4afda5945d9a206a695e4c78a63&x-orig-expires=9223372036854775807&x-orig-sign=eE2eq8l31UoLfEWZaq%2FyzJ7xVZM%3D)
+![下班.jpg](https://upload-images.jianshu.io/upload_images/5874675-776923683467d940.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 # 小结
 
