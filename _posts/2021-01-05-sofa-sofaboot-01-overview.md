@@ -219,8 +219,192 @@ SOFABoot 提供了日志的物理隔离：
 
 # 模块化开发实战
 
+## 整体模块
+
+```
+sofaboot-learn-isle-facade
+sofaboot-learn-isle-provider
+sofaboot-learn-isle-run
+sofaboot-learn-isle-consumer
+```
+
+- pom.xml 配置
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sofaboot-learn</artifactId>
+        <groupId>com.github.houbb</groupId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
 
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>sofaboot-learn-isle</artifactId>
+    <packaging>pom</packaging>
+    <modules>
+        <module>sofaboot-learn-isle-facade</module>
+        <module>sofaboot-learn-isle-provider</module>
+        <module>sofaboot-learn-isle-run</module>
+        <module>sofaboot-learn-isle-consumer</module>
+    </modules>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>sofaboot-learn-isle-facade</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>sofaboot-learn-isle-provider</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.houbb</groupId>
+                <artifactId>sofaboot-learn-isle-consumer</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alipay.sofa</groupId>
+            <artifactId>runtime-sofa-boot-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alipay.sofa</groupId>
+            <artifactId>isle-sofa-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
+```
+
+## sofaboot-learn-isle-facade
+
+最基础的 facade 接口定义：
+
+```java
+package com.github.houbb.sofaboot.learn.isle.facade;
+
+public interface SampleJvmService {
+    String message();
+}
+```
+
+理论上无其他任何依赖。
+
+## sofaboot-learn-isle-provider
+
+服务的提供者：
+
+- pom.xml
+
+引入 facade 依赖。
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.github.houbb</groupId>
+        <artifactId>sofaboot-learn-isle-facade</artifactId>
+    </dependency>
+</dependencies>
+```
+
+- SampleJvmServiceAnnotationImpl.java
+
+实现类：
+
+```java
+package com.github.houbb.sofaboot.learn.isle.provider;
+
+
+import com.alipay.sofa.runtime.api.annotation.SofaService;
+import com.github.houbb.sofaboot.learn.isle.facade.SampleJvmService;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Service;
+
+/**
+ * @author xuanbei 18/5/5
+ */
+@SofaService
+@Service
+public class SampleJvmServiceAnnotationImpl implements SampleJvmService {
+
+    @Override
+    public String message() {
+        String message = "Hello, jvm service annotation implementation.";
+        System.out.println(message);
+        return message;
+    }
+
+}
+```
+
+## sofaboot-learn-isle-consumer
+
+对于服务提供的使用。
+
+- pom.xml
+
+引入依赖：
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.github.houbb</groupId>
+        <artifactId>sofaboot-learn-isle-provider</artifactId>
+    </dependency>
+</dependencies>
+```
+
+- JvmServiceConsumer.java
+
+这里演示里基于注解 `@SofaReference` 的服务调用。
+
+```java
+package com.github.houbb.sofaboot.learn.isle.consumer;
+
+import com.alipay.sofa.runtime.api.annotation.SofaReference;
+import com.github.houbb.sofaboot.learn.isle.facade.SampleJvmService;
+import org.springframework.stereotype.Service;
+
+/**
+ * @author xuanbei 18/5/5
+ */
+@Service
+public class JvmServiceConsumer {
+
+    @SofaReference
+    private SampleJvmService sampleJvmServiceByFieldAnnotation;
+
+    public void say() {
+        sampleJvmServiceByFieldAnnotation.message();
+    }
+
+}
+```
 
 # 模块化开发介绍
 
