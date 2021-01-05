@@ -1,11 +1,21 @@
 ---
 layout: post
-title: Shiro-09-spring 整合
+title: Shiro-09-shiro 整合 spring 实战及源码详解
 date:  2016-8-11 09:38:24 +0800
 categories: [Web]
 tags: [shiro, web, web-security]
 published: true
 ---
+
+# 序言
+
+前面我们学习了如下内容：
+
+[5 分钟入门 shiro 安全框架实战笔记](https://www.toutiao.com/i6910927630845919756/)
+
+[shiro 安全框架入门，看这一篇就够了](https://www.toutiao.com/i6910932912108175879/)
+
+相信大家对于 shiro 已经有了最基本的认识，这一节我们一起来学习写如何将 shiro 与 spring 进行整合。
 
 # spring 整合
 
@@ -459,7 +469,7 @@ createSecurityManager() 方法就会初始化 `DefaultSecurityManager` 对象。
 
 ## 思考
 
-我们在 SampleService 中使用了注解 `@RequiresPermissions("write")，就可以校验对应的权限了。
+我们在 SampleService 中使用了注解 `@RequiresPermissions("write")`，就可以校验对应的权限了。
 
 但是这一切是如何被自动实现的呢？
 
@@ -596,7 +606,7 @@ public class AopAllianceAnnotationsAuthorizingMethodInterceptor
 }
 ```
 
-到这里实际上就比较简单了，相信聪明如你一定已经直到整个 spring-shiro 面纱背后的秘密了。
+到这里实际上就比较简单了，相信聪明如你一定已经知道整个 spring-shiro 面纱背后的秘密了。
 
 我们直接看一下 `PermissionAnnotationMethodInterceptor` 的实现。
 
@@ -677,6 +687,12 @@ public class PermissionAnnotationHandler extends AuthorizingAnnotationHandler {
 ```
 
 # 小结
+
+这一节我们讲解了如何整合 spring 与 shiro，下一节我们将实战整合 springboot 与 shiro，感兴趣的小伙伴可以关注一波不迷路。
+
+为了便于大家学习，所有源码都已开源：
+
+> [https://gitee.com/houbinbin/shiro-inaction/tree/master/shiro-inaction-02-springalone](https://gitee.com/houbinbin/shiro-inaction/tree/master/shiro-inaction-02-springalone)
 
 希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
 

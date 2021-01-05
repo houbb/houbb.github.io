@@ -1,15 +1,27 @@
 ---
 layout: post
-title:  SOFABoot 入门篇详解
+title:  蚂蚁金服开源的 SOFABoot 是什么黑科技？
 date:  2021-01-05 08:11:27 +0800
 categories: [SOFA]
 tags: [sofa, springboot, sh]
 published: true
 ---
 
+# 缘起
+
+最近晚上和公司的同事闲聊，说到了阿里开源的 SOFA 系列，代码写的比较干净，值得学习研究一下。
+
+于是白天花时间学习了一下，感觉确实收获颇丰。
+
+这里分享给大家，希望这会是一个完整的 SOFA 技术栈学习系列。
+
 # SOFABoot
 
-SOFABoot 是蚂蚁金服开源的基于 Spring Boot 的研发框架，它在 Spring Boot 的基础上，提供了诸如 Readiness Check，类隔离，日志空间隔离等能力。在增强了 Spring Boot 的同时，SOFABoot 提供了让用户可以在 Spring Boot 中非常方便地使用 SOFA 中间件的能力。
+SOFABoot 是蚂蚁金服开源的基于 Spring Boot 的研发框架，它在 Spring Boot 的基础上，提供了诸如 Readiness Check，类隔离，日志空间隔离等能力。
+
+在增强了 Spring Boot 的同时，SOFABoot 提供了让用户可以在 Spring Boot 中非常方便地使用 SOFA 中间件的能力。
+
+![蚂蚁金服](https://images.gitee.com/uploads/images/2021/0105/215642_9ff37068_508704.jpeg "蚂蚁金服.jpg")
 
 ## 功能描述
 
@@ -31,6 +43,12 @@ SOFABoot 在 Spring Boot 基础上，提供了以下能力：
 - 提供完全兼容 Spring Boot的能力：SOFABoot 基于 Spring Boot 的基础上进行构建，并且完全兼容 Spring Boot。
 
 # 快速开始
+
+看了这么多，没什么实际的感觉。
+
+我们直接上手一个入门案例直观感受一下。
+
+代码开源地址：[https://gitee.com/houbinbin/sofaboot-learn/tree/master/sofaboot-learn-quickstart](https://gitee.com/houbinbin/sofaboot-learn/tree/master/sofaboot-learn-quickstart)
 
 ## 基本的 springboot 项目
 
@@ -216,8 +234,140 @@ SOFABoot 提供了日志的物理隔离：
 └── spring.log
 ```
 
+## 个人感受
+
+这里基本上和 springboot 使用起来没什么差异，学习成本基本为 0。
+
+不过这个入门案例也只是展示了 SOFABoot 比较基础的几个特性：
+
+（1）Readiness Check
+
+（2）日志文件物理隔离
+
+SOFABoot 有一个非常强大的能力，那就是模块化隔离。
+
+下面让我们一起来看一下。
+
+# 蚂蚁金服的业务系统模块化之模块化隔离方案 
+
+无论是什么样的业务系统，多多少少都会去做一些模块化的划分，或横或纵，各种姿势，但是这些姿势真地能帮你划分出良好的模块吗？
+
+本来将分析常见的几种模块化方案的利弊，并且介绍蚂蚁金服开源的框架 SOFA 在模块化中发挥的作用。
+
+# 传统模块化的陷阱
+
+在一个简单的 Spring/SpringBoot 的系统中，我们常常见到一个系统中的模块会按照如下的方式进行分层，如下图中的左边部分所示，一个系统就简单地分为 Web 层、Service 层、DAL 层。
+
+这个也是最常见的一种模式，老马现在基本用的就是这种方式。
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0105/215325_b0e618b0_508704.png "module-01-tranditional.png")
+
+当这个系统承载的业务变多了之后，系统可能演化成上图中右边的这种方式。
+
+在上图的右边的部分中，一个系统承载了两个业务，一个是 Cashier（收银台），另一个是 Pay（支付），这两个业务可能会有一些依赖的关系，Cashier 需要调用 Pay 提供的能力去做支付。
+
+但是在这种模块化的方案里面，Spring 的上下文依然是同一个，类也没有任何做隔离，这就意味着，Pay Service 这个模块里面的任何的一个 Bean，都可以被 Cashier Service 这个模块所依赖。
+
+长此以往，模块和模块之间的耦合就会越来越严重，原来的模块的划分形同虚设。
+
+**当系统越来越大，最后需要做服务化拆分的时候，就需要花费非常大的精力去梳理模块和模块之间的关系。**
+
+# OSGi 模块化
+
+提到模块化，不得不提 OSGi，虽然 OSGi 没有成为 Java 官方的模块化的标准，但是由于 Java 在 Java 9 之前，一直没有官方的模块化的标准，所以 OSGi 已经是事实上的标准。
+
+OSGi 为模块化主要做了两个事情：
+
+- OSGi 的类隔离
+
+- OSGi 的声明式服务
+
+下面就给读者们简单地解释一下 OSGi 的这两个方面。
+
+## OSGi 的类隔离
+
+OSGi 通过扩展 Java 的 ClassLoader 机制，将模块和模块之间的类完全隔离开来，当一个模块需要引用另一个模块的类的时候，通过在模块中的 MANIFEST.MF 文件中声明类的导出和导入来解决，如下图所示：
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0105/215440_20c40b13_508704.png "module-02-osgi.png")
+
+通过这种方式，可以控制一个模块特定的类才可以被另一个模块所访问，达到了一定程度地模块的隔离。
+
+但是，光光通过类的导出导入来解决类的引用问题还不够，还需要去解决实例的引用的问题，我们往往希望能够直接使用对方模块提供的某一个类的实例，而不是自己去 new 一个实例出来，所以 OSGi 还提供了声明式服务的方式，让一个模块可以引用到另一个模块提供的服务。
+
+ps：这里可以发现技术的核心底层还是 JVM 的 ClassLoader 机制，所以面试阿里一般对于 jvm 都会问的比较深一些。
+
+## OSGi 的声明式服务
+
+OSGi 的声明式服务正是为了解决这个实例引用的问题，我们可以在一个 OSGi 的模块（Bundle）中去添加一个 XML 配置文件去声明一个服务，如下面的代码所示：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="ITodoService">
+   <implementation class="com.example.e4.rcp.todo.service.internal.MyTodoServiceImpl"/>
+   <service>
+      <provide interface="com.example.e4.rcp.todo.model.ITodoService"/>
+   </service>
+</scr:component>
+```
+
+也可以同样的通过 XML 配置文件去引用一个其他的模块声明的服务：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="XXXService">
+    <reference name="ITodoService"
+            interface="com.example.e4.rcp.todo.model.ITodoService"
+            bind="setITodoService" cardinality="0..1" unbind="unsetITodoService"
+            policy="dynamic" />
+   <implementation class="com.example.e4.rcp.todo.service.internal.XXXServiceImpl"/>
+</scr:component>
+```
+
+通过声明式服务的方式，我们就可以直接在一个 OSGi 的 Bundle 中使用另一个 Bundle 中提供的服务实例了。
+
+## OSGi 的模块化的问题
+
+OSGi 通过类隔离的机制解决了模块之间的类隔离的问题，然后通过声明式服务的方式解决了模块之间的服务调用的问题，看起来已经完美的解决了我们在传统的模块化中遇到的问题，通过这两个机制，模块和模块之间的边界变得清晰了起来。
+
+但是在实践的过程中，OSGi 对开发者的技术要求比较高，并不是非常适合于业务研发。
+
+# SOFA 模块化
+
+为了解决传统的模块化方案模块化不彻底的问题，以及 OSGi 的彻底的模块化带来的复杂性的问题，SOFA 在早期就开始引入了一种折衷的模块化的方案。
+
+SOFA 模块化的整体的示意图如下：
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0105/215528_ea01ccea_508704.png "module-03-sofa.png")
+
+SOFA 模块化的方案，给每一个模块都提供了一个单独的 Spring 的上下文，通过 Spring 上下文的隔离，让模块和模块之间的 Bean 的引用无法直接进行，达到模块在运行时隔离的能力。
+
+当一个模块需要调用另一个模块里面的一个 Bean 的时候，SOFA 采用了类似于 OSGi 的声明式的服务的方式，提供服务的模块可以在其配置文件（也可以通过 Annotation 的方式来声明）中声明一个 SOFA Service：
+
+```xml
+<sofa:service ref="sampleBean" interface="com.alipay.sofaboot.SampleBean"/>
+```
+
+使用服务的模块可以在其配置文件（也可以通过 Annotation 来使用）声明一个 SOFA Reference：
+
+```xml
+<sofa:reference id="sampleBean" interface="com.alipay.sofaboot.SampleBean"/>
+```
+
+通过这种方式，一个模块就可以清晰地知道它提供了哪些服务，引用了哪些服务，和其他的模块之间的关系也就非常清楚了。
+
+但是 SOFA 的模块化方案中并没有引入类隔离的方案，这也是为了避免研发的同学去处理太复杂的类加载的问题，简化研发的成本。
+
+ps: 任何一项技术框架都是为了解决特定的问题而产生的，但是往往技术框架的复杂度会成为开发者最大的负担。所以学会取舍，是技术开发者一生的追求和宿命。
 
 # 模块化开发实战
+
+上面看蚂蚁说的头头是道，我们还是直接实践感受一下。
+
+下面的例子是老马从官方的 demo 中简化而来的，原始的 demo 展示了 xml/annotation/api 等方式显得比较复杂，这里重点演示一下 annotation 的方式。
+
+代码开源地址：
+
+> [https://gitee.com/houbinbin/sofaboot-learn/tree/master/sofaboot-learn-isle](https://gitee.com/houbinbin/sofaboot-learn/tree/master/sofaboot-learn-isle)
 
 ## 整体模块
 
@@ -406,6 +556,14 @@ public class JvmServiceConsumer {
 }
 ```
 
+## 个人感受
+
+SOFABoot 通过拓展的 spring context 实现了模块的隔离，实际上是对服务治理和技术学习成本的一个折中。
+
+任何技术只有推广开来，才能说得上是一个好技术。
+
+下面是对于模块化的详细介绍，感兴趣的小伙伴可以学习下，便于理解上面的代码。
+
 # 模块化开发介绍
 
 ## 是什么
@@ -501,244 +659,13 @@ Module-Profile 支持取反操作，`!dev` 表示 com.alipay.sofa.boot.active-pr
 
 SOFABoot 模块未指定 Module-Profile 时，表示当前 SOFABoot 模块可以在任何 profile 启动。
 
-## Spring 配置文件
-
-SOFABoot 模块可以包含 Spring 配置文件，配置文件需要放置在 META-INF/spring 目录下，SOFABoot 启动时会自动扫描该目录，并把目录下所有 XML 文件作为本模块的 Spring 配置加载起来。
-
-在 Spring 配置文件中，我们可以定义 Bean、发布服务等等。
-
-SOFABoot 模块一般用于封装对外发布服务接口的具体实现，属于业务层，Controller 属于展现层内容，我们不建议也不支持在 SOFABoot 模块中定义 Controller 组件，Controller 组件相关定义请直接放在 Root Application Context。
-
-
-## Root Application Context
-
-SOFABoot 应用运行时，本身会产生一个 Spring Context，我们把它叫做 Root Application Context，它是每个 SOFABoot 模块创建的 Spring Context 的 Parent。
-
-这样设计的目的是为了保证每个 SOFABoot 模块的 Spring Context 都能发现 Root Application Context 中创建的 Bean，这样当应用新增 Starter 时，不仅 Root Application Context 能够使用 Starter 中新增的 Bean，每个 SOFABoot 模块的 Spring Context 也能使用这些 Bean。
-
-# 模块并行化启动
-
-每个 SOFABoot 模块都是独立的 Spring 上下文，多个 SOFABoot 模块支持并行化启动，与 Spring Boot 的单 Spring 上下文模式相比，模块并行化启动能够加快应用的启动速度。
-
-SOFABoot 会根据 Require-Module 计算模块依赖树，例如以下依赖树表示模块B 和模块C 依赖模块A，模块E 依赖模块D，模块F 依赖模块E：
-
-![依赖](https://www.sofastack.tech/projects/sofa-boot/parallel-start/module-parallel.png)
-
-该依赖树会保证模块A 必定在模块B 和模块C 之前启动，模块D 在模块E 之前启动，模块E 在模块F 之前启动，但是依赖树没有定义模块B 与模块C，模块B、C与模块D、E、F之间的启动顺序，这几个模块之间可以串行启动，也可以并行启动。
-
-SOFABoot 默认会并行启动模块，在使用过程中，如果希望关闭并行启动，可以在 application.properties 中增加以下参数:
-
-```
-com.alipay.sofa.boot.module-start-up-parallel=false
-```
-
-# Spring Bean 异步初始化 
-
-SOFABoot 提供了模块并行启动以及 Spring Bean 异步初始化能力，用于加快应用启动速度。
-
-本文介绍如何使用 SOFABoot 异步初始化 Spring Bean 能力以提高应用启动速度。
-
-## 使用场景
-
-在实际使用 Spring/Spring Boot 开发中，一些 Bean 在初始化过程中执行准备操作，如拉取远程配置、初始化数据源等等。
-
-在应用启动期间，这些 Bean 会增加 Spring 上下文刷新时间，导致应用启动耗时变长。
-
-为了加速应用启动，SOFABoot 通过配置可选项，将 Bean 的初始化方法（init-method）使用单独线程异步执行，加快 Spring 上下文加载过程，提高应用启动速度。
-
-## 引入依赖
-
-在工程的 pom.xml 文件中，引入如下 starter：
-
-```xml
-<dependency>
-    <groupId>com.alipay.sofa</groupId>
-    <artifactId>runtime-sofa-boot-starter</artifactId>
-</dependency>
-```
-
-## 使用方法
-
-异步初始化 Bean 的原理是开启单独线程负责执行 Bean 的初始化方法（init-method）。
-
-因此，除了引入上述依赖，还需要在 Bean 的 XML 定义中配置 async-init=“true” 属性，用于指定是否异步执行该 Bean 的初始化方法，例如：
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
- 
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:sofa="http://sofastack.io/schema/sofaboot"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-                   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-                   http://sofastack.io/schema/sofaboot   http://sofastack.io/schema/sofaboot.xsd"
-       default-autowire="byName">
-       
-    <!-- async init  test -->
-    <bean id="testBean" class="com.alipay.sofa.runtime.beans.TimeWasteBean" init-method="init" async-init="true"/>
-</beans>
-```
-
-## 属性配置
-
-SOFABoot 异步初始化能力提供两个属性配置，用于指定负责异步执行 Bean 初始化方法（init-method）的线程池大小：
-
-```
-com.alipay.sofa.boot.asyncInitBeanCoreSize：线程池基本大小，默认值为 CPU 核数加一。
-com.alipay.sofa.boot.asyncInitBeanMaxSize：线程池中允许的最大线程数大小，默认值为 CPU 核数加一。
-```
-
-此配置可以通过 VM -D 参数或者 Spring Boot 配置文件 application.yml 设置。
-
-# SOFABoot 模块间通信
-
-上下文隔离后，模块与模块间的 Bean 无法直接注入，模块间需要通过 SOFA 服务进行通信，目前SOFABoot 提供了两种形式的服务发布和引用，用于解决不同级别的模块间调用的问题：
-
-JVM 服务发布和引用：解决一个 SOFABoot 应用内部各个 SOFABoot 模块之间的调用问题。
-
-RPC 服务发布和引用：解决多个 SOFABoot 应用之间的远程调用问题。
-
-# JVM 服务发布与引用 
-
-SOFABoot 提供三种方式给开发人员发布和引用 JVM 服务
-
-- XML 方式
-
-- Annotation 方式
-
-- 编程 API 方式
-
-## XML 方式
-
-### 服务发布
-
-首先需要定义一个 Bean：
-
-```xml
-<bean id="sampleService" class="com.alipay.sofa.runtime.test.service.SampleServiceImpl">
-```
-
-然后通过 SOFA 提供的 Spring 扩展标签来将上面的 Bean 发布成一个 SOFA JVM 服务。
-
-```xml
-<sofa:service interface="com.alipay.sofa.runtime.test.service.SampleService" ref="sampleService">
-    <sofa:binding.jvm/>
-</sofa:service>
-```
-
-上面的配置中的 interface 指的是需要发布成服务的接口，ref 指向的是需要发布成 JVM 服务的 Bean，至此，我们就已经完成了一个 JVM 服务的发布。
-
-### 服务引用
-
-使用 SOFA 提供的 Spring 扩展标签引用服务:
-
-```xml
-<sofa:reference interface="com.alipay.sofa.runtime.test.service.SampleService" id="sampleServiceRef">
-    <sofa:binding.jvm/>
-</sofa:reference>
-```
-
-上面的配置中的 interface 是服务的接口，需要和发布服务时配置的 interface 一致。
-
-id 属性的含义同 Spring BeanId。
-
-上面的配置会生成一个 id 为 sampleServiceRef 的 Spring Bean，你可以将 sampleServiceRef 这个 Bean 注入到当前 SOFABoot 模块 Spring 上下文的任意地方。
-
-## Annotation 方式
-
-### 发布
-
-- 警告
-
-如果一个服务已经被加上了 `@SofaService` 的注解，它就不能再用 XML 的方式去发布服务了，选择一种方式发布服务，而不是两种混用。
-
-除了通过 XML 方式发布 JVM 服务和引用之外，SOFABoot 还提供了 Annotation 的方式来发布和引用 JVM 服务。
-
-通过 Annotation 方式发布 JVM 服务，只需要在实现类上加一个 @SofaService 注解即可，如下：
-
-```java
-@SofaService
-public class SampleImpl implements SampleInterface {
-   public void test() {
-
-   }
-}
-```
-
-@SofaService 的作用是将一个 Bean 发布成一个 JVM 服务，这意味着虽然你可以不用再写 `<sofa:service/>` 的配置，但是还是需要事先将 @SofaService 所注解的类配置成一个 Spring Bean。
-
-在使用 XML 配置 `<sofa:service/>` 的时候，我们配置了一个 interface 属性，但是在使用 @SofaService 注解的时候，却没有看到有配置服务接口的地方。
-
-这是因为当被 @SofaService 注解的类只有一个接口的时候，框架会直接采用这个接口作为服务的接口。当被 @SofaService 注解的类实现了多个接口时，可以设置 @SofaService 的 interfaceType 字段来指定服务接口，比如下面这样：
-
-```java
-@SofaService(interfaceType=SampleInterface.class)
-public class SampleImpl implements SampleInterface, Serializable {
-   public void test() {
-
-   }
-}
-```
-
-### 引用
-
-和 @SofaService 对应，Sofa 提供了 `@SofaReference` 来引用一个 JVM 服务。
-
-假设我们需要在一个 Spring Bean 中使用 SampleJvmService 这个 JVM 服务，那么只需要在字段上加上一个 @SofaReference 的注解即可：
-
-```java
-public class SampleServiceRef {
-    @SofaReference
-    private SampleService sampleService;
-}
-```
-
-和 @SofaService 类似，我们也没有在 @SofaReference 上指定服务接口，这是因为 @SofaReference 在不指定服务接口的时候，会采用被注解字段的类型作为服务接口，你也可以通过设定 @SofaReference 的 interfaceType 属性来指定：
-
-```java
-public class SampleServiceRef {
-    @SofaReference(interfaceType=SampleService.class)
-    private SampleService sampleService;
-}
-```
-
-使用 @SofaService 注解发布服务时，需要在实现类上打上 @SofaService 注解；在 Spring Boot 使用 Bean Method 创建 Bean 时，会导致 @Bean 和 @SofaService 分散在两处，而且无法对同一个实现类使用不同的 unique id。
-
-因此自 SOFABoot v2.6.0 及 v3.1.0 版本起，支持 @SofaService 作用在 Bean Method 之上，例如：
-
-```java
-@Configuration
-public class SampleSofaServiceConfiguration {
-    @Bean("sampleSofaService")
-    @SofaService(uniqueId = "service1")
-    SampleService service() {
-        return new SampleServiceImpl("");
-    }
-}
-```
-
-同样为了方便在 Spring Boot Bean Method 使用注解 @SofaReference 引用服务，自 SOFABoot v2.6.0 及 v3.1.0 版本起，支持在 Bean Method 参数上使用 @SofaReference 注解引用 JVM 服务，例如：
-
-```java
-@Configuration
-public class MultiSofaReferenceConfiguration {
-    @Bean("sampleReference")
-    TestService service(@Value("$spring.application.name") String appName,
-                        @SofaReference(uniqueId = "service") SampleService service) {
-        return new TestService(service);
-    }
-}
-```
-
 # 小结
 
-今天我们和大家一起感受了数据填充工具的便利性，大家工作中有需要就可以用起来。
+本节我们主要介绍了 SOFABoot 的入门使用，以及如何解决模块化开发的实战。
 
-为了便于大家学习，所有源码均已开源：
+说起模块化我们也可以想到 OSGi 以及 jdk9 的 module 支持，不过每一种解决方案都有对应的优势和限制。
 
-对象填充：[https://github.com/houbb/data-factory](https://github.com/houbb/data-factory)
-
-性能压测：[https://github.com/houbb/junitperf](https://github.com/houbb/junitperf)
+SOFABoot 解决了模块的隔离，SOFAArk 则专注于解决类的隔离，我们下一节一起来学习下 SOFA 的另一个神器 SOFAArk。
 
 希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
 
