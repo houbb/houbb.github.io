@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Spring Session
+title: Spring Session 入门教程
 date:  2018-09-26 14:24:33 +0800
 categories: [Spring]
 tags: [web, spring, session, distributed, sh]
 published: true
-excerpt: Spring Session 入门教程
 ---
 
 # Spring Session

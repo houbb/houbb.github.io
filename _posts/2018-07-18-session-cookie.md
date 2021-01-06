@@ -1,12 +1,12 @@
 ---
 layout: post
-title:  Session Cookie
+title:  Session Cookie 详解
 date:  2018-07-18 13:47:39 +0800
 categories: [Http]
-tags: [http, net]
+tags: [http, net, session, cookie, web, sf]
 published: true
 ---
- 
+
 
 # Session Cookie
 
@@ -240,6 +240,24 @@ https://www.jianshu.com/p/25802021be63
 https://www.zhihu.com/question/19786827
 
 [Session 机制详解](http://justsee.iteye.com/blog/1570652)
+
+[JavaWeb基于session和cookie的数据共享](https://www.cnblogs.com/nanyangke-cjz/p/7143799.html)
+
+[Java Web(三) 会话机制，Cookie和Session详解 ](https://www.cnblogs.com/whgk/p/6422391.html)
+
+[(JavaEE)JavaWeb中的Session与Cookie机制(案例-cookie验证)](https://blog.csdn.net/qq_39872652/article/details/80993092)
+
+[JavaWeb使用Session和Cookie实现登录认证](https://www.jb51.net/article/108764.htm)
+
+[Java Web之Cookie和Session详解](https://blog.csdn.net/yuzhiqiang_1993/article/details/81232914)
+
+## 禁用 cookie
+
+[禁用 cookie 之后的 jsessionid 问题](http://www.360doc.com/content/15/0123/16/18924983_443118801.shtml)
+
+[cookie 被禁用，如何使用session](https://www.cnblogs.com/ceceliahappycoding/p/10544075.html)
+
+[当浏览器禁用了cookie，java实现传递JSESSIONID](https://blog.csdn.net/qq_36244155/article/details/80083385)
 
 * any list
 {:toc}

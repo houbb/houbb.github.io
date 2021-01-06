@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Session 共享
+title: 分布式 Session 共享的解决方案
 date:  2018-09-26 13:56:24 +0800
 categories: [Web]
 tags: [web, session, distributed, sh]
 published: true
-excerpt: 分布式 Session 共享的解决方案
 ---
 
 # Session 共享
