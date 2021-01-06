@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Session Cookie 详解
+title:  web 会话机制之 session cookie 详解
 date:  2018-07-18 13:47:39 +0800
 categories: [Http]
 tags: [http, net, session, cookie, web, sf]
@@ -8,119 +8,350 @@ published: true
 ---
 
 
-# Session Cookie
+# 老板的苦恼
 
-## 作用
+假如你在繁华的街角开了一家店，每天客人络绎不绝。
 
-网页没有记忆存储功能。
+不过你作为老板却有一些苦恼，你想知道自己的顾客上一次是什么时候来的？
 
-从一个页面到另一个页面的用户将被网站视为一个全新的访问者。会话cookie使您访问的网站能够跟踪您的移动从页面到页面，这样您就不会被要求获得您已经提供给站点的相同信息。Cookies允许您快速、轻松地浏览站点的许多页面，而无需对所访问的每个新区域进行身份验证或重新处理。
+在店里的时候买了什么商品，方便购物的时候进一步提升用户体验。
 
-会话cookie允许用户在网站中被识别，所以你所做的**任何页面更改或项目或数据选择都会被记住**。
+可是这些客人赤果果的来，无牵挂的走，店里一直没有留下客人的信息，聪明的你会怎么解决这个问题呢？
 
-这个功能最常见的例子是任何电子商务网站的购物车特性。当您访问目录的一个页面并选择一些条目时，会话cookie会记住您的选择，这样您的购物车就会有您在准备结账时所选择的条目。
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0106/221934_e3c93818_508704.jpeg "街角的咖啡店.jpg")
 
-如果没有会话cookie，如果单击CHECKOUT，新页面将不认识您以前页面上的活动，您的购物车将永远是空的。
+# 互联网没有记忆
 
-您可以通过浏览器的设置特性来调整会话cookie。
+我们常说互联网没有记忆。互联网背后的 HTTP 协议也是如此，正因为它无状态，所以足够简单，便于拓展，得以发展到今天这种局面。
 
-没有cookie，网站和服务器就没有内存。
+同时也正是因为 HTTP 协议无状态，所以对用户访问等缺乏识别记忆功能。
 
-一块饼干，就像一把钥匙，可以快速地从一个地方传到另一个地方。如果每次打开一个新web页面时都没有cookie，那么存储该页面的服务器就会将您视为一个全新的访问者。
+那怎么解决这个问题呢？
 
-网站通常使用会话cookie，以确保当您在一个站点内从一个页面移动到另一个页面时，您被识别，并且您输入的任何信息都将被记住。例如，如果电子商务网站不使用会话cookie，那么当您到达收银台时，放在购物篮中的物品将会消失。您可以通过更改浏览器中的设置来选择接受会话cookie。
+目前有两张最主流的方式：cookie 和 session。
 
-## 总结
-
-所以，总结一下：
-
-Session 是在服务端保存的一个数据结构，用来跟踪用户的状态，这个数据可以保存在集群、数据库、文件中；
+## cookie
 
 Cookie 是客户端保存用户信息的一种机制，用来记录用户的一些信息，也是实现 Session 的一种方式。
 
+这个就好比我们把客户上次到店里的时间放在用户的口袋里，下次他们来的时候，我们拿出来看一下，就知道客户上次是什么时候来的了。
 
-# Cookie
+当然这些信息用户自己是可以修改的，比如各种浏览器的 cookies 可以被清空。
+
+这让我想起来以前读的一个故事：
+
+> 刚在路边摊准备买点小吃。我说：老板我经常来买，给我便宜点吧。老板说：我今天第一天摆摊。
+
+![铁锅炖自己](https://images.gitee.com/uploads/images/2021/0106/210557_ea208bd4_508704.jpeg)
+
+信息都放在用户的口袋里虽然方便，但是服务端也要记一些必要的信息，不然被忽悠了都不知道。
+
+## session
+
+Session 是在服务端保存的一个数据结构，用来跟踪用户的状态，这个数据可以保存在集群、数据库、文件中；
+
+这个就类似于店里来客人了，服务员留心看一下，知道用户购物车里放了什么商品，是否需要帮助等等。
+
+# Cookie 操作
+
+为了让大家直观的感受到 cookie 的使用，我们来看一下 CRUD 的例子。
+
+为了简单，此处使用 servlet 进行演示。
+
+![Cookie](https://images.gitee.com/uploads/images/2021/0106/222136_e585c519_508704.png "屏幕截图.png")
+
+## 说明 
 
 Cookie是浏览器保存信息的一种方式，可以理解为一个文件，保存到客户端了啊，服务器可以通过响应浏览器的set-cookie的标头，得到Cookie的信息。
 
-你可以给这个文件设置一个期限，这个期限呢，不会因为浏览器的关闭而消失啊。
+你可以给这个文件设置一个期限，这个期限呢，不会因为浏览器的关闭而消失。
 
-## 操作
+## 添加
 
-- add
+我们可以新建一个 cookie 返回给 resp。
 
-```js
-Cookie cookie = new Cookie("user", "suntao");
-cookie.setMaxAge(7*24*60*60);     // 一星期有效
-response.addCookie(cookie);
-```
+```java
+package com.github.houbb.simple.servlet;
 
-- get
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-```js
-// 因为取得的是整个网页作用域的Cookie的值，所以得到的是个数组
-Cookie[] cookies = request.getCookies();
+/**
+ * @author binbin.hou
+ * @since 0.0.2
+ */
+@WebServlet("/cookie/add")
+public class CookieAddServlet extends HttpServlet {
 
-for(int i = 0 ; i < cookies.length ; i++) {
-  String name = cookies[i].getName() ;
-  String value = cookies[i].getValue() ;
+    private static final long serialVersionUID = 491287664925808862L;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        //1. 创建 cookie 信息
+        Cookie cookie = new Cookie("age", "10");
+        //30min
+        cookie.setMaxAge(30 * 60);
+        //2. 返回给客户端，用于客户端保存
+        resp.addCookie(cookie);
+
+        //3. 页面输出
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html;charset=utf-8");
+        PrintWriter out = resp.getWriter();
+        // 后端会根据页面是否禁用 cookie,选择是否将 sessionId 放在 url 后面
+        String url = resp.encodeURL("/cookie/get");
+        out.println("<a href='"+url+"'>获取 cookie</a>");
+    }
+
 }
 ```
 
-# Session
+## 获取 
 
-session是服务端的技术，当浏览器第1次访问web资源的时候，服务器会自动为其创建一个session，并保存在服务器，当需要保存用户数据的时候，可以将数据写入session中。
-
-当用户访问其他程序的时候，就可以直接从session中取值。值得一提的是sesion是建立在cookie的基础上创建的。
-
-
-## Session 实现原理
-
-session的实现原理是建立在给浏览器回写cookie，并且是以JSESSIONID为键，但是这个cookie是没有时间的，也就是说，当你关闭浏览器时，代表一个会话结束了，也就是说你的session会被删除，当你再次访问服务器的时候，服务器会为你重新创建一个session。
-
-## Session 的使用
-
-### 客户端不禁用 cookie
+获取 cookie 也比较简单，直接通过 `req.getCookies()` 就可以获取到整个 cookie 列表。
 
 ```java
-HttpSession session = request.getSession();//客户端访问服务器的时候，服务器会自动创建一个session,如果客户端没有禁用cookie的话。
-String sessionId = session.getId();
-Cookie cookie = new Cookie("JSESSIONID",sessionId);
-cookie.setPath("/");
-cookie.setMaxAge(30*60);//注意在tomcat的web.xml文件中，设置了session的生命周期最长为30分钟。
-response.addCookie(cookie);
-session.setAttribute("key","value");
+package com.github.houbb.simple.servlet;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+/**
+ * @author binbin.hou
+ * @since 0.0.2
+ */
+@WebServlet("/cookie/get")
+public class CookieGetServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 491287664925808862L;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        // 实际的逻辑是在这里
+        PrintWriter out = resp.getWriter();
+
+        Cookie[] cookies = req.getCookies();
+        if(cookies != null) {
+            for(Cookie cookie : cookies) {
+                out.println(cookie.getName()+"="+cookie.getValue()+"");
+            }
+        }
+    }
+
+}
 ```
 
-### 客户端禁用 cookie
+## 删除
 
-如果客户端禁用cookie，那么需要调用response的encodeURL("转发的地址")
+cookie 是非法直接删除的，一般都是首先获取，然后设置 maxAge 为 0。
 
 ```java
-HttpSession session = request.getSession();
-// 注意，调用这个方法之前，必须要先获取session,（在该方法的API描述得很清楚）
-String url1 = response.encodeURL("xxxx");
-PrintWriter pw = response.getWriter();
-pw.write(url1);
+package com.github.houbb.simple.servlet;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+/**
+ * 清空
+ * @author binbin.hou
+ * @since 0.0.2
+ */
+@WebServlet("/cookie/clear")
+public class CookieClearServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 491287664925808862L;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        for(Cookie cookie : req.getCookies()) {
+            // 立刻失效
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+            resp.addCookie(cookie);
+        }
+
+        resp.setContentType("text/html;charset=utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        PrintWriter out = resp.getWriter();
+        out.println("<a href='/cookie/add'>添加 cookie 信息</a>");
+    }
+
+}
 ```
 
-- URL 重写
+# session
 
-URL地址重写的原理是将该用户Session的id信息重写到URL地址中。服务器能够解析重写后的URL获取Session的id。
+![session](https://images.gitee.com/uploads/images/2021/0106/222105_00f0ebd5_508704.png "屏幕截图.png")
 
-这样即使客户端不支持Cookie，也可以使用Session来记录用户状态。
+## 说明
 
-`encodeURL()` 方法在使用时，会首先判断Session是否启用，如果未启用，直接返回url。 
+session的实现原理是建立在给浏览器回写cookie，并且是以 JSESSIONID 为键，但是这个cookie是没有时间的，也就是说，当你关闭浏览器时，代表一个会话结束了，也就是说你的session会被删除，当你再次访问服务器的时候，服务器会为你重新创建一个session。
 
-然后判断客户端是否启用Cookie，如果未启用，则将参数url中加入SessionID信息，然后返回修改的URL；如果启用，直接返回参数url。
+## 添加
 
-# HttpSession 会话机制
+添加 session 属性的方式也比较简单，直接使用 `req.getSession().setAttribute("name", "session");` 即可。
 
-Servlet的会话机制的实现。
+```java
+package com.github.houbb.simple.servlet;
 
-创建于服务器端，保存于服务器，维护于服务器端,每创建一个新的Session,服务器端都会分配一个唯一的ID，并且把这个ID保存到客户端的Cookie中，保存形式是以 `JSESSIONID` 来保存的。
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-## 细节
+/**
+ * @author binbin.hou
+ * @since 0.0.2
+ */
+@WebServlet("/session/add")
+public class SessionAddServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 491287664925808862L;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        // 只有在 getSession 的时候，才会设置对应的 JSESSIONID
+        req.getSession().setAttribute("name", "session");
+
+        resp.setContentType("text/html;charset=utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        PrintWriter out = resp.getWriter();
+
+        // 后端会根据页面是否禁用 cookie,选择是否将 sessionId 放在 url 后面
+        String url = resp.encodeURL("/session/get");
+        out.println("<a href='"+url+"'>获取 session 信息</a>");
+    }
+
+}
+```
+
+## 获取
+
+我们可以通过 `httpSession.getAttributeNames()` 获取到所有的 session 属性。
+
+也可以通过 `req.getSession().getId()` 得到我们的 JSESSIONID 属性。
+
+```java
+package com.github.houbb.simple.servlet;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
+
+/**
+ * @author binbin.hou
+ * @since 0.0.2
+ */
+@WebServlet("/session/get")
+public class SessionGetServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 491287664925808862L;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        // 实际的逻辑是在这里
+        PrintWriter out = resp.getWriter();
+        String jsessionId = req.getSession().getId();
+        out.println("jsessionId: " + jsessionId);
+
+        HttpSession httpSession = req.getSession();
+        Enumeration attrs = httpSession.getAttributeNames();
+        while (attrs.hasMoreElements()) {
+            String key = (String) attrs.nextElement();
+            Object value = httpSession.getAttribute(key);
+            out.println("key: " + key +"; value: " + value);
+        }
+    }
+
+}
+```
+
+## 清空
+
+清空 session 的操作非常简单。
+
+直接通过 `httpSession.removeAttribute(key)` 即可操作。
+
+```java
+package com.github.houbb.simple.servlet;
+
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Enumeration;
+
+/**
+ * @author binbin.hou
+ * @since 0.0.2
+ */
+@WebServlet("/session/clear")
+public class SessionClearServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 491287664925808862L;
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setContentType("text/html;charset=utf-8");
+        resp.setCharacterEncoding("UTF-8");
+        PrintWriter out = resp.getWriter();
+
+        HttpSession httpSession = req.getSession();
+        Enumeration attrs = httpSession.getAttributeNames();
+        while (attrs.hasMoreElements()) {
+            String key = (String) attrs.nextElement();
+
+            httpSession.removeAttribute(key);
+            out.println("清空 key: " + key);
+        }
+    }
+
+}
+```
+
+上面的代码，为了便于大家学习，已经全部开源：
+
+> [https://gitee.com/houbinbin/simple-servlet](https://gitee.com/houbinbin/simple-servlet)
+
+
+# session 的一些细节
+
+相信很多小伙伴读到这里依然是意犹未尽的。
+
+接下来我们一起考虑几个细节问题。
+
+## 会话机制
+
+session 创建于服务器端，保存于服务器，维护于服务器端,每创建一个新的Session,服务器端都会分配一个唯一的ID，并且把这个ID保存到客户端的Cookie中，保存形式是以 `JSESSIONID` 来保存的。
+
+## 一点细节
+
+![不要在意](https://images.gitee.com/uploads/images/2021/0106/222534_d3c83f5a_508704.png "屏幕截图.png")
 
 通过HttpServletRequest.getSession 进行获得HttpSession对象，通过setAttribute()给会话赋值，可以通过invalidate()将其失效。
 
@@ -141,23 +372,9 @@ Servlet的会话机制的实现。
 </session-config>
 ```
 
-- HttpSession默认使用Cookie进行保存SessionID，当客户端禁用了Cookie之后，可以通过URL重写的方式进行实现。
-
-- 可以通过response.encodeURL(url) 进行实现
-
-- API对encodeURL的结束为，当浏览器支持Cookie时，url不做任何处理；当浏览器不支持Cookie的时候，将会重写URL将SessionID拼接到访问地址后。
-
-# HttpSession 的常见问题
-
-## Session 的创建时机
+## session 的创建时机
 
 一个常见的误解是以为session在有客户端访问时就被创建，然而事实是直到某server端程序调用 `HttpServletRequest.getSession(true)` 这样的语句时才被创建。
-
-注意如果JSP没有显示的使用 `<%@page session="false"%>` 关闭session，则JSP文件在编译成Servlet时将会自动加上这样一条语句
-
-`HttpSession session = HttpServletRequest.getSession(true);` 这也是JSP中隐含的session对象的来历。 
-
-由于session会消耗内存资源，因此，如果不打算使用session，应该在所有的JSP中关闭它。 
 
 ## Session 何时被删除 
 
@@ -169,63 +386,121 @@ Servlet的会话机制的实现。
 
 3. 服务器进程被停止（非持久session） 
 
-## 如何做到在浏览器关闭时删除 Session 
+## JSESSIONID 的创建与获取
 
-严格的讲，做不到这一点。
+我们在 session 创建的时候，也就是第一次调用 `HttpServletRequest.getSession(true)` 时，会给客户端分配一个 JSESSIONID 用于唯一标识这个用户。
 
-可以做一点努力的办法是在所有的客户端页面里使用 javascript 代码 window.onclose() 来监视浏览器的关闭动作，然后向服务器发送一个请求来删除session。
+这个信息会被写回到客户端的 cookie 中，并且后续的请求都会携带。
 
-但是对于浏览器崩溃或者强行杀死进程这些非常规手段仍然无能为力。 
+比如我测试时的 JSESSIONID：
 
-## 有个 HttpSessionListener 是怎么回事 
+```
+Cookie: JSESSIONID=8AE65FE9AEB0AA6053FADF9ED7AEE544
+```
 
-你可以创建这样的listener去监控session的创建和销毁事件，使得在发生这样的事件时你可以做一些相应的工作。
+可以发现实际上 JSESSIONID 是非常依赖客户端 cookie 的，那么问题来了，如果用户禁用了 cookie 怎么办？
 
-注意是session的创建和销毁动作触发listener，而不是相反。
+# 客户端禁用 cookie
 
-类似的与HttpSession有关的listener还有HttpSessionBindingListener，HttpSessionActivationListener和HttpSessionAttributeListener。 
+cookie 是用户自己的口袋，如果用户有一天把口袋全部封死也是有可能的。
 
-## 存放在 Session 中的对象必须是可序列化的吗 
+如果客户端禁用了 cookie，一般有两种解决方案。
 
-不是必需的。
+### 隐藏域
 
-要求对象可序列化只是为了session能够在集群中被复制或者能够持久保存或者在必要时server能够暂时把session交换出内存。
+我们将 JSESSIONID 的值传入到页面中，放入一个隐藏的 input 框中，每次请求带上这个参数。
 
-在Weblogic Server的session中放置一个不可序列化的对象在控制台上会收到一个警告。
+```html
+<form name="testform" action="/xxx"> 
+　 <input type="hidden" name="jsessionid" value="8AE65FE9AEB0AA6053FADF9ED7AEE544"/>
+ 　<input type="text"> 
+</form>
+```
 
-我所用过的某个iPlanet版本如果session中有不可序列化的对象，在session销毁时会有一个Exception，很奇怪。 
+后端通过 `req.getParameter("jsessionid")` 的方式获取到这个 jsessionid 信息。
 
-## 如何才能正确的应付客户端禁止cookie的可能性 
+### URL 重写
 
-对所有的URL使用URL重写，包括超链接，form的action，和重定向的URL。
+URL地址重写的原理是将该用户Session的id信息重写到URL地址中。服务器能够解析重写后的URL获取Session的id。
 
-## 开两个浏览器窗口访问应用程序会使用同一个session还是不同的session 
+这样即使客户端不支持Cookie，也可以使用Session来记录用户状态。
 
-参见第三小节对cookie的讨论，对session来说是只认id不认人，因此不同的浏览器，不同的窗口打开方式以及不同的cookie存储方式都会对这个问题的答案有影响。 
+`encodeURL()` 方法在使用时，会首先判断Session是否启用，如果未启用，直接返回url。 
 
-## 如何防止用户打开两个浏览器窗口操作导致的session混乱 
+然后判断客户端是否启用Cookie，如果未启用，则将参数url中加入SessionID信息，然后返回修改的URL；如果启用，直接返回参数url。
 
-这个问题与防止表单多次提交是类似的，可以通过设置客户端的令牌来解决。
+就像老马前面代码写的一样：
 
-就是在服务器每次生成一个不同的id返回给客户端，同时保存在session里，客户端提交表单时必须把这个id也返回服务器，程序首先比较返回的id与保存在session里的值是否一致，如果不一致则说明本次操作已经被提交过了。
+```java
+// 后端会根据页面是否禁用 cookie,选择是否将 sessionId 放在 url 后面
+String url = resp.encodeURL("/session/get");
+out.println("<a href='"+url+"'>获取 session 信息</a>");
+```
 
-可以参看《J2EE核心模式》关于表示层模式的部分。需要注意的是对于使用javascript window.open打开的窗口，一般不设置这个id，或者使用单独的id，以防主窗口无法操作，建议不要再window.open打开的窗口里做修改操作，这样就可以不用设置。 
+如果我们禁用 cookie，链接的地址就会变成:
 
-## 为什么在Weblogic Server中改变session的值后要重新调用一次session.setValue 
-    
-做这个动作主要是为了在集群环境中提示Weblogic Server session中的值发生了改变，需要向其他服务器进程复制新的session值。 
+```
+http://localhost:8080/session/get;jsessionid=3E2EEB9840F2566EDB3085BA392AE6CB
+```
 
-## 为什么session不见了 
+`;jsessionid=3E2EEB9840F2566EDB3085BA392AE6CB` 这个是 encodeURL 自己加上去的，这样我们就可以像原来一样处理 session id 了。
 
-排除session正常失效的因素之外，服务器本身的可能性应该是微乎其微的，虽然笔者在iPlanet6SP1加若干补丁的Solaris版本上倒也遇到过；
+# 连锁店的机遇与挑战
 
-浏览器插件的可能性次之，笔者也遇到过3721插件造成的问题；理论上防火墙或者代理服务器在cookie处理上也有可能会出现问题。 
+当目前为止，你作为一家店的老板已经可以轻松的掌握客户的信息了。
 
-出现这一问题的大部分原因都是程序的错误，最常见的就是在一个应用程序中去访问另外一个应用程序。
+哪怕用户把自己的口袋封死。
+
+随着你的生意越来越好，你的店从一家门面，变成了多家连锁店。
+
+新的问题又来了，一个用户去了其中的一家，当到另外一家店面的时候，如何得到用户对应的信息呢？
+
+![连锁店](https://images.gitee.com/uploads/images/2021/0106/222911_7d5bfbc2_508704.jpeg "咖啡连锁.jpg")
+
+这个就涉及到分布式系统的 session 共享问题。
+
+其实解决问题的思路也是从两个角度出发：
+
+（1）用户的角度
+
+在用户的口袋中放着验证信息。
+
+不过需要考虑信息被恶意修改等，这方面 JWT 做的比较优秀。
+
+可以参考：
+
+[分布式系统 session 共享解决方案 JWT 实战笔记](https://mp.toutiao.com/profile_v4/graphic/preview?pgc_id=6914648140029362691)
+
+（2）服务者的角度
+
+我们作为连锁店，只需要把各个店里的商户信息共享即可。
+
+至于共享到哪里，可以是 redis 也可以是数据库。
+
+这方面 spring session 设计的比较优秀，可以参考：
+
+[springboot整合redis实现分布式session](https://www.toutiao.com/item/6905646805476753927/)
+
+[spring session 结合拦截器实战](https://www.toutiao.com/item/6914623299200745992/)
+
+# 小结
+
+这一节老马和大家一起学习了 web 会话机制中的 session 和 cookie 机制。
+
+我们知道问题的源头，自然就理解了一个技术产生需要解决的问题。
+
+最后拓展到了分布式系统中的 session 共享问题，后续我们将重点介绍下 spring sesison 和 jwt，感兴趣的小伙伴可以关注一波不迷路。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # Session 的共享
 
 [Session 共享](https://houbb.github.io/2018/09/26/session-sharing)
+
+
+
 
 # 参考资料
 
