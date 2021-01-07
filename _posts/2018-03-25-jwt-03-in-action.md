@@ -329,6 +329,8 @@ axios.get('/index');
 
 [由前端登录验证，页面跳转，携带headers token引发的思考和尝试](https://www.cnblogs.com/southday/p/10885235.html)
 
+[讲真，别再使用JWT了！](https://www.jianshu.com/p/af8360b83a9f)
+
 * any list
 {:toc}
 
