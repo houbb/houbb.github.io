@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Spring Session-02-整合拦截器实战例子
+title: Spring Session 结合拦截器实战
 date:  2018-09-26 14:24:33 +0800
 categories: [Spring]
 tags: [web, spring, session, distributed, sh]
@@ -9,9 +9,11 @@ published: true
 
 # 场景
 
+前面我们学习了[springboot整合redis实现分布式session](https://www.toutiao.com/i6905646805476753927/)，对 spring session 有了一个最基本的认识。
+
 有时候我们希望登陆的时候设置对应的 session 信息，然后结合拦截器进行是否登陆校验。
 
-本文就给出一个简单的拦截器整合例子。
+本文就给出一个结合拦截器使用的例子，让我们进一步感受下 spring session 的魅力吧。
 
 # 实战
 
@@ -370,6 +372,20 @@ sessionId: 5251161a-d946-41e5-98fc-eae2e5c01960
 ```
 
 如果我们再次请求，页面就会跳转到登陆首页，因为这个时候的 session 已经被清空了。
+
+# 小结
+
+这一节我们展示了如何结合拦截器使用 spring session，这也是目前比较主流的做法。
+
+对于很多讲解到这里一般就结束了，不过老马实际上是为了引入接下来的内容。
+
+spring session 底层的实现原理是怎样的？
+
+下一节将和各位小伙伴们一起学习下 spring session 的源码。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 
