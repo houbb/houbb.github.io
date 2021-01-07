@@ -1,11 +1,31 @@
 ---
 layout: post
-title: Spring Session-04-redis session 持久化的细节
+title: Spring Session-04-深入源码，和你一起重新认识 spring session 
 date:  2018-09-26 14:24:33 +0800
 categories: [Spring]
 tags: [web, spring, session, redis, sh]
 published: true
 ---
+
+# 序言
+
+大家好，我是老马。
+
+前面我们共同学习了 spring session 的入门使用：
+
+[web 会话机制之 session cookie 详解](https://www.toutiao.com/item/6914651999556583948/)
+
+[springboot整合redis实现分布式session](https://www.toutiao.com/i6905646805476753927/)
+
+[spring session 结合拦截器实战](https://www.toutiao.com/item/6914623299200745992/)
+
+大家对使用 spring session 一定不在话下。
+
+但是每次夜深人静时，你是否会思考 spring session 背后的实现原理？
+
+我们只是使用了一个注解，背后的一切又是怎样运转的呢？
+
+接下来，就让我们从源码入手，重新认识一下 spring session。
 
 # 使用 @EnableRedisHttpSession
 
@@ -59,10 +79,6 @@ flushMode：允许指定何时将数据写入Redis。 默认设置仅在SessionR
 还有一个核心的配置，就是 `@Import(RedisHttpSessionConfiguration.class)`。
 
 ## 核心目的
-
-将 SessionRepositoryFilter 作为名为 bean 公开 springSessionRepositoryFilter。
-
-为了使用它，必须将单个 RedisConnectionFactory 作为Bean公开。
 
 完成核心目标（1）将 session 的信息持久化到 redis。
 
@@ -187,7 +203,7 @@ public class SessionRepositoryFilter<S extends ExpiringSession>
 		extends OncePerRequestFilter {}
 ```
 
-这是 Filter 继承自 OncePerRequestFilter，保证每一个请求只执行一次。
+这是 Filter 继承自 `OncePerRequestFilter`，保证每一个请求只执行一次。
 
 ### 构造器
 
@@ -374,9 +390,9 @@ public void save(RedisSession session) {
 }
 ```
 
-# 过期 key 的清空问题
+# 过期 session 的清空问题
 
-
+针对需要过期 session 的清空，也针对 redis 做了相应的优化。
 
 ## 测试
 
@@ -457,6 +473,18 @@ lastAccessedTime
 session 中非常核心的是 lastAccessedTime，也就是我们常说的续签问题。
 
 每次 session 的续签，需要将旧桶中的数据移除，放到新桶中。
+
+## 源码
+
+每次访问，都会更新对应的 lastAccessedTime
+
+```java
+Long originalExpiration = this.originalLastAccessTime == null ? null
+					: this.originalLastAccessTime + TimeUnit.SECONDS
+							.toMillis(getMaxInactiveIntervalInSeconds());
+			RedisOperationsSessionRepository.this.expirationPolicy
+					.onExpirationUpdated(originalExpiration, this);
+```
 
 ## 场景
 
@@ -578,6 +606,8 @@ RedisIndexedSessionRepository支持在删除会话时触发SessionDeletedEvent�
 
 ## 例子
 
+RedisHttpSessionConfiguration 中有一个配置可以定义，默认的实现是 `ConfigureNotifyKeyspaceEventsAction`。
+
 例如，当与WebSockets集成时，SessionDestroyedEvent负责关闭任何活动的WebSocket连接。
 
 可以通过SessionMessageListener来触发SessionDeletedEvent或SessionExpiredEvent，该监听器监听Redis Keyspace事件。 
@@ -640,7 +670,7 @@ keyspace notifications 只会告诉我们哪个键过期了，不会告诉我们
 对于用户来说，C 类型键过期后，意味着登录失效，而对于服务端而言，真正的过期其实是 A 类型键过期，这中间会有 5 分钟的误差。
 
 
-# 反思
+# 小结
 
 如果是你实现一个 session 框架，你会如何设计？
 
@@ -663,6 +693,10 @@ spring session 重写了 http session，使用起来可以保证和原生的 htt
 这让设计变得有些复杂，而且有时候使用不慎，会直接把网络打爆。
 
 后续我们将参考 spring session，设计并且实现一个属于自己的 session。
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 
