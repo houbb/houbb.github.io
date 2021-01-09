@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  SOFAArk-01-SOFAArk 入门详解
+title:  SOFAArk-01-蚂蚁金服类隔离工具 SOFAArk 入门及源码讲解
 date:  2021-01-05 08:11:27 +0800
 categories: [SOFA]
 tags: [sofa, springboot, sh]
@@ -10,15 +10,15 @@ published: true
 
 # 情境导入
 
-相信每一位小伙伴都和老马一样遇到过包冲突的问题。
+你是否遇到过包冲突问题？又是如何解决的？
 
-手里的项目都是多年的历史“遗留财产”，老马甚至还遇到过一个应用中有 3 个不同版本的 spring，只能说能跑起来就是奇迹。
+有些项目都是多年的历史“遗留财产”，老马甚至还遇到过一个应用中有 3 个不同版本的 spring，只能说能跑起来就是奇迹。
 
 不过有时候会进行各种版本升级，然后会发现各种版本冲突，浪费时间在排除各种版本冲突的问题上。
 
 那有没有一种方法，可以帮助我们更好的解决包冲突呢？
 
-【冲突.jpg】
+![类冲突](https://images.gitee.com/uploads/images/2021/0109/163236_1331143e_508704.png "屏幕截图.png")
 
 今天就让我们一起学习下蚂蚁金服开源的利器——SOFAArk。
 
@@ -49,6 +49,8 @@ SOFAArk 是一款基于 Java 实现的轻量级类隔离容器，主要提供类
 jvm认为不同classloader加载的类即使包名类名相同，也认为他们是不同的。
 
 sofa-ark将需要隔离的jar包打成plugin，对每个plugin都用独立的classloader去加载。
+
+![蚂蚁金服](https://images.gitee.com/uploads/images/2021/0109/163326_23043cd2_508704.png "屏幕截图.png")
 
 # 快速入门
 
@@ -372,6 +374,8 @@ Ark container started in 2894 ms.
 
 接下来，我们可以继续学习一下，这背后的原理。
 
+![实现原理](https://images.gitee.com/uploads/images/2021/0109/163458_cc8d3d38_508704.png "屏幕截图.png")
+
 # sofa-ark-plugin-maven-plugin 插件原理
 
 这 3 个模块中，都反复出现一个核心插件：sofa-ark-plugin-maven-plugin。
@@ -437,6 +441,8 @@ public void execute() throws MojoExecutionException {
 
 
 # SofaArkBootstrap ark 引导类
+
+![容器加载机制](https://images.gitee.com/uploads/images/2021/0109/163549_376b7489_508704.png "屏幕截图.png")
 
 ## 初始化 Ark Container
 
@@ -680,6 +686,12 @@ arkServiceContainer中包含了一些Container启动前需要运行的Service，
 就实现了不同类使用不同的类加载器加载。
 
 # 小结
+
+对于类冲突，ark 确实是一种非常优雅轻量的解决方案。
+
+背后核心原理就是对于 jvm classloader 和 maven plugin 的理解和应用。
+
+学习好原理，并且和具体的应用场景结合起来，就产生了新的技术工具。
 
 希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
 
