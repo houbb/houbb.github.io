@@ -7,6 +7,21 @@ tags: [sofa, springboot, sh]
 published: true
 ---
 
+
+# 情境导入
+
+相信每一位小伙伴都和老马一样遇到过包冲突的问题。
+
+手里的项目都是多年的历史“遗留财产”，老马甚至还遇到过一个应用中有 3 个不同版本的 spring，只能说能跑起来就是奇迹。
+
+不过有时候会进行各种版本升级，然后会发现各种版本冲突，浪费时间在排除各种版本冲突的问题上。
+
+那有没有一种方法，可以帮助我们更好的解决包冲突呢？
+
+【冲突.jpg】
+
+今天就让我们一起学习下蚂蚁金服开源的利器——SOFAArk。
+
 # SOFAArk
 
 SOFAArk 是一款基于 Java 实现的轻量级类隔离容器，主要提供类隔离和应用(模块)合并部署能力，由蚂蚁金服公司开源贡献；
@@ -29,320 +44,640 @@ SOFAArk 是一款基于 Java 实现的轻量级类隔离容器，主要提供类
 
 基于以上能力，SOFAArk 可以帮助解决依赖包冲突、多应用(模块)合并部署等场景问题。
 
-# 应用场景
+## classloader 加载
 
-## 包冲突
+jvm认为不同classloader加载的类即使包名类名相同，也认为他们是不同的。
 
-日常使用 Java 开发，常常会遇到包依赖冲突的问题，尤其当应用变得臃肿庞大，包冲突的问题也会变得更加棘手，导致各种各样的报错，例如 LinkageError, NoSuchMethodError 等；实际开发中，可以采用多种方法来解决包冲突问题，比较常见的是类似 Spring Boot 的做法，统一管理应用所有依赖包的版本，保证这些三方包不存在依赖冲突；这种做法只能有效避免包冲突问题，不能根本上解决包冲突的问题；如果某个应用的确需要在运行时使用两个相互冲突的包，例如 protobuf2 和 protobuf3，那么类似 Spring Boot 的做法依然解决不了问题。
+sofa-ark将需要隔离的jar包打成plugin，对每个plugin都用独立的classloader去加载。
 
-为了彻底解决包冲突的问题，需要借助类隔离机制，使用不同的 ClassLoader 加载不同版本的三方依赖，进而隔离包冲突问题； OSGI 作为业内最出名的类隔离框架，自然是可以被用于解决上述包冲突问题，但是 OSGI 框架太过臃肿，功能繁杂；为了解决包冲突问题，引入 OSGI 框架，有牛刀杀鸡之嫌，且反而使工程变得更加复杂，不利于开发；
+# 快速入门
 
-SOFAArk 采用轻量级的类隔离方案来解决日常经常遇到的包冲突问题，在蚂蚁金服内部服务于整个 SOFABoot 技术体系，弥补 Spring Boot 没有的类隔离能力。SOFAArk 提出了一种特殊的包结构 – Ark Plugin，在遇到包冲突时，用户可以使用 Maven 插件将若干冲突包打包成 Plugin，运行时由独立的 PluginClassLoader 加载，从而解决包冲突。
+## 定义 2 个不同版本的 jar
 
-假设如下场景，如果工程需要引入两个三方包：A 和 B，但是 A 需要依赖版本号为 0.1 的 C 包，而恰好 B 需要依赖版本号为 0.2 的 C 包，且 C 包的这两个版本无法兼容：
+为了模拟不同版本之间的冲突，你可以自己定义 2 个不同版本的 jar 安装到本地，也可以直接使用常用的一些工具包进行模拟。
 
-![依赖](https://cdn.nlark.com/lark/2018/png/590/1523868150329-41ea3982-4783-49b0-a1e6-ffffddbe0886.png)
-
-此时，即可使用 SOFAArk 解决该依赖冲突问题；只需要把 A 和版本为 0.1 的 C 包一起打包成一个 Ark 插件，然后让应用工程引入该插件依赖即可；
-
-## 合并部署
-
-复杂项目通常需要跨团队协作开发，各自负责不同的组件，而众所周知，协调跨团队合作开发会遇到不少问题；比如各自技术栈不统一导致的依赖冲突，又比如往同一个 Git 仓库提交代码常常导致 merge 冲突。
-
-因此，如果能让每个团队将负责的功能组件当成一个个单独的应用开发，运行时合并部署，通过统一的编程界面交互，那么将极大的提升开发效率及应用可扩展性。
-
-SOFAArk 提出了一种特殊的包结构 – Ark Biz，用户可以使用 Maven 插件将应用打包成 Biz，允许多 Biz 在 SOFAArk 容器之上合并部署，并通过统一的编程界面交互。
-
-### 静态合并部署
-
-SOFAArk 提供了静态合并部署能力，在开发阶段，应用可以将其他应用打成的 Biz 包通过 Maven 依赖的方式引入，而当自身被打成可执行 Fat Jar 时，可以将其他应用 Biz 包一并打入，启动时，则会根据优先级依次启动各应用。
-
-每个 Biz 使用独立的 BizClassLoader 加载，不需要考虑相互依赖冲突问题，Biz 之间则通过 SofaService/SofaReference JVM 服务进行交互。
-
-### 动态合并部署
-
-动态合并部署区别于静态合并部署最大的一点是，运行时通过 API 或者配置中心（Zookeeper）来控制 Biz 的部署和卸载。动态合并部署的设计理念图如下：
-
-![动态合并部署](https://www.sofastack.tech/projects/sofa-boot/sofa-ark-readme/architecture.png)
-
-无论是静态还是动态合并部署都会有宿主应用（master biz）的概念, 如果 Ark 包只打包了一个 Biz，则该 Biz 默认成为宿主应用；如果 Ark 包打包了多个 Biz 包，需要配置指定宿主应用。
-
-宿主应用不允许被卸载，一般而言，宿主应用会作为流量入口的中台系统，具体的服务实现会放在不同的动态 Biz 中，供宿主应用调用。
-
-宿主应用可以使用 SOFAArk 提供的客户端 API 实现动态应用的部署和卸载。
-
-除了 API, SOFAArk 提供了 Config Plugin，用于对接配置中心（目前支持 Zookeeper），运行时接受动态配置；Config Plugin 会解析下发的配置，控制动态应用的部署和卸载。
-
-# 原理
-
-SOFAArk 包含三个概念，Ark Container, Ark Plugin 和 Ark Biz; 运行时逻辑结构图如下:
-
-![原理](https://cdn.nlark.com/lark/2018/png/590/1523868989241-f50695ed-dca0-4bf7-a6a9-afe07c2ade76.png)
-
-在介绍这三个概念之前，先介绍上述 Ark 包概念；Ark 包是满足特定目录格式要求的可运行 Fat Jar，使用官方提供的 Maven 插件 sofa-ark-maven-plugin 可以将单个或多个应用打包成标准格式的 Ark 包；
-
-使用 java -jar 命令即可在 SOFAArk 容器之上启动所有应用；
-
-Ark 包通常包含 Ark Container、Ark Plugin 和 Ark Biz；
-
-以下我们针对这三个概念简单做下名词解释：
-
-在介绍这三个概念之前，先介绍上述 Ark 包概念；
-
-Ark 包是满足特定目录格式要求的可运行 Fat Jar，使用官方提供的 Maven 插件 sofa-ark-maven-plugin 可以将单个或多个应用打包成标准格式的 Ark 包；
-
-使用 java -jar 命令即可在 SOFAArk 容器之上启动所有应用；Ark 包通常包含 Ark Container、Ark Plugin 和 Ark Biz；
-
-## 名词
-
-以下我们针对这三个概念简单做下名词解释：
-
-### Ark Container
-
-SOFAArk 容器，负责 Ark 包启动运行时的管理；Ark Plugin 和 Ark Biz 运行在 SOFAArk 容器之上；容器具备管理插件和应用的功能；容器启动成功后，会自动解析 classpath 包含的 Ark Plugin 和 Ark Biz 依赖，完成隔离加载并按优先级依次启动之；
-
-### Ark Plugin
-
-Ark 插件，满足特定目录格式要求的 Fat Jar，使用官方提供的 Maven 插件 sofa-ark-plugin-maven-plugin 可以将一个或多个普通的 Java jar 打包成一个标准格式的 Ark Plugin；Ark Plugin 会包含一份配置文件，通常包括插件类导入导出配置、资源导入导出配置、插件启动优先级等；运行时，SOFAArk 容器会使用独立的 PluginClassLoader加载插件，并根据插件配置构建类加载索引表、资源加载索引表，使插件和插件之间、插件和应用之间相互隔离；
-
-### Ark Biz
-
-Ark 应用模块，满足特定目录格式要求的 Fat Jar，使用官方提供的 Maven 插件 sofa-ark-maven-plugin 可以将工程应用打包成一个标准格式的 Ark Biz；Ark Biz 是工程应用以及其依赖包的组织单元，包含应用启动所需的所有依赖和配置；一个 Ark 包中可以包含多个 Ark Biz 包，按优先级依次启动，Biz 之间通过 JVM 服务交互；
-
-运行 Ark 包，Ark Container 优先启动，容器自动解析 Ark 包中含有的 Ark Plugin 和 Ark Biz，并读取他们的配置信息，构建类和资源的加载索引表；然后使用独立的 ClassLoader 加载并按优先级配置依次启动；需要指出的是，Ark Plugin 优先 Ark Biz 被加载启动；Ark Plugin 之间是双向类索引关系，即可以相互委托对方加载所需的类和资源；Ark Plugin 和 Ark Biz 是单向类索引关系，即只允许 Ark Biz 索引 Ark Plugin 加载的类和资源，反之则不允许。
-
-# 如何打包 Ark Plugin 
-
-## 简介
-
-该样例工程演示了如何借助 maven 插件将一个普通的 Java 工程打包成标准格式规范的 Ark Plugin
-
-## 背景
-
-现实开发中，常常会遇到依赖包冲突的情况；假设我们开发了一个类库 sample-lib , 业务应用在引入使用时，可能存在跟已有的依赖发生冲突的情况；通常这个时候，我们会希望自己的类库能够和业务其他依赖进行隔离，互不协商双方依赖包版本。 
-
-Ark Plugin 正是基于这种需求背景下的实践产物； 
-
-Ark Plugin 运行在 Ark Container 之上，由容器负责加载启动，任何一个 Ark Plugin 由独立的 ClassLoader 加载，从而做到相互隔离。
-
-Ark Plugin 存在四个概念： 
-
-- 导入类：插件启动时，优先委托给导出该类的插件负责加载，如果加载不到，才会尝试从本插件内部加载；
-
-- 导出类：其他插件如果导入了该类，优先从本插件加载；
-
-- 导入资源：插件在查找资源时，优先委托给导出该资源的插件负责加载，如果加载不到，才会尝试从本插件内部加载；
-
-- 导出资源：其他插件如果导入了该资源，优先从本插件加载；
-
-## 工具
-
-官方提供了 Maven 插件 - sofa-ark-plugin-maven-plugin，只需要简单的配置项，即可将普通的 Java 工程打包成标准格式规范的 Ark Plugin ，插件坐标为:
+我这里直接使用了自己的一个工具包：
 
 ```xml
-<plugin>
-    <groupId>com.alipay.sofa</groupId>
-    <artifactId>sofa-ark-plugin-maven-plugin</artifactId>
-    <version>${sofa.ark.version}</version>
-</plugin>
+<dependency>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>heaven</artifactId>
+    <version>${heaven.version}</version>
+</dependency>
 ```
 
-# 入门
+## 项目结构
 
-基于该用例工程，我们一步步描述如何构建一个 Ark Plugin
+一共下面 3 个模块：
 
-## 创建标准 Maven 工程
+```
+sofaark-learn-serviceone
+sofaark-learn-servicetwo
+sofaark-learn-run
+```
 
-该用例工程是一个标准的 Maven 工程，一共包含两个模块： 
+我们让 serviceone 和 servicetwo 依赖不同的 heaven 版本，然后在 run 模块中同时依赖二者，模拟 jar 版本冲突。
 
-- common 模块：包含了插件导出类
+## serviceone
 
-- plugin 模块：包含了 com.alipay.sofa.ark.spi.service.PluginActivator 接口实现类和一个插件服务类，插件打包工具 sofa-ark-plugin-maven-plugin 即配置在该模块的 pom.xml 中；
+- pom.xml
 
-## 配置打包插件
+指定依赖了 0.0.1 版本的 heaven。
 
-在 plugin 模块的 pom.xml 中按如下配置打包插件：
+`sofa-ark-plugin-maven-plugin` 是为了将当前模块打包成为 ark-plugin。
 
 ```xml
-<build>
-    <plugins>
-        <plugin>
-            <groupId>com.alipay.sofa</groupId>
-            <artifactId>sofa-ark-plugin-maven-plugin</artifactId>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sofaark-learn</artifactId>
+        <groupId>org.example</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>sofaark-learn-serviceone</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>heaven</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>sofa-ark-plugin-maven-plugin</artifactId>
+                <version>0.6.0</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <goals>
+                            <goal>ark-plugin</goal>
+                        </goals>
+
+                        <configuration>
+                            <!-- configure exported class -->
+                            <exported>
+                                <!-- configure class-level exported class -->
+                                <classes>
+                                    <class>com.github.houbb.sofaark.learn.serviceone.ServiceOne</class>
+                                </classes>
+                            </exported>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+```
+
+- ServiceOne.java
+
+服务定义比较简单，输出一下当前类的 classloader。
+
+```java
+package com.github.houbb.sofaark.learn.serviceone;
+
+/**
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+public class ServiceOne {
+
+    public static void say() {
+        System.out.println("v0.0.1 classloader:" + ServiceOne.class.getClassLoader());
+    }
+
+}
+```
+
+## servicetwo
+
+这个和 serviceone 基本一样，只是依赖的 heaven 版本不同。
+
+- pom.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sofaark-learn</artifactId>
+        <groupId>org.example</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>sofaark-learn-servicetwo</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>heaven</artifactId>
+            <version>0.1.120</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>sofa-ark-plugin-maven-plugin</artifactId>
+                <version>0.6.0</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+                        <goals>
+                            <goal>ark-plugin</goal>
+                        </goals>
+
+                        <configuration>
+                            <!-- configure exported class -->
+                            <exported>
+                                <!-- configure class-level exported class -->
+                                <classes>
+                                    <class>com.github.houbb.sofaark.learn.servicetwo.ServiceTwo</class>
+                                </classes>
+                            </exported>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+```
+
+- ServiceTwo.java
+
+```java
+package com.github.houbb.sofaark.learn.servicetwo;
+
+/**
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+public class ServiceTwo {
+
+    public static void say() {
+        System.out.println("v0.1.120 classloader:" + ServiceTwo.class.getClassLoader());
+    }
+
+}
+```
+
+## run
+
+这个模块会依赖二者的实现。
+
+- pom.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sofaark-learn</artifactId>
+        <groupId>org.example</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>sofaark-learn-run</artifactId>
+
+    <dependencies>
+
+<!--        只作用于编译器-->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>sofaark-learn-serviceone</artifactId>
             <version>${project.version}</version>
-            <executions>
-                <execution>
-                    <id>default-cli</id>
-                    <goals>
-                        <goal>ark-plugin</goal>
-                    </goals>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>sofaark-learn-servicetwo</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
 
-                    <configuration>
+<!--        实际执行的是 ark-plugin-->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>sofaark-learn-serviceone</artifactId>
+            <version>${project.version}</version>
+            <classifier>ark-plugin</classifier>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>sofaark-learn-servicetwo</artifactId>
+            <version>${project.version}</version>
+            <classifier>ark-plugin</classifier>
+        </dependency>
 
-                        <!--can only configure no more than one activator-->
-                        <activator>com.alipay.sofa.ark.sample.activator.SamplePluginActivator</activator>
-
-                        <!-- configure exported class -->
-                        <exported>
-                            <!-- configure package-level exported class-->
-                            <packages>
-                                <package>com.alipay.sofa.ark.sample.common</package>
-                            </packages>
-
-                            <!-- configure class-level exported class -->
-                            <classes>
-                                <class>com.alipay.sofa.ark.sample.facade.SamplePluginService</class>
-                            </classes>
-                        </exported>
-
-                        <!--specify destination where ark-plugin will be saved, default saved to ${project.build.directory}-->
-                        <outputDirectory>../target</outputDirectory>
-
-                    </configuration>
-                </execution>
-
-            </executions>
-        </plugin>
-    </plugins>
-</build>
-```
-
-在用例工程中，我们只配置了一部分配置项，这已经足够生成一个可用的 Ark Plugin，各配置项含义如下： * activator: Ark 容器启动插件的入口类，最多只能配置一个；通常来说，在插件的 activator 会执行一些初始化操作，比如发布插件服务；在本样例工程中，即发布了插件服务。
-
-- 导出包：包级别的导出类配置，插件中所有以导出包名为前缀的类，包括插件的三方依赖包，都会被导出；
-
-- 导出类：精确类名的导出类配置，导出具体的类；
-
-- outputDirectory： mvn package 打包后，输出的 ark plugin 文件存放目录；
-
-需要指出的是，在用例工程中，我们只导出了工程创建的类；实际在使用时，也可以把工程依赖的三方包也导出去。
-
-## 打包、安装、发布、引入
-
-和普通的工程操作类似，使用 mvn package , mvn install , mvn deploy 即可完成插件包的安装和发布；需要注意的是，默认发布的 Ark Plugin 其 Maven 坐标会增加 classifier=ark-plugin ；
-
-例如在该样例工程中，如果需要使用该 ark plugin，必须如下配置依赖：
-
-```xml
-<dependency>
-     <groupId>com.alipay.sofa</groupId>
-     <artifactId>sample-ark-plugin</artifactId>
-     <classifier>ark-plugin</classifier>
-     <version>${sofa.ark.version}</version>
- </dependency>
-```
-
-## 发布引用插件服务
-
-在该 Demo 中，演示了如何使用 PluginContext 发布插件服务：
-
-```java
-public class SamplePluginActivator implements PluginActivator {
-
-    public void start(PluginContext context) throws ArkRuntimeException {
-        System.out.println("starting in sample ark plugin activator");
-        context.publishService(SamplePluginService.class, new SamplePluginServiceImpl());
-    }
-
-    public void stop(PluginContext context) throws ArkRuntimeException {
-        System.out.println("stopping in ark plugin activator");
-    }
-}
-```
-
-同时，在服务实现 SamplePluginServiceImpl 中演示了如何引用其他插件或者Ark容器发的服务，这里是引用 Ark 容器发布的事件管理服务 EventAdminService:
-
-```java
-public class SamplePluginServiceImpl implements SamplePluginService {
-
-    @ArkInject
-    private EventAdminService eventAdminService;
-
-    public String service() {
-        return "I'm a sample plugin service published by ark-plugin";
-    }
-
-    public void sendEvent(ArkEvent arkEvent) {
-        eventAdminService.sendEvent(arkEvent);
-    }
-}
-```
-
-# 如何打包 Ark 包 
-
-该样例工程演示了如何借助 Maven 插件将一个 Spring Boot Web 工程打包成标准格式规范的可执行 Ark 包；
-
-## 准备
-
-因该样例工程依赖 sample-ark-plugin，因此需要提前在本地安装该 Ark Plugin
-
-## 工具
-
-官方提供了 Maven 插件 - sofa-ark-maven-plugin ，只需要简单的配置项，即可将 Spring Boot Web 工程打包成标准格式规范的可执行 Ark 包，插件坐标为：
-
-```xml
-<plugin>
-    <groupId>com.alipay.sofa</groupId>
-    <artifactId>sofa-ark-maven-plugin</artifactId>
-    <version>${sofa.ark.version}</version>
-</plugin>
-```
-
-# 入门
-
-基于该样例工程，我们一步步描述如何将一个 Spring Boot Web 工程打包成可运行 Ark 包
-
-## 创建 SpringBoot Web 工程
-
-在官网 https://start.spring.io/ 下载一个标准的 Spring Boot Web 工程
-
-## 引入 sample-ark-plugin
-
-在工程主 pom.xml 中如下配置，添加另一个样例工程打包生成的 Ark Plugin 依赖，参考文档
-
-```xml
-<dependency>
-     <groupId>com.alipay.sofa</groupId>
-     <artifactId>sample-ark-plugin</artifactId>
-     <classifier>ark-plugin</classifier>
-     <version>${sofa.ark.version}</version>
- </dependency>
-```
-
-## 配置打包插件
-
-在工程主 pom.xml 中如下配置 Maven 插件 sofa-ark-maven-plugin :
-
-```xml
-<build>
-    <plugins>
-        <plugin>
+        <dependency>
             <groupId>com.alipay.sofa</groupId>
-            <artifactId>sofa-ark-maven-plugin</artifactId>
-            <executions>
-                <execution>
-                    <id>default-cli</id>
-                    
-                    <!--goal executed to generate executable-ark-jar -->
-                    <goals>
-                        <goal>repackage</goal>
-                    </goals>
-                    
-                    <configuration>
-                        <!--specify destination where executable-ark-jar will be saved, default saved to ${project.build.directory}-->
-                        <outputDirectory>./target</outputDirectory>
-                        
-                        <!--default none-->
-                        <arkClassifier>executable-ark</arkClassifier>
-                    </configuration>
-                </execution>
-            </executions>
-        </plugin>
-    </plugins>
-</build>
+            <artifactId>sofa-ark-support-starter</artifactId>
+            <version>0.6.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.alipay.sofa</groupId>
+                <artifactId>sofa-ark-maven-plugin</artifactId>
+                <version>0.6.0</version>
+                <executions>
+                    <execution>
+                        <id>default-cli</id>
+
+                        <!--goal executed to generate executable-ark-jar -->
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                        <configuration>
+                            <!--specify destination where executable-ark-jar will be saved, default saved to ${project.build.directory}-->
+                            <outputDirectory>./</outputDirectory>
+
+                            <!--default none-->
+                            <arkClassifier>executable-ark</arkClassifier>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
 ```
 
+注意这里的 `<classifier>ark-plugin</classifier>`，实际上是引入了上面编译后的 ark-plugin，为了让 idea 识别。
 
+plugins 中的 `<arkClassifier>executable-ark</arkClassifier>` 为了将当前的模块打包成为一个可以执行的 ark 包。
+
+- Main.java
+
+运行的方法如下：
+
+```java
+package com.github.houbb.sofaark.learn.run;
+
+import com.alipay.sofa.ark.support.startup.SofaArkBootstrap;
+import com.github.houbb.sofaark.learn.serviceone.ServiceOne;
+import com.github.houbb.sofaark.learn.servicetwo.ServiceTwo;
+
+/**
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+public class Main {
+
+    public static void main(String[] args) {
+        SofaArkBootstrap.launch(args);
+        System.out.println("Main classloader: " + Main.class.getClassLoader());
+
+        ServiceOne.say();
+        ServiceTwo.say();
+    }
+
+}
+```
+
+我们需要指定 `SofaArkBootstrap.launch(args);`，让 ark 启动生效。
+
+这样整个入门流程就完成了，对应的日志如下：
+
+```
+Main classloader: com.alipay.sofa.ark.container.service.classloader.BizClassLoader@1cec3a6
+v0.0.1 classloader:com.alipay.sofa.ark.container.service.classloader.BizClassLoader@1cec3a6
+v0.1.120 classloader:com.alipay.sofa.ark.container.service.classloader.BizClassLoader@1cec3a6
+Ark container started in 2894 ms.
+```
+
+可以发现，所有的 classloader 都变成了 ark 对应的容器 BizClassLoader。
+
+接下来，我们可以继续学习一下，这背后的原理。
+
+# sofa-ark-plugin-maven-plugin 插件原理
+
+这 3 个模块中，都反复出现一个核心插件：sofa-ark-plugin-maven-plugin。
+
+这个插件做了什么？
+
+最好的答案就在源码之中，我们可以到 [sofa-ark-plugin](https://github.com/sofastack/sofa-ark/tree/master/sofa-ark-plugin) 查看对应的源码。
+
+## ArkPluginMojo 
+
+ark-plugin 核心实现类 ArkPluginMojo 定义如下：
+
+```java
+@Mojo(name = "ark-plugin", defaultPhase = LifecyclePhase.PACKAGE, requiresDependencyResolution = ResolutionScope.RUNTIME)
+public class ArkPluginMojo extends AbstractMojo {}
+```
+
+这里通过注解 `@Mojo` 定义了 ark-plugin，并将其生效的阶段绑定为 package 打包阶段。
+
+### execute 方法
+
+也就是每次执行 mvn package 时，会执行其对应的 execute 方法进行处理。
+
+核心实现精简如下：
+
+```java
+@Override
+public void execute() throws MojoExecutionException {
+    Archiver archiver = getArchiver();
+    String fileName = getFileName();
+    File destination = new File(outputDirectory, fileName);
+    File tmpDestination = new File(outputDirectory, getTempFileName());
+    archiver.setDestFile(tmpDestination);
+    Set<Artifact> artifacts = project.getArtifacts();
+    artifacts = filterExcludeArtifacts(artifacts);
+    Set<Artifact> conflictArtifacts = filterConflictArtifacts(artifacts);
+    addArkPluginArtifact(archiver, artifacts, conflictArtifacts);
+    addArkPluginConfig(archiver);
+    archiver.createArchive();
+    shadeJarIntoArkPlugin(destination, tmpDestination, artifacts);
+    
+    if (isAttach()) {
+        if (StringUtils.isEmpty(classifier)) {
+            Artifact artifact = project.getArtifact();
+            artifact.setFile(destination);
+            project.setArtifact(artifact);
+        } else {
+            projectHelper.attachArtifact(project, destination, classifier);
+        }
+    }
+}
+```
+
+这个方法主要做了下面几步：
+
+1. 建立一个zip格式的归档，用来保存引入的jar包和其他文件，建立输出路径。
+
+2. 获取引入的所有依赖（Artifacts），并且将需要exclude的包排除出去。
+
+3. 将所有依赖写入zip归档中的lib目录下
+
+4. 将配置信息写入zip归档中，包括 export.index，MANIFEST.MF，mark 等
+
+
+# SofaArkBootstrap ark 引导类
+
+## 初始化 Ark Container
+
+我们使用的方式，和普通的 main() 方法相比，就是多了一句  `SofaArkBootstrap.launch(args);`
+
+对应的源码如下：
+
+```java
+public static void launch(String[] args) {
+    try {
+        // ark 是否已经启动
+        // 直接 debug 可以发现，会进入到判断之中
+        if (!isSofaArkStarted()) {
+            // 
+            entryMethod = new EntryMethod(Thread.currentThread());
+            IsolatedThreadGroup threadGroup = new IsolatedThreadGroup(
+                entryMethod.getDeclaringClassName());
+
+            //MAIN_ENTRY_NAME 对应的方法名称为 remain，实际上这里就是一个反射调用 remain()    
+            LaunchRunner launchRunner = new LaunchRunner(SofaArkBootstrap.class.getName(),
+                MAIN_ENTRY_NAME, args);
+            Thread launchThread = new Thread(threadGroup, launchRunner,
+                entryMethod.getMethodName());
+            launchThread.start();
+            LaunchRunner.join(threadGroup);
+            threadGroup.rethrowUncaughtException();
+            System.exit(0);
+        }
+    } catch (Throwable e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
+核心目的：
+
+（1）将 ark container 启动起来
+
+（2）让 ark container 加载 ark-plugin 和 ark-biz
+
+
+- isSofaArkStarted ark 是否已经启动
+
+实现如下：
+
+```java
+private static boolean isSofaArkStarted() {
+    Class<?> bizClassLoader = SofaArkBootstrap.class.getClassLoader().getClass();
+    return BIZ_CLASSLOADER.equals(bizClassLoader.getCanonicalName());
+}
+```
+
+- remain()
+
+实现如下：
+
+```java
+private static void remain(String[] args) throws Exception {// NOPMD
+    AssertUtils.assertNotNull(entryMethod, "No Entry Method Found.");
+    URL[] urls = getURLClassPath();
+    new ClasspathLauncher(new ClassPathArchive(entryMethod.getDeclaringClassName(),
+        entryMethod.getMethodName(), urls)).launch(args, getClasspath(urls),
+        entryMethod.getMethod());
+}
+```
+
+作用：
+
+1. 获取classpath下的所有jar包，包括jdk自己的jar包和maven引入的jar包。
+
+2. 将所有依赖jar包和自己写的启动类及其main函数以url的形式传入ClasspathLauncher，ClasspathLauncher反射调用ArkContainer的main方法，并且使用ContainerClassLoader加载ArkContainer。
+
+至此，就开始启动ArkContainer了。
+
+## 启动 ArkContainer
+
+接着就运行到了ArkContainer中的main方法，传入的参数args即之前 ClasspathLauncher 传入的url。
+
+ClasspathLauncher 继承自 ArkLauncher，实现如下：
+
+```java
+public class ArkLauncher extends BaseExecutableArchiveLauncher {
+
+    public final String SOFA_ARK_MAIN = "com.alipay.sofa.ark.container.ArkContainer";
+
+    public static void main(String[] args) throws Exception {
+        new ArkLauncher().launch(args);
+    }
+
+    public ArkLauncher() {
+    }
+
+    public ArkLauncher(ExecutableArchive executableArchive) {
+        super(executableArchive);
+    }
+
+    @Override
+    protected String getMainClass() {
+        return SOFA_ARK_MAIN;
+    }
+}
+```
+
+所以后续反射调用 main 实际上会调用到 `ArkContainer#main()` 方法。
+
+完整实现如下：
+
+```java
+public static Object main(String[] args) throws ArkRuntimeException {
+    // 参数校验
+    if (args.length < MINIMUM_ARGS_SIZE) {
+        throw new ArkRuntimeException("Please provide suitable arguments to continue !");
+    }
+    try {
+        //使用 LaunchCommand 将传入的参数按类型分类
+        LaunchCommand launchCommand = LaunchCommand.parse(args);
+        if (launchCommand.isExecutedByCommandLine()) {
+            ExecutableArkBizJar executableArchive;
+            File rootFile = new File(URLDecoder.decode(launchCommand.getExecutableArkBizJar()
+                .getFile()));
+            if (rootFile.isDirectory()) {
+                executableArchive = new ExecutableArkBizJar(new ExplodedArchive(rootFile));
+            } else {
+                executableArchive = new ExecutableArkBizJar(new JarFileArchive(rootFile,
+                    launchCommand.getExecutableArkBizJar()));
+            }
+            return new ArkContainer(executableArchive, launchCommand).start();
+        } else {
+            //ClassPathArchive将传入依赖的Jar包分类，并提供获得plugin和biz的filter方法
+            ClassPathArchive classPathArchive = new ClassPathArchive(
+                launchCommand.getEntryClassName(), launchCommand.getEntryMethodName(),
+                launchCommand.getClasspath());
+            return new ArkContainer(classPathArchive, launchCommand).start();
+        }
+    } catch (IOException e) {
+        // 异常处理
+        throw new ArkRuntimeException(String.format("SOFAArk startup failed, commandline=%s",
+            LaunchCommand.toString(args)), e);
+    }
+}
+```
+
+最后都会调用 start 方法进行 ArkContainer 容器启动：
+
+```java
+public Object start() throws ArkRuntimeException {
+    AssertUtils.assertNotNull(arkServiceContainer, "arkServiceContainer is null !");
+
+    //AtomicBoolean 通过 cas 进行比较
+    if (started.compareAndSet(false, true)) {
+        // 添加关闭时的钩子函数
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                stop();
+            }
+        }));
+
+        // ark 配置的处理工作
+        prepareArkConfig();
+        // 重新初始化 Ark Logger
+        reInitializeArkLogger();
+
+        // 初始化 ArkService
+        arkServiceContainer.start();
+        // 依次执行 pipeline
+        Pipeline pipeline = arkServiceContainer.getService(Pipeline.class);
+        pipeline.process(pipelineContext);
+        System.out.println("Ark container started in " + (System.currentTimeMillis() - start) //NOPMD
+                           + " ms.");
+    }
+    return this;
+}
+```
+
+### 初始化 ArkService
+
+`arkServiceContainer.start();` 实现如下：
+
+这里是选择的 google Guice 作为注入实现。
+
+```java
+public void start() throws ArkRuntimeException {
+    if (started.compareAndSet(false, true)) {
+        ClassLoader oldClassLoader = ClassLoaderUtils.pushContextClassLoader(getClass()
+            .getClassLoader());
+        try {
+            LOGGER.info("Begin to start ArkServiceContainer");
+            injector = Guice.createInjector(findServiceModules());
+            for (Binding<ArkService> binding : injector
+                .findBindingsByType(new TypeLiteral<ArkService>() {
+                })) {
+                arkServiceList.add(binding.getProvider().get());
+            }
+            Collections.sort(arkServiceList, new OrderComparator());
+
+            // 循环 ark 列表，执行 init
+            for (ArkService arkService : arkServiceList) {
+                LOGGER.info(String.format("Init Service: %s", arkService.getClass().getName()));
+                arkService.init();
+            }
+
+            ArkServiceContainerHolder.setContainer(this);
+            ArkClient.setBizFactoryService(getService(BizFactoryService.class));
+            ArkClient.setBizManagerService(getService(BizManagerService.class));
+            ArkClient.setInjectionService(getService(InjectionService.class));
+            ArkClient.setEventAdminService(getService(EventAdminService.class));
+            ArkClient.setArguments(arguments);
+            LOGGER.info("Finish to start ArkServiceContainer");
+        } finally {
+            ClassLoaderUtils.popContextClassLoader(oldClassLoader);
+        }
+    }
+}
+```
+
+### pipeline 流水线
+
+arkServiceContainer中包含了一些Container启动前需要运行的Service，这些Service被封装到一个个的PipelineStage中，这些PipelineStage又被封装成List到一个pipeline中。
+
+主要包含这么几个PipelineStage，依次执行：
+
+（1）HandleArchiveStage
+
+筛选所有第三方jar包中含有mark标记的plugin jar，说明这些jar是sofa ark maven插件打包成的需要隔离的jar。
+
+从jar中的export.index中提取需要隔离的类，把他们加入一个PluginList中，并给每个plugin，分配一个独立的PluginClassLoader。同时以同样的操作给Biz也分配一个BizClassLoader
+
+（2）DeployPluginStage 
+
+创建一个map，key是需要隔离的类，value是这个加载这个类使用的PluginClassLoader实例。
+
+（3）DeployBizStage 
+
+使用BizClassLoader反射调用Biz的main方法。
+
+至此，Container就启动完了。
+
+后面再调用需要隔离的类时，由于启动Biz的线程已经被换成了BizClassLoader，在loadClass时BizClassLoader会首先看看在DeployPluginStage创建的Map中是否有PluginClassLoader能加载这个类，如果能就委托PluginClassLoader加载。
+
+就实现了不同类使用不同的类加载器加载。
 
 # 小结
 
@@ -354,13 +689,7 @@ public class SamplePluginServiceImpl implements SamplePluginService {
 
 [Java隔离容器之sofa-ark使用说明及源码解析](https://blog.csdn.net/weixin_34246551/article/details/87990362)
 
-[常见问题](https://www.sofastack.tech/projects/sofa-boot/faq/)
-
-[在 Spring Boot 中集成 SOFABoot 类隔离能力](https://www.sofastack.tech/blog/spring-boot-sofa-boot-class-isolation-integration/)
-
-[SOFABoot 类隔离原理剖析](https://www.sofastack.tech/blog/sofa-boot-class-isolation-deep-dive/)
-
-https://www.sofastack.tech/projects/sofa-boot/sofa-ark-readme/
+[Ark 容器启动流程](https://www.sofastack.tech/projects/sofa-boot/sofa-ark-startup/)
 
 * any list
 {:toc}

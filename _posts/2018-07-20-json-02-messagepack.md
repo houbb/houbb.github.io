@@ -42,13 +42,11 @@ Small integers are encoded into a single byte, and typical short strings require
 ## maven 引入
 
 ```xml
-<dependencies>
-  <dependency>
+<dependency>
     <groupId>org.msgpack</groupId>
-    <artifactId>msgpack</artifactId>
-    <version>${msgpack.version}</version>
-  </dependency>
-</dependencies>
+    <artifactId>msgpack-core</artifactId>
+    <version>0.8.22</version>
+</dependency>
 ```
 
 ## 代码案例
