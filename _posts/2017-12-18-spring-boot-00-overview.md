@@ -44,7 +44,7 @@ ps: 感觉这点和 maven 是比较类似的。
     visit->result:
 </div>
 
-## Hello World
+# Hello World
 
 - create
 
@@ -197,6 +197,10 @@ SUCCESS
 # 参考资料
 
 https://www.cnblogs.com/ityouknow/p/7508306.html
+
+[springboot依赖的一些配置：spring-boot-dependencies、spring-boot-starter-parent、io.spring.platform](https://www.cnblogs.com/ld-mars/p/11714151.html)
+
+[完整文档](https://docs.spring.io/spring-boot/docs/2.4.1/reference/htmlsingle/)
 
 * any list
 {:toc}
