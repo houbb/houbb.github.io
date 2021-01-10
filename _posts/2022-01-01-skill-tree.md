@@ -23,6 +23,61 @@ published: true
 
 我称之为这次差缺补漏环节为【盘古计划】。希望自己在学习完之后，可以开天辟地，让知识体系清晰起来。
 
+
+# 授权系列
+
+shiro
+
+spring-session
+
+spring security
+
+sso
+
+auth2
+
+ums-用户管理系统
+
+pms-权限管理系统
+
+审批流-用于权限/角色添加申请
+
+分布式/单机任务调度系统
+
+authing 三方校验服务
+
+# 数据库系统
+
+jdbc-oracle
+
+jdbc-sqlserver
+
+metadata
+
+jdbc
+
+jdbc-pool
+
+sql 注入攻击
+
+mybatis
+
+explain
+
+发展路线：
+
+（1）代码生成
+
+（2）元数据管理
+
+（3）元数据文档生成
+
+（4）基本的 crud，类似于 jpa
+
+进阶：
+
+手写 h2=>mysql
+
 # 面向对象
 
 - 什么是面向对象
