@@ -7,6 +7,18 @@ tags: [spring, exception, spring, springboot]
 published: true
 ---
 
+# 序言
+
+大家好，我是老马。
+
+平时一直在使用 springboot，却总感觉对于其理解不深入，于是有两个这个系列的整理。
+
+主要是为了系统的学习一下 springboot，残缺补漏一下。主要翻译自官方文档，结合自己的实际使用。
+
+[springboot 学习笔记（一）引导类特性详解](https://www.toutiao.com/item/6916083152544956932/)
+
+[springboot 学习笔记（二）外部化配置详解](https://www.toutiao.com/item/6916084329705734660/)
+
 # 场景
 
 有很多公司都有配置中心，保证不同的环境不同的配置。
@@ -125,6 +137,38 @@ java -jar --spring.profiles.active=dev xxxx.jar
 ```
 [vm options:] -Dspring.profiles.action=dev
 ```
+
+# 指定 profile 生效
+
+看了下官方文档，还有一个比较强大的功能。
+
+任何 `@Component`，`@Configuration` 或 `@ConfigurationProperties` 都可以用 `@Profile` 标记，以限制其加载时间。
+
+可以指定对应的 bean 或者配置，在指定的环境下才生效。
+
+```java
+@Configuration(proxyBeanMethods = false)
+@Profile("production")
+public class ProductionConfiguration {
+
+    // ...
+
+}
+```
+
+这个应用场景老马倒是没有使用过，不过有一说一，确认非常的强大灵活。
+
+# 小结
+
+不同的环境，使用不同的配置，基本是所有的 web 应用都需要的一个特性。
+
+对于没有配置中心的小型公司或是轻量的项目，使用 springboot 的 profile 可以非常方便的达到环境隔离的效果，只需要指定对应的启动命令即可。
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位极客的点赞收藏转发，是老马持续写作的最大动力！
+
+我是老马，期待与你的下次重逢。
 
 # 参考资料
 
