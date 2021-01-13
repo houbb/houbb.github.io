@@ -122,7 +122,7 @@ ps: 感觉这种转换一般是用不到的，默认的实现已经比较方便�
 
 您还可以在包含序列化器/反序列化器作为内部类的类上使用它，如以下示例所示：
 
-```java 
+```java
 @JsonComponent
 public class Example {
 
