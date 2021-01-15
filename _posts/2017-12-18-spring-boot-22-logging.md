@@ -239,6 +239,37 @@ org.jooq.tools.LoggerListener
 </appender>
 ```
 
+# 不同的环境指定不同的配置
+
+## 场景说明
+
+一般情况下 springboot 可以通过 -P 指定不同的环境配置，当然如果有配置中心的情况下，就不希望使用 -P 指定环境了。
+
+## 配置修改
+
+默认为  logback.xml
+
+我们新建一个 logback-dev.xml
+
+配置如下:
+
+```xml
+<root level="INFO">
+     <appender-ref ref="STDOUT"/>
+</root>
+```
+
+dev 环境输出到控台，便于测试。
+
+## 启动 jvm 参数
+
+```
+-Dlogging.config=classpath:logback-dev.xml
+```
+
+这样本地就可以以 logback-dev.xml 配置为准。
+
+
 # 小结
 
 希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
