@@ -181,7 +181,7 @@ amount=100.00&routingNumber=1234&account=9876&_csrf=4bfd1575-3ad1-4d21-96c7-4ef2
 
 恶意网站将无法为_csrf参数提供正确的值（必须在邪恶网站上明确提供），并且当服务器将实际CSRF令牌与预期CSRF令牌进行比较时，传输将失败。
 
-# SameSite属性
+# SameSite 属性
 
 防止CSRF攻击的一种新兴方法是在cookie上指定SameSite属性。 
 
