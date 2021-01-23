@@ -185,6 +185,105 @@ response.setHeader("Content-Disposition", String.format("attachment; filename=\"
 
 不过缺点也是有的，实际测试 excel 打开会提示文件损坏之类的，不过不影响使用。
 
+# axios 导出
+
+## 无效的例子
+
+前端实现如下：
+
+```js
+download() {
+    var req = {
+        envName: 'test',
+        appName: 'demo',
+    }
+    // var actualToken = md5(this.form.token);
+    axios.post('/config/download', req).then(function (response) {
+        console.log(response);
+    }).catch(function (error) {
+        ELEMENT.Message.error("请求失败");
+        console.log(error);
+    });
+}
+```
+
+## 原因
+
+众所周知，Ajax/Axios请求实际上是通过XMLHttpRequest实现的，具体请自行百度。
+
+request请求只是个“字符型”的请求，即请求的内容是以文本类型存放的。
+
+文件的下载是以二进制形式进行，虽然可以读取到返回的response，但只是读取，无法执行。
+
+也就是说前端无法调用到浏览器的下载处理机制和程序。
+
+## 解决方案
+
+通过blob(用来存储二进制大文件)包装ajax（或axios）请求到的data数据，实现下载EXCEL(或其他如图片等)文件。
+
+实现如下：
+
+```js
+//案例一
+axios：设置返回数据格式为blob或者arraybuffer
+如：
+    var instance = axios.create({         ... //一些配置
+        responseType: 'blob', //返回数据的格式，可选值为arraybuffer,blob,document,json,text,stream，默认值为json
+    })
+请求时的处理：
+　　getExcel().then(res => {
+    　　//这里res.data是返回的blob对象    
+    　　var blob = new Blob([res.data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8'}); //application/vnd.openxmlformats-officedocument.spreadsheetml.sheet这里表示xlsx类型
+    　　var downloadElement = document.createElement('a');
+    　　var href = window.URL.createObjectURL(blob); //创建下载的链接
+    　　downloadElement.href = href;
+    　　downloadElement.download = 'xxx.xlsx'; //下载后文件名
+    　　document.body.appendChild(downloadElement);
+    　　downloadElement.click(); //点击下载
+    　　document.body.removeChild(downloadElement); //下载完成移除元素
+    　　window.URL.revokeObjectURL(href); //释放掉blob对象
+　})
+//案例二
+ 
+function createDownload(fileName, content){
+    var blob = new Blob([content]);
+    var link = document.createElement("a");
+    link.innerHTML = fileName;
+    link.download = fileName;
+    link.href = URL.createObjectURL(blob);
+    document.getElementsByTagName("body")[0].appendChild(link);
+}
+createDownload("download.txt","download file");
+//案例三<br>
+function downloadExport(data) {
+　　return axios.post(url, data).then((res)=>{
+　　　　const content = res
+　　　　const blob = new Blob(["\uFEFF" + content.data],{ type: "application/vnd.ms-excel;charset=utf-8"})
+　　　　const fileName = '卡密.xls'
+　　　　if ('download' in document.createElement('a')) { // 非IE下载
+　　　　　　const elink = document.createElement('a')
+　　　　　　elink.download = fileName
+　　　　　　elink.style.display = 'none'
+　　　　　　elink.href = URL.createObjectURL(blob)
+　　　　　　document.body.appendChild(elink)
+　　　　　　elink.click()
+　　　　　　URL.revokeObjectURL(elink.href) // 释放URL 对象
+　　　　　　document.body.removeChild(elink)
+　　　　} else { // IE10+下载
+　　　　　　navigator.msSaveBlob(blob, fileName)
+　　　　}
+　　});
+}
+```
+
+## 最简单的方式
+
+使用 a 标签或者 localtion.href 直接修改链接地址。
+
+
+
+
+
 # 拓展阅读
 
 [compress](http://github.com/houbb/compress)
@@ -200,6 +299,8 @@ response.setHeader("Content-Disposition", String.format("attachment; filename=\"
 [java.io.IOException:stream closed 异常的原因及处理](https://www.cnblogs.com/mabaishui/archive/2011/07/26/2116987.html)
 
 [Action请求后台出现Response already commited异常解决方法](https://www.cnblogs.com/seedling/p/10011551.html)
+
+[解决Ajax/Axios请求下载无效的问题](https://blog.csdn.net/romestylexn/article/details/100089881)
 
 * any list
 {:toc}
