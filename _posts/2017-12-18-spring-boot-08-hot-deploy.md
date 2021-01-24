@@ -7,7 +7,7 @@ tags: [spring, exception, spring, springboot]
 published: true
 ---
 
-#   前言
+# 前言
 
 在实际开发过程中，每次修改代码就得将项目重启，重新部署，对于一些大型应用来说，重启时间需要花费大量的时间成本。
 
@@ -21,7 +21,63 @@ published: true
 
 深层原理是使用了两个ClassLoader，一个Classloader加载那些不会改变的类（第三方Jar包），另一个ClassLoader加载会更改的类，称为restart ClassLoader,这样在有代码更改的时候，原来的restart ClassLoader 被丢弃，重新创建一个restart ClassLoader，由于需要加载的类相比较少，所以实现了较快的重启时间。
 
-若想探究底层实现或者自定义加载类，可以参考 []()
+# springboot + idea 热部署实战
+
+## pom 引入 devtools
+
+引入 devtools 依赖：
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-devtools</artifactId>
+    <scope>runtime</scope>
+    <optional>true</optional>
+</dependency>
+```
+
+## 添加插件配置
+
+在 pom.xml 中添加插件：
+
+```xml
+<build>
+     <plugins>
+     <plugin>
+         <groupId>org.springframework.boot</groupId>
+         <artifactId>spring-boot-maven-plugin</artifactId>
+         <configuration>
+          <fork>true</fork>
+                  <addResources>true</addResources>
+         </configuration>
+    </plugin>
+     </plugins>
+</build>
+```
+
+## 设置 application.properties
+
+```
+#配置项目热部署
+spring.devtools.restart.enabled=true
+```
+
+## 在 idea 中设置自动编译：
+
+首先 `ctrl+alt+s` 打开设置（Other Settings 的设置是对整个工作空间项目都启作用，而Settings…的设置是对整个项目启作用），搜索Compliler，勾选 `Build project automatically`, 如下图所示：
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0124/205840_b34926c7_508704.png "idea-hot-deploy-1.png")
+
+
+##  设置 idea 
+
+按住 `ctrl + shift + alt + /`，出现如下图所示界面，点击 `Registry`。
+
+点击进入后，勾选 `compiler.automake.allow.when.app.running` 后关闭即可
+
+如下：
+
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0124/210150_ddd16096_508704.png "idea-hot-deploy-02.png")
 
 # 方式
 
