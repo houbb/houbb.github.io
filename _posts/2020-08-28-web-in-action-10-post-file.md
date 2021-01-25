@@ -350,6 +350,27 @@ void uploadFile(MultipartFile file, HttpServletResponse response, HttpServletReq
 ## 前端页面回调
 
 
+# js 实现表单提交
+
+## 表单
+
+```html
+<form action="/test/action" method="get" id="myForm">
+    <p>First name: <input type="text" name="fname" /></p>
+    <p>Last name: <input type="text" name="lname" /></p>
+    <input type="button" οnclick="formSubmit()" value="提交" />
+</form>
+```
+
+## js 代码
+
+```js
+function formSubmit() {
+    // 提交表单
+    document.getElementById("myForm").submit();
+}
+```
+
 
 # 参考资料
 
