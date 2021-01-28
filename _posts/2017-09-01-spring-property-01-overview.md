@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Spring Property
+title:  Spring Property-01-入门使用
 date:  2017-8-8 13:54:50 +0800
 categories: [Spring]
 tags: [property, spring]
