@@ -57,6 +57,12 @@ git config --global user.name "houbb"
 D:\Program Files\Java\jdk1.8.0_192\
 ```
 
+## 设置 JAVA_HOME
+
+```
+JAVA_HOME=D:\Program Files\Java\jdk1.8.0_192\
+```
+
 ## 测试
 
 ```
