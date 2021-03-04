@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  21-微信小程序 tabbar
+title:  互联网风控笔记
 date:  2021-2-14 16:52:15 +0800
-categories: [Dev]
-tags: [dev, windows, sh]
+categories: [BIZ]
+tags: [biz, risk, sh]
 published: true
 ---
 
