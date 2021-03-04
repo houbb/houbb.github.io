@@ -503,6 +503,200 @@ for(i = 1; i < 100; i++)
         d[i % 2][j] = d[(i - 1) % 2][j] + d[i % 2][j - 1];
 ```
 
+
+# 最小路径之和
+
+## 题目
+
+https://leetcode-cn.com/problems/minimum-path-sum/
+
+给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+
+说明：每次只能向下或者向右移动一步。
+
+### 示例 1：
+
+![minpath](https://assets.leetcode.com/uploads/2020/11/05/minpath.jpg)
+
+```
+输入：grid = [[1,3,1],[1,5,1],[4,2,1]]
+
+输出：7
+```
+
+解释：因为路径 1→3→1→1→1 的总和最小。
+
+## 递归解法
+
+为了便于理解，我们首先实现一个递归版本。
+
+```java
+public int minPathSum(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+    return getMin(grid, m-1, n-1);
+}
+
+private int getMin(int[][] grid, int i, int j) {
+    // 起点位置
+    if(i == 0 && j == 0) {
+        return grid[0][0];
+    }
+    // 第一行，想到达这里，说明前面肯定是水平向右，否则肯定不会在第一行
+    if(i == 0) {
+        return grid[i][j] + getMin(grid, i, j-1);
+    }
+    // 第一列，说明肯定是垂直到打这里。否则肯定不会在第一列
+    if(j == 0) {
+        return grid[i][j] + getMin(grid, i-1, j);
+    }
+    // 直接返回当前 + 前面的最小值即可。
+    int minRow = getMin(grid, i-1, j);
+    int minColumn = getMin(grid, i, j-1);
+    // 找到最小的距离
+    return grid[i][j] + Math.min(minRow, minColumn);
+}
+```
+
+## DP 版本
+
+接下来，就是将递归转变为递归的方式：
+
+初始化：
+
+我们处理一下第一行+第一列，以及开始位置。
+
+```java
+// 初始化
+int[][] dp = new int[m][n];
+dp[0][0] = grid[0][0];
+for(int i = 1; i < m ;i++) {
+    dp[i][0] = dp[i-1][0] + grid[i][0];
+}
+for(int i = 1; i < n;i++) {
+    dp[0][i] = dp[0][i-1] + grid[0][i];
+}
+```
+
+状态转移方程:
+
+最小的和，就是当前的位置元素+前面最小的和。
+
+```java
+// 通过状态转移方程
+dp[i][j] = grid[i][j] + Math.min(dp[i-1][j], dp[i][j-1]);
+```
+
+完整扽实现如下：
+
+```java
+public int minPathSum(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+
+    // 初始化
+    int[][] dp = new int[m][n];
+    dp[0][0] = grid[0][0];
+    for(int i = 1; i < m ;i++) {
+        dp[i][0] = dp[i-1][0] + grid[i][0];
+    }
+    for(int i = 1; i < n;i++) {
+        dp[0][i] = dp[0][i-1] + grid[0][i];
+    }
+
+    // 循环处理
+    for(int i = 1; i < m; i++) {
+        for(int j = 1; j < n; j++) {
+            // 通过状态转移方程
+            dp[i][j] = grid[i][j] + Math.min(dp[i-1][j], dp[i][j-1]);
+        }
+    }
+    return dp[m-1][n-1];
+}
+```
+
+### 换一种方式
+
+当然，也可以直接使用原来的数组，节省一点空间。
+
+```java
+public int minPathSum(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++) {
+            if(i ==0 && j == 0) {
+               continue;
+            }
+            // 累加距离
+            if(i == 0) {
+                // 第一行，只能从左边过来。
+                grid[i][j] = grid[i][j] + grid[i][j-1];
+            } else if(j == 0) {
+                // 第一列，只能从上面过来
+                grid[i][j] = grid[i][j] + grid[i-1][j];
+            } else {
+                // 通过状态转移方程
+                grid[i][j] = grid[i][j] + Math.min(grid[i-1][j], grid[i][j-1]);
+            }
+        }
+    }
+    return grid[m-1][n-1];
+}
+```
+
+## 最快的实现方式
+
+然而，这一题最快的解法却如下：
+
+```java
+public int minPathSum(int[][] grid) {
+    return dfs(0, 0, grid, new int[grid.length][grid[0].length]);
+}
+
+public int dfs(int row, int col, int[][] grid, int[][] dp) {
+    //base case
+    if(row == grid.length-1 && col == grid[0].length-1){
+        //reached end
+        return grid[row][col];
+    }
+    
+    //out of bound
+    if(row == grid.length || col == grid[0].length) {
+        return Integer.MAX_VALUE;
+    }
+    
+    
+    if(dp[row][col] != 0){
+        return dp[row][col];
+    }
+    
+    
+    dp[row][col] = grid[row][col] + Math.min(dfs(row+1,col, grid, dp), dfs(row,col+1, grid, dp));
+    
+    return dp[row][col];
+}
+
+//DFS + on backtracking memoize
+
+//for now create a separate copy for dp
+```
+
+
+TODO: 首先系统学习一下下面的三个系列：
+
+（1）回溯
+
+https://leetcode.com/tag/backtracking/
+
+（2）贪心
+
+https://leetcode.com/tag/greedy/
+
+（3）动态规划
+
+https://leetcode.com/tag/dynamic-programming/
+
 # 参考资料
 
 [百度百科-动态规划](https://baike.baidu.com/item/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/529408?fr=aladdin)
