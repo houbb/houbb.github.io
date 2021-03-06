@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  分布式系统-03-数据分布方式原理
-date:  2021-3-05 16:52:15 +0800
+date:  2021-3-06 16:52:15 +0800
 categories: [Distributed]
 tags: [distributed, sh]
 published: true
