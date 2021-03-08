@@ -149,6 +149,107 @@ for(int i = n-1; i >= 1; i--) {
 其实,仔细观察该解题过程,该过程就是标准的动态规划解题过程,如果把该过程画出来(找到每一步的最优解,其他的舍弃)对动态规划会有更深刻的解法
 
 
+# 爬楼梯
+
+## 题目
+
+https://leetcode.com/problems/climbing-stairs/
+
+You are climbing a staircase. It takes n steps to reach the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+- Example 1:
+
+```
+Input: n = 2
+Output: 2
+Explanation: There are two ways to climb to the top.
+1. 1 step + 1 step
+2. 2 steps
+```
+
+= Example 2:
+
+```
+Input: n = 3
+Output: 3
+Explanation: There are three ways to climb to the top.
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
+```
+
+Constraints:
+
+1 <= n <= 45
+
+## 解题思路
+
+// 如果为1，只有1中
+// 如果为2，则有 11 或者 2
+// 如果为3  111 12 21
+// 如果为4  1111 112 121 211 22
+// 有两种方式：第一次走一步；第一次走两步。
+
+这一题可以拆分为第一次走1步，第一次走两步。地推公式如下：
+
+```
+dp[i] = dp[i-1] + dp[i-2];
+```
+
+## java 实现
+
+实现也非常的简单。
+
+```java
+public int climbStairs(int n) {
+    int[] dp = new int[n+1];
+    dp[0] = 1;
+    dp[1] = 2;
+    for(int i = 2; i < n; i++) {
+        dp[i] = dp[i-1] + dp[i-2];
+    }
+    return dp[n-1];
+}
+```
+
+运行效果
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Climbing Stairs.
+Memory Usage: 35.4 MB, less than 91.67% of Java online submissions for Climbing Stairs.
+```
+
+## 滚动数组优化
+
+当然，我们的最后结果，只和 dp[i-1] 和 dp[i-2] 有关，所以可以使用滚动数组优化。
+
+```java
+public int climbStairs(int n) {
+    int pre = 1;
+    if(n <= 1) {
+        return pre;
+    }
+    int current = 2;
+    for(int i = 2; i < n; i++) {
+        int temp = current;
+        current += pre;
+        pre = temp;
+    }
+    return current;
+}
+```
+
+不过这是理论的优化，实际效果反而下降了。。
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Climbing Stairs.
+Memory Usage: 35.6 MB, less than 71.64% of Java online submissions for Climbing Stairs.
+```
+
+ps: 忽然发现，这实际上就是一个斐波那契额数列。妙不可言。
+
 # 算法实战-路径
 
 ## 题目
@@ -645,44 +746,6 @@ public int minPathSum(int[][] grid) {
 }
 ```
 
-## 最快的实现方式
-
-然而，这一题最快的解法却如下：
-
-```java
-public int minPathSum(int[][] grid) {
-    return dfs(0, 0, grid, new int[grid.length][grid[0].length]);
-}
-
-public int dfs(int row, int col, int[][] grid, int[][] dp) {
-    //base case
-    if(row == grid.length-1 && col == grid[0].length-1){
-        //reached end
-        return grid[row][col];
-    }
-    
-    //out of bound
-    if(row == grid.length || col == grid[0].length) {
-        return Integer.MAX_VALUE;
-    }
-    
-    
-    if(dp[row][col] != 0){
-        return dp[row][col];
-    }
-    
-    
-    dp[row][col] = grid[row][col] + Math.min(dfs(row+1,col, grid, dp), dfs(row,col+1, grid, dp));
-    
-    return dp[row][col];
-}
-
-//DFS + on backtracking memoize
-
-//for now create a separate copy for dp
-```
-
-
 TODO: 首先系统学习一下下面的三个系列：
 
 （1）回溯
@@ -696,6 +759,198 @@ https://leetcode.com/tag/greedy/
 （3）动态规划
 
 https://leetcode.com/tag/dynamic-programming/
+
+# Decode Ways
+
+https://leetcode.com/problems/decode-ways/
+
+## 题目
+
+A message containing letters from A-Z can be encoded into numbers using the following mapping:
+
+'A' -> "1"
+'B' -> "2"
+...
+'Z' -> "26"
+
+To decode an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways). For example, "11106" can be mapped into:
+
+"AAJF" with the grouping (1 1 10 6)
+"KJF" with the grouping (11 10 6)
+Note that the grouping (1 11 06) is invalid because "06" cannot be mapped into 'F' since "6" is different from "06".
+
+Given a string s containing only digits, return the number of ways to decode it.
+
+The answer is guaranteed to fit in a 32-bit integer.
+
+- Example 1:
+
+```
+Input: s = "12"
+Output: 2
+Explanation: "12" could be decoded as "AB" (1 2) or "L" (12).
+```
+
+- Example 2:
+
+```
+Input: s = "226"
+Output: 3
+Explanation: "226" could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
+```
+
+- Example 3:
+
+```
+Input: s = "0"
+Output: 0
+Explanation: There is no character that is mapped to a number starting with 0.
+The only valid mappings with 0 are 'J' -> "10" and 'T' -> "20", neither of which start with 0.
+Hence, there are no valid ways to decode this since all digits need to be mapped.
+```
+
+- Example 4:
+
+```
+Input: s = "06"
+Output: 0
+Explanation: "06" cannot be mapped to "F" because of the leading zero ("6" is different from "06").
+```
+
+Constraints:
+
+- 1 <= s.length <= 100
+
+- s contains only digits and may contain leading zero(s).
+
+## 解题思路
+
+我们沿着 [https://leetcode.com/problems/decode-ways/discuss/30451/Evolve-from-recursion-to-dp](https://leetcode.com/problems/decode-ways/discuss/30451/Evolve-from-recursion-to-dp)
+
+的解题流程，来看一下 dp 的整体思考过程。
+
+[https://leetcode-cn.com/problems/decode-ways/](https://leetcode-cn.com/problems/decode-ways/)
+
+## 思考过程
+
+dp[i] 为 s[0...i] 的编码数。
+
+最优子结构。
+
+（1）如果 s[i] == '0'
+
+如果 s[i-1] == '1' || s[i-1] == '2'，和上一个元素可以组成 10/20。
+
+此时 dp[i] = dp[i-2]。
+
+否则直接返回 0。
+
+解释：s[i-1] + s[i] 最多唯一构成一个字母的映射。
+
+（2）如果 s[i-1] == '1'
+
+则 dp[i] = dp[i-1] + dp[i-2]
+
+解释：s[i-1] 和 s[i] 可以分开组合。开始的数值为1，后面的数值 0-9 都满足条件。
+
+（3）如果 s[i-1] == '2' and  1 <= s[i] <= 6
+
+则 dp[i] = dp[i-1] + dp[i-2]
+
+解释：s[i-1] 和 s[i] 可以分开组合。不过此时要求数值为 21~26。
+
+
+## 动态规划实现
+
+为了便于大家理解，我们首先使用 O(n) 的空间来实现。
+
+```java
+public int numDecodings(String s) {
+    char[] chars = s.toCharArray();
+
+    // s[i] 为0，而且没有上一个元素。
+    if(chars[0] == '0') {
+        return 0;
+    }
+
+    int len = s.length();
+    int[] dp = new int[len+1];
+    // dp[-1] = dp[0] = 1
+    // 为什么初始化为 1？？
+    // 因为此时 chars[0] != '0'，所以 dp[0] = 1;
+    // dp[-1] 这里也是1，纯粹是为了 dp[i-1] 时的推导。
+    dp[0] = 1;
+    dp[1] = 1;
+
+    // 开始遍历
+    for(int i = 1; i < len; i++) {
+        //1. 如果当前元素为0
+        if (chars[i] == '0') {
+            //s[i - 1]等于1或2的情况
+            if (chars[i - 1] == '1' || chars[i - 1] == '2') {
+                //由于s[1]指第二个下标，对应为dp[2],所以dp的下标要比s大1，故为dp[i+1]
+                dp[i+1] = dp[i-1];
+            } else {
+                return 0;
+            }
+        } else {
+            //s[i-1]s[i]两位数要小于26的情况
+            if (chars[i - 1] == '1' || (chars[i - 1] == '2' && chars[i] <= '6')) {
+                dp[i+1] = dp[i]+dp[i-1];
+            } else {
+                // 即当前状态值等于前一个状态
+                dp[i+1] = dp[i];
+            }
+        }
+    }
+
+    return dp[len];
+}
+```
+
+## 滚动数组 DP
+
+当然，实际上最后的结果，只依赖 dp[i-1] + dp[i-2]。
+
+所以空间复杂度可以降低到 O(1)
+
+```java
+public int numDecodings2(String string) {
+    char[] s = string.toCharArray();
+    if (s[0] == '0') {
+        return 0;
+    }
+
+    int len = string.length();
+    int pre = 1, curr = 1;//dp[-1] = dp[0] = 1
+    for (int i = 1; i < len; i++) {
+        int tmp = curr;
+        if (s[i] == '0') {
+            if (s[i - 1] == '1' || s[i - 1] == '2') {
+                curr = pre;
+            } else {
+                return 0;
+            }
+        } else if (s[i - 1] == '1' || (s[i - 1] == '2' && s[i] >= '1' && s[i] <= '6')) {
+            curr = curr + pre;
+        }
+        // 让上一个值迭代更新。
+        pre = tmp;
+    }
+    return curr;
+}
+```
+
+
+# 拓展阅读
+
+- 91. decode ways
+
+- 62. Unique Paths
+
+- 70. Climbing Stairs
+
+- 509. Fibonacci Number
 
 # 参考资料
 
