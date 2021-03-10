@@ -45,6 +45,149 @@ published: true
 
 动态规划主要运用于二维或三维问题，而贪心一般是一维问题。
 
+
+# 跳跃游戏 II
+
+https://leetcode.com/problems/jump-game-ii/
+
+## 题目
+
+给定一个非负整数数组，你最初位于数组的第一个位置。
+
+数组中的每个元素代表你在该位置可以跳跃的最大长度。
+
+你的目标是使用最少的跳跃次数到达数组的最后一个位置。
+
+
+示例:
+
+```
+输入: [2,3,1,1,4]
+输出: 2
+解释: 跳到最后一个位置的最小跳跃数是 2。
+     从下标为 0 跳到下标为 1 的位置，跳 1 步，然后跳 3 步到达数组的最后一个位置。
+```
+
+说明:
+
+假设你总是可以到达数组的最后一个位置。
+
+## 思考过程
+
+看到这道题，你的第一反应是怎么解决呢？
+
+我甚至产生了要使用 DP 去解题的思路，不过后来一想也不对，这题不需要回退，而且是一道一维问题。
+
+所以就想到了贪心算法。
+
+那应该怎么使用贪心呢？
+
+
+## 思路1
+
+有一句话叫做以终为始，就是我们从后往前遍历。
+
+找到一个可以可以达到结尾 i_n 的地方，如果有多个，就选择距离最远的那一个 i_n-1。
+
+然后找到可以达到 i_n-1 最远的地方 i_n-2。
+
+依次类推，找到最初的位置。
+
+### java 实现
+
+```java
+public int jump(int[] nums) {
+    int count = 0;
+    if(nums.length == 1) {
+        return count;
+    }
+    // 最後一個位置。
+    for(int i = nums.length-1; i > 0; i--) {
+        // 取出当前位置的值
+        // 从前往后循环都一样，因为你必须循环一遍，才能找到最大的那一个元素。
+        // 最后前面的一个元素，肯定可以达到，至少为 1 步
+        // 从前向后，记录肯定是最远的。
+        for(int j = 0; j < i; j++) {
+            // 哪一个值并不重要，重要的是距离
+            int len = i - j;
+            int maxLen = nums[j];
+            // 可以达到
+            if(maxLen >= len && len > 1) {
+                i -= (len-1);
+                break;
+            }
+        }
+        // 次数递增
+        count++;
+    }
+    return count;
+}
+```
+
+理论上这个复杂度是比较高的，不过我的执行结果却是双 100。
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Jump Game II.
+Memory Usage: 36.3 MB, less than 100.00% of Java online submissions for Jump Game II.
+```
+
+为了避免错判，我跑了 2 次，结果都是超过双百。:)
+
+最坏的场景就是全部都是 1，时间复杂度为 O(n^2)。
+
+## 思路 2
+
+最基本的思路，可能是从前往后遍历。
+
+以 `[2,3,1,1,4]` 作为例子。
+
+我们第一次可以选择走两步：
+
+（1）直接两步，可以走到 1，
+
+（2）走一步，选择走到3，然后向后走走3步。
+
+如果用贪心的角度思考的话，肯定是方案 2 划算一点。
+
+然后我们一直按照这个方式，走到最后。
+
+其中方案（2）能走的最远的地方，我们可以定义为边界。
+
+### java 实现
+
+最核心的就是一句话，如何达到可以达到的最远距离呢？
+
+```java
+public int jump(int[] nums) {
+    int count = 0;
+    if(nums.length == 1) {
+        return count;
+    }
+    // 目前能跳到的最远位置
+    int maxFar = 0;
+    // 上次跳跃可达范围右边界（下次的最右起跳点）
+    int end = 0;
+    // 最后一个位置不需要访问。
+    for(int i = 0; i < nums.length-1; i++) {
+        maxFar = Math.max(maxFar, i + nums[i]);
+        // 到达上次跳跃能到达的右边界了
+        if(i == end) {
+            // 更新右边界
+            end = maxFar;
+            count++;
+        }
+    }
+    return count;
+}
+```
+
+當然，這個性能也是很好的：
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Jump Game II.
+Memory Usage: 36.7 MB, less than 100.00% of Java online submissions for Jump Game II.
+```
+
 # 区间调度问题
 
 假设有如下课程，希望尽可能多的将课程安排在一间教室里：
