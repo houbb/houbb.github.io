@@ -13,31 +13,6 @@ published: true
 
 链接: https://pan.baidu.com/s/1Yd5lCd9T9JJ8GgaTkSHI5Q 提取码: fdd8
 
-# 《ZooKeeper分布式过程协同技术详解》
-
-ZooKeeper是分布式系统的基础组件，要想掌握分布式系统设计和开发，必须先掌握ZooKeeper。
-
-```
-第一部分（第1～2章）阐述Apache ZooKeeper这类系统的设计目的和动机，并介绍分布式系统的一些必要背景知识。
-    第1章介绍ZooKeeper可以做什么，以及其设计如何支撑这些任务。
-    第2章介绍基本概念和基本组成模块，并通过命令行工具的具体操作介绍了ZooKeeper可以做什么。
-
-第二部分（第3～8章）阐述开发人员所需要掌握的ZooKeeper库调用方法和编程技巧。
-    第3章介绍Java语言的API.
-    第4章解释如何跟踪和处理ZooKeeper中的状态变更情况。
-    第5章介绍如何在系统或网络故障时恢复应用。
-    第6章介绍需要注意来避免故障的一些繁杂却很重要的场景。
-    第7章介绍C语言版的API接口，也可以作为非Java语言实现的ZooKeeperAPI的基础，对非Java语言的开发人员非常有帮助。
-    第8章介绍一款更高层级的封装的ZooKeeper接口。
-
-第三部分（第9～10章）主要介绍ZooKeeper内部原理及如何运行ZooKeeper.
-        第9章介绍ZooKeeper的作者们在设计时所采用的方案。
-        第10章介绍如何对ZooKeeper进行配置。
-```
-
-链接: https://pan.baidu.com/s/1utz_Dl0mjdC8ckURExxaYw 提取码: bnvu
-
-示例代码链接: https://pan.baidu.com/s/1SYk-EsGr769Hdrx67md5Tw 提取码: qgux
 
 # 《分布式服务架构：原理、设计与实战》
 
@@ -93,6 +68,32 @@ ZooKeeper是分布式系统的基础组件，要想掌握分布式系统设计�
 链接： https://pan.baidu.com/s/152Fm2W2a0sDqe7KuZ0U7MQ
 提取码：8wrg
 
+
+# 《ZooKeeper分布式过程协同技术详解》
+
+ZooKeeper是分布式系统的基础组件，要想掌握分布式系统设计和开发，必须先掌握ZooKeeper。
+
+```
+第一部分（第1～2章）阐述Apache ZooKeeper这类系统的设计目的和动机，并介绍分布式系统的一些必要背景知识。
+    第1章介绍ZooKeeper可以做什么，以及其设计如何支撑这些任务。
+    第2章介绍基本概念和基本组成模块，并通过命令行工具的具体操作介绍了ZooKeeper可以做什么。
+
+第二部分（第3～8章）阐述开发人员所需要掌握的ZooKeeper库调用方法和编程技巧。
+    第3章介绍Java语言的API.
+    第4章解释如何跟踪和处理ZooKeeper中的状态变更情况。
+    第5章介绍如何在系统或网络故障时恢复应用。
+    第6章介绍需要注意来避免故障的一些繁杂却很重要的场景。
+    第7章介绍C语言版的API接口，也可以作为非Java语言实现的ZooKeeperAPI的基础，对非Java语言的开发人员非常有帮助。
+    第8章介绍一款更高层级的封装的ZooKeeper接口。
+
+第三部分（第9～10章）主要介绍ZooKeeper内部原理及如何运行ZooKeeper.
+        第9章介绍ZooKeeper的作者们在设计时所采用的方案。
+        第10章介绍如何对ZooKeeper进行配置。
+```
+
+链接: https://pan.baidu.com/s/1utz_Dl0mjdC8ckURExxaYw 提取码: bnvu
+
+示例代码链接: https://pan.baidu.com/s/1SYk-EsGr769Hdrx67md5Tw 提取码: qgux
 
 # 参考资料
 
