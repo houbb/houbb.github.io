@@ -148,73 +148,809 @@ for(int i = n-1; i >= 1; i--) {
 
 其实,仔细观察该解题过程,该过程就是标准的动态规划解题过程,如果把该过程画出来(找到每一步的最优解,其他的舍弃)对动态规划会有更深刻的解法
 
-# 分类
 
-动态规划一般可分为线性动规，区域动规，树形动规，背包动规四类。
+# 爬楼梯
 
-举例：
+## 题目
 
-线性动规：拦截导弹，合唱队形，挖地雷，建学校，剑客决斗等；
+https://leetcode.com/problems/climbing-stairs/
 
-区域动规：石子合并， 加分二叉树，统计单词个数，炮兵布阵等；
+You are climbing a staircase. It takes n steps to reach the top.
 
-树形动规：贪吃的九头龙，二分查找树，聚会的欢乐，数字三角形等；
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
 
-背包问题：01背包问题，完全背包问题，分组背包问题，二维背包，装箱问题，挤牛奶（同济ACM第1132题）等；
+- Example 1:
 
-应用实例：
+```
+Input: n = 2
+Output: 2
+Explanation: There are two ways to climb to the top.
+1. 1 step + 1 step
+2. 2 steps
+```
 
-最短路径问题 ，项目管理，网络流优化等；
+= Example 2:
 
-## 概念意义
+```
+Input: n = 3
+Output: 3
+Explanation: There are three ways to climb to the top.
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
+```
 
-动态规划问世以来，在经济管理、生产调度、工程技术和最优控制等方面得到了广泛的应用。
+Constraints:
 
-例如最短路线、库存管理、资源分配、设备更新、排序、装载等问题，用动态规划方法比用其它方法求解更为方便。
+1 <= n <= 45
 
-虽然动态规划主要用于求解以时间划分阶段的动态过程的优化问题，但是一些与时间无关的静态规划(如线性规划、非线性规划)，只要人为地引进时间因素，把它视为多阶段决策过程，也可以用动态规划方法方便地求解。
+## 解题思路
 
-动态规划程序设计是对解最优化问题的一种途径、一种方法，而不是一种特殊算法。不像搜索或数值计算那样，具有一个标准的数学表达式和明确清晰的解题方法。
+// 如果为1，只有1中
+// 如果为2，则有 11 或者 2
+// 如果为3  111 12 21
+// 如果为4  1111 112 121 211 22
+// 有两种方式：第一次走一步；第一次走两步。
 
-动态规划程序设计往往是针对一种最优化问题，由于各种问题的性质不同，确定最优解的条件也互不相同，因而动态规划的设计方法对不同的问题，有各具特色的解题方法，而不存在一种万能的动态规划算法，可以解决各类最优化问题。
+这一题可以拆分为第一次走1步，第一次走两步。地推公式如下：
 
-因此读者在学习时，除了要对基本概念和方法正确理解外，必须具体问题具体分析处理，以丰富的想象力去建立模型，用创造性的技巧去求解。
+```
+dp[i] = dp[i-1] + dp[i-2];
+```
 
-我们也可以通过对若干有代表性的问题的动态规划算法进行分析、讨论，逐渐学会并掌握这一设计方法。
+## java 实现
 
-## 概念引入
+实现也非常的简单。
 
-多阶段决策过程的最优化问题。
+```java
+public int climbStairs(int n) {
+    int[] dp = new int[n+1];
+    dp[0] = 1;
+    dp[1] = 2;
+    for(int i = 2; i < n; i++) {
+        dp[i] = dp[i-1] + dp[i-2];
+    }
+    return dp[n-1];
+}
+```
 
-含有递推的思想以及各种数学原理（加法原理，乘法原理等等）。
+运行效果
 
-在现实生活中，有一类活动的过程，由于它的特殊性，可将过程分成若干个互相联系的阶段，在它的每一阶段都需要作出决策，从而使整个过程达到最好的活动效果。
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Climbing Stairs.
+Memory Usage: 35.4 MB, less than 91.67% of Java online submissions for Climbing Stairs.
+```
 
-当然，各个阶段决策的选取不是任意确定的，它依赖于当前面临的状态，又影响以后的发展，当各个阶段决策确定后，就组成一个决策序列，因而也就确定了整个过程的一条活动路线，如图所示：（看词条图）
+## 滚动数组优化
 
-![多阶段决策](https://bkimg.cdn.bcebos.com/pic/4610b912c8fcc3ce0150f43a9245d688d43f2022?x-bce-process=image/resize,m_lfit,w_220,h_220,limit_1)
+当然，我们的最后结果，只和 dp[i-1] 和 dp[i-2] 有关，所以可以使用滚动数组优化。
 
-这种把一个问题看作是一个前后关联具有链状结构的多阶段过程就称为多阶段决策过程，这种问题就称为多阶段决策问题。
+```java
+public int climbStairs(int n) {
+    int pre = 1;
+    if(n <= 1) {
+        return pre;
+    }
+    int current = 2;
+    for(int i = 2; i < n; i++) {
+        int temp = current;
+        current += pre;
+        pre = temp;
+    }
+    return current;
+}
+```
 
-# 基本思想
+不过这是理论的优化，实际效果反而下降了。。
 
-动态规划算法通常用于求解具有某种最优性质的问题。
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Climbing Stairs.
+Memory Usage: 35.6 MB, less than 71.64% of Java online submissions for Climbing Stairs.
+```
 
-在这类问题中，可能会有许多可行解。每一个解都对应于一个值，我们希望找到具有最优值的解。
+ps: 忽然发现，这实际上就是一个斐波那契额数列。妙不可言。
 
-动态规划算法与分治法类似，其基本思想也是将待求解问题分解成若干个子问题，先求解子问题，然后从这些子问题的解得到原问题的解。
+# 算法实战-路径
 
-**与分治法不同的是，适合于用动态规划求解的问题，经分解得到子问题往往不是互相独立的。**
+## 题目
 
-若用分治法来解这类问题，则分解得到的子问题数目太多，有些子问题被重复计算了很多次。
+我们以 [leetcode 第 62 题为例](https://leetcode-cn.com/problems/unique-paths)，感受一下 DP 的魅力。
 
-**如果我们能够保存已解决的子问题的答案，而在需要时再找出已求得的答案，这样就可以避免大量的重复计算，节省时间。**
+一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。
 
-我们可以用一个表来记录所有已解的子问题的答案。
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
 
-不管该子问题以后是否被用到，只要它被计算过，就将其结果填入表中。这就是动态规划法的基本思路。
+问总共有多少条不同的路径？
 
-具体的动态规划算法多种多样，但它们具有相同的填表格式。
+![example1](https://assets.leetcode.com/uploads/2018/10/22/robot_maze.png)
+
+## 思路
+
+说一下你的第一感觉？
+
+你会通过穷举法来解决吗？
+
+## 递归法
+
+我们先说下递归法。
+
+像走到终点，实际只有 2 条路：
+
+如果是 m*n 的网格，目标就是 (m, n)
+
+（1）走到终点的左边 (m-1, n)
+
+（2）走到终点的上边 (m, n-1)
+
+不同的路径就是上面两条路的和。
+
+递归实现非常简单：
+
+```java
+public int uniquePaths(int m, int n) {
+    if(m == 1 || n == 1) {
+        return 1;
+    }
+
+    return uniquePaths(m - 1, n) + uniquePaths(m , n -1);
+}
+```
+
+当然，这个算法本身没啥问题，但是递归有一个致命的问题，那就是性能问题。
+
+比如 leetcode 执行的 case 51*9 就直接超时了。
+
+那么，应该如何优化性能呢？
+
+## 动态规划
+
+实际上看到这里，再结合一下前面的斐波那契额，我想聪明如你肯定知道了如何解决这个问题。
+
+从上到下解不出来，我们自下而上解不就行了。
+
+### 动态规划转移方程
+
+dp 最核心的是要找到方程。
+
+我们假设 f(m,n) 是从左上到右下的所有可能路径数。
+
+同理，想到大 f(m,n) 依然是 2 条路，从 (m-1, n) 向右一步达到，或者从 (m, n-1) 向下一步到达。
+
+对应的方程：
+
+```
+f(m, n) = f(m-1, n) + f(m, n-1);
+```
+
+### java 实现方式
+
+实现方式如下：
+
+```java
+public int uniquePaths(int m, int n) {
+    int[][] dp = new int[m][n];
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++) {
+            // 这种其实是不符合条件的，不过我们设定初始值 dp[0][0] = 1
+            if(i == 0 || j == 0) {
+                dp[i][j] = 1;
+            } else {
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            }
+        }
+    }
+    
+    // 返回所有可能的结果
+    return dp[m-1][n-1];
+}
+```
+
+执行速度：
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Unique Paths.
+Memory Usage: 37.8 MB, less than 9.51% of Java online submissions for Unique Paths.
+```
+
+### 复杂度
+
+时间复杂度：O(m*n)
+
+空间复杂度：O(m * n)
+
+
+## 排列组合
+
+虽然上面的性能已经 100% 了，但实际上封号斗罗和封号斗罗还是有差距的。
+
+那么，有没有更快的解决方法呢？
+
+### 组合
+
+从左上角到右下角的过程中，我们需要移动 m+n−2 次，其中有 m−1 次向下移动，n−1 次向右移动。
+
+因此路径的总数，就等于从 m+n-2 次移动中选择 m-1 次向下移动的方案数，即组合数：
+
+```
+C（（m+n-2），（m-1））
+```
+
+时间复杂度为O(n)，空间复杂度O(1)
+
+### 实现
+
+```java
+public int uniquePaths(int m, int n) {
+    long ans = 1;
+    for (int x = n, y = 1; y < m; ++x, ++y) {
+        ans = ans * x / y;
+    }
+    return (int) ans;
+}
+```
+
+# 不同路径-障碍物版本
+
+## 题目
+
+一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为“Start” ）。
+
+机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为“Finish”）。
+
+现在考虑网格中有障碍物。那么从左上角到右下角将会有多少条不同的路径？
+
+网格中的障碍物和空位置分别用 1 和 0 来表示。
+
+### 例子
+
+![robot1.jpg](https://assets.leetcode.com/uploads/2020/11/04/robot1.jpg)
+
+```
+输入：obstacleGrid = [[0,0,0],[0,1,0],[0,0,0]]
+输出：2
+解释：
+3x3 网格的正中间有一个障碍物。
+从左上角到右下角一共有 2 条不同的路径：
+1. 向右 -> 向右 -> 向下 -> 向下
+2. 向下 -> 向下 -> 向右 -> 向右
+```
+
+## 分析
+
+实际上就算解决了上面一题，我们解决这个障碍还是不太好处理。
+
+（1）状态方程
+
+也许你会想，遇到障碍我要绕着走，但这种“动态”的想法不符合 DP “状态”的思路
+
+我们思考单个点的“状态”：
+
+1. 障碍点，是无法抵达的点，是到达方式数为 0 的点
+
+2. 是无法从它这里走到别的点的点，即无法提供给别的点方式数的点
+
+递推公式和不同路径一样，dp[i][j] = dp[i - 1][j] + dp[i][j - 1]。
+
+但这里需要注意一点，因为有了障碍，(i, j)如果就是障碍的话应该就保持初始状态（初始状态为0）。
+
+```java
+if (obstacleGrid[i][j] == 0) { // 当(i, j)没有障碍的时候，再推导dp[i][j]
+    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+}
+```
+
+（2）dp 数组的初始化
+
+没有障碍物的场景，达到 (i, 0) 和 (0, j) 的路径数都是固定的，固定为1。有且只有一条路。
+
+如果加上障碍物的话，对应的位置，路径数为0。
+
+而且要注意，**障碍物后面的位置也是无法到达的，路径数也应该为 0**。
+
+```java
+for (int i = 0; i < m && obstacleGrid[i][0] == 0; i++) dp[i][0] = 1;
+for (int j = 0; j < n && obstacleGrid[0][j] == 0; j++) dp[0][j] = 1;
+```
+
+（3）遍历顺序
+
+我们依旧是从左到右，从上到下遍历。
+
+```java
+for (int i = 1; i < m; i++) {
+    for (int j = 1; j < n; j++) {
+		// 如果遇到障碍物，则跳过。
+        if (obstacleGrid[i][j] == 1) continue;
+		// 当然，也可以只在为 0 的时候才处理。
+        dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+    }
+}
+```
+
+## java 实现
+
+我们把上面的几步合并起来，实现如下：
+
+```java
+public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+    int m = obstacleGrid.length;
+    int n = obstacleGrid[0].length;
+    int[][] dp = new int[m][n];
+    // 初始化
+    for(int i = 0; i < m; i++) {
+        // 存在障碍物
+        if(obstacleGrid[i][0] == 1) {
+            break;
+        }
+        dp[i][0] = 1;
+    }
+    for(int j = 0; j < n; j++) {
+        // 存在障碍物
+        if(obstacleGrid[0][j] == 1) {
+            break;
+        }
+        dp[0][j] = 1;
+    }
+
+    // 遍历
+    for(int i = 1; i < m; i++) {
+        for(int j = 1; j < n; j++) {
+            if(obstacleGrid[i][j] == 0) {
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+            }
+        }
+    }
+    return dp[m-1][n-1];
+}
+```
+
+很显然我们可以给出一个时间复杂度 O(nm) 并且空间复杂度也是 O(nm) 的实现。
+
+## 滚动数组思想优化
+
+上面的实现可以进一步优化吗？
+
+由于这里 f(i, j) 只与 f(i - 1, j) 和 f(i, j - 1)相关，我们可以运用「滚动数组思想」把空间复杂度优化称 O(m)。
+
+当我们定义的状态在动态规划的转移方程中只和某几个状态相关的时候，就可以考虑这种优化方法，目的是给空间复杂度「降维」。
+
+优化后的实现如下（这个是官方的解决方案）：
+
+```java
+public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+    int n = obstacleGrid.length, m = obstacleGrid[0].length;
+    int[] f = new int[m];
+
+    f[0] = obstacleGrid[0][0] == 0 ? 1 : 0;
+
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            if (obstacleGrid[i][j] == 1) {
+                f[j] = 0;
+                continue;
+            }
+            if (j - 1 >= 0 && obstacleGrid[i][j - 1] == 0) {
+                f[j] += f[j - 1];
+            }
+        }
+    }
+    
+    return f[m - 1];
+}
+```
+
+空间复杂度：O(m)。利用滚动数组优化，我们可以只用 O(m)大小的空间来记录当前行的 f 值。
+
+# 滚动数组
+
+## 简介
+
+滚动数组是DP中的一种编程思想。
+
+简单的理解就是让数组滚动起来，每次都使用固定的几个存储空间，来达到压缩，节省存储空间的作用。
+
+因为 DP 题目是一个自底向上的扩展过程，**我们常常需要用到的是连续的解，前面的解往往可以舍去**，所以用滚动数组优化是很有效的。
+
+## 斐波那契的例子
+
+```c
+int i;
+long long d[80];
+d[0]=1;
+d[1]=1;
+for(i=2;i<80;i++)
+{
+    d[i]=d[i-1]+d[i-2];
+}
+```
+
+上面这个循环d[i]只依赖于前两个数据d[i - 1]和d[i - 2]; 为了节约空间用滚动数组的做法。
+
+```c
+int i;
+long long d[3];
+
+d[1]=1;
+d[2]=1;
+for(i=2;i<80;i++)
+{
+    d[0]=d[1];
+    d[1]=d[2];
+    d[2]=d[0]+d[1]; 
+}
+```
+
+原来需要 80，实际上可以压缩为 3，因为 3 个元素的位置就已经足够了。
+
+## 二维数组压缩
+
+这个就是我们前面的唯一路径的例子。
+
+```java
+int i, j, d[100][100];
+for(i = 1; i < 100; i++)
+    for(j = 0; j < 100; j++)
+        d[i][j] = d[i - 1][j] + d[i][j - 1];
+```
+
+上面的d[i][j]只依赖于d[i - 1][j], d[i][j - 1]; 
+
+利用滚动数组:
+
+```c
+int i, j, d[2][100];
+for(i = 1; i < 100; i++)
+    for(j = 0; j < 100; j++)
+        d[i % 2][j] = d[(i - 1) % 2][j] + d[i % 2][j - 1];
+```
+
+
+# 最小路径之和
+
+## 题目
+
+https://leetcode-cn.com/problems/minimum-path-sum/
+
+给定一个包含非负整数的 m x n 网格 grid ，请找出一条从左上角到右下角的路径，使得路径上的数字总和为最小。
+
+说明：每次只能向下或者向右移动一步。
+
+### 示例 1：
+
+![minpath](https://assets.leetcode.com/uploads/2020/11/05/minpath.jpg)
+
+```
+输入：grid = [[1,3,1],[1,5,1],[4,2,1]]
+
+输出：7
+```
+
+解释：因为路径 1→3→1→1→1 的总和最小。
+
+## 递归解法
+
+为了便于理解，我们首先实现一个递归版本。
+
+```java
+public int minPathSum(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+    return getMin(grid, m-1, n-1);
+}
+
+private int getMin(int[][] grid, int i, int j) {
+    // 起点位置
+    if(i == 0 && j == 0) {
+        return grid[0][0];
+    }
+    // 第一行，想到达这里，说明前面肯定是水平向右，否则肯定不会在第一行
+    if(i == 0) {
+        return grid[i][j] + getMin(grid, i, j-1);
+    }
+    // 第一列，说明肯定是垂直到打这里。否则肯定不会在第一列
+    if(j == 0) {
+        return grid[i][j] + getMin(grid, i-1, j);
+    }
+    // 直接返回当前 + 前面的最小值即可。
+    int minRow = getMin(grid, i-1, j);
+    int minColumn = getMin(grid, i, j-1);
+    // 找到最小的距离
+    return grid[i][j] + Math.min(minRow, minColumn);
+}
+```
+
+## DP 版本
+
+接下来，就是将递归转变为递归的方式：
+
+初始化：
+
+我们处理一下第一行+第一列，以及开始位置。
+
+```java
+// 初始化
+int[][] dp = new int[m][n];
+dp[0][0] = grid[0][0];
+for(int i = 1; i < m ;i++) {
+    dp[i][0] = dp[i-1][0] + grid[i][0];
+}
+for(int i = 1; i < n;i++) {
+    dp[0][i] = dp[0][i-1] + grid[0][i];
+}
+```
+
+状态转移方程:
+
+最小的和，就是当前的位置元素+前面最小的和。
+
+```java
+// 通过状态转移方程
+dp[i][j] = grid[i][j] + Math.min(dp[i-1][j], dp[i][j-1]);
+```
+
+完整扽实现如下：
+
+```java
+public int minPathSum(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+
+    // 初始化
+    int[][] dp = new int[m][n];
+    dp[0][0] = grid[0][0];
+    for(int i = 1; i < m ;i++) {
+        dp[i][0] = dp[i-1][0] + grid[i][0];
+    }
+    for(int i = 1; i < n;i++) {
+        dp[0][i] = dp[0][i-1] + grid[0][i];
+    }
+
+    // 循环处理
+    for(int i = 1; i < m; i++) {
+        for(int j = 1; j < n; j++) {
+            // 通过状态转移方程
+            dp[i][j] = grid[i][j] + Math.min(dp[i-1][j], dp[i][j-1]);
+        }
+    }
+    return dp[m-1][n-1];
+}
+```
+
+### 换一种方式
+
+当然，也可以直接使用原来的数组，节省一点空间。
+
+```java
+public int minPathSum(int[][] grid) {
+    int m = grid.length;
+    int n = grid[0].length;
+    for(int i = 0; i < m; i++) {
+        for(int j = 0; j < n; j++) {
+            if(i ==0 && j == 0) {
+               continue;
+            }
+            // 累加距离
+            if(i == 0) {
+                // 第一行，只能从左边过来。
+                grid[i][j] = grid[i][j] + grid[i][j-1];
+            } else if(j == 0) {
+                // 第一列，只能从上面过来
+                grid[i][j] = grid[i][j] + grid[i-1][j];
+            } else {
+                // 通过状态转移方程
+                grid[i][j] = grid[i][j] + Math.min(grid[i-1][j], grid[i][j-1]);
+            }
+        }
+    }
+    return grid[m-1][n-1];
+}
+```
+
+TODO: 首先系统学习一下下面的三个系列：
+
+（1）回溯
+
+https://leetcode.com/tag/backtracking/
+
+（2）贪心
+
+https://leetcode.com/tag/greedy/
+
+（3）动态规划
+
+https://leetcode.com/tag/dynamic-programming/
+
+# Decode Ways
+
+https://leetcode.com/problems/decode-ways/
+
+## 题目
+
+A message containing letters from A-Z can be encoded into numbers using the following mapping:
+
+'A' -> "1"
+'B' -> "2"
+...
+'Z' -> "26"
+
+To decode an encoded message, all the digits must be grouped then mapped back into letters using the reverse of the mapping above (there may be multiple ways). For example, "11106" can be mapped into:
+
+"AAJF" with the grouping (1 1 10 6)
+"KJF" with the grouping (11 10 6)
+Note that the grouping (1 11 06) is invalid because "06" cannot be mapped into 'F' since "6" is different from "06".
+
+Given a string s containing only digits, return the number of ways to decode it.
+
+The answer is guaranteed to fit in a 32-bit integer.
+
+- Example 1:
+
+```
+Input: s = "12"
+Output: 2
+Explanation: "12" could be decoded as "AB" (1 2) or "L" (12).
+```
+
+- Example 2:
+
+```
+Input: s = "226"
+Output: 3
+Explanation: "226" could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
+```
+
+- Example 3:
+
+```
+Input: s = "0"
+Output: 0
+Explanation: There is no character that is mapped to a number starting with 0.
+The only valid mappings with 0 are 'J' -> "10" and 'T' -> "20", neither of which start with 0.
+Hence, there are no valid ways to decode this since all digits need to be mapped.
+```
+
+- Example 4:
+
+```
+Input: s = "06"
+Output: 0
+Explanation: "06" cannot be mapped to "F" because of the leading zero ("6" is different from "06").
+```
+
+Constraints:
+
+- 1 <= s.length <= 100
+
+- s contains only digits and may contain leading zero(s).
+
+## 解题思路
+
+我们沿着 [https://leetcode.com/problems/decode-ways/discuss/30451/Evolve-from-recursion-to-dp](https://leetcode.com/problems/decode-ways/discuss/30451/Evolve-from-recursion-to-dp)
+
+的解题流程，来看一下 dp 的整体思考过程。
+
+[https://leetcode-cn.com/problems/decode-ways/](https://leetcode-cn.com/problems/decode-ways/)
+
+## 思考过程
+
+dp[i] 为 s[0...i] 的编码数。
+
+最优子结构。
+
+（1）如果 s[i] == '0'
+
+如果 s[i-1] == '1' || s[i-1] == '2'，和上一个元素可以组成 10/20。
+
+此时 dp[i] = dp[i-2]。
+
+否则直接返回 0。
+
+解释：s[i-1] + s[i] 最多唯一构成一个字母的映射。
+
+（2）如果 s[i-1] == '1'
+
+则 dp[i] = dp[i-1] + dp[i-2]
+
+解释：s[i-1] 和 s[i] 可以分开组合。开始的数值为1，后面的数值 0-9 都满足条件。
+
+（3）如果 s[i-1] == '2' and  1 <= s[i] <= 6
+
+则 dp[i] = dp[i-1] + dp[i-2]
+
+解释：s[i-1] 和 s[i] 可以分开组合。不过此时要求数值为 21~26。
+
+
+## 动态规划实现
+
+为了便于大家理解，我们首先使用 O(n) 的空间来实现。
+
+```java
+public int numDecodings(String s) {
+    char[] chars = s.toCharArray();
+
+    // s[i] 为0，而且没有上一个元素。
+    if(chars[0] == '0') {
+        return 0;
+    }
+
+    int len = s.length();
+    int[] dp = new int[len+1];
+    // dp[-1] = dp[0] = 1
+    // 为什么初始化为 1？？
+    // 因为此时 chars[0] != '0'，所以 dp[0] = 1;
+    // dp[-1] 这里也是1，纯粹是为了 dp[i-1] 时的推导。
+    dp[0] = 1;
+    dp[1] = 1;
+
+    // 开始遍历
+    for(int i = 1; i < len; i++) {
+        //1. 如果当前元素为0
+        if (chars[i] == '0') {
+            //s[i - 1]等于1或2的情况
+            if (chars[i - 1] == '1' || chars[i - 1] == '2') {
+                //由于s[1]指第二个下标，对应为dp[2],所以dp的下标要比s大1，故为dp[i+1]
+                dp[i+1] = dp[i-1];
+            } else {
+                return 0;
+            }
+        } else {
+            //s[i-1]s[i]两位数要小于26的情况
+            if (chars[i - 1] == '1' || (chars[i - 1] == '2' && chars[i] <= '6')) {
+                dp[i+1] = dp[i]+dp[i-1];
+            } else {
+                // 即当前状态值等于前一个状态
+                dp[i+1] = dp[i];
+            }
+        }
+    }
+
+    return dp[len];
+}
+```
+
+## 滚动数组 DP
+
+当然，实际上最后的结果，只依赖 dp[i-1] + dp[i-2]。
+
+所以空间复杂度可以降低到 O(1)
+
+```java
+public int numDecodings2(String string) {
+    char[] s = string.toCharArray();
+    if (s[0] == '0') {
+        return 0;
+    }
+
+    int len = string.length();
+    int pre = 1, curr = 1;//dp[-1] = dp[0] = 1
+    for (int i = 1; i < len; i++) {
+        int tmp = curr;
+        if (s[i] == '0') {
+            if (s[i - 1] == '1' || s[i - 1] == '2') {
+                curr = pre;
+            } else {
+                return 0;
+            }
+        } else if (s[i - 1] == '1' || (s[i - 1] == '2' && s[i] >= '1' && s[i] <= '6')) {
+            curr = curr + pre;
+        }
+        // 让上一个值迭代更新。
+        pre = tmp;
+    }
+    return curr;
+}
+```
+
+
+# 拓展阅读
+
+- 91. decode ways
+
+- 62. Unique Paths
+
+- 70. Climbing Stairs
+
+- 509. Fibonacci Number
 
 # 参考资料
 
@@ -233,6 +969,12 @@ for(int i = n-1; i >= 1; i--) {
 [【算法复习】动态规划](https://www.cnblogs.com/hithongming/p/9229871.html)
 
 https://www.jianshu.com/p/40064cb0d5f3
+
+https://leetcode-cn.com/problems/unique-paths-ii/solution/shou-hua-tu-jie-dp-si-lu-by-hyj8/
+
+https://leetcode-cn.com/problems/unique-paths-ii/solution/63-bu-tong-lu-jing-iidong-tai-gui-hua-ji-6h8h/
+
+[滚动数组思想，运用在动态规划当中](https://blog.csdn.net/weixin_40295575/article/details/80181756)
 
 * any list
 {:toc}
