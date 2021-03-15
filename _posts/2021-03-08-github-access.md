@@ -68,6 +68,16 @@ ping 测试
 
 重新操作成功。
 
+# 开源工具
+
+（1）获取 github.com 对应的所有 ip 列表
+
+（2）ping 获取所有的 github.com 耗时
+
+（3）选择耗时比较短的 IP 内容，写入到 hosts 文件
+
+（4）执行 `ipconfig /flushdns` 命令
+
 # 参考资料
 
 [Failed to connect to github.com port 443: Timed out](https://blog.csdn.net/yy339452689/article/details/104040279)

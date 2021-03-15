@@ -187,6 +187,13 @@ gpg:              unchanged: 1
 搞定，上传成功。
 
 
+- 另一次
+
+```
+gpg --keyserver hkp://keyserver.ubuntu.com:11371 --send-keys 9B765573E9EE7DF5DB1C9CC84A125640BEBB2D5B
+gpg --keyserver hkp://keyserver.ubuntu.com:11371 --recv-keys 9B765573E9EE7DF5DB1C9CC84A125640BEBB2D5B
+```
+
 ### Mac 安装
 
 Mac 系统。安装 [GPG](http://www.ruanyifeng.com/blog/2013/07/gpg.html)
@@ -1061,9 +1068,51 @@ cmd 执行命令：
 ipconfig /flushdns
 ```
 
+# 执行报错
+
+## 报错
+
+```
+'gpg' 不是内部或外部命令，也不是可运行的程序或批处理文件。
+```
+
+## 原因
+
+对应的 pgp 在当前路径找不到。需要配置对应的 PATH。
+
+然后就是安装路径中，exe 只有 pgp2.exe
+
+## 解决方案
+
+- setting.xml
+
+```xml
+<profile>
+    <id>release</id>
+    <activation>
+        <activeByDefault>true</activeByDefault>
+    </activation>
+    
+    <properties>
+        <gpg.executable>gpg2</gpg.executable>
+        <gpg.passphrase>密码</gpg.passphrase>
+    </properties>
+</profile>
+```
+
+- 执行命令
+
+不过这个是临时的，也可以配置环境变量，设置为永久的。
+
+```
+SET PATH=%PATH%;C:\Program Files (x86)\GNU\GnuPG
+```
+
 # 参考资料
 
 http://blog.csdn.net/hj7jay/article/details/51130398
+
+https://stackoverrun.com/cn/q/6500169
 
 * any list
 {:toc}
