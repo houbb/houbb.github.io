@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  二叉搜索树一共有多少种解法II？
+title:  面试算法力扣95-二叉搜索树的所有解法结果？
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, search]

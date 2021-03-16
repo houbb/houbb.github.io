@@ -1,15 +1,15 @@
 ---
 layout: post
-title: 二叉树遍历的三种方式：前序遍历、中序遍历（Inorder Traversal）、后续遍历
-date:  2020-1-23 10:09:32 +0800
+title: 面试算法：二叉树的前序/中序/后序/层序遍历方式汇总 preorder/Inorder/postorder/levelorder
+date:  2020-1-23 10:09:32 +0800 
 categories: [Data-Struct]
-tags: [data-struct, block-chain, sh]
+tags: [data-struct, block-chain, leetcode, sh]
 published: true
 ---
 
 # 要求
 
-本文用于整理二叉树的 3 种遍历方式：前序遍历、中序遍历、后续遍历。
+本文用于整理二叉树的 4 种遍历方式：前序遍历、中序遍历、后序遍历、层序遍历。
 
 并且使用递归和非递归两种方式。
 
@@ -147,7 +147,7 @@ public List<Integer> preorderTraversal(TreeNode root) {
 }
 ```
 
-# 后续遍历
+# 后序遍历
 
 ## 流程
 
@@ -209,11 +209,172 @@ public List<Integer> postorderTraversal(TreeNode root) {
 }
 ```
 
+# 层序遍历
+
+## 题目
+
+给你一个二叉树，请你返回其按层序遍历得到的节点值。 （即逐层地，从左到右访问所有节点）。
+
+示例：
+
+```
+二叉树：[3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回其层序遍历结果：
+
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+```
+
+## 解法一：前序遍历
+
+### 解题思路
+
+如何判断层级呢？
+
+我们可以使用前序遍历：数据=》左=》右
+
+然后把层级传递下去，每次左（右）level+1。
+
+### java 实现
+
+```java
+public List<List<Integer>> levelOrder(TreeNode root) {
+    List<List<Integer>> results = new ArrayList<>();
+    levelOrder(results, root, 0);
+    return results;
+}
+
+private void levelOrder(List<List<Integer>> results, TreeNode treeNode, int level) {
+    if(treeNode == null) {
+        return;
+    }
+    // 当前节点
+    // AVOID BOUND EX
+    if(results.size() <= level) {
+        results.add(new ArrayList<>());
+    }
+    List<Integer> list = results.get(level);
+    // 节点
+    int val = treeNode.val;
+    list.add(val);
+    results.set(level, list);
+    // 左
+    levelOrder(results, treeNode.left, level+1);
+    // 右
+    levelOrder(results, treeNode.right, level+1);
+}
+```
+
+效果：
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Tree Level Order Traversal.
+Memory Usage: 39.2 MB, less than 56.89% of Java online submissions for Binary Tree Level Order Traversal.
+```
+
+# 从下往上的层序遍历
+
+## 题目
+
+我们把层序遍历做一个简单的调整：要求从最下面一层往上面遍历，其他不变。
+
+给你一个二叉树，请你返回其按 层序遍历 得到的节点值。 （即逐层地，从左到右访问所有节点）。
+ 
+
+示例：
+
+```
+二叉树：[3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回其层序遍历结果：
+
+[
+  [3],
+  [9,20],
+  [15,7]
+]
+```
+
+## 思路
+
+如果直接做这一题难度还是有的，不过如果我们在上一题的基础上去做，就变得非常简单。
+
+（1）获取层序遍历的列表
+
+（2）列表反序
+
+## 实现
+
+```java
+public List<List<Integer>> levelOrderBottom(TreeNode root) {
+    List<List<Integer>> results = new ArrayList<>();
+    levelOrder(results, root, 0);
+    // reverse
+    return reverseList(results);
+}
+
+private List<List<Integer>> reverseList(List<List<Integer>> list) {
+    if(list.size() <= 1) {
+        return list;
+    }
+    // 从后向前遍历
+    List<List<Integer>> results = new ArrayList<>();
+    for(int i = list.size()-1; i >= 0; i--) {
+        List<Integer> temp = list.get(i);
+        results.add(temp);
+    }
+    return results;
+}
+
+private void levelOrder(List<List<Integer>> results, TreeNode treeNode, int level) {
+    if(treeNode == null) {
+        return;
+    }
+    // 当前节点
+    // AVOID BOUND EX
+    if(results.size() <= level) {
+        results.add(new ArrayList<>());
+    }
+    List<Integer> list = results.get(level);
+    // 节点
+    int val = treeNode.val;
+    list.add(val);
+    results.set(level, list);
+    // 左
+    levelOrder(results, treeNode.left, level+1);
+    // 右
+    levelOrder(results, treeNode.right, level+1);
+}
+```
+
+效果：
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Tree Level Order Traversal.
+Memory Usage: 39.2 MB, less than 56.89% of Java online submissions for Binary Tree Level Order Traversal.
+```
+
 # 参考资料
 
 [二叉树的先序(preorder)，中序（inorder），后序(postorder)的遍历(python)](https://blog.csdn.net/weixin_42664431/article/details/100751446)
 
 https://leetcode.com/problems/binary-tree-postorder-traversal/discuss/45551/Preorder-Inorder-and-Postorder-Iteratively-Summarization
+
+[102. 二叉树的层序遍历](https://leetcode-cn.com/problems/binary-tree-level-order-traversal/)
 
 * any list
 {:toc}

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  二叉搜索树一共有多少种？
+title: 面试算法力扣96-二叉搜索树一共有多少种？
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, search]
