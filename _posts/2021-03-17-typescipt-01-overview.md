@@ -2,8 +2,8 @@
 layout: post
 title: Typescript-01-overview
 date:  2021-3-09 16:52:15 +0800
-categories: [Database]
-tags: [oracle, mybatis, sh]
+categories: [Web]
+tags: [web, js, sh]
 published: true
 ---
 
