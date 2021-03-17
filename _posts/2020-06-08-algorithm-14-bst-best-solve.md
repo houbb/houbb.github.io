@@ -174,6 +174,16 @@ Memory Usage: 39.9 MB, less than 61.25% of Java online submissions for Convert S
 
 时间复杂度：O(nlogn)，其中 n 是链表的长度。
 
+# 小结
+
+这一题需要我们理解 BST，然后结合中位数实现即可。
+
+快慢指针是获取中间元素非常常用的技巧，利用链表存储元素，也可以解决随机访问的问题。
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位**极客**的点赞收藏转发，是老马持续写作的最大动力！
+
 # 参考资料
 
 https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/
