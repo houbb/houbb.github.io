@@ -368,6 +368,94 @@ Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Tree Le
 Memory Usage: 39.2 MB, less than 56.89% of Java online submissions for Binary Tree Level Order Traversal.
 ```
 
+# 层级 Z 字形遍历
+
+## 题目
+
+给定一个二叉树，返回其节点值的锯齿形层序遍历。（即先从左往右，再从右往左进行下一层遍历，以此类推，层与层之间交替进行）。
+
+例如：
+
+```
+给定二叉树 [3,9,20,null,null,15,7],
+
+    3
+   / \
+  9  20
+    /  \
+   15   7
+返回锯齿形层序遍历如下：
+
+[
+  [3],
+  [20,9],
+  [15,7]
+]
+```
+
+## 解题思路
+
+实际上这个在我们掌握了层级遍历之后，一切都变得非常简单。
+
+我们可以先层级遍历，然后把每一个偶数层的数组反转即可。
+
+## 实现如下
+
+```java
+public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+    List<List<Integer>> results = new ArrayList<>();
+    levelOrder(results, root, 0);
+    // 根據層級進行反轉
+    reverseByLevel(results);
+    return results;
+}
+
+private void reverseByLevel(List<List<Integer>> results) {
+    if(results.size() <= 1) {
+        return;
+    }
+    // 偶數開始便利
+    for(int i = 1; i < results.size(); i+=2) {
+        List<Integer> list = results.get(i);
+        Collections.reverse(list);
+        results.set(i, list);
+    }
+}
+
+/**
+ *
+ * @param results 結果
+ * @param treeNode 樹
+ * @param level 層級
+ */
+private void levelOrder(List<List<Integer>> results, TreeNode treeNode, int level) {
+    if(treeNode == null) {
+        return;
+    }
+    // 当前节点
+    // AVOID BOUND EX
+    if(results.size() <= level) {
+        results.add(new ArrayList<>());
+    }
+    List<Integer> list = results.get(level);
+    // 节点
+    int val = treeNode.val;
+    list.add(val);
+    results.set(level, list);
+    // 左
+    levelOrder(results, treeNode.left, level+1);
+    // 右
+    levelOrder(results, treeNode.right, level+1);
+}
+```
+
+效果：
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Binary Tree Zigzag Level Order Traversal.
+Memory Usage: 39.2 MB, less than 50.08% of Java online submissions for Binary Tree Zigzag Level Order Traversal.
+```
+
 # 参考资料
 
 [二叉树的先序(preorder)，中序（inorder），后序(postorder)的遍历(python)](https://blog.csdn.net/weixin_42664431/article/details/100751446)

@@ -170,9 +170,6 @@ Runtime: 0 ms, faster than 100.00% of Java online submissions for Validate Binar
 Memory Usage: 38.8 MB, less than 44.59% of Java online submissions for Validate Binary Search Tree.
 ```
 
-
-
-
 # 参考资料
 
 [98. 验证二叉搜索树](https://leetcode-cn.com/problems/validate-binary-search-tree)
