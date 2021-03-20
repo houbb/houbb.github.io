@@ -158,6 +158,221 @@ Memory Usage: 39.2 MB, less than 70.19% of Java online submissions for Populatin
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0320/120821_4a1c2997_508704.png "屏幕截图.png")
 
 
+可以总结为 2 点：
+
+（1）左子树
+
+当前节点的左子树，直接 next 指向当前节点的右子树。
+
+完美二叉树，左子树存在，则右子树必然存在。
+
+（2）右子树
+
+当前节点的右子树，分为两个场景。
+
+如果当前节点.next 存在，则直接右子树指向 当前节点.next.left
+
+否则，指向空。（每一层的末尾）
+
+## java 实现
+
+递归时间其实非常简单：
+
+```java
+public Node connect(Node root) {
+    connect(root, null);
+    return root;
+}
+
+private void connect(Node current, Node next) {
+    // 终止条件
+    if (current == null) {
+        return;
+    }
+    // 核心逻辑
+    current.next = next;
+
+    // 左=》右（当前节点，左子树=》右子树）
+    connect(current.left, current.right);
+    // 右子树，指向当前节点 next 的左子树，或者指向空
+    connect(current.right, current.next == null ? null : current.next.left);
+}
+```
+
+效果：
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Populating Next Right Pointers in Each Node.
+Memory Usage: 39.3 MB, less than 45.38% of Java online submissions for Populating Next Right Pointers in Each Node.
+```
+
+什么叫神用递归，这就叫神用递归。
+
+# 填充每个节点的下一个右侧节点指针 II
+
+## 题目
+
+解决了上面的题目，我们稍微调整下条件。
+
+给定一个二叉树
+
+```c
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+```
+
+填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
+
+初始状态下，所有 next 指针都被设置为 NULL。
+
+进阶：
+
+你只能使用常量级额外空间。
+
+使用递归解题也符合要求，本题中递归程序占用的栈空间不算做额外的空间复杂度。
+
+### 例子
+
+![ex](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2019/02/15/117_sample.png)
+
+```
+输入：root = [1,2,3,4,5,null,7]
+输出：[1,#,2,3,#,4,5,7,#]
+解释：给定二叉树如图 A 所示，你的函数应该填充它的每个 next 指针，以指向其下一个右侧节点，如图 B 所示。序列化输出按层序遍历顺序（由 next 指针连接），'#' 表示每层的末尾。
+```
+
+提示：
+
+- 树中的节点数小于 6000
+
+- -100 <= node.val <= 100
+
+## 思路 1
+
+和上面类似，直接分成两步：
+
+（1）层序遍历获取所有元素
+
+（2）按照层级，依次设置 next 指向
+
+### java 实现
+
+```java
+public Node connect(Node root) {
+    List<List<Node>> results = new ArrayList<>();
+    connect(results, root, 0);
+    // 设置 next
+    for(int i = 0; i < results.size(); i++) {
+        List<Node> list = results.get(i);
+        for(int j = 1; j < list.size(); j++) {
+            Node pre = list.get(j-1);
+            pre.next = list.get(j);
+        }
+    }
+    return root;
+}
+
+private void connect(List<List<Node>> results, Node node, int level) {
+    if (node == null) {
+        return;
+    }
+    // AVOID BOUND EX
+    if(results.size() <= level) {
+        results.add(new ArrayList<>());
+    }
+    List<Node> list = results.get(level);
+    if(list == null) {
+        list = new ArrayList<>();
+    }
+    list.add(node);
+    results.set(level, list);
+    connect(results, node.left, level+1);
+    connect(results, node.right, level+1);
+}
+```
+
+效果：
+
+```
+Runtime: 1 ms, faster than 55.82% of Java online submissions for Populating Next Right Pointers in Each Node II.
+Memory Usage: 38.7 MB, less than 50.24% of Java online submissions for Populating Next Right Pointers in Each Node II.
+```
+
+### 复杂度
+
+时间：O(N)
+
+空间：O(N)
+
+## 思路 2
+
+从根节点开始。
+
+因为第 0 层只有一个节点，不需要处理。可以在上一层为下一层建立 next指针。
+
+该方法最重要的一点是：**位于第 x 层时为第 x+1 层建立 next 指针**。
+
+一旦完成这些连接操作，移至第 x+1 层为第 x+2 层建立 next 指针。
+
+当遍历到某层节点时，该层节点的 next 指针已经建立。这样就不需要队列从而节省空间。
+
+每次只要知道下一层的最左边的节点，就可以从该节点开始，像遍历链表一样遍历该层的所有节点。
+
+### java 实现
+
+这种实现的优势就是空间复杂度为O（1）。
+
+```java
+// 上一个节点
+private Node pre = null;
+// 下一层的开始节点
+private Node nextStart = null;
+public Node connect(Node root) {
+    Node start = root;
+    while (start != null) {
+        pre = null;
+        nextStart = null;
+        Node current = start;
+        while (current != null) {
+            // 处理下一层的 next 关系
+            handle(current.left);
+            handle(current.right);
+            // 移动当前层的位置
+            current = current.next;
+        }
+        // 下一层的开始节点
+        start = nextStart;
+    }
+    return root;
+}
+
+private void handle(Node current) {
+    if(current == null) {
+        return;
+    }
+    // 设置子节点层 pre.next = current
+    if (pre != null) {
+        pre.next = current;
+    }
+    // 更新 pre
+    pre = current;
+    // 设置下一层的开始节点（第一个非空的元素）
+    if (nextStart == null) {
+        nextStart = current;
+    }
+}
+```
+
+效果：
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Populating Next Right Pointers in Each Node II.
+Memory Usage: 38.9 MB, less than 29.02% of Java online submissions for Populating Next Right Pointers in Each Node II.
+```
 
 # 小结
 
@@ -168,7 +383,6 @@ Memory Usage: 39.2 MB, less than 70.19% of Java online submissions for Populatin
 # 参考资料
 
 https://leetcode-cn.com/problems/populating-next-right-pointers-in-each-node/
-
 
 * any list
 {:toc}
