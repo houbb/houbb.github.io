@@ -676,6 +676,189 @@ Memory Usage: 38.8 MB, less than 61.97% of Java online submissions for Path Sum 
 
 空间：O(N)
 
+# 求根节点到叶节点数字之和 
+
+## 題目
+
+https://leetcode-cn.com/problems/sum-root-to-leaf-numbers
+
+给你一个二叉树的根节点 root ，树中每个节点都存放有一个 0 到 9 之间的数字。
+每条从根节点到叶节点的路径都代表一个数字：
+
+例如，从根节点到叶节点的路径 1 -> 2 -> 3 表示数字 123 。
+计算从根节点到叶节点生成的 所有数字之和 。
+
+叶节点 是指没有子节点的节点。
+
+示例 1：
+
+![e1](https://assets.leetcode.com/uploads/2021/02/19/num1tree.jpg)
+
+```
+输入：root = [1,2,3]
+输出：25
+解释：
+从根到叶子节点路径 1->2 代表数字 12
+从根到叶子节点路径 1->3 代表数字 13
+因此，数字总和 = 12 + 13 = 25
+```
+
+示例 2：
+
+![e2](https://assets.leetcode.com/uploads/2021/02/19/num2tree.jpg)
+
+```
+输入：root = [4,9,0,5,1]
+输出：1026
+解释：
+从根到叶子节点路径 4->9->5 代表数字 495
+从根到叶子节点路径 4->9->1 代表数字 491
+从根到叶子节点路径 4->0 代表数字 40
+因此，数字总和 = 495 + 491 + 40 = 1026
+```
+
+提示：
+
+- 树中节点的数目在范围 [1, 1000] 内
+
+- 0 <= Node.val <= 9
+
+- 树的深度不超过 10
+
+## 思路1
+
+在前面我们学会获取二叉树的全路径之后，这一题就变得非常简单。
+
+（1）获取全路径
+
+（2）遍历列表，构建对应的数字，直接累加即可。
+
+数字的构建方式，比如  1 2 3 4
+
+实际上就是：
+
+```
+1 * 10^3 + 2 * 10^2 + 3 * 10^1 + 4 * 10^0
+```
+
+### java 实现
+
+编码也非常的简单：
+
+```java
+public int sumNumbers(TreeNode root) {
+    List<List<Integer>> results = new ArrayList<>();
+    getAllPath(root, results, new ArrayList<>());
+    // 遍历构建
+    int sum = 0;
+    for(int i = 0; i < results.size(); i++) {
+        sum += calcInt(results.get(i));
+    }
+    return sum;
+}
+
+// 1 2 3 4 = 1 * 10^3 + 2*10^2 + 3*10 + 4;
+private int calcInt(List<Integer> list) {
+    int sum = 0;
+    for(int i = 0; i < list.size(); i++) {
+        int pow = list.size() -1 - i;
+        sum += list.get(i) * Math.pow(10, pow);
+    }
+    return sum;
+}
+
+private void getAllPath(TreeNode node, List<List<Integer>> results,
+                        List<Integer> tempList) {
+    if(node == null) {
+        return;
+    }
+    tempList.add(node.val);
+    if(node.left == null && node.right == null) {
+        results.add(tempList);
+    }
+    getAllPath(node.left, results, new ArrayList<>(tempList));
+    getAllPath(node.right, results, new ArrayList<>(tempList));
+}
+```
+
+理所当然的 AC，不过一看效果：
+
+```
+Runtime: 1 ms, faster than 28.21% of Java online submissions for Sum Root to Leaf Numbers.
+Memory Usage: 36.9 MB, less than 30.13% of Java online submissions for Sum Root to Leaf Numbers.
+```
+
+整个人都傻了，啥，性能怎么这么差？
+
+所以到底别人的性能为啥这么好？
+
+## 思路2
+
+秉持着打不过就加入的心态，我学习了一下别人的解法思路。
+
+发现有一个很大的问题，就是我们的计算过程没有任何的复用，所以产生了很多的浪费。
+
+```
+    1
+   / \
+  2   3
+ /\
+4  5
+```
+
+比如对于 [1,2,4] 和 [1,2,5] 的两个分支计算，我们原来的方法全部是从头计算，实际上 1,2 这部分是可以复用的。
+
+对于 [1,2,4] 的计算方式可以调整如下：
+
+```
+第一步：1
+
+第二次：1*10 + 2
+
+第三次：10 * (1*10 + 2) + 4 
+```
+
+这种好处就是可以复用上一次的计算。
+
+### java 实现
+
+```java
+private int sum = 0;
+private int temp = 0;
+
+
+public int sumNumbers(TreeNode root) {
+    calc(root);
+    return sum;
+}
+private void calc(TreeNode node) {
+    if(node == null) {
+        return;
+    }
+    temp = temp * 10 + node.val;
+    // 叶子
+    if(node.left == null && node.right == null) {
+        sum += temp;
+    }
+    // 递归子节点
+    calc(node.left);
+    calc(node.right);
+    // 返回上一层
+    temp /= 10;
+}
+```
+
+效果：
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Sum Root to Leaf Numbers.
+Memory Usage: 36.2 MB, less than 96.95% of Java online submissions for Sum Root to Leaf Numbers.
+```
+
+嗯，只能说是非常满意了~~
+
+学无止境，学无止境。
+
 # 小结
 
 希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
