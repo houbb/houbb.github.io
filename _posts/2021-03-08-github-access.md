@@ -41,6 +41,8 @@ git config --global --unset http.proxy
 
 ## 修改 hosts 文件
 
+hosts 文件路径：C:\Windows\System32\drivers\etc\HOSTS
+
 我们把 `13.250.177.223 github.com` 添加到 hosts 文件。
 
 立刻刷新 dns
@@ -68,6 +70,20 @@ ping 测试
 
 重新操作成功。
 
+# ssl 异常
+
+## 异常
+
+```
+OpenSSL SSL_read: Connection was reset, errno 10054
+```
+
+## 解决方案
+
+```
+git config --global http.sslVerify "false"
+```
+
 # 开源工具
 
 （1）获取 github.com 对应的所有 ip 列表
@@ -77,6 +93,11 @@ ping 测试
 （3）选择耗时比较短的 IP 内容，写入到 hosts 文件
 
 （4）执行 `ipconfig /flushdns` 命令
+
+
+## 开源地址
+
+https://github.com/houbb/ping-hosts
 
 # 参考资料
 
