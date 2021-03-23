@@ -941,6 +941,217 @@ public int numDecodings2(String string) {
 }
 ```
 
+# 97. 交错字符串
+
+[交错字符串](https://leetcode-cn.com/problems/interleaving-string/)
+
+## 题目
+
+给定三个字符串 s1、s2、s3，请你帮忙验证 s3 是否是由 s1 和 s2 交错 组成的。
+
+两个字符串 s 和 t 交错 的定义与过程如下，其中每个字符串都会被分割成若干 非空 子字符串：
+
+s = s1 + s2 + ... + sn
+
+t = t1 + t2 + ... + tm
+
+|n - m| <= 1
+
+交错 是 s1 + t1 + s2 + t2 + s3 + t3 + ... 或者 t1 + s1 + t2 + s2 + t3 + s3 + ...
+
+提示：a + b 意味着字符串 a 和 b 连接。
+
+- 示例 1：
+
+![ex1](https://assets.leetcode.com/uploads/2020/09/02/interleave.jpg)
+
+```
+输入：s1 = "aabcc", s2 = "dbbca", s3 = "aadbbcbcac"
+输出：true
+```
+
+- 示例 2：
+
+```
+输入：s1 = "aabcc", s2 = "dbbca", s3 = "aadbbbaccc"
+输出：false
+```
+
+- 示例 3：
+
+```
+输入：s1 = "", s2 = "", s3 = ""
+输出：true
+```
+
+## 思路1-双指针法
+
+看到这一题，感觉简单啊。
+
+直接两个指针，从左到右遍历 s3，如果和 s1 相同，则 s1 的指针+1；如果和 s2 相同，则 s2 的指针+1。
+
+### java 实现
+
+```java
+public boolean isInterleave(String s1, String s2, String s3) {
+    if(s1.length() + s2.length() != s3.length()) {
+        return false;
+    }
+    char[] one = s1.toCharArray();
+    char[] two = s2.toCharArray();
+    int oneIndex = 0;
+    int twoIndex = 0;
+    char[] three  =s3.toCharArray();
+    for(int i = 0; i < three.length; i++) {
+        char c = three[i];
+        if(oneIndex < one.length && c == one[oneIndex]) {
+            oneIndex++;
+        } else if(twoIndex < two.length && c == two[twoIndex]) {
+            twoIndex++;
+        } else {
+            return false;
+        }
+    }
+    return true;
+}
+```
+
+### 反思
+
+这里存在一个思考的误区。
+
+比如对于 "aabcc", "dbbca", "aadbbcbcac" 我们得到的是 false，实际上应该是 true。
+
+## 思路2-动态规划
+
+最基本的判断：如果 s1.len + s2.len != s3.len，则直接返回 false。
+
+令f(i,j) 表示 s1 的前 i 个字符和 s2 的前 j 个字符能否交错组成 s3的前 i+j 个字符。
+
+（1）初始值
+
+f(0,0) = true
+
+（2）递推公式
+
+接下来，我们需要找到最核心的东西，递推公式。
+
+交错从s1和s2拿元素，但每次可能拿多个
+
+示例1的交错方式为：
+
+```
+s1: aa    bc     c
+s2:    db    bca
+```
+
+所以，如果s1的前i个字符和s2的前j个字符，能够交替拼出s3的前i+j个字符的话， 那么，s3的下一个字符随便从s1还是s2拿都是有可能的。
+
+理解了这一点，递推关系就有了：
+
+递推关系： 令p = i+j-1, f(0,0)=true, 则f(i,j)有两种情况为真：
+
+```
+1、f(i-1,j) && s1[i-1]==s3[p]
+2、f(i,j-1) && s2[j-1]==s3[p]
+```
+
+### java 实现
+
+找到上面的关系之后，编码也变得简单起来：
+
+```java
+public boolean isInterleave(String s1, String s2, String s3) {
+    int m  = s1.length();
+    int n  = s2.length();
+    if(m+n != s3.length()) {
+        return false;
+    }
+
+    boolean[][] dp = new boolean[m+1][n+1];
+    dp[0][0] = true;
+
+    for(int i = 0; i  <= m; i++) {
+        for(int j = 0; j <= n; j++) {
+            int p = i+j-1;
+            if(i > 0) {
+                dp[i][j] = dp[i][j] || (dp[i - 1][j] && s1.charAt(i - 1) == s3.charAt(p));
+            }
+            if(j > 0) {
+                dp[i][j] = dp[i][j] || (dp[i][j-1] && s2.charAt(j - 1) == s3.charAt(p));
+            }
+        }
+    }
+
+    // 获取结果
+    return dp[m][n];
+}
+```
+
+效果：
+
+```
+Runtime: 4 ms, faster than 54.21% of Java online submissions for Interleaving String.
+Memory Usage: 37.3 MB, less than 53.38% of Java online submissions for Interleaving String.
+```
+
+复杂度：
+
+时间、空间都是 O(m*n)
+
+## 优化-滚动数组
+
+
+### 优化思路
+
+针对滚动数组优化，参见 [Approach 4: Using 1D Dynamic Programming](https://leetcode.com/problems/interleaving-string/solution/)
+
+```
+dp[i][j] = dp[i][j] || (dp[i - 1][j] && s1.charAt(i - 1) == s3.charAt(p));
+
+dp[i][j] = dp[i][j] || (dp[i][j-1] && s2.charAt(j - 1) == s3.charAt(p));
+```
+
+通过状态转移方程来看，只用到了dp[i-1][j]和dp[i][j-1],即上一层的数据，再之前的数据就没有用了。可以将二维空间压缩成一维。
+
+### java 实现
+
+```java
+public boolean isInterleave(String s1, String s2, String s3) {
+    int m  = s1.length();
+    int n  = s2.length();
+    if(m+n != s3.length()) {
+        return false;
+    }
+    boolean[] dp = new boolean[n+1];
+    dp[0] = true;
+    for(int i = 0; i  <= m; i++) {
+        for(int j = 0; j <= n; j++) {
+            int p = i+j-1;
+            if(i > 0) {
+                dp[j] = dp[j] && s1.charAt(i - 1) == s3.charAt(p);
+            }
+            if(j > 0) {
+                dp[j] = dp[j] || (dp[j-1] && s2.charAt(j - 1) == s3.charAt(p));
+            }
+        }
+    }
+    // 获取结果
+    return dp[n];
+}
+```
+
+
+效果:
+
+```
+Runtime: 2 ms, faster than 84.77% of Java online submissions for Interleaving String.
+Memory Usage: 36.9 MB, less than 97.75% of Java online submissions for Interleaving String.
+```
+
+
+
+
 
 # 拓展阅读
 
@@ -975,6 +1186,10 @@ https://leetcode-cn.com/problems/unique-paths-ii/solution/shou-hua-tu-jie-dp-si-
 https://leetcode-cn.com/problems/unique-paths-ii/solution/63-bu-tong-lu-jing-iidong-tai-gui-hua-ji-6h8h/
 
 [滚动数组思想，运用在动态规划当中](https://blog.csdn.net/weixin_40295575/article/details/80181756)
+
+[动态规划空间优化之滚动数组](https://blog.csdn.net/qq_36378681/article/details/98657014)
+
+[详细通俗的思路分析，多解法](https://leetcode-cn.com/problems/interleaving-string/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-2-9/)
 
 * any list
 {:toc}

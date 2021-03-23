@@ -7,6 +7,8 @@ tags: [data-struct, block-chain, sh]
 published: true
 ---
 
+面试算法：回溯算法与分割回文串实战
+
 # 回溯算法
 
 回溯算法实际上一个类似枚举的搜索尝试过程，主要是在搜索尝试过程中寻找问题的解，当发现已不满足求解条件时，就“回溯”返回，尝试别的路径。
@@ -29,43 +31,29 @@ published: true
 
 当然，对于某些问题如果其解空间过大，即使用回溯法进行计算也有很高的时间复杂度，因为回溯法会尝试解空间树中所有的分支。
 
+## 剪枝
+
 所以根据这类问题，我们有一些优化剪枝策略以及启发式搜索策略。
 
 所谓优化剪枝策略，就是判断当前的分支树是否符合问题的条件，如果当前分支树不符合条件，那么就不再遍历这个分支里的所有路径。
 
 所谓启发式搜索策略指的是，给回溯法搜索子节点的顺序设定一个优先级，从该子节点往下遍历更有可能找到问题的解。
 
-# 来源
+# 一般步骤
 
 回溯算法也叫试探法，它是一种系统地搜索问题的解的方法。
 
 用回溯算法解决问题的一般步骤：
 
-1、 针对所给问题，定义问题的解空间，它至少包含问题的一个（最优）解。
+1、针对所给问题，定义问题的解空间，它至少包含问题的一个（最优）解。
 
 2、确定易于搜索的解空间结构,使得能用回溯法方便地搜索整个解空间 。
 
 3、以深度优先的方式搜索解空间，并且在搜索过程中用剪枝函数避免无效搜索。
 
-确定了解空间的组织结构后，回溯法就从开始结点（根结点）出发，以深度优先的方式搜索整个解空间。
-
-这个开始结点就成为一个活结点，同时也成为当前的扩展结点。在当前的扩展结点处，搜索向纵深方向移至一个新结点。
-
-这个新结点就成为一个新的活结点，并成为当前扩展结点。
-
-如果在当前的扩展结点处不能再向纵深方向移动，则当前扩展结点就成为死结点。
-
-此时，应往回移动（回溯）至最近的一个活结点处，并使这个活结点成为当前的扩展结点。
-
-回溯法即以这种工作方式递归地在解空间中搜索，直至找到所要求的解或解空间中已没有活结点时为止。
-
 # 基本思想
 
 回溯算法的基本思想是：从一条路往前走，能进则进，不能进则退回来，换一条路再试。
-
-八皇后问题就是回溯算法的典型，第一步按照顺序放一个皇后，然后第二步符合要求放第2个皇后，如果没有位置符合要求，那么就要改变第一个皇后的位置，重新放第2个皇后的位置，直到找到符合条件的位置就可以了。
-
-回溯在迷宫搜索中使用很常见，就是这条路走不通，然后返回前一个路口，继续下一条路。
 
 **回溯算法说白了就是穷举法。不过回溯算法使用剪枝函数，剪去一些不可能到达 最终状态（即答案状态）的节点，从而减少状态空间树节点的生成。**
 
@@ -84,6 +72,174 @@ published: true
 而回溯法在用来求问题的任一解时，只要搜索到问题的一个解就可以结束。
 
 这种以深度优先的方式系统地搜索问题的解的算法称为回溯法，它适用于解一些组合数较大的问题。
+
+# 分割回文串
+
+## 题目
+
+[131. 分割回文串](https://leetcode-cn.com/problems/palindrome-partitioning/)
+
+给你一个字符串 s，请你将 s 分割成一些子串，使每个子串都是 回文串 。返回 s 所有可能的分割方案。
+
+回文串是正着读和反着读都一样的字符串。
+
+示例 1：
+
+```
+输入：s = "aab"
+输出：[["a","a","b"],["aa","b"]]
+```
+
+示例 2：
+
+```
+输入：s = "a"
+输出：[["a"]] 
+```
+
+提示：
+
+1 <= s.length <= 16
+
+s 仅由小写英文字母组成
+
+## 思路1-回溯
+
+我能想到最自然的解法就是回溯。
+
+这题大概花了 30min 左右解出来的，整体思路如下：
+
+（1）子字符串的截取方式
+
+最短的可能性为1，最长可能是整个字符串
+
+（2）回文的判断
+
+可以翻转字符串，和原来字符串相等，则认为是回文。
+
+也可以，从前往后进行比较（有点双指针的感觉），遇到不一致的则认为不是。
+
+（3）终止条件
+
+当截取的 index 等于源字符串的长度-1
+
+### java 实现
+
+java 实现如下:
+
+```java
+public List<List<String>> partition(String s) {
+    List<List<String>> results = new ArrayList<>();
+    backtrack(results, new ArrayList<>(), s, 0);
+    return results;
+}
+
+private void backtrack(List<List<String>> results, List<String> tempList,
+                       String s, int startIndex) {
+    // 终止的条件
+    // 元素的長度等於 s
+    if(startIndex == s.length()) {
+        results.add(new ArrayList<>(tempList));
+    } else {
+        // 如何进行回溯处理呢？
+        for(int i = 1; i <= s.length()-startIndex; i++) {
+            int endIndex = startIndex + i;
+            String subString = s.substring(startIndex, endIndex);
+            if(isPalindrome(subString)) {
+                tempList.add(subString);
+                // 执行具体的逻辑
+                backtrack(results, tempList, s, endIndex);
+                // 回溯
+                tempList.remove(tempList.size()-1);
+            }
+        }
+    }
+}
+
+private boolean isPalindrome(String s) {
+    if(s.length() == 1) {
+        return true;
+    }
+    char[] chars = s.toCharArray();
+    int low = 0;
+    int high = chars.length-1;
+    while (low < high) {
+        if(chars[low] != chars[high] ) {
+            return false;
+        }
+        low++;
+        high--;
+    }
+    return true;
+}
+```
+
+效果如下：
+
+```
+Runtime: 8 ms, faster than 79.54% of Java online submissions for Palindrome Partitioning.
+Memory Usage: 52.8 MB, less than 67.93% of Java online submissions for Palindrome Partitioning.
+```
+
+只能说是中规中矩，看了其他答案，感觉不是自己的菜，目前也记不住。
+
+## 优化思路
+
+看到官方解题中的对于回文的判断比较有趣，这里记录一下。
+
+利用动态规划，来判断是否为回文。
+
+```java
+int[][] f;
+List<List<String>> ret = new ArrayList<List<String>>();
+List<String> ans = new ArrayList<String>();
+int n;
+
+public List<List<String>> partition(String s) {
+    n = s.length();
+    f = new int[n][n];
+    dfs(s, 0);
+    return ret;
+}
+
+public void dfs(String s, int i) {
+    if (i == n) {
+        ret.add(new ArrayList<String>(ans));
+        return;
+    }
+    for (int j = i; j < n; ++j) {
+        if (isPalindrome(s, i, j) == 1) {
+            ans.add(s.substring(i, j + 1));
+            dfs(s, j + 1);
+            ans.remove(ans.size() - 1);
+        }
+    }
+}
+
+// 记忆化搜索中，f[i][j] = 0 表示未搜索，1 表示是回文串，-1 表示不是回文串
+public int isPalindrome(String s, int i, int j) {
+    if (f[i][j] != 0) {
+        return f[i][j];
+    }
+    if (i >= j) {
+        f[i][j] = 1;
+    } else if (s.charAt(i) == s.charAt(j)) {
+        f[i][j] = isPalindrome(s, i + 1, j - 1);
+    } else {
+        f[i][j] = -1;
+    }
+    return f[i][j];
+}
+```
+
+效果：
+
+```
+Runtime: 7 ms, faster than 99.23% of Java online submissions for Palindrome Partitioning.
+Memory Usage: 53.2 MB, less than 49.46% of Java online submissions for Palindrome Partitioning.
+```
+
+忽然返现，这 1ms 的差距，差的人还是很多的。
 
 # 8 皇后问题
 
@@ -299,6 +455,12 @@ void dfs(int i,int cv,int cw)
 ```
 
 这里其实是：穷举+剪枝+回溯
+
+# 小结
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位**极客**的点赞收藏转发，是老马持续写作的最大动力！
 
 # 参考资料
 
