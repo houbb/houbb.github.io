@@ -102,128 +102,7 @@ V1 -> V2 -> V4 -> V8 -> V5 -> V3 -> V6 -> V7
 
 深度优先搜索是一个不断回溯的过程。
 
-## C 实现
 
-```c
-#include <stdio.h>
-
-#define MAX_VERtEX_NUM 20                   //顶点的最大个数
-#define VRType int                          //表示顶点之间的关系的变量类型
-#define InfoType char                       //存储弧或者边额外信息的指针变量类型
-#define VertexType int                      //图中顶点的数据类型
-
-typedef enum{false,true}bool;               //定义bool型常量
-bool visited[MAX_VERtEX_NUM];               //设置全局数组，记录标记顶点是否被访问过
-
-typedef struct {
-    VRType adj;                             //对于无权图，用 1 或 0 表示是否相邻；对于带权图，直接为权值。
-    InfoType * info;                        //弧或边额外含有的信息指针
-}ArcCell,AdjMatrix[MAX_VERtEX_NUM][MAX_VERtEX_NUM];
-
-typedef struct {
-    VertexType vexs[MAX_VERtEX_NUM];        //存储图中顶点数据
-    AdjMatrix arcs;                         //二维数组，记录顶点之间的关系
-    int vexnum,arcnum;                      //记录图的顶点数和弧（边）数
-}MGraph;
-//根据顶点本身数据，判断出顶点在二维数组中的位置
-int LocateVex(MGraph * G,VertexType v){
-    int i=0;
-    //遍历一维数组，找到变量v
-    for (; i<G->vexnum; i++) {
-        if (G->vexs[i]==v) {
-            break;
-        }
-    }
-    //如果找不到，输出提示语句，返回-1
-    if (i>G->vexnum) {
-        printf("no such vertex.\n");
-        return -1;
-    }
-    return i;
-}
-//构造无向图
-void CreateDN(MGraph *G){
-    scanf("%d,%d",&(G->vexnum),&(G->arcnum));
-    for (int i=0; i<G->vexnum; i++) {
-        scanf("%d",&(G->vexs[i]));
-    }
-    for (int i=0; i<G->vexnum; i++) {
-        for (int j=0; j<G->vexnum; j++) {
-            G->arcs[i][j].adj=0;
-            G->arcs[i][j].info=NULL;
-        }
-    }
-    for (int i=0; i<G->arcnum; i++) {
-        int v1,v2;
-        scanf("%d,%d",&v1,&v2);
-        int n=LocateVex(G, v1);
-        int m=LocateVex(G, v2);
-        if (m==-1 ||n==-1) {
-            printf("no this vertex\n");
-            return;
-        }
-        G->arcs[n][m].adj=1;
-        G->arcs[m][n].adj=1;//无向图的二阶矩阵沿主对角线对称
-    }
-}
-
-int FirstAdjVex(MGraph G,int v)
-{
-    //查找与数组下标为v的顶点之间有边的顶点，返回它在数组中的下标
-    for(int i = 0; i<G.vexnum; i++){
-        if( G.arcs[v][i].adj ){
-            return i;
-        }
-    }
-    return -1;
-}
-int NextAdjVex(MGraph G,int v,int w)
-{
-    //从前一个访问位置w的下一个位置开始，查找之间有边的顶点
-    for(int i = w+1; i<G.vexnum; i++){
-        if(G.arcs[v][i].adj){
-            return i;
-        }
-    }
-    return -1;
-}
-void visitVex(MGraph G, int v){
-    printf("%d ",G.vexs[v]);
-}
-void DFS(MGraph G,int v){
-    visited[v] = true;//标记为true
-    visitVex( G,  v); //访问第v 个顶点
-    //从该顶点的第一个边开始，一直到最后一个边，对处于边另一端的顶点调用DFS函数
-    for(int w = FirstAdjVex(G,v); w>=0; w = NextAdjVex(G,v,w)){
-        //如果该顶点的标记位false，证明未被访问，调用深度优先搜索函数
-        if(!visited[w]){
-            DFS(G,w);
-        }
-    }
-}
-//深度优先搜索
-void DFSTraverse(MGraph G){//
-    int v;
-    //将用做标记的visit数组初始化为false
-    for( v = 0; v < G.vexnum; ++v){
-        visited[v] = false;
-    }
-    //对于每个标记为false的顶点调用深度优先搜索函数
-    for( v = 0; v < G.vexnum; v++){
-        //如果该顶点的标记位为false，则调用深度优先搜索函数
-        if(!visited[v]){
-            DFS( G, v);
-        }
-    }
-}
-
-int main() {
-    MGraph G;//建立一个图的变量
-    CreateDN(&G);//初始化图
-    DFSTraverse(G);//深度优先搜索图
-    return 0;
-}
-```
 
 # 主要解决问题
 
@@ -234,7 +113,6 @@ int main() {
 比如数字的全排列问题
 
 ## 地图型
-
 
 # 广度优先搜索
 
@@ -254,168 +132,240 @@ int main() {
 V1 -> V2 -> v3 -> V4 -> V5 -> V6 -> V7 -> V8
 ```
 
-## C 实现
+# 133-克隆图
 
-广度优先搜索的实现需要借助队列这一特殊数据结构，实现代码为：
+看了上面的解释，你可能感觉很简单，也可能感觉很疑惑。
 
-```c
-#include <stdio.h>
-#include <stdlib.h>
+我们还是直接解决一个问题，体验一下 DFS 和 BFS。
 
-#define MAX_VERtEX_NUM 20                   //顶点的最大个数
-#define VRType int                          //表示顶点之间的关系的变量类型
-#define InfoType char                       //存储弧或者边额外信息的指针变量类型
-#define VertexType int                      //图中顶点的数据类型
+## 题目
 
-typedef enum{false,true}bool;               //定义bool型常量
+给你无向 连通 图中一个节点的引用，请你返回该图的 深拷贝（克隆）。
 
-bool visited[MAX_VERtEX_NUM];               //设置全局数组，记录标记顶点是否被访问过
-typedef struct Queue{
-    VertexType data;
-    struct Queue * next;
-}Queue;
+图中的每个节点都包含它的值 val（int） 和其邻居的列表（list[Node]）。
 
-typedef struct {
-    VRType adj;                             //对于无权图，用 1 或 0 表示是否相邻；对于带权图，直接为权值。
-    InfoType * info;                        //弧或边额外含有的信息指针
-}ArcCell,AdjMatrix[MAX_VERtEX_NUM][MAX_VERtEX_NUM];
-typedef struct {
-    VertexType vexs[MAX_VERtEX_NUM];        //存储图中顶点数据
-    AdjMatrix arcs;                         //二维数组，记录顶点之间的关系
-    int vexnum,arcnum;                      //记录图的顶点数和弧（边）数
-}MGraph;
-
-//根据顶点本身数据，判断出顶点在二维数组中的位置
-int LocateVex(MGraph * G,VertexType v){
-    int i=0;
-    //遍历一维数组，找到变量v
-    for (; i<G->vexnum; i++) {
-        if (G->vexs[i]==v) {
-            break;
-        }
-    }
-    //如果找不到，输出提示语句，返回-1
-    if (i>G->vexnum) {
-        printf("no such vertex.\n");
-        return -1;
-    }
-    return i;
-}
-//构造无向图
-void CreateDN(MGraph *G){
-    scanf("%d,%d",&(G->vexnum),&(G->arcnum));
-    for (int i=0; i<G->vexnum; i++) {
-        scanf("%d",&(G->vexs[i]));
-    }
-    for (int i=0; i<G->vexnum; i++) {
-        for (int j=0; j<G->vexnum; j++) {
-            G->arcs[i][j].adj=0;
-            G->arcs[i][j].info=NULL;
-        }
-    }
-    for (int i=0; i<G->arcnum; i++) {
-        int v1,v2;
-        scanf("%d,%d",&v1,&v2);
-        int n=LocateVex(G, v1);
-        int m=LocateVex(G, v2);
-        if (m==-1 ||n==-1) {
-            printf("no this vertex\n");
-            return;
-        }
-        G->arcs[n][m].adj=1;
-        G->arcs[m][n].adj=1;//无向图的二阶矩阵沿主对角线对称
-    }
-}
-
-int FirstAdjVex(MGraph G,int v)
-{
-    //查找与数组下标为v的顶点之间有边的顶点，返回它在数组中的下标
-    for(int i = 0; i<G.vexnum; i++){
-        if( G.arcs[v][i].adj ){
-            return i;
-        }
-    }
-    return -1;
-}
-
-int NextAdjVex(MGraph G,int v,int w)
-{
-    //从前一个访问位置w的下一个位置开始，查找之间有边的顶点
-    for(int i = w+1; i<G.vexnum; i++){
-        if(G.arcs[v][i].adj){
-            return i;
-        }
-    }
-    return -1;
-}
-//操作顶点的函数
-void visitVex(MGraph G, int v){
-    printf("%d ",G.vexs[v]);
-}
-//初始化队列
-void InitQueue(Queue ** Q){
-    (*Q)=(Queue*)malloc(sizeof(Queue));
-    (*Q)->next=NULL;
-}
-//顶点元素v进队列
-void EnQueue(Queue **Q,VertexType v){
-    Queue * element=(Queue*)malloc(sizeof(Queue));
-    element->data=v;
-    Queue * temp=(*Q);
-    while (temp->next!=NULL) {
-        temp=temp->next;
-    }
-    temp->next=element;
-}
-//队头元素出队列
-void DeQueue(Queue **Q,int *u){
-    (*u)=(*Q)->next->data;
-    (*Q)->next=(*Q)->next->next;
-}
-//判断队列是否为空
-bool QueueEmpty(Queue *Q){
-    if (Q->next==NULL) {
-        return true;
-    }
-    return false;
-}
-//广度优先搜索
-void BFSTraverse(MGraph G){//
-    int v;
-    //将用做标记的visit数组初始化为false
-    for( v = 0; v < G.vexnum; ++v){
-        visited[v] = false;
-    }
-    //对于每个标记为false的顶点调用深度优先搜索函数
-    Queue * Q;
-    InitQueue(&Q);
-    for( v = 0; v < G.vexnum; v++){
-        if(!visited[v]){
-            visited[v]=true;
-            visitVex(G, v);
-            EnQueue(&Q, G.vexs[v]);
-            while (!QueueEmpty(Q)) {
-                int u;
-                DeQueue(&Q, &u);
-                u=LocateVex(&G, u);
-                for (int w=FirstAdjVex(G, u); w>=0; w=NextAdjVex(G, u, w)) {
-                    if (!visited[w]) {
-                        visited[w]=true;
-                        visitVex(G, w);
-                        EnQueue(&Q, G.vexs[w]);
-                    }
-                }
-            }
-        }
-    }
-}
-int main() {
-    MGraph G;//建立一个图的变量
-    CreateDN(&G);//初始化图
-    BFSTraverse(G);//广度优先搜索图
-    return 0;
+```java
+class Node {
+    public int val;
+    public List<Node> neighbors;
 }
 ```
+ 
+测试用例格式：
+
+**简单起见，每个节点的值都和它的索引相同。**
+
+例如，第一个节点值为 1（val = 1），第二个节点值为 2（val = 2），以此类推。该图在测试用例中使用邻接列表表示。
+
+邻接列表 是用于表示有限图的无序列表的集合。每个列表都描述了图中节点的邻居集。
+
+给定节点将始终是图中的第一个节点（值为 1）。
+
+你必须将 给定节点的拷贝 作为对克隆图的引用返回。
+
+- 示例 1：
+
+![q](https://assets.leetcode-cn.com/aliyun-lc-upload/uploads/2020/02/01/133_clone_graph_question.png)
+
+```
+输入：adjList = [[2,4],[1,3],[2,4],[1,3]]
+输出：[[2,4],[1,3],[2,4],[1,3]]
+解释：
+图中有 4 个节点。
+节点 1 的值是 1，它有两个邻居：节点 2 和 4 。
+节点 2 的值是 2，它有两个邻居：节点 1 和 3 。
+节点 3 的值是 3，它有两个邻居：节点 2 和 4 。
+节点 4 的值是 4，它有两个邻居：节点 1 和 3 。
+```
+
+提示：
+
+- 节点数不超过 100 。
+
+- 每个节点值 Node.val 都是唯一的，1 <= Node.val <= 100。
+
+- 无向图是一个简单图，这意味着图中没有重复的边，也没有自环。
+
+- 由于图是无向的，如果节点 p 是节点 q 的邻居，那么节点 q 也必须是节点 p 的邻居。
+
+- 图是连通图，你可以从给定节点访问到所有节点。
+
+其中 Node 定义如下：
+
+```java
+class Node {
+    public int val;
+    public List<Node> neighbors;
+    public Node() {
+        val = 0;
+        neighbors = new ArrayList<Node>();
+    }
+    public Node(int _val) {
+        val = _val;
+        neighbors = new ArrayList<Node>();
+    }
+    public Node(int _val, ArrayList<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+}
+```
+
+## 思路1-DFS 深度优先遍历
+
+这一题的本质上还是在考量大家对于图遍历的掌握情况。
+
+主要有几个问题需要考虑：
+
+（1）DFS 深度优先遍历，如何记录被访问过的节点？
+
+（2）如何存放拷贝后的节点
+
+（3）如何深度拷贝
+
+针对问题1，我们可以使用一个 boolean 数组，每一个下标初始化为 false，访问完之后，设置为 true。
+
+针对问题2，我们可以使用 HashMap，key 是 val 值，value 存放对应的拷贝节点。
+
+因为题目中的条件：每个节点的值都和它的索引相同，且最多为 100 个元素。
+
+所以我们整合（1）（2），使用一个大小为 100 的数组存放拷贝后的元素，同时也可以用来标识是否已经访问过。
+
+### 深度拷贝
+
+深度拷贝有 2 点：
+
+1. 针对节点的拷贝，我们直接创建一个新的 Node(val) 即可。
+
+2. 针对邻居节点的拷贝，我们需要 DFS 创建所有邻居节点的拷贝。
+
+### java 实现
+
+这里为了让 val 直接访问下标，我们把数组的大小初始化为 101.
+
+```java
+// 定义为 101，直接把 val 当做下标，减少一次减法运算。
+Node[] copyArray = new Node[101];
+public Node cloneGraph(Node node) {
+    //fast-return
+    if(node == null) {
+        return null;
+    }
+    // 当前节点
+    // 节点的位置，就是对应的索引的位置。
+    int val = node.val;
+    // 如果已经访问，则直接返回已经复制好的节点
+    if(copyArray[val] != null) {
+        return copyArray[val];
+    }
+    // 拷贝（不拷贝对应的邻居节点）
+    Node copy = new Node(val, new ArrayList<>(node.neighbors.size()));
+    copyArray[val] = copy;
+    // 复制处理邻居节点
+    for(Node node1 : node.neighbors) {
+        copy.neighbors.add(cloneGraph(node1));
+    }
+    return copy;
+}
+```
+
+效果：
+
+```
+Runtime: 24 ms, faster than 98.98% of Java online submissions for Clone Graph.
+Memory Usage: 38.9 MB, less than 87.79% of Java online submissions for Clone Graph.
+```
+
+### 其他
+
+官方解答中，使用的 HashMap 存放，key 是原始 Node，value 是拷贝的 Node。
+
+这样也可以做到存储，访问标识的作用，而且访问也是 O(1)。
+
+不过我这里没有使用，因为 Node 本身是没有实现 equals() 和 hashcode() 方法的。
+
+不过也有下面的解释：
+
+key是结点类型的指针，那么只有当结点相同时key才会相同，而题目中已经指明了每个结点的val是唯一的，所以val相同一定可以推出结点相同，进而推出Key相同
+
+## 思路2-BFS 广度优先遍历
+
+既然可以用递归，那么我们接下来看下使用 BFS 怎么实现。
+
+### BFS 流程
+
+广度优先搜索类似于树的层次遍历。
+
+从图中的某一顶点出发，遍历每一个顶点时，依次遍历其所有的邻接点，然后再从这些邻接点出发，同样依次访问它们的邻接点。按照此过程，直到图中所有被访问过的顶点的邻接点都被访问到。
+
+最后还需要做的操作就是查看图中是否存在尚未被访问的顶点，若有，则以该顶点为起始点，重复上述遍历的过程。
+
+### 实现流程
+
+（1）存放当前 node 到 stack 中，拷贝对象放到 copyArray 中。
+
+（2）遍历 stack
+
+弹出元素，遍历对应的邻居节点
+
+如果邻居没有访问过，添加到 stack，拷贝对象设置到 copyArray 中。
+
+将拷贝后的邻居节点，设置到弹出元素对应的 copy 对象的邻居节点
+
+（3）返回 copyArray[node.val]
+
+因为 node.val 放置的就是 node 对应的拷贝信息。
+
+### java 实现
+
+```java
+Node[] copyArray = new Node[101];
+
+public Node cloneGraph(Node node) {
+    //fast-return
+    if(node == null) {
+        return null;
+    }
+    // 当前节点
+    // 节点的位置，就是对应的索引的位置。
+    Stack<Node> stack = new Stack<>();
+    stack.push(node);
+    // 克隆第一个节点并存储到哈希表中
+    int val = node.val;
+    copyArray[val]  = new Node(val, new ArrayList<>());
+    while (!stack.isEmpty()) {
+        Node pop = stack.pop();
+        // 处理邻居节点
+        for(Node neighbor : pop.neighbors) {
+            // 复制邻居节点
+            int nVal = neighbor.val;
+            Node copy = copyArray[nVal];
+            // 没有访问过
+            if(copy == null) {
+                copy = new Node(nVal, new ArrayList<>());
+                copyArray[nVal] = copy;
+                stack.push(neighbor);
+            }
+            // 更新拷贝的邻居节点
+            copyArray[pop.val].neighbors.add(copy);
+        }
+    }
+    // 直接获取拷贝后的 node
+    return copyArray[val];
+}
+```
+
+效果:
+
+```
+Runtime: 25 ms, faster than 90.62% of Java online submissions for Clone Graph.
+Memory Usage: 39.1 MB, less than 66.44% of Java online submissions for Clone Graph.
+```
+
+回顾，这一题 BFS 其实和 DFS 的整体思路类似，不过 DFS 确实要简洁一点。
+
+借助 stack 实现 BFS 也是必须要熟练掌握的！
+
 
 # 应用实战篇
 
