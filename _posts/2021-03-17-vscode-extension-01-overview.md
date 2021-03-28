@@ -2,8 +2,8 @@
 layout: post
 title:  vscode extension 插件开发-01-概览
 date:  2021-3-09 16:52:15 +0800
-categories: [Database]
-tags: [oracle, mybatis, sh]
+categories: [Web]
+tags: [web, vscode, plugin, sh]
 published: true
 ---
 

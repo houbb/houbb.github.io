@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  BlockChain 01 BitCoin
+title:  BlockChain 01 BitCoin 比特币是什么？
 date:  2018-2-6 09:18:43 +0800
 categories: [BlockChain]
 tags: [blockchain, bit coin]
@@ -12,10 +12,9 @@ published: true
 
 ## 比特币是什么？
 
-Bitcoin is a decentralized [digital currency](https://en.bitcoin.it/wiki/Digital_currency) that enables instant payments to anyone, anywhere in the world. 
-Bitcoin uses peer-to-peer technology to operate with no central authority: [transaction management](https://en.bitcoin.it/wiki/Transaction) 
-and [money issuance](https://en.bitcoin.it/wiki/Controlled_supply) are carried out collectively by the network.
+比特币是一种去中心化的[数字货币]（https://en.bitcoin.it/wiki/Digital_currency），可以即时支付给世界任何地方的任何人。
 
+比特币使用对等技术在没有中央授权的情况下进行操作：[交易管理]（https://en.bitcoin.it/wiki/Transaction）和[货币发行]（https://en.bitcoin.it/wiki/Controlled_supply）由网络共同执行。
 
 # 演化历程
 
@@ -185,9 +184,9 @@ Money。如果你生成的账簿被所有小组接受，可以获取相应的收
 
 > [比特币白皮书](https://bitcoin.org/bitcoin.pdf)
 
-> [我什么支持 BitCoin Cash?](https://baijiahao.baidu.com/s?id=1583949411756823716&wfr=spider&for=pc)
+> [为什么支持 BitCoin Cash?](https://baijiahao.baidu.com/s?id=1583949411756823716&wfr=spider&for=pc)
 
-
+[如何学习区块链技术？](https://www.zhihu.com/question/51047975)
 
 * any list
 {:toc}

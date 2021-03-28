@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  BlockChain 02 block chain
+title:  BlockChain 02 block chain 区块链是什么？
 date:  2018-02-06 23:20:18 +0800
 categories: [BlockChain]
 tags: [blockchain]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  BlockChain 03 BitCoin White Book
+title:  BlockChain 03 BitCoin White Book 比特币白皮书
 date:  2018-2-7 13:55:12 +0800
 categories: [BlockChain]
 tags: [blockchain, bit coin]
