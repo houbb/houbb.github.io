@@ -2,8 +2,8 @@
 layout: post
 title: 老马学机器学习-03-python 必备工具包简介 
 date:  2019-4-16 10:55:13 +0800
-categories: [Database]
-tags: [database, big-data, overview, sh]
+categories: [ML]
+tags: [ML, ai, math, sh]
 published: true
 ---
 
