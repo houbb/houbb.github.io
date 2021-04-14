@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 老马学机器学习-06-感知机算法 PLA 原理及源码实现
+title: 老马学机器学习-06-感知机算法 PLA 原理及源码实现详解
 date:  2019-4-16 10:55:13 +0800
 categories: [ML]
 tags: [ML, ai, math, sh]
@@ -9,7 +9,7 @@ published: true
 
 # 感知机
 
-PLA全称是Perceptron Linear Algorithm，即线性感知机算法，属于一种最简单的感知机（Perceptron）模型。
+PLA 全称是 Perceptron Linear Algorithm，即线性感知机算法，属于一种最简单的感知机（Perceptron）模型。
 
 感知机模型是机器学习二分类问题中的一个非常简单的模型。
 
@@ -64,6 +64,14 @@ scores 是感知机的输出，接下来就要对 scores 进行判断：
 （2）若 scores<0，则y^=−1（负类）
 
 # PLA 理论解释
+
+## 感知机算法的原始形式
+
+这里，我们直接给出《统计学习方法》中的原始算法。
+
+![感知机算法的原始形式](https://images.gitee.com/uploads/images/2021/0414/200747_0bbcf6f5_508704.png "ml-pla-orginal.png")
+
+## 理论解释
 
 对于二分类问题，可以使用感知机模型来解决。
 
@@ -173,8 +181,8 @@ array([ 1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,
 import matplotlib.pyplot as plt
 
 # 可视化
-plt.scatter(X[:50, 0], X[:50, 1], color='blue', marker='o', label='Positive')
-plt.scatter(X[50:, 0], X[50:, 1], color='red', marker='x', label='Negative')
+plt.scatter(x[:50, 0], x[:50, 1], color='blue', marker='o', label='Positive')
+plt.scatter(x[50:, 0], x[50:, 1], color='red', marker='x', label='Negative')
 plt.xlabel('Feature 1')
 plt.ylabel('Feature 2')
 plt.legend(loc = 'upper left')
@@ -439,6 +447,27 @@ plt.legend(loc = 'upper left')
 plt.show()
 ```
 
+### x,y 的问题
+
+```py
+# 直线第一个坐标（x1，y1）
+x1 = -2
+y1 = -1 / w[2] * (w[0] * 1 + w[1] * x1)
+# 直线第二个坐标（x2，y2）
+x2 = 2
+y2 = -1 / w[2] * (w[0] * 1 + w[1] * x2)
+```
+
+这个不知道你看起来会不会觉得奇怪。
+
+这个实际上是根据:
+
+```
+w[0]*1 + w[1]*x1 + w[2]*y1=0
+```
+
+这个公式简单推导出来的。
+
 ## 完整的代码
 
 - PLA.py
@@ -512,14 +541,6 @@ plt.show()
 
 所以得出结论，对于正负样本线性可分的情况，PLA能够在有限次迭代后得到正确的分类直线。
 
-# TODO
-
-补全 numpy 说明
-
-感知机学习算法的对偶形式
-
-如何处理不可分的情况？
-
 # 总结与疑问
 
 本文导入的数据本身就是线性可分的，可以使用 PLA 来得到分类直线。
@@ -528,7 +549,6 @@ plt.show()
 
 对于线性不可分的情况，该如何使用PLA算法呢？
 
-我们下次将对PLA进行改进和优化。
 
 # 参考资料
 

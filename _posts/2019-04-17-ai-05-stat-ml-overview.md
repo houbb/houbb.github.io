@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 老马学机器学习-05-统计机器学习方法概论
+title: 老马学机器学习-06-PLA
 date:  2019-4-16 10:55:13 +0800
 categories: [ML]
 tags: [ML, ai, math, sh]
