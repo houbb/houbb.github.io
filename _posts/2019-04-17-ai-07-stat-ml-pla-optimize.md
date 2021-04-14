@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 老马学机器学习-07-感知机算法优化 pocket PLA
+title: 老马学机器学习-08-感知机算法对偶算法
 date:  2019-4-16 10:55:13 +0800
 categories: [ML]
 tags: [ML, ai, math, sh]
