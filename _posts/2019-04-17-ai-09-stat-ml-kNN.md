@@ -31,7 +31,13 @@ k最近邻(k-Nearest Neighbor，kNN)分类算法是一个比较成熟也是最�
 
 ![输入图片说明](https://images.gitee.com/uploads/images/2021/0415/204446_772c7a3a_508704.png "屏幕截图.png")
 
-# KNN算法原理
+# KNN 算法原理
+
+## 算法
+
+![算法](https://images.gitee.com/uploads/images/2021/0415/221409_7a94927e_508704.png)
+
+## 原理
 
 在KNN中，通过计算对象间距离来作为各个对象之间的非相似性指标，避免了对象之间的匹配问题，在这里距离一般使用欧氏距离或曼哈顿距离：
 
