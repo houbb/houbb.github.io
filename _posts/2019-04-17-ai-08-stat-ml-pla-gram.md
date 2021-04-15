@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 老马学机器学习-08-感知机详解及算法实现
+title: 老马学机器学习-08-感知机算法详解及 python 实现
 date:  2019-4-16 10:55:13 +0800
 categories: [ML]
 tags: [ML, ai, math, sh]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 老马学机器学习-09-KNN 算法实现
+title: 老马学机器学习-09-KNN 算法详解及 python 实现
 date:  2019-4-16 10:55:13 +0800
 categories: [ML]
 tags: [ML, ai, math, sh]
