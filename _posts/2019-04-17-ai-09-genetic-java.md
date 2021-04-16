@@ -99,8 +99,6 @@ published: true
 
 也就是说遗传算法提供了一组问题的解。
 
-# 案例实现
-
 种群的规模恒定。新一代形成时，适应度最差的个体凋亡，为后代留出空间。
 
 这些阶段的序列被不断重复，以产生优于先前的新一代。
@@ -109,53 +107,9 @@ published: true
 
 这一迭代过程的伪代码：
 
-```
-START
+![输入图片说明](https://images.gitee.com/uploads/images/2021/0416/200020_28f72003_508704.png "屏幕截图.png")
 
-Generate the initial population
-
-Compute fitness
-
-REPEAT
-
-Selection
-
-Crossover
-
-Mutation
-
-Compute fitness
-
-UNTIL population has converged
-
-STOP
-```
-
-## 个人的理解
-
-我下面说下我所理解的遗传算法，我所理解的遗传算法其实就是“广撒网多捞鱼”,怎么讲？
-
-遗传算法一般是先确定初始的群体，群体的每个个体都有两部分组成：
-
-1，染色体，也就是基因序列，2，适应性函数 也就是进化能力 ，其中基因序列指的是在实际问题中的一些起主要决定作用的一些特征的编码，
-
-主要分为两种：二进制编码和浮点数编码，这种所谓的编码其实就是对应着该“个体”的特征值，而确定了特征编码之后，因为遗传算法还需要进行进化，那么就需要对个体的“适应环[size=medium]境的能力”进行考量，在实际问题中其实也就是距离真正最优解的度量。
-
-我理解这个部分的内容为“广撒网阶段”
-
-在确定初始群体之后，就需要进行选择和进化，其实是选择其中的优胜者得到下一代，选择是依据进化论的“物竞天择”理论，也就是适应度越好的个体越容易被选出来，在算法的实现过程中这一部分一般使用“转盘赌”算法实现，所谓“转盘赌”算法，比如现在有四个个体，适应度分别是3,6,9,12 ，那么选择下一代就相当于在一个四个区域的转盘上转指针，其中3的区域占3/(3+6+9+12)=10%，以此类推，当指针停在哪个区域上表示选中哪个个体，显然，适应度越高的个体越容易被选中，在编程中，一般使用这样的算法：
-
-第一步：选择一个介于0（本文讨论的内容适应度大多为正，因为为负的话这种转盘赌方法不适用）和总适应度的适应度，也就是可以描述为：rand(0,1)乘以总的适应度，
-
-第二步骤:将种群的所有个体的适应度进行累加，如果当加到某个个体的时候累加的适应度大于了第一步所得到的适应度，那么就将这个个体取出来
-
-其实有人会质疑，这种算法实现的转盘赌是不是真的是有效的，我不太清除如何使用使用数学概率推导说明，但是这种方法实现的转盘赌还是有一定道理的，直观的理解就是，假设在前N-1步到了比步骤一的数字小的累加和，那么第N步能够超越步骤一的累加和的数字肯定是偏向适应度大的那个个体(没有数学上的证明，只是直观想像)
-
-好了，选择出杂交的后代接下来就是进行产生后代了，产生后代的过程过程其实是染色体交换和基因变异的过程，对于二进制编码而言，染色体交换是交换父母的一部分序列，基因变异是其中几个序列由1变成0或者0变为1的过程；
-
-对于浮点数编码的话，那么染色体交换是一样的（在下文的例子中间因为基因只有一个浮点数的编码，所以没有用到染色体交换），基因突变是指在原有的浮点数基础上加一点随机噪音（加一点变化步长）
-
-# Java 中的示例实现
+# java 实例
 
 以下展示的是遗传算法在Java中的示例实现，我们可以随意调试和修改这些代码。
 
@@ -197,8 +151,6 @@ STOP
 
 ```java
 public static final int GENG_LENGTH = 14;
-public static final int MAX_X = 127;
-public static final int MAX_Y = 127;
 private int x,y;
 private String gene;
 ```
@@ -207,11 +159,23 @@ private String gene;
 
 遗传算法是对群体进行的进化操作，所以第一步要产生一个初始种群，再进行后续的交叉、变异、选择等操作。
 
-在具体实现上，初始种群的产生较为简单。首先对类Chromosome进行构造函数的编写，主要写了以下两种构造函数：
+在具体实现上，初始种群的产生较为简单。
+
+首先对类Chromosome进行构造函数的编写，主要写了以下两种构造函数：
 
 ```java
-public Chromosome(String gene) //给定基因串构造染色体
-public Chromosome(int x,int y) //给定表现型构造染色体
+public Chromosome(String gene) {
+    this.gene = gene;
+    this.x = MathUtil.binaryStringToInt(gene.substring(0, gene.length() / 2));
+    this.y = MathUtil.binaryStringToInt(gene.substring(gene.length() / 2));
+}
+
+public Chromosome(int x, int y) {
+    this.x = x;
+    this.y = y;
+    //int 转二进制
+    this.gene = MathUtil.toBinaryString(x, 7) + MathUtil.toBinaryString(y, 7);
+}
 ```
 
 在这里用到了第二个构造函数，首先随机产生两个1到127之间的数作为X,Y，再调用构造函数生成新染色体并添加到初始种群中去。
@@ -225,10 +189,8 @@ public static ArrayList<Chromosome> initGroup(int size) {
     ArrayList<Chromosome> list = new ArrayList<Chromosome>();
     Random random = new Random();
     for(int i = 0; i < size; i++) {
-        int x = random.nextInt() % 128;
-        int y = random.nextInt() % 128;
-        x = x < 0? (-x):x;
-        y = y < 0? (-y):y;
+        int x = random.nextInt(128);
+        int y = random.nextInt(128);
         list.add(new Chromosome(x,y));
     }
     return list;
@@ -253,25 +215,7 @@ public int calcFitness() {
 
 ## 选择运算
 
-选择运算把当前的群体中适应度较高的个体按照某种规则或模型遗传到下一代个体中。
-
-这里我们使用课堂上讲的“轮盘赌”的方式进行选择。
-
-“轮盘赌”的思想这里不再赘述，只说一下JAVA代码的具体实现过程。
-
-首先计算种群中每个个体的适应度保存到一个数组里。
-
-在这基础上计算“累加适应度”，即第一个适应度为原第一个适应度，第二个为前两个的和，第三个为前三个的和，以此类推。
-
-再将此数组每个元素除以总的适应度。
-
-然后进行选择，选择次数和设定好的种群规模相同（这样便可以控制种群的规模不会无限的上涨）。
-
-每次选择时，先产生一个0到1之间的随机数。
-
-在上述数组中遍历找到第一个大于此随机数的元素，这个元素对应的个体被选择。
-
-具体代码如下：
+此处使用 “轮盘赌” 的选择算法。
 
 ```java
 public static ArrayList<Chromosome> selector(ArrayList<Chromosome> fatherGroup,int sonGroupSize) 
@@ -305,6 +249,7 @@ public static ArrayList<Chromosome> selector(ArrayList<Chromosome> fatherGroup,i
         }
         return sonGroup;
     }
+}
 ```
 
 ## 交叉运算
@@ -314,8 +259,6 @@ public static ArrayList<Chromosome> selector(ArrayList<Chromosome> fatherGroup,i
 本文采用单点交叉的方法，具体操作过程是：
 
 **先对群体进行随机配对；其次随机设置交叉点位置；最后再相互交换配对染色体之间的部分基因。**
-
-具体的算法流程按照老师课件上讲的，这里也不赘述了。
 
 只说一下具体代码实现原理。
 
@@ -330,18 +273,21 @@ public static ArrayList<Chromosome> selector(ArrayList<Chromosome> fatherGroup,i
 具体代码如下：
 
 ```java
-public static ArrayList<Chromosome> corssover(ArrayList<Chromosome> fatherGroup,double probability) {
+public static ArrayList<Chromosome> crossover(ArrayList<Chromosome> fatherGroup,double probability) {
     ArrayList<Chromosome> sonGroup = new ArrayList<Chromosome>();
     sonGroup.addAll(fatherGroup);
     Random random = new Random();
     for(int k = 0; k < fatherGroup.size() / 2; k++) {
         if(probability > random.nextDouble()) {
             int i = 0,j = 0;
+            // 为了保证不同
             do {
                 i = random.nextInt(fatherGroup.size());
                 j = random.nextInt(fatherGroup.size());
             } while(i == j);
             int position = random.nextInt(Chromosome.GENG_LENGTH);
+
+            // 随机选择两个，进行基因的组合
             String parent1 = fatherGroup.get(i).getGene();
             String parent2 = fatherGroup.get(j).getGene();
             String son1 = parent1.substring(0, position) + parent2.substring(position);
@@ -391,12 +337,36 @@ public static void mutation(ArrayList<Chromosome> fatherGroup,double probability
         String newGene = c.getGene();
         for(int i = 0; i < newGene.length();i++){
             if(probability > random.nextDouble()) {
+                // 变异，基本反转
                 String newChar = newGene.charAt(i) == '0'?"1":"0";
                 newGene = newGene.substring(0, i) + newChar + newGene.substring(i+1);
             }
         }
         c.selfMutation(newGene);
     }
+}
+```
+
+其中 best 方法用来找出最佳的个体。
+
+```java
+/**
+ * 最佳的个体
+ *
+ * @param fatherGroup 种群
+ * @return 最佳个体
+ */
+private static Chromosome best(ArrayList<Chromosome> fatherGroup) {
+    int bestFit = -1;
+    Chromosome best = null;
+    for (Chromosome chromosome : fatherGroup) {
+        int fitness = chromosome.calcFitness();
+        if (fitness > bestFit) {
+            bestFit = fitness;
+            best = chromosome;
+        }
+    }
+    return best;
 }
 ```
 
@@ -414,18 +384,43 @@ final double CORSSOVER_P = 0.6;//交叉概率
 final double MUTATION_P = 0.01;//变异概率
 ArrayList<Chromosome> group = Chromosome.initGroup(GROUP_SIZE);
 Chromosome theBest;
-do{
-    group = Chromosome.corssover(group, CORSSOVER_P);
+
+for(int i = 0; i < 180; i++) {
+    group = Chromosome.crossover(group, CORSSOVER_P);
     Chromosome.mutation(group, MUTATION_P);
     group = Chromosome.selector(group, GROUP_SIZE);
-    theBest = Chromosome.best(group);
-    System.out.println(theBest.calcFitness());
-}while(theBest.calcFitness() < 32258);
+    System.out.println(Chromosome.best(group).calcFitness());
+}
 ```
+
+输出：
+
+```
+...
+32005
+32258
+32258
+```
+
+最后输出使我们的预期值 32258。
+
+当然，因为演化并不能保证每一个个体都最优，可能会出现最优解下降的问题。
 
 # 拓展题目
 
-求解 `f=x*sin(10PI*x)+2` 在 `[0,4]` 之间的最大值
+当然，我们选择了一道比较简单的题目作为入门，为了便于大家理解。
+
+你可以尝试解决下面的题目：
+
+```
+求解 f=x*sin(10PI*x)+2 在 [0,4] 之间的最大值
+
+精确到小数点后 6 位。
+```
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 
