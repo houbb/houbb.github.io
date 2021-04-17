@@ -89,7 +89,7 @@ Iris数据集总共包含150个样本，每个类别由50个样本，整体构�
 
 我们可以利用已有的训练数据：
 
-![https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data](https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data)
+[https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data](https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data)
 
 我们看下前几行，内容如下：
 
