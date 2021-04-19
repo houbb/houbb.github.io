@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 老马学机器学习-11-决策树
+title: 老马学机器学习-11-决策树算法详解及 java 实现
 date:  2018-11-14 08:38:35 +0800
 categories: [ML]
 tags: [ML, ai, math, sh]
