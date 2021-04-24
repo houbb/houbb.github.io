@@ -7,10 +7,6 @@ tags: [ML, ai, math, sh]
 published: true
 ---
 
-# 回顾
-
-线性回归
-
 # 逻辑斯蒂回归(Logistic Regression)
 
 逻辑斯蒂回归(Logistic Regression) 虽然名字中有回归，但模型最初是为了解决二分类问题。
