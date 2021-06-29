@@ -284,6 +284,49 @@ public class SFTPUtil {
 
 备注：download 中的 `IOUtils.toByteArray(is)` 被我注释掉了，这个需要额外引入 apache 的包。
 
+## 实战总结
+
+### upload 的文件夹问题
+
+```java
+try {
+    sftp.cd(directory);
+} catch (SftpException e) {
+    log.warn("directory is not exist");
+    sftp.mkdir(directory);
+    sftp.cd(directory);
+}
+```
+
+这里对目标服务器的 sftp 文件夹做了一次不存在则创建的兼容。
+
+实际发现只能支持一个层级，比如 `/app`。
+
+如果是多个层级，依然会报错，比如 `/app/test/`
+
+### 文件流的关闭
+
+单个文件上传，建议使用下面的方式。
+
+这样上传之后，可以保证文件流被正常关闭。
+
+```java
+/**
+ * 上传单个文件
+ *
+ * @param directory  上传到sftp目录
+ * @param uploadFile 要上传的文件,包括路径
+ */
+public void upload(String directory, String uploadFile)  {
+    File file = new File(uploadFile);
+    try(FileInputStream inputStream = new FileInputStream(file)) {
+        upload(directory, file.getName(), inputStream);
+    } catch (SftpException | IOException e) {
+        throw new RuntimeException(e);
+    }
+}
+```
+
 ## 测试代码
 
 这里直接把 `Main.java` 测试文件，上传到 sftp 服务器的根路径。
