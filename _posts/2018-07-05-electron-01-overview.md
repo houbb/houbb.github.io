@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Electron
+title:  Electron-01-构建跨平台的桌面应用程序
 date:  2018-07-05 21:01:28 +0800
 categories: [Tool]
 tags: [tool, electron, sh]
@@ -24,7 +24,10 @@ Electron 是一个使用 JavaScript, HTML 和 CSS 等 Web 技术创建原生程�
 
 ```
 node -v
-v12.15.0
+v12.16.2
+
+npm -v
+6.14.4
 ```
 
 ## 安装
@@ -48,6 +51,16 @@ $ npm install && npm start
 
 然后会有一个简单的页面弹窗，这就是将 html 转换为 windows 程序的结果。
 
+一个如下的简单页面：
+
+```
+Hello World!
+We are using Node.js 14.16.0, Chromium 91.0.4472.106, and Electron 13.1.4.
+```
+
+# 参考资料
+
+[官网](https://www.electronjs.org)
 
 * any list
 {:toc}
