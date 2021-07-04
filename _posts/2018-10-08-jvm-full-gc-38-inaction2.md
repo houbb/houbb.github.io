@@ -46,6 +46,8 @@ import java.util.concurrent.atomic.AtomicLong;
  * @author binbin.hou
  * @since 1.0.0
  */
+ 2
+ 
 public class UserServicePageQueue implements UserService {
 
     // 分页大小
