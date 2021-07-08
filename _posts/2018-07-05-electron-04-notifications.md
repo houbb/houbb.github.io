@@ -134,7 +134,6 @@ MacOS上的通知是最直接的，但你应该注意苹果关于通知的人机
 
 通知是通过libnotify发送的，libnotify可以在任何实现了桌面通知规范（Desktop Notifications Specification）的桌面环境中发送通知，包括Cinnamon、Enlightenment、Unity、GNOME、KDE
 
-
 # 参考资料
 
 [官方文档](https://www.electronjs.org/docs/tutorial/notifications)
