@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Croptograph Althgorim-几种常见的加密算法
+title: 几种常见的加密算法
 date:  2018-11-9 18:55:36 +0800
 categories: [Althgorim]
-tags: [althgorim, croptograph, sh]
+tags: [althgorim, croptograph, secret, sh]
 published: true
 ---
 

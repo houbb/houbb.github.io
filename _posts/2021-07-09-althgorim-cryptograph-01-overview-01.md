@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Croptograph Althgorim-加密算法简介
+title: 加密算法简介
 date:  2018-11-9 18:55:36 +0800
 categories: [Althgorim]
-tags: [althgorim, croptograph, sh]
+tags: [althgorim, croptograph, secret, sh]
 published: true
 ---
 

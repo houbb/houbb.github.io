@@ -106,7 +106,7 @@ System.out.println(new String(decoder.decode(encodedText), "UTF-8"));
 
 与 sun.misc 套件和Apache Commons Codec所提供的Base64编解码器来比较的话，Java 8提供的Base64拥有更好的效能。
 
-实际测试编码与解码速度的话，Java 8提供的Base64，要比sun.mis c套件提供的还要快至少11倍，比Apache Commons Codec提供的还要快至少3倍。
+实际测试编码与解码速度的话，**Java 8提供的Base64，要比sun.mis c套件提供的还要快至少11倍，比Apache Commons Codec提供的还要快至少3倍。**
 
 因此在Java上若要使用Base64，这个Java 8底下的java.util套件所提供的Base64类别绝对是首选！
 
