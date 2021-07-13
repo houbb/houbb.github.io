@@ -1,27 +1,29 @@
 ---
 layout: post
-title:  Spring Boot-25-三种常见拦截器实现方式及异步的一点思考
+title:  Spring Boot-25-三种常见拦截方式实现方式及异步的一点思考
 date:  2017-12-19 14:43:25 +0800
 categories: [Spring]
 tags: [spring, web, springboot]
 published: true
 ---
 
-# springboot 拦截器
+# springboot 拦截方式
 
 实际项目中，我们经常需要输出请求参数，响应结果，方法耗时，统一的权限校验等。
 
 本文首先为大家介绍 HTTP 请求中三种常见的拦截实现，并且比较一下其中的差异。
 
-（1）基于 Aspect 的拦截器
+（1）基于 Aspect 的拦截方式
 
-（2）基于 HandlerInterceptor 的拦截器
+（2）基于 HandlerInterceptor 的拦截方式
 
-（3）基于 ResponseBodyAdvice 的拦截器
+（3）基于 ResponseBodyAdvice 的拦截方式
 
 推荐阅读：
 
 统一日志框架: [https://github.com/houbb/auto-log](https://github.com/houbb/auto-log)
+
+![MVC](https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/e5782cef98ef40acbc60e9053db3dbbc~tplv-k3u1fbpfcp-zoom-1.image)
 
 # springboot 入门案例
 
@@ -118,7 +120,7 @@ public class AsyncResp {
 }
 ```
 
-# 拦截器定义
+# 拦截方式定义
 
 ## 基于 Aspect
 
@@ -247,7 +249,7 @@ public class LogHandlerInterceptor implements HandlerInterceptor {
 }
 ```
 
-然后需要指定对应的 url 和拦截器之间的关系才会生效：
+然后需要指定对应的 url 和拦截方式之间的关系才会生效：
 
 ```java
 import com.github.houbb.springboot.learn.aspect.aspect.LogHandlerInterceptor;
@@ -277,7 +279,7 @@ public class SpringMvcConfig extends WebMvcConfigurerAdapter {
 }
 ```
 
-这种方式的优点就是可以根据 url 灵活指定不同的拦截器。
+这种方式的优点就是可以根据 url 灵活指定不同的拦截方式。
 
 缺点是主要用于 Controller 层。
 
@@ -328,7 +330,7 @@ public class MyResponseBodyAdvice implements ResponseBodyAdvice<Object> {
         ServletServerHttpRequest servletServerHttpRequest = (ServletServerHttpRequest) serverHttpRequest;
         HttpServletRequest servletRequest = servletServerHttpRequest.getServletRequest();
 
-        // 可以做统一的拦截器处理
+        // 可以做统一的拦截方式处理
 
         // 可以对结果做动态修改等
         LOG.info("MyResponseBodyAdvice#beforeBodyWrite 响应结果：{}", resp);
@@ -529,13 +531,106 @@ c.g.h.s.l.a.a.LogHandlerInterceptor      : LogHandlerInterceptor#postHandle 调�
 
 可以获取到异步执行完成的结果。
 
+这个看起来有些奇怪，本质上原因是什么呢？又怎么验证呢？
+
+# 异步执行
+
+## 原因
+
+本质上，异步执行和 spring 本身的机制关系不大。
+
+只不过是异步执行的方法本身需要时间，拦截方式越靠后，如果异步执行完了，刚好就可以获取到对应的信息而已。
+
+## 验证方式
+
+如何验证这个猜想呢？
+
+我们在 process 中添加一个 sleep 即可。
+
+## 代码调整
+
+- BaseAsyncController.java
+
+execute 中添加一些执行的日志信息，便于查看时间。
+
+```java
+taskExecutor.execute(new Runnable() {
+    @Override
+    public void run() {
+        try {
+            logger.info("AsyncResp#execute 异步开始执行。");
+            T result = process(request);
+            resp.setRespCode("00");
+            resp.setRespDesc("成功");
+            resp.setResult(result.toString());
+            logger.info("AsyncResp#execute 异步完成执行。");
+        } catch (Exception exception) {
+            resp.setRespCode("98");
+            resp.setRespDesc("任务异常");
+        }
+    }
+});
+```
+
+- MyAsyncController.java
+
+执行时添加沉睡时间。
+
+```java
+@Override
+protected String process(HttpServletRequest request) {
+    try {
+        TimeUnit.SECONDS.sleep(5);
+        return "ok";
+    } catch (InterruptedException e) {
+        return "error";
+    }
+}
+```
+
+## 测试
+
+页面访问 [http://localhost:18080/async](http://localhost:18080/async)
+
+页面返回如下：
+
+```
+{"respCode":null,"respDesc":null,"result":null}
+```
+
+对应的日志如下：
+
+```
+2021-07-10 09:16:08.661  INFO 11008 --- [io-18080-exec-1] c.g.h.s.l.a.a.LogHandlerInterceptor      : LogHandlerInterceptor#preHandle 请求地址：/async
+2021-07-10 09:16:08.685  INFO 11008 --- [io-18080-exec-1] c.g.h.s.l.a.aspect.AspectLogInterceptor  : MyAsyncController.hello(..) 参数: [org.apache.catalina.connector.RequestFacade@1d491e0]
+Controller#async 结果：AsyncResp{respCode='null', respDesc='null', result='null'}
+2021-07-10 09:16:08.722  INFO 11008 --- [io-18080-exec-1] c.g.h.s.l.a.aspect.AspectLogInterceptor  : MyAsyncController.hello(..) 结果: AsyncResp{respCode='null', respDesc='null', result='null'}
+2021-07-10 09:16:08.722  INFO 11008 --- [lTaskExecutor-1] c.g.h.s.l.a.c.BaseAsyncController        : AsyncResp#execute 异步开始执行。
+2021-07-10 09:16:08.777  INFO 11008 --- [io-18080-exec-1] c.g.h.s.l.a.aspect.MyResponseBodyAdvice  : MyResponseBodyAdvice#beforeBodyWrite 请求地址：/async
+2021-07-10 09:16:08.777  INFO 11008 --- [io-18080-exec-1] c.g.h.s.l.a.aspect.MyResponseBodyAdvice  : MyResponseBodyAdvice#beforeBodyWrite 响应结果：AsyncResp{respCode='null', respDesc='null', result='null'}
+2021-07-10 09:16:08.797  INFO 11008 --- [io-18080-exec-1] c.g.h.s.l.a.a.LogHandlerInterceptor      : LogHandlerInterceptor#postHandle 调用
+2021-07-10 09:16:13.729  INFO 11008 --- [lTaskExecutor-1] c.g.h.s.l.a.c.BaseAsyncController        : AsyncResp#execute 异步完成执行。
+```
+
+可以发现 spring 本身依然按照正常的流程执行，因为 process 的执行时间过长，导致三种拦截方式都是无法获取异步内容。
+
 ## 反思
 
-可以发现，spring 对于页面的响应也许和我们想的有些不一样，并不是直接获取同步结果。
+写到这里，自己的收获还是不少。
 
-写到这里，发现自己对于 mvc 的理解一直只是停留在表面，没有真正理解整个流程。
+（1）拦截器的叫法问题
 
-Aspect 的形式在很多框架中都会使用，不过这里会发现无法获取异步的执行结果，存在一定问题。
+平时会习惯的叫日志拦截器之类的，所以一开始标题使用的是 3 种拦截器，诚然，严谨的说并不能将这些混为一谈。
+
+否则，就如评论区所言，filter 也可以称为拦截器了。
+
+所有，将拦截器统一修正为拦截方式。
+
+（2）对知识的理解问题
+
+第一次实现的时候，因为 process 时间太短，让人产生误以为 spring 会有特殊的处理机制。
+
+学习本身还是要严谨一些，所以本文重新做了修正。
 
 # 小结
 
