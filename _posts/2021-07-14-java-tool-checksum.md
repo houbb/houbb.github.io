@@ -19,6 +19,8 @@ published: true
 
 产品经理发过来一条消息，打破了这份美好。
 
+![computer-1185626_1280.jpg](https://upload-images.jianshu.io/upload_images/5874675-da180915bc327eb6.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 “我可去他的吧，每次需求都是快下班就来了。”小明不免心里嘀咕了起来，不过手上可没停。
 
 “好的，我先看下需求。”
@@ -256,6 +258,8 @@ public class CheckValueUtils {
 “这样，提测时间也来得及了。”
 
 看着时间已经超过了下班时间，小明叹了一口气。
+
+![paper-3261159_960_720.jpg](https://upload-images.jianshu.io/upload_images/5874675-418c89cd943f6a58.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 # 更优雅的加签实现
 
