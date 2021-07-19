@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Spring-cloud-gateway Kong Soul
+title: 分布式网关-01-Spring cloud gateway Kong Soul
 date: 2018-11-21 8:01:55 +0800
 categories: [Distributed]
-tags: [gateway, distributed, sh]
+tags: [gateway, distributed, spring-cloud, sh]
 published: true
-excerpt: 分布式网关
 ---
 
 # Spring-cloud-gateway
@@ -19,8 +18,6 @@ Spring Cloud Gateway旨在提供一种简单而有效的方式来路由到API，
 Java 8
 
 Spring Framework 5
-
-春季启动2
 
 动态路由
 
