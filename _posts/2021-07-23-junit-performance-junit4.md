@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 基于 junit4 分析 junitperf 源码，junit4 99% 的人都不知道的秘密！
+title: junit4 90% 的人都不知道的特性，详解 junitperf 的实现原理
 date: 2021-07-23 21:01:55 +0800
 categories: [Test]
 tags: [test, junit, sh]
@@ -9,13 +9,17 @@ published: true
 
 # 前言
 
-上一节介绍了 [junitperf](https://github.com/houbb/junitperf) 的入门使用。
+上一节介绍了 [https://github.com/houbb/junitperf](https://github.com/houbb/junitperf) 的入门使用。
 
 这一节我们从源码的角度，剖析一下其实现方式。
+
+> [性能测试该怎么做？](http://houbb.github.io/2021/07/23/junit-performance-overview)
 
 # Junit Rules
 
 junit4 小伙伴们肯定不陌生，那么 junit rules 你听过说过吗？
+
+![junit4-struct](https://img-blog.csdnimg.cn/ea8ed166546e43d5904433c7d00e9c59.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3J5bzEwNjA3MzI0OTY=,size_16,color_FFFFFF,t_70#pic_center)
 
 要想基于 junit4 实现一个性能测试框架，最核心的一点在于理解 Junit Rules。
 
@@ -116,7 +120,7 @@ public class MyLoggerTest {
 
 好了你已经学会 1+1=2 了，下面让我们来学习一下泰勒展开吧。
 
-【数学真简单.jpg】
+![算数入门](https://img-blog.csdnimg.cn/1c96353a2c6a41d4a912cd9af8d27a27.jpg?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3J5bzEwNjA3MzI0OTY=,size_16,color_FFFFFF,t_70#pic_center)
 
 # 性能测试算法流程
 
