@@ -96,6 +96,18 @@ shell> sudo yum-config-manager --disable mysql80-community
 shell> sudo yum-config-manager --enable mysql57-community
 ```
 
+### 报错
+
+```
+sudo: yum-config-manager: command not found
+```
+
+通过
+
+```
+yum -y install yum-utils 
+```
+
 除了使用yum-config-manager之外，还可以直接编辑/etc/yum.repos.d/mysql-community.repo文件
 
 enabled=0禁用
@@ -120,6 +132,10 @@ enabled=1
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
 ```
+
+
+
+安装
 
 ## 检查当前启用的MySQL仓库
 
@@ -332,7 +348,9 @@ init_connect='SET NAMES utf8mb4'
 
 character-set-client-handshake=FALSE
 explicit_defaults_for_timestamp=true
- 
+
+lower_case_table_names=1
+
 [client]
 default-character-set=utf8mb4
 ```

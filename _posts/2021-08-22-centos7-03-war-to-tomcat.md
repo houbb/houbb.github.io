@@ -188,6 +188,8 @@ web项目下缺少WEB-INF/web.xml
 
 可以在 target 下，找到指定的 war 包。
 
+
+
 # 上传到 tomcat 服务器
 
 ## 本地文件上传到服务器
@@ -422,6 +424,8 @@ https://www.cnblogs.com/java-zhao/p/5829598.html
 [Centos7-低配情况下 Tomcat jvm内存溢出优化配置及JVM参数说明](https://www.cnblogs.com/XMYG/p/14640749.html)
 
 [centos中修改tomcat中JVM非堆内存默认配置解决内存溢出](https://www.cnblogs.com/dion-90/articles/8651493.html)
+
+https://blog.csdn.net/wxmiy/article/details/88893053
 
 * any list
 {:toc}
