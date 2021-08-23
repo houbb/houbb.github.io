@@ -9,23 +9,151 @@ published: true
 
 # WebPack
 
-[Webpack](https://webpack.js.org/) is a static module bundler for modern JavaScript applications.
-When webpack processes your application, it recursively builds a dependency graph
-that includes every module your application needs, then packages all of those modules into one or more bundles.
+[Webpack](https://webpack.js.org/)  是一个用于现代 JavaScript 应用程序的 静态模块打包工具。
+
+当 webpack 处理应用程序时，它会在内部从一个或多个入口点构建一个依赖图(dependency graph)，然后将你项目中所需的每一个模块组合成一个或多个 bundles，它们均为静态资源，用于展示你的内容。
 
 ## 教程
 
 [webpack-4](https://wanago.io/2018/07/16/webpack-4-course-part-one-entry-output-and-es6-modules/)
 
+[https://github.com/dabit3/beginning-webpack](https://github.com/dabit3/beginning-webpack)
+
+# 入门例子
+
+我们先说一个最基本的例子，后面会逐步优化。
+
+## 安装 webpack
+
+为了演示方便，这里全局安装。
+
+```
+npm install webpack -g
+```
+
+发现安装很慢，一直卡主，可以尝试调整 npm 为国内源。
+
+```
+npm config set registry https://registry.npm.taobao.org
+```
+
+## 最基本的构建
+
+在你的根目录里创建两个文件 index.html app.js
+
+- app.js
+
+```js
+document.write('welcome to my app');
+console.log('app loaded')
+```
+
+- index.html
+
+```html
+<html> 
+  <body> 
+  <script src="bundle.js"></script> 
+  </body>
+</html>
+```
+
+## js 重命名
+
+打开你的控制台，运行：
+
+```
+webpack ./app.js bundle.js
+```
+
+这个命令可以把你的 app.js 重新打包为 bundle.js。
+
+你可能觉得这有什么用？
+
+当你的 app.js 引用了其他的js 或者 css 时，webpack 就会将他们统统打包甚至压缩成一个文件。 
+
+怎么样？是不是再也不用在html里写冗长的scrpit 标签了？
+
+### cli 的安装
+
+会提示你安装：
+
+```
+λ webpack ./app.js bundle.js
+CLI for webpack must be installed.
+  webpack-cli (https://github.com/webpack/webpack-cli)
+
+We will use "npm" to install the CLI via "npm install -D webpack-cli".
+Do you want to install 'webpack-cli' (yes/no): yes
+Installing 'webpack-cli' (running 'npm install -D webpack-cli')...
+
+added 121 packages in 9s
+Error: Cannot find module 'webpack-cli/package.json'
+Require stack:
+- ....
+```
+
+安装报错，有点尴尬。
+
+直接全局安装即可：
+
+```
+npm install webpack-cli -g
+```
+
+发现执行还是报错，我们还是使用配置的方式。
+
+## 定义一个配置文件
+
+Webpack 里的配置文件是一个基本的commonJs 模块。
+
+这个配置文件包含了项目里所有的配置 ， loaders(稍后解释)， 以及其他项目相关信息
+
+在你的根目录里创建 一个 webpack.config.js 文件 ，加上如下代码
+
+- webpack.config.js
+
+```js
+module.exports = { 
+  entry: "./app.js", 
+  output: { filename: "bundle.js" }
+}
+```
+
+entry-- 指向项目里最顶层的 一个文件 或者 一组文件，在这个项目里我们只用了 app.js
+
+output-- 包括输出配置的一个对象。 在我们的项目中，我们只给filename 关键字 指定了 bundle.js, 即webpack 将会构建的输出文件
+
+现在 打开命令行开始运行我们的app吧！
+
+```
+webpack
+```
+
+执行之后会在 dist 目录下看到 bundle.js 文件，内容如下：
+
+```js
+document.write("welcome to my app"),console.log("app loaded");
+```
+
+看的出来，这里是做了压缩。
+
 # 快速开始
 
 ## 起步
 
-webpack 用于编译 JavaScript 模块。一旦完成[安装](https://doc.webpack-china.org/guides/installation)，
-你就可以通过 webpack 的 [CLI](https://doc.webpack-china.org/api/cli)
+webpack 用于编译 JavaScript 模块。
+
+比如很多 ES6 的语法，但是浏览器是 ES5 的，就可以通过打包，让语法变成兼容 ES5 的。
+
+一旦完成[安装](https://doc.webpack-china.org/guides/installation)，你就可以通过 webpack 的 [CLI](https://doc.webpack-china.org/api/cli)
 或 [API](https://doc.webpack-china.org/api/node) 与其配合交互。
 
 ## 基本安装
+
+-g 的方式是全局安装，这并不够优雅，因为并不是所有的项目都需要webpack的。
+
+通常我们会将 Webpack 安装到项目的依赖中，这样就可以使用项目本地版本的 Webpack。
 
 首先我们创建一个目录，初始化 npm，以及在本地安装 webpack：
 
@@ -34,6 +162,15 @@ mkdir webpack-demo && cd webpack-demo
 npm init -y
 npm install --save-dev webpack
 ```
+
+### 指令差异
+
+`--save` 和 `--save-dev` 下载标签
+
+他们表面上的区别是–save 会把依赖包名称添加到 package.json 文件 dependencies 键下，–save-dev 则添加到 package.json 文件 devDependencies 键下.
+dependencies是运行时依赖，devDependencies是开发时的依赖。
+
+即devDependencies 下列出的模块，是我们开发时用的。
 
 - 实际操作日志
 
@@ -383,9 +520,19 @@ The 'mode' option has not been set, webpack will fallback to 'production' for th
 You can also set it to 'none' to disable any default behavior. Learn more: https://webpack.js.org/concepts/mode/
 ```
 
+# 拓展阅读
+
+和 vue-cli-service 的区别？
+
+和 vite 对比？
+
 # 其他
 
 > [打包器对比](https://doc.webpack-china.org/comparison)
+
+[【译】Webpack新手入门](https://www.jianshu.com/p/61fdbe909e11)
+
+https://www.cnblogs.com/nickbai/articles/6249239.html
 
 * any list
 {:toc}
