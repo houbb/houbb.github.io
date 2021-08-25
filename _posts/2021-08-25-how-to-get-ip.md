@@ -131,20 +131,6 @@ public class IPUtils {
 
 当客户端请求被转发，IP将会追加在其后并以逗号隔开，例如：10.47.103.13,4.2.2.2,10.96.112.230。
 
-# 术业有专攻
-
-## 吸取教训
-
-这次同事吸取了上一次的教训，去和安全部门请教了一波。
-
-得到的答案是：
-
-真实客户端 IP 的建议获取方式如下：
-
-```
-X-Client-IP ，X-Real-IP， X-Real-Ip， WL-Proxy-Client-IP，PROXY_CLIENT_IP， X_Forwarded_For,  request.getRemoteAddr()     
-```
-
 ## 属性
 
 这些都是个啥？
@@ -223,10 +209,9 @@ public final class IpUtil {
         IpInfo ipInfo = new IpInfo();
         ipInfo.setClientIp(request.getHeader("X-Client-IP"));
         ipInfo.setRealIP(request.getHeader("X-Real-IP"));
-        ipInfo.setRealIp(request.getHeader("X-Real-Ip"));
         ipInfo.setWlProxyClientIP(request.getHeader("WL-Proxy-Client-IP"));
-        ipInfo.setProxyClientIp(request.getHeader("PROXY_CLIENT_IP"));
-        ipInfo.setForwardedFor(request.getHeader("X_Forwarded_For"));
+        ipInfo.setProxyClientIp(request.getHeader("Proxy-Client-IP"));
+        ipInfo.setForwardedFor(request.getHeader("X-Forwarded-For"));
         ipInfo.setRemoteAddress(request.getRemoteAddr());
         return ipInfo;
     }
@@ -241,10 +226,9 @@ public final class IpUtil {
         List<String> keyList = Arrays.asList(
                 "X-Client-IP",
                 "X-Real-IP",
-                "X-Real-Ip",
                 "WL-Proxy-Client-IP",
-                "PROXY_CLIENT_IP",
-                "X_Forwarded_For"
+                "Proxy-Client-IP",
+                "X-Forwarded-For"
         );
 
         for(String key : keyList) {
@@ -290,6 +274,13 @@ public final class IpUtil {
 包括本篇，毕竟老马对网络安全也是一点不懂。
 
 我是老马，期待与你的下次重逢。
+
+
+# 拓展阅读
+
+[根据Request获取客户端IP](https://www.cnblogs.com/lukelook/p/11079372.html)
+
+[利用X-Forwarded-For伪造客户端IP漏洞成因及防范](https://blog.csdn.net/xiao__gui/article/details/83054462)
 
 # 参考资料
 
