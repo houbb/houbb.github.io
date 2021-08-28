@@ -82,8 +82,6 @@ Vue.js 的核心是一个允许采用简洁的模板语法来声明式地将数�
 完整的代码如下：
 
 ```js
-{% raw %}
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -93,7 +91,7 @@ Vue.js 的核心是一个允许采用简洁的模板语法来声明式地将数�
 <body>
 
 <div id="hello-vue" class="demo">
-  {{ counter }}
+  ${counter}
 </div>
 
 <script src="https://unpkg.com/vue@next"></script>
@@ -116,8 +114,6 @@ Vue.createApp(Counter).mount('#hello-vue')
 </body>
 
 </html>
-
-{% endraw %}
 ```
 
 可以看到页面的计数，不断随着时间而变化。
@@ -164,9 +160,7 @@ Vue.js 的核心是一个允许采用简洁的模板语法来声明式地将数�
 
 ```html
 <div id="counter">
-  {% raw %}
-  Counter: {{ counter }}
-  <% endraw %>
+  Counter: ${counter}
 </div>
 ```
 
@@ -243,9 +237,7 @@ Vue.createApp(AttributeBinding).mount('#bind-attribute')
 
 ```xml
 <div id="event-handling">
-  <% raw %>
-  <p>{{ message }}</p>
-  <% endraw %>
+  <p>${message}</p>
   <button v-on:click="reverseMessage">反转 Message</button>
 </div>
 ```
@@ -276,9 +268,7 @@ Vue 还提供了 v-model 指令，它能轻松实现表单输入和应用状态�
 
 ```xml
 <div id="two-way-binding">
-  <% raw %>
-  <p>{{ message }}</p>
-  <% endraw %>
+  <p>${message}</p>
   <input v-model="message" />
 </div>
 ```
@@ -331,7 +321,7 @@ Vue.createApp(ConditionalRendering).mount('#conditional-rendering')
 <div id="list-rendering">
   <ol>
     <li v-for="todo in todos">
-      {{ todo.text }}
+      ${todo.text}
     </li>
   </ol>
 </div>
