@@ -24,7 +24,7 @@ Vue.js 使用了基于 HTML 的模板语法，允许开发者声明式地将 DOM
 数据绑定最常见的形式就是使用“Mustache”语法 (双大括号) 的文本插值：
 
 ```html
-<span>Message: {{ msg }}</span>
+<span>Message: ${msg} </span>
 ```
 
 Mustache 标签将会被替代为对应组件实例中 msg property 的值。
@@ -36,7 +36,7 @@ Mustache 标签将会被替代为对应组件实例中 msg property 的值。
 但请留心这会影响到该节点上的其它数据绑定：
 
 ```html
-<span v-once>这个将不会改变: {{ msg }}</span>
+<span v-once>这个将不会改变:${msg}</span>
 ```
 
 ## 原始 HTML
@@ -46,7 +46,7 @@ Mustache 标签将会被替代为对应组件实例中 msg property 的值。
 为了输出真正的 HTML，你需要使用 v-html 指令：
 
 ```html
-<p>Using mustaches: {{ rawHtml }}</p>
+<p>Using mustaches: ${rawHtml} </p>
 <p>Using v-html directive: <span v-html="rawHtml"></span></p>
 ```
 
@@ -85,14 +85,11 @@ Mustache 语法不能在 HTML attribute 中使用 ，然而，可以使用 v-bin
 但实际上，对于所有的数据绑定，Vue.js 都提供了完全的 JavaScript 表达式支持。
 
 ```html
-<% raw %>
-
-{{ number + 1 }} 
-{{ ok ? 'YES' : 'NO' }} 
-{{ message.split('').reverse().join('')}}
+${number + 1}
+${ok ? 'YES' : 'NO'}
+${message.split('').reverse().join('')}
 
 <div v-bind:id="'list-' + id"></div>
-<% endraw %>
 ```
 
 这些表达式会在当前活动实例的数据作用域下作为 JavaScript 被解析。
@@ -100,16 +97,14 @@ Mustache 语法不能在 HTML attribute 中使用 ，然而，可以使用 v-bin
 有个限制就是，每个绑定都只能包含单个表达式，所以下面的例子都不会生效。
 
 ```js
-<% raw %>
-
 <!--  这是语句，不是表达式：-->
-{{ var a = 1 }}
+var a = 1 
 
 <!-- 流控制也不会生效，请使用三元表达式 -->
-{{ if (ok) { return message } }}
-
-<% endraw %>
+if (ok) { return message }
 ```
+
+ps: 省略了双花括号
 
 # 指令
 
