@@ -46,6 +46,12 @@ Selma - Annotation processor-based bean mapper.
 
 [java 浅拷贝，深度拷贝与属性复制](https://houbb.github.io/2019/01/09/java-deep-copy)
 
+## 开源框架
+
+- [mapstruct / mapstruct](https://github.com/mapstruct/mapstruct)
+
+An annotation processor for generating type-safe bean mappers
+
 # 参考资料
 
 [Java的一个高性能快速深拷贝方法。Cloneable?](https://www.cnblogs.com/huaxingtianxia/p/5985913.html)
