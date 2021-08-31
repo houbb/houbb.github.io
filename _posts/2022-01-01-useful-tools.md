@@ -19,6 +19,9 @@ draw.io
 
 [https://github.com/lyricat/wechat-format](https://github.com/lyricat/wechat-format)
 
+https://lab.lyric.im/wxformat/
+
+
 # git 设置
 
 ## 查看

@@ -332,6 +332,8 @@ private boolean isDfaMatch(String text, int pos, State startState) {
 
 [03-Regex 正则表达式原理及如何从零实现](https://houbb.github.io/2020/01/07/regex-and-dfa-02)
 
+[正则表达式实现](https://github.com/xindoo/regex)
+
 # 参考资料
 
 [从0到1打造正则表达式执行引擎(二)](https://xindoo.blog.csdn.net/article/details/106458165)
