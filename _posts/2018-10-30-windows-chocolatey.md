@@ -26,6 +26,14 @@ excerpt:  Windows Chocolatey 一款优雅的 windows 包管理工具
 
 ## 安装日志
 
+powershell 执行命令：
+
+```sh
+Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+```
+
+- 日志
+
 ```
 Microsoft Windows [版本 10.0.17134.345]
 (c) 2018 Microsoft Corporation。保留所有权利。
