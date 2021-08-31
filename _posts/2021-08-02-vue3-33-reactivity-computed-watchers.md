@@ -1,0 +1,233 @@
+---
+layout: post
+title: VUE3-33-响应式计算和侦听
+date: 2021-08-02 21:01:55 +0800
+categories: [VUE]
+tags: [vue, vue3, sh]
+published: true
+---
+
+# 计算值
+
+有时我们需要依赖于其他状态的状态——在 Vue 中，这是用组件计算属性处理的，以直接创建计算值，我们可以使用 computed 方法：它接受 getter 函数并为 getter 返回的值返回一个不可变的响应式 ref 对象。
+
+```js
+const count = ref(1)
+const plusOne = computed(() => count.value++)
+
+console.log(plusOne.value) // 2
+
+plusOne.value++ // error
+```
+
+或者，它可以使用一个带有 get 和 set 函数的对象来创建一个可写的 ref 对象。
+
+```js
+const count = ref(1)
+const plusOne = computed({
+  get: () => count.value + 1,
+  set: val => {
+    count.value = val - 1
+  }
+})
+
+plusOne.value = 1
+console.log(count.value) // 0
+```
+
+# watchEffect
+
+为了根据响应式状态自动应用和重新应用副作用，我们可以使用 watchEffect 方法。
+
+它立即执行传入的一个函数，同时响应式追踪其依赖，并在其依赖变更时重新运行该函数。
+
+```js
+const count = ref(0)
+
+watchEffect(() => console.log(count.value))
+// -> logs 0
+
+setTimeout(() => {
+  count.value++
+  // -> logs 1
+}, 100)
+```
+
+## 停止侦听
+
+当 watchEffect 在组件的 setup() 函数或生命周期钩子被调用时，侦听器会被链接到该组件的生命周期，并在组件卸载时自动停止。
+
+在一些情况下，也可以显式调用返回值以停止侦听：
+
+```js
+const stop = watchEffect(() => {
+  /* ... */
+})
+
+// later
+stop()
+```
+
+## 清除副作用
+
+有时副作用函数会执行一些异步的副作用，这些响应需要在其失效时清除 (即完成之前状态已改变了) 。所以侦听副作用传入的函数可以接收一个 onInvalidate 函数作入参，用来注册清理失效时的回调。当以下情况发生时，这个失效回调会被触发：
+
+- 副作用即将重新执行时
+
+- 侦听器被停止 (如果在 setup() 或生命周期钩子函数中使用了 watchEffect，则在组件卸载时)
+
+```js
+watchEffect(onInvalidate => {
+  const token = performAsyncOperation(id.value)
+  onInvalidate(() => {
+    // id has changed or watcher is stopped.
+    // invalidate previously pending async operation
+    token.cancel()
+  })
+})
+```
+
+我们之所以是通过传入一个函数去注册失效回调，而不是从回调返回它，是因为返回值对于异步错误处理很重要。
+
+在执行数据请求时，副作用函数往往是一个异步函数：
+
+```js
+const data = ref(null)
+watchEffect(async onInvalidate => {
+  onInvalidate(() => {...}) // 我们在Promise解析之前注册清除函数
+  data.value = await fetchData(props.id)
+})
+```
+
+我们知道异步函数都会隐式地返回一个 Promise，但是清理函数必须要在 Promise 被 resolve 之前被注册。
+
+另外，Vue 依赖这个返回的 Promise 来自动处理 Promise 链上的潜在错误。
+
+## 副作用刷新时机
+
+Vue 的响应性系统会缓存副作用函数，并异步地刷新它们，这样可以避免同一个“tick” 中多个状态改变导致的不必要的重复调用。
+
+在核心的具体实现中，组件的 update 函数也是一个被侦听的副作用。当一个用户定义的副作用函数进入队列时，默认情况下，会在所有的组件 update 前执行：
+
+```xml
+<template>
+  <div>{{ count }}</div>
+</template>
+
+<script>
+  export default {
+    setup() {
+      const count = ref(0)
+
+      watchEffect(() => {
+        console.log(count.value)
+      })
+
+      return {
+        count
+      }
+    }
+  }
+</script>
+```
+
+在这个例子中：
+
+count 会在初始运行时同步打印出来
+
+更改 count 时，将在组件更新前执行副作用。
+
+如果需要在组件更新后重新运行侦听器副作用，我们可以传递带有 flush 选项的附加 options 对象 (默认为 'pre')：
+
+```js
+// fire before component updates
+watchEffect(
+  () => {
+    /* ... */
+  },
+  {
+    flush: 'post'
+  }
+)
+```
+
+flush 选项还接受 sync，这将强制效果始终同步触发。然而，这是低效的，应该很少需要。
+
+## 侦听器调试
+
+onTrack 和 onTrigger 选项可用于调试侦听器的行为。
+
+onTrack 将在响应式 property 或 ref 作为依赖项被追踪时被调用。
+
+onTrigger 将在依赖项变更导致副作用被触发时被调用。
+
+这两个回调都将接收到一个包含有关所依赖项信息的调试器事件。建议在以下回调中编写 debugger 语句来检查依赖关系：
+
+```js
+watchEffect(
+  () => {
+    /* 副作用 */
+  },
+  {
+    onTrigger(e) {
+      debugger
+    }
+  }
+)
+```
+
+onTrack 和 onTrigger 只能在开发模式下工作。
+
+# watch
+
+watch API 完全等同于组件侦听器 property。watch 需要侦听特定的数据源，并在回调函数中执行副作用。默认情况下，它也是惰性的，即只有当被侦听的源发生变化时才执行回调。
+
+与 watchEffect 比较，watch 允许我们：
+
+- 懒执行副作用；
+
+- 更具体地说明什么状态应该触发侦听器重新运行；
+
+- 访问侦听状态变化前后的值。
+
+## 侦听单个数据源
+
+侦听器数据源可以是返回值的 getter 函数，也可以直接是 ref：
+
+```js
+// 侦听一个 getter
+const state = reactive({ count: 0 })
+watch(
+  () => state.count,
+  (count, prevCount) => {
+    /* ... */
+  }
+)
+
+// 直接侦听ref
+const count = ref(0)
+watch(count, (count, prevCount) => {
+  /* ... */
+})
+```
+
+## 侦听多个数据源
+
+侦听器还可以使用数组同时侦听多个源：
+
+```js
+watch([fooRef, barRef], ([foo, bar], [prevFoo, prevBar]) => {
+  /* ... */
+})
+```
+
+## 与 watchEffect 共享的行为
+
+watch 与 watchEffect共享停止侦听，清除副作用 (相应地 onInvalidate 会作为回调的第三个参数传入)、副作用刷新时机和侦听器调试行为。
+
+# 参考资料
+
+https://vue3js.cn/docs/zh/guide/reactivity-computed-watchers.html
+
+* any list
+{:toc}
