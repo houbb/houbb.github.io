@@ -1,21 +1,13 @@
 ---
 layout: post
-<<<<<<< HEAD
-title: VUE3-07-Class 与 Style 绑定
-=======
 title: VUE3-07-class and style
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 date: 2021-08-02 21:01:55 +0800
 categories: [VUE]
 tags: [vue, hello-world, sh]
 published: true
 ---
 
-<<<<<<< HEAD
-# class 与 style 绑定
-=======
 # Class 与 Style 绑定
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 
 操作元素的 class 列表和内联样式是数据绑定的一个常见需求。
 
@@ -23,23 +15,13 @@ published: true
 
 不过，字符串拼接麻烦且易错。
 
-<<<<<<< HEAD
-因此，在将 v-bind 用于 class 和 style 时，Vue.js 做了专门的增强。
-
-表达式结果的类型除了字符串之外，还可以是对象或数组。
-=======
 因此，在将 v-bind 用于 class 和 style 时，Vue.js 做了专门的增强。表达式结果的类型除了字符串之外，还可以是对象或数组。
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 
 # 绑定 HTML Class
 
 ## 对象语法
 
-<<<<<<< HEAD
-我们可以传给 :class (v-bind:class 的简写) 一个对象，以动态地切换 class：
-=======
 我们可以传给 `:class` (v-bind:class 的简写) 一个对象，以动态地切换 class：
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 
 ```xml
 <div :class="{ active: isActive }"></div>
@@ -53,11 +35,7 @@ published: true
 
 当有如下模板：
 
-<<<<<<< HEAD
-```html
-=======
 ```xml
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 <div
   class="static"
   :class="{ active: isActive, 'text-danger': hasError }"
@@ -75,11 +53,7 @@ data() {
 }
 ```
 
-<<<<<<< HEAD
-渲染的结果为：
-=======
 渲染结果：
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 
 ```xml
 <div class="static active"></div>
@@ -106,13 +80,9 @@ data() {
 }
 ```
 
-<<<<<<< HEAD
-渲染的结果和上面一样。我们也可以在这里绑定一个返回对象的计算属性。这是一个常用且强大的
-=======
 渲染的结果和上面一样。我们也可以在这里绑定一个返回对象的计算属性。
 
 这是一个常用且强大的模式：
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 
 ```xml
 <div :class="classObject"></div>
@@ -135,11 +105,8 @@ computed: {
 }
 ```
 
-<<<<<<< HEAD
-=======
 ps: 这种计算方式动态修改样式的方式非常方便。
 
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 ## 数组语法
 
 我们可以把一个数组传给 :class，以应用一个 class 列表：
@@ -181,13 +148,7 @@ data() {
 
 ## 在组件上使用
 
-<<<<<<< HEAD
-这个章节假设你已经对 Vue 组件有一定的了解。
-
-当然你也可以先跳过这里，稍后再回过头来看。
-=======
 这个章节假设你已经对 Vue 组件有一定的了解。当然你也可以先跳过这里，稍后再回过头来看。
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 
 例如，如果你声明了这个组件：
 
@@ -201,11 +162,7 @@ app.component('my-component', {
 
 然后在使用它的时候添加一些 class：
 
-<<<<<<< HEAD
-```xml
-=======
 ```html
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 <div id="app">
   <my-component class="baz boo"></my-component>
 </div>
@@ -225,7 +182,6 @@ HTML 将被渲染为：
 
 当 isActive 为 truthy[1] 时，HTML 将被渲染成为：
 
-<<<<<<< HEAD
 ```js
 <p class="foo bar active">Hi</p>
 ```
@@ -233,17 +189,6 @@ HTML 将被渲染为：
 如果你的组件有多个根元素，你需要定义哪些部分将接收这个类。
 
 可以使用 $attrs 组件属性执行此操作：
-=======
-```xml
-<p class="foo bar active">Hi</p>
-```
-
-ps: 这里给人的感觉是有点奇怪，就是覆盖 isActive，对应的 key 会被 css 渲染。
-
-如果你的组件有多个根元素，你需要定义哪些部分将接收这个类。
-
-可以使用 `$attrs` 组件属性执行此操作：
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 
 ```xml
 <div id="app">
@@ -262,9 +207,6 @@ app.component('my-component', {
 })
 ```
 
-<<<<<<< HEAD
-
-=======
 你可以在非 prop Attribute 小节了解更多关于组件属性继承的信息。
 
 # 绑定内联样式
@@ -334,7 +276,6 @@ ps: 感觉这种方式非常自然。
 在本例中，如果浏览器支持不带浏览器前缀的 flexbox，那么就只会渲染 display: flex。
 
 译者注 [1] truthy 不是 true，详见 MDN 的解释。
->>>>>>> 528424f29898731065629caf75d347ffc0c09b00
 
 # 参考资料
 
