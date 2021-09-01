@@ -237,6 +237,10 @@ java 编译为的 class 文件
 
 网络通讯原理
 
+# 拓展阅读
+
+[JVM 底层原理最全知识总结](https://github.com/doocs/jvm)
+
 # 参考资料
 
 [深入理解Java虚拟机到底是什么](https://blog.csdn.net/zhangjg_blog/article/details/20380971)
