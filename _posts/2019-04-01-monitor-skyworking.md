@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 监控-skyworking
+title: 监控-skywalking
 date:  2019-4-1 19:24:57 +0800
 categories: [APM]
 tags: [monitor, apm, sf]
@@ -28,7 +28,7 @@ OpenTracing 是一个轻量级的标准化层，它位于应用程序/类库和�
 
 本文要介绍的就是国人吴晟基于OpenTracking实现的开源项目skywalking。
 
-# skywalking简介
+# skywalking 简介
 
 针对分布式系统的APM（应用性能监控）系统，特别针对微服务、cloud native和容器化(Docker, Kubernetes, Mesos)架构， 其核心是个分布式追踪系统。
 

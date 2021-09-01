@@ -59,10 +59,6 @@ PFMERGE destkey sourcekey [sourcekey ...]
 
 细节后期研究。
 
-# 拓展阅读
-
-[stream-lib](https://github.com/addthis/stream-lib) 一个不错的 java 框架。
-
 # 参考资料
 
 《Redis 开发与运维》
