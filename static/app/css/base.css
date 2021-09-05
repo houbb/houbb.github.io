@@ -85,13 +85,13 @@ html {
     background: #74b3fb;
     color: #fff;
     bottom: 20px;
-    right: 50px;
+    left: 50px;
     height: 30px;
     line-height: 30px;
     width: 30px;
     position: fixed;
     z-index: 9999;
-    display: none
+    display: none;
 }
 
 .syntaxhighlighter.collapsed .toolbar {
