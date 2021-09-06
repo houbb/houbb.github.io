@@ -141,5 +141,7 @@ test
 
 [c3p0-quickstart](https://www.mchange.com/projects/c3p0/#quickstart)
 
+https://github.com/swaldman/c3p0
+
 * any list
 {:toc}
