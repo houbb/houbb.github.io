@@ -20,7 +20,7 @@ Node.js' package ecosystem, npm, is the largest ecosystem of open source librari
 
 > [正确学习 node](https://i5ting.github.io/How-to-learn-node-correctly/)
 
-
+> [Node.js 教程](https://github.com/wangdoc/node-tutorial)
 
 # 安装
 
