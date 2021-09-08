@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Spring Boot-13-springboot 整合 redis 实现分布式 session 实战
+title:  Spring Boot-13-springboot 整合 redis 实现分布式 session 实战 拦截器+方法注解
 date:  2017-12-19 14:43:25 +0800
 categories: [Spring]
 tags: [spring, web, springboot]
@@ -263,6 +263,200 @@ public class SessionInterceptor implements HandlerInterceptor {
 }
 ```
 
+# 基于方法注解的实现
+
+## 权限校验
+
+在使用SpringMVC进行项目的时候用到了权限验证。
+
+验证无非就是收到请求后，在拦截器循环判断用户是否有权限执行操作。
+
+## url 判断
+
+通过request获得用户的URI，再逐一循环判断是否可以操作。
+
+这种方法适合格式较为固定的校验，但是不太适合细化的。
+
+## 通过用户要访问的方法来判断是否有权限
+
+preHandle方法中handler实际为HandlerMethod，（看网上说的有时候不是HandlerMethod），加个 instanceof 验证即可。
+
+可以得到方法名：h.getMethod().getName()
+
+可以得到 RequestMapping 注解中的值：h.getMethodAnnotation(RequireRole.class)
+
+这种方法还是不太方便
+
+## 注解实现
+
+### 注解定义
+
+```java
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface RequireRole {
+
+    /**
+     * 权限列表
+     * @return 列表
+     */
+    String[] value() default {};
+
+}
+```
+
+### 注解使用
+
+可以放在方法上，用于指定需要的权限。
+
+```java
+@RequestMapping("hello")
+@RequireRole({"admin"})
+public String hello() {
+    return "hello";
+}
+
+@RequestMapping("hello2")
+public String hello2() {
+    return "hello2";
+}
+```
+
+### 拦截器实现
+
+```java
+import com.github.houbb.springboot.learn.interceptor.annotation.RequireRole;
+import com.sun.deploy.util.ArrayUtil;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+
+/**
+ * https://blog.csdn.net/howroad/article/details/80220320
+ * （1）通过request获得用户的URI，再逐一循环判断是否可以操作。只是这种方法很让人难受。
+ * （2）
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+@Component
+public class SessionInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        String token = httpServletRequest.getParameter("token");
+        String roleInfo = mockTokenResp(token);
+
+        // 根据信息设置等操作
+        // 进行权限校验
+        if(o instanceof HandlerMethod) {
+            HandlerMethod h = (HandlerMethod)o;
+            RequireRole requireRole = h.getMethodAnnotation(RequireRole.class);
+            if(requireRole != null) {
+                String[] strings = requireRole.value();
+                boolean contains = containsRole(strings, roleInfo);
+                System.out.println("需要：" + Arrays.toString(strings) + "; 实际：" + roleInfo + ": 结果：" + contains);
+                if(!contains) {
+                    return false;
+                }
+            }
+            //判断后执行操作...
+        }
+
+
+        return true;
+    }
+
+    /**
+     * 是否包含对应的角色
+     * @param strings 需要角色
+     * @param currentRole 当前角色
+     * @return 是否满足
+     */
+    private boolean containsRole(String[] strings,
+                                 String currentRole) {
+        if(strings.length <= 0) {
+            return true;
+        }
+
+        for(String requireRole : strings) {
+            if(requireRole.equals(currentRole)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 根据 token 去 redis 等取 session 信息，此处直接 mock 掉
+     * @param token 请求参数，可以是 sessionId, JWT 等
+     * @return 结果
+     */
+    private String mockTokenResp(String token) {
+        if("ryo".equals(token)) {
+            return "admin";
+        }
+        return "";
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+
+    }
+}
+```
+
+## 类级别
+
+当然，如果你觉得每个方法都添加比较麻烦，则可以直接添加类级别的。
+
+### 注解
+
+简单调整注解：
+
+```java
+@Target({ElementType.METHOD, ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+public @interface RequireRole {
+
+    /**
+     * 权限列表
+     * @return 列表
+     */
+    String[] value() default {};
+
+}
+```
+
+使用时就可以定位在类上。
+
+### 拦截器处理逻辑调整
+
+```java
+HandlerMethod h = (HandlerMethod)o;
+RequireRole requireRole = h.getMethodAnnotation(RequireRole.class);
+if(requireRole != null) {
+   // 方法级别的处理
+} else {
+    // 获取类上面的注解，进行类似的处理逻辑
+    requireRole = h.getMethod().getDeclaringClass().getAnnotation(RequireRole.class);
+}
+```
+
+
 # 小结
 
 session 是 web 登录中必备的功能，redis 存放 session 是分布式系统中比较成熟的方案。
@@ -292,6 +486,8 @@ session 是 web 登录中必备的功能，redis 存放 session 是分布式系�
 # 参考资料
 
 [SpringBoot 之Actuator](https://www.cnblogs.com/jmcui/p/9820579.html)
+
+[SpringMVC拦截器中获得Controller方法名和注解信息（用于验证权限）](https://blog.csdn.net/howroad/article/details/80220320)
 
 * any list
 {:toc}
