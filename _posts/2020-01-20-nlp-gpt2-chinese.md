@@ -85,6 +85,8 @@ scripts 内包含了样例训练与生成脚本
 
 唐诗
 
+> [最全中华古诗词数据库](https://github.com/chinese-poetry/chinese-poetry)
+
 宋词
 
 元曲

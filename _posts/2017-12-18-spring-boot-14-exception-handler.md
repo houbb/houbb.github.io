@@ -361,6 +361,164 @@ public class GlobalException implements HandlerExceptionResolver {
 }
 ```
 
+# 全局异常的个人误区
+
+## 返回值的设计
+
+一般建议基于 springboot 的结果进行设计，不过一般我们都会习惯定义基本的响应体。
+
+```java
+public class BaseResp {
+
+    private String respCode;
+
+    private String respMsg;
+
+    //...
+}
+```
+
+其他响应值，以这个为基础进行拓展：
+
+```java
+public class BaseInfoResp extends BaseResp {
+
+    private String message;
+
+    //...
+```
+
+## 使用
+
+这样的好处就是，返回值可以统一使用 BaseResp，同时保证前端的接收到的结果是完整的。
+
+当然，指定为具体的子类也是可以的。
+
+```java
+@RequestMapping("hello")
+@RequireRole({"admin"})
+public BaseInfoResp hello() {
+    try {
+        BaseInfoResp infoResp = new BaseInfoResp();
+        infoResp.setRespCode("0");
+        infoResp.setRespMsg("success");
+        infoResp.setMessage("hello");
+        return infoResp;
+    } catch (Exception exception) {
+        BaseInfoResp infoResp = new BaseInfoResp();
+        infoResp.setRespCode("自己设置的异常");
+        infoResp.setRespMsg(exception.getMessage());
+        return infoResp;
+    }
+}
+
+
+@RequestMapping("hello2")
+@RequireRole({"admin"})
+public BaseResp hello2() {
+    try {
+        BaseInfoResp infoResp = new BaseInfoResp();
+        infoResp.setRespCode("0");
+        infoResp.setRespMsg("success");
+        infoResp.setMessage("hello");
+        return infoResp;
+    } catch (Exception exception) {
+        BaseInfoResp infoResp = new BaseInfoResp();
+        infoResp.setRespCode("自己设置的异常");
+        infoResp.setRespMsg(exception.getMessage());
+        return infoResp;
+    }
+}
+```
+
+## 拦截器的异常
+
+### 异常的其他情况
+
+上面的方法还有两一个问题：异常的捕获。
+
+虽然方法体本身进行了 catch，但是如果我们在拦截器中抛出异常，比如：
+
+```java
+@Component
+public class SessionInterceptor implements HandlerInterceptor {
+
+    @Override
+    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+         throw new RuntimeException("403 FORBIDDEN");
+    }
+
+    //....
+}
+```
+
+这个时候，上述的 controller 方法的 catch 是无效的，因为还没有进入方法。
+
+### 全局异常
+
+这个时候建议引入全局异常。
+
+```java
+import com.github.houbb.springboot.learn.interceptor.resp.BaseInfoResp;
+import com.github.houbb.springboot.learn.interceptor.resp.BaseResp;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletResponse;
+
+/**
+ * 全局异常处理
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    /**
+     * 日志
+     * @since 0.0.3
+     */
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ResponseBody
+    @ExceptionHandler(Exception.class)
+    public BaseResp globalException(HttpServletResponse response, Exception ex){
+        logger.error("全局异常", ex);
+
+        BaseInfoResp infoResp = new BaseInfoResp();
+        infoResp.setRespCode("全局异常");
+        infoResp.setRespMsg(ex.getMessage());
+
+        return infoResp;
+    }
+
+}
+```
+
+可以发现，原来的方法返回的是 BaseInfoResp，我们在全局拦截器中返回 BaseResp 也是没有任何问题的。
+
+### 异常的细化
+
+当然，我们的异常可以进一步细化，以便提示的更加细致。
+
+```java
+@ResponseBody
+@ExceptionHandler(EchoBlogBizException.class)
+public BaseResp echoBlogBizException(HttpServletResponse response, EchoBlogBizException ex){
+    logger.error("业务异常", ex);
+    // 异常输出
+    return RespUtil.fail(ex.getCode()+": " + ex.getMsg());
+}
+```
+
+这样 springboot 会优先匹配最精确的 EchoBlogBizException 异常，如果不匹配就寻找兜底的异常 Exception。
 
 # 参考资料
 
