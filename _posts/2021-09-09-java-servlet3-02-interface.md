@@ -275,7 +275,7 @@ ac.dispatch(); // ASYNC dispatch to /url/B
 
 FIGURE 2-1 State transition diagram for asynchronous operations
 
-![](/images/FIGURE 2-1 State transition diagram for asynchronous operations.jpg)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/deba3efe5bfa46c2a118a4f98ca2fcc6.png)
 
 #### 线程安全
 
@@ -285,7 +285,13 @@ FIGURE 2-1 State transition diagram for asynchronous operations
 
 #### 升级处理
 
-在HTTP/1.1，Upgrade 通用头允许客户端指定其支持和希望使用的其他通信协议。如果服务器找到合适的切换协议，那么新的协议将在之后的通信中使用。Servle t容器提供了 HTTP 升级机制。不过，Servlet 容器本身不知道任何升级协议。协议处理封装在 HttpUpgradeHandler 协议处理器。在容器和 HttpUpgradeHandler 协议处理器之间通过字节流进行数据读取或写入。
+在HTTP/1.1，Upgrade 通用头允许客户端指定其支持和希望使用的其他通信协议。
+
+如果服务器找到合适的切换协议，那么新的协议将在之后的通信中使用。Servle t容器提供了 HTTP 升级机制。
+
+不过，Servlet 容器本身不知道任何升级协议。协议处理封装在 HttpUpgradeHandler 协议处理器。
+
+在容器和 HttpUpgradeHandler 协议处理器之间通过字节流进行数据读取或写入。
 
 当收到一个升级请求，servlet 可以调用 HttpServletRequest.upgrade方法启动升级处理。该方法实例化给定的 HttpUpgradeHandler 类，返回的 HttpUpgradeHandler 实例可以被进一步的定制。应用准备和发送一个合适的响应到客户端。退出 servlet service 方法之后，servlet 容器完成所有过滤器的处理并标记连接已交给 HttpUpgradeHandler 协议处理器处理。然后调用 HttpUpgradeHandler 协议处理器的 init 方法，传入一个 WebConnection 以允许 HttpUpgradeHandler 协议处理器访问数据流。
 
