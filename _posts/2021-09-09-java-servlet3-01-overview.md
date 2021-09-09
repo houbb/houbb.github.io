@@ -88,7 +88,7 @@ web-fragments 的概念在 servlet 2.5 并不存在。
 
 # 参考地址
 
-[原始地址](https://download.oracle.com/otn-pub/jcp/servlet-3_1-fr-eval-spec/servlet-3_1-final.pdf?AuthParam=1631191656_f7c49f9309df87d3e7af229ed34cf0b8)
+[原始地址](https://download.oracle.com/otndocs/jcp/servlet-3_1-fr-eval-spec/index.html)
 
 [SUMMARY.md](https://github.com/waylau/servlet-3.1-specification/blob/master/SUMMARY.md)
 
