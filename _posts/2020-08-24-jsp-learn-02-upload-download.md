@@ -273,6 +273,168 @@ java.lang.IllegalStateException: getOutputStream() has already been called for t
 
 后来发现是，download 我想跳转页面导致的，其实不需要跳转，直接不返回即可。
 
+## 前端 axios 实现
+
+```js
+doExport() {
+    var req = {
+        id: this.queryForm.id,
+        roleId: this.queryForm.roleId,
+        roleName: this.queryForm.roleName,
+        remark: this.queryForm.remark,
+        operatorId: this.queryForm.operatorId,
+        createTime: this.queryForm.createTime,
+        updateTime: this.queryForm.updateTime,
+    }
+
+    console.log("请求：" + JSON.stringify(req));
+    //axios 中的 this 并不指向 vue
+    var _this = this;
+    axios({ // 用axios发送post请求
+        method: 'post',
+        url: '/role/export', // 请求地址
+        data: req, // 参数
+        responseType: 'blob', // 表明返回服务器返回的数据类型
+        headers: {'Content-Type': 'application/json'}
+    }).
+    then(function (response) {
+        let fileName = window.decodeURI(response.headers['content-disposition'].split('=')[1]);
+        let link = document.createElement("a");
+        const blob =new Blob([response.data]);
+        link.href = window.URL.createObjectURL(blob);
+        link.target = "_blank";
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }).catch(function (error) {
+        ELEMENT.Message.error("请求失败");
+        console.log(error);
+    });
+},
+```
+
+这种实现还是比较麻烦的，可以使用 `<a>` 标签替代，或者 localtion.href 直接修改链接地址。
+
+# 指定返回值
+
+## 说明
+
+很多例子，导出都是直接导出的，没有给前端任何响应，这里存在一个问题。
+
+如果参数错误等，会导致很麻烦。
+
+## 后端实现
+
+```java
+/**
+* 导出
+* @param pageReq 入参
+* @param response 响应
+*/
+@RequestMapping("/export")
+@ResponseBody
+@CrossOrigin
+public BaseResp export(@RequestBody RolePagePo pageReq, HttpServletResponse response) {
+    final String fileName = "文件导出-角色-" + System.currentTimeMillis() + ".xls";
+    File file = new File(fileName);
+    try {
+        if("1".equals(pageReq.getRoleId())) {
+            return RespUtil.fail("角色标识禁止为1");
+        }
+
+
+        pageReq.setPageNum(1);
+        pageReq.setPageSize(Integer.MAX_VALUE);
+        BasePageInfo<Role> pageInfo = roleService.pageQueryList(pageReq);
+        // 直接写入到文件
+        ExcelHelper.write(file.getAbsolutePath(), pageInfo.getList());
+        // 根据客户端，选择信息
+        response.addHeader("content-Type", "application/octet-stream");
+        response.addHeader("content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        try(InputStream in = new FileInputStream(file);
+            ServletOutputStream out = response.getOutputStream();) {
+            byte[] bs = new byte[1024];
+            int len = -1;
+            while ((len = in.read(bs)) != -1) {
+                out.write(bs, 0, len);
+            }
+            out.flush();
+        }
+        return RespUtil.success();
+    } catch (Exception e) {
+        return RespUtil.fail(e.getMessage());
+    } finally {
+        FileUtil.deleteFile(file);
+    }
+}
+```
+
+注意，下面的代码是我故意添加的，用来模拟错误的情况。
+
+```java
+if("1".equals(pageReq.getRoleId())) {
+    return RespUtil.fail("角色标识禁止为1");
+}
+```
+
+## 前端 axios 实现
+
+参考下面的文章：
+
+```
+// https://blog.csdn.net/qq_37246828/article/details/90080614
+// https://www.h5w3.com/16051.html
+```
+
+实现如下：
+
+```js
+//axios 中的 this 并不指向 vue
+var _this = this;
+axios({ // 用axios发送post请求
+    method: 'post',
+    url: '/role/export', // 请求地址
+    data: req, // 参数
+    responseType: 'blob', // 表明返回服务器返回的数据类型
+    headers: {'Content-Type': 'application/json'}
+}).
+then(function (response) {
+    console.log(response);
+    // https://blog.csdn.net/qq_37246828/article/details/90080614
+    // https://www.h5w3.com/16051.html
+    let contentType = response.headers['content-type'];
+    console.log('内容类型：' + contentType);
+    // 或者调整为以 xxx 开始
+    // 如果服务器错误返回
+    if (response.data.type === 'application/json') {
+        let reader = new FileReader();
+        reader.readAsText(response.data, 'utf-8');
+        reader.onload = function (e) {
+            console.log("====",JSON.parse(reader.result));
+            console.log("====",JSON.parse(e.target.result));
+        }
+    } else {
+        let fileName = window.decodeURI(response.headers['content-disposition'].split('=')[1]);
+        let link = document.createElement("a");
+        const blob =new Blob([response.data]);
+        link.href = window.URL.createObjectURL(blob);
+        link.target = "_blank";
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+}).catch(function (error) {
+    ELEMENT.Message.error("请求失败");
+    console.log(error);
+});
+```
+
+如果导出正常，那么返回的肯定是 blob 类型。
+
+如果返回的是 `application/json`，则说明异常，可以对其进行 json 转换，获取对应的 json 信息，进行页面展示。
+
 # commons-fileupload 上传实现
 
 网上最多的还是基于 apache commons 包实现的上传，这里没有真正实践，记录一下：
