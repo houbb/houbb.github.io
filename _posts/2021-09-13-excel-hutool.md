@@ -246,12 +246,24 @@ public final class ExcelHelper {
 public void test() {
     final String path = "导入模板.xlsx";
     File file = new File(path);
-    List<InnerCustomerOrderImportDto> list = ExcelHelper.readList(file, InnerCustomerOrderImportDto.class);
+    List<User> list = ExcelHelper.readList(file, User.class);
     System.out.println(JSON.toJSON(list));
 
     final String path2 = "EXPORT.xlsx";
     ExcelHelper.writeList(list, path2);
 }
+```
+
+# 开箱即用
+
+## maven 引入
+
+```xml
+<dependency>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>iexcel-hutool</artifactId>
+    <version>1.0.0</version>
+</dependency>
 ```
 
 # 参考资料
