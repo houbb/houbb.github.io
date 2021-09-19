@@ -573,7 +573,74 @@ JSP 远程调用
 
 
 
+# axios 实战
 
+## maven 引入
+
+```xml
+<dependency>
+    <groupId>commons-fileupload</groupId>
+    <artifactId>commons-fileupload</artifactId>
+    <version>1.4</version>
+</dependency>
+<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>2.2</version>
+</dependency>
+```
+
+## 后端配置
+
+```java
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+import javax.servlet.MultipartConfigElement;
+
+/**
+ * 文件请求配置
+ *
+ * https://blog.csdn.net/luyongguo/article/details/86010145
+ *
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+@Configuration
+public class FileRequestConfig {
+
+    @Value("${file.request.maxFileSize:100MB}")
+    private String maxFileSize;
+
+    @Value("${file.request.maxRequestSize:100MB}")
+    private String maxRequestSize;
+
+    @Bean
+    public MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        // 单个数据大小
+        // KB,MB
+        factory.setMaxFileSize(maxFileSize);
+        // 总上传数据大小
+        factory.setMaxRequestSize(maxRequestSize);
+
+        return factory.createMultipartConfig();
+    }
+
+    @Bean
+    public CommonsMultipartResolver commonsMultipartResolver() {
+        CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+
+        resolver.setDefaultEncoding(Constants.UTF_8);
+        resolver.setMaxUploadSize(500 * 1024 * 1024);
+        resolver.setMaxUploadSizePerFile(100 * 1024* 1024);
+        return resolver;
+    }
+}
+```
 
 # 参考资料
 
@@ -582,6 +649,10 @@ JSP 远程调用
 [Spring Boot 使用 ServletFileUpload上传文件失败，upload.parseRequest(request)为空](https://www.cnblogs.com/tinya/p/9626710.html)
 
 [Apache Commons FileUpload](https://www.jianshu.com/p/aa0f97cd2975)
+
+[SpringMVC用MultipartFile上传文件及文件名中文乱码](https://blog.csdn.net/lzwglory/article/details/81542435)
+
+[SpringBoot结合commons-fileupload上传文件](https://blog.csdn.net/cxfly957/article/details/84747942)
 
 * any list
 {:toc}

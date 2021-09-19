@@ -188,6 +188,61 @@ private void decodeFileName(Req req) {
 
 总结：方法总比困难多，奈何困难特别多。
 
+# 后续-文件编码错误
+
+后来发现只是文件名称对了，但是内容不对。
+
+本质上还是说本来是 utf8 的字节流，被强制转换成了 iso 编码。
+
+## 源码分析
+
+默认 springboot 的文件上传使用的是 CommonsFileUploadSupport 类。
+
+这里有一段关于编码的内容：
+
+```java
+protected String getDefaultEncoding() {
+	String encoding = getFileUpload().getHeaderEncoding();
+	if (encoding == null) {
+		encoding = WebUtils.DEFAULT_CHARACTER_ENCODING;     //ISO-8859-1
+	}
+	return encoding;
+}
+```
+
+所以我们需要修改默认的编码形式。
+
+## 配置
+
+我们自定义自己的实现类，而不是完全使用 sprign 默认的。
+
+```java
+@Bean
+public CommonsMultipartResolver commonsMultipartResolver() {
+    CommonsMultipartResolver resolver = new CommonsMultipartResolver();
+    resolver.setDefaultEncoding(Constants.UTF_8);
+    resolver.setMaxUploadSize(500 * 1024 * 1024);
+    resolver.setMaxUploadSizePerFile(100 * 1024* 1024);
+    return resolver;
+}
+```
+
+当然，这个最好和 commons-upload 结合使用。
+
+```xml
+<dependency>
+    <groupId>commons-fileupload</groupId>
+    <artifactId>commons-fileupload</artifactId>
+    <version>1.4</version>
+</dependency>
+<dependency>
+    <groupId>commons-io</groupId>
+    <artifactId>commons-io</artifactId>
+    <version>2.2</version>
+</dependency>
+```
+
+
 # 参考资料
 
 [JSP页面表单提交时出现中文乱码的解决方法](https://blog.csdn.net/shenlan18446744/article/details/25529679)
