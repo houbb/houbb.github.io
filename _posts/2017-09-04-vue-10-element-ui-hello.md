@@ -123,6 +123,7 @@ window.onload = function(){
        methods: {
             add(){
                 // this.obj.age = 12;  无效
+                
                 this.$set(this.obj,"age",12);
             },
             del: function(){

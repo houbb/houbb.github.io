@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  SSDB
+title:  SSDB - 一个快速的 NoSQL 数据库，Redis 的替代品
 date:  2018-09-10 10:28:57 +0800
 categories: [Cache]
 tags: [cache, middleware, docker, sh]
 published: true
-excerpt: SSDB 入门学习
 ---
 
 # SSDB

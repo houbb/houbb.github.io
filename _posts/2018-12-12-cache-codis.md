@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Codis
+title:  Codis 基于代理的 Redis 集群解决方案，支持管道和动态扩展
 date:  2018-09-07 07:44:19 +0800
 categories: [Cache]
 tags: [cache, redis, TODO, sh]
 published: true
-excerpt: Codis 使用入门
 ---
 
 # Codis
