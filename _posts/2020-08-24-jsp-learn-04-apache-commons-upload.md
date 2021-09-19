@@ -590,7 +590,58 @@ JSP 远程调用
 </dependency>
 ```
 
+
+## 前端
+
+```html
+<div class="upload">
+    <div class="upload-title">附件上传</div>
+    <div class="upload-item">
+        <input ref="createFile" class="file" accept=".zip,.rar"  type="file" @change="fileChange"> 
+        <el-button size="small" type="primary" class="btn">选择文件</el-button>
+    </div>
+    <div>{{fileName}}</div>
+    <div class="upload-text">文件大小不超过30M，仅支持ZIP、RAR文件格式</div>
+</div>
+```
+
+对应的上传 js
+
+```js
+fileChange(e){
+    const files = e.target.files;
+    if(files && files[0]) {
+        const file = files[0];
+        if(file.size > 1024 * 1024 *30) {
+            this.$message({ showClose: true,  message: '文件大小不能超过30M!', type: 'warning'});
+            return
+        } 
+        var formData = new FormData()
+        formData.append("file",files[0])
+        var config = {
+            headers: {
+                "Content-Type": "multipart/form-data;charset=UTF-8"
+            }
+        };
+        axios.post("file/upload",formData, config).then((res) => {
+            console.log(formData,res);
+            if (res.data.respCode == '0000') {
+                this.fileName= files[0].name 
+                this.$refs.createFile.value = '' 
+                this.fileToken=res.data.result.fileToken            
+            } else {
+                this.$message({ message: res.data.respMsg, type: 'error'});
+            } 
+        })
+    }
+}
+```
+
+ps: 这种上传比较麻烦，可以参考网上的 post form 表单的方式。
+
 ## 后端配置
+
+### 配置类
 
 ```java
 import org.springframework.beans.factory.annotation.Value;
@@ -642,6 +693,109 @@ public class FileRequestConfig {
 }
 ```
 
+主要指定文件的上传大小，编码等。
+
+### 后端实现
+
+注意：`@RequestParam("file") MultipartFile multipartFile` 这里是必须的，如果使用 ServeletHttpRequest 中转换获取是没有值的。
+
+```java
+/**
+ * 文件上传
+ * https://www.cnblogs.com/charlypage/p/9858676.html
+ * @param multipartFile 上传请求
+ * @return 上传结果
+ */
+@RequestMapping("/upload")
+public BaseInfoResp<FileUploadResp> upload(@RequestParam("file") MultipartFile multipartFile) {
+    UploadFileDto uploadFileDto = HttpUtils.getUploadFileInfo(multipartFile);
+    File file = uploadFileDto.getFile();
+    try {
+        ValidateUtils.validate(uploadFileDto);
+        this.fileSizeCheck(uploadFileDto);
+        String fileToken = fileService.uploadJFile(file);
+        // 入库
+        String fileName = uploadFileDto.getOriginalFilename();
+        customerFileService.addFile(fileToken, fileName);
+        FileUploadResp resp = new FileUploadResp();
+        resp.setFileToken(fileToken);
+        return RespUtil.of(resp);
+    } finally {
+        FileUtil.deleteFile(file);
+    }
+}
+```
+
+其中文件构建的部分：
+
+```java
+/**
+ * 获取上传的文件信息
+ * @param multipartFile 请求
+ * @return 结果
+ */
+public static UploadFileDto getUploadFileInfo(MultipartFile multipartFile) {
+    try {
+        String filename = multipartFile.getOriginalFilename();
+        long fileSize = multipartFile.getSize();
+        log.info("原始的文件名称 {}, 文件大小 {}", filename, fileSize);
+        //1. 创建文件
+        String targetFullPath = FileUtil.buildFullPath(filename);
+        File file = FileUtil.createFile(targetFullPath);
+        // 写入文件
+        try (FileOutputStream fos = new FileOutputStream(targetFullPath);
+             BufferedOutputStream bos = new BufferedOutputStream(fos);) {
+            bos.write(multipartFile.getBytes());
+        } catch (Exception e) {
+            log.error("异常", e);
+            throw new BizException(RespCode.FILE_UPLOAD_ERROR);
+        }
+        UploadFileDto dto = new UploadFileDto();
+        dto.setFile(file);
+        dto.setOriginalFilename(filename);
+        dto.setFileSize(fileSize);
+        return dto;
+    } catch (Exception e) {
+        log.error("文件上传异常", e);
+        throw new BizException(RespCode.FILE_UPLOAD_REQUEST_ERROR);
+    }
+}
+```
+
+## file 信息缺失
+
+测试了很多遍，都发现 multipartFile 的信息为 null。
+
+虽然以前踩过类似的坑，直到被 spring 转换掉了。
+
+但是配置下面之后，依然无效。
+
+- springboot.properties
+
+```
+spring.servlet.multipart.enabled=false
+```
+
+后来发现，需要排除 springboot 的自动配置类：
+
+```java
+@SpringBootApplication(exclude = {MultipartAutoConfiguration.class})
+@PropertySource("classpath:springboot.properties")
+public class BootApplication extends SpringBootServletInitializer {
+
+    public static void main(String[] args) {
+        SpringApplication.run(BootApplication.class, args);
+    }
+
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(BootApplication.class);
+    }
+
+}
+```
+
+
 # 参考资料
 
 [commons-fileupload](http://commons.apache.org/proper/commons-fileupload/index.html)
@@ -653,6 +807,17 @@ public class FileRequestConfig {
 [SpringMVC用MultipartFile上传文件及文件名中文乱码](https://blog.csdn.net/lzwglory/article/details/81542435)
 
 [SpringBoot结合commons-fileupload上传文件](https://blog.csdn.net/cxfly957/article/details/84747942)
+
+- 上传文件缺失问题
+
+https://www.cnblogs.com/charlypage/p/9858676.html
+
+
+https://blog.csdn.net/weixin_42733631/article/details/112600786
+
+https://www.cnblogs.com/charlypage/p/9858676.html
+
+https://blog.csdn.net/qq_36907589/article/details/108516431
 
 * any list
 {:toc}
