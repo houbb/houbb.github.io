@@ -19,13 +19,23 @@ http://fund.eastmoney.com/allfund.html
 
 http://fund.eastmoney.com/f10/000001.html
 
+- 基金对应的基金经理
+
+http://fundf10.eastmoney.com/jjjl_000001.html
+
 变换最后的基金编码
 
 - 基金的数据
 
 http://fund.eastmoney.com/f10/F10DataApi.aspx?type=lsjz&code=000001&sdate=2015-05-05&edate=2018-05-05&per=10
 
-居然还是个动态卷轴，改变地址咒语中的代码code、开始日期sdate、截止日期edate和分页数量per，它就能呈现出这只鸡的生活作息表，是肥了还是瘦了，是开心了还是不开心了...
+居然还是个动态卷轴，改变地址咒语中的代码code、开始日期sdate、截止日期edate和分页数量per，
+
+https://fundf10.eastmoney.com/F10DataApi.aspx?type=lsjz&code=000001&sdate=2015-05-05&edate=2018-05-05&per=40&page=1
+
+page 对应的页数
+
+per 最大为 40
 
 ## 基金經理
 
@@ -42,6 +52,14 @@ http://fund.eastmoney.com/manager/30634044.html 详情
 http://fund.eastmoney.com/Company/default.html
 
 http://fund.eastmoney.com/Company/80084302.html
+
+## 托管公司（银行）
+
+银行列表
+
+http://fund.eastmoney.com/bank/default.html
+
+http://fund.eastmoney.com/bank/80001068.html
 
 # 技术选型
 
