@@ -37,6 +37,42 @@ page 对应的页数
 
 per 最大为 40
 
+## 基金评级
+
+http://api.fund.eastmoney.com/F10/JJPJ/?callback=jQuery18306361654704720274_1632320287852&fundcode=000001&pageIndex=2&pageSize=50&_=1632320302887
+
+http://api.fund.eastmoney.com/F10/JJPJ?fundcode=000001&pageIndex=2&pageSize=50&_=1632320302887
+
+添加对应的 header 信息即可。
+
+## 基金持仓
+
+http://fundf10.eastmoney.com/FundArchivesDatas.aspx?type=jjcc&code=000001&topline=1000&year=2021&month=12  第四季度
+
+http://fundf10.eastmoney.com/FundArchivesDatas.aspx?type=jjcc&code=000001&topline=1000&year=2021&month=9  第3季度
+
+http://fundf10.eastmoney.com/FundArchivesDatas.aspx?type=jjcc&code=000001&topline=1000&year=2021&month=6  第2季度
+
+http://fundf10.eastmoney.com/FundArchivesDatas.aspx?type=jjcc&code=000001&topline=1000&year=2021&month=6,3  第1季度
+
+
+
+https://fundf10.eastmoney.com/FundArchivesDatas.aspx?type=jjcc&code=000001&topline=1000&year=2019&month=&rt=0.9728810782356063
+
+code 基金代码
+
+topline 前多少个
+
+year 年
+
+month 月份，实际上怎么制定，其他几个月份也会返回，
+
+直接按照年返回即可。
+
+
+
+rt? 固定值
+
 ## 基金經理
 
 所有：

@@ -435,6 +435,68 @@ then(function (response) {
 
 如果返回的是 `application/json`，则说明异常，可以对其进行 json 转换，获取对应的 json 信息，进行页面展示。
 
+## 兼容 IE10+
+
+上面的代码已经非常完善了，但是依然存在一个问题。
+
+无法在 IE 浏览器执行下载操作。
+
+可以改良如下：
+
+```js
+//axios 中的 this 并不指向 vue
+var _this = this;
+axios({ // 用axios发送post请求
+    method: 'post',
+    url: '/role/export', // 请求地址
+    data: req, // 参数
+    responseType: 'blob', // 表明返回服务器返回的数据类型
+    headers: {'Content-Type': 'application/json'}
+}).
+then(function (response) {
+    console.log(response);
+    // https://blog.csdn.net/qq_37246828/article/details/90080614
+    // https://www.h5w3.com/16051.html
+    let contentType = response.headers['content-type'];
+    console.log('内容类型：' + contentType);
+    // 或者调整为以 xxx 开始
+    // 如果服务器错误返回
+    if (response.data.type === 'application/json') {
+        let reader = new FileReader();
+        reader.readAsText(response.data, 'utf-8');
+        reader.onload = function (e) {
+            console.log("====",JSON.parse(reader.result));
+            console.log("====",JSON.parse(e.target.result));
+        }
+    } else {
+        let fileName = window.decodeURI(response.headers['content-disposition'].split('=')[1]);
+
+        //  如果支持微软的文件下载方式(ie10+浏览器)
+        if (window.navigator.msSaveBlob) {
+            try {
+                const blobObject = new Blob([response.data]);
+                window.navigator.msSaveBlob(blobObject, fileName);
+            } catch (e) {
+                // 报错误
+                console.log(e);
+            }
+        } else {
+            let link = document.createElement("a");
+            const blob =new Blob([response.data]);
+            link.href = window.URL.createObjectURL(blob);
+            link.target = "_blank";
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    }
+}).catch(function (error) {
+    ELEMENT.Message.error("请求失败");
+    console.log(error);
+});
+```
+
 # commons-fileupload 上传实现
 
 网上最多的还是基于 apache commons 包实现的上传，这里没有真正实践，记录一下：
