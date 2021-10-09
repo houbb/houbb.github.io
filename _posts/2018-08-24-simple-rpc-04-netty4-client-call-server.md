@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 基于 netty4 手写 rpc-03-客户端调用服务端
+title: java 从零开始手写 RPC (03) 如何实现客户端调用服务端？
 date:  2018-08-24 16:23:15 +0800
 categories: [Java]
 tags: [java, dubbo, rpc, hand-write, netty, sf]
@@ -9,11 +9,13 @@ published: true
 
 # 说明
 
-写完了客户端和服务端，我们要来写一个真正有点用的代码。
+[java 从零开始手写 RPC (01) 基于 socket 实现](https://mp.weixin.qq.com/s/Pvzi_O4DumhisIwDrSwnqQ)
 
-还记得我们由 websocket 写的一篇计算方法的实现吗？
+[java 从零开始手写 RPC (02)-netty4 实现客户端和服务端](https://mp.weixin.qq.com/s/0zbk6fo-PryCNOxESwMSbQ)
 
-我们用 netty4 来进行实现。
+写完了客户端和服务端，那么如何实现客户端和服务端的调用呢？
+
+下面就让我们一起来看一下。
 
 # 接口定义
 
@@ -518,7 +520,9 @@ new RpcClient().start();
 
 > [https://github.com/houbb/rpc](https://github.com/houbb/rpc)
 
-我是老马，期待与你的下次重逢。
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 * any list
 {:toc}

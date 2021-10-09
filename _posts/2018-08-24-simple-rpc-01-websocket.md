@@ -1,6 +1,6 @@
 ---
 layout: post
-title: RPC-手写 RPC 基于 websocket
+title: java 从零开始手写 RPC (01) 基于 websocket 实现
 date:  2018-08-24 16:23:15 +0800
 categories: [Java]
 tags: [java, dubbo, rpc, hand-write, sf]
@@ -11,15 +11,19 @@ published: true
 
 ## 解决的问题
 
-正如上一讲所说，RPC 主要是为了解决的两个问题：
+RPC 主要是为了解决的两个问题：
 
 - 解决分布式系统中，服务之间的调用问题。
 
 - 远程调用时，要能够像本地调用一样方便，让调用者感知不到远程调用的逻辑。
 
+这一节我们来学习下如何基于 websocket 实现最简单的 rpc 调用，后续会实现基于 netty4 的版本。
+
+> 开源地址： [https://github.com/houbb/rpc](https://github.com/houbb/rpc)
+
 ## 完整流程
 
-![2018-08-24-rpc](https://raw.githubusercontent.com/houbb/resource/master/img/java/rpc/2018-08-24-rpc.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/bb4ae48501794c87814ab6b83a45cd00.png)
 
 其中左边的Client，对应的就是前面的Service A，而右边的Server，对应的则是Service B。
 
@@ -219,6 +223,15 @@ server 端
 Server 端启动：127.0.0.1:12345
 Request is: RpcCalculateRequest{one=1, two=2}
 ```
+
+# 开源地址
+
+为了便于大家学习，以上源码已经开源：
+
+> [https://github.com/houbb/rpc](https://github.com/houbb/rpc)
+
+我是老马，期待与你的下次重逢。
+
 
 # 参考资料
 
