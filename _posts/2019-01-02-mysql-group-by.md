@@ -89,14 +89,9 @@ group by tt.template_id;
 
 不满足这三个条件，order by会被忽略。
 
-一旦外部表使用了group by，那么临时表（派生表 derived table）将不会执行filesort操作（即order by 会被忽略）。之后我使用了limit可以使其生效，原因是因为要使派生表order by生效，派生表可以通过使用group by、limit、having、distinct等等使其生效（方法有好多，详情可看文档https://dev.mysql.com/doc/refman/5.7/en/derived-table-optimization.html）
-————————————————
-版权声明：本文为CSDN博主「山鬼谣me」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
-原文链接：https://blog.csdn.net/u013066244/article/details/116461584
+一旦外部表使用了group by，那么临时表（派生表 derived table）将不会执行filesort操作（即order by 会被忽略）。
 
-
-
-
+之后我使用了limit可以使其生效，原因是因为要使派生表order by生效，派生表可以通过使用group by、limit、having、distinct等等使其生效（方法有好多，详情可看文档https://dev.mysql.com/doc/refman/5.7/en/derived-table-optimization.html）
 
 # 参考资料
 
