@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 基于 netty4 手写 rpc-07-reflect 通用反射调用之服务端
+title: java 从零开始手写 RPC (05) reflect 反射实现通用调用之服务端
 date:  2018-08-24 16:23:15 +0800
 categories: [Java]
 tags: [java, dubbo, rpc, hand-write, netty, sf]
@@ -9,13 +9,27 @@ published: true
 
 # 通用调用
 
+[java 从零开始手写 RPC (01) 基于 socket 实现](https://mp.weixin.qq.com/s/Pvzi_O4DumhisIwDrSwnqQ)
+
+[java 从零开始手写 RPC (02)-netty4 实现客户端和服务端](https://mp.weixin.qq.com/s/0zbk6fo-PryCNOxESwMSbQ)
+
+[java 从零开始手写 RPC (03) 如何实现客户端调用服务端？](https://mp.weixin.qq.com/s/2z6T4yEVT29AZMvdYqwZ7Q)
+
+[java 从零开始手写 RPC (04) -序列化](https://mp.weixin.qq.com/s/ZCxozEJHY8QRKf_EhNXuTw)
+
 前面我们的例子是一个固定的出参和入参，固定的方法实现。
 
-本节将实现通用的调用，让框架具有更高的实用性。
+本节将实现通用的调用，让框架具有更广泛的实用性。
 
 ## 基本思路
 
-所有的方法调用，基于反射进行相关处理实现。
+说到 java 进阶内容，不得不提反射。
+
+关于反射，你知道多少？
+
+平时使用时，又记得多少呢？
+
+以下内容较长，是主要是对反射的一些应用。建议收藏起来吃灰~
 
 # 服务端
 
@@ -705,6 +719,8 @@ ps: 写到这里忽然发现忘记添加对应的 register 日志了，这里可
 为了便于大家学习，以上源码已经开源：
 
 > [https://github.com/houbb/rpc](https://github.com/houbb/rpc)
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
 
 我是老马，期待与你的下次重逢。
 

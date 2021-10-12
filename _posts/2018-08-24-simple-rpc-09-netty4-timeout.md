@@ -1,13 +1,35 @@
 ---
 layout: post
-title: 基于 netty4 手写 rpc-09-timeout 超时处理
+title: java 从零开始手写 RPC (06)-timeout 超时处理
 date:  2018-08-24 16:23:15 +0800
 categories: [Java]
 tags: [java, dubbo, rpc, hand-write, netty, sf]
 published: true
 ---
 
+
+《过时不候》
+
+最漫长的莫过于等待
+
+我们不可能永远等一个人
+
+就像请求
+
+永远等待响应
+
+
 # 超时处理
+
+[java 从零开始手写 RPC (01) 基于 socket 实现](https://mp.weixin.qq.com/s/Pvzi_O4DumhisIwDrSwnqQ)
+
+[java 从零开始手写 RPC (02)-netty4 实现客户端和服务端](https://mp.weixin.qq.com/s/0zbk6fo-PryCNOxESwMSbQ)
+
+[java 从零开始手写 RPC (03) 如何实现客户端调用服务端？](https://mp.weixin.qq.com/s/2z6T4yEVT29AZMvdYqwZ7Q)
+
+[java 从零开始手写 RPC (04) 序列化](https://mp.weixin.qq.com/s/ZCxozEJHY8QRKf_EhNXuTw)
+
+[java 从零开始手写 RPC (05) 基于反射的通用化实现](https://mp.weixin.qq.com/s/oquiIaXKB70WF_tKRCUhaQ)
 
 ## 必要性
 
@@ -378,6 +400,8 @@ Exception in thread "main" com.github.houbb.rpc.common.exception.RpcTimeoutExcep
 为了便于大家学习，以上源码已经开源：
 
 > [https://github.com/houbb/rpc](https://github.com/houbb/rpc)
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
 
 我是老马，期待与你的下次重逢。
 
