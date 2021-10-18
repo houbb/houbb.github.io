@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 基于 netty4 手写 rpc-06-序列化
+title: java 从零开始手写 RPC (04) -序列化
 date:  2018-08-24 16:23:15 +0800
 categories: [Java]
 tags: [java, dubbo, rpc, hand-write, netty, sf]
@@ -8,6 +8,16 @@ published: true
 ---
 
 # 序列化
+
+[java 从零开始手写 RPC (01) 基于 socket 实现](https://mp.weixin.qq.com/s/Pvzi_O4DumhisIwDrSwnqQ)
+
+[java 从零开始手写 RPC (02)-netty4 实现客户端和服务端](https://mp.weixin.qq.com/s/0zbk6fo-PryCNOxESwMSbQ)
+
+[java 从零开始手写 RPC (03) 如何实现客户端调用服务端？](https://mp.weixin.qq.com/s/2z6T4yEVT29AZMvdYqwZ7Q)
+
+前面几节我们实现了最基础的客户端调用服务端，这一节来学习一下通讯中的对象序列化。
+
+![fastjson](https://img-blog.csdnimg.cn/d8490dd90106448696bc274cf770cc0e.jpg)
 
 ## 为什么需要序列化
 
@@ -24,6 +34,10 @@ netty 底层都是基于 ByteBuf 进行通讯的。
 基于字节的实现，性能好，可读性不高。
 
 基于字符串的实现，比如 json 序列化，可读性好，性能相对较差。
+
+ps: 可以根据个人还好选择，相关序列化可参考下文，此处不做展开。
+
+> [json 序列化框架简介](http://houbb.github.io/2018/07/20/json-00-overview)
 
 ## 实现思路
 
@@ -44,10 +58,6 @@ netty 底层都是基于 ByteBuf 进行通讯的。
     <version>0.1.1</version>
 </dependency>
 ```
-
-ps: 可以根据个人还好选择，相关序列化可参考：
-
-> [json 框架](http://houbb.github.io/tags/#json)
 
 ## 服务端
 
@@ -222,7 +232,9 @@ public class RpcClientHandler extends SimpleChannelInboundHandler {
 
 > [https://github.com/houbb/rpc](https://github.com/houbb/rpc)
 
-我是老马，期待与你的下次重逢。
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 * any list
 {:toc}
