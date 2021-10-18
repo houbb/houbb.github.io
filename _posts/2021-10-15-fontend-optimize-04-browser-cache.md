@@ -72,13 +72,9 @@ cache-control: max-age=31536000
 
 如大家所见，在 Cache-Control 中，我们通过 max-age 来控制资源的有效期。max-age 不是一个时间戳，而是一个时间长度。在本例中，max-age 是 31536000 秒，它意味着该资源在 31536000 秒以内都是有效的，完美地规避了时间戳带来的潜在问题。
 
-<<<<<<< HEAD
-Cache-Control 相对于 expires 更加准确，它的优先级也更高。当 Cache-Control 与 expires 同时出现时，我们以 Cache-Control 为准。
-=======
 Cache-Control 相对于 expires 更加准确，它的优先级也更高。
 
 当 Cache-Control 与 expires 同时出现时，我们以 Cache-Control 为准。
->>>>>>> 7e9cfaf62c6a2240fad0ab7aa9a58ce808f15d7c
 
 ## Cache-Control 应用分析
 
@@ -90,23 +86,6 @@ Cache-Control 的神通，可不止于这一个小小的 max-age。
 cache-control: max-age=3600, s-maxage=31536000
 ```
 
-<<<<<<< HEAD
-s-maxage 优先级高于 max-age，两者同时出现时，优先考虑 s-maxage。
-
-如果 s-maxage 未过期，则向代理服务器请求其缓存内容。
-
-这个 s-maxage 不像 max-age 一样为大家所熟知。的确，在项目不是特别大的场景下，max-age 足够用了。
-
-但在依赖各种代理的大型架构中，我们不得不考虑代理服务器的缓存问题。s-maxage 就是用于表示 cache 服务器上（比如 cache CDN）的缓存的有效时间的，并只对 public 缓存有效。
-
-(10.24晚更新。感谢评论区@敖天羽的补充，此处应注意这样一个细节：s-maxage仅在代理服务器中生效，客户端中我们只考虑max-age。)
-
-那么什么是 public 缓存呢？
-
-说到这里，Cache-Control 中有一些适合放在一起理解的知识点，我们集中梳理一下：
-
-设置了 s-maxage，没设置 public，那么 CDN 还可以缓存这个资源吗？答案是肯定的。因为明确的缓存信息（例如“max-age”）已表示响应是可以缓存的。
-=======
 s-maxage 优先级高于 max-age，两者同时出现时，优先考虑 s-maxage。如果 s-maxage 未过期，则向代理服务器请求其缓存内容。
 
 这个 s-maxage 不像 max-age 一样为大家所熟知。的确，在项目不是特别大的场景下，max-age 足够用了。但在依赖各种代理的大型架构中，我们不得不考虑代理服务器的缓存问题。
@@ -116,17 +95,11 @@ s-maxage 就是用于表示 cache 服务器上（比如 cache CDN）的缓存的
 (10.24晚更新。感谢评论区@敖天羽的补充，此处应注意这样一个细节：s-maxage仅在代理服务器中生效，客户端中我们只考虑max-age。)
 
 那么什么是 public 缓存呢？说到这里，Cache-Control 中有一些适合放在一起理解的知识点，我们集中梳理一下：
->>>>>>> 7e9cfaf62c6a2240fad0ab7aa9a58ce808f15d7c
 
 ### public 与 private
 
 public 与 private 是针对资源是否能够被代理服务缓存而存在的一组对立概念。
 
-<<<<<<< HEAD
-如果我们为资源设置了 public，那么它既可以被浏览器缓存，也可以被代理服务器缓存；如果我们设置了 private，则该资源只能被浏览器缓存。
-
-private 为默认值。但多数情况下，public 并不需要我们手动设置，比如有很多线上网站的 cache-control 是这样的：
-=======
 如果我们为资源设置了 public，那么它既可以被浏览器缓存，也可以被代理服务器缓存；如果我们设置了 private，则该资源只能被浏览器缓存。private 为默认值。
 
 但多数情况下，public 并不需要我们手动设置，比如有很多线上网站的 cache-control 是这样的：
@@ -134,7 +107,6 @@ private 为默认值。但多数情况下，public 并不需要我们手动设�
 设置了 s-maxage，没设置 public，那么 CDN 还可以缓存这个资源吗？
 
 答案是肯定的。因为明确的缓存信息（例如“max-age”）已表示响应是可以缓存的。
->>>>>>> 7e9cfaf62c6a2240fad0ab7aa9a58ce808f15d7c
 
 ### no-store与no-cache
 
@@ -144,9 +116,6 @@ no-store 比较绝情，顾名思义就是不使用任何缓存策略。
 
 在 no-cache 的基础上，它连服务端的缓存确认也绕开了，只允许你直接向服务端发送请求、并下载完整的响应。
 
-<<<<<<< HEAD
-
-=======
 # 协商缓存：浏览器与服务器合作之下的缓存策略
 
 协商缓存依赖于服务端与浏览器之间的通信。
@@ -333,7 +302,6 @@ Push Cache 是指 HTTP2 在 server push 阶段存在的缓存。这块的知识�
 终于结束了对缓存世界的探索，不知道大家有没有一种意犹未尽的感觉。开篇我们谈过，缓存非常重要，它几乎是我们性能优化的首选方案。
 
 但页面的数据存储方案除了缓存，还有本地存储。在下一节中，我们就将围绕本地存储展开探索。
->>>>>>> 7e9cfaf62c6a2240fad0ab7aa9a58ce808f15d7c
 
 # 参考资料
 
