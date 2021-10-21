@@ -430,9 +430,9 @@ export {
 
 # 思考 & 作业
 
-    devServer 中 proxy 的 key 值代表什么？如果再添加一个 /reposed 的配置会产生什么隐患？
+devServer 中 proxy 的 key 值代表什么？如果再添加一个 /reposed 的配置会产生什么隐患？
 
-    如何配置 webpack 使得 require.ensure() 拆分出的 js 文件具有自定义文件名？
+如何配置 webpack 使得 require.ensure() 拆分出的 js 文件具有自定义文件名？
 
 # 参考资料
 
