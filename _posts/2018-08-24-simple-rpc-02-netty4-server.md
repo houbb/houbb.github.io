@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 基于 netty4 手写 rpc-01-server 服务端代码实现
+title: java 从零开始手写 RPC (02)-server 服务端代码实现
 date:  2018-08-24 16:23:15 +0800
 categories: [Java]
 tags: [java, dubbo, rpc, hand-write, netty, sf]
@@ -15,6 +15,7 @@ published: true
 
 > [为什么选择 netty？](http://houbb.github.io/2019/05/10/netty-definitive-gudie-04-why-netty)
 
+[http://houbb.github.io/2019/05/10/netty-definitive-gudie-04-why-netty](http://houbb.github.io/2019/05/10/netty-definitive-gudie-04-why-netty)
 
 # 代码实现
 
