@@ -161,21 +161,21 @@ module.exports = {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>模板</title>
-    <% for (var chunk in htmlWebpackPlugin.files.css) { %>
-        <% if(htmlWebpackPlugin.files.css[chunk]) {%>
+    <% for (var chunk in htmlWebpackPlugin.files.css) %>
+        <% if(htmlWebpackPlugin.files.css[chunk]) %>
             <link href="<%= htmlWebpackPlugin.files.css[chunk] %>" rel="stylesheet" />
-        <%}%>
-    <% } %>
+        <% endif %>
+    <% endfor %>
   </head>
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
 
-    <% for (var chunk in htmlWebpackPlugin.files.js) { %>
-        <% if(htmlWebpackPlugin.files.js[chunk]) {%>
+    <% for (var chunk in htmlWebpackPlugin.files.js)%>
+        <% if(htmlWebpackPlugin.files.js[chunk])%>
             <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js[chunk] %>"></script>
-        <%}%>
-    <% } %>
+        <% endif %>
+    <% endfor %>
   </body>
 </html>
 ```
