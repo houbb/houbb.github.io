@@ -19,7 +19,9 @@ published: true
 
 Data Analysis Using SQL and Excel.pdf
 
-Google Analytic经典分析.pdfR语言实战（中文完整版）.pdf
+Google Analytic经典分析.pdf
+
+R语言实战（中文完整版）.pdf
 
 吴喜之_统计学：从数据到结论(第2版).pdf
 
@@ -29,7 +31,7 @@ Google Analytic经典分析.pdfR语言实战（中文完整版）.pdf
 
 深入浅出数据分析--英文版
 
-Head_First_Data_Analysis.pdf
+~~Head_First_Data_Analysis.pdf~~
 
 深入浅出统计学（美）道恩·格里菲思.pdf
 
