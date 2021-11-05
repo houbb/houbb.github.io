@@ -1,9 +1,9 @@
 ---
 layout: post
-title: qiankun-03-快速入门开始
+title: Metaverse 基础技术值 WEBXR
 date: 2021-11-02 21:01:55 +0800
-categories: [Web]
-tags: [web, front-end, micro, sh]
+categories: [Metaverse]
+tags: [Metaverse, sh]
 published: true
 ---
 
