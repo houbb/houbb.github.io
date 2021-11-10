@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Metaverse 元宇宙入门-01-不断发展的用户 + 商业行为和元界
+title: Metaverse 元宇宙入门-09-不断发展的用户 + 商业行为和元界
 date: 2021-11-02 21:01:55 +0800
 categories: [Metaverse]
 tags: [Metaverse, sh]
