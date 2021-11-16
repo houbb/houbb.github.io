@@ -184,9 +184,366 @@ Spring Cloud 支持开箱即用的 Resilience4J。
 
 - 示例 20. application.yml
 
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: circuitbreaker_route
+        uri: https://example.org
+        filters:
+        - CircuitBreaker=myCircuitBreaker
+```
 
+要配置断路器，请参阅您正在使用的底层断路器实现的配置。
 
+Spring Cloud CircuitBreaker 过滤器还可以接受可选的 fallbackUri 参数。 
 
+目前，仅支持转发：schemed URI。 如果调用回退，则请求将转发到与 URI 匹配的控制器。 以下示例配置了这样的回退：
+
+- 示例 21. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: circuitbreaker_route
+        uri: lb://backing-service:8088
+        predicates:
+        - Path=/consumingServiceEndpoint
+        filters:
+        - name: CircuitBreaker
+          args:
+            name: myCircuitBreaker
+            fallbackUri: forward:/inCaseOfFailureUseThis
+        - RewritePath=/consumingServiceEndpoint, /backingServiceEndpoint
+```
+
+下面的清单在 Java 中做了同样的事情：
+
+- Example 22. Application.java
+
+```java
+@Bean
+public RouteLocator routes(RouteLocatorBuilder builder) {
+    return builder.routes()
+        .route("circuitbreaker_route", r -> r.path("/consumingServiceEndpoint")
+            .filters(f -> f.circuitBreaker(c -> c.name("myCircuitBreaker").fallbackUri("forward:/inCaseOfFailureUseThis"))
+                .rewritePath("/consumingServiceEndpoint", "/backingServiceEndpoint")).uri("lb://backing-service:8088")
+        .build();
+}
+```
+
+此示例在调用断路器回退时转发到 /inCaseofFailureUseThis URI。
+
+请注意，此示例还演示了（可选）Spring Cloud LoadBalancer 负载平衡（由目标 URI 上的 lb 前缀定义）。
+
+主要场景是使用 fallbackUri 在网关应用程序中定义内部控制器或处理程序。 
+
+但是，您也可以将请求重新路由到外部应用程序中的控制器或处理程序，如下所示：
+
+- Example 23. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: ingredients
+        uri: lb://ingredients
+        predicates:
+        - Path=//ingredients/**
+        filters:
+        - name: CircuitBreaker
+          args:
+            name: fetchIngredients
+            fallbackUri: forward:/fallback
+      - id: ingredients-fallback
+        uri: http://localhost:9994
+        predicates:
+        - Path=/fallback
+```
+
+在此示例中，网关应用程序中没有回退端点或处理程序。 但是，在另一个应用程序中有一个，在 localhost:9994 下注册。
+
+如果请求被转发到回退，Spring Cloud CircuitBreaker Gateway 过滤器还提供导致它的 Throwable。 
+
+它作为 ServerWebExchangeUtils.CIRCUITBREAKER_EXECUTION_EXCEPTION_ATTR 属性添加到 ServerWebExchange 中，可在网关应用程序中处理回退时使用。
+
+对于外部控制器/处理程序场景，可以添加带有异常详细信息的标头。 
+
+您可以在 FallbackHeaders GatewayFilter Factory 部分找到有关这样做的更多信息。
+
+## 6.5.1. 根据状态代码使断路器脱扣
+
+在某些情况下，您可能希望根据从其环绕的路由返回的状态代码来触发断路器。
+
+断路器配置对象采用状态代码列表，如果返回这些状态代码，将导致断路器跳闸。 
+ 
+在设置要使断路器跳闸的状态代码时，您可以使用带有状态代码值的整数或 HttpStatus 枚举的字符串表示形式。
+
+示例 24. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: circuitbreaker_route
+        uri: lb://backing-service:8088
+        predicates:
+        - Path=/consumingServiceEndpoint
+        filters:
+        - name: CircuitBreaker
+          args:
+            name: myCircuitBreaker
+            fallbackUri: forward:/inCaseOfFailureUseThis
+            statusCodes:
+              - 500
+              - "NOT_FOUND"
+```
+
+- Example 25. Application.java
+
+```java
+@Bean
+public RouteLocator routes(RouteLocatorBuilder builder) {
+    return builder.routes()
+        .route("circuitbreaker_route", r -> r.path("/consumingServiceEndpoint")
+            .filters(f -> f.circuitBreaker(c -> c.name("myCircuitBreaker").fallbackUri("forward:/inCaseOfFailureUseThis").addStatusCode("INTERNAL_SERVER_ERROR"))
+                .rewritePath("/consumingServiceEndpoint", "/backingServiceEndpoint")).uri("lb://backing-service:8088")
+        .build();
+}
+```
+
+# 6.6. FallbackHeaders 网关过滤器工厂
+
+FallbackHeaders 工厂允许您在转发到外部应用程序中的 fallbackUri 的请求的标头中添加 Spring Cloud CircuitBreaker 执行异常详细信息，如在以下场景中：
+
+- 示例 26. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: ingredients
+        uri: lb://ingredients
+        predicates:
+        - Path=//ingredients/**
+        filters:
+        - name: CircuitBreaker
+          args:
+            name: fetchIngredients
+            fallbackUri: forward:/fallback
+      - id: ingredients-fallback
+        uri: http://localhost:9994
+        predicates:
+        - Path=/fallback
+        filters:
+        - name: FallbackHeaders
+          args:
+            executionExceptionTypeHeaderName: Test-Header
+```
+
+在此示例中，在运行断路器时发生执行异常后，请求将转发到在 localhost:9994 上运行的应用程序中的回退端点或处理程序。 
+
+FallbackHeaders 过滤器将带有异常类型、消息和（如果可用）根本原因异常类型和消息的标头添加到该请求中。
+
+您可以通过设置以下参数的值（显示为默认值）来覆盖配置中标题的名称：
+
+- executionExceptionTypeHeaderName ("Execution-Exception-Type")
+
+- executionExceptionMessageHeaderName ("Execution-Exception-Message")
+
+- rootCauseExceptionTypeHeaderName ("Root-Cause-Exception-Type")
+
+- rootCauseExceptionMessageHeaderName ("Root-Cause-Exception-Message")
+
+有关断路器和网关的更多信息，请参阅 Spring Cloud CircuitBreaker Factory 部分。
+
+# 6.7. MapRequestHeader 网关过滤器工厂
+
+MapRequestHeader GatewayFilter 工厂采用 fromHeader 和 toHeader 参数。 
+
+它创建一个新的命名标头 (toHeader)，并从传入的 http 请求中从现有命名标头 (fromHeader) 中提取值。 
+
+如果输入标头不存在，则过滤器没有影响。 
+
+如果新命名的标头已存在，则其值将使用新值进行扩充。 以下示例配置 MapRequestHeader：
+
+- 示例 27. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: map_request_header_route
+        uri: https://example.org
+        filters:
+        - MapRequestHeader=Blue, X-Request-Red
+```
+
+这会将 `X-Request-Red:<values>` 标头添加到下游请求，并使用来自传入 HTTP 请求的 Blue 标头的更新值。
+
+# 6.8. PrefixPath 网关过滤器工厂
+
+PrefixPath GatewayFilter 工厂采用单个前缀参数。 
+
+以下示例配置 PrefixPath GatewayFilter：
+
+- 示例 28. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: prefixpath_route
+        uri: https://example.org
+        filters:
+        - PrefixPath=/mypath
+```
+
+这会将 /mypath 前缀为所有匹配请求的路径。 
+
+因此，对 /hello 的请求将被发送到 /mypath/hello。
+
+# 6.9. PreserveHostHeader 网关过滤器工厂
+
+PreserveHostHeader GatewayFilter 工厂没有参数。 
+
+此过滤器设置路由过滤器检查的请求属性，以确定是否应发送原始主机标头，而不是由 HTTP 客户端确定的主机标头。 
+
+以下示例配置 PreserveHostHeader GatewayFilter：
+
+- 示例 29. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: preserve_host_route
+        uri: https://example.org
+        filters:
+        - PreserveHostHeader
+```
+
+# 6.10. RequestRateLimiter 网关过滤器工厂
+
+RequestRateLimiter GatewayFilter 工厂使用 RateLimiter 实现来确定是否允许继续处理当前请求。 
+
+如果不是，则返回 HTTP 429 - Too Many Requests（默认情况下）状态。
+
+此过滤器采用可选的 keyResolver 参数和特定于速率限制器的参数（本节稍后介绍）。
+
+keyResolver 是一个实现 KeyResolver 接口的 bean。 在配置中，使用 SpEL 按名称引用 bean。 #{@myKeyResolver} 是一个 SpEL 表达式，它引用名为 myKeyResolver 的 bean。 
+
+以下清单显示了 KeyResolver 接口：
+
+- 示例 30.KeyResolver.java
+
+```java
+public interface KeyResolver {
+    Mono<String> resolve(ServerWebExchange exchange);
+}
+```
+
+KeyResolver 接口让可插拔策略派生出限制请求的密钥。 
+
+在未来的里程碑版本中，将有一些 KeyResolver 实现。
+
+KeyResolver 的默认实现是 PrincipalNameKeyResolver，它从 ServerWebExchange 检索 Principal 并调用 Principal.getName()。
+
+默认情况下，如果 KeyResolver 没有找到密钥，请求将被拒绝。 
+
+您可以通过设置 spring.cloud.gateway.filter.request-rate-limiter.deny-empty-key（true 或 false）和 spring.cloud.gateway.filter.request-rate-limiter.empty-key 来调整此行为 -状态码属性。
+
+RequestRateLimiter 不能使用“快捷方式”表示法进行配置。 以下示例无效：
+
+- 示例 31. application.properties
+
+```
+# INVALID SHORTCUT CONFIGURATION
+spring.cloud.gateway.routes[0].filters[0]=RequestRateLimiter=2, 2, #{@userkeyresolver}
+```
+
+## 6.10.1. Redis 速率限制器
+
+Redis 实现基于在 Stripe 完成的工作。它需要使用 spring-boot-starter-data-redis-reactive Spring Boot starter。
+
+使用的算法是令牌桶算法。
+
+redis-rate-limiter.replenishRate 属性是您希望允许用户每秒执行多少请求，而没有任何丢弃的请求。这是令牌桶填充的速率。
+
+redis-rate-limiter.burstCapacity 属性是允许用户在一秒内执行的最大请求数。这是令牌桶可以容纳的令牌数量。将此值设置为零会阻止所有请求。
+
+redis-rate-limiter.requestedTokens 属性是请求花费多少令牌。这是每个请求从桶中取出的令牌数量，默认为 1。
+
+通过在replyRate 和burstCapacity 中设置相同的值来实现稳定的速率。
+
+通过将burstCapacity 设置为高于replyRate，可以允许临时突发。在这种情况下，需要允许速率限制器在突发之间有一段时间（根据replyRate），因为两个连续的突发将导致请求丢失（HTTP 429 - Too Many Requests）。
+
+以下清单配置了 redis-rate-limiter：
+
+低于 1 请求/秒的速率限制是通过将replyRate 设置为所需的请求数量，将requestedTokens 设置为以秒为单位的时间跨度，并将burstCapacity 设置为replyRate 和requestedTokens 的乘积来实现的，例如设置replyRate=1、requestedTokens=60 和burstCapacity=60 将导致1 请求/分钟的限制。
+
+- 示例 32. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: requestratelimiter_route
+        uri: https://example.org
+        filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
+            redis-rate-limiter.requestedTokens: 1
+```
+
+以下示例在 Java 中配置 KeyResolver：
+
+- Example 33. Config.java
+
+```java
+@Bean
+KeyResolver userKeyResolver() {
+    return exchange -> Mono.just(exchange.getRequest().getQueryParams().getFirst("user"));
+}
+```
+
+这将每个用户的请求速率限制定义为 10。 允许突发 20 个，但在下一秒，只有 10 个请求可用。 
+
+KeyResolver 是一个简单的获取用户请求参数的方法（注意，不推荐用于生产）。
+
+您还可以将速率限制器定义为实现 RateLimiter 接口的 bean。 在配置中，您可以使用 SpEL 按名称引用 bean。 
+
+#{@myRateLimiter} 是一个 SpEL 表达式，它引用名为 myRateLimiter 的 bean。 
+
+下面的清单定义了一个速率限制器，它使用在前面的清单中定义的 KeyResolver：
+
+- Example 34. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: requestratelimiter_route
+        uri: https://example.org
+        filters:
+        - name: RequestRateLimiter
+          args:
+            rate-limiter: "#{@myRateLimiter}"
+            key-resolver: "#{@userKeyResolver}"
+```
 
 # 参考资料
 
