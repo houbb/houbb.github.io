@@ -545,6 +545,50 @@ spring:
             key-resolver: "#{@userKeyResolver}"
 ```
 
+## 6.11. RedirectTo 网关过滤器工厂
+
+RedirectTo GatewayFilter 工厂接受两个参数，status 和 url。 
+
+status 参数应该是 300 系列的重定向 HTTP 代码，例如 301。 
+
+url 参数应该是一个有效的 URL。 这是 Location 标头的值。 
+
+对于相对重定向，您应该使用 uri: no://op 作为路由定义的 uri。 
+
+以下清单配置了 RedirectTo GatewayFilter：
+
+- 示例 35. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: prefixpath_route
+        uri: https://example.org
+        filters:
+        - RedirectTo=302, https://acme.org
+```
+
+这将发送带有 Location:https://acme.org 标头的状态 302 以执行重定向。
+
+## 6.12. RemoveRequestHeader 网关过滤器工厂
+
+RemoveRequestHeader GatewayFilter 工厂采用名称参数。 
+
+它是要删除的标题的名称。 
+
+以下清单配置了 RemoveRequestHeader GatewayFilter：
+
+- 示例 36. application.yml
+
+```yml
+
+```
+
+
+
+
 # 参考资料
 
 https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#gatewayfilter-factories
