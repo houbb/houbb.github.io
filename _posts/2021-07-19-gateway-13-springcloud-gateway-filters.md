@@ -583,9 +583,185 @@ RemoveRequestHeader GatewayFilter 工厂采用名称参数。
 - 示例 36. application.yml
 
 ```yml
-
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: removerequestheader_route
+        uri: https://example.org
+        filters:
+        - RemoveRequestHeader=X-Request-Foo
 ```
 
+这会在向下游发送之前删除 X-Request-Foo 标头。
+
+## 6.13. RemoveResponseHeader 网关过滤器工厂
+
+RemoveResponseHeader GatewayFilter 工厂采用 name 参数。 
+
+它是要删除的标题的名称。 
+
+以下清单配置了 RemoveResponseHeader GatewayFilter：
+
+- 示例 37. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: removeresponseheader_route
+        uri: https://example.org
+        filters:
+        - RemoveResponseHeader=X-Response-Foo
+```
+
+这将在响应返回到网关客户端之前从响应中删除 X-Response-Foo 标头。
+
+要删除任何类型的敏感标头，您应该为您可能想要这样做的任何路由配置此过滤器。 
+
+此外，您可以使用 spring.cloud.gateway.default-filters 配置此过滤器一次，并将其应用于所有路由。
+
+## 6.14. RemoveRequestParameter 网关过滤器工厂
+
+RemoveRequestParameter GatewayFilter 工厂采用名称参数。 
+
+它是要删除的查询参数的名称。 
+
+以下示例配置 RemoveRequestParameter GatewayFilter：
+
+- 示例 38. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: removerequestparameter_route
+        uri: https://example.org
+        filters:
+        - RemoveRequestParameter=red
+```
+
+这将在向下游发送之前删除 red 参数。
+
+## 6.15. RewritePath 网关过滤器工厂
+
+RewritePath GatewayFilter 工厂采用路径正则表达式参数和替换参数。 
+
+这使用 Java 正则表达式来灵活地重写请求路径。 
+
+以下清单配置了 RewritePath GatewayFilter：
+
+- 示例 39. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: rewritepath_route
+        uri: https://example.org
+        predicates:
+        - Path=/red/**
+        filters:
+        - RewritePath=/red/?(?<segment>.*), /$\{segment}
+```
+
+对于 /red/blue 的请求路径，这会在发出下游请求之前将路径设置为 /blue。 
+
+请注意，由于 YAML 规范，$ 应替换为 $\。
+
+## 6.16. RewriteLocationResponseHeader GatewayFilter Factory
+
+RewriteLocationResponseHeader GatewayFilter 工厂修改 Location 响应头的值，通常是为了摆脱后端特定的细节。 
+
+它采用stripVersionMode、locationHeaderName、hostValue 和protocolsRegex 参数。 
+
+以下清单配置了 RewriteLocationResponseHeader GatewayFilter：
+
+- 示例 40. application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: rewritelocationresponseheader_route
+        uri: http://example.org
+        filters:
+        - RewriteLocationResponseHeader=AS_IN_REQUEST, Location, ,
+```
+
+例如对于POST api.example.com/some/object/name的请求，object-service.prod.example.net/v2/some/object/id的Location响应头值改写为api.example。 com/some/object/id。
+
+stripVersionMode 参数具有以下可能的值：NEVER_STRIP、AS_IN_REQUEST（默认）和 ALWAYS_STRIP。
+
+     NEVER_STRIP：不剥离版本，即使原始请求路径不包含版本。
+
+     AS_IN_REQUEST 仅当原始请求路径不包含版本时才会剥离版本。
+
+     ALWAYS_STRIP 始终剥离版本，即使原始请求路径包含版本。
+
+hostValue 参数（如果提供）用于替换响应 Location 标头的 host:port 部分。 
+
+如果未提供，则使用 Host 请求标头的值。
+
+protocolRegex 参数必须是有效的正则表达式字符串，与协议名称匹配。 
+
+如果不匹配，则过滤器不执行任何操作。 
+
+默认为 http|https|ftp|ftps。
+
+## 6.17. RewriteResponseHeader 网关过滤器工厂
+
+RewriteResponseHeader GatewayFilter 工厂采用名称、正则表达式和替换参数。 
+
+它使用 Java 正则表达式来灵活地重写响应头值。 
+
+以下示例配置了 RewriteResponseHeader GatewayFilter：
+
+- 例 41.application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: rewriteresponseheader_route
+        uri: https://example.org
+        filters:
+        - RewriteResponseHeader=X-Response-Red, , password=[^&]+, password=***
+```
+
+对于/42?user=ford&password=omg!what&flag=true的header值，在进行下游请求后设置为/42?user=ford&password=***&flag=true。 
+
+由于 YAML 规范，您必须使用 `$\` 来表示 `$`。
+
+## 6.18. SaveSession 网关过滤器工厂
+
+SaveSession GatewayFilter 工厂在向下游转发调用之前强制执行 WebSession::save 操作。 
+
+这在将 Spring Session 之类的东西与惰性数据存储一起使用时特别有用，并且您需要确保在进行转发调用之前已保存会话状态。 
+
+以下示例配置 SaveSession GatewayFilter：
+
+- 例 42.application.yml
+
+```yml
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: save_session
+        uri: https://example.org
+        predicates:
+        - Path=/foo/**
+        filters:
+        - SaveSession
+```
+
+如果您将 Spring Security 与 Spring Session 集成并希望确保安全详细信息已转发到远程进程，则这一点至关重要。
 
 
 
