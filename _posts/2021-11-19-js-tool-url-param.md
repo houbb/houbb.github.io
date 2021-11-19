@@ -97,11 +97,55 @@ http://www.runoob.com/index.php?id=1&image=awesome.jpg
 
 调用 getQueryVariable("image") 返回 "awesome.jpg"。
 
+
+# 实际应用
+
+## 场景
+
+当前页面，根据传过来的 callbackurl 做页面跳转。
+
+```
+http://localhost:8080/login?systemId=cms&callbackUrl=http://localhost:8081/home
+```
+
+## 获取参数
+
+```js
+//systemId
+let systemId = getLocationSearchVar('systemId'); 
+if(systemId && systemId != '') {
+   this.systemId = systemId;
+   this.callbackUrl = getLocationSearchVar('callbackUrl');
+   console.log(this.systemId);
+   console.log(this.callbackUrl);
+
+   // window.location.href = 'http://www.baidu.com';
+}
+```
+
+但是发现页面跳转的时候会失败。
+
+因为 url 中的地址会被转义。
+
+## URL 的转义处理
+
+```js
+//转译
+encodeURIComponent("https://zhidao.baidu.com");
+//https%3A%2F%2Fzhidao.baidu.com
+ 
+//逆转译
+decodeURIComponent("https%3A%2F%2Fzhidao.baidu.com");
+//https://zhidao.baidu.com
+```
+
 # 参考资料
 
 https://www.cnblogs.com/sherryweb/p/11643050.html
 
 [js获取url地址的参数的方法](https://zhuanlan.zhihu.com/p/72581171)
+
+[获取URL地址时某些参数被转义](https://blog.csdn.net/weixin_39513821/article/details/85002541)
 
 * any list
 {:toc}
