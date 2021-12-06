@@ -194,6 +194,8 @@ sed -i 's/\(http-listener.*\)\//\1\ max-post-size=\"59715200\"\//g' standalone.x
 
 # 参考资料
 
+[SpringBoot设置文件上传大小限制--默认为1M](https://www.cnblogs.com/yysbolg/p/10621610.html)
+
 https://developer.jboss.org/thread/252840
 
 [Connection terminated as request was larger than 10485760.](https://blog.csdn.net/weixin_50678918/article/details/114384081)
