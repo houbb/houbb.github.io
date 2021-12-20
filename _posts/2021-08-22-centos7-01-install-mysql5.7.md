@@ -56,7 +56,9 @@ rpm -e --nodeps xxx
 CentOS Linux release 7.9.2009 (Core)
 ```
 
-选择对应的版本进行下载，例如CentOS 7当前在官网查看最新Yum源的下载地址为： https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+选择对应的版本进行下载，例如CentOS 7当前在官网查看最新Yum源的下载地址为： 
+
+https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
 
 下载：
 
@@ -568,6 +570,207 @@ innodb_log_buffer_size = 1M
 
 如果遇到问题请查看mysql的日志文件/var/log/mysqld.log，里面的错误记录如[ERROR] unknown variable 'have_crypt=NO'，这就表示你的版本没有have_crypt这个变量，删掉即可。
 
+# centos7 yum mysql 5.7 安装笔记（2021-12-20）
+
+## 配置 yum 源
+
+去 MySQL 官网下载 YUM 的 RPM 安装包，http://dev.mysql.com/downloads/repo/yum/
+
+（1）下载
+
+```
+$   sudo wget https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+```
+
+（2）安装 mysql 源
+
+```
+$   sudo yum localinstall mysql57-community-release-el7-11.noarch.rpm
+```
+
+（3）检查 mysql 源是否安装成功
+
+```
+$   yum repolist enabled | grep "mysql.*-community.*"
+```
+
+如下：
+
+```
+mysql-connectors-community/x86_64   MySQL Connectors Community               221
+mysql-tools-community/x86_64        MySQL Tools Community                    135
+mysql57-community/x86_64            MySQL 5.7 Community Server               544
+```
+
+## 安装 mysql
+
+```
+$   sudo yum install -y mysql-community-server
+```
+
+## 启动 mysql 服务
+
+在 CentOS 7 下，新的启动/关闭服务的命令是 `systemctl start|stop`
+
+（1）启动
+
+```
+$   sudo systemctl start mysqld
+```
+
+（2）状态查看
+
+```
+$   sudo systemctl status mysqld
+```
+
+日志如下：
+
+```
+mysqld.service - MySQL Server
+   Loaded: loaded (/usr/lib/systemd/system/mysqld.service; enabled; vendor preset: disabled)
+   Active: active (running) since Mon 2021-12-20 14:49:30 CST; 1min 11s ago
+     Docs: man:mysqld(8)
+           http://dev.mysql.com/doc/refman/en/using-systemd.html
+  Process: 24492 ExecStart=/usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid $MYSQLD_OPTS (code=exited, status=0/SUCCESS)
+  Process: 24433 ExecStartPre=/usr/bin/mysqld_pre_systemd (code=exited, status=0/SUCCESS)
+ Main PID: 24496 (mysqld)
+   CGroup: /system.slice/mysqld.service
+           └─24496 /usr/sbin/mysqld --daemonize --pid-file=/var/run/mysqld/mysqld.pid
+
+Dec 20 14:49:25 VM-12-8-centos systemd[1]: Starting MySQL Server...
+Dec 20 14:49:30 VM-12-8-centos systemd[1]: Started MySQL Server.
+```
+
+## 设置开机启动
+
+```
+$ sudo systemctl enable mysqld
+```
+
+重载所有修改过的配置文件
+
+```
+$ sudo systemctl daemon-reload
+```
+
+## 修改 root 本地账户密码
+
+（1）临时默认密码
+
+mysql 安装完成之后，生成的默认密码在 `/var/log/mysqld.log` 文件中。
+
+使用 grep 命令找到日志中的密码。
+
+```
+$   grep 'temporary password' /var/log/mysqld.log
+```
+
+如下：
+
+```
+2021-12-20T06:49:26.697576Z 1 [Note] A temporary password is generated for root@localhost: XXXXXXXX
+```
+
+（2）登录修改
+
+使用临时密码登录。
+
+```
+$   mysql -uroot -p
+```
+
+修改密码命令：
+
+```
+$   ALTER USER 'root'@'localhost' IDENTIFIED BY 'MyNewPassword!'; 
+```
+
+或者：
+
+```
+$   set password for 'root'@'localhost'=password('MyNewPass4!'); 
+```
+
+注意：
+
+mysql 5.7 默认安装了密码安全检查插件（validate_password），默认密码检查策略要求密码必须包含：大小写字母、数字和特殊符号，并且长度不能少于8位。
+
+否则会提示 ERROR 1819 (HY000): Your password does not satisfy the current policy requirements 错误。
+
+[查看 MySQL官网密码详细策略](https://links.jianshu.com/go?to=https%3A%2F%2Fdev.mysql.com%2Fdoc%2Frefman%2F5.7%2Fen%2Fvalidate-password-options-variables.html%23sysvar_validate_password_policy)
+
+
+## 配置文件调整
+
+mysql 安装后默认不支持中文，需要修改编码。
+
+修改 `/etc/my.cnf` 配置文件。
+
+可参考的配置如下：
+
+```ini
+[mysql]
+# 设置mysql客户端默认字符集
+default-character-set=utf8mb4
+ 
+[mysqld]
+# 原始配置部分
+datadir=/var/lib/mysql
+socket=/var/lib/mysql/mysql.sock
+symbolic-links=0
+log-error=/var/log/mysqld.log
+pid-file=/var/run/mysqld/mysqld.pid
+
+# 设置3306端口
+port=3306
+# 允许最大连接数
+max_connections=20
+# 服务端使用的字符集默认为8比特编码的latin1字符集
+character-set-server=utf8mb4
+# 创建新表时将使用的默认存储引擎
+default-storage-engine=INNODB
+ 
+collation-server=utf8mb4_unicode_ci
+init_connect='SET NAMES utf8mb4'
+
+character-set-client-handshake=FALSE
+explicit_defaults_for_timestamp=true
+
+# mysql 大小写敏感
+lower_case_table_names=1
+
+[client]
+default-character-set=utf8mb4
+```
+
+- 重启 mysql 服务
+
+```
+sudo systemctl restart mysqld.service
+```
+
+- 登录查看配置
+
+```
+mysql> SHOW VARIABLES WHERE Variable_name LIKE 'character_set_%' OR Variable_name LIKE 'collation%';
++--------------------------+----------------------------+
+| Variable_name            | Value                      |
++--------------------------+----------------------------+
+| character_set_client     | utf8mb4                    |
+| character_set_connection | utf8mb4                    |
+| character_set_database   | utf8mb4                    |
+| character_set_filesystem | binary                     |
+| character_set_results    | utf8mb4                    |
+| character_set_server     | utf8mb4                    |
+| character_set_system     | utf8                       |
+| character_sets_dir       | /usr/share/mysql/charsets/ |
+| collation_connection     | utf8mb4_unicode_ci         |
+| collation_database       | utf8mb4_unicode_ci         |
+| collation_server         | utf8mb4_unicode_ci         |
++--------------------------+----------------------------+
+```
+
 # 参考资料
 
 [CentOS安装MySQL详解](https://juejin.cn/post/6844903870053761037)
@@ -575,6 +778,10 @@ innodb_log_buffer_size = 1M
 [Linux执行shell出现错误bad interpreter: No such file or directory解决方法](https://blog.csdn.net/wangkai_123456/article/details/53504237)
 
 [CentOS上mysql占用内存过大之解决](https://www.caogenjava.com/detail/69.html)
+
+[CentOS 7 下 Yum 安装 MySQL 5.7](https://qizhanming.com/blog/2017/05/10/how-to-yum-install-mysql-57-on-centos-7)
+
+[CentOS 7 下 MySQL 5.7 的安装与配置](https://www.jianshu.com/p/1dab9a4d0d5f)
 
 * any list
 {:toc}

@@ -50,6 +50,12 @@ OpenJDK Runtime Environment (build 1.8.0_302-b08)
 OpenJDK 64-Bit Server VM (build 25.302-b08, mixed mode)
 ```
 
+## 端口开放
+
+云服务器的端口 8080 默认是不开放的。
+
+
+
 # 安装 tomcat
 
 ## 下载
@@ -134,11 +140,135 @@ firewall-cmd --reload
 firewall-cmd --zone=public --query-port=80/tcp
 ```
 
+# centos7 yum 安装 tomcat笔记
+
+## 安装
+
+（1）命令
+
+```
+$   yum -y install tomcat
+```
+
+（2）查询 tomcat 是否安装成功
+
+```
+$   rpm -q tomcat
+```
+
+（3）信息查看
+
+```
+$   yum info tomcat
+```
+
+## 服务启动
+
+（1）启动
+
+```
+$   systemctl start tomcat.service
+```
+
+（2）状态查看
+
+```
+$   systemctl status tomcat.service
+```
+
+或者
+
+```
+$   systemctl status tomcat
+```
+
+最重要的Tomcat的文件将位于 `/usr/share/tomcat`。 
+
+如果你已经有了，你想运行一个Tomcat应用程序，你可以将它放在 `/usr/share/tomcat/webapps` 的目录，配置Tomcat，并重新启动Tomcat服务。
+
+## 其他常见命令
+
+（1）tomcat 启动
+
+```
+sudo systemctl start tomcat
+```
+
+（2）tomcat 重启
+
+```
+sudo systemctl restart tomcat
+```
+
+（3）开机重启
+
+```
+sudo systemctl enable tomcat
+```
+
+## 页面访问
+
+现在Tomcat已经启动并运行，让我们在Web浏览器中访问Web管理界面。您可以通过访问服务器的公共IP地址，在端口8080上：
+
+```
+http://server_IP_address:8080
+```
+
+管理页面：
+
+```
+http:// server_IP_address :8080/manager/html
+```
+
+### 页面无法访问
+
+可能会出现页面无法访问的情况。
+
+（1）缺少管理界面
+
+因为前面安装的是 tomcat 的基础服务，并没有安装浏览器管理界面，接下来我们需要安装管理包
+
+（2）防火墙问题
+
+执行命令 `firewall-cmd --zone=public --add-port=8080/tcp --permanent` 永久开放8080端口，否则会导致无法访问
+
+开放8080后执行 `systemctl restart firewalld.service` 重启防火墙
+
+（3）云服务器本身问题
+
+个人使用的某云服务器测试，发现没有 Firewall，服务也不通。
+
+后来发现在服务器控台-防火墙中可以配置。 T_T
+
+## 安装管理包
+
+安装Tomcat根页面（tomcat-webapps）和Tomcat Web应用程序管理器和Virtual Host Manager（tomcat-admin-webapps），请运行以下命令：
+
+```
+$   sudo yum install tomcat-webapps tomcat-admin-webapps
+```
+
+会安装如下的内容到 `/usr/share/tomcat/webapps` 文件夹下：
+
+```
+examples  host-manager  manager  ROOT  sample
+```
+
+重启服务：
+
+```
+$   sudo systemctl restart tomcat
+```
+
 # 参考资料
 
 [Cenos7安装jdk,tomcat,mysql5.7 零碎笔记](https://www.jianshu.com/p/e1e6b88b12b1)
 
 [如何在CentOS 7上安装Tomcat 8.5](https://www.myfreax.com/how-to-install-tomcat-8-5-on-centos-7/)
+
+[centos7 yum 安装 tomcat](https://www.cnblogs.com/nicknailo/p/8571004.html)
+
+https://blog.csdn.net/github_38336924/article/details/82253553
 
 * any list
 {:toc}
