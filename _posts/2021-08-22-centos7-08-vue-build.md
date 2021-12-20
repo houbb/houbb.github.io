@@ -204,6 +204,24 @@ nohup ./startup.sh &
 我们像这样挂住进程启动Tomcat，才能保证当关掉服务器连接时不停止服务。附上停止Tomcat服务命令：./shutdown.sh
 
 
+### 调整文件夹的权限组
+
+```
+[root@VM-12-8-centos logs]# ll
+total 4
+drwxrwxrwx 2 root root 4096 Dec 20 23:50 ums-server
+[root@VM-12-8-centos logs]# chown tomcat:tomcat ums-server/
+[root@VM-12-8-centos logs]# ll
+total 4
+drwxrwxrwx 2 tomcat tomcat 4096 Dec 20 23:50 ums-server
+```
+
+一开始是 root，调整为 tomcat。
+
+需要把 /root/logs/ums-server 中 root logs  ums-server 都调整为 tomcat 分组。
+
+解决。
+
 ### 解决方案2
 
 有 2 种方式：
@@ -231,9 +249,6 @@ $   sudo chmod a+rwx -R ums-server
 
 发现还是不行。
 
-
-有毒吧， 明明logs这个目录是真真实实存在的， 然后小编自己又仔细思考上面报的错误是 catalina.out: Permission denied 异常，说的只是当前操作用户对Tomcat记录日志的这个catalina.out 文件没有可执行权限，那么为什么不直接对catalina.out这一个文件添加可执行权限呢， 瞬间思路清晰明朗， 于是进入到logs目录， 执行以下命令：
-
 # 参考资料
 
 [webpack打包的vue项目部署在tomcat，页面不能加载的问题](https://blog.csdn.net/weixin_43331469/article/details/88583794)
@@ -251,6 +266,8 @@ $   sudo chmod a+rwx -R ums-server
 [openFile(null,true) call failed. java.io.FileNotFoundException: /data/logs(Permission denied)](https://blog.csdn.net/weixin_43899542/article/details/106593949)
 
 https://blog.csdn.net/qq_34103387/article/details/114436718
+
+[centos普通用户修改文件权限_每天学点之CentOS文件/目录的权限](https://blog.csdn.net/weixin_36033516/article/details/112313080)
 
 * any list
 {:toc}
