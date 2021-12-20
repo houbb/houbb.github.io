@@ -249,6 +249,89 @@ $   sudo chmod a+rwx -R ums-server
 
 发现还是不行。
 
+
+# 80 报错
+
+## 现象
+
+```
+.BindException: Permission denied (Bind failed) <null>:80
+```
+
+## 原因
+
+tomcat 启动的权限不足。
+
+```
+# Systemd unit file for default tomcat
+#
+# To create clones of this service:
+# DO NOTHING, use tomcat@.service instead.
+
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=syslog.target network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/tomcat/tomcat.conf
+Environment="NAME="
+EnvironmentFile=-/etc/sysconfig/tomcat
+ExecStart=/usr/libexec/tomcat/server start
+SuccessExitStatus=143
+User=tomcat
+
+[Install]
+WantedBy=multi-user.target
+```
+
+## 解决办法
+
+```
+vi /lib/systemd/system/tomcat.service
+```
+
+（1）把 user 调整为 root。
+
+```
+# Systemd unit file for default tomcat
+#
+# To create clones of this service:
+# DO NOTHING, use tomcat@.service instead.
+
+[Unit]
+Description=Apache Tomcat Web Application Container
+After=syslog.target network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/tomcat/tomcat.conf
+Environment="NAME="
+EnvironmentFile=-/etc/sysconfig/tomcat
+ExecStart=/usr/libexec/tomcat/server start
+SuccessExitStatus=143
+User=root
+Group=root
+
+[Install]
+WantedBy=multi-user.target
+```
+
+
+配置刷新：
+
+```
+$  systemctl daemon-reload
+```
+
+（2）重新启动。
+
+```
+systemctl restart tomcat
+```
+
+ps: 改成 80 如果使用域名访问，就必须备案。
+
 # 参考资料
 
 [webpack打包的vue项目部署在tomcat，页面不能加载的问题](https://blog.csdn.net/weixin_43331469/article/details/88583794)
@@ -268,6 +351,8 @@ $   sudo chmod a+rwx -R ums-server
 https://blog.csdn.net/qq_34103387/article/details/114436718
 
 [centos普通用户修改文件权限_每天学点之CentOS文件/目录的权限](https://blog.csdn.net/weixin_36033516/article/details/112313080)
+
+[Tomcat无法使用80端口：Permission denied (Bind failed) <null>:80](https://blog.csdn.net/qq_37969433/article/details/104045322)
 
 * any list
 {:toc}
