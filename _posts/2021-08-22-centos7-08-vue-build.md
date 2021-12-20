@@ -101,7 +101,9 @@ VUE router 的history模式问题解答： https://router.vuejs.org/zh/guide/ess
 
 # 后端启动报错
 
-## 现象
+## class 缺失
+
+### 现象
 
 springboot 直接启动正常，放在 tomcat 中启动报错。
 
@@ -148,7 +150,7 @@ Caused by: java.lang.NoClassDefFoundError: org/w3c/dom/ElementTraversal
                 at org.apache.catalina.loader.WebappClassLoaderBase.loadClass(WebappClassLoaderBase.java:1223)
 ```
 
-## 解决方案
+### 解决方案
 
 ```xml
 <dependency>
@@ -157,6 +159,80 @@ Caused by: java.lang.NoClassDefFoundError: org/w3c/dom/ElementTraversal
     <version>1.4.01</version>
 </dependency>
 ```
+
+## 启动报错
+
+### 报错信息
+
+```
+Caused by: java.lang.IllegalStateException: Logback configuration error detected:                                                                                                                                                             
+ERROR in ch.qos.logback.core.rolling.RollingFileAppender[SQL-APPENDER] - Failed to create parent directories for [/app/ums-server/logs/VM-12-8-centos_sql.2021-12-20-0.log]                                                                   
+ERROR in ch.qos.logback.core.rolling.RollingFileAppender[SQL-APPENDER] - openFile(null,true) call failed. java.io.FileNotFoundException: /app/ums-server/logs/VM-12-8-centos_sql.2021-12-20-0.log (No such file or directory)                 
+ERROR in ch.qos.logback.core.rolling.RollingFileAppender[APPLICATION-APPENDER] - Failed to create parent directories for [/app/ums-server/logs/VM-12-8-centos_application.2021-12-20-0.log]                                                   
+ERROR in ch.qos.logback.core.rolling.RollingFileAppender[APPLICATION-APPENDER] - openFile(null,true) call failed. java.io.FileNotFoundException: /app/ums-server/logs/VM-12-8-centos_application.2021-12-20-0.log (No such file or directory) 
+ERROR in ch.qos.logback.core.rolling.RollingFileAppender[SATURN-APPENDER] - Failed to create parent directories for [/app/ums-server/logs/VM-12-8-centos_saturn.2021-12-20-0.log]                                                             
+ERROR in ch.qos.logback.core.rolling.RollingFileAppender[SATURN-APPENDER] - openFile(null,true) call failed. java.io.FileNotFoundException: /app/ums-server/logs/VM-12-8-centos_saturn.2021-12-20-0.log (No such file or directory)           
+ERROR in ch.qos.logback.core.rolling.RollingFileAppender[THIRD-PARTY-APPENDER] - Failed to create parent directories for [/app/ums-server/logs/VM-12-8-centos_3rd-party.2021-12-20-0.log]                                                     
+ERROR in ch.qos.logback.core.rolling.RollingFileAppender[THIRD-PARTY-APPENDER] - openFile(null,true) call failed. java.io.FileNotFoundException: /app/ums-server/logs/VM-12-8-centos_3rd-party.2021-12-20-0.log (No such file or directory)   
+        at org.springframework.boot.logging.logback.LogbackLoggingSystem.loadConfiguration(LogbackLoggingSystem.java:162)                                                                                                                     
+```
+
+### 解决方案(无效)
+
+创建一下对应的文件。
+
+```
+mkdir app
+cd app
+mkdir ums-server
+cd ums-server
+mkdir logs
+```
+
+ps: 后来发现还是不行。本质上是权限不足导致的。
+
+### 权限
+
+错误原因：用户权限不够，无法写入日志内容。
+
+解决方案：由于项目是在云服务器Tomcat上部署的，所以我们要以root权限去开启tomcat。以root身份连接服务器，然后到你Tomcat所在的bin目录，执行下面这行代码：
+
+```
+nohup ./startup.sh &
+```
+
+我们像这样挂住进程启动Tomcat，才能保证当关掉服务器连接时不停止服务。附上停止Tomcat服务命令：./shutdown.sh
+
+
+### 解决方案2
+
+有 2 种方式：
+
+（1）调整日志路径为公共的有权限的路径
+
+（2）为当前应用执行时，设置对应的权限。
+
+此处选择方案 1，比较简单。
+
+----------------------------
+
+tomcat 启动报catalina.out: Permission denied 说的的意思是 Tomcat系统记录日志的catalina.out当前操作用户对它没有可操作权限，网上很多说
+
+进入到tomat的目录中，找到有logs文件夹的目录，执行下面命令。意思就是改变logs文件夹的权限，使tomcat可以有权限访问此文件夹。
+
+日志文件夹根目录为：`/root/logs/ums-server`
+
+```
+$   cd /root/logs
+$   sudo chmod a+rwx -R ums-server
+```
+
+----------------------------
+
+发现还是不行。
+
+
+有毒吧， 明明logs这个目录是真真实实存在的， 然后小编自己又仔细思考上面报的错误是 catalina.out: Permission denied 异常，说的只是当前操作用户对Tomcat记录日志的这个catalina.out 文件没有可执行权限，那么为什么不直接对catalina.out这一个文件添加可执行权限呢， 瞬间思路清晰明朗， 于是进入到logs目录， 执行以下命令：
 
 # 参考资料
 
@@ -167,6 +243,14 @@ Caused by: java.lang.NoClassDefFoundError: org/w3c/dom/ElementTraversal
 [Vue打包发布到Tomcat后，刷新报错404解决方法](https://www.javazxz.com/thread-12879-1-1.html)
 
 [前端vue项目部署到tomcat，一刷新报错404解决方法](https://www.cnblogs.com/chenzhazha/p/10196590.html)
+
+[Linux Centos7新装tomcat 启动./startup.sh报Permission denied详解](https://blog.csdn.net/weixin_42209368/article/details/103050182)
+
+[tomcat 启动报catalina.out: Permission denied 异常解决思路总结【针对的是mac电脑】](https://blog.csdn.net/qq_35661171/article/details/110873448)
+
+[openFile(null,true) call failed. java.io.FileNotFoundException: /data/logs(Permission denied)](https://blog.csdn.net/weixin_43899542/article/details/106593949)
+
+https://blog.csdn.net/qq_34103387/article/details/114436718
 
 * any list
 {:toc}
