@@ -260,6 +260,33 @@ examples  host-manager  manager  ROOT  sample
 $   sudo systemctl restart tomcat
 ```
 
+# scp 卡住问题
+
+## 现象
+
+scp大文件时速度为0.0KB/s，且出现stalled：
+
+```
+scp ROOT.zip root@xxx:/app/ROOT.zip
+ROOT.zip                                                                                                                     44% 2064KB   0.0KB/s - stalled -
+```
+
+## 尝试解决
+
+### -l 8192
+
+尝试限制速度，失败
+
+```
+scp -l 8192 xxxxxx
+```
+
+发现不行，依然越来越来，然后变成 0。
+
+### -C
+尝试提速，降低stalled的概率，成功
+
+
 # 参考资料
 
 [Cenos7安装jdk,tomcat,mysql5.7 零碎笔记](https://www.jianshu.com/p/e1e6b88b12b1)
@@ -269,6 +296,8 @@ $   sudo systemctl restart tomcat
 [centos7 yum 安装 tomcat](https://www.cnblogs.com/nicknailo/p/8571004.html)
 
 https://blog.csdn.net/github_38336924/article/details/82253553
+
+[scp大文件出现stalled](https://blog.csdn.net/weixin_43652082/article/details/104111393)
 
 * any list
 {:toc}
