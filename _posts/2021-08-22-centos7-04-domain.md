@@ -15,7 +15,7 @@ published: true
 
 # Namesilo 简介
 
-Namesilo 是 ICANN 认证的域名域名注册商之一，注册和转入都很人性化，安全保护到位而且性价比很高。
+[Namesilo](https://www.namesilo.com/) 是 ICANN 认证的域名域名注册商之一，注册和转入都很人性化，安全保护到位而且性价比很高。
 
 ## 优势
 
@@ -87,6 +87,8 @@ Namesilo 提供永久免费的域名隐私保护，防止别人通过 WHOIS 查�
 这里我们可以直接使用 Namesilo 解析域名；也可以使用其它解析服务，然后更改 DNS 服务器地址。
 
 ![设置DNS服务器](https://pic3.zhimg.com/80/v2-d685f9aa06f1c2668f0fdcf9c867d2b2_720w.jpg)
+
+配置地址：[https://www.namesilo.com/account_domains.php](https://www.namesilo.com/account_domains.php)
 
 ## 方法一：使用 Namesilo 解析域名
 
