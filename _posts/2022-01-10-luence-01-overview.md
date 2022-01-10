@@ -67,7 +67,11 @@ Lucene 通过一个简单的 API 提供了强大的功能：
 
 《lucene in action》
 
+# 博客
 
+[Lucene 专栏](https://blog.csdn.net/wuyinggui10000/article/category/3173543)
+
+[文件格式](https://www.cnblogs.com/forfuture1978/archive/2009/12/14/1623597.html)
 
 # 参考资料
 
