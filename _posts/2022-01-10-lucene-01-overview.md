@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Luence-01-overview 概览
+title: Lucene-01-overview 概览
 date: 2022-01-10 21:01:55 +0800
-categories: [Luence]
-tags: [luence, search, sh]
+categories: [Lucene]
+tags: [Lucene, search, sh]
 published: true
 ---
  

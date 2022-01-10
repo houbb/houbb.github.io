@@ -167,7 +167,7 @@ Regex 与 DFA 算法
 
 相似度分析算法
 
-[luence 基础知识](https://houbb.github.io/2018/11/15/lucence-base)
+[Lucene 基础知识](https://houbb.github.io/2018/11/15/lucence-base)
 
 # 参考资料
 
