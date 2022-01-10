@@ -36,5 +36,7 @@ https://lucene.apache.org/core/9_0_0/index.html
 
 [技术实现细节](https://github.com/zzboy/lucene)
 
+[Lucene概述](https://blog.csdn.net/y3over/article/details/108064940)
+
 * any list
 {:toc}
