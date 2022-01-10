@@ -38,5 +38,7 @@ https://lucene.apache.org/core/9_0_0/index.html
 
 [Lucene概述](https://blog.csdn.net/y3over/article/details/108064940)
 
+[Elasticsearch内核剖析](https://zhuanlan.zhihu.com/p/35643348)
+
 * any list
 {:toc}
