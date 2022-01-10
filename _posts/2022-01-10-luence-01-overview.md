@@ -63,9 +63,17 @@ Lucene 通过一个简单的 API 提供了强大的功能：
 
 其他可用的与索引兼容的编程语言的实现
 
+# 书籍
+
+《lucene in action》
+
+
+
 # 参考资料
 
 [v9.0.0](https://lucene.apache.org/core/9_0_0/index.html)
+
+[v7.2.1](https://lucene.apache.org/core/7_2_1/index.html)
 
 * any list
 {:toc}
