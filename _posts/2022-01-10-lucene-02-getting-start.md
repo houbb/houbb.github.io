@@ -289,24 +289,7 @@ directory.close();
 IOUtils.rm(indexPath);
 ```
 
-## 包分类
-
-Lucene API 分为几个包：
-
-org.apache.lucene.analysis 定义了一个抽象的 Analyzer API，用于将文本从 Reader 转换为 TokenStream，即令牌属性的枚举。可以通过将TokenFilters 应用于 Tokenizer 的输出来组成 TokenStream。 Tokenizers 和 TokenFilters 串在一起并与 Analyzer 一起应用。 analysis-common 提了许多 Analyzer 实现，包括 StopAnalyzer 和基于语法的 StandardAnalyzer。
-
-org.apache.lucene.codecs 提供了对倒排索引结构的编码和解码的抽象，以及可以根据应用需要选择的不同实现。
-
-org.apache.lucene.document 提供了一个简单的 Document 类。文档只是一组命名字段，其值可能是字符串或 Reader 的实例。
-
-org.apache.lucene.index 提供了两个主要类： IndexWriter，它创建文档并将其添加到索引；和 IndexReader，它访问索引中的数据。
-
-org.apache.lucene.search 提供数据结构来表示查询（即 TermQuery 用于单个单词，PhraseQuery 用于短语，BooleanQuery 用于查询的布尔组合）和将查询换为 TopDocs 的 IndexSearcher。提供了许多 QueryParsers 用于从字符串或 xml 生成查询结构。
-
-org.apache.lucene.store 定义了一个用于存储持久数据的抽象类，即 Directory，它是由 IndexOutput 写入并由 IndexInput 读取的命名文件的集合。提供多种实现，但通常建议使用 FSDirectory，因为它试图有效地使用操作系统磁盘缓冲区缓存。
-
-org.apache.lucene.util 包含一些方便的数据结构和实用程序类，即 FixedBitSet 和 PriorityQueue。
-
+#
 # 参考资料
 
 https://lucene.apache.org/core/9_0_0/core/index.html
