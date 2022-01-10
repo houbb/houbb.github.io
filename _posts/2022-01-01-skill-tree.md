@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  java 封神技能树
-date:  2022-7-17 16:52:15 +0800
+date:  2021-01-01 +0800
 categories: [Java]
 tags: [java, skill, sh]
 published: true

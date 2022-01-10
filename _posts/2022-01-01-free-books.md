@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  免费的编程中文书籍索引
-date:  2022-7-17 16:52:15 +0800
+date:  2021-01-01 16:52:15 +0800
 categories: [Java]
 tags: [java, skill, sh]
 published: true
