@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 如何保证用户私人信息安全？
+title: 互联网公司如何保证用户私人信息安全？
 date: 2022-02-18 21:01:55 +0800 
 categories: [Safe]
 tags: [safe, web, in-action, sh]
@@ -9,7 +9,7 @@ published: true
 
 # 海绵宝宝的烦恼
 
-海绵宝宝非常喜欢网上购物，这让他感觉到被资本腐朽的陶醉。
+海绵宝宝非常喜欢网上购物，这让他感觉到被资本腐朽的快乐。
 
 ![海绵宝宝](https://img-blog.csdnimg.cn/6d1b2d7902f044bfa417a3bc943f3092.png)
 
