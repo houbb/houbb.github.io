@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  WebSocket
-date:  2017-11-1 09:22:02 +0800
+title:  WebSocket-02-java 实现例子
+date:  2022-04-15 09:22:02 +0800
 categories: [Web]
-tags: [web, socket]
+tags: [web, socket, sh]
 published: true
 ---
 
@@ -13,7 +13,6 @@ published: true
 [WebSocket](http://websocket.org/) 是一种网络通信协议。
 
 > [WebSocket 教程-阮一峰](http://www.ruanyifeng.com/blog/2017/05/websocket.html)
-
 
 # 缘起
 
@@ -374,17 +373,3 @@ close
 
 * any list
 {:toc}
-
-
-
-
-
-
-
-
-
-
-
-
- 
-
