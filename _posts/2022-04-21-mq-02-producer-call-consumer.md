@@ -11,6 +11,8 @@ published: true
 
 上一节我们学习了如何实现基于 netty 客服端和服务端的启动。
 
+[]()
+
 那么客户端如何调用服务端呢？
 
 我们本节就来一起实现以下。
@@ -789,11 +791,11 @@ System.out.println(JSON.toJSON(sendResult));
 
 # 开源地址
 
-> [The message queue in java.(java 简易版本 mq 实现) ](https://github.com/houbb/mq)
+> [The message queue in java.(java 简易版本 mq 实现) ](https://github.com/houbb/mq) https://github.com/houbb/mq
 
 # 拓展阅读
 
-[rpc-从零开始实现 rpc](https://github.com/houbb/rpc)
+[rpc-从零开始实现 rpc](https://github.com/houbb/rpc) https://github.com/houbb/rpc
 
 * any list
 {:toc}
