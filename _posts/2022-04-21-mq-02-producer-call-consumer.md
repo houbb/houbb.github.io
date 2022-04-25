@@ -11,11 +11,13 @@ published: true
 
 上一节我们学习了如何实现基于 netty 客服端和服务端的启动。
 
-[]()
+[【mq】从零开始实现 mq-01-生产者、消费者启动](https://mp.weixin.qq.com/s/moF528JiVG9dqCi5oFMbVg)
+
+[【mq】java 从零开始实现消息队列 mq-02-如何实现生产者调用消费者？](https://mp.weixin.qq.com/s/_OF4hbh9llaxN27Cv_cToQ)
 
 那么客户端如何调用服务端呢？
 
-我们本节就来一起实现以下。
+我们本节就来一起实现一下。
 
 # 消费者实现
 
