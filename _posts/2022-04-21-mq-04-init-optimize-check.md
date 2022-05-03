@@ -9,10 +9,17 @@ published: true
 
 # 前景回顾
 
+[【mq】从零开始实现 mq-01-生产者、消费者启动 ](https://mp.weixin.qq.com/s/moF528JiVG9dqCi5oFMbVg)
+
+[【mq】从零开始实现 mq-02-如何实现生产者调用消费者？](https://mp.weixin.qq.com/s/_OF4hbh9llaxN27Cv_cToQ)
+
+[【mq】从零开始实现 mq-03-引入 broker 中间人](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
 上一节我们引入了中间人 broker，让消息的生产者和消费者解耦。
 
 这一节我们对初始化代码进行优化，便于后期拓展维护。
 
+![启动检测](https://img-blog.csdnimg.cn/15c2b1dd62c5494b8d8070e8589d913a.png#pic_center)
 
 # 生产者启动优化
 
