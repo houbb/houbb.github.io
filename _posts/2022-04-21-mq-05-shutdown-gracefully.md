@@ -9,13 +9,15 @@ published: true
 
 # 前景回顾
 
-上一节我们引入了中间人 broker，让消息的生产者和消费者解耦。
+[【mq】从零开始实现 mq-01-生产者、消费者启动 ](https://mp.weixin.qq.com/s/moF528JiVG9dqCi5oFMbVg)
 
-这一节我们对初始化代码进行优化，便于后期拓展维护。
+[【mq】从零开始实现 mq-02-如何实现生产者调用消费者？](https://mp.weixin.qq.com/s/_OF4hbh9llaxN27Cv_cToQ)
 
-# 为什么需要优雅关闭？
+[【mq】从零开始实现 mq-03-引入 broker 中间人](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
 
-各位小伙伴，如果是开发，一定有上线发布的经历。
+[【mq】从零开始实现 mq-04-启动检测与实现优化](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+## 为什么需要优雅关闭？
 
 我记得多年前，那个时候 rpc 框架主流用的还是 dubbo，每次都是半夜还是上线，上线上完基本都是凌晨 2-3 点。
 
@@ -28,6 +30,8 @@ published: true
 因为 rpc 调用入口已经关闭了，但是本身可能还没有处理完。
 
 那么有没有方法可以让服务的关闭更加优雅，而不是人工等待呢？
+
+![05](https://img-blog.csdnimg.cn/9d56469513634bfab087f6e04193c270.png#pic_center)
 
 ## 实现思路
 
