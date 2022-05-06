@@ -17,6 +17,8 @@ published: true
 
 [【mq】从零开始实现 mq-04-启动检测与实现优化](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
 
+[【mq】从零开始实现 mq-05-实现优雅停机](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
 ## 为什么需要优雅关闭？
 
 我记得多年前，那个时候 rpc 框架主流用的还是 dubbo，每次都是半夜还是上线，上线上完基本都是凌晨 2-3 点。
