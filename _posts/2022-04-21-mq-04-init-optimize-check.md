@@ -15,6 +15,8 @@ published: true
 
 [【mq】从零开始实现 mq-03-引入 broker 中间人](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
 
+[【mq】从零开始实现 mq-04-启动检测与实现优化](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
 上一节我们引入了中间人 broker，让消息的生产者和消费者解耦。
 
 这一节我们对初始化代码进行优化，便于后期拓展维护。
@@ -52,7 +54,7 @@ public synchronized void run() {
 }
 ```
 
-看起来是不是比前原来清爽很多呢？
+看起来是不是比起原来清爽很多呢？
 
 但是**复杂性只会转移，不会消失**。
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  java 从零开始实现消息队列 mq-06-消费者心跳 heartbeat
+title:  java 从零开始实现消息队列 mq-06-消费者心跳检测 heartbeat
 date:  2022-04-15 09:22:02 +0800 
 categories: [MQ]
 tags: [mq, netty, sh]
@@ -9,9 +9,17 @@ published: true
 
 # 前景回顾
 
-上一节我们引入了中间人 broker，让消息的生产者和消费者解耦。
+[【mq】从零开始实现 mq-01-生产者、消费者启动 ](https://mp.weixin.qq.com/s/moF528JiVG9dqCi5oFMbVg)
 
-这一节我们对初始化代码进行优化，便于后期拓展维护。
+[【mq】从零开始实现 mq-02-如何实现生产者调用消费者？](https://mp.weixin.qq.com/s/_OF4hbh9llaxN27Cv_cToQ)
+
+[【mq】从零开始实现 mq-03-引入 broker 中间人](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-04-启动检测与实现优化](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-05-实现优雅停机](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-06-消费者心跳检测 heartbeat](https://mp.weixin.qq.com/s/lsvm9UoQWK98Jy3kuS2aNg)
 
 # 为什么需要心跳？
 
@@ -21,12 +29,15 @@ published: true
 
 那么，分布式服务中如何判断一个服务是否还活着呢？
 
-答案也是心跳。
+## 实现思路
 
-比如 mq 中，broker 需要把消息实时推送给在线的消费者。那么如何判断一个消费者是否活着呢？
+比如 mq 中，broker 需要把消息实时推送给在线的消费者。
+
+那么如何判断一个消费者是否活着呢？
 
 我们可以让消费者定时，比如每 5 秒钟给 broker 发送一个心跳包，考虑到网络延迟等，如果连续 1min 都没有收到心跳，我们则移除这个消费者，认为服务已经挂了。
 
+![heartbeat](https://img-blog.csdnimg.cn/18e48dab9ebb47d88ea6910a748d8039.png#pic_center)
 
 # 消费者实现
 
