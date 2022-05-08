@@ -9,15 +9,27 @@ published: true
 
 # 前景回顾
 
-xxx
+[【mq】从零开始实现 mq-01-生产者、消费者启动 ](https://mp.weixin.qq.com/s/moF528JiVG9dqCi5oFMbVg)
+
+[【mq】从零开始实现 mq-02-如何实现生产者调用消费者？](https://mp.weixin.qq.com/s/_OF4hbh9llaxN27Cv_cToQ)
+
+[【mq】从零开始实现 mq-03-引入 broker 中间人](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-04-启动检测与实现优化](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-05-实现优雅停机](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-06-消费者心跳检测 heartbeat](https://mp.weixin.qq.com/s/lsvm9UoQWK98Jy3kuS2aNg)
+
+[【mq】从零开始实现 mq-07-负载均衡 load balance](https://mp.weixin.qq.com/s/ZNuecNeVJzIPCp252Hn4GQ)
 
 # 为什么需要负载均衡
 
-负载均衡的文章我以前写过，可以阅读：
+大家好，我是老马。
 
-> [负载均衡基础知识](http://houbb.github.io/2020/06/19/load-balance-01-basic) http://houbb.github.io/2020/06/19/load-balance-01-basic
+这一节让我们看一下如何实现 MQ 的负载均衡。
 
-此处做一下简单解释。
+为什么需要负载均衡呢？
 
 ## 作用
 
@@ -31,9 +43,11 @@ xxx
 
 负载均衡实现的方式比较多，最简单的就是随机选择一个。
 
-更多推荐阅读：
+拓展阅读：
 
 > [从零手写实现负载均衡](http://houbb.github.io/2020/06/19/load-balance-03-hand-write) http://houbb.github.io/2020/06/19/load-balance-03-hand-write
+
+![负载均衡](https://img-blog.csdnimg.cn/3d89b015b8b14418bdc14b0a03133ea6.png#pic_center)
 
 # MQ 中用到负载均衡的地方
 
