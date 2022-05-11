@@ -27,6 +27,8 @@ published: true
 
 [jvm/gc/双亲委派/类加载流程/jvm 调优 常见面试题]()
 
+参考资料：https://blog.csdn.net/thinkwon/category_9731418.html
+
 # 1、什么是spring、为什么要用spring及其优点、spring有哪些模块组成 ?
 
 ## 什么是spring

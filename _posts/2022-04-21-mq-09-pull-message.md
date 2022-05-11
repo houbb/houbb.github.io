@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  java 从零开始实现消息队列 mq-09-pull message 消费者主动拉取消息
+title:  java 从零开始实现消息队列 mq-09-消费者拉取消息 pull message 
 date:  2022-04-15 09:22:02 +0800
 categories: [MQ]
 tags: [mq, netty, sh]
@@ -9,11 +9,29 @@ published: true
 
 # 前景回顾
 
-大家好，我是老马。
+[【mq】从零开始实现 mq-01-生产者、消费者启动 ](https://mp.weixin.qq.com/s/moF528JiVG9dqCi5oFMbVg)
 
-xxx
+[【mq】从零开始实现 mq-02-如何实现生产者调用消费者？](https://mp.weixin.qq.com/s/_OF4hbh9llaxN27Cv_cToQ)
+
+[【mq】从零开始实现 mq-03-引入 broker 中间人](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-04-启动检测与实现优化](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-05-实现优雅停机](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-06-消费者心跳检测 heartbeat](https://mp.weixin.qq.com/s/lsvm9UoQWK98Jy3kuS2aNg)
+
+[【mq】从零开始实现 mq-07-负载均衡 load balance](https://mp.weixin.qq.com/s/ZNuecNeVJzIPCp252Hn4GQ)
+
+[【mq】从零开始实现 mq-08-配置优化 fluent](https://mp.weixin.qq.com/s/_O20KKdGwxMcHc87rcuWug)
+
+[【mq】从零开始实现 mq-09-消费者拉取消息 pull message](https://mp.weixin.qq.com/s/bAqOJ4fKWTAVet0Oqv8S0g)
 
 # 消息的推与拉
+
+大家好，我是老马。
+
+这一节我们来一起看一下 MQ 消息中的推和拉两种模式。
 
 ## 推
 
@@ -28,6 +46,8 @@ xxx
 缺点是实时性相对较差。
 
 实际业务中，需要结合具体的场景，选择合适的策略。
+
+![mq-pull](https://img-blog.csdnimg.cn/243abfcab8ef4f468eb281a39664beb0.png#pic_center)
 
 # 拉取策略实现
 
