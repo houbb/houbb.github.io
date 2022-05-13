@@ -15,7 +15,7 @@ published: true
 
 这也就是传统意义上的，也就是我们在编程中使用最多的阻塞模型：
 
-![阻塞模型](https://upload-images.jianshu.io/upload_images/13880925-cf34b76f18f4a53b.png?imageMogr2/auto-orient/strip|imageView2/2/w/1000/format/webp)
+![阻塞模型](https://upload-images.jianshu.io/upload_images/13880925-cf34b76f18f4a53b.png)
 
 阻塞模型虽然开发中非常常见也非常易于理解，但是由于它会影响其他 FD 对应的服务，所以在需要处理多个客户端任务的时候，往往都不会使用阻塞模型。
 
@@ -23,7 +23,7 @@ published: true
 
 阻塞式的 I/O 模型并不能满足这里的需求，我们需要一种效率更高的 I/O 模型来支撑 Redis 的多个客户（redis-cli），这里涉及的就是 I/O 多路复用模型了：
 
-![I/O 多路复用](https://upload-images.jianshu.io/upload_images/13880925-ed04dfac6be688f0.png?imageMogr2/auto-orient/strip|imageView2/2/w/1000/format/webp)
+![I/O 多路复用](https://upload-images.jianshu.io/upload_images/13880925-ed04dfac6be688f0.png)
 
 在 I/O 多路复用模型中，最重要的函数调用就是 select，该方法的能够同时监控多个文件描述符的可读可写情况，当其中的某些文件描述符可读或者可写时，select 方法就会返回可读以及可写的文件描述符个数。
 
@@ -105,9 +105,9 @@ epoll_wait的工作实际上就是在这个就绪链表中查看有没有就绪�
 
 Redis 服务采用 Reactor 的方式来实现文件事件处理器（每一个网络连接其实都对应一个文件描述符）
 
-![Reactor 设计模式](https://upload-images.jianshu.io/upload_images/13880925-d45f44df7e39ed05.png?imageMogr2/auto-orient/strip|imageView2/2/w/1000/format/webp)
+![Reactor 设计模式](https://upload-images.jianshu.io/upload_images/13880925-d45f44df7e39ed05.png)
 
-![IO 套接字](https://upload-images.jianshu.io/upload_images/13880925-60b031d3effe4b8a.png?imageMogr2/auto-orient/strip|imageView2/2/w/876/format/webp)
+![IO 套接字](https://upload-images.jianshu.io/upload_images/13880925-60b031d3effe4b8a.png)
 
 文件事件处理器使用 I/O 多路复用模块同时监听多个 FD，当 accept、read、write 和 close 文件事件产生时，文件事件处理器就会回调 FD 绑定的事件处理器。
 
@@ -117,7 +117,7 @@ Redis 服务采用 Reactor 的方式来实现文件事件处理器（每一个�
 
 I/O 多路复用模块封装了底层的 select、epoll、avport 以及 kqueue 这些 I/O 多路复用函数，为上层提供了相同的接口。
 
-![I/O 多路复用模块](https://upload-images.jianshu.io/upload_images/13880925-32733025f1e5c721.png?imageMogr2/auto-orient/strip|imageView2/2/w/1000/format/webp)
+![I/O 多路复用模块](https://upload-images.jianshu.io/upload_images/13880925-32733025f1e5c721.png)
 
 在这里我们简单介绍 Redis 是如何包装 select 和 epoll 的，简要了解该模块的功能，整个 I/O 多路复用模块抹平了不同平台上 I/O 多路复用函数的差异性，提供了相同的接口：
 
@@ -344,7 +344,7 @@ static int aeApiPoll(aeEventLoop *eventLoop, struct timeval *tvp) {
 
 因为 select 函数是作为 POSIX 标准中的系统调用，在不同版本的操作系统上都会实现，所以将其作为保底方案：
 
-![子模块的选择](https://upload-images.jianshu.io/upload_images/13880925-4f157293d864b83a.png?imageMogr2/auto-orient/strip|imageView2/2/w/1000/format/webp)
+![子模块的选择](https://upload-images.jianshu.io/upload_images/13880925-4f157293d864b83a.png)
 
 Redis 会优先选择时间复杂度为 O(1)的 I/O 多路复用函数作为底层实现，包括 Solaries 10 中的 evport、Linux 中的 epoll 和 macOS/FreeBSD 中的 kqueue，上述的这些函数都使用了内核内部的结构，并且能够服务几十万的文件描述符。
 
@@ -454,7 +454,7 @@ Redis之所以这么快除了完全基于内存计算和高效的数据结构意
 
 既然 Redis 是单线程，那么，最基本的一种实现是在一个线程中依次执行上面说的这些操作。
 
-![redis 请求](https://img-blog.csdnimg.cn/20210323201539648.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2phdmFfY2p4,size_16,color_FFFFFF,t_70)
+![redis 请求](https://img-blog.csdnimg.cn/20210323201539648.png)
 
 但是，在这里的网络 IO 操作中，有潜在的阻塞点，分别是 accept() 和 recv()。
 
@@ -480,7 +480,7 @@ socket() 方法会返回主动套接字，然后调用 listen() 方法，将主�
 
 最后，调用 accept() 方法接收到达的客户端连接，并返回已连接套接字。
 
-![非阻塞模式](https://img-blog.csdnimg.cn/20210323202909916.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2phdmFfY2p4,size_16,color_FFFFFF,t_70)
+![非阻塞模式](https://img-blog.csdnimg.cn/20210323202909916.png)
 
 针对监听套接字，我们可以设置非阻塞模式：
 
@@ -510,7 +510,7 @@ Redis 网络框架调用 epoll 机制，让内核监听这些套接字。
 
 正因为此，Redis 可以同时和多个客户端连接并处理请求，从而提升并发性。
 
-![多路复用](https://img-blog.csdnimg.cn/20210323203354974.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2phdmFfY2p4,size_16,color_FFFFFF,t_70)
+![多路复用](https://img-blog.csdnimg.cn/20210323203354974.png)
 
 为了在请求到达时能通知到 Redis 线程，select/epoll 提供了基于事件的回调机制，即针对不同事件的发生，调用相应的处理函数。
 

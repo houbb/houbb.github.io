@@ -15,8 +15,6 @@ published: true
 
 [mybatis 常见面试题]()
 
-[mybatis-plus 常见面试题]()
-
 [redis 常见面试题]()
 
 [mysql 常见面试题]()
