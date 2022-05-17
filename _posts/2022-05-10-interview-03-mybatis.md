@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  mybatis 常见面试题汇总-03-overview 概览
+title:  mybatis 常见面试题汇总
 date:  2022-05-10 09:22:02 +0800
 categories: [Interview]
 tags: [interview, mybatis, sh]
