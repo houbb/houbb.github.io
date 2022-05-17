@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  java 从零开始实现消息队列 mq-11-pull message ack groupName 消费者主动拉取消息消费状态回执添加 groupName 信息
+title:  从零开始实现 mq-11-消费者消息回执添加分组信息 pull message ack groupName
 date:  2022-04-15 09:22:02 +0800
 categories: [MQ]
 tags: [mq, netty, sh]
@@ -9,15 +9,35 @@ published: true
 
 # 前景回顾
 
-大家好，我是老马。
+[【mq】从零开始实现 mq-01-生产者、消费者启动 ](https://mp.weixin.qq.com/s/moF528JiVG9dqCi5oFMbVg)
 
-xxx
+[【mq】从零开始实现 mq-02-如何实现生产者调用消费者？](https://mp.weixin.qq.com/s/_OF4hbh9llaxN27Cv_cToQ)
+
+[【mq】从零开始实现 mq-03-引入 broker 中间人](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-04-启动检测与实现优化](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-05-实现优雅停机](https://mp.weixin.qq.com/s/BvEWsLp3_35yFVRqBOxS2w)
+
+[【mq】从零开始实现 mq-06-消费者心跳检测 heartbeat](https://mp.weixin.qq.com/s/lsvm9UoQWK98Jy3kuS2aNg)
+
+[【mq】从零开始实现 mq-07-负载均衡 load balance](https://mp.weixin.qq.com/s/ZNuecNeVJzIPCp252Hn4GQ)
+
+[【mq】从零开始实现 mq-08-配置优化 fluent](https://mp.weixin.qq.com/s/_O20KKdGwxMcHc87rcuWug)
+
+[【mq】从零开始实现 mq-09-消费者拉取消息 pull message](https://mp.weixin.qq.com/s/bAqOJ4fKWTAVet0Oqv8S0g)
+
+[【mq】从零开始实现 mq-10-消费者拉取消息回执 pull message ack](https://mp.weixin.qq.com/s/OgcQI-Go1ZS9-pdLtYwkcg)
+
+[【mq】从零开始实现 mq-11-消费者消息回执添加分组信息 pull message ack groupName](https://mp.weixin.qq.com/s/3RnB7KhZB3n8yGI6Z02-bw)
 
 # 状态回执
 
 上一节我们实现了消息的回执，但是存在一个问题。
 
 同一个消息，可以被不同的 groupName 进行消费，所以回执是需要根据 groupName 进行分开的，这个上一节中遗漏了。
+
+![状态回执](https://img-blog.csdnimg.cn/de123ac3a856429da0038a0d56bf1545.png#pic_center)
 
 # Broker 推送消息的调整
 
