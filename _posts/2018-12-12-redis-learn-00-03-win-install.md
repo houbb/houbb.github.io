@@ -138,6 +138,56 @@ redis-server.exe redis.windows.conf
 [24264] 10 Sep 13:25:45.971 * Ready to accept connections
 ```
 
+# 设置密码
+
+## 1.临时性设置
+
+找到你redis的安装目录。
+
+运行redis-cli.exe。 如果提示“由于目标计算机积极拒绝，无法连接。”是由于你的redis服务没有正常运行导致的的
+
+运行下面的指令
+
+```
+config set requirepass 123456
+```
+
+设置密码后，需要使用auth重新登录，我们继续输入
+
+```
+auth 123456
+```
+
+然后执行
+
+```
+config get requirepass
+```
+
+可以看到刚才的密码
+
+但是这种做法有个弊端，就是一旦你关闭或者重启redis服务，那么设置的密码就不生效了。所以，你想设置长久密码推荐第二种。
+
+## 2.永久设置密码
+
+打开redis的文件夹。找到redis的配置文件：redis-windows.conf。然后打开它。搜索”requirepass”, 这行代码原来是被注释掉的，我们取消注释，并在后面给他设置密码。
+
+设置完毕后，我们重启redis服务。
+
+使用
+
+```
+auth redis123
+```
+
+```
+config get requirepass
+```
+
+就可以看到刚才设置的密码了。
+
+
+
 # java 连接测试
 
 ## jedis 依赖
