@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  NPM install error Can't find Python executable "python", you can set the PYTHON env variable.
+title:  NPM install error Can't find Python executable python, you can set the PYTHON env variable.
 date:  2022-05-10 09:22:02 +0800
 categories: [Work]
 tags: [work, part-time, sh]
