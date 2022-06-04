@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  long 值进行 Base64 编码原理详解
+title:  如何实现短链服务 short url-01-long 值进行 Base64 编码原理详解
 date:  2022-06-02 09:22:02 +0800
 categories: [Tool]
 tags: [tool, sh]

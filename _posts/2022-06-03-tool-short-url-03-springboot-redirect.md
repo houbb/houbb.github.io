@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  springboot 中页面重定向方式
+title:  如何实现短链服务 short url-03-springboot 中页面重定向方式
 date:  2022-06-02 09:22:02 +0800
 categories: [Tool]
 tags: [tool, sh]
