@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 如何实现短链服务 short url-04-应用拆分思路及 JS 实现复制
+title: 如何实现短链服务 short url-04-优化思路及 JS 实现复制
 date:  2022-06-02 09:22:02 +0800
 categories: [WEB]
 tags: [web, sh]
@@ -23,12 +23,23 @@ published: true
 
 ## 主动复制
 
-
 ## 直接复制
 
 生成之后，直接 js 设置到用户的粘贴板。
 
+# 性能优化
 
+## 短链是否存在
+
+BITMAP？
+
+BloomFilter？
+
+以前通过 mysql 查询访问，也可以通过 redis 等缓存提升性能。
+
+## 短链映射
+
+通过 redis 查询。
 
 # 参考资料
 
