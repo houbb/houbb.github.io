@@ -3,7 +3,7 @@ layout: post
 title: uniapp 跨平台框架-03-history 发展历史
 date: 2021-11-15 21:01:55 +0800
 categories: [WEB]
-tags: [web, cross-plateform, sh]
+tags: [web, cross-plateform, uni-app, sh]
 published: true
 ---
 
