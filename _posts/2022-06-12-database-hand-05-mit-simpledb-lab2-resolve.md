@@ -396,7 +396,7 @@ public boolean filter(Tuple t1, Tuple t2) {
 }
 ```
 
-## Exercise2:Aggregates
+## Exercise2: Aggregates
 
 exercise2的介绍：
 
