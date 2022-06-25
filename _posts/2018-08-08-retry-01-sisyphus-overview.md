@@ -11,6 +11,8 @@ published: true
 
 [sisyphus ](https://github.com/houbb/sisyphus) 综合了 spring-retry 和 gauva-retrying 的优势，使用起来也非常灵活。
 
+> [java 重试框架 sisyphus 开源地址](https://github.com/houbb/sisyphus) https://github.com/houbb/sisyphus
+
 ## 为什么选择这个名字
 
 我觉得重试做的事情和西西弗斯很相似。

@@ -17,7 +17,7 @@ published: true
 
 [更好的 java 重试框架 sisyphus 背后的故事](https://juejin.cn/post/7020767222687612964)
 
-> [java 重试框架 sisyphus 开源地址](https://github.com/houbb/sisyphus)
+> [java 重试框架 sisyphus 开源地址](https://github.com/houbb/sisyphus) https://github.com/houbb/sisyphus
 
 这一节让我们一起学习下 sisyphus 的 3 种使用方式。
 
