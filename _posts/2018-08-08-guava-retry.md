@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Guava Retry
+title:  重试框架介绍：Guava Retry 
 date:  2018-08-08 01:40:39 +0800
 categories: [Java]
 tags: [java, retry]
