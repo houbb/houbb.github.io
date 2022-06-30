@@ -27,13 +27,15 @@ published: true
 
 [【面试】mybatis 常见面试题汇总](https://mp.weixin.qq.com/s/NuyZyeCsdZTqKHbUcWaiiQ)
 
-# 1. Java事件机制包括哪三个部分？分别介绍。
+# 1. Java 事件机制包括哪三个部分？分别介绍。
 
-8、什么是反射机制？
+[Java 事件机制](http://houbb.github.io/2022/05/10/interview-11-java-basic-event)
 
-9、说说反射机制的作用。
+# 什么是反射机制？
 
-10、反射机制会不会有性能问题？
+[Reflection-01-java 反射机制](http://houbb.github.io/2018/07/01/reflection-01-overview)
+
+--------------------------------------
 
 30、描述一下Java异常层次结构。
 
@@ -49,6 +51,16 @@ published: true
 # 参考资料
 
 https://maimai.cn/article/detail?fid=1724791732&efid=4a9eC-XwLGQzl4F09gPajA
+
+## 反射慢在哪里
+
+https://blog.csdn.net/sunny243788557/article/details/109603182
+
+https://www.jianshu.com/p/4e2b49fa8ba1
+
+https://juejin.cn/post/6844904098207105038
+
+
 
 * any list
 {:toc}
