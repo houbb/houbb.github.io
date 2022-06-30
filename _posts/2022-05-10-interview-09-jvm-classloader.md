@@ -56,8 +56,6 @@ Java是运行在Java的虚拟机(JVM)中的，但是它是如何运行在JVM中�
 然后由我们得ClassLoader负责将这些class文件给加载到JVM中去执行。 
 
 
-
-
 ## 类加载器
 
 Java中提供如下四种类型的加载器，每一种加载器都有指定的加载对象，具体如下
@@ -72,7 +70,7 @@ User ClassLoader（用户自定义类加载器） ： 用户自定义的类加�
 
 这四种类加载器存在如下关系，当进行类加载的时候，虽然用户自定义类不会由bootstrap classloader或是extension classloader加载（由类加载器的加载范围决定），但是代码实现还是会一直委托到bootstrap classloader, 上层无法加载，再由下层是否可以加载，如果都无法加载，就会触发findclass,抛出classNotFoundException.
 
-![class loader](https://upload-images.jianshu.io/upload_images/4005155-aa3e6d6f5537d9f9.png?imageMogr2/auto-orient/strip|imageView2/2/w/1080/format/webp)
+![class loader](https://upload-images.jianshu.io/upload_images/4005155-aa3e6d6f5537d9f9.png)
 
 # jvm 类的加载机制
 
@@ -80,7 +78,7 @@ User ClassLoader（用户自定义类加载器） ： 用户自定义的类加�
 
 别着急，请继续往下看。
 
-![加载机制](https://upload-images.jianshu.io/upload_images/14200547-c1b63350b194b663?imageMogr2/auto-orient/strip|imageView2/2/w/817/format/webp)
+![加载机制](https://upload-images.jianshu.io/upload_images/14200547-c1b63350b194b663)
 
 ## 1.加载
 
@@ -181,7 +179,7 @@ protected Class<?> loadClass(String name, boolean resolve)
 
 其实这段代码已经很好的解释了双亲委派机制，为了大家更容易理解，我做了一张图来描述一下上面这段代码的流程：  
 
-![flow](https://img-blog.csdnimg.cn/20201217213314510.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2NvZGV5YW5iYW8=,size_16,color_FFFFFF,t_70)
+![flow](https://img-blog.csdnimg.cn/20201217213314510.png)
 
 
 从上图中我们就更容易理解了，当一个Hello.class这样的文件要被加载时。
@@ -245,7 +243,7 @@ Java 中所有涉及 SPI 的加载动作基本上都采用这种方式，例如 
 
 线程上下文类加载器破坏了“双亲委派模型”，可以在执行线程中抛弃双亲委派加载链模式，使程序可以逆向使用类加载器。
 
-![class loader](https://upload-images.jianshu.io/upload_images/15041653-f14ad4171266d952.png?imageMogr2/auto-orient/strip|imageView2/2/w/471/format/webp)
+![class loader](https://upload-images.jianshu.io/upload_images/15041653-f14ad4171266d952.png)
 
 # 总结
 
