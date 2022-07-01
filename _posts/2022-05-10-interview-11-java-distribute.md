@@ -75,6 +75,12 @@ published: true
 
 PS: 基于 redis/mysql 等集中式资源的标识。
 
+## 幂等
+
+[idempotent 幂等性防止重复提交](http://houbb.github.io/2020/07/16/idempotent-resubmit)
+
+[面试官：你们项目中是怎么做防重复提交的？](http://houbb.github.io/2022/05/10/interview-10-repeat)
+
 # 数据分布式
 
 [Database Sharding](http://houbb.github.io/2018/09/04/database-sharding-01-overview)
@@ -115,15 +121,17 @@ PS: 基于 redis/mysql 等集中式资源的标识。
 
 ## 一致性
 
-什么是著名的拜占庭将军问题？
+[Byzantine failures 拜占庭将军问题](http://houbb.github.io/2018/10/30/distributed-Byzantine-failures)
+
+[分布式共识(Consensus)：PBFT 算法 拜占庭容错算法](http://houbb.github.io/2018/10/30/distributed-PBFT)
 
 [分布式系统-05-Lease 机制，判定节点的状态](http://houbb.github.io/2021/03/06/distributed-system-05-lease)
 
 [分布式系统-06-Quorum 简单高效的副本管理机制](http://houbb.github.io/2021/03/06/distributed-system-06-quorum)
 
-PBFT 算法：
+[分布式原理：Gossip 协议](http://houbb.github.io/2018/10/30/distributed-gossip)
 
-Viewstamped Replication. 
+[分布式共识(Consensus)：Viewstamped Replication](http://houbb.github.io/2018/10/30/distributed-Viewstamped-Replication)
 
 [Paxos-一致性算法](http://houbb.github.io/2018/10/30/paxos)
 
@@ -137,11 +145,21 @@ Viewstamped Replication.
 
 [ZooKeeper-01-overview](http://houbb.github.io/2016/09/25/zookeeper-01-overview)
 
-Gossip
+# 网关
 
+[Zuul-Zuul 是一种网关服务，可提供动态路由、监控、弹性、安全性等。](http://houbb.github.io/2021/09/05/zuul)
 
+spring gateway
 
+Gravitee、
 
+Sentinel
+
+MuleSoft、
+
+WSO2、
+
+Soul
 
 # 注册中心
 

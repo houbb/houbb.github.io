@@ -858,7 +858,5 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.houbb.
 
 > [https://github.com/houbb/resubmit](https://github.com/houbb/resubmit)
 
-![image](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy81ODc0Njc1LWE5ZDFhM2Y0OWM0ZWRjZDk?x-oss-process=image/format,png)
-
 * any list
 {:toc}
