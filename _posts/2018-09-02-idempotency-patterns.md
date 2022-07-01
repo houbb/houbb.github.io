@@ -1,10 +1,9 @@
 ---
 layout: post
-title:  Idempotency Patterns
+title:  Idempotency Patterns  幂等性的概念, RESTful 幂等操作, 幂等的实际使用
 date:  2018-09-02 14:56:19 +0800
 categories: [Design]
 tags: [design, transaction, distributed, sh]
-excerpt: 幂等性的概念, RESTful 幂等操作, 幂等的实际使用
 published: true
 ---
 

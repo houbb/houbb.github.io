@@ -1,14 +1,15 @@
 ---
 layout: post
-title:  TCC Try-Confirm-Cancel
+title:  TCC Try-Confirm-Cancel 分布式事务
 date:  2018-09-02 10:54:19 +0800
 categories: [SQL]
 tags: [sql, transaction, distributed, sh]
-excerpt: 分布式事务 TCC (Try-Confirm-Cancel)。TCC事务机制相对于传统事务机制（X/Open XA），其特征在于它不依赖资源管理器(RM)对XA的支持，而是通过对（由业务系统提供的）业务逻辑的调度来实现分布式事务。 
 published: true
 ---
 
 # TCC (Try-Confirm-Cancel) 
+
+分布式事务 TCC (Try-Confirm-Cancel)。TCC事务机制相对于传统事务机制（X/Open XA），其特征在于它不依赖资源管理器(RM)对XA的支持，而是通过对（由业务系统提供的）业务逻辑的调度来实现分布式事务。 
 
 ## 概念
 

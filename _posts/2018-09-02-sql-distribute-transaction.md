@@ -1,10 +1,9 @@
 ---
 layout: post
-title:  分布式事务-数据库实现
+title:  SQL 分布式事务  distributed transaction 二段提交, 本地消息表, Saga 事务, 最大努力通知
 date:  2018-09-02 10:06:45 +0800
 categories: [SQL]
 tags: [sql, transaction, distributed, sh]
-excerpt: SQL 分布式事务, 二段提交, 本地消息表, Saga 事务, 最大努力通知
 published: true
 ---
 
