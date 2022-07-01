@@ -746,6 +746,8 @@ public class SpringListExtensionDescriptor {
 </sofa:extension-point>
 ```
 
+
+
 # 参考资料
 
 https://www.sofastack.tech/projects/sofa-boot/modular-development/
