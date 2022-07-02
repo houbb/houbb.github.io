@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  java 线程池
+title:  面试其他常见问题
 date:  2022-05-10 09:22:02 +0800
 categories: [Interview]
 tags: [interview, jvm, sh]
