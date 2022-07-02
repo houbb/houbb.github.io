@@ -286,6 +286,8 @@ Eureka 的设计就是图 8 的简化版本，它把 Data replicate 和 Registry
 
 ## Nacos
 
+[分布式注册中心-03-NACOS](http://houbb.github.io/2022/07/02/register-center-03-nacos)
+
 ## Eureka
 
 [eureka-用于弹性中间层负载平衡和故障转移的 AWS 服务注册表。](http://houbb.github.io/2021/09/06/erueka)
