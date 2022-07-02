@@ -129,7 +129,7 @@ DNS 携带的数据较少，例如节点权重、序列化方式等等，无法�
 
 管理端从主节点的其中一台读取数据。
 
-![阶段一：注册中心高可用](https://upload-images.jianshu.io/upload_images/3994147-20c18727477b064f.png?imageMogr2/auto-orient/strip|imageView2/2/w/500/format/webp)
+![阶段一：注册中心高可用](https://upload-images.jianshu.io/upload_images/3994147-20c18727477b064f.png)
 
 ## 阶段二：注册中心提高性能
 
@@ -141,7 +141,7 @@ DNS 携带的数据较少，例如节点权重、序列化方式等等，无法�
 
 管理端从某个Observer读取数据。
 
-![注册中心提高性能](https://upload-images.jianshu.io/upload_images/3994147-bc07dbc4110643cc.png?imageMogr2/auto-orient/strip|imageView2/2/w/613/format/webp)
+![注册中心提高性能](https://upload-images.jianshu.io/upload_images/3994147-bc07dbc4110643cc.png)
 
 **Consul也有Consul Client节点，类似Zookeeper的Observer节点**
 
@@ -155,7 +155,7 @@ DNS 携带的数据较少，例如节点权重、序列化方式等等，无法�
 
 例如提供一组状态检测服务，部署在机房的不同域（例如跨机架、跨交换机等，越分散越好），进行一定的投票，如果半数以上认为死了，则上报状态给注册中心。
 
-![服务高可用](https://upload-images.jianshu.io/upload_images/3994147-8fcee218b4b1ca02.png?imageMogr2/auto-orient/strip|imageView2/2/w/665/format/webp)
+![服务高可用](https://upload-images.jianshu.io/upload_images/3994147-8fcee218b4b1ca02.png)
 
 ## 阶段四：跨机房容灾
 
@@ -167,7 +167,7 @@ DNS 携带的数据较少，例如节点权重、序列化方式等等，无法�
 
 状态检测服务只检查自己同机房的节点。
 
-![图4：单注册中心跨机房容灾](https://upload-images.jianshu.io/upload_images/3994147-e6506380cb922e55.png?imageMogr2/auto-orient/strip|imageView2/2/w/761/format/webp)
+![图4：单注册中心跨机房容灾](https://upload-images.jianshu.io/upload_images/3994147-e6506380cb922e55.png)
 
 ## 阶段5：跨机房数据访问 
 
@@ -177,11 +177,11 @@ DNS 携带的数据较少，例如节点权重、序列化方式等等，无法�
 
 图 5 展示的是，注册中心直接的节点是独立的不共享的，由客户端进行跨注册中心数据访问，在客户端做数据聚合。
 
-![跨机房数据访问](https://upload-images.jianshu.io/upload_images/3994147-9a33cbcdda50e7ff.png?imageMogr2/auto-orient/strip|imageView2/2/w/761/format/webp)
+![跨机房数据访问](https://upload-images.jianshu.io/upload_images/3994147-9a33cbcdda50e7ff.png)
 
 图 6 展示的是，注册中心直接的节点是独立的，但是数据是共享的，由注册中心直接做数据同步合并，客户端无需处理。
 
-![图6：多注册中心跨机房数据同步](https://upload-images.jianshu.io/upload_images/3994147-0bf88d8ee4a53471.png?imageMogr2/auto-orient/strip|imageView2/2/w/761/format/webp)
+![图6：多注册中心跨机房数据同步](https://upload-images.jianshu.io/upload_images/3994147-0bf88d8ee4a53471.png)
 
 Consul 提供了个功能叫跨数据中心访问，但是其实数据是分开存放的。
 
@@ -201,11 +201,11 @@ Consul 提供了个功能叫跨数据中心访问，但是其实数据是分开�
 
 图 7 我们采用数据库主备或者是 Redis 集群作为一个统一的数据源，然后开发 Registry Proxy 程序（以下简称注册中心实例），这些注册中心实例之间并无数据交互，数据统一存在后端的数据源里，实现数据最终一致。
 
-![图7：注册中心统一数据源](https://upload-images.jianshu.io/upload_images/3994147-1d9d5419d33137f6.png?imageMogr2/auto-orient/strip|imageView2/2/w/500/format/webp)
+![图7：注册中心统一数据源](https://upload-images.jianshu.io/upload_images/3994147-1d9d5419d33137f6.png)
 
 还有一种方案的变种是放在一个文件系统里，自己做数据同步，如图 8 所示。
 
-![图8：注册中心数据源数据同步](https://upload-images.jianshu.io/upload_images/3994147-e9e6352b52173c6b.png?imageMogr2/auto-orient/strip|imageView2/2/w/500/format/webp)
+![图8：注册中心数据源数据同步](https://upload-images.jianshu.io/upload_images/3994147-e9e6352b52173c6b.png)
 
 Eureka 的设计就是图 8 的简化版本，它把 Data replicate 和 Registry Proxy 都放在 Eureka-Server 里。
 
@@ -231,7 +231,7 @@ Eureka 的设计就是图 8 的简化版本，它把 Data replicate 和 Registry
 
 以数据库为例。
 
-![图9：注册中心只读缓存](https://upload-images.jianshu.io/upload_images/3994147-bd939bfcf11514eb.png?imageMogr2/auto-orient/strip|imageView2/2/w/501/format/webp)
+![图9：注册中心只读缓存](https://upload-images.jianshu.io/upload_images/3994147-bd939bfcf11514eb.png)
 
 注册中心的只读缓存，如果内存里放得下则可以放在注册中心实例的内存里，如果放不下则可以是单独的存储服务。
 
@@ -245,11 +245,11 @@ Eureka 的设计就是图 8 的简化版本，它把 Data replicate 和 Registry
 
 一种方案就是多个注册中心直接做数据同步、聚合，图9 中的 DB 主从可以换成其它数据源。
 
-![图9：注册中心数据源数据同步](https://upload-images.jianshu.io/upload_images/3994147-8a30b8e9abeb4f74.png?imageMogr2/auto-orient/strip|imageView2/2/w/501/format/webp)
+![图9：注册中心数据源数据同步](https://upload-images.jianshu.io/upload_images/3994147-8a30b8e9abeb4f74.png)
 
 另外一种是注册中心实例对数据源的数据多写，图10 中的 DB 主从可以换成其它数据源。这样做的话，每个数据源里的数据是最终一致的。
 
-![图10：注册中心实例数据源多写](https://upload-images.jianshu.io/upload_images/3994147-29c4ba8008bf4892.png?imageMogr2/auto-orient/strip|imageView2/2/w/501/format/webp)
+![图10：注册中心实例数据源多写](https://upload-images.jianshu.io/upload_images/3994147-29c4ba8008bf4892.png)
 
 ## 阶段6：数据无限水平扩展
 
@@ -282,6 +282,8 @@ Eureka 的设计就是图 8 的简化版本，它把 Data replicate 和 Registry
 
 ## SOFARegistry
 
+[分布式注册中心-02-SOFARegistry](http://houbb.github.io/2022/07/02/register-center-02-sofaregister)
+
 ## Nacos
 
 ## Eureka
@@ -308,7 +310,7 @@ Eureka 的设计就是图 8 的简化版本，它把 Data replicate 和 Registry
 
 [5种微服务注册中心如何选型？这几个维度告诉你！](https://juejin.cn/post/7012084821224603656)
 
-[微服务架构 | 3. 注册中心与服务发现](https://developer.aliyun.com/article/855737)
+[微服务架构 3. 注册中心与服务发现](https://developer.aliyun.com/article/855737)
 
 [服务注册中心 SRC](https://cloud.tencent.com/product/src)
 
