@@ -177,11 +177,11 @@ PS: 基于 redis/mysql 等集中式资源的标识。
 
 [分布式网关 Soul-01-overview](http://houbb.github.io/2018/11/21/gateway-soul-01-overview)
 
-MuleSoft、
+[分布式网关 mulesoft api gateway-01-overview](http://houbb.github.io/2018/11/21/gateway-mulesoft-01-overview)
 
-WSO2、
+[分布式网关 WSO2 api gateway-01-overview](http://houbb.github.io/2018/11/21/gateway-wso2-01-overview)
 
-Gravitee、
+[Gravitee](http://houbb.github.io/2018/11/21/gateway-Gravitee-01-overview)
 
 [如何从零实现属于自己的 API 网关？](http://houbb.github.io/2018/11/21/gateway-02-how-to-design-gateway)
 
