@@ -77,14 +77,13 @@ published: true
 
 70、OSI有哪七层模型？TCP/IP是哪四层模型。
 
+[OSI 协议和 TCP/IP 协议](http://houbb.github.io/2018/09/25/protocol-osi-tcp-ip)
+
+[TCP/IP 协议-03-拥塞控制算法简介](http://houbb.github.io/2019/04/05/protocol-tcp-ip-03-congestion-control-03)
+
 73、TCP协议拥塞是怎么解决的？
 
-92、微服务涉及到的技术以及需要注意的问题有哪些？
-
-
-
 TCP 和 UDP 的区别？TCP 数据传输过程中怎么做到可靠的？
-
 
 # 参考资料
 
