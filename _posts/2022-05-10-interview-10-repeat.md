@@ -9,23 +9,41 @@ published: true
 
 # 系列目录
 
-[spring 常见面试题]()
+[spring 常见面试题](http://houbb.github.io/2022/05/10/interview-01-spring)
 
-[spring-boot 常见面试题]()
+[spring-boot 常见面试题](http://houbb.github.io/2022/05/10/interview-02-springboot)
 
-[redis 常见面试题]()
+[redis 常见面试题](http://houbb.github.io/2022/05/10/interview-04-redis)
 
-[mysql 常见面试题]()
+[mysql 常见面试题](http://houbb.github.io/2022/05/10/interview-05-mysql)
 
-[mq 常见面试题]()
+[mq 常见面试题](http://houbb.github.io/2022/05/10/interview-07-mq)
 
-[rpc/dubbo 常见面试题]()
+[rpc/dubbo 常见面试题](http://houbb.github.io/2022/05/10/interview-06-dubbo)
 
-[ZooKeeper 面试题]()
+[ZooKeeper 面试题](http://houbb.github.io/2022/05/10/interview-08-zookeeper)
 
-[jvm/gc/双亲委派/类加载流程/jvm 调优 常见面试题]()
+[JVM 常见面试题之双亲委派](http://houbb.github.io/2022/05/10/interview-09-jvm-classloader)
 
-[【面试】mybatis 常见面试题汇总](https://mp.weixin.qq.com/s/NuyZyeCsdZTqKHbUcWaiiQ)
+[JVM 常见面试题之 GC 垃圾回收](http://houbb.github.io/2022/05/10/interview-09-jvm-gc)
+
+[JVM 常见面试题之 java 内存结构](http://houbb.github.io/2022/05/10/interview-09-jvm-struct)
+
+[JVM 常见面试题之 java 内存结构2](http://houbb.github.io/2022/05/10/interview-11-java-jvm)
+
+[【面试】mybatis 常见面试题汇总](http://houbb.github.io/2022/05/10/interview-03-mybatis)
+
+[面试官：你们项目中是怎么做防重复提交的？](http://houbb.github.io/2022/05/10/interview-10-repeat)
+
+[java 基础之 event 事件机制](http://houbb.github.io/2022/05/10/interview-11-java-basic-event)
+
+[Reflection-01-java 反射机制](http://houbb.github.io/2018/07/01/reflection-01-overview)
+
+[distributed 分布式相关专题汇总](http://houbb.github.io/2022/05/10/interview-11-java-distribute)
+
+[web 常见面试题](http://houbb.github.io/2022/05/10/interview-11-java-web)
+
+[其他常见面试题](http://houbb.github.io/2022/05/10/interview-12-other)
 
 # 面试经历
 
@@ -857,8 +875,6 @@ org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.github.houbb.
 为了便于大家学习，该项目已经开源，欢迎 star~
 
 > [https://github.com/houbb/resubmit](https://github.com/houbb/resubmit)
-
-![image](https://imgconvert.csdnimg.cn/aHR0cHM6Ly91cGxvYWQtaW1hZ2VzLmppYW5zaHUuaW8vdXBsb2FkX2ltYWdlcy81ODc0Njc1LWE5ZDFhM2Y0OWM0ZWRjZDk?x-oss-process=image/format,png)
 
 * any list
 {:toc}

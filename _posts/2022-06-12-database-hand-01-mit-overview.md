@@ -47,6 +47,15 @@ https://github.com/zhangdaiscott/mini-mogodb
 
 http://db.lcs.mit.edu/6.830/
 
+# 推荐课程
+
+斯坦福CS145、
+
+CS245
+
+两门课程
+
+
 # 参考资料
 
 https://zhidao.baidu.com/question/690619777704291084.html

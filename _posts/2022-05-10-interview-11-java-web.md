@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  java 线程池
+title:  web 常见面试题
 date:  2022-05-10 09:22:02 +0800
 categories: [Interview]
 tags: [interview, jvm, sh]
@@ -9,23 +9,41 @@ published: true
 
 # 系列目录
 
-[spring 常见面试题]()
+[spring 常见面试题](http://houbb.github.io/2022/05/10/interview-01-spring)
 
-[spring-boot 常见面试题]()
+[spring-boot 常见面试题](http://houbb.github.io/2022/05/10/interview-02-springboot)
 
-[redis 常见面试题]()
+[redis 常见面试题](http://houbb.github.io/2022/05/10/interview-04-redis)
 
-[mysql 常见面试题]()
+[mysql 常见面试题](http://houbb.github.io/2022/05/10/interview-05-mysql)
 
-[mq 常见面试题]()
+[mq 常见面试题](http://houbb.github.io/2022/05/10/interview-07-mq)
 
-[rpc/dubbo 常见面试题]()
+[rpc/dubbo 常见面试题](http://houbb.github.io/2022/05/10/interview-06-dubbo)
 
-[ZooKeeper 面试题]()
+[ZooKeeper 面试题](http://houbb.github.io/2022/05/10/interview-08-zookeeper)
 
-[jvm/gc/双亲委派/类加载流程/jvm 调优 常见面试题]()
+[JVM 常见面试题之双亲委派](http://houbb.github.io/2022/05/10/interview-09-jvm-classloader)
 
-[【面试】mybatis 常见面试题汇总](https://mp.weixin.qq.com/s/NuyZyeCsdZTqKHbUcWaiiQ)
+[JVM 常见面试题之 GC 垃圾回收](http://houbb.github.io/2022/05/10/interview-09-jvm-gc)
+
+[JVM 常见面试题之 java 内存结构](http://houbb.github.io/2022/05/10/interview-09-jvm-struct)
+
+[JVM 常见面试题之 java 内存结构2](http://houbb.github.io/2022/05/10/interview-11-java-jvm)
+
+[【面试】mybatis 常见面试题汇总](http://houbb.github.io/2022/05/10/interview-03-mybatis)
+
+[面试官：你们项目中是怎么做防重复提交的？](http://houbb.github.io/2022/05/10/interview-10-repeat)
+
+[java 基础之 event 事件机制](http://houbb.github.io/2022/05/10/interview-11-java-basic-event)
+
+[Reflection-01-java 反射机制](http://houbb.github.io/2018/07/01/reflection-01-overview)
+
+[distributed 分布式相关专题汇总](http://houbb.github.io/2022/05/10/interview-11-java-distribute)
+
+[web 常见面试题](http://houbb.github.io/2022/05/10/interview-11-java-web)
+
+[其他常见面试题](http://houbb.github.io/2022/05/10/interview-12-other)
 
 # 题目
 
@@ -59,14 +77,13 @@ published: true
 
 70、OSI有哪七层模型？TCP/IP是哪四层模型。
 
+[OSI 协议和 TCP/IP 协议](http://houbb.github.io/2018/09/25/protocol-osi-tcp-ip)
+
+[TCP/IP 协议-03-拥塞控制算法简介](http://houbb.github.io/2019/04/05/protocol-tcp-ip-03-congestion-control-03)
+
 73、TCP协议拥塞是怎么解决的？
 
-92、微服务涉及到的技术以及需要注意的问题有哪些？
-
-
-
 TCP 和 UDP 的区别？TCP 数据传输过程中怎么做到可靠的？
-
 
 # 参考资料
 

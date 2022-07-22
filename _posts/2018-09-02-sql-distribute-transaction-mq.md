@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  分布式事务-本地消息表
+title:  分布式事务-本地消息表 （经典的ebay模式）
 date:  2018-09-02 10:54:19 +0800
 categories: [SQL]
 tags: [sql, mq, transaction, distributed, sh]
 published: true
-excerpt: 分布式事务本地消息表（经典的ebay模式）及消息中间件实现详解。
 ---
 
 # 本地消息表（经典的ebay模式）
