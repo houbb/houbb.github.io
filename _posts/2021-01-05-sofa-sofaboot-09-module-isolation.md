@@ -615,7 +615,7 @@ public class ExtensionImpl implements IExtension {
 首先需要一个类去描述这个扩展点：
 
 ```java
-@XObject("word")
+@XObject("word")W
 public class ExtensionDescriptor {
 
     @XNode("value")
