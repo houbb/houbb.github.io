@@ -174,7 +174,7 @@ public abstract class AbstractThreadBiz {
                                  String mdcId) {
         try {
             // 异步线程注意设置 mdcId
-            
+
             LogUtil.putMdc(mdcId);
             final int size = list.size();
             log.info("开始处理子列表 {}", size);
@@ -195,6 +195,14 @@ public abstract class AbstractThreadBiz {
     }
 }
 ```
+
+## 分页优化
+
+有时候我们不适合直接查出所有的信息。
+
+可以把一次性查出所有，改成分页查询。
+
+注意结合业务。
 
 # 小结
 
