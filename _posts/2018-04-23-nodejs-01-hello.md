@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  NodeJs-01 Hello
+title:  NodeJs-01 Hello nodejs install windows11 npm/cnpm install
 date:  2018-04-23 09:19:44 +0800
 categories: [NodeJs]
 tags: [js, nodejs]
@@ -35,6 +35,38 @@ $ node -v
 v6.2.2
 ```
 
+## windows11 安装实战
+
+> [node-v16.16.0-x64.msi](https://nodejs.org/dist/v16.16.0/node-v16.16.0-x64.msi)
+
+调整默认的安装路径：
+
+```
+D:\Program Files\nodejs\
+```
+
+查看版本：
+
+```
+λ node -v
+v16.16.0
+```
+
+## cnpm 安装处理
+
+```
+λ npm -v
+npm WARN config global `--global`, `--local` are deprecated. Use `--location=global` instead.
+8.11.0
+```
+
+npm 作为默认的安装路径，在国内可能会比较慢。
+
+cnpm install 安装 
+
+```
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+```
 
 # 入门案例
 
