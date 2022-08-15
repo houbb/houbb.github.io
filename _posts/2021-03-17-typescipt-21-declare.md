@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Typescript-21-declare 声明
+title: Typescript-21-declare 声明文件
 date:  2021-3-09 16:52:15 +0800
 categories: [Web]
-tags: [web, js, sh]
+tags: [web, js, typescript, ts, sh]
 published: true
 ---
 

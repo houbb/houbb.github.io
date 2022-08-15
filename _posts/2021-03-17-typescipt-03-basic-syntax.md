@@ -3,7 +3,7 @@ layout: post
 title: Typescript-03-basic syntax 基本语法
 date:  2021-3-09 16:52:15 +0800
 categories: [Web]
-tags: [web, js, sh]
+tags: [web, js, typescript, ts, sh]
 published: true
 ---
 
