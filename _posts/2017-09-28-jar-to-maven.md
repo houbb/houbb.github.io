@@ -1048,6 +1048,40 @@ gpg --keyserver hkp://pool.sks-keyservers.net:11371 --recv-keys 17f0276c401804c3
 
 这个直接重新上传，然后等待一段时间即可
 
+## GPG 删除 keys 
+
+一开始生成多个，感觉没啥用，这里执行以下删除。
+
+查看：
+
+`gpg --k` 或者 `gpg --list-keys` 查看已有的信息：
+
+```
+C:/Users/dh/AppData/Roaming/gnupg/pubring.gpg
+---------------------------------------------
+pub   2048R/48848916 2022-08-17
+uid       [ultimate] houbb <1060732496@qq.com>
+sub   2048R/C424FB1D 2022-08-17
+
+pub   2048R/CEC51B24 2022-08-17
+uid       [ultimate] houbb <1060732496@qq.com>
+sub   2048R/91CB7C04 2022-08-17
+```
+
+
+删除私钥：
+
+```
+gpg --delete-secret-keys 48848916
+```
+
+执行删除公钥：
+
+```
+gpg --delete-keys 48848916
+```
+
+
 # 访问 maven 太慢
 
 ## 测速
