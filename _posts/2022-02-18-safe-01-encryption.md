@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 互联网公司如何保证用户私人信息安全？
+title: 互联网公司如何保证用户私人信息安全？数据的加密和脱敏
 date: 2022-02-18 21:01:55 +0800 
 categories: [Safe]
 tags: [safe, web, in-action, sh]
