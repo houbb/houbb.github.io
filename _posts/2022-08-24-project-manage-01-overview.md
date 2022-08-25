@@ -54,17 +54,17 @@ published: true
 
 建立代码规范与Code Review制度
 
-[airbnb](https://link.zhihu.com/?target=https%3A//github.com/airbnb/javascript)
+[airbnb](https://github.com/airbnb/javascript)
 
-[standard](https://link.zhihu.com/?target=https%3A//github.com/standard/standard)
+[standard](https://github.com/standard/standard)
 
-[node-style-guide](https://link.zhihu.com/?target=https%3A//github.com/felixge/node-style-guide)
+[node-style-guide](https://github.com/felixge/node-style-guide)
 
-[google javascript style guide](https://link.zhihu.com/?target=https%3A//google.github.io/styleguide/jsguide.html)
+[google javascript style guide](https://google.github.io/styleguide/jsguide.html)
 
-[google html/css style guide](https://link.zhihu.com/?target=https%3A//google.github.io/styleguide/htmlcssguide.html)
+[google html/css style guide](https://google.github.io/styleguide/htmlcssguide.html)
 
-[Vue风格指南](https://link.zhihu.com/?target=https%3A//cn.vuejs.org/v2/style-guide/)
+[Vue风格指南](https://cn.vuejs.org/v2/style-guide/)
 
 我觉得统一项目目录结构也是规范化的一种(比如我们用脚手架创建项目模板), 一个规范化的目录结构大大降低新人的上手成本。
 
@@ -91,7 +91,7 @@ published: true
 2. 可以利用CI(Jekins/Travis)把构建发布过程搬到线上, 先跑代码扫描, 测试代码等, 然后没有错误再进行build, build成功通过ssh推到服务器。
 
 
-##中心化
+## 中心化
 
 以团队整体为视角，集中管理代码规范，并实现质量状况透明化。
 
@@ -177,15 +177,15 @@ commit-msg 可以用来在提交通过前验证项目状态或提交信息, 使�
 
 ## unittest
 
-[Jest](https://link.zhihu.com/?target=https%3A//jestjs.io/)
+[Jest](https://jestjs.io/)
 
-[Mocha](https://link.zhihu.com/?target=https%3A//mochajs.org/)
+[Mocha](https://mochajs.org/)
 
 ## e2e
 
-[Nightwatch](https://link.zhihu.com/?target=http%3A//nightwatchjs.org/)
+[Nightwatch](http://nightwatchjs.org/)
       
-[Cypress](https://link.zhihu.com/?target=https%3A//www.cypress.io/)
+[Cypress](https://www.cypress.io/)
 
 ## CHANGELOG
 
