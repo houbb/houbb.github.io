@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 数据分析-05-前端埋点实现
+title: 数据分析-05-前端埋点介绍
 date:  2020-6-3 13:34:28 +0800
 categories: [Data]
 tags: [data, data-analysis, monitor, apm, sh]
