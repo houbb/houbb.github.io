@@ -43,10 +43,8 @@ Vue.prototype.$echarts = echarts;
 ## js
 
 ```js
-<script>
-
 export default {
- name: 'myChart',
+ name: 'outerErrorStatus',
  data () {
   return {
    msg: 'Welcome to Your Vue.js App'
@@ -76,7 +74,6 @@ export default {
   }
  }
 }
-</script>
 ```
 
 
