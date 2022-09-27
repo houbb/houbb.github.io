@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 数据分析-22-AARRR 数据分析方法
+title: 数据分析-23-AARRR 数据分析方法
 date:  2020-6-3 13:34:28 +0800
 categories: [Data]
 tags: [data, data-analysis, monitor, apm, sh]
