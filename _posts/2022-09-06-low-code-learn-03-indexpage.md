@@ -59,8 +59,36 @@ public/index.html
 </div>
 ```
 
+打包相关内容参见：
 
+> [WebPack-01-Quick Start](http://houbb.github.io/2018/04/23/webpack-01-quick-start)
 
+### 打包配置
+
+webpack 的配置比较简单：
+
+```js
+const CompressionPlugin = require('compression-webpack-plugin')
+
+const isProd = process.env.NODE_ENV === 'production'
+
+module.exports = {
+    publicPath: isProd ? '/idrag/' : './',
+    configureWebpack: () => {
+        if (isProd) {
+            return {
+                plugins: [
+                    new CompressionPlugin({
+                        test: /\.js$|\.html$|\.css$|\.jpg$|\.jpeg$|\.png/, // 需要压缩的文件类型
+                        threshold: 10240, // 归档需要进行压缩的文件大小最小值，这个对 10K 以上的进行压缩
+                        deleteOriginalAssets: false, // 是否删除原文件
+                    }),
+                ],
+            }
+        }
+    },
+}
+```
 
 # 参考资料
 
