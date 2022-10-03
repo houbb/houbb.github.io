@@ -37,9 +37,17 @@
 
 <body class="container">
 
-<section class="nav-wrapper">
-	<a href="https://houbb.github.io/jsonf">JSON格式化</a>
-</section>
+<div class="nav" style="margin-bottom: 10px;">
+   <h2>JS/CSS/HTML 压缩</h2>	
+   
+   <div style="text-align: right;">
+	<a href="http://houbb.github.io/jsonf/">JSON 格式化</a>
+	|
+	<a href="http://houbb.github.io/jsf/">JS/CSS/HTML 压缩</a>
+	|
+	<a href="http://houbb.github.io/jsf/b">JS/CSS/HTML 美化</a>
+   </div>
+</div>
 
 
 <div class="textarea" >
@@ -56,6 +64,7 @@
 	</select>
 	<span id = "button-wrapper">
 		<button class="btn" onclick="clickCompress()">压缩</button>
+		<button class="btn btn-info" onclick="swap()">交换</button>
 	</span>
 </div>
 
@@ -86,6 +95,15 @@
 		matchBrackets: true,
 		mode:  "javascript"
 	});
+	
+	// 交换内容
+	function swap() {
+		let sourceVal = editor1.getValue();
+		let targetVal = editor2.getValue();
+		
+		editor1.setValue(targetVal);
+		editor2.setValue(sourceVal);
+	};
   
 	// 监听下拉框的值变化
 	function formatTypeChange(val) {	
