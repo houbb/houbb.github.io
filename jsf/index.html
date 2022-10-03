@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>格式化</title>
+
+    <link rel="stylesheet" href="css/base.css">
+	<link rel="stylesheet" href="lib/codemirror.css">
+
+    <style>
+        .textarea {
+            width: 100%;
+        }
+
+		#formatType {
+			width: 200px;
+			display: inline-block;
+		}
+		
+		.nav-wrapper {
+			margin-bottom: 20px;
+		}
+		
+		#button-wrapper {
+			margin-left: 20px;
+		}
+		
+		#handle-wrapper {
+			margin: 20px 0;
+		}
+    </style>
+
+</head>
+
+<body class="container">
+
+<section class="nav-wrapper">
+	<a href="https://houbb.github.io/jsonf">JSON格式化</a>
+</section>
+
+
+<div class="textarea" >
+	<textarea  id="original" placeholder="请输入原始内容"></textarea>
+</div>
+
+
+
+<div id = "handle-wrapper">
+	<select id = "formatType" class="form-control" onchange="formatTypeChange(this.value)">
+		<option value = "javascript">javascript</option>
+		<option value = "css">css</option>
+		<option value = "text/html">html</option>
+	</select>
+	<span id = "button-wrapper">
+		<button class="btn" onclick="clickCompress()">压缩</button>
+	</span>
+</div>
+
+<div class="textarea" >
+	<textarea  id="format" placeholder="格式化后的内容"></textarea>
+</div>
+
+
+<script src="js/minicss.js"></script>
+<script src="js/minijs.js"></script>
+<script src="js/minihtml.js"></script>
+<script src="lib/codemirror.js"></script>
+<script src="mode/javascript/javascript.js"></script>
+<script src="mode/htmlmixed/htmlmixed.js"></script>
+<script src="mode/css/css.js"></script>
+
+<script>
+	var editor1 = CodeMirror.fromTextArea(document.getElementById("original"), {
+		lineNumbers: true,
+		styleActiveLine: true,
+		matchBrackets: true,
+		mode:  "javascript"
+	});
+	
+	var editor2 = CodeMirror.fromTextArea(document.getElementById("format"), {
+		lineNumbers: true,
+		styleActiveLine: true,
+		matchBrackets: true,
+		mode:  "javascript"
+	});
+  
+	// 监听下拉框的值变化
+	function formatTypeChange(val) {	
+		// 动态改变主题模式
+		editor1.setOption("mode", val);
+		editor2.setOption("mode", val);
+	}
+    //后续可以添加去除注释。细节优化。
+    function clickCompress() {
+        let text = editor1.getValue();
+		let type = getFortmatType();
+		
+		let result = '';
+		if('javascript' == type) {
+			result = minifyJs(text, {});
+		} else if('css' == type) {
+			result = minifyCss(text, {
+				level: 1, 
+				inline: false
+			});	
+		} else if('text/html' == type) {
+			let o = {
+				caseSensitive: true, 
+				collapseBooleanAttributes: true, 
+				collapseWhitespace: true, 
+				decodeEntities: true, 
+				minifyCSS: true, 
+				minifyJS: true, 
+				removeScriptTypeAttributes: true, 
+				removeStyleLinkTypeAttributes: true, 
+				useShortDoctype: false, 
+			}
+			result = minifyHtml(text, o);
+		} else {
+			alert('暂不支持的类型');
+		}
+		
+		editor2.setValue(result);
+    }
+
+	// 原始文件内容
+	function getSourceContent() {
+		let text = $('original').value;
+		
+		return text;
+	}	
+	// 格式化的种类
+	function getFortmatType() {
+		let value = $('formatType').value;
+		
+		return value;
+	};
+	
+	function $(id) {
+        return document.getElementById(id);
+    }
+	
+	// 压缩 JS
+	function minifyJs(text, o) {
+        if (o && o.output && o.output.comments) {
+            // Convert to `RegExp`
+            o.output.comments = new RegExp(o.output.comments);
+        }
+        var out = UglifyJS.minify(text, Object.assign({
+            output: {
+                comments: false
+            }
+        }, o));
+	
+        return out.error ? out.error.message : out.code;
+    }
+	// 压缩 CSS
+	function minifyCss(text, o) {
+        var out = (new CleanCSS(o)).minify(text);
+        var result  = {value: out.errors && out.errors.length ? out.errors.join('\n') : out.styles};
+		return result.value;
+    }
+	// 压缩 HTML
+	function minifyHtml(text, o) {
+		console.log(o);
+		let result = {value: require('html-minifier').minify(text, o)};
+		
+		return result.value;
+	}
+</script>
+
+</body>
+</html>
