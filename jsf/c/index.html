@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    <title>JavaScript Obfuscator Tool</title>
+    <meta name="description" content="JavaScript Obfuscator is a free online tool that obfuscates your source code, preventing it from being stolen and used without permission.">
+    <meta name="Keywords" content="obfuscator, javascript obfuscator, javascript obfuscator tool, obfuscation js, obfuscate tool, обфускатор, code obfuscator, obfuscator online, uglify, minify, js obfuscator, obfuscator io, obfuscator.io, obfuscate, protection">
+    <link rel="stylesheet" href="static/dist/stylesheets/bundle.css" media="screen" title="no title">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-116652505-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+
+        gtag('js', new Date());
+
+        gtag('config', 'UA-116652505-1');
+    </script>
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "Organization",
+            "name": "Obfuscator.io",
+            "url": "https://obfuscator.io",
+            "image": "http://obfuscator.io/static/images/logo.png",
+            "sameAs": [
+                "https://github.com/javascript-obfuscator/javascript-obfuscator",
+                "https://http://javascriptobfuscator.herokuapp.com/",
+                "https://www.npmjs.com/package/javascript-obfuscator"
+            ]
+        }
+    </script>
+</head>
+
+<body>
+    <div class="ui container grid middle aligned stackable">
+        <div class="row">
+            <div class="column twelve wide">
+                <div class="ui basic segment">
+                    <h1>JavaScript Obfuscator Tool</h1>
+                    <p>A free and efficient obfuscator for JavaScript (including support of ES2022). Make your code harder to copy and prevent people from stealing your work. This tool is a Web UI to the excellent (and open source) <code><a href="https://github.com/javascript-obfuscator/javascript-obfuscator" target="_new">javascript-obfuscator</a>@4.0.0</code> created by Timofey Kachalov.</p>
+                    <div id="GithubBadges"><iframe src="https://ghbtns.com/github-btn.html?user=javascript-obfuscator&repo=javascript-obfuscator&type=star&size=large&count=true" frameborder="0" scrolling="0" width="150px" height="30px"></iframe><iframe src="https://ghbtns.com/github-btn.html?user=javascript-obfuscator&repo=javascript-obfuscator&type=watch&v=2&size=large" frameborder="0" scrolling="0" width="90px" height="30px"></iframe>
+                        <div id="donate" title="Sponsor javascript-obfuscator/javascript-obfuscator" role="button" onclick="window.scrollTo(0, document.body.scrollHeight)"><svg id="donate-heart" viewBox="0 0 12 16" version="1.1" width="12" height="16" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M8.727 3C7.091 3 6.001 4.65 6.001 4.65S4.909 3 3.273 3C1.636 3 0 4.1 0 6.3 0 9.6 6 14 6 14s6-4.4 6-7.7C12 4.1 10.364 3 8.727 3z"></path>
+                            </svg> Sponsor</div>
+                    </div>
+                </div>
+            </div>
+            <div class="column four wide">
+                <div class="ui basic segment"><a href="https://github.com/javascript-obfuscator/javascript-obfuscator"><img id="Logo" class="ui image centered" src="/static/images/logo.png" alt="obfuscator.io"></a></div>
+            </div>
+        </div>
+    </div>
+    <div class="ui container message internally celled equal width stackable four column grid">
+        <div class="column">
+            <h3>What is this?</h3>
+            <p>This tool transforms your original JavaScript source code into a new representation that's harder to understand, copy, re-use and modify without authorization. The obfuscated result will have the exact functionality of the original code.</p>
+        </div>
+        <div class="column">
+            <h3>So, it is like UglifyJS, Closure Compiler, etc?</h3>
+            <p>Yes and no. While UglifyJS (and others minifiers) does make the output code harder to understand (compressed and ugly), it can be easily transformed into something readable using a JS Beautifier.</p>
+            <p>This tool prevents that by using various transformations and "traps", such as <strong>self-defending</strong> and <strong>debug protection</strong>.</p>
+        </div>
+        <div class="column">
+            <h3>How does the obfuscation work?</h3>
+            <p>Through a series of transformations, such as variable / function / arguments renaming, string removal, and others, your source code is transformed into something unreadable, while working exactly as before.</p>
+            <p><a href="#FAQ">Read more in the FAQ...</a></p>
+        </div>
+        <div class="column">
+            <h3>Sounds great!</h3>
+            <p>Just paste your code or upload it below and click on "obfuscate".</p>
+            <p>Also, be sure to read about <a href="#Options">all the options</a> to understand all the trade-offs between code protection and code size / speed.</p>
+        </div>
+    </div>
+    <div class="ui container grid">
+        <div class="row">
+            <div class="column">
+                <div class="" id="root"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <h2 class="header" id="FAQ">FAQ</h2>
+                <h4>Why would I want to obfuscate my JavaScript code?</h4>
+                <p>There are numerous reasons why it's a good idea to protect your code, such as:</p>
+                <ul>
+                    <li>Prevent anyone from simply copy/pasting your work. This is specially important on 100% client side projects, such as HTML5 games;</li>
+                    <li>Removal of comments and whitespace that aren't needed. Making it faster to load and harder to understand;</li>
+                    <li>Protection of work that hasn't been paid for yet. You can show your work to the client knowing that they won't have the source code until the invoice has been paid.</li>
+                </ul>
+                <h4>Is this obfuscator absolutely foolproof?</h4>
+                <p>No, while it's impossible to recover the exact original source code, someone with the time, knowledge and patience can reverse-engineer it.</p>
+                <p>Since the JavaScript runs on the browser, the browser's JavaScript engine must be able to read and interpret it, so there's no way to prevent that. And any tool that promises that is not being honest.</p>
+                <h4>Why is my obfuscated code larger than my original source?</h4>
+                <p>Because the obfuscator introduces new pieces of code that are meant to protect and defend against debugging and reverse-engineering. Also strings are converted to <code>\xAB</code> hexadecimal code to make things a little bit harder to understand. You don't have to worry too much about code size because there is a lot of repetition, so the obfuscated code will be compressed extremely well by your webserver (if you have GZIP compression enabled on your server, which most do nowadays).</p>
+                <h4>Can I run a minifier such as UglifyJS or Google Closure Compiler on the obfuscated output?</h4>
+                <p>No, it's not recommended and in some cases it'll break the code (such as if you enable <strong>self-defending</strong>). You can run your code through a minifier before to make sure that it removes dead code and do other optimizations, though.</p>
+                <h4>Do you store my source code?</h4>
+                <p>No. The source is processed by our application server, then to the obfuscator and back to the browser, so it only stays on our server memory for a brief period of time (usually milliseconds).</p>
+                <h4>Can I recover the original source code from the obfuscated one?</h4>
+                <p>No, it's impossible to revert the obfuscated code back to your original code, so keep the original safe.</p>
+                <h4>Does this tool works with Node.js source code?</h4>
+                <p>Yes.</p>
+                <h4>I want to run the obfuscator on my own server/machine. Is it possible?</h4>
+                <p>Sure. This tool uses a free and open source (BSD-2-Clause licensed) obfuscator written in TypeScript. You can go to <a href="https://github.com/javascript-obfuscator/javascript-obfuscator" target="_new">its GitHub page</a> and read more there.</p>
+                <p>There are also a number of plugins, such as: <a href="https://github.com/javascript-obfuscator/webpack-obfuscator">webpack-obfuscator</a>, <a href="https://github.com/javascript-obfuscator/gulp-javascript-obfuscator">gulp-javascript-obfuscator</a> and <a href="https://github.com/javascript-obfuscator/grunt-contrib-obfuscator">grunt-contrib-obfuscator</a>.</p>
+                <p>Also, this web app is open-source as well. <a href="https://github.com/javascript-obfuscator/javascript-obfuscator-ui">Check out our GitHub</a>.</p>
+                <h4>What are other similar tools?</h4>
+                <p>If you're interested in just uglyfing and compressing your code, I suggest <a href="https://jscompress.com/" target="_new">JSCompress.com</a>.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <div class="ui basic segment secondary">
+                    <h3 class="ui header">Support project:</h3>
+                    <div id="DonateWallets" class="ui bulleted list">
+                        <div class="item">(Bitcoin) bc1q203p8nyrstwm7vwzjg3h9l9t6y9ka0umw0rx96</div>
+                    </div>
+                    <div class="ui tiny header">Big thanks to all supporters!</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <div class="ui divider"></div><span>&copy; <a href="https://www.tiagoserafim.com/">Tiago Serafim</a>, <a href="https://github.com/sanex3339">Timofey Kachalov</a> - <a href="https://github.com/javascript-obfuscator/javascript-obfuscator-ui">source-code</a> - Powered by <a href="https://github.com/javascript-obfuscator/javascript-obfuscator">JavaScript Obfuscator</a></span>
+            </div>
+        </div>
+    </div>
+    <script src="static/dist/bundle.js"></script>
+	<script src="static/dist/workers/obfuscation-worker.js"></script>
+</body>
+
+</html>
