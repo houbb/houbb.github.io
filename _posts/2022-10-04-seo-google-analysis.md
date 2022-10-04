@@ -61,5 +61,9 @@ https://www.huxu.org.cn/marketing/57608.html
 
 [自己建网站怎么添加 Google Analytics 统计代码查看每日流量](https://blog.naibabiji.com/tutorial/google-analytics.html)
 
+[一文读懂独立站谷歌SEO优化流程](https://zhuanlan.zhihu.com/p/507769599)
+
+[为网站开启Google Analytics](https://zhuanlan.zhihu.com/p/507279404)
+
 * any list
 {:toc}
