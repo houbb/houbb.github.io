@@ -1,9 +1,16 @@
 # Blog
 
-This is an echo blog edit by binbin.Hou
+This is an echo blog edit by 老马啸西风。
 
 You can visit it [here](https://houbb.github.io/).
 
+# About Me
+
+一个兴趣使然的技术爱好者。
+
+关注我的个人公众号：
+
+![个人公众号](http://houbb.github.io/SIGN.png)
 
 # TODO
  
