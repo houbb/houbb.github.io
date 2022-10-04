@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="房贷计算器2022，利用2022最新的房贷利率，计算2022年月供，房贷额度，利息等，助你成功买房，走向人生巅峰" />
+    <meta name="generator" content="emlog" />
+    <title>房贷计算器2022_房贷计算器最新2022_房贷计算器</title>
+    
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/response.css">
+    </head>
+<body>
+<div class="container">
+
+    <!--header component-->
+    <!-- 房贷计算器最新2022 -->
+    <div class="header">
+        <h1 class="logo">
+            房贷计算器2022
+        </h1>
+		
+		<a href="https://houbb.github.io/tools/" style="float:right;">其他工具</a>
+    </div>
+    <!--header component /-->
+
+    <!--banner component-->
+    <div class="banner">
+
+    </div>
+    <!--banner component /-->
+    <!--calculator component-->
+    <div class="calculator" id="calculator">
+        <div class="tab">
+            <div class="tab-header">
+                <div class="tab-nav">
+                    <a href="#tab0" class="item current">商业房贷计算器</a>
+                    <a href="#tab1" class="item">公积金贷款计算器</a>
+                    <a href="#tab2" class="item">组合房贷计算器</a>
+                </div>
+            </div>
+            <div class="tab-body">
+                <div class="item business">
+                    <h2 class="title">商业房贷计算器</h2>
+                    <div class="container-fluid" id="business-form">
+                        <div class="col-md-6">
+                            <p class="notice danger">2022年最新商贷利率4.65%，公积金利率3.25%</p>
+                            <h3 class="title2">输入数据</h3>
+                            <div class="form">
+                            <div class="form-group">
+                                <label>计算方式</label>
+                                <div class="form-input business-dk-type">
+                                    <input type="radio" value="item1-ed-form" name="type" id="item1-radio1" checked />
+                                    <label for="item1-radio1" class="label-normal">按贷款额度算</label>
+                                    <input type="radio" value="item1-mj-form" name="type" id="item1-radio2">
+                                    <label for="item1-radio2" class="label-normal">按面积算</label>
+                                </div>
+                            </div>
+                            <form action="" method="post" id="item1-ed-form">
+                                <div class="form-group">
+                                    <label>贷款金额</label>
+                                    <div class="form-input">
+                                        <input type="text" class="form-control" name="money" required>
+                                        <span class="unit">万元</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>贷款期限</label>
+                                    <div class="form-input">
+                                        <input type="text" class="form-control" name="time" value="20年" required>
+                                        <span class="toggle-dropdown"></span>
+                                        <div class="dropdown">
+                                            <ul class="list">
+                                                <li data-value="5年">5年</li>
+                                                <li data-value="10年">10年</li>
+                                                <li data-value="15年">15年</li>
+                                                <li data-value="20年">20年</li>
+                                                <li data-value="25年">25年</li>
+                                                <li data-value="30年">30年</li>
+												<li data-value="35年">35年</li>
+												<li data-value="40年">40年</li>
+												<li data-value="45年">45年</li>
+												<li data-value="50年">50年</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>年利率</label>
+                                    <div class="form-input">
+                                        <input type="text" class="form-control select" name="interestRateDiscount"
+                                               value="最新基准利率"
+                                               readonly
+                                               required>
+                                        <span class="toggle-dropdown"></span>
+                                        <div class="dropdown">
+                                            <ul class="list">
+                                                <li data-value="最新基准利率7折">最新基准利率7折</li>
+                                                <li data-value="最新基准利率8折">最新基准利率8折</li>
+                                                <li data-value="最新基准利率8.3折">最新基准利率8.3折</li>
+                                                <li data-value="最新基准利率8.5折">最新基准利率8.5折</li>
+                                                <li data-value="最新基准利率8.8折">最新基准利率8.8折</li>
+                                                <li data-value="最新基准利率9折">最新基准利率9折</li>
+                                                <li data-value="最新基准利率9.5折">最新基准利率9.5折</li>
+                                                <li data-value="最新基准利率">最新基准利率</li>
+                                                <li data-value="最新基准利率1.05倍">最新基准利率1.05倍</li>
+                                                <li data-value="最新基准利率1.1倍">最新基准利率1.1倍</li>
+                                                <li data-value="最新基准利率1.2倍">最新基准利率1.2倍</li>
+                                                <li data-value="最新基准利率1.3倍">最新基准利率1.3倍</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-input">
+                                        您也可以手动输入
+                                        <input type="text" class="form-control" value="4.90%" name="interestRate">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-input">
+                                        <input type="submit" value="计算" class="btn btn-primary">
+                                        <input type="reset" value="重置" class="btn btn-default">
+                                    </div>
+                                </div>
+                            </form>
+                            <form action="" method="post" id="item1-mj-form" style="display: none">
+                                <div class="form-group">
+                                    <label>平米单价</label>
+                                    <div class="form-input">
+                                        <input type="text" class="form-control" name="unitPayment" required>
+                                        <span class="unit">元/平米</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>面积</label>
+                                    <div class="form-input">
+                                        <input type="text" class="form-control" name="area" required>
+                                        <span class="unit">平米</span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>购房性质</label>
+                                    <div class="form-input" id="gf-type">
+                                        <input type="radio" value="3" name="gf-type" checked> 一套房
+                                        <input type="radio" value="6" name="gf-type"> 二套房
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>首付</label>
+                                    <div class="form-input">
+                                        <input type="text" class="form-control" name="firstPayment" value="3成" required>
+                                        <span class="toggle-dropdown"></span>
+                                        <div class="dropdown">
+                                            <ul class="list">
+                                                <li data-value="2成">2成</li>
+                                                <li data-value="3成">3成</li>
+                                                <li data-value="4成">4成</li>
+                                                <li data-value="5成">5成</li>
+                                                <li data-value="6成">6成</li>
+                                                <li data-value="7成">7成</li>
+                                                <li data-value="8成">8成</li>
+                                                <li data-value="9成">9成</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>贷款期限</label>
+                                    <div class="form-input">
+                                        <input type="text" class="form-control" name="time" value="20年" required>
+                                        <span class="toggle-dropdown"></span>
+                                        <div class="dropdown">
+                                            <ul class="list">
+                                                <li data-value="5年">5年</li>
+                                                <li data-value="10年">10年</li>
+                                                <li data-value="15年">15年</li>
+                                                <li data-value="20年">20年</li>
+                                                <li data-value="25年">25年</li>
+                                                <li data-value="30年">30年</li>
+												<li data-value="35年">35年</li>
+												<li data-value="40年">40年</li>
+												<li data-value="45年">45年</li>
+												<li data-value="50年">50年</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>年利率</label>
+                                    <div class="form-input">
+                                        <input type="text" class="form-control select" name="interestRateDiscount" value="最新基准利率" readonly
+                                               required>
+                                        <span class="toggle-dropdown"></span>
+                                        <div class="dropdown">
+                                            <ul class="list">
+                                                <li data-value="最新基准利率7折">最新基准利率7折</li>
+                                                <li data-value="最新基准利率8折">最新基准利率8折</li>
+                                                <li data-value="最新基准利率8.3折">最新基准利率8.3折</li>
+                                                <li data-value="最新基准利率8.5折">最新基准利率8.5折</li>
+                                                <li data-value="最新基准利率8.8折">最新基准利率8.8折</li>
+                                                <li data-value="最新基准利率9折">最新基准利率9折</li>
+                                                <li data-value="最新基准利率9.5折">最新基准利率9.5折</li>
+                                                <li data-value="最新基准利率">最新基准利率</li>
+                                                <li data-value="最新基准利率1.05倍">最新基准利率1.05倍</li>
+                                                <li data-value="最新基准利率1.1倍">最新基准利率1.1倍</li>
+                                                <li data-value="最新基准利率1.2倍">最新基准利率1.2倍</li>
+                                                <li data-value="最新基准利率1.3倍">最新基准利率1.3倍</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-input">
+                                        您也可以手动输入
+                                        <input type="text" class="form-control" value="4.90%" name="interestRate">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-input">
+                                        <input type="submit" value="计算" class="btn btn-primary">
+                                        <input type="reset" value="重置" class="btn btn-default">
+                                    </div>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item fund">
+                    <h2 class="title">公积金房贷计算器</h2>
+                    <div class="container-fluid" id="fund-form">
+                        <div class="col-md-6">
+                            <p class="notice danger">2022年最新商贷利率4.90%，公积金利率3.25%</p>
+                            <h3 class="title2">输入数据</h3>
+                            <div class="form">
+                                <div class="form-group">
+                                    <label>计算方式</label>
+                                    <div class="form-input fund-dk-type">
+                                        <input type="radio" value="item2-ed-form" name="item2-type" id="item2-radio1"
+                                               checked />
+                                        <label for="item2-radio1" class="label-normal">按贷款额度算</label>
+                                        <input type="radio" value="item2-mj-form" name="item2-type" id="item2-radio2">
+                                        <label for="item2-radio2" class="label-normal">按面积算</label>
+                                    </div>
+                                </div>
+                                <form action="" method="post" id="item2-ed-form">
+                                    <div class="form-group">
+                                        <label>贷款金额</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control" name="money" required>
+                                            <span class="unit">万元</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>贷款期限</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control" name="time" value="20年" required>
+                                            <span class="toggle-dropdown"></span>
+                                            <div class="dropdown">
+                                                <ul class="list">
+                                                    <li data-value="5年">5年</li>
+                                                    <li data-value="10年">10年</li>
+                                                    <li data-value="15年">15年</li>
+                                                    <li data-value="20年">20年</li>
+                                                    <li data-value="25年">25年</li>
+                                                    <li data-value="30年">30年</li>
+													<li data-value="35年">35年</li>
+													<li data-value="40年">40年</li>
+													<li data-value="45年">45年</li>
+													<li data-value="50年">50年</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>年利率</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control select" name="interestRateDiscount"
+                                                   value="公积金基准利率"
+                                                   readonly
+                                                   required>
+                                            <span class="toggle-dropdown"></span>
+                                            <div class="dropdown">
+                                                <ul class="list">
+                                                    <li data-value="公积金基准利率">公积金基准利率</li>
+                                                    <li data-value="公积金基准利率1.1倍">公积金基准利率1.1倍</li>
+                                                    <li data-value="公积金基准利率1.2倍">公积金基准利率1.2倍</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-input">
+                                            您也可以手动输入
+                                            <input type="text" class="form-control" value="3.25%" name="interestRate">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-input">
+                                            <input type="submit" value="计算" class="btn btn-primary">
+                                            <input type="reset" value="重置" class="btn btn-default">
+                                        </div>
+                                    </div>
+                                </form>
+                                <form action="" method="post" id="item2-mj-form" style="display: none">
+                                    <div class="form-group">
+                                        <label>平米单价</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control" name="unitPayment" required>
+                                            <span class="unit">元/平米</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>面积</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control" name="area" required>
+                                            <span class="unit">平米</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>购房性质</label>
+                                        <div class="form-input" id="gf-type-2">
+                                            <input type="radio" value="3" name="gf-type" checked> 一套房
+                                            <input type="radio" value="6" name="gf-type"> 二套房
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>首付</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control" name="firstPayment" value="4成"
+                                                   required>
+                                            <span class="toggle-dropdown"></span>
+                                            <div class="dropdown">
+                                                <ul class="list">
+                                                    <li data-value="2成">2成</li>
+                                                    <li data-value="3成">3成</li>
+                                                    <li data-value="4成">4成</li>
+                                                    <li data-value="5成">5成</li>
+                                                    <li data-value="6成">6成</li>
+                                                    <li data-value="7成">7成</li>
+                                                    <li data-value="8成">8成</li>
+                                                    <li data-value="9成">9成</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>贷款期限</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control" name="time" value="20年" required>
+                                            <span class="toggle-dropdown"></span>
+                                            <div class="dropdown">
+                                                <ul class="list">
+                                                    <li data-value="5年">5年</li>
+                                                    <li data-value="10年">10年</li>
+                                                    <li data-value="15年">15年</li>
+                                                    <li data-value="20年">20年</li>
+                                                    <li data-value="25年">25年</li>
+                                                    <li data-value="30年">30年</li>
+													<li data-value="35年">35年</li>
+													<li data-value="40年">40年</li>
+													<li data-value="45年">45年</li>
+													<li data-value="50年">50年</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>年利率</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control select" name="interestRateDiscount" value="公积金基准利率" readonly
+                                                   required>
+                                            <span class="toggle-dropdown"></span>
+                                            <div class="dropdown">
+                                                <ul class="list">
+                                                    <li data-value="公积金基准利率">公积金基准利率</li>
+                                                    <li data-value="公积金基准利率1.1倍">公积金基准利率1.1倍</li>
+                                                    <li data-value="公积金基准利率1.2倍">公积金基准利率1.2倍</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-input">
+                                            您也可以手动输入
+                                            <input type="text" class="form-control" value="4.90%" name="interestRate">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-input">
+                                            <input type="submit" value="计算" class="btn btn-primary">
+                                            <input type="reset" value="重置" class="btn btn-default">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item combination">
+                    <h2 class="title">组合房贷计算器</h2>
+                    <div class="container-fluid" id="combination-form">
+                        <div class="col-md-6">
+                            <p class="notice danger">2022年最新商贷利率4.90%，公积金利率3.25%</p>
+                            <h3 class="title2">输入数据</h3>
+                            <div class="form">
+                                <form action="" method="post" id="item3-form">
+                                    <div class="form-group">
+                                        <label>贷款期限</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control" name="time" value="30年" required>
+                                            <span class="toggle-dropdown"></span>
+                                            <div class="dropdown">
+                                                <ul class="list">
+                                                    <li data-value="5年">5年</li>
+                                                    <li data-value="10年">10年</li>
+                                                    <li data-value="15年">15年</li>
+                                                    <li data-value="20年">20年</li>
+                                                    <li data-value="25年">25年</li>
+                                                    <li data-value="30年">30年</li>
+													<li data-value="35年">35年</li>
+													<li data-value="40年">40年</li>
+													<li data-value="45年">45年</li>
+													<li data-value="50年">50年</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>公积金贷款金额</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control" name="gjjMoney" required>
+                                            <span class="unit">万元</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>公积金贷款利率</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control" name="gjjLilv" value="3.25%"
+                                                   required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>商业贷款金额</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control" name="syMoney" required>
+                                            <span class="unit">万元</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>商业贷款利率</label>
+                                        <div class="form-input">
+                                            <input type="text" class="form-control select" name="interestRateDiscount"
+                                                   value="最新基准利率"
+                                                   readonly
+                                                   required>
+                                            <span class="toggle-dropdown"></span>
+                                            <div class="dropdown">
+                                                <ul class="list">
+                                                    <li data-value="最新基准利率7折">最新基准利率7折</li>
+                                                    <li data-value="最新基准利率8折">最新基准利率8折</li>
+                                                    <li data-value="最新基准利率8.3折">最新基准利率8.3折</li>
+                                                    <li data-value="最新基准利率8.5折">最新基准利率8.5折</li>
+                                                    <li data-value="最新基准利率8.8折">最新基准利率8.8折</li>
+                                                    <li data-value="最新基准利率9折">最新基准利率9折</li>
+                                                    <li data-value="最新基准利率9.5折">最新基准利率9.5折</li>
+                                                    <li data-value="最新基准利率">最新基准利率</li>
+                                                    <li data-value="最新基准利率1.05倍">最新基准利率1.05倍</li>
+                                                    <li data-value="最新基准利率1.1倍">最新基准利率1.1倍</li>
+                                                    <li data-value="最新基准利率1.2倍">最新基准利率1.2倍</li>
+                                                    <li data-value="最新基准利率1.3倍">最新基准利率1.3倍</li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-input">
+                                            您也可以手动输入
+                                            <input type="text" class="form-control" value="4.90%" name="interestRate">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="form-input">
+                                            <input type="submit" value="计算" class="btn btn-primary">
+                                            <input type="reset" value="重置" class="btn btn-default">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid result">
+            <h3 class="title2" id="result">输出结果</h3>
+            <div class="col-md-6">
+                <p class="title3">每月等额还款 <i class="help"></i></p>
+                <table class="calc-table">
+                    <tr>
+                        <td>贷款总额</td>
+                        <td width="50%"><span id="dbx-all">0</span> 元</td>
+                    </tr>
+                    <tr>
+                        <td>还款月数</td>
+                        <td><span id="dbx-month">0</span> 月</td>
+                    </tr>
+                    <tr class="special">
+                        <td>每月还款</td>
+                        <td class="red"><span id="dbx-monthlyPayment">0</span> 元</td>
+                    </tr>
+                    <tr>
+                        <td>总支付利息</td>
+                        <td class="red"><span id="dbx-totalInterest">0</span> 元</td>
+                    </tr>
+                    <tr>
+                        <td>本息合计</td>
+                        <td class="red"><span id="dbx-allMoney">0</span> 元</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <p class="title3">逐月递减还款 <i class="help"></i></p>
+                <table class="calc-table">
+                    <tr>
+                        <td>贷款总额</td>
+                        <td width="50%"><span id="dbj-all">0</span> 元</td>
+                    </tr>
+                    <tr>
+                        <td>还款月数</td>
+                        <td><span id="dbj-month">0</span> 月</td>
+                    </tr>
+                    <tr class="special">
+                        <td>首月还款</td>
+                        <td class="red">
+                            <span id="dbj-firstMonthPayment">0</span> 元<br>
+                            <p class="grey">每月递减：<span id="dbj-monthlyDecline">0</span> 元</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>总支付利息</td>
+                        <td class="red"><span id="dbj-totalInterest">0</span> 元</td>
+                    </tr>
+                    <tr>
+                        <td>本息合计</td>
+                        <td class="red"><span id="dbj-allMoney">0</span> 元</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="result-footer">
+                <p class="action">接下来您可以：<a href="javascript:;" id="recount">重新计算</a></p>
+            </div>
+        </div>
+    </div>
+    <!--calculator component /-->
+
+   
+    
+
+ <footer>
+    <div class="footer">
+       &copy; 房贷计算器版权所有 Powered by <a href="https://github.com/houbb" title="房贷计算器2022">房贷计算器2022</a> <br>
+	</div>
+	
+	<div style="text-align: center;">
+		<img src = "img/SIGN.png" style="height: 250px; width: 600px;"/>
+	</div>
+</footer>
+</div> <!-- .container /-->
+<script src="js/jquery.min.js"></script>
+<script src="js/main.min.js"></script>
+</body>
+</html>

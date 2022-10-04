@@ -1,0 +1,107 @@
+@media screen and (max-width: 1024px) {
+  .container {
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box; }
+
+  .notice {
+    font-size: 12px;
+    text-align: center; }
+
+  .header .logo a, .header .logo img {
+    height: 40px; }
+
+  .banner {
+    max-height: 100px; }
+
+  .tab .tab-header {
+    width: 100%;
+    box-sizing: border-box; }
+    .tab .tab-header .websiteName {
+      text-align: center;
+      font-size: 24px;
+      color: #666; }
+    .tab .tab-header .tab-nav {
+      width: 100%; }
+    .tab .tab-header a, .tab .tab-header .item {
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+      margin: 5px 0; }
+    .tab .tab-header .tab-nav {
+      padding: 15px 0; }
+      .tab .tab-header .tab-nav .item {
+        width: 31.3%;
+        float: left;
+        font-size: 12px;
+        text-align: center;
+        padding: 10px 0;
+        margin: 1%;
+        word-wrap: break-word;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        background-color: #ececec;
+        border-radius: 4px;
+        color: #666; }
+        .tab .tab-header .tab-nav .item.current {
+          background-color: #3A6DBF;
+          color: #fff; }
+  .tab .tab-body .item {
+    padding: 10px 0; }
+
+  .calculator {
+    padding: 10px 5px;
+    border: none; }
+
+  .col-md-6 {
+    width: 100%; }
+
+  .form .form-group label {
+    width: 100%; }
+  .form .form-group .form-input {
+    float: none;
+    width: 100%; }
+    .form .form-group .form-input .toggle-dropdown, .form .form-group .form-input .unit {
+      bottom: 1px;
+      top: inherit; }
+    .form .form-group .form-input .btn {
+      width: 100%; }
+
+  .article-list li {
+    padding-left: 0;
+    margin-bottom: 10px;
+    line-height: 1.2; }
+    .article-list li a {
+      font-size: 14px; }
+
+  .result-footer a {
+    display: block; }
+
+  .breadthumb {
+    line-height: 3; }
+
+  .article {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    border: none; }
+    .article .article-title {
+      line-height: 1.5;
+      margin-bottom: 10px; }
+    .article .content {
+      padding: 10px 0; }
+
+  .side {
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 10px; }
+    .side .title2 {
+      margin: 0; }
+    .side ul {
+      margin: 10px 0 0; }
+      .side ul li {
+        line-height: 1.2;
+        margin-bottom: 10px; } }
+
+/*# sourceMappingURL=respone.css.map */
