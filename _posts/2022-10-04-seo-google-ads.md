@@ -37,7 +37,13 @@ published: true
 
 将这段代码放在网站中即可。
 
+点击提交申请即可。
 
+# 其他
+
+类似的还有 [carbon ads](https://www.carbonads.net/)
+
+感觉比较业界良心，准备后续接入。
 
 # 参考资料
 
