@@ -1,0 +1,54 @@
+---
+title: GAMES
+layout: default
+header-img: "static/app/res/img/tags-bg.jpg"
+permalink: /games/
+---
+
+<head>
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082537058031213" crossorigin="anonymous"></script>
+</head>
+
+<style>
+	.main-content-container {
+		min-height: 650px;
+	}
+	.stackable>a {
+		line-height: 80px;
+		text-align: center;
+		font-size: 26px;
+	}
+</style>
+
+<!-- Page Header -->
+<header class="intro-header" style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<div class="site-heading" id="tag-heading">
+					<h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
+					<span class="subheading">{{ page.description }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<!-- Main Content -->
+<div class="main-content-container container">
+	<div class="ui four column stackable padded grid">
+			<a class="column" style="background-color:#F09C5A; color: #FFFFFF;" href="http://houbb.github.io/games/mota"><span>魔塔</span></a>
+			<a class="column" style="background-color:#ED556A; color: #FFFFFF;" href="http://houbb.github.io/games/2048"><span>2048</span></a>
+	</div>
+</div>
+
+<footer style="text-align: center; margin-top:50px;">
+	<div class="footer">
+		&copy; 版权所有 Powered by <a href="https://github.com/houbb" title="老马啸西风">老马啸西风</a> <br>
+	</div>
+	<br />
+	<div style="text-align: center;">
+		<img src="http://houbb.github.io/SIGN.png" style="height: 250px; width: 600px;" />
+	</div>
+</footer>
