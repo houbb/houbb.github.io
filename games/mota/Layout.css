@@ -1,0 +1,317 @@
+@font-face {
+	font-family: "Mota";
+	src: url("Word.ttf");
+}
+
+html,body {
+	margin: 0;
+	padding: 0;
+	background-color: #000000;
+}
+
+#GameStart {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+	background-color: #333333;
+	z-index: 50;
+	background-image: url(./Res/Floor.png);
+}
+
+#LoadTip {
+	height: 20px;
+	text-align: center;
+	margin-top: 25%;
+	color: #FFFFFF;
+}
+
+#LoadProgressBar {
+	width: 80%;
+	height: 20px;
+	margin: 10px auto;
+	border: solid 1px #CC6600;
+	-webkit-box-shadow: 0px 0px 10px #CC6600;
+	box-shadow: 0px 0px 10px #CC6600;
+	background-color: #CC6600;
+	-moz-border-radius: 15px;
+ -webkit-border-radius: 15px;
+ border-radius:15px;
+	z-index: 51;
+}
+
+#LoadProgress {
+	width: 0%;
+	height: 6px;
+	position: relative;
+	top: 6px;
+	left: 7px;
+	border: solid 1px #FFFFFF;
+	-webkit-box-shadow: 0px 0px 5px #FFFFFF;
+	box-shadow: 0px 0px 5px #FFFFFF;
+	background-color: #FFFFFF;
+	-moz-border-radius: 15px;
+ 	-webkit-border-radius: 15px;
+  	border-radius:15px;
+	z-index: 52;
+}
+
+#GameGroup {
+	max-width: 500px;
+	max-height: 365px;
+	min-height: 365px;
+	margin: 0 auto;
+	background-color: #000000;
+}
+
+#GameLoading {
+	width: 100%;
+	color: #FFFFFF;
+	text-align: center;
+	margin-top: 150px;
+	font-family: "Mota";
+	position: absolute;
+	z-index: 1;
+}
+
+#CanvasGroup {
+	width: 352px;
+	height: 352px;
+	margin: 0;
+	border: solid 3px #FFFFFF;
+	position: absolute;
+	background-color: #333333;
+	background-image: url(./Res/Floor.png);
+}
+
+#ToolGroup {
+  width: 120px;
+  height: 120px;
+  position: fixed;
+  left: 5px;
+  bottom: 0;
+  z-index: 11;
+}
+
+#HelpButton {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  margin-top: 44px;
+  margin-left: 180px;
+  opacity: 0.5;
+}
+
+#ToolsButton {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  margin-left: 60px;
+  opacity: 0.5;
+}
+
+#GoFloorButton {
+  width: 50px;
+  position: absolute;
+  filter:grayscale(100%); 
+  -webkit-filter:grayscale(100%); 
+  -moz-filter:grayscale(100%); 
+  -ms-filter:grayscale(100%); 
+  -o-filter:grayscale(100%); 
+  filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  -webkit-filter:grayscale(1);
+  opacity: 0.5;
+}
+
+#EnemyBookButton {
+  width: 50px;
+  position: absolute;
+  margin-top: 60px;
+  filter:grayscale(100%); 
+  -webkit-filter:grayscale(100%); 
+  -moz-filter:grayscale(100%); 
+  -ms-filter:grayscale(100%); 
+  -o-filter:grayscale(100%); 
+  filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+  -webkit-filter:grayscale(1);
+  opacity: 0.5;
+}
+
+#SettingButton {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  margin-top: 60px;
+  margin-left: 60px;
+  display: none;
+  opacity: 0.5;
+}
+
+#SaveGame {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  margin-top: 60px;
+  margin-left: 120px;
+  opacity: 0.5;
+}
+
+#LoadGame {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  margin-left: 120px;
+  opacity: 0.5;
+}
+
+#ZoomBox {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  margin-top: 25px;
+  margin-left: 60px;
+  opacity: 0.5;
+}
+
+#Test {
+  display: none;
+}
+
+#ControlGroup {
+	width: 160px;
+	height: 160px;
+	position: fixed;
+	bottom: 3%;
+	right: 3%;
+	z-index: 12;
+}
+
+#Controller {
+  zoom: 1;
+  width: 100%;
+  height: 100%;
+}
+
+#Controller2 {
+  zoom: 1;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+#Tip {
+	color: #FFFFFF;
+	text-align: center;
+}
+
+#Property {
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  z-index: 5;
+}
+
+#MapBg {
+	margin: 100px 0 0 0;
+ 	padding: 0;
+ display: block;
+ position: absolute;
+	z-index: 6;
+}
+
+#MapEvent{
+	margin: 100px 0 0 0;
+ 	padding: 0;
+ 	display: block;
+ position: absolute;
+	z-index: 7;
+}
+
+#MapFg {
+	margin: 100px 0 0 0;
+ 	padding: 0;
+ display: block;
+	position: absolute;
+	z-index: 8;
+}
+
+#MapHero {
+  margin: 100px 0 0 0;
+ 	padding: 0;
+ display: block;
+ position: absolute;
+	z-index: 9;
+}
+
+#SystemUI {
+	margin: 100px 0 0 0;
+ 	padding: 0;
+  	display: block;
+  	position: absolute;
+	z-index: 10;
+}
+
+#DataUpdate {
+	margin: 100px 0 0 0;
+ 	padding: 0;
+  	display: block;
+  	position: absolute;
+	z-index: 11;
+}
+
+@media screen and (min-height: 490px) {
+	#GameGroup {
+		max-width: 490px;
+		max-height: 350px;
+		margin: 10% auto;
+		background-color: #000000;
+	}
+}
+
+@media screen and (max-width: 490px) {
+  #GameGroup {
+    max-width: 490px;
+    max-height: 365px;
+    min-height: 365px;
+    margin: 0 auto;
+    background-color: #000000;
+  }
+  
+  #GameLoading {
+	  margin-top: 220px;
+  }
+  
+  #LoadTip {
+	height: 20px;
+	text-align: center;
+	margin-top: 50%;
+	color: #FFFFFF;
+	font-family: "Mota";
+  }
+
+  #CanvasGroup {
+    width: 352px;
+    height: 352px;
+    margin: 0;
+    border: solid 2px #FFFFFF;
+    position: fixed;
+    left: 0;
+    background-color: #333333;
+  }
+}
+
+/* Gitչʾ */
+#MaYunLogo {position: fixed;top: 5px;left: 5px;opacity: 0.6;z-index:99998;width: 5%;}
+.osc_git_box {position: fixed;top: 5px;left: 5px;z-index:99999;display:none}
+.pro_name a{color: #4183c4;}
+.osc_git_title{background-color: #d8e5f1;}
+.osc_git_box{background-color: #fafafa;}
+.osc_git_box{border-color: #ddd;}
+.osc_git_info{color: #666;}
+.osc_git_main a{color: #4183c4;}

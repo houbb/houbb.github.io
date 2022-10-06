@@ -1,0 +1,46 @@
+/*
+  变量集合
+*/
+var Flag = new Object();
+Flag.ResDone = false; //资源加载是否完毕
+Flag.MessageIn = false; //是否处于消息显示状态
+Flag.JumpFloor = false; //是否处于跳跃楼层状态
+Flag.RunOver = false; //是否已经执行完一回了
+Flag.EventRuning = false; //是否正在执行事件
+Flag.Move = false; //勇士是否处于移动状态
+Flag.LockMove = true; //是否锁定勇士移动
+Flag.LockController = true; //是否禁止控制走动
+Flag.ChangeHead = true; //是否允许原地转向
+Flag.NextMessage = false; //是否开始播放下一条消息
+Flag.MessageBoxStep = 0; //消息框位置状态
+Flag.FloorChoose = false; //是否处于快速选择楼层状态
+Flag.ShowMessage = false; //是否正在输出
+Flag.DisableGoFloor = true; //是否禁用了楼层传送器
+Flag.DisableEnemyBook = true; //是否禁用了怪物图鉴
+Flag.ShowGoFloor = false; //是否打开了楼层传送
+Flag.ShowEnemyBook = false; //是否打开了怪物图鉴
+Flag.ShowToolsPanel = false; //是否打开了道具面板
+Flag.ShowSettingPanel = false; //是否打开了设置面板
+Flag.ShowGetItemPanel = false; //是否打开了获得特殊道具的面板
+Flag.ShowHelpPanel = false; //是否打开了帮助面板
+Flag.LockGoFloorButton = true //是否锁定楼层传送按钮
+Flag.LockEnemyBookButton = true; //是否锁定怪物图鉴按钮
+Flag.LockToolsButton = true; //是否锁定道具按钮
+Flag.LockSettingButton = true; //是否锁定设置按钮
+Flag.LockIceButton = true; //是否锁定冰冻徽章
+Flag.LockFloorTip = false; //是否锁定楼层提示
+Flag.ShowStorePanel = false; //是否正在购买能力
+Flag.SL = false; //是否打开存档界面
+Flag.GameSL = false; //是否能够存档
+Flag.Battle = false; //是否处于战斗状态
+Flag.BattleAnimate = false; //是否开启战斗动画
+Flag.GameOver = false; //是否已经失败
+Flag.Switch = [] //开关集合
+Flag.Switch[0] = false; //是否在地下三层与仙子对话
+Flag.Switch[1] = false; //是否与地震卷轴商人对话
+Flag.Switch[2] = false; //是否与骑士队长对话
+Flag.Switch[3] = false; //是否打败魔龙
+Flag.Switch[4] = false; //是否最终战
+Flag.Switch[5] = false; //是否魔龙后与仙子对话
+Flag.Switch[6] = false; //是否打败魔物首领
+Flag.Switch[7] = false; //是否拿了罪恶权杖
