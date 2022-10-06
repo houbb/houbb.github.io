@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -9,8 +9,10 @@
   <title>Compressor.js</title>
   <link rel="stylesheet" href="https://unpkg.com/bootstrap@4/dist/css/bootstrap.min.css" crossorigin="anonymous">
   <link rel="stylesheet" href="css/main.css">
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082537058031213" crossorigin="anonymous"></script>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082537058031213"
+    crossorigin="anonymous"></script>
 </head>
+
 <body>
   <div class="jumbotron bg-primary text-white rounded-0">
     <div class="container">
@@ -18,7 +20,8 @@
         <div class="col-md">
           <h1>图片在线压缩</h1>
           <p class="lead">JavaScript image compressor.</p>
-		  <h2 class="lead" style="float:right;"><a href="http://houbb.github.io/tools/" style="color:#fff;">其他工具</a></h2>
+          <h2 class="lead" style="float:right;"><a href="http://houbb.github.io/tools/" style="color:#fff;">其他工具</a>
+          </h2>
         </div>
       </div>
     </div>
@@ -30,7 +33,8 @@
     <div id="app" v-cloak>
       <div class="card bg-light mb-4" @change="change" @dragover="dragover" @drop="drop">
         <div class="card-body">
-          <div class="p-5 text-center">Drop image here or <label class="text-primary">browse... <input type="file" class="sr-only" id="file" accept="image/*" ref="input"></label></div>
+          <div class="p-5 text-center">Drop image here or <label class="text-primary">browse... <input type="file"
+                class="sr-only" id="file" accept="image/*" ref="input"></label></div>
         </div>
       </div>
       <div class="row">
@@ -40,50 +44,58 @@
             <div class="card-body">
               <fieldset class="form-group">
                 <div class="form-check form-check-inline">
-                  <input type="checkbox" name="strict" class="form-check-input" id="inputStrict" v-model="options.strict">
+                  <input type="checkbox" name="strict" class="form-check-input" id="inputStrict"
+                    v-model="options.strict">
                   <label class="form-check-label" for="inputStrict">strict</label>
                 </div>
               </fieldset>
               <fieldset class="form-group">
                 <div class="form-check form-check-inline">
-                  <input type="checkbox" name="checkOrientation" class="form-check-input" id="inputCheckOrientation" v-model="options.checkOrientation">
+                  <input type="checkbox" name="checkOrientation" class="form-check-input" id="inputCheckOrientation"
+                    v-model="options.checkOrientation">
                   <label class="form-check-label" for="inputCheckOrientation">checkOrientation</label>
                 </div>
               </fieldset>
               <div class="form-group row">
                 <label for="inputMaxWidth" class="col-5 col-form-label">maxWidth</label>
                 <div class="col-7">
-                  <input type="number" name="maxWidth" class="form-control" id="inputMaxWidth" placeholder="Infinity" v-model.number="options.maxWidth">
+                  <input type="number" name="maxWidth" class="form-control" id="inputMaxWidth" placeholder="Infinity"
+                    v-model.number="options.maxWidth">
                 </div>
               </div>
               <div class="form-group row">
                 <label for="inputMaxHeight" class="col-5 col-form-label">maxHeight</label>
                 <div class="col-7">
-                  <input type="number" name="maxHeight" class="form-control" id="inputMaxHeight" placeholder="Infinity" v-model.number="options.maxHeight">
+                  <input type="number" name="maxHeight" class="form-control" id="inputMaxHeight" placeholder="Infinity"
+                    v-model.number="options.maxHeight">
                 </div>
               </div>
               <div class="form-group row">
                 <label for="inputMinWidth" class="col-5 col-form-label">minWidth</label>
                 <div class="col-7">
-                  <input type="number" name="minWidth" class="form-control" id="inputMinWidth" placeholder="0" v-model.number="options.minWidth">
+                  <input type="number" name="minWidth" class="form-control" id="inputMinWidth" placeholder="0"
+                    v-model.number="options.minWidth">
                 </div>
               </div>
               <div class="form-group row">
                 <label for="inputMinHeight" class="col-5 col-form-label">minHeight</label>
                 <div class="col-7">
-                  <input type="number" name="minHeight" class="form-control" id="inputMinHeight" placeholder="0" v-model.number="options.minHeight">
+                  <input type="number" name="minHeight" class="form-control" id="inputMinHeight" placeholder="0"
+                    v-model.number="options.minHeight">
                 </div>
               </div>
               <div class="form-group row">
                 <label for="inputWidth" class="col-5 col-form-label">width</label>
                 <div class="col-7">
-                  <input type="number" name="width" class="form-control" id="inputWidth" placeholder="undefined" v-model.number="options.width">
+                  <input type="number" name="width" class="form-control" id="inputWidth" placeholder="undefined"
+                    v-model.number="options.width">
                 </div>
               </div>
               <div class="form-group row">
                 <label for="inputHeight" class="col-5 col-form-label">height</label>
                 <div class="col-7">
-                  <input type="number" name="height" class="form-control" id="inputHeight" placeholder="undefined" v-model.number="options.height">
+                  <input type="number" name="height" class="form-control" id="inputHeight" placeholder="undefined"
+                    v-model.number="options.height">
                 </div>
               </div>
               <div class="form-group row">
@@ -118,19 +130,22 @@
               <div class="form-group row">
                 <label for="inputMimeType" class="col-5 col-form-label">mimeType</label>
                 <div class="col-7">
-                  <input type="text" name="mimeType" class="form-control" id="inputMimeType" placeholder="auto" v-model.number="options.mimeType">
+                  <input type="text" name="mimeType" class="form-control" id="inputMimeType" placeholder="auto"
+                    v-model.number="options.mimeType">
                 </div>
               </div>
               <div class="form-group row">
                 <label for="inputConvertTypes" class="col-5 col-form-label">convertTypes</label>
                 <div class="col-7">
-                  <input type="text" name="convertTypes" class="form-control" id="inputConvertTypes" placeholder="image/png" v-model="options.convertTypes">
+                  <input type="text" name="convertTypes" class="form-control" id="inputConvertTypes"
+                    placeholder="image/png" v-model="options.convertTypes">
                 </div>
               </div>
               <div class="form-group row mb-0">
                 <label for="inputConvertSize" class="col-5 col-form-label">convertSize</label>
                 <div class="col-7">
-                  <input type="number" name="convertSize" class="form-control" id="inputConvertSize" placeholder="5000000" v-model.number="options.convertSize">
+                  <input type="number" name="convertSize" class="form-control" id="inputConvertSize"
+                    placeholder="5000000" v-model.number="options.convertSize">
                 </div>
               </div>
             </div>
@@ -140,7 +155,8 @@
           <div class="card mb-4">
             <h5 class="card-header d-flex align-items-center justify-content-between">
               <span>Input image <small class="text-secondary">(original image)</small></span>
-              <a class="btn btn-sm btn-blocks btn-outline-primary" :download="input.name" :href="inputURL" title="Download the compressed image">Download</a>
+              <a class="btn btn-sm btn-blocks btn-outline-primary" :download="input.name" :href="inputURL"
+                title="Download the compressed image">Download</a>
             </h5>
             <div class="card-body">
               <div class="row">
@@ -170,7 +186,8 @@
           <div class="card">
             <h5 class="card-header d-flex align-items-center justify-content-between">
               <span>Output image <small class="text-secondary">(compressed image)</small></span>
-              <a class="btn btn-sm btn-blocks btn-outline-primary" :download="output.name" :href="outputURL" title="Download the compressed image">Download</a>
+              <a class="btn btn-sm btn-blocks btn-outline-primary" :download="output.name" :href="outputURL"
+                title="Download the compressed image">Download</a>
             </h5>
             <div class="card-body">
               <div class="row">
@@ -204,34 +221,38 @@
       <div class="card" v-if="inputURL && outputURL">
         <h4 class="card-header">Comparing images</h4>
         <div class="card-body">
-          <vue-compare-image v-if="inputURL && outputURL" :left-image="inputURL" :left-image-alt="input.name" left-label="Input image" :right-image="outputURL" :right-image-alt="output.name" right-label="Output image"></vue-compare-image>
+          <vue-compare-image v-if="inputURL && outputURL" :left-image="inputURL" :left-image-alt="input.name"
+            left-label="Input image" :right-image="outputURL" :right-image-alt="output.name" right-label="Output image">
+          </vue-compare-image>
         </div>
       </div>
     </div>
-	
-	<hr>
-	
-	<footer style="text-align: center; margin-top:20px; margin: 0 auto;">
-		<div class="footer">
-		   &copy; 版权所有 Powered by <a href="https://github.com/houbb" title="老马啸西风">老马啸西风</a> <br>
-		</div>
-		<br/>
-		<div style="text-align: center;">
-			<img src = "../../SIGN.png" style="height: 250px; width: 600px;"/>
-		</div>
-	  </footer>
-	
+
+    <hr>
+
+    <footer style="text-align: center; margin-top:20px; margin: 0 auto;">
+      <div class="footer">
+        &copy; 版权所有 Powered by <a href="https://github.com/houbb" title="老马啸西风">老马啸西风</a> <br>
+      </div>
+      <br />
+      <div style="text-align: center;">
+        <img src="../../SIGN.png" style="height: 250px; width: 600px;" />
+      </div>
+    </footer>
+
   </div>
 
   <script src="https://unpkg.com/jquery@3/dist/jquery.slim.min.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/bootstrap@4/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/vue@2/dist/vue.min.js" crossorigin="anonymous"></script>
-  <script src="https://unpkg.com/vue-compare-image@0.2/dist/vueCompareImage.umd.min.js" crossorigin="anonymous"></script>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-F03RP3XNVG"></script>
-    <script src="/static/libs/google/gtag.js"></script>
+  <script src="https://unpkg.com/vue-compare-image@0.2/dist/vueCompareImage.umd.min.js"
+    crossorigin="anonymous"></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-F03RP3XNVG"></script>
+  <script src="/static/libs/google/gtag.js"></script>
 
   <script src="js/compressor.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>
