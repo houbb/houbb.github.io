@@ -1,225 +1,219 @@
-<!DOCTYPE html>
-<html lang="en">
+
+<!DOCTYPE HTML>
+<html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <!-- 上述3个meta标签必须放在最前面，任何其他内容都必须跟随其后！ -->
-    <meta name="renderer" content="webkit">
-
-    <title>贪吃蛇</title>
-    
-    <style>
-        #canvas{
-            box-shadow: 0 5px 40px black;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-top: -250px;
-            margin-left: -400px;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <title>H5小游戏100例: 贪吃蛇</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no" />
+  <link href="css/snake.css" rel="stylesheet">
 </head>
+
 <body>
-    <canvas id="canvas" width="800" height="500">
-        Your browser does not support the Canvas API.
-        Please upgrade your browser.
-    </canvas>
-
-    <script type="text/javascript">
-        var canvas = document.getElementById('canvas');
-        var context = canvas.getContext('2d');
-
-        //构造对象方块
-        function Rect(x, y, w, h, color) {
-            this.x = x;
-            this.y = y;
-            this.w = w;
-            this.h = h;
-            this.color = color;
-        }
-        //画方块的方法
-        Rect.prototype.draw = function() {
-            context.beginPath();
-            context.fillStyle = this.color;
-            context.rect(this.x, this.y, this.w, this.h);
-            context.fill();
-            context.stroke();
-        }
-
-        //构造对象蛇
-        function Snake() {
-
-            //定义一个空数组存放组成整蛇的方块对象
-            var snakeArray = [];
-
-            //画出4个方块，设置成灰色
-            for (var i = 0; i < 4; i++) {
-                var rect = new Rect(i * 20, 0, 20, 20, "gray");
-                //之所以用splice（往前加）而不是用push（往后加），是为了让蛇头出现在数组第一个位置
-                snakeArray.splice(0, 0, rect);
-            }
-
-            //把数组第一个作为蛇头，蛇头设成红色
-            var head = snakeArray[0];
-            head.color = "red";
-
-            //此处将两个后面常用的东西定为属性，方便后面调用
-            this.head = snakeArray[0]; //蛇头
-            this.snakeArray = snakeArray; //整蛇数组
-
-            //给定初始位置向右(同keyCode右箭头)
-            this.direction = 39;
-        }
-        //画蛇的方法
-        Snake.prototype.draw = function() {
-                for (var i = 0; i < this.snakeArray.length; i++) {
-                    this.snakeArray[i].draw();
-                }
-            }
-            //蛇移动的方法
-        Snake.prototype.move = function() {
-
-            //此处是核心部分，蛇的 移动方式
-            //1、画一个灰色的方块，位置与蛇头重叠
-            //2、将这个方块插到数组中蛇头后面一个的位置
-            //3、砍去末尾的方块
-            //4、将蛇头向设定方向移动一格
-            var rect = new Rect(this.head.x, this.head.y, this.head.w, this.head.h, "gray");
-            this.snakeArray.splice(1, 0, rect);
-
-            //判断是否吃到食物，isEat判定函数写在最后了
-            //吃到则食物重新给位置，不砍去最后一节，即蛇变长
-            //没吃到则末尾砍掉一节，即蛇长度不变
-            if (isEat()) {
-                food = new getRandomFood();
-            } else {
-                this.snakeArray.pop();
-            }
-
-            //设置蛇头的运动方向，37 左，38 上，39 右，40 下
-            switch (this.direction) {
-                case 37:
-                    this.head.x -= this.head.w
-                    break;
-                case 38:
-                    this.head.y -= this.head.h
-                    break;
-                case 39:
-                    this.head.x += this.head.w
-                    break;
-                case 40:
-                    this.head.y += this.head.h
-                    break;
-                default:
-                    break;
-            }
-
-            // gameover判定
-            // 撞墙
-            if (this.head.x >= canvas.width || this.head.x < 0 || this.head.y >= canvas.height || this.head.y < 0) {
-                clearInterval(timer);
-            }
-
-            // 撞自己，循环从1开始，避开蛇头与蛇头比较的情况
-            for (var i = 1; i < this.snakeArray.length; i++) {
-                if (this.snakeArray[i].x == this.head.x && this.snakeArray[i].y == this.head.y) {
-                    clearInterval(timer);
-                }
-            }
-        }
-
-        //画出初始的蛇
-        var snake = new Snake()
-        snake.draw();
-
-        //画出初始的食物
-        var food = new getRandomFood()
-
-        //定时器
-        var timer = setInterval(function() {
-            context.clearRect(0, 0, canvas.width, canvas.height);
-            food.draw();
-            snake.move();
-            snake.draw();
-        }, 100)
-
-        //键盘事件，其中的if判定是为了让蛇不能直接掉头
-        document.onkeydown = function(e) {
-            var ev = e || window.event;
-            switch (ev.keyCode) {
-                case 37:
-                    {
-                        if (snake.direction !== 39) {
-                            snake.direction = 37;
-                        }
-                        break;
-                    }
-                case 38:
-                    {
-                        if (snake.direction !== 40) {
-                            snake.direction = 38;
-                        }
-                        break;
-                    }
-                case 39:
-                    {
-                        if (snake.direction !== 37) {
-                            snake.direction = 39;
-                        }
-                        break;
-                    }
-                case 40:
-                    {
-                        if (snake.direction !== 38) {
-                            snake.direction = 40;
-                        }
-                        break;
-                    }
-            }
-            ev.preventDefault();
-        }
-
-        //随机函数，获得[min,max]范围的值
-        function getNumberInRange(min, max) {
-            var range = max - min;
-            var r = Math.random();
-            return Math.round(r * range + min)
-        }
-
-        //构建食物对象
-        function getRandomFood() {
-
-            //判定食物是否出现在蛇身上，如果是重合，则重新生成一遍
-            var isOnSnake = true;
-
-            //设置食物出现的随机位置
-            while (isOnSnake) {
-                //执行后先将判定条件设置为false，如果判定不重合，则不会再执行下列语句
-                isOnSnake = false;
-                var indexX = getNumberInRange(0, canvas.width / 20 - 1);
-                var indexY = getNumberInRange(0, canvas.height / 20 - 1);
-                var rect = new Rect(indexX * 20, indexY * 20, 20, 20, "green");
-                for (var i = 0; i < snake.snakeArray.length; i++) {
-                    if (snake.snakeArray[i].x == rect.x && snake.snakeArray[i].y == rect.y) {
-                        //如果判定重合，将其设置为true，使随机数重给
-                        isOnSnake = true;
-                        break;
-                    }
-                }
-            }
-            //返回rect，使得实例化对象food有draw的方法
-            return rect;
-        }
-
-        //判定吃到食物，即蛇头坐标与食物坐标重合
-        function isEat() {
-            if (snake.head.x == food.x && snake.head.y == food.y) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    </script>
+	<div class="snake-game"></div>
+	<div class="snake-controller">
+		<div class="snake-direction">
+			<div class="snake-up"></div>
+			<div class="snake-right"></div>
+			<div class="snake-down"></div>
+			<div class="snake-left"></div>
+		</div>
+		<input type="checkbox" class="snake-trigger" checked="checked"> 
+		<input type="button" class="snake-switch">
+		<div class="snake-timer">时间：300s</div>
+		<div class="snake-speed">
+			<div class="snake-speed-thumb"></div>
+		</div>
+	</div>
 </body>
+<script src="script/lib/pixi.js"></script>
+<script src="script/snake.js"></script>
+<script>
+// 创建一个游戏对象
+var snakeGame = new SnakeClass(document.querySelector(".snake-game"));
+// 初始化游戏 
+snakeGame.init(
+	{
+		time: 300000, // 总时间
+		width: 640, 
+		height: 640, 
+		row: 20, 
+		column: 20, 
+		// 显示屏的边框
+		border: 0x414042, 
+		color: 0x414042, // 蛇的节点颜色
+		food: 0x990000, // 食物的颜色
+		min: 4, // 初始长度
+		speed: 1.5 // 速度标量
+	}
+); 
+// 开始游戏 
+snakeGame.start(); 
+
+/* S 游戏 API */
+
+// 注销游戏 
+// snakeGame.destory(); 
+
+// 重新开始游戏 
+// snakeGame.restart(); // 相当于 destroy -> init -> start
+
+// 暂停游戏 
+// snakeGame.pause(); 
+
+// 恢复游戏
+// snakeGame.resume(); 
+
+// 控制游戏速度，数值越大速度越快
+// snakeGame.speed = 1; 
+
+// 游戏方向
+// snakeGame.turn(); // 四个值：left, right, up, down。
+
+/* E 游戏 API */
+
+
+/* S 游戏的事件 */
+
+// 游戏时间
+let $timer = document.querySelector(".snake-timer"); 
+snakeGame.event.on("countdown", (time) => {
+	$timer.innerHTML = `时间：${time}s`; 
+}); 
+
+// 游戏结束
+snakeGame.event.on("gameover", (type) => {
+	alert("游戏结束。结束类型是：" + type); 
+}); 
+
+// 吃到东西
+snakeGame.event.on("eat", (food) => {
+	console.log("吃到食物，当前长度: " + snakeGame.length); 
+}); 
+
+// 吃到东西前
+snakeGame.event.on("before-eat", () => {
+	console.log("吃到食物之前的长度：" + snakeGame.length)
+})
+
+/* E 游戏的事件 */
+
+// 禁止页面滚动提高体验
+document.body.addEventListener("touchmove", (e) => e.preventDefault() ); 
+
+/* S 控制游戏 */
+{
+	let controller = document.querySelector(".snake-direction"), 
+	curDirection, 
+	{top, left, width, height} = controller.getBoundingClientRect(), 
+	x = left + width / 2, 
+	y = top + height / 2, 
+	deg45 = Math.PI / 4, 
+	deg90 = Math.PI / 2, 
+	deg135 = Math.PI / 2 + deg45, 
+	deg180 = Math.PI, 
+	deg225 = Math.PI + deg45, 
+	deg270 = Math.PI + deg90, 
+	deg315 = Math.PI * 2 - deg45; 
+
+	controller.addEventListener("touchstart", ({targetTouches: [{pageX, pageY}]}) => {
+		checkDirection(pageX - x, pageY - y); 
+	});
+
+	controller.addEventListener("touchmove", ({targetTouches: [{pageX, pageY}]}) => {
+		checkDirection(pageX - x, pageY - y); 
+	}); 
+
+	controller.addEventListener("touchend", ({changedTouches: [{pageX, pageY}]}) => {
+		curDirection = undefined; 
+		controller.className = 'snake-direction'; 
+	}); 
+
+	let checkDirection = function(x, y) {
+		let radian = Math.asin( y / Math.sqrt( Math.pow(x, 2) + Math.pow(y, 2)) ); 
+		// 1~2象限
+		if(x > 0 && y < 0 || x > 0 && y > 0) {
+			radian += deg90; 
+		}
+		// 3~4象限
+		else if(x < 0 && y > 0 || x < 0 && y < 0) {
+			radian = deg270 - radian; 
+		}
+
+		let direction = "up"; 
+		if(radian > deg45 && radian < deg135) {
+			direction = "right";
+		}
+		else if(radian > deg135 && radian < deg225) {
+			direction = "down";
+		}
+		else if(radian > deg225 && radian < deg315) {
+			direction = "left";
+		} 
+		direction === curDirection || snakeGame.turn(curDirection = direction, controller.className = "snake-direction " + direction); 
+	}
+
+	// 暂停开关
+	let trigger = document.querySelector(".snake-trigger"); 
+	trigger.addEventListener("click", function() {
+		if(this.checked) {
+			snakeGame.pause(); 
+		}
+		else {
+			snakeGame.resume(); 
+		}
+	}); 
+
+	// 电源开关
+	let power =document.querySelector(".snake-switch"); 
+	power.addEventListener("click", () => {
+		snakeGame.restart(); 
+		trigger.checked = false; 
+		trigger.click(); 
+	}); 
+
+	{
+		// 控制速度
+		let thumb = document.querySelector(".snake-speed-thumb"), 
+		x0, y0, 
+		min = 0, max = thumb.parentNode.offsetWidth - 5, 
+		left0, left1; 
+		// 定位 thumb
+		left1 = (snakeGame.speed - .5) * max / 3;
+		thumb.style.left = left1 + "px";  
+
+		thumb.addEventListener("touchstart", 
+			({targetTouches, targetTouches: [{pageX, pageY}]}) => {
+				x0 = pageX, y0 = pageY, left0 = thumb.offsetLeft; 
+			}
+		)
+
+		thumb.addEventListener("touchmove", 
+			({targetTouches, targetTouches: [{pageX, pageY}]}) => {
+				let x = Math.max(Math.min(pageX - x0 + left0, max), 0), y = pageY - y0; 
+				left1 = x; 
+				thumb.style.left = x + "px"; 
+			}
+		)
+
+		thumb.addEventListener("touchend", () => {
+			snakeGame.speed = .5 + (left1 / max) * 3; 
+		})
+	}
+
+	// PC 键盘
+	let keyboradUpdate = ({keyCode}) => { 
+		switch(keyCode) {
+			case 37: snakeGame.turn("left"), controller.className = "snake-direction left"; break; 
+			case 38: snakeGame.turn("up"), controller.className = "snake-direction up"; break; 
+			case 39: snakeGame.turn("right"), controller.className = "snake-direction right"; break; 
+			case 40: snakeGame.turn("down"), controller.className = "snake-direction down"; break; 
+		}
+	}
+	window.addEventListener("keydown", keyboradUpdate); 
+	window.addEventListener("keyup", () => controller.className = "snake-direction");
+}
+
+/* E 控制游戏 */
+
+</script>
 </html>
