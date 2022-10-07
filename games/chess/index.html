@@ -1,9 +1,17 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>中国象棋 in html5</title>
-<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+	<title>中国象棋 in html5</title>
+	<meta charset="UTF-8">
+<meta http-equiv="x-ua-compatible" content="IE=edge">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Cache-Control" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
+<!-- 引入外部图片的处理 -->
+<meta name="referrer" content="no-referrer" />
+
 <link href="css/chess.css" rel="stylesheet" type="text/css">
 <!--[if lt IE 9]>
 <script> alert("对不起，您的浏览器不支持HTML5，请升级浏览器至IE9、firefox或者谷歌浏览器！")</script>
@@ -21,7 +29,9 @@
 	</div>
 </div>
 <div class="menu_box" id="menuBox">
-	<div class="menu_init" id="indexBox"><a id="indexDy">人机对弈</a><a id="indexQj">挑战棋局</a><a id="stypeBtn">更换皮肤</a></div>
+	<div class="menu_init" id="indexBox"><a id="indexDy">人机对弈</a><a id="indexQj">挑战棋局</a>
+		<a id="stypeBtn">棋盘尺寸 <span id="styleSizeDesc">(小)</span></a>
+	</div>
 	<div class="menu_dy" id="menuDy">
 		<div class="menu_info">
 			<div class="menu_fh" id="menuFh"></div>

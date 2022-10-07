@@ -4,7 +4,7 @@ var com = com||{};
 
 com.init = function (stype){
 	
-	com.nowStype= stype || com.getCookie("stype") ||"stype2";
+	com.nowStype= stype || com.getCookie("stype") ||"stype1";
 	var stype = com.stype[com.nowStype];
 	com.width			=	stype.width;		//画布宽度
 	com.height			=	stype.height; 		//画布高度
@@ -145,9 +145,20 @@ window.onload = function(){
 	//换肤
 	com.get("stypeBtn").addEventListener("click", function(e) {
 		var stype =com.nowStype;
-		if (stype=="stype3") stype="stype2";
-		else if (stype=="stype2") stype="stype1";
-		else if (stype=="stype1") stype="stype3";
+		let desc = document.getElementById('styleSizeDesc');
+
+		if (stype=="stype3") {
+			stype="stype1";
+			desc.innerHTML = '(小)';
+		} else {
+			stype="stype3";
+
+			desc.innerHTML = '(大)';
+		}
+		// if (stype=="stype3") stype="stype1";
+		// else if (stype=="stype2") stype="stype1";
+		// else if (stype=="stype1") stype="stype3";
+
 		com.init(stype);
 		com.show();
 		//play.depth = 4;
