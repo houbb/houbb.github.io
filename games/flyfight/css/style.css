@@ -1,0 +1,107 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    color: #fff;
+    overflow: hidden;
+    background-size: cover;
+}
+.bg-1{
+    background-image: url('../img/bg@01.jpg');
+}
+.bg-2{
+    background-image: url('../img/bg@02.jpg');
+}
+.bg-3{
+    background-image: url('../img/bg@03.jpg');
+}
+.bg-4{
+    background-image: url('../img/bg@04.jpg');
+}
+
+.index {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    margin-top: -142px;
+}
+
+.index h1 {
+    font-size: 50px;
+    text-shadow: 2px 8px 2px #000;
+    text-align: center;
+}
+
+.index .btn {
+    display: block;
+    color: #fff;
+    font-size: 20px;
+    background: none;
+    border: 1 solid #999;
+    border-radius: 6px;
+    width: 140px;
+    margin: 0 auto 14px auto;
+}
+
+.panel {
+    width: 80%;
+    background: #070808;
+    padding: 14px;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    text-align: center;
+    box-sizing: border-box;
+    position: absolute;
+    left: 10%;
+    top: 50%;
+    margin-top: -109px;
+}
+
+.panel button {
+    color: #fff;
+    border: 1 solid #fff;
+    background: none;
+    font-size: 18px;
+}
+
+.setting-group {
+    list-style: none;
+    padding: 0;
+}
+
+.setting-group .setting {
+    margin-bottom: 10px;
+}
+
+.setting-group select {
+    width: 100px;
+    padding-left: 5px;
+    background: #fff;
+    margin-left: 10px;
+    border-radius: 0;
+    appearance: none;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+}
+
+/*默认隐藏*/
+.index, .rule, .setting, .score {
+    display: none;
+}
+
+/*游戏状态切换场景*/
+[data-status="index"] .index {
+    display: block;
+}
+
+[data-status="rule"] .rule {
+    display: block;
+}
+
+[data-status="setting"] .setting {
+    display: block;
+}
+[data-status="score"] .score {
+    display: block;
+}
