@@ -31,7 +31,7 @@ npm install -g node-gyp
 然后安装构建工具。
 
 ```
-npm install --global --production windows-build-tools
+cnpm install --global --production windows-build-tools
 ```
 
 安装的过程会比较漫长，耐心等待即可。
@@ -78,6 +78,14 @@ Still waiting for installer log file...
 直接打开，进入之后选择->单个组件->勾选Node.js MSBuild 支持，下载，解决。
 
 浪费了我一天半时间，终于解决了，感觉自己是个废物，需要学的内容还是非常多的。
+
+到 `C:\Users\dh\.windows-build-tools` 目录下，管理员身份安装。提示重启计算机。
+
+重启之后，再次双击，就会发现已经安装。重新执行安装命令：
+
+```
+cnpm install --global --production windows-build-tools
+```
 
 ### 正常
 

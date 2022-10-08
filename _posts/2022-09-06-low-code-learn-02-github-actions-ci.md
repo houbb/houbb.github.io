@@ -299,6 +299,42 @@ jobs:
 
 - 第二步需要四个环境变量，分别为 GitHub 密钥、发布分支、构建成果所在目录、构建脚本。其中，只有 GitHub 密钥是秘密变量，需要写在双括号里面，其他三个都可以直接写在文件里。
 
+
+### 指定 node 版本的例子
+
+```yml
+name: GitHub Actions Build and Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+        with:
+          persist-credentials: false
+      - name: NODE 
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install and Build
+        run: |
+          npm install
+          npm run-script build
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GO_ACCESS_TOKEN }}
+          BRANCH: master
+          FOLDER: dist
+          CLEAN: true
+          REPOSITORY_NAME: houbb/houbb.github.io
+          TARGET_FOLDER: games/gobang
+```
+
 ## 5. 第五步，保存上面的文件后，将整个仓库推送到 GitHub。
 
 GitHub 发现了 workflow 文件以后，就会自动运行。
