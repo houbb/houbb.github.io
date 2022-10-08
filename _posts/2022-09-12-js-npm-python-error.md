@@ -23,10 +23,20 @@ gyp ERR! stack     at FSReqCallback.oncom
 执行命令，这个命令需要管理员权限。
 
 ```
-cnpm install --global --production windows-build-tools
+npm install -g node-gyp
+```
+
+`node-gyp` 已经安装的可以忽略。
+
+然后安装构建工具。
+
+```
+npm install --global --production windows-build-tools
 ```
 
 安装的过程会比较漫长，耐心等待即可。
+
+一直等待到 ALL DONE! 其实才是真正的安装完成。
 
 ## 卡主的问题
 
@@ -110,6 +120,8 @@ https://blog.csdn.net/gxgalaxy/article/details/105200828
 [安装windows-build-tools，卡在Still waiting for installer log file... 这里一动不动的问题及解决办法，实测有效。](https://blog.csdn.net/originalzzZ/article/details/119612887)
 
 [Win10如何配置Python环境变量](https://m.php.cn/article/471645.html)
+
+[C:\Windows\Microsoft.NET\Framework\v4.0.30319\msbuild.exe` failed with exit code: 1](https://blog.csdn.net/BADAO_LIUMANG_QIZHI/article/details/83617235)
 
 * any list
 {:toc}
