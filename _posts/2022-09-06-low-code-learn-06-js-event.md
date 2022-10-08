@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  低代码开源源码学习-06-js preventDefault and stopPropagation 阻止默认事件与阻止冒泡
-date:  2022-09-03 21:22:02 +0800
+date:  2022-09-06 21:22:02 +0800
 categories: [Tool]
 tags: [low-code, sh]
 published: true
