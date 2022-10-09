@@ -13,9 +13,9 @@ published: true
 
 至于 netty 的优点可以参考：
 
-> [为什么选择 netty？](http://houbb.github.io/2019/05/10/netty-definitive-gudie-04-why-netty)
+> [为什么选择 netty？](https://houbb.github.io/2019/05/10/netty-definitive-gudie-04-why-netty)
 
-[http://houbb.github.io/2019/05/10/netty-definitive-gudie-04-why-netty](http://houbb.github.io/2019/05/10/netty-definitive-gudie-04-why-netty)
+[https://houbb.github.io/2019/05/10/netty-definitive-gudie-04-why-netty](https://houbb.github.io/2019/05/10/netty-definitive-gudie-04-why-netty)
 
 # 代码实现
 

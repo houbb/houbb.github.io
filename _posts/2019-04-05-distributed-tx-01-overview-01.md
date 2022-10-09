@@ -64,7 +64,7 @@ CAP理论告诉我们在分布式存储系统中，最多只能实现上面的�
 
 [hmily-分布式事务框架](https://houbb.github.io/2018/10/30/hmily)
 
-[Seata-一站式分布式事务解决方案](http://houbb.github.io/2018/10/30/distributed-tx-seata)
+[Seata-一站式分布式事务解决方案](https://houbb.github.io/2018/10/30/distributed-tx-seata)
 
 - 数据库
 

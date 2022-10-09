@@ -224,7 +224,7 @@ public static void main(String[] args) {
 
 具体算法原理建议阅读：
 
-> DES 加密算法入门及算法原理：[http://houbb.github.io/2020/06/17/althgorim-cryptograph-05-des](http://houbb.github.io/2020/06/17/althgorim-cryptograph-05-des)
+> DES 加密算法入门及算法原理：[https://houbb.github.io/2020/06/17/althgorim-cryptograph-05-des](https://houbb.github.io/2020/06/17/althgorim-cryptograph-05-des)
 
 # 3DES
 
@@ -380,7 +380,7 @@ A60CBC97EEFF2958DF4384215E0838C0
 
 具体算法原理建议阅读：
 
-> 3DES 加密算法入门及算法原理：[http://houbb.github.io/2020/06/17/althgorim-cryptograph-06-3des](http://houbb.github.io/2020/06/17/althgorim-cryptograph-06-3des)
+> 3DES 加密算法入门及算法原理：[https://houbb.github.io/2020/06/17/althgorim-cryptograph-06-3des](https://houbb.github.io/2020/06/17/althgorim-cryptograph-06-3des)
 
 # AES 算法
 
@@ -502,7 +502,7 @@ public static void main(String[] args) throws UnsupportedEncodingException {
 
 具体算法原理建议阅读：
 
-> AES 加密算法入门及算法原理：[http://houbb.github.io/2020/06/17/althgorim-cryptograph-07-aes](http://houbb.github.io/2020/06/17/althgorim-cryptograph-07-aes)
+> AES 加密算法入门及算法原理：[https://houbb.github.io/2020/06/17/althgorim-cryptograph-07-aes](https://houbb.github.io/2020/06/17/althgorim-cryptograph-07-aes)
 
 # SM4 算法
 
@@ -732,7 +732,7 @@ System.out.println("结束****************************");
 
 具体算法原理建议阅读：
 
-> SM4 加密算法入门及算法原理：[http://houbb.github.io/2020/06/17/althgorim-cryptograph-04-sm4](http://houbb.github.io/2020/06/17/althgorim-cryptograph-04-sm4)
+> SM4 加密算法入门及算法原理：[https://houbb.github.io/2020/06/17/althgorim-cryptograph-04-sm4](https://houbb.github.io/2020/06/17/althgorim-cryptograph-04-sm4)
 
 # 第五大加密算法
 
@@ -953,7 +953,7 @@ public static void main(String[] args) {
 
 具体算法原理建议阅读：
 
-> BASE64 加密算法入门及算法原理：[http://houbb.github.io/2020/06/17/althgorim-cryptograph-03-base64](http://houbb.github.io/2020/06/17/althgorim-cryptograph-03-base64)
+> BASE64 加密算法入门及算法原理：[https://houbb.github.io/2020/06/17/althgorim-cryptograph-03-base64](https://houbb.github.io/2020/06/17/althgorim-cryptograph-03-base64)
 
 # 小结
 

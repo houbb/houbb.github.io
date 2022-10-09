@@ -35,7 +35,7 @@ published: true
 
 十几分钟后，DBA 告诉我确实有慢 SQL，已经 kill 掉了。
 
-> [GC 日志](http://houbb.github.io/2018/10/08/jvm-27-gc-log)
+> [GC 日志](https://houbb.github.io/2018/10/08/jvm-27-gc-log)
 
 不过查看 GC 日志的道路却一点都不顺利。
 

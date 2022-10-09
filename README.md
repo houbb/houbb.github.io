@@ -10,7 +10,7 @@ You can visit it [here](https://houbb.github.io/).
 
 关注我的个人公众号：
 
-![个人公众号](http://houbb.github.io/SIGN.png)
+![个人公众号](https://houbb.github.io/SIGN.png)
 
 # TODO
  

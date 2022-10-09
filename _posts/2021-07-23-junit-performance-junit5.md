@@ -17,9 +17,9 @@ published: true
 
 拓展阅读：
 
-[浅谈性能测试](http://houbb.github.io/2021/07/23/junit-performance-overview)
+[浅谈性能测试](https://houbb.github.io/2021/07/23/junit-performance-overview)
 
-[基于 junit4 分析 junitperf 源码，junit4 99% 的人都不知道的秘密！](http://houbb.github.io/2021/07/23/junit-performance-junit4)
+[基于 junit4 分析 junitperf 源码，junit4 99% 的人都不知道的秘密！](https://houbb.github.io/2021/07/23/junit-performance-junit4)
 
 ![junit5](https://img-blog.csdnimg.cn/cc90ab578e154833b6e9970d1ce3d9d4.jpg)
 

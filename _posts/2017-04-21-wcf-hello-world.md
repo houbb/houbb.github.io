@@ -11,7 +11,7 @@ published: true
 
 # Hello World
 
-[上一篇](http://houbb.github.io/2017/04/21/wcf)中我们直接使用默认创建的模板尝试了一下WCF。我们这里再手动写一下。
+[上一篇](https://houbb.github.io/2017/04/21/wcf)中我们直接使用默认创建的模板尝试了一下WCF。我们这里再手动写一下。
 
 （友情提示：可以跳过。）
 

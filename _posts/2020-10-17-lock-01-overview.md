@@ -55,9 +55,9 @@ published: true
 
 ## 自己实现
 
-[手写 spinlock 自旋锁 & 可重入锁](http://houbb.github.io/2020/10/17/lock-07-spin-lock)
+[手写 spinlock 自旋锁 & 可重入锁](https://houbb.github.io/2020/10/17/lock-07-spin-lock)
 
-[手写可重入读写锁](http://houbb.github.io/2020/10/17/lock-08-read-write-lock)
+[手写可重入读写锁](https://houbb.github.io/2020/10/17/lock-08-read-write-lock)
 
 # 新篇章
 
@@ -69,11 +69,11 @@ published: true
 
 [ReentrantReadWriteLock 可重入读写锁源码学习](https://houbb.github.io/2019/01/18/jcip-36-read-write-lock)
 
-[AtomicLong 原子性 long 详解](http://houbb.github.io/2019/01/20/juc-02-atomiclong)
+[AtomicLong 原子性 long 详解](https://houbb.github.io/2019/01/20/juc-02-atomiclong)
 
-[AtomicInteger 源码解析](http://houbb.github.io/2019/01/20/juc-02-atomicinteger)
+[AtomicInteger 源码解析](https://houbb.github.io/2019/01/20/juc-02-atomicinteger)
 
-[AtomicReference 源码解析](http://houbb.github.io/2019/01/20/juc-02-AtomicReference)
+[AtomicReference 源码解析](https://houbb.github.io/2019/01/20/juc-02-AtomicReference)
 
 ## 基础数据结构
 
@@ -115,7 +115,7 @@ published: true
 
 ----------------------------------------------------------------------------------------------------------------------
 
-[ConcurrentHashMap 源码详解](http://houbb.github.io/2018/09/12/java-concurrent-hashmap)
+[ConcurrentHashMap 源码详解](https://houbb.github.io/2018/09/12/java-concurrent-hashmap)
 
 [跳跃表(SkipList)](https://houbb.github.io/2019/02/13/datastruct-skiplist)
 
@@ -153,15 +153,15 @@ published: true
 
 ## 工具篇
 
-[闭锁（如CountDownLatch），栅栏（如CyclicBarrier），信号量（如Semaphore）和阻塞队列（如LinkedBlockingQueue）](http://houbb.github.io/2019/01/18/jcip-19-sync-tool)
+[闭锁（如CountDownLatch），栅栏（如CyclicBarrier），信号量（如Semaphore）和阻塞队列（如LinkedBlockingQueue）](https://houbb.github.io/2019/01/18/jcip-19-sync-tool)
 
-[java 异步查询转同步多种实现方式：循环等待，CountDownLatch，Spring EventListener，超时处理和空循环性能优化](http://houbb.github.io/2019/01/18/jcip-41-async-sync)
+[java 异步查询转同步多种实现方式：循环等待，CountDownLatch，Spring EventListener，超时处理和空循环性能优化](https://houbb.github.io/2019/01/18/jcip-41-async-sync)
 
-[闭锁 CountDownLatch 使用入门及源码详解](http://houbb.github.io/2020/10/17/lock-09-CountDownLatch-source-code)
+[闭锁 CountDownLatch 使用入门及源码详解](https://houbb.github.io/2020/10/17/lock-09-CountDownLatch-source-code)
 
-[Semaphore 信号量源码深度解析](http://houbb.github.io/2020/10/17/lock-09-Semaphore-source-code)
+[Semaphore 信号量源码深度解析](https://houbb.github.io/2020/10/17/lock-09-Semaphore-source-code)
 
-[CyclicBarrier 源码详解](http://houbb.github.io/2020/10/17/lock-09-CyclicBarrier-source-code)
+[CyclicBarrier 源码详解](https://houbb.github.io/2020/10/17/lock-09-CyclicBarrier-source-code)
 
 [Phaser 源码详解](https://houbb.github.io/2020/10/17/lock-12-tool-phaser)
 
@@ -169,17 +169,17 @@ published: true
 
 ## 底层原理
 
-[LongAdder 更高效的原子性 Long 变量](http://houbb.github.io/2019/01/20/juc-03-longadder)
+[LongAdder 更高效的原子性 Long 变量](https://houbb.github.io/2019/01/20/juc-03-longadder)
 
-[AbstractQueuedSynchronizer AQS 源码详解](http://houbb.github.io/2020/10/17/lock-06-aqs-source-code)
+[AbstractQueuedSynchronizer AQS 源码详解](https://houbb.github.io/2020/10/17/lock-06-aqs-source-code)
 
 AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位的 long state 而已。
 
-[LockSupport 源码解析](http://houbb.github.io/2019/01/20/juc-06-lock-support)
+[LockSupport 源码解析](https://houbb.github.io/2019/01/20/juc-06-lock-support)
 
-[Unsafe 并发锁的基石](http://houbb.github.io/2019/01/20/juc-05-unsafe)
+[Unsafe 并发锁的基石](https://houbb.github.io/2019/01/20/juc-05-unsafe)
 
-[striped64 缓存行](http://houbb.github.io/2019/01/20/juc-04-striped64)
+[striped64 缓存行](https://houbb.github.io/2019/01/20/juc-04-striped64)
 
 ## 分布式锁
 
@@ -197,11 +197,11 @@ AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位
 
 ## 数据库锁
 
-[MVCC Multi Version Concurrency Control 多版本控制](http://houbb.github.io/2018/08/31/sql-mvcc)
+[MVCC Multi Version Concurrency Control 多版本控制](https://houbb.github.io/2018/08/31/sql-mvcc)
 
 ## 进阶学习
 
-[linux 系统中的 seqlocks 实现原理](http://houbb.github.io/2020/10/17/lock-10-linux-seq-locks-01-atomic)
+[linux 系统中的 seqlocks 实现原理](https://houbb.github.io/2020/10/17/lock-10-linux-seq-locks-01-atomic)
 
 [seqlock 在 jmm 如何应用？](https://houbb.github.io/2020/10/17/lock-05-seqlock-jmm)
 

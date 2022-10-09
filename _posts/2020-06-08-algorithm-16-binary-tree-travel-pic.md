@@ -19,7 +19,7 @@ published: true
 
 本文主要是为了重新梳理二叉树的非递归遍历，所以基本的遍历可以参考下面的文章：
 
-[面试算法：二叉树的前序/中序/后序/层序遍历方式汇总](http://houbb.github.io/2020/01/23/algorithm-16-binary-tree-travel)
+[面试算法：二叉树的前序/中序/后序/层序遍历方式汇总](https://houbb.github.io/2020/01/23/algorithm-16-binary-tree-travel)
 
 ## 节点定义
 

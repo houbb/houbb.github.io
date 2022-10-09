@@ -61,7 +61,7 @@ public/index.html
 
 打包相关内容参见：
 
-> [WebPack-01-Quick Start](http://houbb.github.io/2018/04/23/webpack-01-quick-start)
+> [WebPack-01-Quick Start](https://houbb.github.io/2018/04/23/webpack-01-quick-start)
 
 ### 打包配置
 

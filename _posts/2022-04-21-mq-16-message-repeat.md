@@ -41,9 +41,9 @@ mq 是通过网络传输，因为网络的不稳定性，可能会导致失败�
 
 为了保证消息抵达，一般都会进行重试。重试在消费侧如果不进行幂等，就会导致消息的重复消费。
 
-[idempotent 幂等性防止重复提交](http://houbb.github.io/2020/07/16/idempotent-resubmit)
+[idempotent 幂等性防止重复提交](https://houbb.github.io/2020/07/16/idempotent-resubmit)
 
-[面试官：你们项目中是怎么做防重复提交的？](http://houbb.github.io/2022/05/10/interview-10-repeat)
+[面试官：你们项目中是怎么做防重复提交的？](https://houbb.github.io/2022/05/10/interview-10-repeat)
 
 # 幂等性
 
@@ -99,7 +99,7 @@ kafka有一个叫做offset的概念，就是每个消息写进去，都有一个
 
 [rpc-从零开始实现 rpc](https://github.com/houbb/rpc) https://github.com/houbb/rpc
 
-[Kafka 为什么这么快](http://houbb.github.io/2018/09/19/kafka-fast-reason)
+[Kafka 为什么这么快](https://houbb.github.io/2018/09/19/kafka-fast-reason)
 
 # 参考资料
 

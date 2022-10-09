@@ -375,7 +375,7 @@ public final class ChineseNameProbHelper {
 
 [贝叶斯推断及其互联网应用（一）：定理简介](http://www.ruanyifeng.com/blog/2011/08/bayesian_inference_part_one.html)
 
-[NLP 中文人名生成器，性别识别实现思路](http://houbb.github.io/2020/01/20/nlp-chinese-name-00-overview)
+[NLP 中文人名生成器，性别识别实现思路](https://houbb.github.io/2020/01/20/nlp-chinese-name-00-overview)
 
 * any list
 {:toc}

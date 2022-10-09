@@ -127,7 +127,7 @@ kafka会均匀度讲一个partition的所有数据replica分布在不同的机�
 
 [rpc-从零开始实现 rpc](https://github.com/houbb/rpc) https://github.com/houbb/rpc
 
-[Kafka 为什么这么快](http://houbb.github.io/2018/09/19/kafka-fast-reason)
+[Kafka 为什么这么快](https://houbb.github.io/2018/09/19/kafka-fast-reason)
 
 # 参考资料
 

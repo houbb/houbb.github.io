@@ -398,7 +398,7 @@ Regex 是一个用起来觉得很简单，实际上我们又没有深入思考�
 
 [Regex 正则表达式入门](https://houbb.github.io/2017/07/24/regex)
 
-[Regex 正则表达式与 DFA](http://houbb.github.io/2020/01/07/regex-and-dfa)
+[Regex 正则表达式与 DFA](https://houbb.github.io/2020/01/07/regex-and-dfa)
 
 # 参考资料
 

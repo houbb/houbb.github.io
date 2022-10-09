@@ -9,41 +9,41 @@ published: true
 
 # 系列目录
 
-[spring 常见面试题](http://houbb.github.io/2022/05/10/interview-01-spring)
+[spring 常见面试题](https://houbb.github.io/2022/05/10/interview-01-spring)
 
-[spring-boot 常见面试题](http://houbb.github.io/2022/05/10/interview-02-springboot)
+[spring-boot 常见面试题](https://houbb.github.io/2022/05/10/interview-02-springboot)
 
-[redis 常见面试题](http://houbb.github.io/2022/05/10/interview-04-redis)
+[redis 常见面试题](https://houbb.github.io/2022/05/10/interview-04-redis)
 
-[mysql 常见面试题](http://houbb.github.io/2022/05/10/interview-05-mysql)
+[mysql 常见面试题](https://houbb.github.io/2022/05/10/interview-05-mysql)
 
-[mq 常见面试题](http://houbb.github.io/2022/05/10/interview-07-mq)
+[mq 常见面试题](https://houbb.github.io/2022/05/10/interview-07-mq)
 
-[rpc/dubbo 常见面试题](http://houbb.github.io/2022/05/10/interview-06-dubbo)
+[rpc/dubbo 常见面试题](https://houbb.github.io/2022/05/10/interview-06-dubbo)
 
-[ZooKeeper 面试题](http://houbb.github.io/2022/05/10/interview-08-zookeeper)
+[ZooKeeper 面试题](https://houbb.github.io/2022/05/10/interview-08-zookeeper)
 
-[JVM 常见面试题之双亲委派](http://houbb.github.io/2022/05/10/interview-09-jvm-classloader)
+[JVM 常见面试题之双亲委派](https://houbb.github.io/2022/05/10/interview-09-jvm-classloader)
 
-[JVM 常见面试题之 GC 垃圾回收](http://houbb.github.io/2022/05/10/interview-09-jvm-gc)
+[JVM 常见面试题之 GC 垃圾回收](https://houbb.github.io/2022/05/10/interview-09-jvm-gc)
 
-[JVM 常见面试题之 java 内存结构](http://houbb.github.io/2022/05/10/interview-09-jvm-struct)
+[JVM 常见面试题之 java 内存结构](https://houbb.github.io/2022/05/10/interview-09-jvm-struct)
 
-[JVM 常见面试题之 java 内存结构2](http://houbb.github.io/2022/05/10/interview-11-java-jvm)
+[JVM 常见面试题之 java 内存结构2](https://houbb.github.io/2022/05/10/interview-11-java-jvm)
 
-[【面试】mybatis 常见面试题汇总](http://houbb.github.io/2022/05/10/interview-03-mybatis)
+[【面试】mybatis 常见面试题汇总](https://houbb.github.io/2022/05/10/interview-03-mybatis)
 
-[面试官：你们项目中是怎么做防重复提交的？](http://houbb.github.io/2022/05/10/interview-10-repeat)
+[面试官：你们项目中是怎么做防重复提交的？](https://houbb.github.io/2022/05/10/interview-10-repeat)
 
-[java 基础之 event 事件机制](http://houbb.github.io/2022/05/10/interview-11-java-basic-event)
+[java 基础之 event 事件机制](https://houbb.github.io/2022/05/10/interview-11-java-basic-event)
 
-[Reflection-01-java 反射机制](http://houbb.github.io/2018/07/01/reflection-01-overview)
+[Reflection-01-java 反射机制](https://houbb.github.io/2018/07/01/reflection-01-overview)
 
-[distributed 分布式相关专题汇总](http://houbb.github.io/2022/05/10/interview-11-java-distribute)
+[distributed 分布式相关专题汇总](https://houbb.github.io/2022/05/10/interview-11-java-distribute)
 
-[web 常见面试题](http://houbb.github.io/2022/05/10/interview-11-java-web)
+[web 常见面试题](https://houbb.github.io/2022/05/10/interview-11-java-web)
 
-[其他常见面试题](http://houbb.github.io/2022/05/10/interview-12-other)
+[其他常见面试题](https://houbb.github.io/2022/05/10/interview-12-other)
 
 # 题目
 
@@ -77,9 +77,9 @@ published: true
 
 70、OSI有哪七层模型？TCP/IP是哪四层模型。
 
-[OSI 协议和 TCP/IP 协议](http://houbb.github.io/2018/09/25/protocol-osi-tcp-ip)
+[OSI 协议和 TCP/IP 协议](https://houbb.github.io/2018/09/25/protocol-osi-tcp-ip)
 
-[TCP/IP 协议-03-拥塞控制算法简介](http://houbb.github.io/2019/04/05/protocol-tcp-ip-03-congestion-control-03)
+[TCP/IP 协议-03-拥塞控制算法简介](https://houbb.github.io/2019/04/05/protocol-tcp-ip-03-congestion-control-03)
 
 73、TCP协议拥塞是怎么解决的？
 

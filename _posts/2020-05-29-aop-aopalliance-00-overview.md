@@ -333,7 +333,7 @@ AspectJ模型无疑是最成功的模型，并且已经有一些工具可以支�
 
 # 拓展阅读
 
-[aopalliance 简介](http://houbb.github.io/2019/02/26/aopalliance)
+[aopalliance 简介](https://houbb.github.io/2019/02/26/aopalliance)
 
 # 参考资料
 

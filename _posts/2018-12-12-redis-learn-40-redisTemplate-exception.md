@@ -15,7 +15,7 @@ published: true
 
 后来 redis 采用 redisTemplate 来操作，发现会报如下错误：
 
-> [redis 中大 key 的删除策略](http://houbb.github.io/2018/12/12/redis-learn-29-big-key-hset)
+> [redis 中大 key 的删除策略](https://houbb.github.io/2018/12/12/redis-learn-29-big-key-hset)
 
 ## 异常信息
 

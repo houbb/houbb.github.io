@@ -17,7 +17,7 @@ published: true
 
 ## npm 安装
 
-此处不再赘述，可参考 [npm 使用入门](http://houbb.github.io/2018/04/24/npm)
+此处不再赘述，可参考 [npm 使用入门](https://houbb.github.io/2018/04/24/npm)
 
 ```
 λ npm -version

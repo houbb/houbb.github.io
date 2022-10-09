@@ -11,7 +11,7 @@ published: true
 
 大家好，我是老马。
 
-上一篇文章我们简单学习了[事务的隔离级别](http://houbb.github.io/2018/07/26/database-transaction-01-isolation)，
+上一篇文章我们简单学习了[事务的隔离级别](https://houbb.github.io/2018/07/26/database-transaction-01-isolation)，
 
 另外的一些概念，比如原子性和持久性谈的人不多。
 

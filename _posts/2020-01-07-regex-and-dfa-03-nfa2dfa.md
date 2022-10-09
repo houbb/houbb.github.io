@@ -328,7 +328,7 @@ private boolean isDfaMatch(String text, int pos, State startState) {
 
 [01-Regex 正则表达式入门](https://houbb.github.io/2017/07/24/regex)
 
-[02-Regex 正则表达式与 DFA](http://houbb.github.io/2020/01/07/regex-and-dfa)
+[02-Regex 正则表达式与 DFA](https://houbb.github.io/2020/01/07/regex-and-dfa)
 
 [03-Regex 正则表达式原理及如何从零实现](https://houbb.github.io/2020/01/07/regex-and-dfa-02)
 

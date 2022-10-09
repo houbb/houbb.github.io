@@ -103,11 +103,11 @@ ps: 如果只是想异步，应用架构中没有引入 mq，使用 spring boot 
 
 ## 自己的系统使用情况
 
-一些比较早的系统，使用都是 apache 的 [activeMQ](http://houbb.github.io/2017/06/07/activemq)。目前遗留的就是一些基本没人维护的任务调度等系统。
+一些比较早的系统，使用都是 apache 的 [activeMQ](https://houbb.github.io/2017/06/07/activemq)。目前遗留的就是一些基本没人维护的任务调度等系统。
 
-后续系统业务上都基本换成了 ali 的 [rocketMQ](http://houbb.github.io/2022/03/18/01-rocketmq-01-concept)，当然后续在 rocketMQ 的基础上进行自研，使其更加便于业务使用。
+后续系统业务上都基本换成了 ali 的 [rocketMQ](https://houbb.github.io/2022/03/18/01-rocketmq-01-concept)，当然后续在 rocketMQ 的基础上进行自研，使其更加便于业务使用。
 
-数据分析、日志等基本使用的是 [kafka](http://houbb.github.io/2017/08/09/apacke-kafka-00-overview)。
+数据分析、日志等基本使用的是 [kafka](https://houbb.github.io/2017/08/09/apacke-kafka-00-overview)。
 
 # 小结
 

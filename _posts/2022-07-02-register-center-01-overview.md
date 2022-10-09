@@ -63,7 +63,7 @@ published: true
 
 ## 一致性分歧
 
-> [CAP 理论](http://houbb.github.io/2018/09/06/distributed-theory-cap)
+> [CAP 理论](https://houbb.github.io/2018/09/06/distributed-theory-cap)
 
 这里不得不提一下，我们知道分布式里一个重要的理论，那就是 CAP。
 
@@ -282,27 +282,27 @@ Eureka 的设计就是图 8 的简化版本，它把 Data replicate 和 Registry
 
 ## SOFARegistry
 
-[分布式注册中心-02-SOFARegistry](http://houbb.github.io/2022/07/02/register-center-02-sofaregister)
+[分布式注册中心-02-SOFARegistry](https://houbb.github.io/2022/07/02/register-center-02-sofaregister)
 
 ## Nacos
 
-[分布式注册中心-03-NACOS](http://houbb.github.io/2022/07/02/register-center-03-nacos)
+[分布式注册中心-03-NACOS](https://houbb.github.io/2022/07/02/register-center-03-nacos)
 
 ## Eureka
 
-[eureka-用于弹性中间层负载平衡和故障转移的 AWS 服务注册表。](http://houbb.github.io/2021/09/06/erueka)
+[eureka-用于弹性中间层负载平衡和故障转移的 AWS 服务注册表。](https://houbb.github.io/2021/09/06/erueka)
 
 ## Consul
 
-[Consul 是一种服务网格解决方案，提供具有服务发现，配置和分段功能的全功能控制平面。](http://houbb.github.io/2018/10/31/consul)
+[Consul 是一种服务网格解决方案，提供具有服务发现，配置和分段功能的全功能控制平面。](https://houbb.github.io/2018/10/31/consul)
 
 ## ZooKeeper
 
-[ZooKeeper-01-overview](http://houbb.github.io/2016/09/25/zookeeper-01-overview)
+[ZooKeeper-01-overview](https://houbb.github.io/2016/09/25/zookeeper-01-overview)
 
 ## Kubernetes
 
-[Kubernetes-01-快速开始 k8s](http://houbb.github.io/2018/08/18/docker-manager-k8-01-overview)
+[Kubernetes-01-快速开始 k8s](https://houbb.github.io/2018/08/18/docker-manager-k8-01-overview)
 
 # 参考资料
 

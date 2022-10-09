@@ -43,7 +43,7 @@ serverBootstrap.group(workerGroup, bossGroup)
 
 这里我们通过指定分隔符解决 netty 粘包问题。
 
-> [解决 netty 粘包问题](http://houbb.github.io/2019/05/10/netty-definitive-gudie-05-packing-and-unpacking)
+> [解决 netty 粘包问题](https://houbb.github.io/2019/05/10/netty-definitive-gudie-05-packing-and-unpacking)
 
 ## MqConsumerHandler 处理类
 

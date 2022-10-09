@@ -9,7 +9,7 @@ published: true
 
 # 序言
 
-上一篇文章：[你连对外接口签名都不会知道？有时间还是要学习学习。](http://houbb.github.io/2020/06/17/java-tool-checksum)
+上一篇文章：[你连对外接口签名都不会知道？有时间还是要学习学习。](https://houbb.github.io/2020/06/17/java-tool-checksum)
 
 有很多小伙伴反应，对外的 API 中相关的加签，验签这些工作可以统一使用网关去处理。
 

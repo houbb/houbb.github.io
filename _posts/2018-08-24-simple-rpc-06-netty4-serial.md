@@ -37,7 +37,7 @@ netty 底层都是基于 ByteBuf 进行通讯的。
 
 ps: 可以根据个人还好选择，相关序列化可参考下文，此处不做展开。
 
-> [json 序列化框架简介](http://houbb.github.io/2018/07/20/json-00-overview)
+> [json 序列化框架简介](https://houbb.github.io/2018/07/20/json-00-overview)
 
 ## 实现思路
 

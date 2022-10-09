@@ -206,7 +206,7 @@ ps: 个人理解一般树的数据结构，时间复杂度都是 logn 级别的�
 
 [希尔排序](https://zh.wikipedia.org/wiki/%E5%B8%8C%E5%B0%94%E6%8E%92%E5%BA%8F)
 
-[索引数据结构（1）概览篇](http://houbb.github.io/2020/10/17/data-struct-index-01-overview)
+[索引数据结构（1）概览篇](https://houbb.github.io/2020/10/17/data-struct-index-01-overview)
 
 [图解排序算法(二)之希尔排序](https://www.cnblogs.com/chengxiao/p/6104371.html)
 

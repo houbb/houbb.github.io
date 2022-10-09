@@ -18,7 +18,7 @@ excerpt:  Mybatis 分页插件 PageHelper
 
 ## 拓展阅读
 
-[分页插件介绍](http://houbb.github.io/2018/10/26/mybatis-page-helper)
+[分页插件介绍](https://houbb.github.io/2018/10/26/mybatis-page-helper)
 
 # 基本的使用
 

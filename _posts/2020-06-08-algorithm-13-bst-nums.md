@@ -52,7 +52,7 @@ published: true
 
 这种数据结构就是为了提升查询速度而生的，可以保证每次缩短一半的查询范围。
 
-> [java 如何实现 binary search 二分查找法？](http://houbb.github.io/2020/06/08/algorithm-12-binary-search)
+> [java 如何实现 binary search 二分查找法？](https://houbb.github.io/2020/06/08/algorithm-12-binary-search)
 
 # 解题思路
 

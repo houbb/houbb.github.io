@@ -81,15 +81,15 @@ published: true
 
 # 解决算法
 
-[Paxos-一致性算法](http://houbb.github.io/2018/10/30/paxos)
+[Paxos-一致性算法](https://houbb.github.io/2018/10/30/paxos)
 
-[Raft-一致性算法](http://houbb.github.io/2018/10/30/raft)
+[Raft-一致性算法](https://houbb.github.io/2018/10/30/raft)
 
-[ZAB-一致性算法](http://houbb.github.io/2018/10/30/zab)
+[ZAB-一致性算法](https://houbb.github.io/2018/10/30/zab)
 
-[时间戳-分布式一致性算法](http://houbb.github.io/2018/08/31/lock-time-series-02)
+[时间戳-分布式一致性算法](https://houbb.github.io/2018/08/31/lock-time-series-02)
 
-[Vector Lock 时钟向量-一致性算法](http://houbb.github.io/2018/08/31/lock-vector-clock-01)
+[Vector Lock 时钟向量-一致性算法](https://houbb.github.io/2018/08/31/lock-vector-clock-01)
 
 # 参考资料
 

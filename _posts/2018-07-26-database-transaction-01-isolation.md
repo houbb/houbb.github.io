@@ -391,9 +391,9 @@ select * from user for update
 
 推荐阅读：
 
-[redis 分布式锁设计 redis lock](http://houbb.github.io/2019/01/07/redis-learn-41-lock)
+[redis 分布式锁设计 redis lock](https://houbb.github.io/2019/01/07/redis-learn-41-lock)
 
-[ZooKeeper 分布式锁](http://houbb.github.io/2018/09/08/distributed-lock-zookeeper)
+[ZooKeeper 分布式锁](https://houbb.github.io/2018/09/08/distributed-lock-zookeeper)
 
 # Mysql 事务的实现原理
 
@@ -480,7 +480,7 @@ mysql官方innodb的实现是用MVCC，官方声称默认的innodb的隔离级�
 
 > [consistent read](https://dev.mysql.com/doc/refman/5.7/en/innodb-consistent-read.html)
 
-MVCC 的详细内容，此处不做展开。拓展阅读：[SQL MVCC](http://houbb.github.io/2018/08/31/sql-mvcc)
+MVCC 的详细内容，此处不做展开。拓展阅读：[SQL MVCC](https://houbb.github.io/2018/08/31/sql-mvcc)
 
 # 小结
 

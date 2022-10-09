@@ -45,7 +45,7 @@ published: true
 
 拓展阅读：
 
-> [从零手写实现负载均衡](http://houbb.github.io/2020/06/19/load-balance-03-hand-write) http://houbb.github.io/2020/06/19/load-balance-03-hand-write
+> [从零手写实现负载均衡](https://houbb.github.io/2020/06/19/load-balance-03-hand-write) https://houbb.github.io/2020/06/19/load-balance-03-hand-write
 
 ![负载均衡](https://img-blog.csdnimg.cn/3d89b015b8b14418bdc14b0a03133ea6.png#pic_center)
 

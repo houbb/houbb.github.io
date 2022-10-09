@@ -188,7 +188,7 @@ Memory Usage: 41.5 MB, less than 62.33% of Java online submissions for Top K Fre
 
 ## 思路4-摩尔投票法
 
-我们在 [如何找到数组中出现次数最多的元素？](http://houbb.github.io/2020/01/23/algorithm-25-major-element) 中介绍过摩尔投票法。
+我们在 [如何找到数组中出现次数最多的元素？](https://houbb.github.io/2020/01/23/algorithm-25-major-element) 中介绍过摩尔投票法。
 
 不过感觉这里并不适用，因为当 k 较大的时候，投票的复杂度就是 k*n，如果 k=n 就是 n^2，不符合题意。
 
