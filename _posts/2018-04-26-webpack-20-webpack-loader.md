@@ -27,7 +27,7 @@ module.exports = {
         include: [ 
           path.resolve(__dirname, 'src'),
         ], // 条件
-        use: 'babel-loader', // 规则应用结果
+        use: 'babel-loader', // 规则应用结果
       }, // 一个 object 即一条规则
       // ...
     ],
