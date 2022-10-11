@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  低代码开源源码学习-03-index.html 页面加载处理
+title:  低代码开源源码学习-03-index 页面加载处理
 date:  2022-09-03 21:22:02 +0800
 categories: [Tool]
 tags: [low-code, sh]

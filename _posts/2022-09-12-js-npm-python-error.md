@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Can't find Python executable "python", you can set the PYTHON env variable.
+title:  Can't find Python executable python you can set the PYTHON env variable.
 date:  2022-10-01 09:22:02 +0800
 categories: [JS]
 tags: [js, error, npm, sh]
