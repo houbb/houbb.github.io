@@ -56,9 +56,16 @@ public static void main(String[] args) {
 
 也可以直接根据 ascii 全文替换：
 
-ps: 好像很多网站不支持。
+```java
+for(int i = 1; i < 32; i++) {
+    char c = (char) i;
+    System.out.println(i + ": " + Character.valueOf(c));
+}
+```
 
+ps: 好像很多网站不支持，这里为了不影响 feed 文件，使用截图。
 
+![特殊字符](https://img-blog.csdnimg.cn/6950a630792446c88c473dd62c1cb833.png#pic_center)
 
 # 参考资料
 
