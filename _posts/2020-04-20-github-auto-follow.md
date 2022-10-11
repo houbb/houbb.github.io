@@ -19,15 +19,15 @@ The page index looks like Base64 to me so I decoded some:
 
 Following:
 ```
-Y3Vyc29yOnYyOpK5MjAxOS0wNi0wOVQxOToyNDo0MC0wNDowMM4Cut97 -> cursor:v2:2019-06-09T19:24:40-04:00{
-Y3Vyc29yOnYyOpK5MjAxOS0wNi0yNVQyMTo0NzoxNi0wNDowMM4Cwicz -> cursor:v2:2019-06-25T21:47:16-04:00'3
-Y3Vyc29yOnYyOpK5MjAxOS0wNS0yNFQxMDowNDo1OC0wNDowMM4CsqPx -> cursor:v2:2019-05-24T10:04:58-04:00
+Y3Vyc29yOnYyOpK5MjAxOS0wNi0wOVQxOToyNDo0MC0wNDowMM4Cut97 -> cursor:v2:2019-06-09T19:24:40-04:00{
+Y3Vyc29yOnYyOpK5MjAxOS0wNi0yNVQyMTo0NzoxNi0wNDowMM4Cwicz -> cursor:v2:2019-06-25T21:47:16-04:00'3
+Y3Vyc29yOnYyOpK5MjAxOS0wNS0yNFQxMDowNDo1OC0wNDowMM4CsqPx -> cursor:v2:2019-05-24T10:04:58-04:00
 ```
 
 Followers:
 ```
-Y3Vyc29yOnYyOpK5MjAxNy0xMS0xMlQwMTowMToxMy0wNTowMM4Bve -> cursor:v2:2017-11-12T01:01:13-05:00
-Y3Vyc29yOnYyOpK5MjAxNy0xMS0xMlQwMDo1ODo1Ny0wNTowMM4Bve9S -> cursor:v2:2017-11-12T00:58:57-05:00R
+Y3Vyc29yOnYyOpK5MjAxNy0xMS0xMlQwMTowMToxMy0wNTowMM4Bve -> cursor:v2:2017-11-12T01:01:13-05:00
+Y3Vyc29yOnYyOpK5MjAxNy0xMS0xMlQwMDo1ODo1Ny0wNTowMM4Bve9S -> cursor:v2:2017-11-12T00:58:57-05:00R
 ```
 
 That makes sense because the timestamp is used for pagination now instead of page number (from the timestamp get 20 records).

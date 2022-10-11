@@ -75,7 +75,7 @@ var jsonlint = function() {
                         var i = g.length - 1;
                         switch (f) {
                         case 1:
-                            this.$ = b.replace(/\\(\\|")/g, "$1").replace(/\\n/g, "\n").replace(/\\r/g, "\r").replace(/\\t/g, " ").replace(/\\v/g, "").replace(/\\f/g, "\f").replace(/\\b/g, "\b");
+                            this.$ = b.replace(/\\(\\|")/g, "$1").replace(/\\n/g, "\n").replace(/\\r/g, "\r").replace(/\\t/g, " ").replace(/\\v/g, "").replace(/\\f/g, "\f").replace(/\\b/g, "\b");
                             break;
                         case 2:
                             this.$ = Number(b);
