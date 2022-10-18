@@ -2,8 +2,8 @@
 layout: post
 title: DeepLearning4j-02-Multi Project Beginners 新人
 date:  2022-10-14 09:22:02 +0800
-categories: [Tool]
-tags: [tool, sh]
+categories: [AI]
+tags: [ai, dl4j, ml, sh]
 published: true
 ---
 

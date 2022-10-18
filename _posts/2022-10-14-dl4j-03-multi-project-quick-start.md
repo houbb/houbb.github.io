@@ -2,8 +2,8 @@
 layout: post
 title: DeepLearning4j-03-Multi Project Quick start 快速开始
 date:  2022-10-14 09:22:02 +0800
-categories: [Tool]
-tags: [tool, sh]
+categories: [AI]
+tags: [ai, dl4j, ml, sh]
 published: true
 ---
 
