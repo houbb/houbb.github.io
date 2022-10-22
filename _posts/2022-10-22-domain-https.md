@@ -375,9 +375,55 @@ certbot renew
 
 这里选用最新的 8.5.x 版本。
 
-8.5.x 版本的 tomcat 支持 OpenSSL 风格的证书配置，优势在于无需先生成 JSSE 风格需要的 keystore 证书文件。
+8.5.x 版本的 tomcat 支持 OpenSSL 风格的证书配置，**优势在于无需先生成 JSSE 风格需要的 keystore 证书文件**。
 
 参考 `conf/server.xml` 中的提示，配置如下：
+
+### apache-tomcat-8.5.83 例子
+
+原始 server.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+
+  <GlobalNamingResources>
+    <Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" />
+  </GlobalNamingResources>
+
+  <Service name="Catalina">
+    <Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+    <Engine name="Catalina" defaultHost="localhost">
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+               resourceName="UserDatabase"/>
+      </Realm>
+
+      <Host name="localhost"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true">
+
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+               prefix="localhost_access_log" suffix=".txt"
+               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+
+      </Host>
+    </Engine>
+  </Service>
+</Server>
+```
+
+在这个文件上添加对应的 443 SSL 配置，修改 8080 为 80
 
 ```xml
 <Connector port="443" protocol="org.apache.coyote.http11.Http11NioProtocol"
@@ -391,7 +437,61 @@ certbot renew
 </Connector>
 ```
 
-conf/server.xml 提示：如果需要升级成 HTTP/2 协议，需要 APR/native 支持。
+最终结果：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Server port="8005" shutdown="SHUTDOWN">
+  <Listener className="org.apache.catalina.startup.VersionLoggerListener" />
+  <Listener className="org.apache.catalina.core.AprLifecycleListener" SSLEngine="on" />
+  <Listener className="org.apache.catalina.core.JreMemoryLeakPreventionListener" />
+  <Listener className="org.apache.catalina.mbeans.GlobalResourcesLifecycleListener" />
+  <Listener className="org.apache.catalina.core.ThreadLocalLeakPreventionListener" />
+
+  <GlobalNamingResources>
+    <Resource name="UserDatabase" auth="Container"
+              type="org.apache.catalina.UserDatabase"
+              description="User database that can be updated and saved"
+              factory="org.apache.catalina.users.MemoryUserDatabaseFactory"
+              pathname="conf/tomcat-users.xml" />
+  </GlobalNamingResources>
+
+  <Service name="Catalina">
+    <Connector port="80" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="443" />
+
+    <Connector port="443" protocol="org.apache.coyote.http11.Http11NioProtocol"
+           maxThreads="150" SSLEnabled="true">
+        <SSLHostConfig>
+            <Certificate certificateKeyFile="/etc/letsencrypt/live/chisha.one-0001/privkey.pem"
+                        certificateFile="/etc/letsencrypt/live/chisha.one-0001/cert.pem"
+                        certificateChainFile="/etc/letsencrypt/live/chisha.one-0001/chain.pem"
+                        type="RSA" />
+        </SSLHostConfig>
+    </Connector>
+
+    <Engine name="Catalina" defaultHost="localhost">
+      <Realm className="org.apache.catalina.realm.LockOutRealm">
+        <Realm className="org.apache.catalina.realm.UserDatabaseRealm"
+               resourceName="UserDatabase"/>
+      </Realm>
+
+      <Host name="localhost"  appBase="webapps"
+            unpackWARs="true" autoDeploy="true">
+
+        <Valve className="org.apache.catalina.valves.AccessLogValve" directory="logs"
+               prefix="localhost_access_log" suffix=".txt"
+               pattern="%h %l %u %t &quot;%r&quot; %s %b" />
+
+      </Host>
+    </Engine>
+  </Service>
+</Server>
+```
+
+
+`/root/tool/tomcat/apache-tomcat-8.5.83/conf/server.xml` 提示：如果需要升级成 HTTP/2 协议，需要 APR/native 支持。
 
 且安装 APR/native 后 tomcat 将会有更好的性能。会另写一篇文章来进行实践。
 
@@ -584,7 +684,7 @@ Let’s Encrypt 是一个证书颁发机构（CA）。
 
 # 参考资料
 
-[为 tomcat 应用 Let’s Encrypt 证书](https://www.chisha.one/article/18)
+[为 tomcat 应用 Let’s Encrypt 证书](https://www.dunnen.top/article/18)
 
 [https://letsencrypt.org/](https://letsencrypt.org/)
 

@@ -56,14 +56,16 @@ OpenJDK 64-Bit Server VM (build 25.302-b08, mixed mode)
 
 
 
-# 安装 tomcat
+# 安装 tomcat8
 
 ## 下载
 
 可以从官网 [https://tomcat.apache.org/download-80.cgi?Preferred=https%3A%2F%2Fapache.claz.org%2F](https://tomcat.apache.org/download-80.cgi?Preferred=https%3A%2F%2Fapache.claz.org%2F) 查看
 
+选择最上面的 Binary Distributions > Core > tar.gz
+
 ```
-# wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.70/bin/apache-tomcat-8.5.70.tar.gz
+# wget https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.83/bin/apache-tomcat-8.5.83.tar.gz
 ```
 
 ## 解压
@@ -94,6 +96,23 @@ catalina.bat   catalina-tasks.xml  ciphers.sh   commons-daemon-native.tar.gz  co
 
 ```
 ./shutdown.sh
+```
+
+### 启动报错
+
+```
+22-Oct-2022 21:17:32.622 SEVERE [main] org.apache.catalina.core.StandardServer.await Failed to create server shutdown socket on address [localhost] and port [8005] (base port [8005] and offset [0])
+        java.net.BindException: Address already in use (Bind failed)
+```
+
+`8005` 这个端口被占用。
+
+解决：
+
+（1）查看占用线程
+
+```
+lsof -i:8005
 ```
 
 ### 查看运行状态
@@ -212,6 +231,19 @@ sudo systemctl restart tomcat
 sudo systemctl enable tomcat
 ```
 
+（4）服务停止
+
+```
+sudo systemctl stop tomcat
+```
+
+（5）服务删除
+
+```
+yum remove tomcat
+```
+
+
 ## 页面访问
 
 现在Tomcat已经启动并运行，让我们在Web浏览器中访问Web管理界面。您可以通过访问服务器的公共IP地址，在端口8080上：
@@ -316,6 +348,8 @@ https://blog.csdn.net/github_38336924/article/details/82253553
 [CENTOS7 YUM安装TOMCAT9[亲测可用]](https://www.freesion.com/article/5870470392/)
 
 https://blog.csdn.net/KeithQin/article/details/123631488
+
+[Linux 查看端口占用情况](https://www.runoob.com/w3cnote/linux-check-port-usage.html)
 
 * any list
 {:toc}
