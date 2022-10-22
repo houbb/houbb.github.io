@@ -137,6 +137,17 @@ TTL：一般设置为 3600。
 
 新手无需纠结，任选一种直接用，先把网站运行起来，其它的以后再慢慢研究。
 
+# 如何启用 HTTPS
+
+## 说明
+
+购买域名的时候，其实可以选择 SSL，不过比较贵。
+
+这里可以采用免费的 Let's Encrypt。
+
+
+
+
 # 参考资料
 
 https://zhuanlan.zhihu.com/p/116916962
@@ -146,6 +157,8 @@ https://zhuanlan.zhihu.com/p/33921436
 [Namesilo优惠码注册域名购买教程](https://www.1deng.me/namesilo-sign-up-tutorial.html)
 
 [Namesilo DNS 域名解析教程和常见问题解决方法汇总](https://zhuanlan.zhihu.com/p/86961133)
+
+[NAMESILO如何注册域名和添加解析](https://www.zzygx.cc/?p=916)
 
 * any list
 {:toc}

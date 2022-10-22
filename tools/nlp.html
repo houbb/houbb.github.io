@@ -13,6 +13,7 @@
     <link href="https://unpkg.com/layui@2.7.3/dist/css/layui.css" rel="stylesheet">
     
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082537058031213" crossorigin="anonymous"></script>
+
     <style>
 
         textarea {
@@ -47,7 +48,7 @@
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-F03RP3XNVG"></script>
 <script src="/static/libs/google/gtag.js"></script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082537058031213" crossorigin="anonymous"></script>
+
 <script>
     function nlpCopy() {
         let result = document.getElementById("after").value.trim();
@@ -95,7 +96,7 @@
             }
         }
 
-        xhr.open('POST', 'http://42.192.74.192:8080/nlp-server/a/nlp/nlp', true);
+        xhr.open('POST', 'https://chisha.one:8080/nlp-server/a/nlp/nlp', true);
         xhr.setRequestHeader("Content-Type","application/json"); //formdata数据请求头需设置为application/x-www-form-urlencoded
         xhr.ontimeout = function() {
             layer.msg('请求超时');
@@ -111,8 +112,5 @@
     }
 
 </script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-F03RP3XNVG"></script>
-<script src="/static/libs/google/gtag.js"></script>
 </body>
 </html>
