@@ -162,6 +162,12 @@ $   rpm -q tomcat
 $   yum info tomcat
 ```
 
+## 升级
+
+想把 tomcat 升级到 8.5.X
+
+> [tomcat 版本说明](https://tomcat.apache.org/whichversion.html)
+
 ## 服务启动
 
 （1）启动
@@ -302,6 +308,14 @@ scp -C xxxxxxx
 https://blog.csdn.net/github_38336924/article/details/82253553
 
 [scp大文件出现stalled](https://blog.csdn.net/weixin_43652082/article/details/104111393)
+
+## tomcat9
+
+[Tomcat9新特性及升级注意事项](http://javakk.com/2421.html)
+
+[CENTOS7 YUM安装TOMCAT9[亲测可用]](https://www.freesion.com/article/5870470392/)
+
+https://blog.csdn.net/KeithQin/article/details/123631488
 
 * any list
 {:toc}

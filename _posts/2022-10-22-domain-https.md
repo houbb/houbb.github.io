@@ -1,6 +1,6 @@
 ---
 layout: post
-title: domain 域名购买如何实现免费的 HTTPS let's Encrypt
+title: domain 域名购买如何实现免费的 HTTPS let's Encrypt 在 tomcat 实战笔记
 date: 2021-08-02 21:01:55 +0800
 categories: [System]
 tags: [system, tomcat, sh]
@@ -237,24 +237,137 @@ ps: 一般的 DNS 添加，都需要一定的时间才会生效。
 确认生效后，再进行 Enter 执行。
 
 ```
-IMPORTANT NOTES:
- - Congratulations! Your certificate and chain have been saved at:
-   /etc/letsencrypt/live/chisha.one/fullchain.pem
-   Your key file has been saved at:
-   /etc/letsencrypt/live/chisha.one/privkey.pem
-   Your cert will expire on 2021-02-20. To obtain a new or tweaked
-   version of this certificate in the future, simply run certbot
-   again. To non-interactively renew *all* of your certificates, run
-   "certbot renew"
- - If you like Certbot, please consider supporting our work by:
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Press Enter to Continue
 
-   Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
-   Donating to EFF:                    https://eff.org/donate-le
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/chisha.one/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/chisha.one/privkey.pem
+This certificate expires on 2023-01-20.
+These files will be updated when the certificate renews.
+
+NEXT STEPS:
+- This certificate will not be renewed automatically. Autorenewal of --manual certificates requires the use of an authentication hook script (--manual-auth-hook) but one was not provided. To renew this certificate, repeat this same certbot command before the certificate's expiry date.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+If you like Certbot, please consider supporting our work by:
+ * Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+ * Donating to EFF:                    https://eff.org/donate-le
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 ```
 
 证书有效期为 3 个月，到期前 1 个月内可重新生成新的证书，或通过 `certbot renew` 自动续期。
 
 ps: 可以把 certbot renew 直接放在 cron 定时执行器中。
+
+## 在 tomcat7 中配置整数
+
+如果是 tomcat 8.5.x 以后的版本，是可以直接使用上面的文件的。
+
+我的系统中使用的是 tomcat7 版本，所以需要把文件格式做一下转换。
+
+### 转换证书格式
+
+进入加密证书目录下：
+
+```
+cd /etc/letsencrypt/live/chisha.one/
+```
+
+（1）执行命令生成 `.p12` 文件
+
+此命令会要求输入一个密码，我这里就取“123456”
+
+```
+$ openssl pkcs12 -export -in fullchain.pem -inkey privkey.pem -out fullchain_and_key.p12 -name tomcat
+```
+
+完成后，会生成一个 `fullchain_and_key.p12` 文件。
+
+（2）生成 `.jks` 证书
+
+```
+$ keytool -importkeystore -deststorepass 'yourJKSpass' -destkeypass 'yourKeyPass' -destkeystore MyDSKeyStore.jks -srckeystore fullchain_and_key.p12 -srcstoretype PKCS12 -srcstorepass 'yourPKCS12pass' -alias tomcat
+```
+
+这里的yourPKCS12pass就是上一步中设置的密码，yourJKSpass密码和yourKeyPass也可以跟yourPKCS12pass一样
+
+这里我们简单点，都是用 123456
+
+```
+$ keytool -importkeystore -deststorepass 123456 -destkeypass 123456 -destkeystore MyDSKeyStore.jks -srckeystore fullchain_and_key.p12 -srcstoretype PKCS12 -srcstorepass 123456 -alias tomcat
+```
+
+执行完成后，生成 `MyDSKeyStore.jks` 文件。
+
+### TOMCAT 中配置
+
+到配置目录下
+
+```
+cd /usr/share/tomcat/conf/
+```
+
+编辑 server.xml
+
+```
+vi server.xml
+```
+
+找到如下内容并取消其注释
+
+```xml
+<Connector port="8443" protocol="org.apache.coyote.http11.Http11Protocol" 
+URIEncoding="UTF-8" maxThreads="150" SSLEnabled="true" 
+scheme="https" secure="true" clientAuth="false" 
+sslProtocol="TLS" />
+```
+
+添加或修改 ssl 支持
+
+```xml
+<Connector port="8443" protocol="org.apache.coyote.http11.Http11Protocol" 
+URIEncoding="UTF-8" maxThreads="150" SSLEnabled="true" 
+scheme="https" secure="true" clientAuth="false" 
+sslProtocol="TLS" 
+keystoreFile="/etc/letsencrypt/live/chisha.one/MyDSKeyStore.jks" 
+keystorePass="123456" 
+keyAlias="tomcat" 
+keyPass="123456"/>
+```
+
+说明：https默认端口是443，一般生产环境中会将上面的8443端口改为443. 
+
+修改后重启tomcat
+
+```
+$ tomcat restart
+```
+
+
+验证
+
+浏览器中访问
+
+https://chisha.one:8443
+
+如果8443端口修改成了443，则访问
+
+https://chisha.one
+
+### 重启测试
+
+重启 Tomcat，测试 HTTPS 域名访问。
+
+### 证书续签
+
+```
+certbot renew
+```
+
+申请最新的证书，然后根据上面的步骤，重新生成文件。
+
+可以放在 shell 脚本中。
 
 ## 在 tomcat 中配置证书
 
@@ -482,6 +595,8 @@ Let’s Encrypt 是一个证书颁发机构（CA）。
 [Centos7 + Tomcat 8 + Let's encrypt 免费 SSL 升级 https](https://www.jianshu.com/p/7bbad2985caf )
 
 [Let's Encrypt 泛域名ssl证书申请](https://blog.csdn.net/wc810267705/article/details/79917688)
+
+[linux下keytool生成证书_使用keytool 生成证书](https://blog.csdn.net/weixin_32073375/article/details/112830515)
 
 * any list
 {:toc}
