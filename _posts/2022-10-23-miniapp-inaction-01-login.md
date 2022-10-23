@@ -74,6 +74,26 @@ App({
 })
 ```
 
+wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        if (res.code) {
+          let params = {
+            wxCode: res.code
+          };
+          getDataApi.login(params)
+          .then(res=>{
+            console.log(res, '登录结果');
+          });
+        } else {
+            wx.showToast({
+                title: '登录失败',
+                icon: 'error',
+                duration: 2000
+            });
+        }
+      };
+
 ps: 这个方法可以统一进行封装处理，放在 login.js 中。
 
 ### 后端
@@ -104,6 +124,117 @@ public class AnyMiniAppController {
 
 }
 ```
+
+
+# 登录方法的改良
+
+## app.js
+
+```js
+// pages/setting/setting.js
+const getDataApi = require('utils/getDataApi.js')
+
+// app.js
+App({
+  onLaunch() {
+    // 登录
+    wx.login({
+      success: res => {
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        // 发送 res.code 到后台换取 openId, sessionKey, unionId
+        if (res.code) {
+          let params = {
+            wxCode: res.code
+          };
+          getDataApi.login(params)
+          .then(res=>{
+            console.log(res, '登录结果');
+            // 持久化
+            if(res.respCode == '0000') {
+              let result = res.result;
+              wx.setStorageSync('tokenId', result.tokenId);
+              wx.setStorageSync('wxOpenId', result.wxOpenId);
+            } else {
+              wx.showToast({
+                  title: res.respMessage,
+                  icon: 'error',
+                  duration: 2000
+              });
+            }
+          });
+        } else {
+            wx.showToast({
+                title: '登录失败',
+                icon: 'error',
+                duration: 2000
+            });
+        }
+      }
+    })
+  },
+  globalData: {
+    userInfo: null
+  }
+})
+```
+
+
+- getDataApi.js
+
+避免大量重复的代码。
+
+```js
+let BASE_URL = 'http://localhost:8080/eat-server/';
+
+/**
+ * 登录
+ */
+function login(params) {
+  return post('any/miniApp/auth', params);
+}
+
+/**
+  * post方法，对应post请求
+  * @param {String} url [请求的url地址]
+  * @param {Object} params [请求时携带的参数]
+  */
+function post (url, params) {
+    let tokenId = '';
+    let wxOpenId = '';
+
+    // 如果不是登录
+    if(url != 'any/miniApp/auth') {
+      // 存储到本地
+      wx.getStorageSync('tokenId');
+      wx.getStorageSync('wxOpenId');
+    }
+    
+    return new Promise((resolve, reject) => {
+      //发起网络请求
+      wx.request({
+        url: BASE_URL + url,
+        data: params,
+        method: 'post',
+        header: {
+          'content-type': 'application/json', 
+          'tokenId': tokenId,
+          'account': wxOpenId,
+        },
+        success (res) {
+          resolve(res.data)
+        },
+        fail(res) {
+          reject(err.data)
+        } 
+    })
+  })
+}
+
+module.exports = {
+  login
+}
+```
+
 
 # 参考资料
 
