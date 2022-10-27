@@ -28,6 +28,77 @@ JavaScript API GL的使用方式请参考开发指南，详细的接口类说明
 如果您在使用过程遇到技术问题，可查看常见问题或通过工单联系我们。
 
 
+## 注册申请 AK
+
+首先注册成为开发者。
+
+然后申请一下 ak 即可。
+
+参考：
+
+> [账号和获取密钥](https://lbsyun.baidu.com/index.php?title=jspopularGL/guide/getkey)
+
+## 服务配额
+
+请您务必先申请密钥（AK）再使用JS API提供的相关服务，接口无使用次数限制，请开发者放心使用。
+
+如有问题请随时通过工单系统联系我们。
+
+# hello world
+
+## 代码
+
+- helloword.html
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="//api.map.baidu.com/api?type=webgl&v=1.0&ak=您的密钥"></script>
+	<title>地图展示</title>
+</head>
+<body>
+	<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+    // GL版命名空间为BMapGL
+    // 按住鼠标右键，修改倾斜角和角度
+	var map = new BMapGL.Map("allmap");    // 创建Map实例
+	map.centerAndZoom(new BMapGL.Point(116.404, 39.915), 11);  // 初始化地图,设置中心点坐标和地图级别
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+</script>
+```
+
+## 效果如下：
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<style type="text/css">
+	body, html,#allmap {width: 100%;height: 100%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+	</style>
+	<script type="text/javascript" src="//api.map.baidu.com/api?type=webgl&v=1.0&ak=ZdY9ZSVpHVDbZs1ecxAbhyHMX9sfBHv3"></script>
+	<title>地图展示</title>
+</head>
+<body>
+	<div id="allmap"></div>
+</body>
+</html>
+<script type="text/javascript">
+    // GL版命名空间为BMapGL
+    // 按住鼠标右键，修改倾斜角和角度
+	var map = new BMapGL.Map("allmap");    // 创建Map实例
+	map.centerAndZoom(new BMapGL.Point(116.404, 39.915), 11);  // 初始化地图,设置中心点坐标和地图级别
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+</script>
 
 
 
