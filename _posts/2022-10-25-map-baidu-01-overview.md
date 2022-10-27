@@ -83,7 +83,7 @@ JavaScript API GL的使用方式请参考开发指南，详细的接口类说明
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<style type="text/css">
-	    #allmap {width: 100px;height: 100px;overflow: auto;margin:0;font-family:"微软雅黑";}
+	    #allmap {width: 800px;height: 600px;overflow: auto;margin:0;font-family:"微软雅黑";}
 	</style>
 	<script type="text/javascript" src="//api.map.baidu.com/api?type=webgl&v=1.0&ak=bTyl2kLG4HPMSBnBsOg5o1GMY74GZwKk"></script>
 	<title>地图展示</title>
