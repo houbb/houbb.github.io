@@ -77,7 +77,6 @@ JavaScript API GL的使用方式请参考开发指南，详细的接口类说明
 
 ## 效果如下：
 
-<!DOCTYPE html>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
