@@ -61,7 +61,6 @@ published: true
 
 比特币也因基于SHA-256的低效能工作证明而受到批评。
 
-
 # 推荐阅读
 
 [DAG 有向无环图（Directed Acyclic Graph）](https://houbb.github.io/2020/01/23/data-struct-learn-03-dag)
