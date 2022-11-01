@@ -79,10 +79,6 @@ published: true
 
 在任何其他情况下，只有一条以太坊链可以选择。
 
-
-----------------------------
-
-
 # 参考资料
 
 https://ethereum.org/zh/developers/docs/consensus-mechanisms/pos/weak-subjectivity/
