@@ -1,6 +1,6 @@
 ---
 layout: post
-title: web3 以太坊开发-17-POS 权益证明机制(POS)
+title: web3 以太坊开发-18-GASPER 最终确定性工具
 date: 2022-10-28 21:01:55 +0800
 categories: [web3]
 tags: [web3, dev, ethereum, sh]
