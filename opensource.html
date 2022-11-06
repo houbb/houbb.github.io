@@ -1,0 +1,71 @@
+---
+title: 开源免费工具类 opensource free tool
+layout: default
+header-img: "static/app/res/img/tags-bg.jpg"
+permalink: /opensource/
+---
+
+
+<head>
+	<link rel="stylesheet" type="text/css"
+		href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082537058031213"
+		crossorigin="anonymous"></script>
+</head>
+
+<style>
+	.main-content-container {
+		min-height: 650px;
+	}
+
+	.stackable>a {
+		line-height: 80px;
+		text-align: center;
+		font-size: 26px;
+	}
+</style>
+
+
+<!-- Page Header -->
+<header class="intro-header"
+	style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+				<div class="site-heading" id="tag-heading">
+					<h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
+					<span class="subheading">{{ page.description }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<!-- Main Content -->
+<div class="main-content-container container">
+	<div class="ui four column stackable padded grid">
+		<a class="red column" href="https://houbb.github.io/opensource/opencc4j"><span>中文繁简体转换(opencc4j)</span></a>
+		<a class="green column" href="https://houbb.github.io/opensource/sensitive-word"><span>敏感词(sensitive-word)</span></a>
+		<a class="violet column" href="https://houbb.github.io/opensource/markdown-toc"><span>markdown 目录(markdown-toc)</span></a>
+		<a class="column" style="background-color:#EA8958; color: #FFFFFF;"
+			href="https://houbb.github.io/opensource/pinyin"><span>拼音(pinyin)</span></a>
+		<a class="orange column" href="https://houbb.github.io/opensource/segment"><span>分词(segment)</span></a>
+		<a class="yellow column" href="https://houbb.github.io/opensource/nlp-hanzi-similar"><span>汉字相似度(nlp-hanzi-similar)</span></a>
+	</div>
+</div>
+
+<div class="more-learn-wrapper">
+	<h2 id="更多学习">更多学习</h2>
+	<li>
+	  <a class="my-a" href="https://github.com/houbb"><span class="icon icon--github">{% include icon-github.svg %}</span>&nbsp;个人 Github</a>
+	</li>
+	<li>
+	  <i class="fa fa-fw fa-wechat text-muted" title="wechat"></i>&nbsp;个人公众号
+	</li>
+	<p>更多实时资讯，前沿技术，生活趣事。尽在【老马啸西风】</p>
+	<p><img src="{{ site.url }}/SIGN.png" alt="image" /></p>
+  </div>
+  
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-F03RP3XNVG"></script>
+<script src="/static/libs/google/gtag.js"></script>
