@@ -108,6 +108,8 @@ yǐ qián zài github shàng zì jǐ kāi yuán le yī xiē xiàng mù 。 ài y
   * [markdown 目录](#markdown-目录)
 ```
 
+![TREE](https://img-blog.csdnimg.cn/a97a66d851d34acfaabcb6179e5ab367.png#pic_center)
+
 # 小结
 
 这样东西，实现起来非常简单。
@@ -118,9 +120,6 @@ yǐ qián zài github shàng zì jǐ kāi yuán le yī xiē xiàng mù 。 ài y
 
 **不同的语言产生了难以逾越的鸿沟，愿你我能够借助 WEB 的力量，跨过去**。
 
-# 参考资料
-
-https://github.com/tuteng/Best-websites-a-programmer-should-visit-zh/blob/master/README.md
 
 * any list
 {:toc}
