@@ -21,7 +21,9 @@ published: true
 
 迈出第一步，将 Java 与以太坊进行集成
 
-需要更基础的入门知识？ 请查看 ethereum.org/learn 或者 ethereum.org/developers。
+需要更基础的入门知识？ 
+
+请查看 ethereum.org/learn 或者 ethereum.org/developers。
 
 区块链详解
 理解智能合约
