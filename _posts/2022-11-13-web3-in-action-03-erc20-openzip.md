@@ -722,8 +722,176 @@ _balances[sender] = _balances[sender].sub(amount, "ERC20: transfer amount exceed
 _balances[recipient] = _balances[recipient].add(amount);
 ```
 
+这些是实际实现转账的代码。 
 
+请注意，将转账金额从发送人帐户上扣除，然后加到接收人帐户之间， 不得有任何动作。 
 
+这很重要，因为如果 中间调用不同的合约，可能会被用来骗过这个合约。 
+
+目前转账为最小操作单元，即中间什么都不会发生。
+
+```js
+emit Transfer(sender, recipient, amount);
+```
+
+最后，激发一个 Transfer 事件。 
+
+智能合约无法访问事件，但区块链外运行的代码 可以监听事件并对其作出反应。 
+
+例如，钱包可以跟踪所有者获得更多代币事件。
+
+## _mint 和 _burn 函数 {#_mint-and-_burn}
+
+这两个函数（_mint 和 _burn）修改代币的总供应量。 它们都是内部函数，在原有合约中没有任何调用它们的函数。 
+
+因此，仅通过继承合约并添加您自己的逻辑， 来决定在什么条件下可以铸造新代币或消耗现有代币时， 它们才是有用的。
+
+注意：每一个 ERC-20 代币都通过自己的业务逻辑来决定代币管理。 
+
+例如，一个固定供应总量的合约可能只在构造函数中调用 _mint，而从不调用 _burn。 
+
+一个销售代币的合约 将在支付时调用 _mint，并大概在某个时间点调用 _burn， 以避免过快的通货膨胀。
+
+```js
+/** @dev Creates `amount` tokens and assigns them to `account`, increasing
+ * the total supply.
+ *
+ * Emits a {Transfer} event with `from` set to the zero address.
+ *
+ * Requirements:
+ *
+ * - `to` cannot be the zero address.
+ */
+function _mint(address account, uint256 amount) internal virtual {
+    require(account != address(0), "ERC20: mint to the zero address");
+    _beforeTokenTransfer(address(0), account, amount);
+    _totalSupply = _totalSupply.add(amount);
+    _balances[account] = _balances[account].add(amount);
+    emit Transfer(address(0), account, amount);
+}
+```
+
+当代币总数发生变化时，请务必更新 _totalSupply。
+
+```js
+/**
+ * @dev Destroys `amount` tokens from `account`, reducing the
+ * total supply.
+ *
+ * Emits a {Transfer} event with `to` set to the zero address.
+ *
+ * Requirements:
+ *
+ * - `account` cannot be the zero address.
+ * - `account` must have at least `amount` tokens.
+ */
+function _burn(address account, uint256 amount) internal virtual {
+    require(account != address(0), "ERC20: burn from the zero address");
+    _beforeTokenTransfer(account, address(0), amount);
+    _balances[account] = _balances[account].sub(amount, "ERC20: burn amount exceeds balance");
+    _totalSupply = _totalSupply.sub(amount);
+    emit Transfer(account, address(0), amount);
+}
+```
+
+_burn 函数与 _mint 函数几乎完全相同，但它们的方向相反。
+
+## _approve 函数 {#_approve}
+
+这是实际设定许可额度的函数。 
+
+请注意，它允许所有者指定 一个高于所有者当前余额的许可额度。 
+
+这是允许的，因为在转账时 会核查余额，届时可能不同于 创建许可额度时的金额。
+
+```js
+/**
+ * @dev Sets `amount` as the allowance of `spender` over the `owner` s tokens.
+ *
+ * This internal function is equivalent to `approve`, and can be used to
+ * e.g. set automatic allowances for certain subsystems, etc.
+ *
+ * Emits an {Approval} event.
+ *
+ * Requirements:
+ *
+ * - `owner` cannot be the zero address.
+ * - `spender` cannot be the zero address.
+ */
+function _approve(address owner, address spender, uint256 amount) internal virtual {
+    require(owner != address(0), "ERC20: approve from the zero address");
+    require(spender != address(0), "ERC20: approve to the zero address");
+    _allowances[owner][spender] = amount;
+```
+
+激发一个 Approval 事件。 根据应用程序的编写， 消费者合约可以从代币所有者或监听事件的服务器获知审批结果。
+
+```js
+emit Approval(owner, spender, amount);
+```
+
+## 修改小数点设置变量
+
+```js
+/**
+ * @dev Sets {decimals} to a value other than the default one of 18.
+ *
+ * WARNING: This function should only be called from the constructor. Most
+ * applications that interact with token contracts will not expect
+ * {decimals} to ever change, and may work incorrectly if it does.
+ */
+function _setupDecimals(uint8 decimals_) internal {
+    _decimals = decimals_;
+}
+```
+
+此函数修改了 >_decimals 变量，此变量用于设置用户接口如何计算金额。 
+
+您应该从构造函数里面调用。 
+
+在之后的任何时候调用都是不正当的， 应用程序一般不会处理。
+
+## 钩子
+
+```js
+/**
+ * @dev Hook that is called before any transfer of tokens. This includes
+ * minting and burning.
+ *
+ * Calling conditions:
+ *
+ * - when `from` and `to` are both non-zero, `amount` of ``from``'s tokens
+ * will be to transferred to `to`.
+ * - when `from` is zero, `amount` tokens will be minted for `to`.
+ * - when `to` is zero, `amount` of ``from``'s tokens will be burned.
+ * - `from` and `to` are never both zero.
+ *
+ * To learn more about hooks, head to xref:ROOT:extending-contracts.adoc#using-hooks[Using Hooks].
+ */
+function _beforeTokenTransfer(address from, address to, uint256 amount) internal virtual { }
+}
+```
+
+# 结论
+
+复习一下，这些是我认为此合约中最重要的概念（你们的看法可能与我不同）
+
+区块链上没有秘密 智能合约可以访问的任何信息 都可以提供给全世界。
+
+您可以控制自己交易的订单，但在其他人的交易发生时， 则不能控制。 这就是为什么更改许可额度时会有风险，因为它 允许消费者花掉这两个许可额度的总和。
+
+uint256 类型值的溢出。 换言之，0-1=2^256-1。 如果这不是预期的 行为，您必须自行检查（或使用 SafeMath 库执行该服务）。 请注意， Solidity 0.8.0 中对此进行了更改。
+将特定类型变量的状态改变放在一个特定的地方，这样可以使审核更容易。 
+
+这就是我们使用以下等函数的原因，例如 _approval 函数，它可以被approve、transferFrom、 increaseAllowance 和 decreaseAllowance 调用。
+
+状态更改应为最小操作单元，其中没有任何其他动作 （如在 _transfer 中所见）。 这是因为在状态更改期间，会出现不一致的情况。 
+
+例如， 在减少发送人的余额，和增加接收人的余额之间， 代币总量会小于应有总量。 
+
+如果在这两个时刻之间有任何操作， 特别是调用不同的合约，则可能出现滥用。
+
+现在您已经了解了 OpenZeppelin ERC-20 合约是怎么编写的， 尤其是如何使之更加安全，您即可编写自己的安全合约和应用程序。
 
 # 参考资料
 
