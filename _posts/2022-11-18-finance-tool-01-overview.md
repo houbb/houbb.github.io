@@ -1,0 +1,30 @@
+---
+layout: post 
+title: 金融理财工具-01-概览
+date: 2022-11-18 21:01:55 +0800
+categories: [Finance] 
+tags: [finance, tool, sh]
+published: true
+---
+
+# 第一性原理
+
+为什么理财工具可以获取收益？
+
+本质是什么？
+
+风险要放在收益之前考虑，二者相互伴随。
+
+# 目录
+
+
+
+
+
+
+# 参考资料
+
+https://wiki.mbalib.com/wiki/%E7%90%86%E8%B4%A2%E5%B7%A5%E5%85%B7
+
+* any list
+{:toc}
