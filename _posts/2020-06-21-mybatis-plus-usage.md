@@ -47,7 +47,7 @@ protected String formatSqlIfNeed(boolean need, String sqlStr, Object... params) 
         if (ArrayUtils.isNotEmpty(params)) {
             for(int i = 0; i < params.length; ++i) {
                 String genParamName = "MPGENVAL" + this.paramNameSeq.incrementAndGet();
-                sqlStr = sqlStr.replace(String.format("{%s}", i), String.format("#{%s.paramNameValuePairs.%s}", this.getParamAlias(), genParamName));
+                sqlStr = sqlStr.replace(String.format("%s", i), String.format("#%s.paramNameValuePairs.%s", this.getParamAlias(), genParamName));
                 this.paramNameValuePairs.put(genParamName, params[i]);
             }
         }
