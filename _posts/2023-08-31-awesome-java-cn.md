@@ -712,9 +712,9 @@ Awesome 系列虽然挺全，但基本只对收录的资源做了极为简要的
 
 * [Effective Java (2nd Edition)](http://www.importnew.com/effective-java/)
 * [Java 8 in Action](http://www.importnew.com/java-8-in-action/)
-* [Java Concurrency in Practice | Java并发编程实战](http://www.importnew.com/java-concurrency-in-practice/)
-* [Thinking in Java | Java编程思想](http://www.importnew.com/thinking-in-java/)
-* [Java Puzzlers | Java解惑](http://www.importnew.com/java-puzzlers/)
+* [Java Concurrency in Practice Java并发编程实战](http://www.importnew.com/java-concurrency-in-practice/)
+* [Thinking in Java Java编程思想](http://www.importnew.com/thinking-in-java/)
+* [Java Puzzlers Java解惑](http://www.importnew.com/java-puzzlers/)
 
 <h3 id="podcasts">播客</h3>
 
