@@ -716,12 +716,6 @@ Awesome 系列虽然挺全，但基本只对收录的资源做了极为简要的
 * Java Council：[官网](http://virtualjug.com/#podcast/)
 * Java Posse：Discontinued as of 02/2015.[官网](http://www.javaposse.com/)
 
-<h3 id="weibo-weixin">微博、微信公众号</h3>
-
-* ImportNew：是最受欢迎的、专注Java技术分享的微信公众号。专注Java技术分享，包括Java基础技术、进阶技能、架构设计和Java技术领域动态等。 
-<br>![](http://ww2.sinaimg.cn/small/63918611gw1epb2c7rv2uj20460463ym.jpg)
-* ImportNew 微博：[@ImportNew](http://weibo.com/importnew)
-
 <h3 id="twitter">Twitter</h3>
 
 * [Adam Bien](https://twitter.com/AdamBien/)：自由职业者、作家、JavaONE明星演讲者、顾问、Java Champion。
@@ -746,12 +740,6 @@ Awesome 系列虽然挺全，但基本只对收录的资源做了极为简要的
 * [Stephen Colebourne](https://twitter.com/jodastephen)： Java Champion、演讲者。
 * [Tim Boudreau](https://twitter.com/kablosna)：作家、NetBeans大牛。
 * [Trisha Gee](https://twitter.com/trisha_gee)：Java Champion、演讲者。
-
-<h3 id="weibo-weixin">微博、微信公众号</h3>
-
-* ImportNew 微博：[@ImportNew](http://weibo.com/importnew)
-* ImportNew：最受欢迎的、专注Java技术分享的微信公众号。专注Java技术分享，包括Java基础技术、进阶技能、架构设计和Java技术领域动态等。
-<br><img src="http://ww2.sinaimg.cn/small/63918611gw1epb2c7rv2uj20460463ym.jpg" width=150 height=150>
 
 <h3 id="websites">知名网站</h3>
 
