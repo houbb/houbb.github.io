@@ -3,7 +3,7 @@ layout: post
 title: leecode 详解 05-median of two sorted arrays 寻找两个正序数组的中位数
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [Algorithm, data-struct, leetcode, sf]
+tags: [algorithm, data-struct, leetcode, sf]
 published: true
 ---
 
