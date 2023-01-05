@@ -146,8 +146,9 @@ ps: 因为每一个分支，都是把所有的可能罗列出来（不遗漏）�
 
 ### 只有这一种方式吗？
 
-感觉不需要排序+剪枝吧，把递归结束条件写在方法最前面 if(target < 0 || candidates == null || candidates.length == 0){ return; }不是一样？ 假如数组的长度很长，排序反而耗时。
+感觉不需要排序+剪枝吧，把递归结束条件写在方法最前面 `if(target < 0 || candidates == null || candidates.length == 0){ return; }` 不是一样？ 
 
+假如数组的长度很长，排序反而耗时。
 
 ## 代码实现
 
