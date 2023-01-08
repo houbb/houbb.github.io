@@ -183,6 +183,7 @@ Else if maxLeft > maxRight, it means the water level is based on the right side 
 if(height[left] > maxLeft) {
     // 无法蓄水
     maxLeft = height[left];
+    
 } else {
     // 可以蓄水
     int water = maxLeft - height[left];
