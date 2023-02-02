@@ -3,7 +3,7 @@ layout: post
 title: 从零开始的数据结构与算法-00-概览
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [Algorithm, data-struct, sf]
+tags: [algorithm, data-struct, sf]
 published: true
 ---
 

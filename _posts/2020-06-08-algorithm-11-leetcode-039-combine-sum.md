@@ -1,9 +1,9 @@
 ---
 layout: post
-title: leecode 精选 11-backtracking 回溯算法 + 剪枝
+title: leecode 39 Combination Sum backtracking 回溯算法 + 剪枝
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [Algorithm, data-struct, leetcode, sf]
+tags: [algorithm, backtracking, leetcode, sf]
 published: true
 ---
 
@@ -146,8 +146,9 @@ ps: 因为每一个分支，都是把所有的可能罗列出来（不遗漏）�
 
 ### 只有这一种方式吗？
 
-感觉不需要排序+剪枝吧，把递归结束条件写在方法最前面 if(target < 0 || candidates == null || candidates.length == 0){ return; }不是一样？ 假如数组的长度很长，排序反而耗时。
+感觉不需要排序+剪枝吧，把递归结束条件写在方法最前面 `if(target < 0 || candidates == null || candidates.length == 0){ return; }` 不是一样？ 
 
+假如数组的长度很长，排序反而耗时。
 
 ## 代码实现
 

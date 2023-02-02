@@ -450,9 +450,268 @@ try {
 }
 ```
 
-# 小结
 
-到这里，一个简单版本的 redis 分布式锁就实现完成了。
+# 其他的实现方式
+
+## 基于函数接口的实现
+
+优点：使用相对简单
+
+缺点：基于回调，导致有时候使用反而变得麻烦。要求 jdk1.8+
+
+### 源码
+
+```java
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.LockSupport;
+
+@FunctionalInterface
+public interface DistributedLock {
+
+    Logger LOGGER = LoggerFactory.getLogger(DistributedLock.class);
+
+    /**
+     * 超时时间（单位毫秒）
+     */
+    Long TIMEOUT = 10000L;
+
+    /**
+     * 重试间隔（单位毫秒）
+     */
+    Long RETRY_INTERVAL = 200L;
+
+    /**
+     * 获取锁从成功的回调
+     */
+    void onSuccess();
+
+    /**
+     * 获取锁
+     *
+     * @param lockId
+     */
+    default void getLock(String lockId) {
+        getLock(lockId, TIMEOUT);
+    }
+
+    /**
+     * 获取锁
+     *
+     * @param lockId
+     * @param timeout
+     */
+    default void getLock(String lockId, Long timeout) {
+        BaseRedisManager redisManager = SpringContext.getBean(BaseRedisManager.class);
+        boolean getLock = false;
+        try {
+            if (getRedisLock(redisManager, lockId, timeout)) {
+                getLock = true;
+                onSuccess();
+                return;
+            }
+        } catch (RuntimeException e) {
+            // 业务异常，抛出去
+            throw e;
+        } catch (Exception e) {
+            LOGGER.error("获取分布式锁异常，key={}", lockId, e);
+            Thread.currentThread().interrupt();
+        } finally {
+            if (getLock) {
+                //PS: 这里的删除，某种角度是存在问题的。
+                redisManager.delete(lockId);
+            }
+        }
+        onTimeout(lockId);
+    }
+
+    /**
+     * 超时
+     *
+     * @param lockId
+     */
+    default void onTimeout(String lockId) {
+        LOGGER.warn("获取分布式锁超时, lockId={}", lockId);
+        throw new BizException(ErrorCode.TIMEOUT);
+    }
+
+    /**
+     * 获取redis锁
+     *
+     * @param redisManager
+     * @param lockId
+     * @param timeout
+     * @return
+     */
+    default boolean getRedisLock(BaseRedisManager redisManager, String lockId, Long timeout) {
+        long startTime = System.currentTimeMillis();
+        while (!redisManager.getLock(lockId)) {
+            if (System.currentTimeMillis() - startTime > timeout) {
+                return false;
+            }
+            LockSupport.parkNanos(TimeUnit.MILLISECONDS.toNanos(RETRY_INTERVAL));
+        }
+        return true;
+    }
+}
+```
+
+### 使用
+
+- 定义锁
+
+```java
+@FunctionalInterface
+public interface CoreAccountLock extends DistributedLock {
+
+    /**
+     * 尝试获取锁
+     *
+     * @param userId
+     */
+    default CoreAccountLock lock(String userId) {
+        getLock(RedisKeys.LOCK_ACCOUNT + userId);
+        return this;
+    }
+}
+```
+
+- 使用
+
+```java
+final String userId = req.getUserId();
+((CoreAccountLock) () -> {
+    // 处理....
+
+}).lock(userId);
+```
+
+ps: 这里如果需要处理的结果，就会变得不那么方便。
+
+
+## 基于 springTemplate 的实现
+
+优点：相对方便
+
+缺点：整合 spring 
+
+```java
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.connection.RedisConnection;
+import org.springframework.data.redis.core.RedisCallback;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisCluster;
+import redis.clients.jedis.JedisCommands;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 分布式锁
+ */
+@Component
+@Slf4j
+public class RedisDistributedLock{
+ 
+    @Autowired
+	private StringRedisTemplate redisTemplate;
+ 
+    public static final String UNLOCK_LUA;
+ 
+    static {
+        StringBuilder sb = new StringBuilder();
+        sb.append("if redis.call(\"get\",KEYS[1]) == ARGV[1] ");
+        sb.append("then ");
+        sb.append("    return redis.call(\"del\",KEYS[1]) ");
+        sb.append("else ");
+        sb.append("    return 0 ");
+        sb.append("end ");
+        UNLOCK_LUA = sb.toString();
+    }
+ 
+    public boolean setLock(String key,String value, long expire) {
+        try {
+            RedisCallback<String> callback = new RedisCallback<String>() {
+				
+				@Override
+				public String doInRedis(RedisConnection connection) throws DataAccessException {
+					JedisCommands commands = (JedisCommands) connection.getNativeConnection();
+					 return commands.set(key, value, "NX", "PX", expire);
+				}
+			};
+            String result = redisTemplate.execute(callback);
+           
+            return StringUtils.isNotBlank(result);
+        } catch (Exception e) {
+            log.error("set redis occured an exception", e);
+        }
+        return false;
+    }
+ 
+    public String get(String key) {
+        try {
+            RedisCallback<String> callback = new RedisCallback<String>() {
+				
+				@Override
+				public String doInRedis(RedisConnection connection) throws DataAccessException {
+					JedisCommands commands = (JedisCommands) connection.getNativeConnection();
+	                return commands.get(key);
+				}
+			};
+            String result = redisTemplate.execute(callback);
+            return result;
+        } catch (Exception e) {
+            log.error("get redis occured an exception", e);
+        }
+        return "";
+    }
+ 
+    public boolean releaseLock(String key,String requestId) {
+        // 释放锁的时候，有可能因为持锁之后方法执行时间大于锁的有效期，此时有可能已经被另外一个线程持有锁，所以不能直接删除
+        try {
+            List<String> keys = new ArrayList<>();
+            keys.add(key);
+            List<String> args = new ArrayList<>();
+            args.add(requestId);
+ 
+            // 使用lua脚本删除redis中匹配value的key，可以避免由于方法执行时间过长而redis锁自动过期失效的时候误删其他线程的锁
+            // spring自带的执行脚本方法中，集群模式直接抛出不支持执行脚本的异常，所以只能拿到原redis的connection来执行脚本
+            RedisCallback<Long> callback = new RedisCallback<Long>() {
+				
+				@Override
+				public Long doInRedis(RedisConnection connection) throws DataAccessException {
+					 Object nativeConnection = connection.getNativeConnection();
+	                // 集群模式和单机模式虽然执行脚本的方法一样，但是没有共同的接口，所以只能分开执行
+	                // 集群模式
+	                if (nativeConnection instanceof JedisCluster) {
+	                    return (Long) ((JedisCluster) nativeConnection).eval(UNLOCK_LUA, keys, args);
+	                }
+	                // 单机模式
+	                else if (nativeConnection instanceof Jedis) {
+	                    return (Long) ((Jedis) nativeConnection).eval(UNLOCK_LUA, keys, args);
+	                }
+	                return 0L;
+				}
+			};
+            Long result = redisTemplate.execute(callback);
+            return result != null && result > 0;
+        } catch (Exception e) {
+            log.error("release lock occured an exception", e);
+        } 
+        return false;
+    }
+}
+```
+
+`UNLOCK_LUA` 和前面其实是一样的，支持拆分为多行，更加便于阅读。
+
+
+# 直接改进的点
 
 当然还有很多可以改进的地方：
 
@@ -461,6 +720,20 @@ try {
 （2）对于更多 redis 服务端+客户端的支持
 
 （3）对于注解式 redis 分布式锁的支持
+
+## 其他
+
+锁的加锁时间应该多久？
+
+如果太短，可能还没有执行完成，锁就被释放了。导致数据不一致！
+
+如果太长，可能会导致释放锁失败时，导致无法释放。（此时，如果采取另外一个线程，清理。可能也会引发类似的问题）
+
+ps: 引入看门狗的机制？
+
+# 小结
+
+到这里，一个简单版本的 redis 分布式锁就实现完成了。
 
 希望对你有帮助，感兴趣的可以关注一下，便于实时接收最新内容。
 
