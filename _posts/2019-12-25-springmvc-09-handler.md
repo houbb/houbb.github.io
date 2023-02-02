@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Spring Web MVC-09-springmvc 过滤器与拦截器 Handler and Filter
+title: Spring Web MVC-09-springmvc 过滤器与拦截器 Handler and Filter/spring aop 拦截器/ @ControllerAdvice ResponseBodyAdvice
 date:  2019-12-25 16:57:12 +0800
 categories: [Spring]
 tags: [spring mvc, http, spring, sf]
@@ -17,7 +17,15 @@ SpringMVC 中的Interceptor 拦截请求是通过 HandlerInterceptor 来实现�
 
 （2）第二种方式是实现Spring的WebRequestInterceptor接口，或者是继承实现了WebRequestInterceptor的类。
 
-# 实现HandlerInterceptor接口
+-------------------------------------------------------------------------------------------------------------------------------------- 
+
+还有两种常见的实现拦截的方式：
+
+（1）spring aop
+
+（2）ResponseBodyAdvice & @ControllerAdvice
+
+# 方法1-实现HandlerInterceptor接口
 
 ## 方法说明
 
@@ -104,8 +112,71 @@ public class SpringMVCInterceptor implements HandlerInterceptor {
 }  
 ```
 
+## 例子2-统一的 session 处理
 
-# 实现WebRequestInterceptor 接口
+比如 session 的统一处理。
+
+```java
+import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * session 请求拦截器
+ * @author binbin.hou
+ */
+@Component
+@Slf4j
+public class SessionRequestInterceptor extends HandlerInterceptorAdapter{
+
+    @Override
+    public boolean preHandle(HttpServletRequest httpServletRequest,
+                             HttpServletResponse httpServletResponse,
+                             Object o) throws Exception {
+        // 判断请求的地址
+        String requestUrl = httpServletRequest.getRequestURI();
+        // 是否需要跳过鉴权
+        if(requestUrl.startsWith("/xxx/any") {
+            log.info("url: {}, ignore valid", requestUrl);
+            return true;
+        }
+
+        //1. 获取登录信息，校验合法性
+        // 需要和前端确认，目前是直接放在这个 header 中的 httpServletRequest，然后通过 jwt 解密。
+        JwtAuthDto jwtDto = buildByRequest(httpServletRequest);
+        JwtInfoUtils.set(jwtDto);
+
+        //2. 异步添加日志
+
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+        JwtInfoUtils.remove();
+    }
+
+}
+```
+
+
+
+
+
+# 方法2-实现WebRequestInterceptor 接口
 
 ## 方法
 
@@ -183,6 +254,190 @@ public class AllInterceptor implements WebRequestInterceptor {
       
 }  
 ```
+
+# 方法3-spring aop 方式
+
+## 介绍
+
+spring aop 是非常强大的功能。
+
+各种层都可以实现，这里记录一下，便于后续查阅。
+
+## 例子
+
+以 controller 层的日志拦截器为例。
+
+```java
+import com.alibaba.fastjson.JSON;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ *
+ * 可以添加下列特性：
+ *
+ * 1. mdc
+ * 2. 入参
+ * 3. 出参
+ * 4. 统一异常处理
+ *
+ * 暂时先处理 1/2
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+@Aspect
+@Component
+@EnableAspectJAutoProxy
+public class ControllerInterceptor {
+
+    /**
+     * 日志实例
+     * @since 1.0.0
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(ControllerInterceptor.class);
+
+    /**
+     * 拦截 controller 下所有的 public方法
+     */
+    @Pointcut("execution(public * com.xxx.web.application.controller..*(..))")
+    public void pointCut() {
+        //
+    }
+
+    /**
+     * 拦截处理
+     *
+     * @param point point 信息
+     * @return result
+     * @throws Throwable if any
+     */
+    @Around("pointCut()")
+    public Object around(ProceedingJoinPoint point) throws Throwable {
+        try {
+            //1. 设置 MDC
+            LogUtil.putMdcIfAbsent();
+
+            // 获取当前拦截的方法签名
+            String signatureShortStr = point.getSignature().toShortString();
+            //2. 打印入参信息
+            Object[] args = point.getArgs();
+            // 参数过滤
+            List<Object> filterArgs = getFilterArgs(args);
+            LOG.info("{} Param: {}", signatureShortStr, JSON.toJSON(filterArgs));
+
+            Object result = point.proceed();
+            LOG.info("{} result: {}", signatureShortStr, JSON.toJSON(result));
+            return result;
+        } finally {
+            LogUtil.removeMdc();
+        }
+    }
+
+    /**
+     * 避免 http 复杂参数异常
+     * @param args 参数
+     * @return 结果
+     */
+    private List<Object> getFilterArgs(Object[] args) {
+        List<Object> list = new ArrayList<>();
+        if(ArrayUtil.isEmpty(args)) {
+            return list;
+        }
+
+        for(Object o : args) {
+            if(o instanceof HttpServletRequest) {
+                continue;
+            }
+
+            if(o instanceof HttpServletResponse) {
+                continue;
+            }
+
+            if(o instanceof MultipartFile) {
+                continue;
+            }
+
+            list.add(o);
+        }
+
+        return list;
+    }
+
+}
+```
+
+# 方法4-ResponseBodyAdvice & @ControllerAdvice
+
+## 说明
+
+我们可以通过实现 ResponseBodyAdvice 接口,标注 `@ControllerAdvice` 来实现统一的拦截。
+
+## 例子
+
+```java
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.MethodParameter;
+import org.springframework.http.MediaType;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import javax.servlet.http.HttpServletRequest;
+
+@Slf4j
+@ControllerAdvice
+public class ApiResponseBodyAdvice implements ResponseBodyAdvice {
+
+    final static String[] EXCLUDE_PATHS = {};
+
+    @Override
+    public boolean supports(MethodParameter methodParameter, Class aClass) {
+        //这个地方如果返回false, 不会执行 beforeBodyWrite 方法
+        return true;
+    }
+
+    @Override
+    public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass,
+                                  ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
+
+        String uri = serverHttpRequest.getURI().getPath();
+        for (String path : EXCLUDE_PATHS) {
+            if (uri.contains(path)) {
+                return o;
+            }
+        }
+        ServletServerHttpRequest servletServerHttpRequest = (ServletServerHttpRequest) serverHttpRequest;
+        HttpServletRequest servletRequest = servletServerHttpRequest.getServletRequest();
+        String sessionId = servletRequest.getParameter("sessionId");
+
+        // 更多的处理
+
+        return o;
+    }
+}
+```
+
+
+------------------------------------------------
+
+更多的拓展知识：
+
 
 # 定义的拦截器添加到 spring mvc
 
@@ -527,7 +782,17 @@ public class LogInterceptor implements HandlerInterceptor {
 
 # 拓展阅读
 
-session
+[RPC 调用中的拦截器怎么写？](https://houbb.github.io/2022/11/28/rpc-aop)
+
+[Spring Web MVC-09-springmvc 过滤器与拦截器 Handler and Filter](https://houbb.github.io/2019/12/25/springmvc-09-handler)
+
+[Mybatis 拦截器](https://houbb.github.io/2019/01/23/mybatis-inteceptor)
+
+[Spring Session 结合拦截器实战](https://houbb.github.io/2018/09/26/spring-session-02-interceptor)
+
+[基于 netty4 手写 rpc-17-interceptor 拦截器](https://houbb.github.io/2018/08/24/simple-rpc-17-netty4-interceptor)
+
+[Spring Boot-13-springboot 整合 redis 实现分布式 session 实战 拦截器+方法注解](https://houbb.github.io/2017/12/19/spring-boot-13-session)
 
 # 参考资料
 
