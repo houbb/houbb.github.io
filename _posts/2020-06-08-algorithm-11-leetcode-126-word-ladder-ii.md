@@ -1,7 +1,7 @@
 ---
 layout: post
 title: leecode 126 127-Word Ladder II-backtracking 回溯算法 + 剪枝 BFS DFS
-date:  2023-1-5 10:25:08 +0800
+date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, backtracking, leetcode, sf]
 published: true
