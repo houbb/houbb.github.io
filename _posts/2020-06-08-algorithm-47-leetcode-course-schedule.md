@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leetcode 47 
+title: leetcode 47 207. Course Schedule 课程表 DFS/BFS 
 date:  2020-1-23 10:09:32 +0800 
 categories: [Algorithm]
 tags: [algorithm, leetcode, dfs, bfs, sh]
