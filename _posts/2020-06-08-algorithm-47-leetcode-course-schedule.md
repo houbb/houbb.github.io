@@ -228,6 +228,70 @@ class Solution {
 }
 ```
 
+自己的实现：
+
+```java
+class Solution {
+    
+    private boolean valid = true;
+
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        //1. 构建边，用 list 和 hashMap 一样。list 需要初始化一遍，避免越界。
+        Map<Integer, List<Integer>> edges = new HashMap<>();
+        for(int[] ints : prerequisites) {
+            List<Integer> list = edges.getOrDefault(ints[1], new ArrayList<>());
+            list.add(ints[0]);
+            edges.put(ints[1], list);
+        }
+
+        // 3 种状态标记
+        int[] visited = new int[numCourses];
+        for(int i = 0; i < numCourses; i++) {
+            if(!valid) {
+                break;
+            }
+
+            // 未访问
+            if(visited[i] == 0) {
+                dfs(edges, visited, i);
+            }
+        }
+
+        return valid;
+    }
+
+    private void dfs(Map<Integer, List<Integer>> edges,
+                     int[] visited,
+                     int i) {
+        if(!valid) {
+            return;
+        }
+
+        // 访问中
+        visited[i] = 1;
+
+        // 遍历所有的边
+        for(int v : edges.getOrDefault(i, new ArrayList<>())) {
+            // 如果未访问的，递归
+            if(visited[v] == 0) {
+                dfs(edges, visited, v);
+            } else if(visited[v] == 1) {
+                // 存在环
+                valid = false;
+            } else {
+                // v 已经入栈，不需要关心。
+            }
+        }
+
+        // 访问完成
+        visited[i] = 2;
+    }
+
+
+
+}
+```
+
 ## 复杂度分析
 
 时间复杂度: O(n+m)，其中 n 为课程数，m 为先修课程的要求数。这其实就是对图进行深度优先搜索的时间复杂度。
