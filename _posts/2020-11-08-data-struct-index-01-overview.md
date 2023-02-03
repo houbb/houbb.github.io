@@ -83,7 +83,7 @@ mongodb 为什么使用 B Tree?
 
 [LSM 索引](https://houbb.github.io/2018/09/06/index-lsm)
 
-[java 敏感词之 DFA 算法(Tire Tree 算法)详解](https://houbb.github.io/2020/01/07/sensitive-word-dfa)
+[java 敏感词之 DFA 算法(Trie Tree 算法)详解](https://houbb.github.io/2020/01/07/sensitive-word-dfa)
 
 > [sensitive-word 工具](https://github.com/houbb/sensitive-word)
 
