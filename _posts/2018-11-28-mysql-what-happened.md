@@ -5,7 +5,6 @@ date: 2018-11-28 19:30:44 +0800
 categories: [CI]
 tags: [ci, web, sh]
 published: true
-excerpt: 当我们输入一条SQL查询语句时，发生了什么？
 ---
 
 # 基本架构示意图
