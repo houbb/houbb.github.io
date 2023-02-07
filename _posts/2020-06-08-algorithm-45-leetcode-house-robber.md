@@ -219,11 +219,134 @@ dp[i+1] = Math.max(dp[i], dp[i-1], nums[i]);
     }
 ```
 
+# 213. 打家劫舍 II
+
+你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。
+
+**这个地方所有的房屋都围成一圈，这意味着第一个房屋和最后一个房屋是紧挨着的。**
+
+同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
+
+给定一个代表每个房屋存放金额的非负整数数组，计算你 在不触动警报装置的情况下 ，今晚能够偷窃到的最高金额。
+
+## 例子
+
+示例 1：
+
+```
+输入：nums = [2,3,2]
+输出：3
+解释：你不能先偷窃 1 号房屋（金额 = 2），然后偷窃 3 号房屋（金额 = 2）, 因为他们是相邻的。
+```
+
+示例 2：
+
+```
+输入：nums = [1,2,3,1]
+输出：4
+解释：你可以先偷窃 1 号房屋（金额 = 1），然后偷窃 3 号房屋（金额 = 3）。
+     偷窃到的最高金额 = 1 + 3 = 4 。
+```
+
+示例 3：
+
+```
+输入：nums = [1,2,3]
+输出：3
+```
+
+## 提示：
+
+1 <= nums.length <= 100
+
+0 <= nums[i] <= 1000
+
+# V1-复用以前的算法
+
+## 思路
+
+这一题和前面的区别就在于屋子是环形排列的，首尾相连。
+
+那么，应该如何解决呢？
+
+如果有 10 个房子，a0, a1, ..., a9
+
+那么有两种偷取的方式：
+
+1）偷取 a0
+
+a1、a9 和 a0 都紧挨着。
+
+那么子问题变成如何在 a2, ..., a8 中获取最大收益。
+
+2）不偷取 a0
+
+那么子问题变成如何在 a1, ..., a9 中获取最大收益。
+
+然后我们取两种场景的最大值即可。
+
+## 实现
+
+```java
+public class T213_HouseRobberII {
+
+
+    public int rob(int[] nums) {
+        //rob0，从 2...-1 开始
+        int sum1 = nums[0] + robNoCircle(getSubArray(nums, 2, nums.length-2));
+
+        //not rob0
+        int sum2 = robNoCircle(getSubArray(nums, 1, nums.length-1));
+
+        return Math.max(sum1, sum2);
+    }
+
+    private int[] getSubArray(int[] nums,
+                              int startIndex,
+                              int endIndex) {
+        if(endIndex < startIndex) {
+            return new int[0];
+        }
+
+        int len = endIndex - startIndex + 1;
+        int[] results = new int[len];
+        int size = 0;
+        for(int i = startIndex; i <= endIndex; i++) {
+            results[size++] = nums[i];
+        }
+        return results;
+    }
+
+    // 无环时
+    public int robNoCircle(int[] nums) {
+        if(nums.length == 0) {
+            return 0;
+        }
+
+        int[] dp = new int[nums.length + 1];
+        dp[0] = 0;
+        dp[1] = nums[0];
+
+        // 从1开始，避免 i-1 越界。
+        for(int i = 1; i < nums.length; i++) {
+            dp[i+1] = Math.max(dp[i], dp[i-1] + nums[i]);
+        }
+
+        return dp[nums.length];
+    }
+
+}
+```
+
 # 参考资料
 
 https://leetcode.com/problems/house-robber/description/
 
 https://leetcode.com/problems/house-robber/solutions/156523/from-good-to-great-how-to-approach-most-of-dp-problems/
+
+https://leetcode.cn/problems/house-robber-ii/
+
+https://leetcode.com/problems/house-robber-ii/solutions/893957/python-just-use-house-robber-twice/?orderBy=most_votes
 
 * any list
 {:toc}
