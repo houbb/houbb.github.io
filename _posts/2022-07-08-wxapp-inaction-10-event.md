@@ -725,6 +725,215 @@ public class WxOpenSignatureUtil {
 
 > [获取微信服务器 ip](https://developers.weixin.qq.com/doc/offiaccount/Basic_Information/Get_the_WeChat_server_IP_address.html)
 
+# 实战记录
+
+## 配置
+
+在测试账号管理中，【接口配置信息修改】下配置对应的 URL（用于验证和接受消息） 和 token（随便自定义）。
+
+```
+URL: https://xxx/any/wx/event/receive/message
+
+token: 123456
+```
+
+可以发现，这里没有明文密文选择。
+
+建议使用明文，不然无法保证环境统一性。
+
+如果处于安全考虑，可以使用密文。其实 xml 中没有什么敏感信息。
+
+## maven 引入
+
+```xml
+<dependency>
+    <groupId>com.github.binarywang</groupId>
+    <artifactId>weixin-java-mp</artifactId>
+    <version>3.5.0</version>
+</dependency>
+```
+
+引入 WxMpService，封装了很多公众号交互使用到的方法。
+
+## java 实现
+
+### 控制层
+
+1) verification 用于微信验证服务可用性。
+
+2) messageEvent 接受消息
+
+```java
+import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.mp.api.WxMpService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.stream.Collectors;
+
+/**
+ * 接受微信事件消息
+ *
+ * @author binbin.hou
+ */
+@RestController
+@RequestMapping("/any/wx/event/receive")
+@Slf4j
+public class AnyWxEventReceiveController {
+
+    @Autowired
+    private WxMpService wxMpService;
+
+    /**
+     * GET 验证
+     * @param signature 签名
+     * @param timestamp 时间
+     * @param nonce
+     * @param echostr 回复
+     * @return 结果
+     */
+    @GetMapping(value = {"/message"})
+    @ResponseBody
+    public String verification(@RequestParam(value = "signature", required = false) String signature, @RequestParam String timestamp, @RequestParam String nonce, @RequestParam(value = "echostr", required = false) String echostr) {
+        if (wxMpService.checkSignature(timestamp, nonce, signature)) {
+            log.info("【微信事件】微信请求验签通过");
+            return echostr;
+        } else {
+            log.warn("【微信事件】微信请求验签失败");
+            return "Error";
+        }
+    }
+
+    /**
+     * 接受事件消息
+     * @param req 请求
+     * @param resp 响应
+     * @throws IOException
+     */
+    @PostMapping(value = {"/message"})
+    public void messageEvent(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        req.setCharacterEncoding(Constants.UTF_8);
+        resp.setCharacterEncoding(Constants.UTF_8);
+        try {
+            String signature = req.getParameter("signature");
+            String timestamp = req.getParameter("timestamp");
+            String nonce = req.getParameter("nonce");
+
+            log.info("【微信事件】 signature:{}, timestamp: {}, nonce: {}",
+                    signature, timestamp, nonce);
+
+            if (wxMpService.checkSignature(timestamp, nonce, signature)) {
+                // 逻辑处理（放在签名通过之后处理）
+                String fromXml = req.getReader()
+                        .lines()
+                        .collect(Collectors.joining(System.lineSeparator()));
+                log.info("【微信事件】 ------------- 接收到微信消息：{}", fromXml);
+            } else {
+                log.warn("【微信事件】 微信请求验签失败");
+            }
+        } catch (Exception e) {
+            log.error("【微信事件】消息处理失败", e);
+        }
+    }
+
+}
+```
+
+`wxMpService.checkSignature(timestamp, nonce, signature)` 用于验证方法的来源。
+
+注意：
+
+1）验证数据的来源是必须的，过滤脏数据，避免恶意调用。
+
+2）signature 网上的代码是错误的。
+
+```java
+String signature = req.getParameter("signature");
+```
+
+### 配置
+
+当然，wxMpService 需要我们配置一下对应的信息
+
+```java
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.api.impl.WxMpServiceOkHttpImpl;
+import me.chanjar.weixin.mp.config.impl.WxMpRedisConfigImpl;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
+/**
+ * 微信公众号配置
+ * @since 1.0.0
+ * @author binbin.hou
+ */
+@Configuration
+public class WxMpConfig {
+
+    @Bean("wxJedisPool")
+    public JedisPool jedisPool(){
+        JedisPoolConfig poolConfig = new JedisPoolConfig();
+        JedisPool jedisPool = new JedisPool(poolConfig, redisAddress, redisPort,
+                timeout, password);
+        return jedisPool;
+    }
+
+    @Bean("wxMpService")
+    public WxMpService wxMpService(@Qualifier("wxJedisPool") JedisPool jedisPool) {
+        WxMpService service = new WxMpServiceOkHttpImpl();
+        WxMpRedisConfigImpl config = new WxMpRedisConfigImpl(jedisPool);
+
+        config.setAppId("xxx");
+        config.setSecret("xxx");
+        config.setToken("xxx");
+        service.setWxMpConfigStorage(config);
+        return service;
+    }
+
+}
+```
+
+### xml 的解析
+
+接收到的 xml 内容如下：
+
+```xml
+<xml>
+<ToUserName><![CDATA[gh_9c35b8a7492c]]></ToUserName>
+<FromUserName><![CDATA[o20Kc6T3XA5eoobRr7PqHmBfdUpY]]></FromUserName>
+<CreateTime>1675747313</CreateTime>
+<MsgType><![CDATA[event]]></MsgType>
+<Event><![CDATA[unsubscribe]]></Event>
+<EventKey><![CDATA[]]></EventKey>
+</xml>
+```
+
+我们只需要解析这个 xml，处理对应的业务即可。
+
+> [java 实现 xml 与对象 pojo 之间的转换的几种方式 dom4j/xstream/jackson](https://houbb.github.io/2017/06/13/xml-to-pojo)
+
+字段含义：
+
+> [基础消息能力 /接收事件推送](https://developers.weixin.qq.com/doc/offiaccount/Message_Management/Receiving_event_pushes.html)
+
+```
+参数 			描述
+ToUserName 		开发者微信号
+FromUserName 	发送方帐号（一个OpenID）
+CreateTime 		消息创建时间 （整型）
+MsgType 		消息类型，event
+Event 			事件类型，subscribe(订阅)、unsubscribe(取消订阅)
+```
+
+下一节将具体讲解对应的
+
 # 参考资料
 
 https://www.jianshu.com/p/4102a7649063?open_source
