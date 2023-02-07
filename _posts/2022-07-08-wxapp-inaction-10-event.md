@@ -906,8 +906,8 @@ public class WxMpConfig {
 
 ```xml
 <xml>
-<ToUserName><![CDATA[gh_9c35b8a7492c]]></ToUserName>
-<FromUserName><![CDATA[o20Kc6T3XA5eoobRr7PqHmBfdUpY]]></FromUserName>
+<ToUserName><![CDATA[gh_xxxx]]></ToUserName>
+<FromUserName><![CDATA[xxxUpY]]></FromUserName>
 <CreateTime>1675747313</CreateTime>
 <MsgType><![CDATA[event]]></MsgType>
 <Event><![CDATA[unsubscribe]]></Event>
