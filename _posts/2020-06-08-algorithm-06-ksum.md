@@ -1,13 +1,13 @@
 ---
 layout: post
-title: leecode 详解 06-ksum 求符合条件的 k 个数
+title: leecode 详解 06-ksum 求符合条件的 k 个数  1. Two Sum/15. 3Sum/18. 4Sum/
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, leetcode, sf]
 published: true
 ---
 
-## 两数之和
+## 1. Two Sum 两数之和
 
 ### 题目
 
@@ -101,7 +101,7 @@ Runtime: 1 ms, faster than 99.93% of Java online submissions for Two Sum.
 Memory Usage: 39.5 MB, less than 69.35% of Java online submissions for Two Sum.
 ```
 
-## 三数之和
+## 15. 3Sum 三数之和
 
 结束了第一道开胃菜之后，我们来看看第二道菜。
 
@@ -219,7 +219,7 @@ public List<List<Integer>> threeSum(int[] nums) {
 
 速度超过 99.87 的用户提交，还不错。
 
-## 四数之和
+## 18. 4Sum 四数之和
 
 常言道，有二有三必须有四。
 
