@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leetcode 48 208. Implement Trie (Prefix Tree) 实现 Trie 前缀树
+title: leetcode 48 - Trie (Prefix Tree) 实现 Trie 前缀树
 date:  2020-1-23 10:09:32 +0800 
 categories: [Algorithm]
 tags: [algorithm, leetcode, tree, sh]
@@ -9,6 +9,8 @@ published: true
 
 
 # 208 实现 Trie (前缀树)
+
+> [208. Implement Trie (Prefix Tree)](https://leetcode.com/problems/implement-trie-prefix-tree/)
 
 Trie（发音类似 "try"）或者说 前缀树 是一种树形数据结构，用于高效地存储和检索字符串数据集中的键。这一数据结构有相当多的应用情景，例如自动补完和拼写检查。
 
@@ -264,12 +266,556 @@ class Trie {
 }
 ```
 
+# 211. 添加与搜索单词 - 数据结构设计
+
+> [design-add-and-search-words-data-structure](https://leetcode.com/problems/design-add-and-search-words-data-structure/)
+
+请你设计一个数据结构，支持 添加新单词 和 查找字符串是否与任何先前添加的字符串匹配 。
+
+实现词典类 WordDictionary ：
+
+WordDictionary() 初始化词典对象
+
+void addWord(word) 将 word 添加到数据结构中，之后可以对它进行匹配
+
+bool search(word) 如果数据结构中存在字符串与 word 匹配，则返回 true ；否则，返回  false 。word 中可能包含一些 '.' ，每个 . 都可以表示任何一个字母。
+
+## 示例：
+
+```
+输入：
+["WordDictionary","addWord","addWord","addWord","search","search","search","search"]
+[[],["bad"],["dad"],["mad"],["pad"],["bad"],[".ad"],["b.."]]
+输出：
+[null,null,null,null,false,true,true,true]
+
+解释：
+WordDictionary wordDictionary = new WordDictionary();
+wordDictionary.addWord("bad");
+wordDictionary.addWord("dad");
+wordDictionary.addWord("mad");
+wordDictionary.search("pad"); // 返回 False
+wordDictionary.search("bad"); // 返回 True
+wordDictionary.search(".ad"); // 返回 True
+wordDictionary.search("b.."); // 返回 True
+```
+
+## 提示：
+
+1 <= word.length <= 25
+
+addWord 中的 word 由小写英文字母组成
+
+search 中的 word 由 '.' 或小写英文字母组成
+
+最多调用 10^4 次 addWord 和 search
+
+## V1-基于 Trie Tree
+
+### 思路
+
+整体的单词查询，和上面的实现没有太大差别，但是有一个 `.` 的特殊场景。
+
+### java 实现
+
+节点定义和单词增加，都是不变的。
+
+search 通过回溯的方式，找到所有可能匹配的场景。
+
+```java
+class WordDictionary {
+
+    private class TrieNode {
+        private boolean isEnd;
+
+        private TrieNode[] next;
+
+        public TrieNode() {
+            this.isEnd = false;
+            next = new TrieNode[26];
+        }
+    }
+
+    // 根节点
+    private TrieNode root;
+    
+    public WordDictionary() {
+        root = new TrieNode();
+    }
+
+    // 添加
+    public void addWord(String word) {
+        TrieNode cur = root;
+        for(int i = 0; i < word.length(); i++) {
+            int ci = word.charAt(i) - 'a';
+
+            if(cur.next[ci] == null) {
+                cur.next[ci] = new TrieNode();
+            }
+
+            cur = cur.next[ci];
+        }
+
+        // 单词结束
+        cur.isEnd = true;
+    }
+
+    // word . 可以匹配任意字符
+    public boolean search(String word) {
+        return match(word.toCharArray(), 0, root);
+    }
+
+    private boolean match(char[] chs, int k, TrieNode node) {
+        // 终止条件
+        if (k == chs.length) {
+            return node.isEnd;
+        }
+
+        if (chs[k] == '.') {
+            // 任意匹配
+            for (int i = 0; i < node.next.length; i++) {
+                if (node.next[i] != null && match(chs, k + 1, node.next[i])) {
+                    return true;
+                }
+            }
+        } else {
+            // 精准匹配
+            return node.next[chs[k] - 'a'] != null && match(chs, k + 1, node.next[chs[k] - 'a']);
+        }
+
+        return false;
+    }
+
+}
+```
+
+# 212. 单词搜索 II
+
+> [212. 单词搜索 II](https://leetcode.cn/problems/word-search-ii/)
+
+给定一个 m x n 二维字符网格 board 和一个单词（字符串）列表 words， 返回所有二维网格上的单词 。
+
+单词必须按照字母顺序，通过 相邻的单元格 内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。
+
+同一个单元格内的字母在一个单词中不允许被重复使用。
+
+## 例子
+
+示例 1：
+
+![ex1](https://assets.leetcode.com/uploads/2020/11/07/search1.jpg)
+
+```
+输入：board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]], words = ["oath","pea","eat","rain"]
+输出：["eat","oath"]
+```
+
+示例 2：
+
+![ex2](https://assets.leetcode.com/uploads/2020/11/07/search2.jpg)
+
+```
+输入：board = [["a","b"],["c","d"]], words = ["abcb"]
+输出：[]
+``` 
+
+## 提示：
+
+m == board.length
+
+n == board[i].length
+
+1 <= m, n <= 12
+
+board[i][j] 是一个小写英文字母
+
+1 <= words.length <= 3 * 10^4
+
+1 <= words[i].length <= 10
+
+words[i] 由小写英文字母组成
+
+words 中的所有字符串互不相同
+
+## V1-循环处理
+
+我们可以直接复用 [79. Word Search](https://leetcode.com/problems/word-search/)
+
+### 思路
+
+直接复用 079 的算法。
+
+### java 实现
+
+```java
+    /**
+     * 这一题，使用原来的解法，问题并不大。079
+     *
+     * @param board
+     * @param words
+     * @return
+     */
+    public List<String> findWords(char[][] board, String[] words) {
+        List<String> resultList = new ArrayList<>();
+
+        for(String word : words) {
+            if(exist(board, word)) {
+                resultList.add(word);
+            }
+        }
+
+        return resultList;
+    }
+
+    public boolean exist(char[][] board, String word) {
+        // 统一转换，可以避免 charAt 的越界校验
+        char[] chars = word.toCharArray();
+
+        int m = board.length;
+        int n = board[0].length;
+        boolean[][] visited = new boolean[m][n];
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                if(search(board, chars, visited, i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    // 实际上核心思想还是回溯
+    // index 从零开始
+    private boolean search(char[][] board, char[] chars,
+                           boolean[][] visited,
+                           int i, int j, int index) {
+        // 终止条件
+        if(index == chars.length) {
+            return true;
+        }
+
+        if(i >= board.length || i < 0
+                || j >= board[i].length || j < 0
+                || board[i][j] != chars[index]
+                || visited[i][j]){
+            return false;
+        }
+
+        visited[i][j] = true;
+        // 上下左右
+        if(search(board, chars, visited, i-1, j, index+1) ||
+                search(board, chars, visited,i+1, j, index+1) ||
+                search(board, chars, visited, i, j-1, index+1) ||
+                search(board, chars, visited, i, j+1, index+1)){
+            return true;
+        }
+
+        // 回溯
+        visited[i][j] = false;
+        return false;
+    }
+```
+
+### 评价
+
+这个算法会在 62/64 的用例超时。
+
+原因也比较简单，我们每一个单词都是从头开始处理，每次遍历没有复用任何信息。
+
+能不能把单词的处理，复用起来呢？
+
+## V2-通过 Trie Tree
+
+### 思路
+
+我们引入 Trie Tree，把单词构建成一个前缀树。
+
+然后处理这棵前缀树，可以达到复用的效果。
+
+### java 实现
+
+有两个部分组成：
+
+1）trie-tree 构建，参见 T208 实现。
+
+2）dfs 判断是否匹配
+
+这里如果匹配，将其放在结果中。
+
+```java
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+public class T212_WordSearchV2 {
+
+    /**
+     * 优化思路：
+     *
+     * 1. 可以结合 trie 优化性能。
+     *
+     * 2. trie-tree 的实现参见 T208
+     *
+     * @param board
+     * @param words
+     * @return
+     */
+    private Set<String> res = new HashSet<String>();
+
+    public List<String> findWords(char[][] board, String[] words) {
+        // 构建 trie
+        TrieTree trieTree = new TrieTree();
+        for(String word : words) {
+            trieTree.insert(word);
+        }
+
+        //dfs 处理
+        int m = board.length;
+        int n = board[0].length;
+        boolean[][] visited = new boolean[m][n];
+
+        for(int i = 0; i < m; i++) {
+            for(int j = 0; j < n; j++) {
+                dfs(board, visited, trieTree, i, j, "");
+            }
+        }
+
+        return new ArrayList<>(res);
+    }
+
+
+    // 实际上核心思想还是回溯
+    // index 从零开始
+    private void dfs(char[][] board,
+                     boolean[][] visited,
+                     TrieTree trieTree,
+                     int i,
+                     int j,
+                     String str) {
+        // 终止条件
+        if(i >= board.length
+                || i < 0
+                || j >= board[i].length
+                || j < 0
+                || visited[i][j]){
+            return;
+        }
+
+        str += board[i][j];
+        // 剪枝，没有匹配的前缀
+        if(!trieTree.startsWith(str)) {
+            return;
+        }
+
+        // 满足条件的结果
+        if(trieTree.search(str)) {
+            res.add(str);
+        }
+
+        visited[i][j] = true;
+        // 上下左右
+        dfs(board, visited, trieTree, i - 1, j, str);
+        dfs(board, visited, trieTree, i + 1, j, str);
+        dfs(board, visited, trieTree, i, j - 1, str);
+        dfs(board, visited, trieTree, i, j + 1, str);
+
+        // 回溯
+        visited[i][j] = false;
+    }
+
+
+    /**
+     * 前缀树实现 T208
+     */
+    private class TrieTree {
+        private class TrieNode {
+            private boolean isEnd;
+
+            private TrieNode[] next;
+
+            public TrieNode() {
+                this.isEnd = false;
+                next = new TrieNode[26];
+            }
+        }
+
+        // 根节点
+        private TrieNode root;
+
+        public TrieTree() {
+            // 初始化
+            root = new TrieNode();
+        }
+
+        public void insert(String word) {
+            TrieNode cur = root;
+            for(int i = 0; i < word.length(); i++) {
+                int ci = word.charAt(i) - 'a';
+
+                if(cur.next[ci] == null) {
+                    cur.next[ci] = new TrieNode();
+                }
+
+                cur = cur.next[ci];
+            }
+
+            // 单词结束
+            cur.isEnd = true;
+        }
+
+        public boolean search(String word) {
+            TrieNode cur = root;
+            for(int i = 0; i < word.length(); i++) {
+                int ci = word.charAt(i) - 'a';
+
+                if(cur.next[ci] == null) {
+                    return false;
+                }
+
+                cur = cur.next[ci];
+            }
+
+            // 单词结束
+            return cur.isEnd;
+        }
+
+        public boolean startsWith(String prefix) {
+            TrieNode cur = root;
+            for(int i = 0; i < prefix.length(); i++) {
+                int ci = prefix.charAt(i) - 'a';
+
+                if(cur.next[ci] == null) {
+                    return false;
+                }
+
+                cur = cur.next[ci];
+            }
+
+            // 单词结束
+            return true;
+        }
+    }
+
+}
+```
+ 
+## V3-进一步性能优化
+
+### 思路
+
+如果是我，估计最多止步于 V2 的算法。
+
+不过在学习的时候，还是拜读了 [java-15ms-easiest-solution-100-00](https://leetcode.com/problems/word-search-ii/solutions/59780/java-15ms-easiest-solution-100-00/)
+
+这种追求卓越的思想值得敬佩。
+
+```
+请注意：
+
+1. TrieNode 就是我们所需要的。 search 和 startsWith 没用。
+
+2. 无需在 TrieNode 存储字符。 c.next[i] != null 就足够了。
+
+3. 切勿使用 c1 + c2 + c3。 使用字符串生成器。
+
+4. 无需使用 O(n^2) 的额外空间 visited[m][n]。
+
+5. 无需使用 StringBuilder。 将单词本身存储在叶节点就足够了。
+
+6. 无需使用 HashSet 去重。 使用“一次性搜索”trie。
+```
+
+其中共计 6 步的优化策略，值得我们平时使用的时候借鉴。
+
+不过实现会变得更加难懂一些。
+
+### java 实现
+
+（1）Trie Tree 简化
+
+只需要构建即可，省略了对应的方法。
+
+因为方法放在 dfs 中实现了。
+
+（2）StringBuilder 替代 string 加法
+
+这个 jdk 优化的也比较好，知道即可。多次拼接，建议使用 StringBuilder。
+
+（3）节省内存
+
+直接通过 `board[i][j] = '#';` 替换来节省一个内存空间，可以在类似的题目中使用。
+
+```java
+    public List<String> findWords(char[][] board, String[] words) {
+        List<String> res = new ArrayList<>();
+        TrieNode root = buildTrie(words);
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                dfs (board, i, j, root, res);
+            }
+        }
+        return res;
+    }
+
+    public void dfs(char[][] board, int i, int j, TrieNode p, List<String> res) {
+        char c = board[i][j];
+        if (c == '#' || p.next[c - 'a'] == null) {
+            return;
+        }
+
+        // 通过直接处理，而不是方法。但是这样不利于类的封装。
+        p = p.next[c - 'a'];
+        if (p.word != null) {   // found one
+            res.add(p.word);
+            p.word = null;     // de-duplicate
+        }
+
+        // 替换，节省空间
+        board[i][j] = '#';
+
+        if (i > 0) dfs(board, i - 1, j ,p, res);
+        if (j > 0) dfs(board, i, j - 1, p, res);
+        if (i < board.length - 1) dfs(board, i + 1, j, p, res);
+        if (j < board[0].length - 1) dfs(board, i, j + 1, p, res);
+
+        board[i][j] = c;
+    }
+
+    public TrieNode buildTrie(String[] words) {
+        TrieNode root = new TrieNode();
+        for (String w : words) {
+            TrieNode p = root;
+            for (char c : w.toCharArray()) {
+                int i = c - 'a';
+                if (p.next[i] == null) p.next[i] = new TrieNode();
+                p = p.next[i];
+            }
+            // 类似于 isEnd
+            p.word = w;
+        }
+        return root;
+    }
+
+    private class TrieNode {
+        TrieNode[] next = new TrieNode[26];
+        String word;
+    }
+```
 
 # 参考资料
 
 https://leetcode.cn/problems/implement-trie-prefix-tree/
 
 https://leetcode.cn/problems/implement-trie-prefix-tree/solution/trie-tree-de-shi-xian-gua-he-chu-xue-zhe-by-huwt/
+
+https://leetcode.cn/problems/design-add-and-search-words-data-structure/
 
 * any list
 {:toc}
