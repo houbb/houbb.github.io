@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  微信公众号项目开发实战-10-微信公众号事件消息 订阅与取消订阅 subscribe/unsubscribe
+title:  微信公众号项目开发实战-10-java 实现接收微信公众号事件消息
 date:  2022-07-08 09:22:02 +0800
 categories: [Wechat]
 tags: [wechat, sh]
