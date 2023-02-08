@@ -222,5 +222,7 @@ substring searching algorithm
 
 [详尽的 KMP 算法](https://www.cnblogs.com/ZuoAndFutureGirl/p/9028287.html)
 
+[图解 KMP 算法](https://leetcode.cn/problems/shortest-palindrome/solution/tu-jie-kmpsuan-fa-by-yangbingjie/)
+
 * any list
 {:toc}
