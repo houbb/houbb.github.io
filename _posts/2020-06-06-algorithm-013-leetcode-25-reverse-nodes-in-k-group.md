@@ -119,6 +119,53 @@ k 是一个正整数，它的值小于或等于链表的长度。
 进阶：你可以设计一个只用 O(1) 额外内存空间的算法解决此问题吗？
 
 
+# V1-基本实现
+
+## 思路
+
+我们首先要判断节点是否够 k 个，不够直接返回。
+
+如果够的话，就把剩下的 k 个节点进行反转。
+
+可见 T24 只是本题的一个特例而已。
+
+## java 实现
+
+```java
+public static ListNode reverseKGroup(ListNode head, int k) {
+    ListNode dummy = new ListNode(-1, head), prev = dummy;
+    while (true) {
+        // 检查剩余节点是否有k个，不足则返回
+        ListNode last = prev;
+        for (int i = 0; i < k; i++) {
+            last = last.next;
+            if (last == null) {
+                return dummy.next;
+            }
+        }
+
+        // 翻转k个节点
+        ListNode curr = prev.next, next;
+        for (int i = 0; i < k - 1; i++) {
+            next = curr.next;
+            curr.next = next.next;
+            next.next = prev.next;
+            prev.next = next;
+        }
+        prev = curr;
+    }
+}
+```
+
+会有方便，这里引入 dummy 节点。
+
+## 性能
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Reverse Nodes in k-Group.
+Memory Usage: 39.9 MB, less than 28.23% of Java online submissions for Reverse Nodes in k-Group.
+```
+
 # 开源地址
 
 为了便于大家学习，所有实现均已开源。欢迎 fork + star~
