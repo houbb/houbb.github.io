@@ -1,15 +1,198 @@
 ---
 layout: post
-title: leecode 详解 07-generate-parentheses 括号生成
+title: 【leetcode】010-22.括号生成 generate-parentheses + 20. 有效的括号 valid parentheses
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [Algorithm, data-struct, leetcode, sf]
 published: true
 ---
 
-## 括号生成
+# 20. 有效的括号
 
-### 题目
+## 题目
+
+给定一个只包括 `()[]{}` 的字符串 s ，判断字符串是否有效。
+
+有效字符串需满足：
+
+1. 左括号必须用相同类型的右括号闭合。
+
+2. 左括号必须以正确的顺序闭合。
+
+3. 每个右括号都有一个对应的相同类型的左括号。
+
+### 例子 
+
+示例 1：
+
+```
+输入：s = "()"
+输出：true
+```
+
+示例 2：
+
+```
+输入：s = "()[]{}"
+输出：true
+```
+
+示例 3：
+
+```
+输入：s = "(]"
+输出：false
+``` 
+
+### 提示：
+
+1 <= s.length <= 10^4
+
+s 仅由括号 '()[]{}' 组成
+
+## V1-基于 Stack
+
+### 思路
+
+这一道题作为 22 题的开胃菜，实现起来也不难。
+
+我们可以直接使用 stack 存入元素，每次遇到开头的 `([{` 则进行入栈，遇到 `)]}` 则进行出栈，并且要求一一对应。
+
+### java 实现
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
+
+/**
+ * @author d
+ * @since 1.0.0
+ */
+public class T020_ValidParentheses {
+
+    private static final Map<Character, Character> MAP = new HashMap<>(4);
+
+    static {
+        MAP.put(')', '(');
+        MAP.put('}', '{');
+        MAP.put(']', '[');
+    }
+
+    /**
+     * 简单思路
+     * @param s 字符串
+     * @return 结果
+     * @since v1
+     */
+    public boolean isValid(String s) {
+        if(null == s || s.length() == 0) {
+            return true;
+        }
+        // 奇数
+        if(s.length() % 2 != 0) {
+            return false;
+        }
+
+        Stack<Character> stack = new Stack<>();
+        for(int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if(c == '(' || c == '{' || c == '[') {
+                stack.push(c);
+            } else {
+                // 开始 pop
+                if(stack.isEmpty()) {
+                    return false;
+                }
+
+                char pop = stack.pop();
+                char expectPop = MAP.get(c);
+
+                if(pop != expectPop) {
+                    return false;
+                }
+            }
+
+        }
+
+        return stack.isEmpty();
+    }
+
+}
+```
+
+### 效果
+
+```
+Runtime: 1 ms, faster than 98.79% of Java online submissions for Valid Parentheses.
+Memory Usage: 37.4 MB, less than 70.07% of Java online submissions for Valid Parentheses.
+```
+
+## v2-模拟 stack
+
+### 思路
+
+我们在通过 stack 的时候，实际上也可以使用数组模拟实现。
+
+这样代码看起来更加简单一些。
+
+### java 实现
+
+```java
+    /**
+     * 大道至简
+     *
+     * @param s 字符串
+     * @return 结果
+     * @since v1
+     */
+    public boolean isValid(String s) {
+        int length = s.length();
+        char[] stack = new char[length];
+        int headIx = 0;
+
+        for(int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+
+            switch (c) {
+                case '{':
+                case '[':
+                case '(':
+                    stack[headIx++] = c;
+                    break;
+                case '}':
+                    if(headIx == 0 || stack[--headIx] != '{') {
+                        return false;
+                    }
+                    break;
+                case ']':
+                    if(headIx == 0 || stack[--headIx] != '[') {
+                        return false;
+                    }
+                    break;
+                case ')':
+                    if(headIx == 0 || stack[--headIx] != '(') {
+                        return false;
+                    }
+                    break;
+            }
+        }
+
+        return headIx == 0;
+    }
+```
+
+### 效果
+
+```
+Runtime: 0 ms, faster than 100.00% of Java online submissions for Valid Parentheses.
+Memory Usage: 37.1 MB, less than 95.67% of Java online submissions for Valid Parentheses.
+```
+
+# 22. 括号生成
+
+## 题目
 
 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且有效的括号组合。
 
@@ -26,7 +209,7 @@ published: true
      ]
 ```
 
-### 思路分析
+## 思路分析
 
 你看这道题，他的样子平淡无奇。
 
@@ -435,7 +618,13 @@ Memory Usage: 39.5 MB, less than 65.23% of Java online submissions for Generate 
 
 不知道你的收获如何呢？
 
-## 参考资料
+# 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
+
+# 参考资料
 
 [generate-parentheses](https://leetcode-cn.com/problems/generate-parentheses)
 

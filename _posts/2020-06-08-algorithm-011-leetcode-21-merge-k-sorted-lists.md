@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leecode 精选 08-merge k sorted lists 合并多个有序的链表
+title: 【leetcode】010-merge k sorted lists 合并多个有序的链表
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [Algorithm, data-struct, leetcode, sf]
@@ -436,6 +436,12 @@ Memory Usage: 41.5 MB, less than 35.98% of Java online submissions for Merge k S
 [优先级队列与堆排序](https://houbb.github.io/2019/01/04/prority-queue)
 
 [leetcode 源码实现](https://github.com/houbb/leetcode)
+
+# 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
 
 ## 参考资料
 
