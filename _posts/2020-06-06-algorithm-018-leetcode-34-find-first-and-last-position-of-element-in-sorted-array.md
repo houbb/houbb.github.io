@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  面试算法：在排序数组中查找元素的第一个和最后一个位置的 3 种境界
+title:  【leetcode】018-34. 在排序数组中查找元素的第一个和最后一个位置 Find First and Last Position of Element in Sorted Array 
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, search]
+tags: [algorithm, binary-search]
 published: true
 ---
 
@@ -13,7 +13,7 @@ published: true
 
 本文就来讨论一下二分查找法的问题，以及这道题背后真正想考察的东西。
 
-# 题目
+# 34. 在排序数组中查找元素的第一个和最后一个位置
 
 给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
 
