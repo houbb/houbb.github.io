@@ -714,6 +714,12 @@ bool isMatch(string s, string p) {
 
 耗时：2ms，超过 100%
 
+# 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
+
 # 参考资料
 
 https://leetcode.com/problems/wildcard-matching/solutions/17810/linear-runtime-and-constant-space-solution/

@@ -346,10 +346,6 @@ public double findMedianLeetCode(int[] nums1, int[] nums2) {
 }
 ```
 
-### 源码地址
-
-> [leetcode](https://github.com/houbb/leetcode)
-
 ### 性能
 
 这个就非常优秀了，超越了 99% 的解法。
