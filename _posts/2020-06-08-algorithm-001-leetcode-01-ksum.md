@@ -219,6 +219,188 @@ public List<List<Integer>> threeSum(int[] nums) {
 
 速度超过 99.87 的用户提交，还不错。
 
+# 16. 最接近的三数之和
+
+给你一个长度为 n 的整数数组 nums 和 一个目标值 target。
+
+请你从 nums 中选出三个整数，使它们的和与 target 最接近。
+
+返回这三个数的和。
+
+假定每组输入只存在恰好一个解。
+
+示例 1：
+
+```
+输入：nums = [-1,2,1,-4], target = 1
+输出：2
+解释：与 target 最接近的和是 2 (-1 + 2 + 1 = 2) 。
+```
+
+示例 2：
+
+```
+输入：nums = [0,0,0], target = 1
+输出：0
+```
+
+提示：
+
+3 <= nums.length <= 1000
+
+-1000 <= nums[i] <= 1000
+
+-10^4 <= target <= 10^4
+
+## V1-双指针法
+
+## 思路
+
+针对多个数之和，对无序的数组进行一次排序，可以大大降低后续的时间复杂度。
+
+我们通过两个指针，l r 分别计算每一次的差值，找到最小的差异。
+
+当然，等于肯定最小，直接返回即可。
+
+## java 实现
+
+```java
+    /**
+     * 思路：
+     *
+     * 能否继续借助排序+双指针？
+     *
+     * 1. 如果相等，则直接返回
+     * 2. 否则需要保存最接近的一个值。
+     *
+     * 3. 如果差异越来越大，则直接停止。
+     *
+     * 使用 abs
+     *
+     * @param nums 数字
+     * @param target 目标值
+     * @return 结果
+     * @since v1
+     */
+    public int threeSumClosest(int[] nums, int target) {
+        // 最小
+        if(nums.length == 3) {
+            return nums[0]+nums[1]+nums[2];
+        }
+
+        //1. 排序
+        Arrays.sort(nums);
+
+        //2. 双指针
+        int diff = Integer.MAX_VALUE;
+        for(int i = 0; i < nums.length; i++) {
+            int l = i+1;
+            int r = nums.length-1;
+
+            // 去重 i,l,r
+            while (l < r) {
+                // 此处可以直接返回
+                int sum = nums[i] + nums[l] + nums[r];
+                int loopDiff = sum-target;
+
+                if(sum == target) {
+                    return target;
+                } else if(loopDiff < 0) {
+                    // 偏小
+                    l++;
+
+                    if(Math.abs(loopDiff) < Math.abs(diff)) {
+                        diff = loopDiff;
+                    }
+                } else {
+                    // 偏大
+                    r--;
+
+                    if(Math.abs(loopDiff)  < Math.abs(diff)) {
+                        diff = loopDiff;
+                    }
+                }
+            }
+        }
+
+        return target+diff;
+    }
+```
+
+### 效果
+
+```
+Runtime: 5 ms, faster than 99.27% of Java online submissions for Container With Most Water.
+Memory Usage: 39 MB, less than 100% of Java online submissions for Container With Most Water.
+```
+
+效果还是非常不错的。
+
+## V2-优化
+
+### 思路
+
+针对上面的算法进行优化。
+
+能否继续借助排序+双指针？
+
+1. 最大值如果依然小于原有差异，跳过
+
+2. 最小值如果依然大于原有差异，跳过。
+
+直接先把可能有结果的大概范围找到，然后再进一步细化，快速定位结果。
+
+### java 实现
+
+```java
+    public int threeSumClosest(int[] nums, int target) {
+        // 最小
+        int result = nums[0] + nums[1] + nums[2];
+
+        //1. 排序
+        Arrays.sort(nums);
+
+        //2. 双指针
+        for(int i = 0; i < nums.length-2; i++) {
+            int l = i+1;
+            int r = nums.length-1;
+
+            if (nums[i] + nums[i+1] + nums[i+2] - target >= Math.abs(target - result)) {
+                break;  //Too big, can't get better result!
+            }
+            if (i < nums.length-3 && nums[i+1] + nums[nums.length-2] + nums[nums.length-1] < target) {
+                continue; //Too small, skip
+            }
+
+            while (l < r) {
+                // 此处可以直接返回
+                int sum = nums[i] + nums[l] + nums[r];
+
+                // 如果差异较小
+                if(Math.abs(sum-target) < Math.abs(result-target)) {
+                    result = sum;
+                } else if(sum < target) {
+                    // 偏小
+                    l++;
+                } else if(sum > target) {
+                    r--;
+                } else {
+                    return sum;
+                }
+            }
+        }
+
+        return result;
+    }
+```
+
+### 效果
+
+```
+Runtime: 1 ms, faster than 100.00% of Java online submissions for 3Sum Closest.
+Memory Usage: 38.9 MB, less than 85.21% of Java online submissions for 3Sum Closest.
+```
+
 ## 18. 4Sum 四数之和
 
 常言道，有二有三必须有四。
