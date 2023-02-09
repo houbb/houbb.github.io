@@ -1,13 +1,13 @@
 ---
 layout: post
-title: leecode 详解 05-median of two sorted arrays 寻找两个正序数组的中位数
+title: leecode 详解 04-4.median of two sorted arrays 寻找两个正序数组的中位数
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, leetcode, sf]
 published: true
 ---
 
-## 题目
+## 4. 题目
 
 给定两个大小为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。
 
