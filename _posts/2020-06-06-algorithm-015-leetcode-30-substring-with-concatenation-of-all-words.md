@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leecode 精选 10-substring-with-concatenation-of-all-words 串联所有单词的子串
+title: 【leetcode】015-30.串联所有单词的子串 Substring with Concatenation of All Words
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [Algorithm, data-struct, leetcode, sf]
@@ -405,6 +405,12 @@ Memory Usage: 40.1 MB, less than 57.99% of Java online submissions for Substring
 这里没有特别多的判断，但是实际优化效果却非常明显。
 
 可见大道至简。
+
+# 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
 
 ## 参考资料
 
