@@ -1,13 +1,13 @@
 ---
 layout: post
-title: leecode 精选 09-divide two integers 两数相除
+title: 【leetcode】014-29.两数相除 divide two integers 
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [Algorithm, data-struct, leetcode, sf]
 published: true
 ---
 
-## 整数相除
+## 29.整数相除
 
 给定两个整数，被除数 dividend 和除数 divisor。
 

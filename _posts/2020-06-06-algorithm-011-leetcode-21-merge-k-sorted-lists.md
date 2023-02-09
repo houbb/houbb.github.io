@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 【leetcode】010-merge k sorted lists 合并多个有序的链表
+title: 【leetcode】011-21.合并多个有序的链表 merge k sorted lists 
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [Algorithm, data-struct, leetcode, sf]
+tags: [Algorithm, list, leetcode, sf]
 published: true
 ---
 

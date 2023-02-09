@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 【leetcode】010-22.括号生成 generate-parentheses + 20. 有效的括号 valid parentheses
+title: 【leetcode】012-22.括号生成 generate-parentheses + 20. 有效的括号 valid parentheses
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [Algorithm, data-struct, leetcode, sf]
