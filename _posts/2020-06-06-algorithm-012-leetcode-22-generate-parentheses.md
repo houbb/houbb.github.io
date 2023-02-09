@@ -618,6 +618,409 @@ Memory Usage: 39.5 MB, less than 65.23% of Java online submissions for Generate 
 
 不知道你的收获如何呢？
 
+# 32. 最长有效括号 Longest Valid Parentheses
+
+## 题目
+
+给你一个只包含 '(' 和 ')' 的字符串，找出最长有效（格式正确且连续）括号子串的长度。
+
+### 例子
+
+示例 1：
+
+```
+输入：s = "(()"
+输出：2
+解释：最长有效括号子串是 "()"
+```
+
+示例 2：
+
+```
+输入：s = ")()())"
+输出：4
+解释：最长有效括号子串是 "()()"
+```
+
+示例 3：
+
+```
+输入：s = ""
+输出：0
+``` 
+
+提示：
+
+0 <= s.length <= 3 * 10^4
+
+s[i] 为 '(' 或 ')'
+
+## v1-暴力算法
+
+### 思路
+
+直接截取所有的 s[i,j]，判断对应的子串是否为有效的子串。
+
+是否有效直接参考 T20。
+
+### java 实现
+
+```java
+    /**
+     * 最简单的思路：
+     *
+     * 1. 通过双指针，两边移动。截取 substring
+     * 2. 通过 020 的方法，判断字符串是否为 valid，是返回 j-i
+     * 3. i j 重合，返回 0
+     *
+     * 这种解法：会在 222 CASE 超时
+     *
+     * @param s 字符串
+     * @return 结果
+     */
+    public int longestValidParentheses(String s) {
+        //0.1 都不是
+        if(s.length() <= 1) {
+            return 0;
+        }
+
+        // 这个复杂度是 o(N^3)，肯定没戏
+        for (int stepLen = s.length(); stepLen >= 2; stepLen--) {
+            // 逆序，本质是双指针
+            for(int i = 0; i < s.length()-1; i++) {
+                // fast-return
+                if(i + stepLen > s.length()) {
+                    break;
+                }
+
+                String subString = s.substring(i, i+stepLen);
+
+                if(isValid(subString)) {
+                    return stepLen;
+                }
+            }
+        }
+
+        // 没有
+        return 0;
+    }
+
+    /**
+     * 大道至简
+     *
+     * T020
+     *
+     * @param s 字符串
+     * @return 结果
+     * @since v1
+     */
+    public static boolean isValid(String s) {
+        // 奇数个，不可能满足
+        if(s.length() % 2 != 0) {
+            return false;
+        }
+
+        Stack<Character> stack = new Stack<>();
+        for(int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if(c == '(') {
+                stack.push(c);
+            } else {
+                // 开始 pop
+                if(stack.isEmpty()) {
+                    return false;
+                }
+
+                char pop = stack.pop();
+                char expectPop = '(';
+
+                if(pop != expectPop) {
+                    return false;
+                }
+            }
+
+        }
+
+        return stack.isEmpty();
+    }
+```
+
+### 复杂度
+
+这个 TC 为 O(N^3)。外边两层遍历，中间判断合法又是 O(N)。
+
+执行会直接超时。
+
+## V2-基于 stack
+
+### 思路
+
+其实有更加优雅的方式，我们通过 stack 存储。
+
+具体做法是我们始终保持栈底元素为当前已经遍历过的元素中「最后一个没有被匹配的右括号的下标」，这样的做法主要是考虑了边界条件的处理，栈里其他元素维护左括号的下标：
+
+1) 对于遇到的每个 `(`，我们将它的下标放入栈中
+
+2) 对于遇到的每个 `)`，我们先弹出栈顶元素表示匹配了当前右括号：
+
+2.1) 如果栈为空，说明当前的右括号为没有被匹配的右括号，我们将其下标放入栈中来更新我们之前提到的「最后一个没有被匹配的右括号的下标」
+
+2.2) 如果栈不为空，当前右括号的下标减去栈顶元素即为「以该右括号为结尾的最长有效括号的长度」
+
+我们从前往后遍历字符串并更新答案即可。
+
+需要注意的是，如果一开始栈为空，第一个字符为左括号的时候我们会将其放入栈中，这样就不满足提及的「最后一个没有被匹配的右括号的下标」，为了保持统一，我们在一开始的时候往栈中放入一个值为 -1 的元素。
+
+### java 实现
+
+```java
+class Solution {
+    public int longestValidParentheses(String s) {
+        int maxans = 0;
+        Deque<Integer> stack = new LinkedList<Integer>();
+        stack.push(-1);
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                stack.push(i);
+            } else {
+                stack.pop();
+
+                if (stack.isEmpty()) {
+                    stack.push(i);
+                } else {
+                    maxans = Math.max(maxans, i - stack.peek());
+                }
+            }
+        }
+        return maxans;
+    }
+}
+```
+
+以 `())((())` 为例子，日志为：
+
+```
+i=0, stack=[0, -1], maxans=0
+i=1, stack=[-1], maxans=2
+i=2, stack=[2], maxans=2
+i=3, stack=[3, 2], maxans=2
+i=4, stack=[4, 3, 2], maxans=2
+i=5, stack=[5, 4, 3, 2], maxans=2
+i=6, stack=[4, 3, 2], maxans=2
+i=7, stack=[3, 2], maxans=4
+```
+
+### 复杂度
+
+TC：O(N)
+
+MC: O(N)
+
+## v3-DP 动态规划
+
+### 思路
+
+结合题目，有 最长 这个字眼，可以考虑尝试使用 动态规划 进行分析。这是一个 最值型 动态规划的题目。
+
+动态规划题目分析的 4 个步骤：
+
+1）确定状态
+
+研究最优策略的最后一步
+
+化为子问题
+
+2）转移方程
+
+根据子问题定义得到
+
+3）初始条件和边界情况
+
+4）计算顺序
+
+首先，我们定义一个 dp 数组，其中第 i 个元素表示以下标为 i 的字符结尾的最长有效子字符串的长度。
+
+### 确定状态-最后一步
+
+对于最优的策略，一定有最后一个元素 s[i].
+
+所以，我们先看第 i 个位置，这个位置的元素 s[i] 可能有如下两种情况：
+
+1） `s[i] == '('` ，这时，s[i] 无法和其之前的元素组成有效的括号对，所以，`dp[i] = 0`
+
+2) `s[i] == ')'`，这时，需要看其前面对元素来判断是否有有效括号对。
+
+2.1) 情况1:
+
+`s[i - 1] == '('`，即 s[i] 和 s[i - 1] 组成一对有效括号，有效括号长度新增长度2，i 位置对最长有效括号长度为 其之前2个位置的最长括号长度加上当前位置新增的2，我们无需知道i-2位置对字符是否可以组成有效括号对。
+
+那么有：
+
+```java
+dp[i] = dp[i - 2] + 2
+```
+
+刚好匹配，所以长度+2。再加上前面的  dp[i-2]
+
+2.2) 情况2:
+
+`s[i - 1] == ')'`
+
+这种情况下，如果前面有和 s[i] 组成有效括号对的字符，即形如 `((...))`，这样的话，就要求 s[i - 1] 位置必然是有效的括号对，否则 s[i] 无法和前面对字符组成有效括号对。
+
+这时，我们只需要找到和 s[i] 配对对位置，并判断其是否是 `(` 即可。和其配对对位置为：i - dp[i - 1] - 1。
+
+如果：`s[i - dp[i - 1] - 1] == '('`，有效括号长度新增长度 2，i 位置对最长有效括号长度为 i-1 位置的最长括号长度加上当前位置新增的 2，那么有：
+
+```java
+dp[i] = dp[i - 1] + 2
+```
+
+值得注意的是，`i - dp[i - 1] - 1`  和 i 组成了有效括号对，这将是一段独立的有效括号序列，如果之前的子序列是形如 `(...)(...)` 这种序列，那么当前位置的最长有效括号长度还需要加上这一段。
+
+所以：
+
+```java
+dp[i] = dp[i - 1] + dp[i - dp[i - 1] - 2] + 2
+```
+
+
+### 子问题
+
+根据上面的分析，我们得到了如下两个计算公式：
+
+```java
+dp[i] = dp[i - 2] + 2
+
+dp[i] = dp[i - 1] + dp[i - dp[i - 1] - 2] + 2
+```
+
+这样状态也明确了：
+
+设 dp 数组，其中第 i 个元素表示以下标为 i 的字符结尾的最长有效子字符串的长度。
+
+### 转移方程
+
+```c
+if s[i] == '(' :
+    dp[i] = 0
+if s[i] == ')' :
+    if s[i - 1] == '(' :
+        dp[i] = dp[i - 2] + 2 #要保证i - 2 >= 0
+
+    if s[i - 1] == ')' and s[i - dp[i - 1] - 1] == '(' :
+        dp[i] = dp[i - 1] + dp[i - dp[i - 1] - 2] + 2 #要保证i - dp[i - 1] - 2 >= 0
+```
+
+### 初始条件和边界情况：
+
+初始条件：`dp[i] = 0` 
+
+边界情况：需要保证计算过程中：`i - 2 >= 0`  和 `i - dp[i - 1] - 2 >= 0`
+
+### 计算顺序：
+
+无论第一个字符是什么，都有：dp[0] = 0
+
+然后依次计算：dp[1], dp[2], ..., dp[n - 1]
+
+结果是： max(dp[i])
+
+### java 实现
+
+```java
+class Solution {
+    public int longestValidParentheses(String s) {
+        int maxans = 0;
+        int[] dp = new int[s.length()];
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i) == ')') {
+                if (s.charAt(i - 1) == '(') {
+                    dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
+                } else if (i - dp[i - 1] > 0 && s.charAt(i - dp[i - 1] - 1) == '(') {
+                    dp[i] = dp[i - 1] + ((i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0) + 2;
+                }
+                maxans = Math.max(maxans, dp[i]);
+            }
+        }
+        return maxans;
+    }
+}
+```
+
+ps: 这个递推公式比较难，比较容易出错。
+
+### 复杂度计算：
+
+时间复杂度： 遍历了一遍字符串，所以时间复杂度是：O(N)
+
+空间复杂度：需要和字符串长度相同的数组保存每个位置的最长有效括号长度，所以空间复杂度是：O(N)
+
+## V4-正向逆向结合
+
+### 思路
+
+在此方法中，我们利用两个计数器 left 和 right。首先，我们从左到右遍历字符串，对于遇到的每个 (，我们增加 left 计数器，对于遇到的每个 )，我们增加 right计数器。
+
+每当 left 计数器与 right计数器相等时，我们计算当前有效字符串的长度，并且记录目前为止找到的最长子字符串。
+
+当 right计数器比 left 计数器大时，我们将 left 和 right计数器同时变回 0。
+
+这样的做法贪心地考虑了以当前字符下标结尾的有效括号长度，每次当右括号数量多于左括号数量的时候之前的字符我们都扔掉不再考虑，重新从下一个字符开始计算，但这样会漏掉一种情况，就是遍历的时候左括号的数量始终大于右括号的数量，即 `(()` ，这种时候最长有效括号是求不出来的。
+
+解决的方法也很简单，我们只需要从右往左遍历用类似的方法计算即可，只是这个时候判断条件反了过来：
+
+1) 当 left 计数器比 right计数器大时，我们将 left 和 right计数器同时变回 0
+
+2) 当 left 计数器与 right计数器相等时，我们计算当前有效字符串的长度，并且记录目前为止找到的最长子字符串
+
+这样我们就能涵盖所有情况从而求解出答案。
+
+### java 实现
+
+```java
+    public int longestValidParentheses(String s) {
+        int left = 0, right = 0, maxlength = 0;
+
+        // 从左往右
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                left++;
+            } else {
+                right++;
+            }
+            if (left == right) {
+                maxlength = Math.max(maxlength, 2 * right);
+            } else if (right > left) {
+                left = right = 0;
+            }
+        }
+
+        // 从右往左
+        left = right = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == '(') {
+                left++;
+            } else {
+                right++;
+            }
+            if (left == right) {
+                maxlength = Math.max(maxlength, 2 * left);
+            } else if (left > right) {
+                left = right = 0;
+            }
+        }
+        return maxlength;
+    }
+```
+
+### 复杂度
+
+TC: O(N)
+
+MC: O(1)
+
 # 开源地址
 
 为了便于大家学习，所有实现均已开源。欢迎 fork + star~
@@ -633,6 +1036,10 @@ Memory Usage: 39.5 MB, less than 65.23% of Java online submissions for Generate 
 [回溯算法（深度优先遍历）+ 广度优先遍历 + 动态规划](https://leetcode-cn.com/problems/generate-parentheses/solution/hui-su-suan-fa-by-liweiwei1419/)
 
 [二叉树 深度优先搜索（DFS）、广度优先搜索（BFS）](https://blog.csdn.net/chlele0105/article/details/38759593)
+
+https://leetcode.cn/problems/longest-valid-parentheses/solution/zui-chang-you-xiao-gua-hao-by-leetcode-solution/
+
+https://leetcode.cn/problems/longest-valid-parentheses/solution/dong-tai-gui-hua-si-lu-xiang-jie-c-by-zhanganan042/
 
 * any list
 {:toc}
