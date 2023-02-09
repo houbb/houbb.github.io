@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leecode 详解 05-5. 最长回文子串 Longest Palindromic Substring
+title: 【leetcode】05-5. 最长回文子串 Longest Palindromic Substring
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, leetcode, sf]
@@ -313,6 +313,18 @@ Memory Usage: 37.8 MB, less than 84.50% of Java online submissions for Longest P
 Runtime: 8 ms, faster than 96.20% of Java online submissions for Longest Palindromic Substring.
 Memory Usage: 39.1 MB, less than 62.76% of Java online submissions for Longest Palindromic Substring.
 ```
+
+# 小结
+
+我们在实际使用中，能够想到第二种算法就已经够用了。
+
+马拉车算法也值得学习，后续题目也可以采用此算法求解。
+
+# 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
 
 ## 参考资料
 

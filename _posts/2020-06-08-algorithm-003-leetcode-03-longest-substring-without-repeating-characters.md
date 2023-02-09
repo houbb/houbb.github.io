@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 算法详解 06-leetcode 3. 无重复字符的最长子串 Longest Substring Without Repeating Characters
+title: 【leetcode】03-leetcode 3. 无重复字符的最长子串 Longest Substring Without Repeating Characters
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, leetcode, sf]
@@ -233,6 +233,12 @@ Memory Usage: 39.4 MB, less than 100% of Java online submissions for Longest Sub
 不过要善于思考，体验一下第二种方式和第三种的妙处。
 
 进一寸有进一寸的欢喜。
+
+# 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
 
 # 参考资料
 

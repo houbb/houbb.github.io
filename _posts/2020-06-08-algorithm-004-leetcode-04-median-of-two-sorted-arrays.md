@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leecode 详解 04-4.median of two sorted arrays 寻找两个正序数组的中位数
+title: 【leetcode】04-4.median of two sorted arrays 寻找两个正序数组的中位数
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, leetcode, sf]
@@ -370,6 +370,12 @@ Memory Usage: 40.2 MB, less than 91.06% of Java online submissions for Median of
 所有的算法答案不是用来死记硬背的，你要做的是理解其中的思想。
 
 如果是工作中，还是建议使用第一种算法，这样比较便于维护。当然如果你们组内都是大神，对性能要求有非常高，那么可以考虑使用第二种方法。
+
+# 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
 
 ## 参考资料
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 算法详解 06-leetcode 2. 两数相加 add two numbers
+title: 【leetcode】02-leetcode 2. 两数相加 add two numbers
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, leetcode, sf]
@@ -493,6 +493,12 @@ Memory Usage: 39.7 MB, less than 44.45% of Java online submissions for Add Two N
 但是这种性能基本是最差的。
 
 对于节点的遍历和构建，值得我们进一步思考与学习。
+
+# 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
 
 # 参考资料
 

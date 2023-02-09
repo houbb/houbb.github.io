@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leecode 详解 06-ksum 求符合条件的 k 个数  1. Two Sum/15. 3Sum/18. 4Sum/
+title: 【leetcode】01-ksum 求符合条件的 k 个数  1. Two Sum/15. 3Sum/18. 4Sum/
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, leetcode, sf]
@@ -472,6 +472,12 @@ public List<List<Integer>> kSum(int[] nums, int target, int k, int index) {
     return resultList;
 }
 ```
+
+# 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
 
 ## 参考资料
 

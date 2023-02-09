@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leecode 10+42 Regular Expression Matching 正则表达式匹配 + Wildcard Matching 通配符匹配
+title: 【leetcode】08 - 10. Regular Expression Matching 正则表达式匹配 + 42.Wildcard Matching 通配符匹配
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, dp, leetcode, sf]
