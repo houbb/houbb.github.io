@@ -3,7 +3,7 @@ layout: post
 title:  【leetcode】019-36. 有效的数独 Valid Sudoku + 37. 解数独 sudoku solver
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, binary-search]
+tags: [algorithm, leetcode]
 published: true
 ---
 
