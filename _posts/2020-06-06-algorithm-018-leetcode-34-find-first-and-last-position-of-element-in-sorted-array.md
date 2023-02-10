@@ -359,13 +359,17 @@ Memory Usage: 42.5 MB, less than 23.21% of Java online submissions for Find Firs
 
 如果面试的童鞋看过《剑指 offer》 ，那就应该让他想出至少最后一种优化才算面试通过。
 
+# 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
+
 # 小结
 
 希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
 
 各位**极客**的点赞收藏转发，是老马持续写作的最大动力！
-
-下一节我们将讲解一下二叉查询树，感兴趣的小伙伴可以关注一波，精彩内容，不容错过。
 
 # 参考资料
 
