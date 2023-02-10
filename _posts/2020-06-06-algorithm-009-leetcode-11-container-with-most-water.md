@@ -1,13 +1,13 @@
 ---
 layout: post
-title: 【leetcode】009 - 11. 盛最多水的容器 Container With Most Water 双指针法
+title: 【leetcode】009 - 11. 盛最多水的容器 Container With Most Water 双指针法 + 42. 接雨水 Trapping Rain Water + 407. Trapping Rain Water II
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, dp, leetcode, sf]
 published: true
 ---
 
-# 11. 盛最多水的容器
+# 11. 盛最多水的容器 Container With Most Water
 
 给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
 
@@ -198,13 +198,345 @@ Runtime: 2 ms, faster than 95.28% of Java online submissions for Container With 
 Memory Usage: 40 MB, less than 38.16% of Java online submissions for Container With Most Water.
 ```
 
-# 小结
+## 小结
 
 第一种算法，应该很容易考虑到。
 
 双指针法，是一种从两边开始，同时向中间移动的，非常好用的算法。
 
 使用内部方法提升性能，也是一个不错的小技巧。
+
+# 42. 接雨水 Trapping Rain Water
+
+## 题目
+
+给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+
+### 示例
+
+示例 1：
+
+![ex1](https://assets.leetcode.com/uploads/2018/10/22/rainwatertrap.png)
+
+```
+输入：height = [0,1,0,2,1,0,1,3,2,1,2,1]
+输出：6
+解释：上面是由数组 [0,1,0,2,1,0,1,3,2,1,2,1] 表示的高度图，在这种情况下，可以接 6 个单位的雨水（蓝色部分表示雨水）。 
+```
+
+示例 2：
+
+```
+输入：height = [4,2,0,3,2,5]
+输出：9
+```
+
+提示：
+
+n == height.length
+
+1 <= n <= 2 * 10^4
+
+0 <= height[i] <= 10^5
+
+## v1-按列计算
+
+### 思路
+
+我们从左到右，求每一列的水，总和就是结果。
+
+1）第一列和最后一列都是 0
+
+2）中间列的水要怎么求？
+
+当求中间列 i 的时候 , 要知道左边 [0, i) 最高的列 hl，和右边 [i+1, len-1) 最高的列 hr。
+
+因为下雨的时候，雨水一定在左右两边最高的范围内，根据木桶理论，水位的高度取决于短板。也就是 h_min = min(hl, hr)。
+
+所以当前列只有高度低于 h 的时候，对应的存储水位 `h_min - h_i`
+
+知道这些，代码实现起来并不难。
+
+### java 实现
+
+```java
+    public int trap(int[] height) {
+        int n = height.length;
+
+        // 第一个，最后一列不用看。
+        int sum = 0;
+        for(int i = 1; i < n-1; i++) {
+            int hl = getMaxHeight(height, 0, i-1);
+            int hr = getMaxHeight(height, i+1, n-1);
+
+            int h = Math.min(hl, hr);
+            if(height[i] < h) {
+                sum += (h - height[i]);
+            }
+        }
+        return sum;
+    }
+
+    private int getMaxHeight(int[] height,
+                          int startIndex,
+                          int endIndex) {
+        int res = 0;
+        for(int i = startIndex; i <= endIndex; i++) {
+            res = Math.max(res, height[i]);
+        }
+
+        return res;
+    }
+```
+
+### 复杂度
+
+TC: O(N^)
+
+MC: O(1)
+
+321 / 322 执行超时。
+
+## V2-动态规划
+
+### 思路-空间换时间
+
+这里面比较大的问题，在于我们计算高度，都是从头开始计算，实际上不需要。
+
+我们可以把数据记录下来。
+
+```
+dp[0] = height[0];
+dp[len-1] = height[len-1];
+```
+
+不过需要把上面的方法调整一下，这样和 i 的移动保持一致。
+
+让 hl 的计算从左到右推进，`dp[l] = max(dp[l-1], height[l])`
+
+让 hr 的计算从右到做推进，`dp[r] = max(dp[r+1], height[r])`
+
+### java 实现
+
+```java
+    public int trap(int[] height) {
+        int n = height.length;
+
+        // 初始化好对应的高度信息。
+        int[] dpLeft = new int[n];
+        dpLeft[0] = height[0];
+        for(int i = 1; i < n-1; i++) {
+            dpLeft[i] = Math.max(dpLeft[i-1], height[i]);
+        }
+        int[] dpRight = new int[n];
+        dpRight[n-1] = height[n-1];
+        for(int i = n-2; i >= 1; i--) {
+            dpRight[i] = Math.max(dpRight[i+1], height[i]);
+        }
+
+        // 第一个，最后一列不用看。
+        int sum = 0;
+        for(int i = 1; i < n-1; i++) {
+            int hl = dpLeft[i];
+            int hr = dpRight[i];
+
+            int h = Math.min(hl, hr);
+            if(height[i] < h) {
+                sum += (h - height[i]);
+            }
+        }
+        return sum;
+    }
+```
+
+### 效果
+
+时间/空间复杂度
+
+TC: O(N)
+
+MC: O(N)
+
+[效果如下：](https://leetcode.com/problems/trapping-rain-water/submissions/895229335/)
+
+```
+TC: 1ms, 98.34%
+MC: 42.8mb, 81.49%
+```
+
+只能说，DP YYDS！
+
+## v3-双指针
+
+### 优化左边高度数组
+
+我们的 MC 使用了两个数组，那么有没有办法简化一下呢？
+
+观察 v2 中的，dpLeft 与 遍历处理时的下标一致，而且元素都只临时使用一次。
+
+所以可以把 dpLeft 简化掉。
+
+### java 实现 1
+
+```java
+    public int trap(int[] height) {
+        int n = height.length;
+
+        int[] dpRight = new int[n];
+        dpRight[n-1] = height[n-1];
+        for(int i = n-2; i >= 1; i--) {
+            dpRight[i] = Math.max(dpRight[i+1], height[i]);
+        }
+
+        // 第一个，最后一列不用看。
+        int sum = 0;
+        int hl = height[0];
+        for(int i = 1; i < n-1; i++) {
+            hl = Math.max(hl, height[i]);
+            int hr = dpRight[i];
+
+            int h = Math.min(hl, hr);
+            if(height[i] < h) {
+                sum += (h - height[i]);
+            }
+        }
+        return sum;
+    }
+```
+
+这里 dpLeft 数组被简化掉了。
+
+那么，我们可以进一步优化掉 dpRight 数组吗？
+
+### 优化右边高度数组的思路-双指针
+
+没法简单的移除 dpRight 的原因是，dpLeft 和我们的遍历顺序一致，但是 dpRight 是反过来的。
+
+所以这里要用到两个指针，left 和 right，从两个方向去遍历。
+
+那么什么时候从左到右，什么时候从右到左呢？根据下边的代码的更新规则，我们可以知道
+
+使用双指针（左右两边各两个指针）
+            
+我们使用一根一根柱子计算装水量的方法
+
+left 表示左边当前遍历的柱子（即左边我们需要计算能够装多少水的柱子）
+
+leftMax 表示 left 的左边最高的柱子长度（不包括 left）
+
+right 表示右边当前遍历的柱子
+
+rightMax 表示 right 的右边最高的柱子长度（不包括 right）
+
+我们有以下几个公式：            
+
+当 leftMax < rightMax 的话，那么我们就判断 leftMax 是否比 left 高
+
+因为根据木桶效应，一个桶装水量取决于最短的那个木板，这里也一样，柱子能否装水取决于左右两边的是否都存在比它高的柱子
+
+因为 leftMax < rightMax 了，那么我们只需要比较 leftMax 即可
+
+如果 leftMax > left，那么装水量就是 leftMax - left
+
+如果 leftMax <= left，那么装水量为 0，即 left 装不了水
+
+当 leftMax >= rightMax 的话，同理如上，比较 rightMax 和 right
+
+？？？？ 为什么 rightMax 和 left 隔这么远我们还可以使用 rightMax 来判断？
+
+前提：leftMax < rightMax
+
+rightMax 虽然跟 left 离得远，但有如下两种情况：
+
+1、left 柱子和 rightMax 柱子之间，没有比 rightMax 柱子更高的柱子了，
+
+那么情况如下：  left 能否装水取决于 leftMax 柱子是否比 left 高
+
+                            |
+                |           |
+                |   |       |
+                ↑   ↑       ↑
+               l_m  l      r_m
+
+2、left 柱子和 rightMax 柱子之间存在比 rightMax 柱子更高的柱子
+
+那么情况如下：因为存在了比 rightMax 更高的柱子，那么我们仍然只需要判断 leftMax 是否比 left 高，因为右边已经存在比 left 高的柱子
+                        |
+                        |   |
+                |       |   |
+                |   |   |   |
+                ↑   ↑   ↑   ↑
+               l_m  l  mid  r_m
+
+初始化指针：
+
+```java
+left = 1;
+right = len - 2;
+leftMax = 0;
+rightMax = len - 1;
+```
+            
+（因为第一个柱子和最后一个柱子肯定不能装水，因为不作为装水柱子，而是作为左边最高柱子和右边最高柱子）
+
+### java 实现
+
+这里使用 while 更能体会到双指针的妙处。
+
+木桶理论：最大水量，取决于短板。
+
+```java
+    public int trap(int[] height) {
+        int n = height.length;
+
+        //1. 最大高度
+        int left = 0;
+        int right = n-1;
+        int maxLeft = height[left];
+        int maxRight = height[right];
+
+        int sum = 0;
+        while (left <= right) {
+            // 取决于左边
+            if(maxLeft < maxRight) {
+                if(height[left] > maxLeft) {
+                    // 无法蓄水
+                    maxLeft = height[left];
+                } else {
+                    // 可以蓄水
+                    sum += maxLeft - height[left];
+                }
+
+                // 左边指针往右移动
+                left++;
+            } else {
+                // 取决于右边
+                if(height[right] > maxRight) {
+                    // 无法蓄水
+                    maxRight = height[right];
+                } else {
+                    // 可以蓄水
+                    sum += maxRight - height[right];
+                }
+
+                // 右边指针往左移动
+                right--;
+            }
+        }
+
+        return sum;
+    }
+```
+
+### 复杂度
+
+TC: O(N)
+
+MC: O(1)
+
+### 评价
+
+老实说，双指针确实是性能与空间的最佳，但是比较难想，而且容易出错。
 
 # 开源地址
 
@@ -215,6 +547,10 @@ Memory Usage: 40 MB, less than 38.16% of Java online submissions for Container W
 # 参考资料
 
 https://leetcode.cn/problems/container-with-most-water/
+
+https://leetcode.cn/problems/trapping-rain-water/
+
+https://leetcode.cn/problems/trapping-rain-water/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-w-8/
 
 * any list
 {:toc}
