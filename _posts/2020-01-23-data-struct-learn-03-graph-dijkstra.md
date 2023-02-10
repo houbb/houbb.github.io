@@ -376,9 +376,9 @@ class Node implements Comparator<Node> {
 
 # 拓展阅读
 
-[Floyd 算法]()
+[图最短路径算法之弗洛伊德算法（Floyd）](https://houbb.github.io/2020/01/23/data-struct-learn-03-graph-floyd)
 
-[贪心算法]()
+[贪心算法](https://houbb.github.io/2020/01/23/data-struct-learn-07-base-greedy)
 
 # 参考资料
 
@@ -388,7 +388,7 @@ class Node implements Comparator<Node> {
 
 ## blog
 
-[知乎-轻松搞懂dijkstra算法+堆优化 || 原理+实战](https://zhuanlan.zhihu.com/p/34624812)
+[知乎-轻松搞懂dijkstra算法+堆优化 原理+实战](https://zhuanlan.zhihu.com/p/34624812)
 
 [知乎-帮忙通俗解释一下Dijkstra算法](https://www.zhihu.com/question/20630094/answer/758191548)
 

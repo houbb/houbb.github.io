@@ -538,6 +538,43 @@ MC: O(1)
 
 老实说，双指针确实是性能与空间的最佳，但是比较难想，而且容易出错。
 
+# 407. 接雨水 II
+
+## 题目
+
+给你一个 m x n 的矩阵，其中的值均为非负整数，代表二维高度图每个单元的高度，请计算图中形状最多能接多少体积的雨水。
+
+### 示例
+
+示例 1:
+
+![ex1](https://assets.leetcode.com/uploads/2021/04/08/trap1-3d.jpg)
+
+```
+输入: heightMap = [[1,4,3,1,3,2],[3,2,1,3,2,4],[2,3,3,2,3,1]]
+输出: 4
+解释: 下雨后，雨水将会被上图蓝色的方块中。总的接雨水量为1+2+1=4。
+```
+
+示例 2:
+
+![ex2](https://assets.leetcode.com/uploads/2021/04/08/trap2-3d.jpg)
+
+```
+输入: heightMap = [[3,3,3,3,3],[3,2,2,2,3],[3,2,1,2,3],[3,2,2,2,3],[3,3,3,3,3]]
+输出: 10
+``` 
+
+### 提示:
+
+m == heightMap.length
+
+n == heightMap[i].length
+
+1 <= m, n <= 200
+
+0 <= heightMap[i][j] <= 2 * 10^4
+
 # 开源地址
 
 为了便于大家学习，所有实现均已开源。欢迎 fork + star~
@@ -551,6 +588,8 @@ https://leetcode.cn/problems/container-with-most-water/
 https://leetcode.cn/problems/trapping-rain-water/
 
 https://leetcode.cn/problems/trapping-rain-water/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-w-8/
+
+https://leetcode.com/problems/trapping-rain-water-ii/description/
 
 * any list
 {:toc}
