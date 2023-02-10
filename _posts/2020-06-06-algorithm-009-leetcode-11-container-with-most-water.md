@@ -591,5 +591,7 @@ https://leetcode.cn/problems/trapping-rain-water/solution/xiang-xi-tong-su-de-si
 
 https://leetcode.com/problems/trapping-rain-water-ii/description/
 
+https://leetcode.cn/problems/trapping-rain-water-ii/solution/gong-shui-san-xie-jing-dian-dijkstra-yun-13ik/
+
 * any list
 {:toc}

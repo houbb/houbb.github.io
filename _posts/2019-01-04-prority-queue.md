@@ -1,11 +1,10 @@
 ---
 layout: post
-title: 优先级队列与堆排序
+title: 优先级队列与堆排序 PriorityQueue & heap sort
 date: 2019-1-4 15:24:22 +0800
 categories: [Althgorim]
 tags: [althgorim, sh]
 published: true
-excerpt: 优先级队列与堆排序
 ---
 
 # 优先级队列
