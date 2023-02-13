@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Java ThreadLocal
+title: Java 线程安全之 ThreadLocal 详解及源码分析
 date:  2018-10-08 17:55:28 +0800
 categories: [Java]
-tags: [sql, java, thread, sh]
+tags: [sql, java, thread, source-code, sh]
 published: true
-excerpt: Java 线程安全之 ThreadLocal
 ---
 
 # ThreadLocal

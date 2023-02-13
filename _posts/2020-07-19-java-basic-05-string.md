@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  java 基础篇-05-String 字符串又长度限制吗？常量池详解
+title:  java 基础篇-05-String 字符串又长度限制吗？常量池详解 String 类源码分析
 date:  2020-7-19 10:37:20 +0800
 categories: [Java]
 tags: [java, java-base, sf]
@@ -28,7 +28,7 @@ String的长度限制
 
 常量池（运行时常量池、Class常量池）
 
-intern
+[intern](https://houbb.github.io/2018/10/07/java-string-intern)
 
 # Java String 有长度限制吗？
 
@@ -237,7 +237,7 @@ ps: 只能说 jvm 作为基础，稍微学习下就涉及到 jvm 的相关知识
 
 > [java 虚拟机(jvm)-02-java 内存模型(jmm)介绍](https://www.jianshu.com/p/a276b307f887)
 
-![运行时内存模型](https://upload-images.jianshu.io/upload_images/5874675-6f8b8713127257f5.png?imageMogr2/auto-orient/strip|imageView2/2/w/438/format/webp)
+![运行时内存模型](https://upload-images.jianshu.io/upload_images/5874675-6f8b8713127257f5.png?imageMogr2/auto-orient/strip)
 
 ### 基本概念
 
@@ -506,13 +506,212 @@ public synchronized StringBuffer append(String str) {
 
 ps: 一般情况，我们使用 StringBuilder 即可。
 
+# string 源码分析
+
+ps: jdk1.8 为例。
+
+## 类定义
+
+```java
+public final class String
+    implements java.io.Serializable, Comparable<String>, CharSequence {
+    /** The value is used for character storage. */
+    private final char value[];
+
+    /** Cache the hash code for the string */
+    private int hash; // Default to 0
+
+    /** use serialVersionUID from JDK 1.0.2 for interoperability */
+    private static final long serialVersionUID = -6849794470754667710L;
+
+    /**
+     * Class String is special cased within the Serialization Stream Protocol.
+     *
+     * A String instance is written into an ObjectOutputStream according to
+     * <a href="{@docRoot}/../platform/serialization/spec/output.html">
+     * Object Serialization Specification, Section 6.2, "Stream Elements"</a>
+     */
+    private static final ObjectStreamField[] serialPersistentFields = new ObjectStreamField[0];
+```
+
+看的出来，使用的是 char 数组维护的内容。
+
+## 构造器
+
+仔细一看，构造器的类别还是挺多的。
+
+```java
+    public String() {
+        this.value = "".value;
+    }
+
+    public String(String original) {
+        this.value = original.value;
+        // 计算了哈希
+        this.hash = original.hash;
+    }
+
+    public String(char value[]) {
+        this.value = Arrays.copyOf(value, value.length);
+    }
+
+    public String(char value[], int offset, int count) {
+        if (offset < 0) {
+            throw new StringIndexOutOfBoundsException(offset);
+        }
+        if (count <= 0) {
+            if (count < 0) {
+                throw new StringIndexOutOfBoundsException(count);
+            }
+            if (offset <= value.length) {
+                this.value = "".value;
+                return;
+            }
+        }
+        // Note: offset or count might be near -1>>>1.
+        if (offset > value.length - count) {
+            throw new StringIndexOutOfBoundsException(offset + count);
+        }
+        this.value = Arrays.copyOfRange(value, offset, offset+count);
+    }
+
+    public String(int[] codePoints, int offset, int count) {
+        if (offset < 0) {
+            throw new StringIndexOutOfBoundsException(offset);
+        }
+        if (count <= 0) {
+            if (count < 0) {
+                throw new StringIndexOutOfBoundsException(count);
+            }
+            if (offset <= codePoints.length) {
+                this.value = "".value;
+                return;
+            }
+        }
+        // Note: offset or count might be near -1>>>1.
+        if (offset > codePoints.length - count) {
+            throw new StringIndexOutOfBoundsException(offset + count);
+        }
+
+        final int end = offset + count;
+
+        // Pass 1: Compute precise size of char[]
+        int n = count;
+        for (int i = offset; i < end; i++) {
+            int c = codePoints[i];
+            if (Character.isBmpCodePoint(c))
+                continue;
+            else if (Character.isValidCodePoint(c))
+                n++;
+            else throw new IllegalArgumentException(Integer.toString(c));
+        }
+
+        // Pass 2: Allocate and fill in char[]
+        final char[] v = new char[n];
+
+        for (int i = offset, j = 0; i < end; i++, j++) {
+            int c = codePoints[i];
+            if (Character.isBmpCodePoint(c))
+                v[j] = (char)c;
+            else
+                Character.toSurrogates(c, v, j++);
+        }
+
+        this.value = v;
+    }
+
+    @Deprecated
+    public String(byte ascii[], int hibyte, int offset, int count) {
+        checkBounds(ascii, offset, count);
+        char value[] = new char[count];
+
+        if (hibyte == 0) {
+            for (int i = count; i-- > 0;) {
+                value[i] = (char)(ascii[i + offset] & 0xff);
+            }
+        } else {
+            hibyte <<= 8;
+            for (int i = count; i-- > 0;) {
+                value[i] = (char)(hibyte | (ascii[i + offset] & 0xff));
+            }
+        }
+        this.value = value;
+    }
+
+    @Deprecated
+    public String(byte ascii[], int hibyte) {
+        this(ascii, hibyte, 0, ascii.length);
+    }
+```
+
+PS: 看了一下，各种构造器，很多种方法。此处不再赘述。
+
+## 常见方法
+
+### charAt
+
+```java
+public char charAt(int index) {
+    if ((index < 0) || (index >= value.length)) {
+        throw new StringIndexOutOfBoundsException(index);
+    }
+    return value[index];
+}
+```
+
+这个方法，会比直接 value[index] 多进行范围的校验。
+
+所以 leetcode 很多解法，都是建议先把 String 转为 char 数组，然后遍历字符。
+
+### equals
+
+```java
+public boolean equals(Object anObject) {
+    if (this == anObject) {
+        return true;
+    }
+    if (anObject instanceof String) {
+        String anotherString = (String)anObject;
+        int n = value.length;
+        if (n == anotherString.value.length) {
+            char v1[] = value;
+            char v2[] = anotherString.value;
+            int i = 0;
+            while (n-- != 0) {
+                if (v1[i] != v2[i])
+                    return false;
+                i++;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+### hashCode
+
+```java
+public int hashCode() {
+    int h = hash;
+    if (h == 0 && value.length > 0) {
+        char val[] = value;
+        for (int i = 0; i < value.length; i++) {
+            h = 31 * h + val[i];
+        }
+        hash = h;
+    }
+    return h;
+}
+```
+
 # 小结
 
 很多资料都是可能存在谬误的，包括本文。
 
 但是我们力求准确，抱着质疑的心态去学习，大胆质疑，小心求证。
 
-前段时间看到一句话很喜欢，**正是因为质疑的人少了，才有了真理。**
+前段时间看到一句话很喜欢，**正是因为质疑的人多了，才有了真理。**
 
 但是也不能陷入怀疑主义，这会令人陷入虚无。（老哲学家了~）
 
