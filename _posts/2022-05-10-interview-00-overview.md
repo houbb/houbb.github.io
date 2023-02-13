@@ -7,6 +7,11 @@ tags: [interview, overview, sh]
 published: true
 ---
 
+# 数据结构与算法
+
+[数据结构-00-概览](https://houbb.github.io/2019/02/19/data-struct-00-overview)
+
+[从零开始的数据结构与算法-00-概览](https://houbb.github.io/2020/06/08/algorithm-000-index)
 
 # java 
 
@@ -65,8 +70,6 @@ published: true
 [函数式编程-03-java 中的函数式接口和 lambda 简介](https://houbb.github.io/2020/06/05/functional-program-03-functional-and-lambda)
 
 [函数式编程-04-让 java 更加函数式](https://houbb.github.io/2020/06/05/functional-program-04-make-java-functional)
-
-## 集合类
 
 ## 并发类
 
