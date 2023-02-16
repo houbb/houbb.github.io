@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JVM OOM 内存分析
+title: 使用 JVisualVM 分析 dump 文件定位 OOM 实战笔记
 date:  2023-02-15 +0800
 categories: [java]
 tags: [java, jvm, sh]
