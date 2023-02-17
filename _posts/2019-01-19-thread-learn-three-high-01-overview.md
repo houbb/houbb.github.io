@@ -33,34 +33,7 @@ three-high-import 项目意义在于利用多线程进行千万级别导入,实�
 
 并行： 真正意义上的"同时执行。
 
-
-
-
-
-
-
-
-
-
-多线程到底有几种实现方式
-
-多线程使用runnable与继承Thread类有什么区别
-
-多线程如何正确优雅的中断线程
-多线程的生命周期状态纽机流转错误错误说法
-多线程的生命周期状态纽机流转
-Thread和Object类
-多线程重要属性
-多线程异常处理机制
-多线程wait notify notifyall join sleep yield作用与方法详细解读
-多线程可能会带来什么问题
-多种单例模式
-
-
-
-
-
-# 系列导航
+# 参考资料
 
 https://github.com/qiurunze123/threadandjuc
 
