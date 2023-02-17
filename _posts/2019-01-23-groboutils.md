@@ -1,11 +1,10 @@
 ---
 layout: post
-title: GroboUtils
+title: java 多线程测试工具-GroboUtils
 date:  2019-1-23 13:44:33 +0800
 categories: [Test]
-tags: [test, thread, sh]
+tags: [test, util, sh]
 published: true
-excerpt: java 多线程测试工具-GroboUtils
 ---
 
 # GroboUtils
@@ -20,7 +19,9 @@ GroboUtils中包含的流行工具包括多线程测试，分层单元测试和�
 
 # 快速开始
 
-Junit本身是不支持普通的多线程测试的，这是因为Junit的底层实现上，是用System.exit退出用例执行的。JVM都终止了，在测试线程启动的其他线程自然也无法执行。
+Junit本身是不支持普通的多线程测试的，这是因为Junit的底层实现上，是用System.exit退出用例执行的。
+
+JVM都终止了，在测试线程启动的其他线程自然也无法执行。
 
 ## maven jar 引入
 
