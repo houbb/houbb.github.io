@@ -1,11 +1,10 @@
 ---
 layout: post
-title: ConcurrentHashMap 源码解析
+title: JDK ConcurrentHashMap 源码解析
 date:  2018-09-12 11:44:23 +0800
 categories: [Java]
 tags: [source-code, hash, cache, data-struct, java, sf]
 published: true
-excerpt: ConcurrentHashMap 源码解析
 ---
 
 # HashMap 的线程安全性

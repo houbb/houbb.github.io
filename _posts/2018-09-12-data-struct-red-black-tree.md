@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Red Black Tree
+title: 数据结构之红黑树 Red Black Tree  
 date:  2018-09-12 11:44:23 +0800
 categories: [Data-Struct]
-tags: [data-struct, java, TODO, sh]
+tags: [data-struct, java, sh]
 published: true
-excerpt: 数据结构之红黑树 Red Black Tree  
 ---
 
 # Red Black Tree
