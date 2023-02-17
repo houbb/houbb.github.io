@@ -3,7 +3,7 @@ layout: post
 title: JUC-06-LockSupport
 date:  2019-1-20 14:10:12 +0800
 categories: [Concurrency]
-tags: [java, concurrency, juc, sh]
+tags: [thread, concurrency, juc, sh]
 published: true
 ---
 

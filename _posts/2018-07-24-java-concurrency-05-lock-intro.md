@@ -3,7 +3,7 @@ layout: post
 title:  Java Concurrency-05-lock intro 
 date:  2018-07-24 16:11:28 +0800
 categories: [Java]
-tags: [java, concurrency, thread, lock]
+tags: [thread, concurrency, thread, lock]
 published: true
 ---
 

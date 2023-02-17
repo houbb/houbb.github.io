@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-19-闭锁（如CountDownLatch），栅栏（如CyclicBarrier），信号量（如Semaphore）和阻塞队列（如LinkedBlockingQueue）
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, thread, sh]
+tags: [thread, concurrency, thread, sh]
 published: true
 ---
 

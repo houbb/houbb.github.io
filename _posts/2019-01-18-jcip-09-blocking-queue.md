@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-09-java 中 7 种阻塞队列 BlockingQueue 概览篇
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, lock, sh]
+tags: [thread, concurrency, lock, sh]
 published: true
 ---
 

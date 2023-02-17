@@ -3,7 +3,7 @@ layout: post
 title: JCIP-04-可见性，发布与溢出，线程安全对象的构建
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, sh]
+tags: [thread, concurrency, sh]
 published: true
 excerpt: JCIP-04-可见性，发布与溢出，线程安全对象的构建
 ---

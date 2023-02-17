@@ -3,7 +3,7 @@ layout: post
 title: JCIP-01-并发历史
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, sh]
+tags: [thread, concurrency, sh]
 published: true
 excerpt: JCIP-01-并发历史
 ---

@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-40-Lock Free 无锁算法
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, lock-free, sh]
+tags: [thread, concurrency, lock-free, sh]
 published: true
 ---
 

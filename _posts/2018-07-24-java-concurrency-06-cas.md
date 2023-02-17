@@ -3,7 +3,7 @@ layout: post
 title:  Java Concurrency-06-深入浅出 CAS 算法
 date:  2018-07-24 16:11:28 +0800
 categories: [Java]
-tags: [java, concurrency, lock-free, thread]
+tags: [thread, concurrency, lock-free, thread]
 published: true
 ---
 

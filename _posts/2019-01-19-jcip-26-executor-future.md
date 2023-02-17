@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-26-Executor Future FutureTask
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, future, async, sh]
+tags: [thread, concurrency, future, async, sh]
 published: true
 excerpt: JCIP-26-Executor Future FutureTask
 ---

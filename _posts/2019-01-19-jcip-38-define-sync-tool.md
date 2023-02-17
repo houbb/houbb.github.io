@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-38-构建自定义的同步工具 Condition、AQS
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, sh]
+tags: [thread, concurrency, sh]
 published: true
 ---
 

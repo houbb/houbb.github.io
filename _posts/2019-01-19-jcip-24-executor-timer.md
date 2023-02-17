@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-24-Timer 
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, thread, async, sh]
+tags: [thread, concurrency, thread, async, sh]
 published: true
 excerpt: JCIP-24-Timer 
 ---

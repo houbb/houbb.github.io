@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-13-无锁队列
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, lock, data-struct, sh]
+tags: [thread, concurrency, lock, data-struct, sh]
 published: true
 excerpt: JCIP-13-无锁队列
 ---

@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-22-Executor 框架, ExecutorService, AbstractExecutorService  
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, thread, async, sh]
+tags: [thread, concurrency, thread, async, sh]
 published: true
 excerpt: JCIP-22-Executor 框架, ExecutorService  
 ---

@@ -3,7 +3,7 @@ layout: post
 title:  Java Concurrency-07-class object lock
 date:  2018-07-25 14:44:36 +0800
 categories: [Java]
-tags: [java, concurrency, thread, lock]
+tags: [thread, concurrency, thread, lock]
 published: true
 ---
 

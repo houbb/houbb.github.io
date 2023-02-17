@@ -3,7 +3,7 @@ layout: post
 title:  JMM-06-happens before
 date:  2018-07-29 12:14:02 +0800
 categories: [JMM]
-tags: [java, concurrency, thread, sf]
+tags: [thread, concurrency, thread, sf]
 published: true
 ---
 

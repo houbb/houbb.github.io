@@ -3,9 +3,8 @@ layout: post
 title: JUC-02-AtomicReference 对象原子性更新
 date:  2019-1-20 14:10:12 +0800
 categories: [Concurrency]
-tags: [java, concurrency, juc, sh]
+tags: [thread, concurrency, juc, sh]
 published: true
-excerpt: JUC-02-AtomicLong
 ---
 
 # AtomicReference 介绍

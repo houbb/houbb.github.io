@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-35-并发程序的测试
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, test, sh]
+tags: [thread, concurrency, test, sh]
 published: true
 ---
 

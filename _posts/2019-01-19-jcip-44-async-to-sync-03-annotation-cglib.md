@@ -3,7 +3,7 @@ layout: post
 title:  java 手写并发框架（三）异步转同步框架注解和字节码增强
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [concurrency, java, async, sync, sh]
+tags: [concurrency, thread, async, sync, sh]
 published: true
 ---
 

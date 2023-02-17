@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-20-thread 源码
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, thread, sh]
+tags: [thread, concurrency, thread, sh]
 published: true
 excerpt: JCIP-20-thread 源码
 ---

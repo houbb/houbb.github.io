@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-08-生产者消费者模式
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, lock, sh]
+tags: [thread, concurrency, lock, sh]
 published: true
 excerpt: JCIP-08-阻塞队列和生产者消费者模式
 ---

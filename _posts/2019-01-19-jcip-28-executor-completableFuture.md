@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-28-Executor CompletableFuture
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, future, async, TODO, sh]
+tags: [thread, concurrency, future, async, TODO, sh]
 published: true
 excerpt: JCIP-28-Executor CompletableFuture
 ---

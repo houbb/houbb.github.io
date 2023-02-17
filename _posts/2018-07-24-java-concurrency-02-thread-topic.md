@@ -3,7 +3,7 @@ layout: post
 title:  Java Concurrency-02-thread topic
 date:  2018-07-24 15:52:20 +0800
 categories: [Java]
-tags: [java, concurrency, thread]
+tags: [thread, concurrency, thread]
 published: true
 ---
 

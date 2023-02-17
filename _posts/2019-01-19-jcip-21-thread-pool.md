@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-21-thread pool 手写线程池
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, thread, sh]
+tags: [thread, concurrency, thread, sh]
 published: true
 excerpt: JCIP-21-thread pool 手写线程池
 ---

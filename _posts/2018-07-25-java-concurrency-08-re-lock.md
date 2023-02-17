@@ -3,7 +3,7 @@ layout: post
 title:  Java Concurrency-08-reentrant lock
 date:  2018-07-25 15:34:17 +0800
 categories: [Java]
-tags: [java, concurrency, thread, lock]
+tags: [thread, concurrency, thread, lock]
 published: true
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title:  JCIP-10-优先级队列 Priority Queue
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [java, concurrency, lock, sh]
+tags: [thread, concurrency, lock, sh]
 published: true
 excerpt: JCIP-10-优先级队列
 ---

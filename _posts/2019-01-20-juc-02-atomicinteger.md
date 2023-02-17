@@ -3,9 +3,8 @@ layout: post
 title: JUC-02-AtomicInterger 原子性整型源码详解
 date:  2019-1-20 14:10:12 +0800
 categories: [Concurrency]
-tags: [java, concurrency, juc, sh]
+tags: [thread, concurrency, juc, sh]
 published: true
-excerpt: JUC-02-AtomicLong
 ---
 
 # AtomicInterger 介绍
