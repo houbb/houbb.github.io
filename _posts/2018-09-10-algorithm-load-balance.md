@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Algorithm Load Balance
+title:  Algorithm Load Balance 负载均衡算法
 date:  2018-09-10 11:37:31 +0800
 categories: [Algorithm]
 tags: [algorithm, sh]
 published: true
-excerpt: 负载均衡。
 ---
 
 # 负载均衡
