@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 数据结构-02- ArrayList 源码分析
+title: 数据结构 02 ArrayList 源码分析
 date:  2019-2-19 14:50:42 +0800
 categories: [Data-Struct]
 tags: [data-struct, list, source-code, sh]

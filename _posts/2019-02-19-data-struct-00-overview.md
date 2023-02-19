@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 数据结构-00-概览
+title: 数据结构 00 概览
 date:  2019-2-19 14:50:42 +0800
 categories: [Data-Struct]
-tags: [data-struct, sh]
+tags: [data-struct, overview, sh]
 published: true
 ---
 
@@ -22,9 +22,9 @@ published: true
 
 [跳跃链表 skiplist](https://houbb.github.io/2019/02/13/datastruct-skiplist)
 
-[ArrayList]()
+[ArrayList](https://houbb.github.io/2019/02/19/data-struct-02-arraylist-source-code)
 
-[LinkedList]()
+[LinkedList](https://houbb.github.io/2019/02/19/data-struct-03-linkedlist-source-code)
 
 # 栈
 
