@@ -32,9 +32,9 @@ published: true
 
 # SET
 
-[HashSet]()
+[HashSet](https://houbb.github.io/2019/02/19/data-struct-05-hashset)
 
-[TreeSet]()
+[TreeSet](https://houbb.github.io/2019/02/19/data-struct-06-treeset)
 
 # 队列
 
