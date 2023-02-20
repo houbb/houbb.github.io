@@ -28,7 +28,7 @@ published: true
 
 # 栈
 
-[Stack]()
+[Stack](https://houbb.github.io/2019/02/19/data-struct-04-stack-source-code)
 
 # SET
 
