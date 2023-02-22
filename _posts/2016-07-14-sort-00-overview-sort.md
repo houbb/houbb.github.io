@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Sort
+title: Sort-00-排序算法汇总
 date:  2016-07-14 17:22:22 +0800
 categories: [Algorithm]
-tags: [sort]
+tags: [sort, index]
 published: true
 ---
 

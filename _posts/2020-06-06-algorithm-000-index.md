@@ -1,11 +1,59 @@
 ---
 layout: post
-title: 从零开始的数据结构与算法-00-概览
+title: 从零开始的数据结构与算法-00-概览 算法专题汇总
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, data-struct, sf]
+tags: [algorithm, data-struct, topics, sf]
 published: true
 ---
+
+# 算法索引
+
+- 查找
+
+[java 如何实现 binary search 二分查找法？](https://houbb.github.io/2020/06/08/algorithm-12-binary-search)
+
+> [The search tool for java.(java 查询工具)](https://github.com/houbb/search)
+
+- sort
+
+[sort-00-排序算法汇总](https://houbb.github.io/2016/07/14/sort-00-overview-sort)
+
+[sort-01-bubble sort 冒泡排序算法详解](https://houbb.github.io/2016/07/14/sort-01-bubble-sort)
+
+[sort-02-QuickSort 快速排序到底快在哪里？](https://houbb.github.io/2016/07/14/sort-02-quick-sort)
+
+[sort-03-SelectSort 选择排序算法详解](https://houbb.github.io/2016/07/14/sort-03-select-sort)
+
+[sort-04-heap sort 堆排序算法详解](https://houbb.github.io/2016/07/14/sort-03-select-sort)
+
+[sort-05-insert sort 插入排序算法详解](https://houbb.github.io/2016/07/14/sort-05-insert-sort)
+
+[sort-06-shell sort 希尔排序算法详解](https://houbb.github.io/2016/07/14/sort-06-shell-sort)
+
+[sort-07-merge sort 归并排序](https://houbb.github.io/2016/07/14/sort-07-merge-sort)
+
+[sort-08-counting sort 计数排序](https://houbb.github.io/2016/07/14/sort-08-counting-sort)
+
+[sort-08-bucket sort 桶排序](https://houbb.github.io/2016/07/14/sort-09-bucket-sort)
+
+[timesort](https://houbb.github.io/2018/07/26/timesort)
+
+[java big file sort 超大文件如何实现排序？外归并排序（External merge sort）](https://houbb.github.io/2022/08/12/java-diff-sort-big-file)
+
+- 五大算法
+
+[五大基本算法概览](https://houbb.github.io/2020/01/23/data-struct-learn-07-base)
+
+[五大基本算法之回溯算法 backtracking](https://houbb.github.io/2020/01/23/data-struct-learn-07-base-backtracking)
+
+[五大基本算法之分治算法 Divided](https://houbb.github.io/2020/01/23/data-struct-learn-07-base-divided)
+
+[五大基本算法之动态规划算法 DP dynamic programming](https://houbb.github.io/2020/01/23/data-struct-learn-07-base-dp)
+
+[五大基本算法之穷举算法](https://houbb.github.io/2020/01/23/data-struct-learn-07-base-enum)
+
+[五大基本算法之贪心算法 Greedy](https://houbb.github.io/2020/01/23/data-struct-learn-07-base-greedy)
 
 # 绝世武功
 
