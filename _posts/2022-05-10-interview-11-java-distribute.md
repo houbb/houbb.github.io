@@ -45,7 +45,18 @@ published: true
 
 [其他常见面试题](https://houbb.github.io/2022/05/10/interview-12-other)
 
+
 # 分布式
+
+ACID
+
+BASE
+
+CAP
+
+脑裂
+
+一致性算法
 
 [分布式系统-01-书籍推荐](https://houbb.github.io/2021/03/06/distributed-system-01-books)
 
@@ -81,7 +92,7 @@ published: true
 
 [Seata-一站式分布式事务解决方案](https://houbb.github.io/2018/10/30/distributed-tx-seata)
 
-## 分布式标识
+## 分布式 id
 
 [Distributed ID-01-Overview](https://houbb.github.io/2018/09/05/distributed-id-01-overview-01)
 
@@ -91,7 +102,50 @@ published: true
 
 [Distributed ID-04-SnowFlake](https://houbb.github.io/2018/09/05/distributed-id-04-snowflake-04)
 
+[Distributed ID-05-系统时钟，高并发下的时间优化](https://houbb.github.io/2018/09/05/distributed-id-05-system-clock)
+
+> [分布式标识工具包](https://github.com/houbb/id)
+
 PS: 基于 redis/mysql 等集中式资源的标识。
+
+## 分布式 session
+
+- 基础
+
+Session 是啥？浏览器有个 Cookie，在一段时间内这个 Cookie 都存在，然后每次发请求过来都带上一个特殊的 jsessionid cookie ，就根据这个东西，在服务端可以维护一个对应的 Session 域，里面可以放点数据。
+
+> [当页面 cookie 被禁用时](https://houbb.github.io/2018/07/18/session-cookie#%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%A6%81%E7%94%A8-cookie)
+
+[Java Servlet3.1 规范-07-session 会话](https://houbb.github.io/2021/09/09/java-servlet3-07-session)
+
+[分布式 Session 共享的解决方案](https://houbb.github.io/2018/09/26/session-sharing)
+
+[Java Servlet 教程-09-session](https://houbb.github.io/2018/10/04/java-servlet-tutorial-09-session)
+
+[web 会话机制之 session cookie 详解](https://houbb.github.io/2018/07/18/session-cookie)
+
+- jwt
+
+[JWT-01-入门概览](https://houbb.github.io/2018/03/25/jwt)
+
+[JWT-02-常见问题及其解决方案](https://houbb.github.io/2018/03/25/jwt-02-problem-sloves)
+
+[JWT-03-分布式系统 session 共享解决方案 JWT 实战笔记](https://houbb.github.io/2018/03/25/jwt-03-in-action)
+
+[JWT-04-核心源码分析](https://houbb.github.io/2018/03/25/jwt-04-sourcec-code)
+
+- spring session
+
+[Spring Session 为什么需要？session 的演化流程](https://houbb.github.io/2018/09/26/spring-session-00-overview)
+
+[Spring Session 入门教程](https://houbb.github.io/2018/09/26/spring-session-01-hello-world)
+
+[Spring Session 结合拦截器实战](https://houbb.github.io/2018/09/26/spring-session-02-interceptor)
+
+[Spring Session-04-深入源码，和你一起重新认识 spring session](https://houbb.github.io/2018/09/26/spring-session-04-redis-detail)
+
+[java 知识进阶面试-11-distributed session 分布式 session](https://houbb.github.io/2022/12/14/advanced-java-interview-11-dis-session)
+
 
 ## 幂等
 
@@ -185,7 +239,7 @@ PS: 基于 redis/mysql 等集中式资源的标识。
 
 [如何从零实现属于自己的 API 网关？](https://houbb.github.io/2018/11/21/gateway-02-how-to-design-gateway)
 
-# 注册中心
+# 注册中心 zookeeper
 
 [ZooKeeper-01-overview](https://houbb.github.io/2016/09/25/zookeeper-01-overview)
 

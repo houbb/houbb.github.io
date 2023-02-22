@@ -3,7 +3,7 @@ layout: post
 title: NLP 中文形近字相似度计算思路
 date:  2020-1-20 10:09:32 +0800
 categories: [NLP]
-tags: [nlp, block-chain, sh]
+tags: [chinese, nlp, algorithm, sh]
 published: true
 ---
 

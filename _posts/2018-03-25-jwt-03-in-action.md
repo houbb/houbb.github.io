@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  分布式系统 session 共享解决方案 JWT 实战笔记
+title:  JWT-03-分布式系统 session 共享解决方案 JWT 实战笔记
 date:  2018-3-25 13:51:45 +0800
 categories: [Web]
 tags: [web, auth]

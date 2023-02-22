@@ -3,7 +3,7 @@ layout: post
 title: leetcode 48 - Trie (Prefix Tree) 实现 Trie 前缀树
 date:  2020-1-23 10:09:32 +0800 
 categories: [Algorithm]
-tags: [algorithm, leetcode, tree, sh]
+tags: [algorithm, leetcode, tree, data-struct, sh]
 published: true
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title: 名字，名称打分策略之三才五格
 date:  2020-1-20 10:09:32 +0800
 categories: [NLP]
-tags: [nlp, ml, ai, sh]
+tags: [chinese, nlp, algorithm, sh]
 published: true
 ---
 

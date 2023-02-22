@@ -3,7 +3,7 @@ layout: post
 title: NLP 中文拼写检测实现思路
 date:  2020-1-20 10:09:32 +0800
 categories: [Data-Struct]
-tags: [data-struct, block-chain, sh]
+tags: [chinese, nlp, algorithm, sh]
 published: true
 ---
 

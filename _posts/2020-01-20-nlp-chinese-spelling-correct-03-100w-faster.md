@@ -3,7 +3,7 @@ layout: post
 title: NLP 英文拼写算法，如果提升 100W 倍的性能？
 date:  2020-1-20 10:09:32 +0800
 categories: [Data-Struct]
-tags: [data-struct, block-chain, sh]
+tags: [chinese, nlp, algorithm, sh]
 published: true
 ---
 

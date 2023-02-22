@@ -3,9 +3,8 @@ layout: post
 title:  JCIP-32-线程池的使用
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [thread, concurrency, lock, data-struct, sh]
+tags: [thread, thread-pool, concurrency, sh]
 published: true
-excerpt: JCIP-32-线程池的使用
 ---
 
 # 线程池调优的必要性

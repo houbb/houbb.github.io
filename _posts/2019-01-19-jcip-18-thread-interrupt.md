@@ -3,9 +3,8 @@ layout: post
 title:  JCIP-18-thread InterruptedException 中断异常处理及中断机制
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [thread, concurrency, lock, data-struct, sh]
+tags: [thread, concurrency, exception, sh]
 published: true
-excerpt: JCIP-18-thread InterruptedException 中断异常处理及中断机制
 ---
 
 # java 中断机制

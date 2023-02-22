@@ -3,7 +3,7 @@ layout: post
 title:  java 实现中英文拼写检查和错误纠正？可我只会写 CRUD 啊！
 date:  2018-08-11 09:44:54 +0800
 categories: [NLP]
-tags: [nlp, sh]
+tags: [chinese, nlp, algorithm, sh]
 published: true
 ---
 

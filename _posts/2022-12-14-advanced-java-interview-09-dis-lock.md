@@ -3,7 +3,7 @@ layout: post
 title: java 知识进阶面试-08-distributed lock 分布式锁 基于 redis 或者 zookeeper
 date: 2022-12-14 21:01:55 +0800
 categories: [Java] 
-tags: [java, interview, sh]
+tags: [lock, distributed-lock, redis, zookeeper, sh]
 published: true
 ---
 

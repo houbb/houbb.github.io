@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Distributed ID-01-Overview
+title:  分布式标识 Distributed ID-01-Overview 
 date:  2018-09-05 08:53:10 +0800
 categories: [Distributed]
 tags: [id, distributed, random, sh]

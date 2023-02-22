@@ -3,7 +3,7 @@ layout: post
 title: NLP 中文人名印章生成
 date:  2020-1-20 10:09:32 +0800
 categories: [NLP]
-tags: [nlp, ml, ai, sh]
+tags: [chinese, nlp, algorithm, sh]
 published: true
 ---
 

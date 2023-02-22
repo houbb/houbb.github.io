@@ -33,6 +33,12 @@ published: true
 
 [java 手写并发框架（四）异步转同步框架spring整合](https://houbb.github.io/2019/01/18/jcip-45-async-to-sync-04-spring)
 
+## 开源代码
+
+> [The async tool for java.(Java 多线程异步并行框架，基于 java 字节码，支持注解。)](https://github.com/houbb/async)
+
+> [The distributed lock tool for java.(java 实现开箱即用基于 redis 的分布式锁，支持可重入锁获取。内置整合 spring、springboot。)](https://github.com/houbb/lock)
+
 ------------------------------------------------------------------------------------------------------------------------
 
 ## 深入学习
@@ -206,7 +212,6 @@ AbstractQueuedLongSynchronizer  这个和 AQS 实现基本一样，只是 64 位
 [seqlock 在 jmm 如何应用？](https://houbb.github.io/2020/10/17/lock-05-seqlock-jmm)
 
 paper 算法篇
-
 
 ## 内存相关
 

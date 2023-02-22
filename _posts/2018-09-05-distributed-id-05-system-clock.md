@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Distributed ID-05-系统时钟，高并发下的时间优化
+title:  分布式标识 Distributed ID-05-系统时钟，高并发下的时间优化
 date:  2018-09-05 08:53:10 +0800
 categories: [Distributed]
 tags: [id, distributed, sh]
