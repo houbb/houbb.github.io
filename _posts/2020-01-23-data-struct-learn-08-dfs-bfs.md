@@ -3,7 +3,7 @@ layout: post
 title: DFS 深度优先遍历与 BFS 广度优先遍历详解
 date:  2020-1-23 10:09:32 +0800
 categories: [Data-Struct]
-tags: [data-struct, block-chain, sh]
+tags: [data-struct, algorithm, sh]
 published: true
 ---
 

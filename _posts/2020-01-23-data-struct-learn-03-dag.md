@@ -3,7 +3,7 @@ layout: post
 title: DAG 有向无环图（Directed Acyclic Graph）
 date:  2020-1-23 10:09:32 +0800
 categories: [Data-Struct]
-tags: [data-struct, block-chain, sh]
+tags: [data-struct, algorithm, sh]
 published: true
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title: viterbi 算法：利用动态规划寻找最短路径
 date:  2020-1-23 10:09:32 +0800
 categories: [Data-Struct]
-tags: [data-struct, block-chain, sh]
+tags: [data-struct, algorithm, sh]
 published: true
 ---
 

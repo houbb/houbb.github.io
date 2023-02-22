@@ -3,7 +3,7 @@ layout: post
 title: 面试算法：斐波那契数列时间复杂度为 O(1) 的解法，你会吗？
 date:  2020-1-23 10:09:32 +0800
 categories: [Data-Struct]
-tags: [data-struct, block-chain, sh]
+tags: [data-struct, algorithm, sh]
 published: true
 ---
 

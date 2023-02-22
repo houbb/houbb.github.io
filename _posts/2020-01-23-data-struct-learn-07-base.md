@@ -3,7 +3,7 @@ layout: post
 title: 五大基本算法概览
 date:  2020-1-23 10:09:32 +0800
 categories: [Data-Struct]
-tags: [data-struct, block-chain, sh]
+tags: [data-struct, algorithm, sh]
 published: true
 ---
 
