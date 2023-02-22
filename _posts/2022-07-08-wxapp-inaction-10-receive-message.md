@@ -7,6 +7,41 @@ tags: [wechat, sh]
 published: true
 ---
 
+
+# 大坑
+
+> [微信公众号开启服务器配置流程及注意事项](https://blog.csdn.net/cottonknight/article/details/125297464)
+
+## 现象
+
+测试环境使用没有任何问题，因为测试环境的菜单全部是通过接口创建的。
+
+但是生产环境在想监听消息，启用了【基本配置】-【服务器配置】之后，就会导致**运营配置的菜单+自动回复失效**。
+
+## 开启服务器配置
+
+首先在公众号后台左边菜单栏下滑,找到设置与开发,然后点击里面的基本配置如图所示,配置修改好后,先不要点击启 因为点击启用的话,设置的自动回复和自定义菜单将失效,这是因为开启了服务器配置以后,微信会使用开发服务器设置的自定义菜单和自动回复,当然,同时开启自定义菜单和服务器配置的方法也有,下面会介绍。
+
+![开启服务器配置](https://img-blog.csdnimg.cn/d7bbc034c9ed4d62b277eb04dab83ea3.png)
+
+![开启服务器配置-2](https://img-blog.csdnimg.cn/f00f97c74dd94b3092f4fd92673ca14b.png)
+
+## 同时开启服务器配置与自定义菜单方法
+
+在启用服务器配置后,自定义菜单将会失效,此时我们可以在公众号后台左边菜单栏下滑,找到新的功能,然后点击已开通,找到自定义菜单,鼠标移动至标签上面,标签后面会出现一个详情,点击详情
+
+![同时开启服务器配置与自定义菜单方法](https://img-blog.csdnimg.cn/658de80f06744d1c95e97e4dafd56133.png)
+
+点击开启即可
+
+![开启](https://img-blog.csdnimg.cn/757f0646c75347aba27f1159239a0b8e.png)
+
+### 提示
+
+提示:如果需要更改自定义菜单内容,则需要停用服务器配置,然后修改,最后再从开启服务器配置走一遍上面的流程。
+
+如果已经有开发使用,最好不要停用服务器配置,而是通过调用微信接口进行修改.
+
 # 如何接入
 
 [微信公众号接入指南](https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419318183&token=&lang=zh_CN)
@@ -943,6 +978,10 @@ https://www.jianshu.com/p/4102a7649063?open_source
 https://developers.weixin.qq.com/doc/offiaccount/Message_Management/Receiving_event_pushes.html
 
 [Java 微信关注/取消关注事件](https://blog.csdn.net/qq_43548590/article/details/128022934)
+
+[公众号开通开发模式，自定菜单不见了 怎么回事？](https://developers.weixin.qq.com/community/minihome/doc/00008ccf21c3a0ce5b7e2024856c00?jumpto=comment)
+
+https://www.zhihu.com/question/516867659/answer/2352348772
 
 * any list
 {:toc}
