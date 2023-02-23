@@ -10,11 +10,13 @@ excerpt: linux netstat
 
 # netstat
 
+```
 netstat -ntlp   //查看当前所有tcp端口·
 
 netstat -ntulp | grep 80   //查看所有80端口使用情况·
 
 netstat -an | grep 3306   //查看所有3306端口使用情况·
+```
 
 # 参考资料
 
