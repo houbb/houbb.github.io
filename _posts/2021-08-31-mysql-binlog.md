@@ -27,7 +27,7 @@ MySQL Binary Log connector.
 
 主要区别/特点：
 
-- 自动二进制日志文件名/位置 | GTID 解析
+- 自动二进制日志文件名/位置 / GTID 解析
 
 - 可恢复的断开连接
 
