@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Design Pattern 01-入门案例
+title: Design Pattern 01-入门案例 单例+工厂+抽象工厂
 date:  2017-03-14 19:52:28 +0800
 categories: [Design Pattern]
 tags: [design pattern, sf]
@@ -13,55 +13,55 @@ published: true
 to that problem, in such a way that you can use this solution a million times over, without ever doing it the same way twice" [AIS+77].
     —— Christopher Alexander
 
-In general, a pattern has four essential elements:
+一般来说，模式有四个基本要素：
 
-The **pattern name** is a handle we can use to describe a design problem, its solutions, and consequences in a word or two.
+**模式名称** 是一个句柄，我们可以用一两个词来描述设计问题、它的解决方案和后果。
 
-The **problem** describes when to apply the pattern.
+**问题** 描述了何时应用模式。
 
-The **solution** describes the elements that make up the design, their relationships, responsibilities, and collaborations.
+**解决方案** 描述了构成设计的元素、它们之间的关系、职责和协作。
 
-The **consequences** are the results and trade-offs of applying the pattern.
+**后果** 是应用该模式的结果和权衡。
 
 # Singleton
 
-> Intent
+> 意图
 
-Ensure a class only has **one instance**, and provide a global point of *access to it*.
+确保一个类只有**一个实例**，并提供一个全局*访问点*。
 
-> Motivation
+> 动机
 
-How do we ensure that a class has only one instance and that the instance is easily accessible?
+我们如何确保一个类只有一个实例并且该实例易于访问？
 
-A better solution is to make the class itself responsible for keeping track of its sole instance.
-The class can ensure that no other instance can be created (by intercepting requests to create new objects),
-and it can provide a way to access the instance. This is the Singleton pattern.
+更好的解决方案是让类本身负责跟踪它的唯一实例。
+该类可以确保不能创建其他实例（通过拦截创建新对象的请求），
+它可以提供一种访问实例的方法。 这就是单例模式。
 
-> Applicability
+> 适用性
 
-- there must be exactly one instance of a class, and it must be accessible to clients from a well-known access point.
+- 一个类必须只有一个实例，并且客户端必须可以从众所周知的访问点访问它。
 
-- when the sole instance should be extensible by subclassing, and clients should be able to use an extended instance without modifying their code.
+- 当唯一实例应该可以通过子类化进行扩展时，客户应该能够在不修改代码的情况下使用扩展实例。
 
-> Structure
+> 结构
 
-![singleton](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-15-singleton.png)
+![单例](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-15-singleton.png)
 
-> Consequences
+> 后果
 
-The Singleton pattern has several benefits:
+单例模式有几个好处：
 
-- Controlled access to sole instance.
+- 对唯一实例的控制访问。
 
-- Reduced name space.
+- 减少名称空间。
 
-- Permits refinement of operations and representation.
+- 允许改进操作和表示。
 
-- Permits a variable number of instances.
+- 允许可变数量的实例。
 
-- More flexible than class operations.
+- 比类操作更灵活。
 
-> Implementation
+> 实现
 
 [singleton zh_CN](http://cantellow.iteye.com/blog/838473)
 [singleton2 zh_CN](http://blog.csdn.net/jason0539/article/details/23297037/)
@@ -155,26 +155,27 @@ The best way to realize singleton is to use **enum**
 
 # Prototype
 
-Specify the kinds of objects to create using a prototypical instance, and create new objects by **copying this prototype**.
+使用原型实例指定要创建的对象种类，并通过**复制此原型**来创建新对象。
 
-[zh_CN prototype](http://www.52ij.com/jishu/104.html)
+[zh_CN原型](http://www.52ij.com/jishu/104.html)
 
-> Applicability
+> 适用性
 
-Use the Prototype pattern when a system should be *independent of* how its products are created, composed, and represented; and
+当系统应该*独立于*其产品的创建、组合和表示方式时，使用原型模式； 和
 
-- when the classes to instantiate are specified at run-time, for example, by dynamic loading
+- 当要实例化的类在运行时指定时，例如，通过动态加载
 
-- to avoid building a class hierarchy of factories that parallels the class hierarchy of products
+- 避免构建与产品类层次结构平行的工厂类层次结构
 
-- when instances of a class can have one of only a few different combinations of state.
-It may be more convenient to install a corresponding number of prototypes and clone them rather than instantiating the class manually, each time with the appropriate state.
+- 当一个类的实例可以具有仅有的几种不同状态组合中的一种时。
 
-> Consequences
+安装相应数量的原型并克隆它们可能更方便，而不是每次都使用适当的状态手动实例化类。
 
-It hides the concrete product classes from the client, thereby reducing the number of names clients know about.
-Moreover, these patterns let a client work with application-specific classes without modification.
+> 后果
 
+它向客户端隐藏了具体的产品类别，从而减少了客户端知道的名称数量。
+
+此外，这些模式让客户端无需修改即可使用特定于应用程序的类。
 
 > Implementation
 
@@ -559,18 +560,17 @@ Process finished with exit code 0
 
 > Intent
 
-Provide an interface for creating families of related or dependent objects without specifying their concrete classes.
+提供一个接口，用于创建相关或依赖对象的系列，而无需指定它们的具体类。
 
-> Applicability
+> 适用性
 
-- a system should be independent of how its products are created, composed, and represented.
+- 系统应该独立于其产品的创建、组合和表示方式。
 
-- a system should be configured with one of multiple families of products.
+- 系统应配置多个产品系列之一。
 
-- a family of related product objects is designed to be used together, and you need to enforce this constraint.
+- 一系列相关的产品对象旨在一起使用，您需要强制执行此约束。
 
-- you want to provide a class library of products, and you want to reveal just their interfaces, not their implementations.
-
+- 你想提供一个产品的类库，你只想展示它们的接口，而不是它们的实现。
 
 > Structure
 
@@ -579,14 +579,13 @@ Provide an interface for creating families of related or dependent objects witho
 
 > Consequences
 
-- It isolates concrete classes.
+- 它隔离具体类。
 
-- It makes exchanging product families easy.
+- 它使产品系列的交换变得容易。
 
-- It promotes consistency among products.
+- 它促进了产品之间的一致性。
 
-- **Supporting new kinds of products is difficult**.
-
+- **支持新产品很困难**。
 
 > Implementation
 

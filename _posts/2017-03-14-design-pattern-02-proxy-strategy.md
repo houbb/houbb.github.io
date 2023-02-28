@@ -10,27 +10,27 @@ published: true
 
 # Proxy
 
-> Intent
+> 意图
 
-Provide a surrogate or placeholder for another object to control access to it.
+为另一个对象提供代理或占位符以控制对它的访问。
 
-> Applicability
+> 适用性
 
-- A **remote proxy** provides a local representative for an object in a different address space.
+- **远程代理**为不同地址空间中的对象提供本地代表。
 
-- A **virtual proxy** creates expensive objects on demand.
+- **虚拟代理**按需创建昂贵的对象。
 
-- A **protection proxy** controls access to the original object.
+- **保护代理**控制对原始对象的访问。
 
-- A **smart reference** is a replacement for a bare pointer that performs additional actions when an object is accessed.
+- **智能引用**是裸指针的替代品，它在访问对象时执行额外的操作。
 
-> Consequences
+> 后果
 
-- A remote proxy can hide the fact that an object resides in a different address space.
+- 远程代理可以隐藏对象位于不同地址空间的事实。
 
-- A virtual proxy can perform optimizations such as creating an object on demand.
+- 虚拟代理可以执行优化，例如按需创建对象。
 
-- Both protection proxies and smart references allow additional housekeeping tasks when an object is accessed.
+- 保护代理和智能引用都允许在访问对象时执行额外的内务处理任务。
 
 ## static proxy
 
@@ -40,7 +40,7 @@ Provide a surrogate or placeholder for another object to control access to it.
 
 > demo
 
-Suppose we want to add some methods before || after the RealSubject.operation(), how to do ?
+假设我们想在 `||` 之前添加一些方法 RealSubject.operation()之后，怎么办？
 
 - Subject.java
 
@@ -104,7 +104,9 @@ Process finished with exit code 0
 
 ## dynamic proxy
 
-Why we use dynamic proxy ? If there are many methods, it's hard to use static proxy to solve it.
+为什么我们使用动态代理？ 
+
+如果方法很多，很难用静态代理来解决。
 
 > struct
 
@@ -138,7 +140,7 @@ public class RealRequest implements Request {
 
 - ProxyHandler.java
 
-We use reflect to dynamic create class file, then the target object is flexible.
+我们使用reflect来动态创建class文件，目标对象是灵活的。
 
 ```java
 package com.ryo.dynamicProxy;
@@ -202,64 +204,64 @@ dynamic after...
 Process finished with exit code 0
 ```
 
-Tips: As you can see, the dynamic proxy of java is depends on ```interface```, if there is no interface, we can use [aspectj](http://www.eclipse.org/aspectj/) to solve it.
+Tips：可以看到，java的动态代理是依赖于 interface，如果没有接口，我们可以使用[aspectj](http://www.eclipse.org/aspectj/)来 解决这个问题。
 
 
 # Strategy
 
-> Intent
+> 意图
 
-Define a family of algorithms, encapsulate each one, and make them interchangeable. Strategy lets the algorithm vary independently from clients that use it.
+定义一系列算法，封装每个算法，并使它们可以互换。 策略让算法独立于使用它的客户而变化。
 
-> Applicability
+> 适用性
 
-- many related classes differ only in their behavior. Strategy is provide a way to configure a class with one of many behaviors.
+- 许多相关类仅在行为上有所不同。 策略提供了一种配置具有多种行为之一的类的方法。
 
-- you need different variants of an algorithm. For example, you might define algorithms reflecting different space/time trade-offs.
+- 你需要一个算法的不同变体。 例如，您可以定义反映不同空间/时间权衡的算法。
 
-Strategies can be used when these variants are implemented as a classhierarchy of algorithms [HO87].
+当这些变体被实现为算法的类层次结构时，可以使用策略 [HO87]。
 
-- an algorithm uses data that clients shouldn't know about. Use the Strategy pattern to avoid exposing complex, algorithm-specific data structures.
+- 一种算法使用了客户不应该知道的数据。 使用策略模式可以避免暴露复杂的、特定于算法的数据结构。
 
-- a class defines many behaviors, and these appear as multiple conditional statements in its operations.
-Instead of many conditionals, move related conditional branches into their own Strategy class.
+- 一个类定义了许多行为，这些行为在其操作中表现为多个条件语句。
+
+将相关的条件分支移动到它们自己的 Strategy 类中，而不是许多条件。
 
 > Struct
 
 ![Strategy](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-19-strategy.png)
 
+> 后果
 
-> Consequences
+- 继承可以帮助**分解出算法的通用功能**。
 
-- Inheritance can help **factor out common functionality** of the algorithms.
+- 将算法封装在单独的 Strategy 类中，使您可以独立于其上下文改变算法，从而更容易切换、理解和扩展。
 
-- Encapsulating the algorithm in separate Strategy classes lets you vary the algorithm independently of its context, making it easier to switch, understand, and extend.
+- 策略消除了条件语句。
 
-- Strategies eliminate conditional statements.
+- 策略可以提供相同行为的不同实现。 客户可以在具有不同时间和空间权衡的策略中进行选择。
 
-- Strategies can provide different implementations of the same behavior. The client can choose among strategies with different time and space trade-offs.
+*缺点*
 
-*shortcoming*
+- 客户必须了解不同的策略。
 
-- Clients must be aware of different Strategies.
+- Strategy 和 Context 之间的通信开销。
 
-- Communication overhead between Strategy and Context.
-
-- Increased number of objects.
-
-
-> Implementation
-
-Suppose we has different count for different level customers.
-
-- common member: no count
-
-- advanced member: 0.9
-
-- VIP: 0.7
+- 增加的对象数量。
 
 
-Here is the code:
+> 实施
+
+假设我们对不同级别的客户有不同的计数。
+
+- 普通会员：不计
+
+- 高级会员：0.9
+
+- 贵宾：0.7
+
+
+这是代码：
 
 - PriceStrategy.java
 
