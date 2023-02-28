@@ -15,6 +15,9 @@ published: true
 
 # 目录
 
+[使用 JVisualVM 分析 dump 文件定位 OOM 实战笔记](https://houbb.github.io/2023/02/15/jvm-oom-01-analysis)
+
+[项目复盘梳理-02-旧系统数据迁移到新的系统](https://houbb.github.io/2023/02/13/project-fupan-02-pos-migrate)
 
 
 # 参考资料
