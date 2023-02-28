@@ -3,7 +3,7 @@ layout: post
 title:  mysql 时间精度精确到毫秒实现方案
 date:  2021-1-25 16:52:15 +0800
 categories: [SQL]
-tags: [sql, database, sh]
+tags: [sql, database, mysql, sh]
 published: true
 ---
 

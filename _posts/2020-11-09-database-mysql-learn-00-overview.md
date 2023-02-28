@@ -85,6 +85,10 @@ mysql 简易版实现
 
 [你真的理解 mysql 的 insert 吗？](https://houbb.github.io/2021/06/05/database-insert)
 
+[mysql 时间精度精确到毫秒实现方案](https://houbb.github.io/2021/01/25/mysql-time-scale)
+
+[mysql 常见面试题汇总](https://houbb.github.io/2022/05/10/interview-05-mysql)
+
 ## 锁专题
 
 [MySQL Lock](https://houbb.github.io/2018/09/03/sql-lock)

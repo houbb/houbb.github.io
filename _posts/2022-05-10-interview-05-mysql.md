@@ -3,7 +3,7 @@ layout: post
 title:  mysql 常见面试题汇总
 date:  2022-05-10 09:22:02 +0800
 categories: [Interview]
-tags: [interview, redis, sh]
+tags: [interview, database, sql, mysql, sh]
 published: true
 ---
 
