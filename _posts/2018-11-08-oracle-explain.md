@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Oracle Explain
+title: Oracle Explain Oracle 执行计划详解
 date:  2018-11-8 18:55:36 +0800
 categories: [SQL]
-tags: [sql, mysql, TODO, sh]
+tags: [sql, oracle, TODO, sh]
 published: true
-excerpt: Oracle 执行计划详解
 ---
 
 # Oracle Explain

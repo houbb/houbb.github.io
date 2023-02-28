@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 动态内存管理
+title: 操作系统 动态内存管理 OS
 date:  2020-10-17 16:15:55 +0800
-categories: [Data-Struct]
-tags: [data-struct, mysql, index, sh]
+categories: [OS]
+tags: [os, gc, memory, sh]
 published: true
 ---
 

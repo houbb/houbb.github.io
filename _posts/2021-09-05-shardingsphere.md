@@ -2,8 +2,8 @@
 layout: post
 title: shardingsphere-分布式数据库生态圈
 date: 2021-09-05 21:01:55 +0800
-categories: [java]
-tags: [java, mysql, sh]
+categories: [Databae]
+tags: [database, sql, open-source, sh]
 published: true
 ---
 

@@ -1,9 +1,9 @@
 ---
 layout: post
-title: MySQL Ruler
+title: MySQL Ruler mysql 日常开发规范
 date:  2017-02-27 21:44:46 +0800
 categories: [Standard]
-tags: [mysql ruler]
+tags: [mysql, sql, rule]
 published: true
 ---
 

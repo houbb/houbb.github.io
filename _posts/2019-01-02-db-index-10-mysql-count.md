@@ -98,7 +98,7 @@ MySQL 中，不同的存储引擎，count(*)的实现方式是不同的。
 
 注意，上面启动的事务都没有提交。
 
-![TX](https://upload-images.jianshu.io/upload_images/68057-0da5653abba64536.png?imageMogr2/auto-orient/strip|imageView2/2/w/943/format/webp)
+![TX](https://upload-images.jianshu.io/upload_images/68057-0da5653abba64536.png)
 
 A、B、C 查询的结果都不相同。
 

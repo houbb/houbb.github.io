@@ -141,8 +141,7 @@ character_sets_dir
 
 3.最后将操作结果从内部操作字符集转换为 character_set_results
 
-![mysql charsets](https://upload-images.jianshu.io/upload_images/14079828-9e79bb8527143ae1.png?imageMogr2/auto-orient/strip|imageView2/2/w/426/format/webp)
-
+![mysql charsets](https://upload-images.jianshu.io/upload_images/14079828-9e79bb8527143ae1.png)
 
 ## 临时修改配置
 

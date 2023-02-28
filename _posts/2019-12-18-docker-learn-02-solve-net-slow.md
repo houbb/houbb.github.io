@@ -3,7 +3,7 @@ layout: post
 title: Docker Learn-02-解决 Docker 国内较慢的问题
 date:  2016-10-15 22:41:45 +0800
 categories: [Docker]
-tags: [docker, windows, mysql, sf]
+tags: [docker, windows, problem, sf]
 published: true
 ---
 

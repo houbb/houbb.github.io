@@ -3,7 +3,7 @@ layout: post
 title: Oracle Explain-02-查看 oracle 执行计划的几种方式
 date:  2018-11-8 18:55:36 +0800
 categories: [SQL]
-tags: [sql, mysql, sh]
+tags: [sql, oracle, sh]
 published: true
 ---
 
