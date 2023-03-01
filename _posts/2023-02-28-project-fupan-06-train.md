@@ -4,7 +4,7 @@ title: 项目复盘梳理-06-train 培训中心
 date:  2023-02-13 +0800
 categories: [Project]
 tags: [in-actions, project, sh]
-published: true
+published: false
 ---
 
 # 背景
