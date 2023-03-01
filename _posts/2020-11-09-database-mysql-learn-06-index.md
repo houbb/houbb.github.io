@@ -1019,6 +1019,8 @@ Query OK ，Orowsaffected(0.00sec)
 
 《mysql 技术内幕》
 
+https://xiaolincoding.com/mysql/index/why_index_chose_bpuls_tree.html#mysql-%E4%B8%AD%E7%9A%84-b-%E6%A0%91
+
 * any list
 {:toc}
 
