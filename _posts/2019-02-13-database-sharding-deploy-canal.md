@@ -3,7 +3,7 @@ layout: post
 title: canal 阿里巴巴 MySQL binlog 增量订阅&消费组件
 date:  2019-2-13 09:48:27 +0800
 categories: [Database]
-tags: [database, sharding, sh]
+tags: [database, sharding, mysql, sh]
 published: true
 ---
 
