@@ -150,6 +150,12 @@ System.out.println(JSON.toJSON(list));
 {"total":16,"count":16,"openids":["000Kc6VD8nnOz_RC3VPPPC-dfBGI","000Kc6bg_WOGsCy4Q8P0oWOrZmBs","000Kc6cGfPhbchLolkXqni0xMjyo","000Kc6RPORnAK94hwQAALHwzo_J8","000Kc6R6-KwnH_LDIsqyplSOAPak","000Kc6VYjK-buG_Xbkg2PF4iV6F8","000Kc6T3XA5eoobRr7PqHmBfdUpY","000Kc6UE42KA65XJiGbpnxL65ESw","000Kc6Vyyw5QU1HiTatlkq-pfzyw","000Kc6RUi_gzfUbSzxhBB3SU1W7o","000Kc6Sl76K95T0SPK3Bn2HdJX4Y","000Kc6WpaGCU6o963vENiEa5FLaw","000Kc6U9N9deUVaXciwJoqNyqk_w","000Kc6cdxX-qGcZgqngRzv1MY7Pc","000Kc6ZBsRic98LDG0gZU-rSe6Lc","000Kc6ckvXambobnkkqTMhCkxc2s"],"nextOpenid":"000Kc6ckvXambobnkkqTMhCkxc2s"}
 ```
 
+## 说明
+
+用这个方法获取历史数据，基于事件实时获取最新的关注信息。
+
+然后再根据 userInfo 获取用户的信息。
+
 # 参考资料
 
 https://developers.weixin.qq.com/doc/offiaccount/User_Management/Getting_a_User_List.html
