@@ -134,6 +134,21 @@ public interface WxMpUserService {
 }
 ```
 
+## 例子
+
+查询所有的，实际可以分页依次处理。
+
+```java
+WxMpUserList list = wxMpService.getUserService().userList("");
+
+System.out.println(JSON.toJSON(list));
+```
+
+结果：
+
+```json
+{"total":16,"count":16,"openids":["000Kc6VD8nnOz_RC3VPPPC-dfBGI","000Kc6bg_WOGsCy4Q8P0oWOrZmBs","000Kc6cGfPhbchLolkXqni0xMjyo","000Kc6RPORnAK94hwQAALHwzo_J8","000Kc6R6-KwnH_LDIsqyplSOAPak","000Kc6VYjK-buG_Xbkg2PF4iV6F8","000Kc6T3XA5eoobRr7PqHmBfdUpY","000Kc6UE42KA65XJiGbpnxL65ESw","000Kc6Vyyw5QU1HiTatlkq-pfzyw","000Kc6RUi_gzfUbSzxhBB3SU1W7o","000Kc6Sl76K95T0SPK3Bn2HdJX4Y","000Kc6WpaGCU6o963vENiEa5FLaw","000Kc6U9N9deUVaXciwJoqNyqk_w","000Kc6cdxX-qGcZgqngRzv1MY7Pc","000Kc6ZBsRic98LDG0gZU-rSe6Lc","000Kc6ckvXambobnkkqTMhCkxc2s"],"nextOpenid":"000Kc6ckvXambobnkkqTMhCkxc2s"}
+```
 
 # 参考资料
 
