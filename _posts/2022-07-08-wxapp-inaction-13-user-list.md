@@ -150,11 +150,103 @@ System.out.println(JSON.toJSON(list));
 {"total":16,"count":16,"openids":["000Kc6VD8nnOz_RC3VPPPC-dfBGI","000Kc6bg_WOGsCy4Q8P0oWOrZmBs","000Kc6cGfPhbchLolkXqni0xMjyo","000Kc6RPORnAK94hwQAALHwzo_J8","000Kc6R6-KwnH_LDIsqyplSOAPak","000Kc6VYjK-buG_Xbkg2PF4iV6F8","000Kc6T3XA5eoobRr7PqHmBfdUpY","000Kc6UE42KA65XJiGbpnxL65ESw","000Kc6Vyyw5QU1HiTatlkq-pfzyw","000Kc6RUi_gzfUbSzxhBB3SU1W7o","000Kc6Sl76K95T0SPK3Bn2HdJX4Y","000Kc6WpaGCU6o963vENiEa5FLaw","000Kc6U9N9deUVaXciwJoqNyqk_w","000Kc6cdxX-qGcZgqngRzv1MY7Pc","000Kc6ZBsRic98LDG0gZU-rSe6Lc","000Kc6ckvXambobnkkqTMhCkxc2s"],"nextOpenid":"000Kc6ckvXambobnkkqTMhCkxc2s"}
 ```
 
+## 代码实现
+
+```java
+package com.github.houbb.wechat.server.service.task;
+
+import cn.hutool.core.collection.CollectionUtil;
+import com.github.houbb.heaven.util.util.DateUtil;
+import com.github.houbb.wechat.server.dal.entity.WxUserOpenidInfo;
+import com.github.houbb.wechat.server.service.extra.WxUserOpenidInfoServiceEx;
+import com.github.houbb.wechat.server.service.service.WxUserOpenidInfoService;
+import lombok.extern.slf4j.Slf4j;
+import me.chanjar.weixin.common.error.WxErrorException;
+import me.chanjar.weixin.mp.api.WxMpService;
+import me.chanjar.weixin.mp.bean.result.WxMpUserList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@Slf4j
+public class WxUserOpenIdTask {
+
+    @Autowired
+    private WxMpService wxMpService;
+
+    @Autowired
+    private WxUserOpenidInfoService wxUserOpenidInfoService;
+
+    @Autowired
+    private WxUserOpenidInfoServiceEx wxUserOpenidInfoServiceEx;
+
+    /**
+     * 分页查询，一次 10000 个
+     */
+    public void saveAllWxOpenId() {
+        // 查询第一次的 10000
+        String lastOpenId = null;
+        WxMpUserList wxMpUserList = null;
+
+        do {
+            try {
+                log.info("开始查询微信--------------------------------------------");
+                wxMpUserList = wxMpService.getUserService().userList(lastOpenId);
+                lastOpenId = wxMpUserList.getNextOpenid();
+                log.info("完成查询微信-------------------------------------------- {}", wxMpUserList.getCount());
+
+                // 遍历处理
+                List<String> idList = wxMpUserList.getOpenids();
+                if(CollectionUtil.isEmpty(idList)) {
+                    break;
+                }
+
+                for(String wxOpenId : idList) {
+                    log.info("开始处理 wx: {}", wxOpenId);
+                    boolean containsFlag = wxUserOpenidInfoServiceEx.contains(wxOpenId);
+                    if(containsFlag) {
+                        log.warn("已经包含标识 {}", wxOpenId);
+                        continue;
+                    }
+
+                    WxUserOpenidInfo wxUserOpenidInfo = new WxUserOpenidInfo();
+                    wxUserOpenidInfo.setWxOpenId(wxOpenId);
+                    wxUserOpenidInfo.setAddDate(DateUtil.getCurrentDatePureStr());
+                    // 不包含的时候，则插入
+                    wxUserOpenidInfoService.insert(wxUserOpenidInfo);
+                }
+            } catch (WxErrorException e) {
+                throw new RuntimeException(e);
+            }
+        } while (wxMpUserList.getCount() > 0);
+    }
+
+}
+```
+
 ## 说明
 
 用这个方法获取历史数据，基于事件实时获取最新的关注信息。
 
 然后再根据 userInfo 获取用户的信息。
+
+# 限制
+
+## 报错
+
+```
+【请求地址】: https://api.weixin.qq.com/cgi-bin/user/get?access_token=66_uSMIp0R8PDGV43xgv1K4E9uNmyO2-yqIUkqjA6jRvzcATP6LHjdYZk7RDiKMcbdVjibMblF0krHK0lqMU37PwDQgFZ0SMSLnxl3gsEs7NVWT4ectS2eaXhDI6OINCEaAAAIXZ
+【请求参数】：null
+【错误信息】：{"errcode":48001,"errmsg":"api unauthorized rid: 64015252-74a9a21a-7e5122e8"}
+
+java.lang.RuntimeException: me.chanjar.weixin.common.error.WxErrorException: {"errcode":48001,"errmsg":"api unauthorized rid: 64015252-74a9a21a-7e5122e8"}
+```
+
+## 接口权限
+
+发现获取用户列表中，个人账户是没有办法通过[【微信认证】](https://mp.weixin.qq.com/acct/wxverifyorder?action=index&token=362163201&lang=zh_CN)的
 
 # 参考资料
 
