@@ -3,7 +3,7 @@ layout: post
 title:  kafka 常见面试题
 date:  2022-05-10 09:22:02 +0800
 categories: [Interview]
-tags: [interview, jvm, sh]
+tags: [interview, mq, sh]
 published: true
 ---
 
