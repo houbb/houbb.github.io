@@ -20,6 +20,10 @@ published: true
 
 本文重点介绍数据层多租户对各种多租户模型的支持。
 
+## 本质
+
+多租户本质就是通过动态配置，支持**实现同套代码，一次部署，服务多个产品**。
+
 ## 考虑因素
 
 权衡不同的多租户实现方式时，需要考虑如下因素：
@@ -101,6 +105,8 @@ published: true
 # 参考资料
 
 [多租户概念](https://www.jianshu.com/p/fb2d9a188fd1)
+
+https://blog.csdn.net/qq_38712932/article/details/119705932
 
 * any list
 {:toc}
