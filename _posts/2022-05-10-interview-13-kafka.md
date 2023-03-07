@@ -49,6 +49,64 @@ published: true
 
 [Kafka 为什么这么快](https://houbb.github.io/2018/09/19/kafka-fast-reason)
 
+# 关于Kafka的分区：
+
+开始使用Kafka的时候，没有分区的概念，以为类似于传统的MQ中间件一样，就直接从程序中获取Kafka中的数据。
+
+后来程序搭建了多套，发现永远只有一个消费者（消费者应用部署在多个tomcat上）会从Kafka中获取数据进行处理，后来才知道有分区这么一个概念。
+
+具体不说了，网上有很多资料，总的概括：Kafka的分区，相当于把一个Topic再细分成了多个通道，一个消费者应用可以从一个分区或多个分区中获取数据。
+
+有4个分区，1个消费者：这一个消费者需要负责消费四个分区的数据。
+
+有4个分区，2个消费者：每个消费者负责两个分区
+
+有4个分区，3个消费者：消费者1负责1个分区，消费者2负责1个分区，消费者3负责两个分区
+
+有4个分区，4个消费者：一人一个
+
+有4个分区，5个及以上消费者：4个消费者一人一个，剩下的消费者空闲不工作。
+
+部署的时候**尽量做到一个消费者对应一个分区**。
+
+# 分区数据量不均衡：
+
+Topic上设置了四个分区，压测过程中，发现每个分区的数据量差别挺大的，极端的时候，只有一个分区有数据，其余三个分区空闲。
+
+解决方法，在用生产者生产数据的时候，send方法需要指定key。
+
+Kafka会根据key的值，通过一定的算法，如hash，将数据平均的发送到不同的分区上。
+
+PS: 不指定 key,应该是对应的 hash 值，取模到对应的分区上。
+
+# spring-integration-kafka：
+
+在使用spring-integration-kafka做消费者的时候，发现CPU和内存占用量占用非常的大，后来又发现不管生产者发送了多少数据，Kafka的Topic中一直没有数据，这时候才知道spring-integration-kafka会将Topic中的数据全拉到本地，缓存起来，等待后续的处理。
+
+解决方法：
+
+```xml
+<int:channel id="inputFromKafka">
+<int:queue capacity="25"/> --这里加个配置，相当于缓存多少数据到本地
+</int:channel>
+```
+
+# 死循环消费（消费者位移提交失败导致数据一直重复消费）
+
+原因：kafka的consumer消费数据时首先会从broker里读取一批消息数据进行处理，处理完成后再提交offset。而我们项目中的consumer消费能力比较低，导致取出的一批数据在session.timeout.ms时间内没有处理完成，自动提交offset失败，然后kafka会重新分配partition给消费者，消费者又重新消费之前的一批数据，又出现了消费超时，所以会造成死循环，一直消费相同的数据
+
+方法1：将自动提交位移关闭，在项目中手动提交位移
+
+方法2：按报错提示上说的那样，增加max_poll_interval_ms时间，减少max_poll_records数量
+
+max_poll_interval_ms：（默认为300000，即5min）poll()使用使用者组管理时的调用之间的最大延迟。
+
+这为消费者在获取更多记录之前可以闲置的时间量设置了上限。
+
+如果 poll()在此超时到期之前未调用，则认为使用者失败，并且该组将重新平衡以便将分区重新分配给另一个成员。
+
+max_poll_records：（默认值：500）单次调用中返回的最大记录数poll()。
+
 # Kafka 消息数据积压，Kafka 消费能力不足怎么处理？
 
 1）如果是 Kafka 消费能力不足，则可以考虑增加 Topic 的分区数，并且同时提升消费组的消费者数量，消费者数=分区数。（两者缺一不可）
@@ -654,6 +712,8 @@ https://maimai.cn/article/detail?fid=1724791732&efid=4a9eC-XwLGQzl4F09gPajA
 [Kafka 常见问题](https://blog.csdn.net/Swofford/article/details/125777061)
 
 [Kafka 实战宝典：一文带解决 Kafka 常见故障处理](https://xie.infoq.cn/article/3a1e5c49634309380f38a444d)
+
+[Kafka实际使用过程中遇到的一些问题及解决方法](https://www.bbsmax.com/A/1O5Ej2l8d7/)
 
 * any list
 {:toc}
