@@ -4,7 +4,7 @@ title: springboot 启动报错 is expected to be of type but was actually of typ
 date:  2023-03-07 +0800
 categories: [Exception]
 tags: [exception, spring, sh]
-published: false
+published: true
 ---
 
 # 说明
