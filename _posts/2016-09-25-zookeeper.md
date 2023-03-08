@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ZooKeeper
+title: ZooKeeper 入门使用介绍
 date:  2016-09-25 12:21:05 +0800
 categories: [Apache]
 tags: [zookeeper]
@@ -8,10 +8,9 @@ published: true
 ---
 
 
-
 # Zookeeper
 
-Apache ZooKeeper is an effort to develop and maintain an open-source server which enables highly reliable distributed coordination.
+Apache ZooKeeper 致力于开发和维护一个开源服务器，该服务器支持高度可靠的分布式协调。
 
 > [zookeeper](http://zookeeper.apache.org/)
 
@@ -71,9 +70,9 @@ clientPort=2181
 
 ## Add server2
 
-If you want to test Cluster manager in one PC, you can do it like this:
+如果您想在一台PC上测试群集管理器，可以这样做：
 
-server2 is the same as server1.
+服务器2与服务器1相同。
 
 - Then, edit ```zoo.cfg```
 
@@ -290,7 +289,6 @@ zkServer.cmd
 ```
 
 QuorumPeerMain 就是 zk 对应的类
-
 
 # 参考资料
 
