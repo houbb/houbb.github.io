@@ -72,7 +72,8 @@ ZooKeeper 客户端首先会创建一个网络连接器 ClientCnxn，用来管�
 ## 5.初始化SendThread和EventThread。
 
 客户端会创建两个核心网络线程SendThread和EventThread，前者用于管理客户端和服务端之间的所有网络 I/O，后者则用于进行客户端的事件处理。同时，客户端还会将ClientCnxnSocket分配给SendThread作为底层网络I/O处理器，并初始化EventThread的待处理事件队列waitingEvents，用于存放所有等待被客户端处理的事件。
-会话创建阶段
+
+------------------------------ 会话创建阶段
 
 ## 6.启动SendThread和EventThread
 
@@ -81,6 +82,57 @@ SendThread首先会判断当前客户端的状态，进行一系列清理性工�
 ## 7.获取一个服务器地址。
 
 在开始创建TCP连接之前，SendThread首先需要获取一个ZooKeeper服务器的目标地址，这通常是从 HostProvider 中随机获取出一个地址，然后委托给ClientCnxnSocket去创建与ZooKeeper服务器之间的TCP连接。
+
+## 8.创建TCP连接。
+
+获取到一个服务器地址后，ClientCnxnSocket负责和服务器创建一个TCP长连接。
+
+## 9.构造ConnectRequest请求。
+
+在TCP连接创建完毕后，可能有的读者会认为，这样是否就说明已经和ZooKeeper服务器完成连接了呢？其实不然，步骤8只是纯粹地从网络TCP层面完成了客户端与服务端之间的Socket连接，但远未完成ZooKeeper客户端的会话创建。
+
+SendThread会负责根据当前客户端的实际设置，构造出一个ConnectRequest请求，该请求代表了客户端试图与服务器创建一个会话。同时，ZooKeeper 客户端还会进一步将该请求包装成网络 I/O 层的 Packet 对象，放入请求发送队列outgoingQueue中去。
+
+## 10.发送请求
+
+当客户端请求准备完毕后，就可以开始向服务端发送请求了。ClientCnxnSocket 负责从outgoingQueue中取出一个待发送的Packet对象，将其序列化成ByteBuffer后，向服务端进行发送。
+
+------------------------------ 响应处理阶段
+
+## 11.接收服务端响应。
+
+ClientCnxnSocket 接收到服务端的响应后，会首先判断当前的客户端状态是否是“已初始化”，如果尚未完成初始化，那么就认为该响应一定是会话创建请求的响应，直接交由readConnectResult方法来处理该响应。
+
+## 12.处理Response。
+ClientCnxnSocket 会对接收到的服务端响应进行反序列化，得到 Connect Response对象，并从中获取到ZooKeeper服务端分配的会话sessionId。
+
+## 13.连接成功。
+
+连接成功后，一方面需要通知SendThread线程，进一步对客户端进行会话参数的设置，包括 readTimeout 和 connectTimeout 等，并更新客户端状态；
+
+另一方面，需要通知地址管理器HostProvider当前成功连接的服务器地址。
+
+## 14.生成事件：SyncConnected-None。
+
+为了能够让上层应用感知到会话的成功创建，SendThread 会生成一个事件SyncConnected-None，代表客户端与服务器会话创建成功，并将该事件传递给EventThread线程。
+
+## 15.查询Watcher。
+
+EventThread线程收到事件后，会从ClientWatchManager管理器中查询出对应的 Watcher，针对 SyncConnected-None 事件，那么就直接找出步骤 2 中存储的默认Watcher，然后将其放到 EventThread 的waitingEvents队列中去。
+
+## 16.处理事件
+
+EventThread 不断地从 waitingEvents队列中取出待处理的 Watcher对象，然后直接调用该对象的process接口方法，以达到触发Watcher的目的。
+
+至此，ZooKeeper 客户端完整的一次会话创建过程已经全部完成了。上面讲解的这 16个步骤虽然都是比较粗略的说明，但也能帮助我们对ZooKeeper客户端整个会话的创建过程有一个很好的理解。
+
+另外，通过对客户端一次会话的创建过程的讲解，相信读者对地址列表管理器、ClientCnxn和ClientCnxnSocket等这些ZooKeeper客户端的核心组件及其之间的关系和协作过程也有了一个大体上的认识。
+
+本节余下部分将重点从这些组件展开来进一步讲解ZooKeeper客户端的技术内幕。
+
+
+
+
 
 
 
