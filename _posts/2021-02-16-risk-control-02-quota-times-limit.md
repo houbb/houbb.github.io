@@ -212,6 +212,48 @@ value: {
 
 总金额
 
+## 接口设计
+
+### 事前
+
+- beforeRisk
+
+```
+appId: 唯一应用标识
+traceId: 唯一跟踪号
+requestTime: 请求时间
+checksum: 签名      （每一个应用，都有 appSecret。通过这个统一处理）
+
+orderId: 业务订单号
+transAmt: 交易金额
+transType: 交易类别
+prodId: 产品号
+merId: 商户号
+transTime: 交易时间 yyyyMMddHHmmssSSS
+transDate: 交易日期 yyyyMMdd
+```
+
+要求：orderId + appId 唯一。
+
+### 事后
+
+- afterRisk
+
+```
+appId: 唯一应用标识
+traceId: 唯一跟踪号
+requestTime: 请求时间
+checksum: 签名      （每一个应用，都有 appSecret。通过这个统一处理）
+
+orderId: 业务订单号
+transStatus: 交易状态
+```
+
+
+
+
+
+
 # 参考资料
 
 [多线程使用redis进行累加结果不对，不能保证原子性解决方案](https://blog.csdn.net/cucgyfjklx/article/details/124338511)
