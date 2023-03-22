@@ -275,7 +275,7 @@ public class ValidInterceptor {
 
 [Spring Boot集成Hibernate Validator](https://www.cnblogs.com/sun-fan/p/10599038.html)
 
-[SpringBoot 2 快速整合 | Hibernate Validator 数据校验](https://www.cnblogs.com/jerry126/p/11531317.html)
+[SpringBoot 2 快速整合 Hibernate Validator 数据校验](https://www.cnblogs.com/jerry126/p/11531317.html)
 
 [SpringBoot validator 完美实现+统一封装错误提示](https://blog.csdn.net/catoop/article/details/95366348)
 
