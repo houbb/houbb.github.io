@@ -7,6 +7,8 @@ tags: [algorithm, data-struct, leetcode, sf]
 published: true
 ---
 
+![PIC](https://img-blog.csdnimg.cn/1f51f5a81b7a4c19844c6bf169ce1f12.png#pic_center)
+
 ## 1. Two Sum 两数之和
 
 ### 题目
