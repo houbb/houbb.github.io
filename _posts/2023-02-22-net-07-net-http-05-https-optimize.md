@@ -260,7 +260,6 @@ Session ID 和 Session Ticket 都不具备前向安全性，因为一旦加密�
 
 这些会话重用技术虽然好用，但是存在一定的安全风险，它们不仅不具备前向安全，而且有重放攻击的风险，所以应当对会话密钥设定一个合理的过期时间。
 
-
 # 参考资料
 
 https://xiaolincoding.com/network/2_http/https_ecdhe.html#%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0
