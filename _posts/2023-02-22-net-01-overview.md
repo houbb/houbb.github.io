@@ -7,7 +7,7 @@ tags: [net, topics, overview, sh]
 published: true
 ---
 
-# 简洁
+# 简介
 
 网络相关的专题内容。
 
