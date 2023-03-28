@@ -45,8 +45,47 @@ trie 有很多节点用于大量键，因此使双数组紧凑很重要。
 
 为了为大量键实现 trie，双数组仅在 trie 中存储消除键歧义所需的前缀，而不需要进一步消除歧义的键的尾部存储在 字符串数组，记为 TAIL。
 
+- Figure 1. An array-structured trie for bachelor, baby, badge, jar
 
+![Figure 1. An array-structured trie for bachelor, baby, badge, jar](https://img-blog.csdnimg.cn/ebefdce192454fa19424260c8e7783fc.png)
 
+- Figure 2. A list-structured trie for bachelor, baby, badge, jar
+
+![F2-A list-structured trie for bachelor, baby, badge, jar](https://img-blog.csdnimg.cn/7a8ac51dd91f47d6b323169d5e2d9af9.png)
+
+# TRIE 的表示
+
+trie 是一种树结构，其中从根到叶子的每条路径对应于表示集中的一个键。
+
+trie 中的路径对应于集合中键的字符。
+
+为避免将“the”和“then”等词混淆，在集合中每个词的末尾使用了一个特殊的结束标记符号 `#`。
+
+以下定义将用于以下解释。
+
+K 是由 trie 表示的键集。
+
+trie 由节点和弧组成。 弧标签由称为字符的符号组成。 从节点 n 到 m 标记为 a 的弧由符号 g(n, a)=m 表示。
+
+对于 K 中的键，如果 a 是足以将该键与 K 中的所有其他键区分开来的字符（或弧标签），则具有 g(n,a)=m 的节点 m 是一个单独的节点。
+
+从单独节点 m 到终端节点的弧标签的串联称为 m 的单个字符串，表示为 STR[ m ]。
+
+从 K 中删除单个字符串后剩下的键 K 的字符称为 K 的尾部。
+
+仅由从根到 K 中所有键的单独节点的弧构成的树称为缩减特里树。
+
+图 3 显示了集合 K= {baby#, bachelor#, badge#, jar#} 的简化 trie 示例。
+
+图 3 中也显示了相同的简化 trie 表示，使用双数组和字符数组进行尾部存储。
+
+TAIL中的问号（`？`）表示垃圾； 它们的用途将在分析插入和删除算法时进行解释。
+
+简化的 trie 和图 3 所示的双数组之间存在以下关系：
+
+- Figure 3. The reduced trie and the double-array for K
+
+![Figure 3. The reduced trie and the double-array for K](https://img-blog.csdnimg.cn/43fd392b216f4fb7be601c37b9657d6b.png)
 
 # 参考资料
 
