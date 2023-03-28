@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  NLP 开源形近字算法之返回一个字的相似汉字列表
+title:  NLP 开源形近字算法之相似字列表（番外篇）
 date:  2020-1-20 10:09:32 +0800
 categories: [NLP]
 tags: [nlp, ml, ai, sh]
@@ -201,6 +201,11 @@ List<String> list = HanziSimilarHelper.similarList('爱');
 Assert.assertEquals("[爰, 爯, 受, 爭, 妥, 憂, 李, 爳, 叐, 雙]", list.toString());
 ```
 
+# 开源地址
+
+为了便于大家使用学习，项目已开源。
+
+> [https://github.com/houbb/nlp-hanzi-similar](https://github.com/houbb/nlp-hanzi-similar)
 
 # 小结
 
