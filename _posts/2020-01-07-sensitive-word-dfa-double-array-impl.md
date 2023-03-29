@@ -397,8 +397,6 @@ tail of string [b1..bh] has no common prefix and the corresponding state is m:
 /*
  * Name:   Double Array Trie
  * Author: Yaguang Ding
- * Mail: dingyaguang117@gmail.com
- * Blog: blog.csdn.net/dingyaguang117
  * Date:   2012/5/21
  * Note: a word ends may be either of these two case:
  * 1. Base[cur_p] == pos  ( pos<0 and Tail[-pos] == 'END_CHAR' )
