@@ -61,7 +61,7 @@ published: true
 
 在「LISTEN 状态」时，Recv-Q/Send-Q 表示的含义如下：
 
-```
+```sh
 # -l 显示监听中的 socket
 # -n 不解析服务的名称
 # -t 只显示 TCP socket
