@@ -1,6 +1,6 @@
 ---
 layout: post
-title: NET 网络专题汇总-06-17TCP Keepalive 和 HTTP Keep-Alive 是一个东西吗？
+title: NET 网络专题汇总-06-17-TCP Keepalive 和 HTTP Keep-Alive 是一个东西吗？
 date:  2023-02-22 +0800
 categories: [Net]
 tags: [net, tcp, sh]
