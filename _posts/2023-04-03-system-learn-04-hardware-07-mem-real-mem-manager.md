@@ -279,6 +279,22 @@ PFN 的高位 bit 存储的是全局数组 mem_section 中的 section 索引，P
 
 ## 3.1 一致性内存访问 UMA 架构
 
+我们在上篇文章 《深入理解 Linux 虚拟内存管理》 (opens new window)的 “ 8.2 CPU 如何读写主存” 小节中提到 CPU 与内存之间的交互是通过总线完成的。
+
+![一致性内存访问 UMA 架构](https://cdn.xiaolincoding.com//mysql/other/46d08862052d4bbaf0d7bfa778f07978.png)
+
+首先 CPU 将物理内存地址作为地址信号放到系统总线上传输。随后 IO bridge 将系统总线上的地址信号转换为存储总线上的电子信号。
+
+主存感受到存储总线上的地址信号并通过存储控制器将存储总线上的物理内存地址 A 读取出来。
+
+存储控制器通过物理内存地址定位到具体的存储器模块，从 DRAM 芯片中取出物理内存地址对应的数据。
+
+存储控制器将读取到的数据放到存储总线上，随后 IO bridge 将存储总线上的数据信号转换为系统总线上的数据信号，然后继续沿着系统总线传递。
+
+CPU 芯片感受到系统总线上的数据信号，将数据从系统总线上读取出来并拷贝到寄存器中。
+
+上图展示的是单核 CPU 访问内存的架构图，那么在多核服务器中多个 CPU 与内存之间的架构关系又是什么样子的呢？
+
 
 
 
@@ -287,7 +303,7 @@ PFN 的高位 bit 存储的是全局数组 mem_section 中的 section 索引，P
 
 # 参考资料
 
-https://xiaolincoding.com/os/3_memory/linux_mem.html
+https://xiaolincoding.com/os/3_memory/linux_mem2.html
 
 * any list
 {:toc}
