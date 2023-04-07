@@ -1014,9 +1014,416 @@ load_elf_interp 将进程依赖的动态链接库 .so 文件映射到虚拟内�
 
 因此直接映射区的前 16M 专门让内核用来为 DMA 分配内存，这块 16M 大小的内存区域我们称之为 ZONE_DMA。
 
-TODO..
+- 用于 DMA 的内存必须从 ZONE_DMA 区域中分配。
 
+而直接映射区中剩下的部分也就是从 16M 到 896M（不包含 896M）这段区域，我们称之为 ZONE_NORMAL。从字面意义上我们可以了解到，这块区域包含的就是正常的页框（使用没有任何限制）。
 
+ZONE_NORMAL 由于也是属于直接映射区的一部分，对应的物理内存 16M 到 896M 这段区域也是被直接映射至内核态虚拟内存空间中的 3G + 16M 到 3G + 896M 这段虚拟内存上。
+
+![内存映射](https://cdn.xiaolincoding.com//mysql/other/1cf5fc48692826d8446638bbc5dd0e0b.png)
+
+- 注意这里的 ZONE_DMA 和 ZONE_NORMAL 是内核针对物理内存区域的划分。
+
+现在物理内存中的前 896M 的区域也就是前边介绍的 ZONE_DMA 和 ZONE_NORMAL 区域到内核虚拟内存空间的映射我就为大家介绍完了，它们都是采用直接映射的方式，一比一就行映射。
+
+### 7.1.2 ZONE_HIGHMEM 高端内存
+
+而物理内存 896M 以上的区域被内核划分为 ZONE_HIGHMEM 区域，我们称之为高端内存。
+
+本例中我们的物理内存假设为 4G，高端内存区域为 4G - 896M = 3200M，那么这块 3200M 大小的 ZONE_HIGHMEM 区域该如何映射到内核虚拟内存空间中呢？
+
+由于内核虚拟内存空间中的前 896M 虚拟内存已经被直接映射区所占用，而在 32 体系结构下内核虚拟内存空间总共也就 1G 的大小，这样一来内核剩余可用的虚拟内存空间就变为了 1G - 896M = 128M。
+
+显然物理内存中 3200M 大小的 ZONE_HIGHMEM 区域无法继续通过直接映射的方式映射到这 128M 大小的虚拟内存空间中。
+
+这样一来物理内存中的 ZONE_HIGHMEM 区域就只能采用动态映射的方式映射到 128M 大小的内核虚拟内存空间中，也就是说只能动态的一部分一部分的分批映射，先映射正在使用的这部分，使用完毕解除映射，接着映射其他部分。
+
+知道了 ZONE_HIGHMEM 区域的映射原理，我们接着往下看这 128M 大小的内核虚拟内存空间究竟是如何布局的？
+
+![映射](https://cdn.xiaolincoding.com//mysql/other/42ac90617218ba33ce7fdd16bdaa0c5c.png)
+
+内核虚拟内存空间中的 3G + 896M 这块地址在内核中定义为 high_memory，high_memory 往上有一段 8M 大小的内存空洞。空洞范围为：high_memory 到 VMALLOC_START 。
+
+VMALLOC_START 定义在内核源码 /arch/x86/include/asm/pgtable_32_areas.h 文件中：
+
+```c
+#define VMALLOC_OFFSET	(8 * 1024 * 1024)
+
+#define VMALLOC_START	((unsigned long)high_memory + VMALLOC_OFFSET)
+```
+
+### 7.1.3 vmalloc 动态映射区
+
+接下来 VMALLOC_START 到 VMALLOC_END 之间的这块区域成为动态映射区。
+
+采用动态映射的方式映射物理内存中的高端内存。
+
+```c
+#ifdef CONFIG_HIGHMEM
+# define VMALLOC_END	(PKMAP_BASE - 2 * PAGE_SIZE)
+#else
+# define VMALLOC_END	(LDT_BASE_ADDR - 2 * PAGE_SIZE)
+#endif
+```
+
+![vmalloc](https://cdn.xiaolincoding.com//mysql/other/0bd4766b19d043bb4aebdd06bdf8e67c.png)
+
+和用户态进程使用 malloc 申请内存一样，在这块动态映射区内核是使用 vmalloc 进行内存分配。
+
+由于之前介绍的动态映射的原因，vmalloc 分配的内存在虚拟内存上是连续的，但是物理内存是不连续的。通过页表来建立物理内存与虚拟内存之间的映射关系，从而可以将不连续的物理内存映射到连续的虚拟内存上。
+
+由于 vmalloc 获得的物理内存页是不连续的，因此它只能将这些物理内存页一个一个地进行映射，在性能开销上会比直接映射大得多。
+
+关于 vmalloc 分配内存的相关实现原理，我会在后面的文章中为大家讲解，这里大家只需要明白它在哪块虚拟内存区域中活动即可。
+
+### 7.1.4 永久映射区
+
+![永久映射区](https://cdn.xiaolincoding.com//mysql/other/8638152cae4ee85e8467128cb3ffec76.png)
+
+而在 PKMAP_BASE 到 FIXADDR_START 之间的这段空间称为永久映射区。
+
+在内核的这段虚拟地址空间中允许建立与物理高端内存的长期映射关系。
+
+比如内核通过 alloc_pages() 函数在物理内存的高端内存中申请获取到的物理内存页，这些物理内存页可以通过调用 kmap 映射到永久映射区中。
+
+- LAST_PKMAP 表示永久映射区可以映射的页数限制。
+
+```c
+#define PKMAP_BASE		\
+	((LDT_BASE_ADDR - PAGE_SIZE) & PMD_MASK)
+
+#define LAST_PKMAP 1024
+```
+
+### 7.1.5 固定映射区
+
+![固定映射区](https://cdn.xiaolincoding.com//mysql/other/0ea1b8d1d2e31c36001df7652f418e5e.png)
+
+内核虚拟内存空间中的下一个区域为固定映射区，区域范围为：FIXADDR_START 到 FIXADDR_TOP。
+
+FIXADDR_START 和 FIXADDR_TOP 定义在内核源码 `/arch/x86/include/asm/fixmap.h` 文件中：
+
+```c
+#define FIXADDR_START		(FIXADDR_TOP - FIXADDR_SIZE)
+
+extern unsigned long __FIXADDR_TOP; // 0xFFFF F000
+#define FIXADDR_TOP	((unsigned long)__FIXADDR_TOP)
+```
+
+在内核虚拟内存空间的直接映射区中，直接映射区中的虚拟内存地址与物理内存前 896M 的空间的映射关系都是预设好的，一比一映射。
+
+在固定映射区中的虚拟内存地址可以自由映射到物理内存的高端地址上，但是与动态映射区以及永久映射区不同的是，在固定映射区中虚拟地址是固定的，而被映射的物理地址是可以改变的。
+
+也就是说，有些虚拟地址在编译的时候就固定下来了，是在内核启动过程中被确定的，而这些虚拟地址对应的物理地址不是固定的。
+
+采用固定虚拟地址的好处是它相当于一个指针常量（常量的值在编译时确定），指向物理地址，如果虚拟地址不固定，则相当于一个指针变量。
+
+那为什么会有固定映射这个概念呢? 
+
+比如：在内核的启动过程中，有些模块需要使用虚拟内存并映射到指定的物理地址上，而且这些模块也没有办法等待完整的内存管理模块初始化之后再进行地址映射。因此，内核固定分配了一些虚拟地址，这些地址有固定的用途，使用该地址的模块在初始化的时候，将这些固定分配的虚拟地址映射到指定的物理地址上去。
+
+### 7.1.6 临时映射区
+
+在内核虚拟内存空间中的最后一块区域为临时映射区，那么这块临时映射区是用来干什么的呢？
+
+![临时映射区](https://cdn.xiaolincoding.com//mysql/other/0d19dc439390c46612e31ee973f83145.png)
+
+我在之前文章 《从 Linux 内核角度探秘 JDK NIO 文件读写本质》“ 12.3 iov_iter_copy_from_user_atomic ” 小节中介绍在 Buffered IO 模式下进行文件写入的时候，在下图中的第四步，内核会调用 iov_iter_copy_from_user_atomic 函数将用户空间缓冲区 DirectByteBuffer 中的待写入数据拷贝到 page cache 中。
+
+![临时映射区](https://cdn.xiaolincoding.com//mysql/other/fcb8b59a4b73a823603b6cbd4f720b5d.png)
+
+但是内核又不能直接进行拷贝，因为此时从 page cache 中取出的缓存页 page 是物理地址，而在内核中是不能够直接操作物理地址的，只能操作虚拟地址。
+
+那怎么办呢？所以就需要使用 kmap_atomic 将缓存页临时映射到内核空间的一段虚拟地址上，这段虚拟地址就位于内核虚拟内存空间中的临时映射区上，然后将用户空间缓存区 DirectByteBuffer 中的待写入数据通过这段映射的虚拟地址拷贝到 page cache 中的相应缓存页中。这时文件的写入操作就已经完成了。
+
+由于是临时映射，所以在拷贝完成之后，调用 kunmap_atomic 将这段映射再解除掉。
+
+```c
+size_t iov_iter_copy_from_user_atomic(struct page *page,
+    struct iov_iter *i, unsigned long offset, size_t bytes)
+{
+  // 将缓存页临时映射到内核虚拟地址空间的临时映射区中
+  char *kaddr = kmap_atomic(page), 
+  *p = kaddr + offset;
+  // 将用户缓存区 DirectByteBuffer 中的待写入数据拷贝到文件缓存页中
+  iterate_all_kinds(i, bytes, v,
+    copyin((p += v.iov_len) - v.iov_len, v.iov_base, v.iov_len),
+    memcpy_from_page((p += v.bv_len) - v.bv_len, v.bv_page,
+         v.bv_offset, v.bv_len),
+    memcpy((p += v.iov_len) - v.iov_len, v.iov_base, v.iov_len)
+  )
+  // 解除内核虚拟地址空间与缓存页之间的临时映射，这里映射只是为了临时拷贝数据用
+  kunmap_atomic(kaddr);
+  return bytes;
+}
+```
+
+### 7.1.7 32位体系结构下 Linux 虚拟内存空间整体布局
+
+到现在为止，整个内核虚拟内存空间在 32 位体系下的布局，我就为大家详细介绍完毕了，我们再次结合前边《4.1 32 位机器上进程虚拟内存空间分布》小节中介绍的进程虚拟内存空间和本小节介绍的内核虚拟内存空间来整体回顾下 32 位体系结构 Linux 的整个虚拟内存空间的布局：
+
+![Linux 虚拟内存空间整体布局](https://cdn.xiaolincoding.com//mysql/other/68763fe509b7adf5987a3ce96c9d12ee.png)
+
+## 7.2 64 位体系内核虚拟内存空间布局
+
+内核虚拟内存空间在 32 位体系下只有 1G 大小，实在太小了，因此需要精细化的管理，于是按照功能分类划分除了很多内核虚拟内存区域，这样就显得非常复杂。
+
+到了 64 位体系下，内核虚拟内存空间的布局和管理就变得容易多了，因为进程虚拟内存空间和内核虚拟内存空间各自占用 128T 的虚拟内存，实在是太大了，我们可以在这里边随意翱翔，随意挥霍。
+
+因此在 64 位体系下的内核虚拟内存空间与物理内存的映射就变得非常简单，由于虚拟内存空间足够的大，即便是内核要访问全部的物理内存，直接映射就可以了，不在需要用到《7.1.2 ZONE_HIGHMEM 高端内存》小节中介绍的高端内存那种动态映射方式。
+
+在前边《5.1 内核如何划分用户态和内核态虚拟内存空间》小节中我们提到，内核在 /arch/x86/include/asm/page_64_types.h 文件中通过 TASK_SIZE 将进程虚拟内存空间和内核虚拟内存空间分割开来。
+
+```c
+#define TASK_SIZE		(test_thread_flag(TIF_ADDR32) ? \
+					IA32_PAGE_OFFSET : TASK_SIZE_MAX)
+
+#define TASK_SIZE_MAX		task_size_max()
+
+#define task_size_max()		((_AC(1,UL) << __VIRTUAL_MASK_SHIFT) - PAGE_SIZE)
+
+#define __VIRTUAL_MASK_SHIFT	47
+```
+
+- 64 位系统中的 TASK_SIZE 为 0x00007FFFFFFFF000
+
+![64位虚拟空间](https://cdn.xiaolincoding.com//mysql/other/532e6cdf4899588f8b873b6435cba2d8-20230309234146081.png)
+
+在 64 位系统中，只使用了其中的低 48 位来表示虚拟内存地址。其中用户态虚拟内存空间为低 128 T，虚拟内存地址范围为：0x0000 0000 0000 0000 - 0x0000 7FFF FFFF F000 。
+
+内核态虚拟内存空间为高 128 T，虚拟内存地址范围为：0xFFFF 8000 0000 0000 - 0xFFFF FFFF FFFF FFFF 。
+
+本小节我们主要关注 0xFFFF 8000 0000 0000 - 0xFFFF FFFF FFFF FFFF 这段内核虚拟内存空间的布局情况。
+
+![64位虚拟空间布局](https://cdn.xiaolincoding.com//mysql/other/e1f2e689c2754b2af540c6d0b6ab327f.png)
+
+64 位内核虚拟内存空间从 0xFFFF 8000 0000 0000 开始到 0xFFFF 8800 0000 0000 这段地址空间是一个 8T 大小的内存空洞区域。
+
+紧着着 8T 大小的内存空洞下一个区域就是 64T 大小的直接映射区。这个区域中的虚拟内存地址减去 PAGE_OFFSET 就直接得到了物理内存地址。
+
+PAGE_OFFSET 变量定义在 /arch/x86/include/asm/page_64_types.h 文件中：
+
+```c
+#define __PAGE_OFFSET_BASE      _AC(0xffff880000000000, UL)
+#define __PAGE_OFFSET           __PAGE_OFFSET_BASE
+```
+
+从图中 VMALLOC_START 到 VMALLOC_END 的这段区域是 32T 大小的 vmalloc 映射区，这里类似用户空间中的堆，内核在这里使用 vmalloc 系统调用申请内存。
+
+VMALLOC_START 和 VMALLOC_END 变量定义在 /arch/x86/include/asm/pgtable_64_types.h 文件中：
+
+```c
+#define __VMALLOC_BASE_L4	0xffffc90000000000UL
+
+#define VMEMMAP_START		__VMEMMAP_BASE_L4
+
+#define VMALLOC_END		(VMALLOC_START + (VMALLOC_SIZE_TB << 40) - 1)
+```
+
+从 VMEMMAP_START 开始是 1T 大小的虚拟内存映射区，用于存放物理页面的描述符 struct page 结构用来表示物理内存页。
+
+VMEMMAP_START 变量定义在 /arch/x86/include/asm/pgtable_64_types.h 文件中：
+
+```c
+#define __VMEMMAP_BASE_L4	0xffffea0000000000UL
+
+# define VMEMMAP_START		__VMEMMAP_BASE_L4
+```
+
+从 __START_KERNEL_map 开始是大小为 512M 的区域用于存放内核代码段、全局变量、BSS 等。这里对应到物理内存开始的位置，减去 __START_KERNEL_map 就能得到物理内存的地址。这里和直接映射区有点像，但是不矛盾，因为直接映射区之前有 8T 的空洞区域，早就过了内核代码在物理内存中加载的位置。
+
+__START_KERNEL_map 变量定义在 /arch/x86/include/asm/page_64_types.h 文件中：
+
+```c
+#define __START_KERNEL_map  _AC(0xffffffff80000000, UL)
+```
+
+### 7.2.1 64位体系结构下 Linux 虚拟内存空间整体布局
+
+到现在为止，整个内核虚拟内存空间在 64 位体系下的布局我就为大家详细介绍完毕了，我们再次结合前边《4.2 64 位机器上进程虚拟内存空间分布》小节介绍的进程虚拟内存空间和本小节介绍的内核虚拟内存空间来整体回顾下 64 位体系结构 Linux 的整个虚拟内存空间的布局：
+
+![64 位操作布局](https://cdn.xiaolincoding.com//mysql/other/84eb41fc42b790865eb8bc15d3a2892a.png)
+
+# 8. 到底什么是物理内存地址
+
+聊完了虚拟内存，我们接着聊一下物理内存，我们平时所称的内存也叫随机访问存储器（ random-access memory ）也叫 RAM 。而 RAM 分为两类：
+
+一类是静态 RAM（ SRAM ），这类 SRAM 用于 CPU 高速缓存 L1Cache，L2Cache，L3Cache。
+
+其特点是访问速度快，访问速度为 1 - 30 个时钟周期，但是容量小，造价高。
+
+![到底什么是物理内存地址](https://cdn.xiaolincoding.com//mysql/other/560cee15346204f216f8b144a6c2a18c.png)
+
+另一类则是动态 RAM ( DRAM )，这类 DRAM 用于我们常说的主存上，其特点的是访问速度慢（相对高速缓存），访问速度为 50 - 200 个时钟周期，但是容量大，造价便宜些（相对高速缓存）。
+内存由一个一个的存储器模块（memory module）组成，它们插在主板的扩展槽上。常见的存储器模块通常以 64 位为单位（ 8 个字节）传输数据到存储控制器上或者从存储控制器传出数据。
+
+![内存](https://cdn.xiaolincoding.com//mysql/other/647cd97d53cb7d2a67067c90996fa4e8.png)
+
+如图所示内存条上黑色的元器件就是存储器模块（memory module）。
+
+多个存储器模块连接到存储控制器上，就聚合成了主存。
+
+![主存](https://cdn.xiaolincoding.com//mysql/other/9651fbd7b5a3b397f7a81acfcd49723c.png)
+
+而 DRAM 芯片就包装在存储器模块中，每个存储器模块中包含 8 个 DRAM 芯片，依次编号为 0 - 7 。
+
+![存储器模块](https://cdn.xiaolincoding.com//mysql/other/a2112f84eed5dc53dd760cf6a5fdb538.png)
+
+而每一个 DRAM 芯片的存储结构是一个二维矩阵，二维矩阵中存储的元素我们称为超单元（supercell），每个 supercell 大小为一个字节（8 bit）。每个 supercell 都由一个坐标地址（i，j）。
+
+i 表示二维矩阵中的行地址，在计算机中行地址称为 RAS (row access strobe，行访问选通脉冲)。 j 表示二维矩阵中的列地址，在计算机中列地址称为 CAS (column access strobe,列访问选通脉冲)。
+
+下图中的 supercell 的 RAS = 2，CAS = 2。
+
+![存储控制器](https://cdn.xiaolincoding.com//mysql/other/27a06c2b3f831d24e57c40b839bfc9e2.png)
+
+DRAM 芯片中的信息通过引脚流入流出 DRAM 芯片。每个引脚携带 1 bit的信号。
+
+图中 DRAM 芯片包含了两个地址引脚( addr )，因为我们要通过 RAS，CAS 来定位要获取的 supercell 。
+
+还有 8 个数据引脚（data），因为 DRAM 芯片的 IO 单位为一个字节（8 bit），所以需要 8 个 data 引脚从 DRAM 芯片传入传出数据。
+
+注意这里只是为了解释地址引脚和数据引脚的概念，实际硬件中的引脚数量是不一定的。
+
+## 8.1 DRAM 芯片的访问
+
+我们现在就以读取上图中坐标地址为（2，2）的 supercell 为例，来说明访问 DRAM 芯片的过程。
+
+![DRAM](https://cdn.xiaolincoding.com//mysql/other/fefc8d348414d2cd0ec09fdfa20daf9c.png)
+
+首先存储控制器将行地址 RAS = 2 通过地址引脚发送给 DRAM 芯片。
+
+DRAM 芯片根据 RAS = 2 将二维矩阵中的第二行的全部内容拷贝到内部行缓冲区中。
+
+接下来存储控制器会通过地址引脚发送 CAS = 2 到 DRAM 芯片中。
+
+DRAM芯片从内部行缓冲区中根据 CAS = 2 拷贝出第二列的 supercell 并通过数据引脚发送给存储控制器。
+
+DRAM 芯片的 IO 单位为一个 supercell ，也就是一个字节(8 bit)。
+
+## 8.2 CPU 如何读写主存
+
+前边我们介绍了内存的物理结构，以及如何访问内存中的 DRAM 芯片获取 supercell 中存储的数据（一个字节）。
+
+本小节我们来介绍下 CPU 是如何访问内存的：
+
+![CPU 如何读写主存](https://cdn.xiaolincoding.com//mysql/other/efa862811f305ab0aa15c0422d8933e8.png)
+
+CPU 与内存之间的数据交互是通过总线（bus）完成的，而数据在总线上的传送是通过一系列的步骤完成的，这些步骤称为总线事务（bus transaction）。
+
+其中数据从内存传送到 CPU 称之为读事务（read transaction），数据从 CPU 传送到内存称之为写事务（write transaction）。
+
+总线上传输的信号包括：地址信号，数据信号，控制信号。其中控制总线上传输的控制信号可以同步事务，并能够标识出当前正在被执行的事务信息：
+
+- 当前这个事务是到内存的？还是到磁盘的？或者是到其他 IO 设备的？
+
+- 这个事务是读还是写？
+
+- 总线上传输的地址信号（物理内存地址），还是数据信号（数据）？。
+
+这里大家需要注意总线上传输的地址均为物理内存地址。
+
+比如：在 MESI 缓存一致性协议中当 CPU core0 修改字段 a 的值时，其他 CPU 核心会在总线上嗅探字段 a 的物理内存地址，如果嗅探到总线上出现字段 a 的物理内存地址，说明有人在修改字段 a，这样其他 CPU 核心就会失效字段 a 所在的 cache line 。
+
+如上图所示，其中系统总线是连接 CPU 与 IO bridge 的，存储总线是来连接 IO bridge 和主存的。
+
+IO bridge 负责将系统总线上的电子信号转换成存储总线上的电子信号。IO bridge 也会将系统总线和存储总线连接到IO总线（磁盘等IO设备）上。这里我们看到 IO bridge 其实起的作用就是转换不同总线上的电子信号。
+
+## 8.3 CPU 从内存读取数据过程
+
+假设 CPU 现在需要将物理内存地址为 A 的内容加载到寄存器中进行运算。
+
+大家需要注意的是 CPU 只会访问虚拟内存，在操作总线之前，需要把虚拟内存地址转换为物理内存地址，总线上传输的都是物理内存地址，这里省略了虚拟内存地址到物理内存地址的转换过程，这部分内容我会在后续文章的相关章节详细为大家讲解，这里我们聚焦如何通过物理内存地址读取内存数据。
+
+![从内存读取数据过程](https://cdn.xiaolincoding.com//mysql/other/b4c3dc16dbfab2682d46772b787ae962.png)
+
+1. 首先 CPU 芯片中的总线接口会在总线上发起读事务（read transaction）。 该读事务分为以下步骤进行：
+
+2. CPU 将物理内存地址 A 放到系统总线上。随后 IO bridge 将信号传递到存储总线上。
+
+3. 主存感受到存储总线上的地址信号并通过存储控制器将存储总线上的物理内存地址 A 读取出来。
+
+4. 存储控制器通过物理内存地址 A 定位到具体的存储器模块，从 DRAM 芯片中取出物理内存地址 A 对应的数据 X。
+
+5. 存储控制器将读取到的数据 X 放到存储总线上，随后 IO bridge 将存储总线上的数据信号转换为系统总线上的数据信号，然后继续沿着系统总线传递。
+
+CPU 芯片感受到系统总线上的数据信号，将数据从系统总线上读取出来并拷贝到寄存器中。
+
+以上就是 CPU 读取内存数据到寄存器中的完整过程。
+
+但是其中还涉及到一个重要的过程，这里我们还是需要摊开来介绍一下，那就是存储控制器如何通过物理内存地址 A 从主存中读取出对应的数据 X 的？
+
+接下来我们结合前边介绍的内存结构以及从 DRAM 芯片读取数据的过程，来总体介绍下如何从主存中读取数据。
+
+## 8.4 如何根据物理内存地址从主存中读取数据
+
+前边介绍到，当主存中的存储控制器感受到了存储总线上的地址信号时，会将内存地址从存储总线上读取出来。
+
+随后会通过内存地址定位到具体的存储器模块。还记得内存结构中的存储器模块吗 ？
+
+![主存](https://cdn.xiaolincoding.com//mysql/other/b8c4e85c0bff05f7b26a42c246eec222.png)
+
+而每个存储器模块中包含了 8 个 DRAM 芯片，编号从 0 - 7 。
+
+![存储器模块](https://cdn.xiaolincoding.com//mysql/other/1033fbb5b8e2d30c0271b2ad10ead27e.png)
+
+存储控制器会将物理内存地址转换为 DRAM 芯片中 supercell 在二维矩阵中的坐标地址(RAS，CAS)。
+
+并将这个坐标地址发送给对应的存储器模块。
+
+随后存储器模块会将 RAS 和 CAS 广播到存储器模块中的所有 DRAM 芯片。依次通过 (RAS，CAS) 从 DRAM0 到 DRAM7 读取到相应的 supercell 。
+
+![DRAM](https://cdn.xiaolincoding.com//mysql/other/9b841647ee906862636d257ce7064487.png)
+
+我们知道一个 supercell 存储了一个字节（ 8 bit ） 数据，这里我们从 DRAM0 到 DRAM7 依次读取到了 8 个 supercell 也就是 8 个字节，然后将这 8 个字节返回给存储控制器，由存储控制器将数据放到存储总线上。
+
+CPU 总是以 word size 为单位从内存中读取数据，在 64 位处理器中的 word size 为 8 个字节。64 位的内存每次只能吞吐 8 个字节。
+
+CPU 每次会向内存读写一个 cache line 大小的数据（ 64 个字节），但是内存一次只能吞吐 8 个字节。
+
+所以在物理内存地址对应的存储器模块中，DRAM0 芯片存储第一个低位字节（ supercell ），DRAM1 芯片存储第二个字节，......依次类推 DRAM7 芯片存储最后一个高位字节。
+
+![存储器模块](https://cdn.xiaolincoding.com//mysql/other/78f3571fcb65ba401737e27d1fde89b9.png)
+
+由于存储器模块中这种由 8 个 DRAM 芯片组成的物理存储结构的限制，内存读取数据只能是按照物理内存地址，8 个字节 8 个字节地顺序读取数据。所以说内存一次读取和写入的单位是 8 个字节。
+
+![存储器模块-2](https://cdn.xiaolincoding.com//mysql/other/92c51229fbf868919e06d4426cada701.png)
+
+而且在程序员眼里连续的物理内存地址实际上在物理上是不连续的。因为这连续的 8 个字节其实是存储于不同的 DRAM 芯片上的。每个 DRAM 芯片存储一个字节（supercell）
+
+## 8.5 CPU 向内存写入数据过程
+
+我们现在假设 CPU 要将寄存器中的数据 X 写到物理内存地址 A 中。同样的道理，CPU 芯片中的总线接口会向总线发起写事务（write transaction）。
+
+写事务步骤如下：
+
+- CPU 将要写入的物理内存地址 A 放入系统总线上。
+
+- 通过 IO bridge 的信号转换，将物理内存地址 A 传递到存储总线上。
+
+- 存储控制器感受到存储总线上的地址信号，将物理内存地址 A 从存储总线上读取出来，并等待数据的到达。
+
+- CPU 将寄存器中的数据拷贝到系统总线上，通过 IO bridge 的信号转换，将数据传递到存储总线上。
+
+- 存储控制器感受到存储总线上的数据信号，将数据从存储总线上读取出来。
+
+- 存储控制器通过内存地址 A 定位到具体的存储器模块，最后将数据写入存储器模块中的 8 个 DRAM 芯片中。
+
+# 总结
+
+本文我们从虚拟内存地址开始聊起，一直到物理内存地址结束，包含的信息量还是比较大的。首先我通过一个进程的运行实例为大家引出了内核引入虚拟内存空间的目的及其需要解决的问题。
+
+在我们有了虚拟内存空间的概念之后，我又近一步为大家介绍了内核如何划分用户态虚拟内存空间和内核态虚拟内存空间，并在次基础之上分别从 32 位体系结构和 64 位体系结构的角度详细阐述了 Linux 虚拟内存空间的整体布局分布。
+
+我们可以通过 cat /proc/pid/maps 或者 pmap pid 命令来查看进程用户态虚拟内存空间的实际分布。
+
+还可以通过 cat /proc/iomem 命令来查看进程内核态虚拟内存空间的的实际分布。
+
+在我们清楚了 Linux 虚拟内存空间的整体布局分布之后，我又介绍了 Linux 内核如何对分布在虚拟内存空间中的各个虚拟内存区域进行管理，以及每个虚拟内存区域的作用。在这个过程中还介绍了相关的内核数据结构，近一步从内核源码实现角度加深大家对虚拟内存空间的理解。
+
+最后我介绍了物理内存的结构，以及 CPU 如何通过物理内存地址来读写内存中的数据。这里我需要特地再次强调的是 CPU 只会访问虚拟内存地址，只不过在操作总线之前，通过一个地址转换硬件将虚拟内存地址转换为物理内存地址，然后将物理内存地址作为地址信号放在总线上传输，由于地址转换的内容和本文主旨无关，考虑到文章的篇幅以及复杂性，我就没有过多的介绍。
+
+好了，本文的内容到这里就全部结束了，感谢大家的耐心观看。
 
 
 # 参考资料
