@@ -337,7 +337,7 @@ API网关需要具备一定的安全性，可以使用开源的安全框架，�
 
 以下是一个基于Netty的Http客户端的示例代码，该代码可以复用请求，以提高性能和效率：
 
-ps: 代码的正确性不一定保证，仅提供思路。
+ps: **本篇代码的正确性不一定保证，仅提供思路**。
 
 ```java
 import io.netty.bootstrap.Bootstrap;
@@ -702,66 +702,6 @@ response.setHeader("requestId", requestId);
 一种可行的方案是使用 AOP（面向切面编程），在服务端请求处理前后拦截，判断请求头中是否有 request ID，如果有则在处理完请求后，在响应头中添加该 request ID，从而达到网关和服务端都能处理 request ID 的效果。这种方式可以避免服务端代码修改，并且可以灵活控制需要加入 request ID 的服务端。
 
 PS：总的来说还是不行，这个方案可以直接忽略。
-
-# 基于 netty 调用后端 http 服务， java 实现。
-
-好的，这里提供一个基于 Netty 调用后端 HTTP 服务的 Java 实现。
-
-首先，需要创建一个 HttpClient 类来发送 HTTP 请求：
-
-```java
-public class HttpClient {
-
-    private static final EventLoopGroup GROUP = new NioEventLoopGroup();
-    private static final Bootstrap BOOTSTRAP = new Bootstrap()
-            .group(GROUP)
-            .channel(NioSocketChannel.class)
-            .option(ChannelOption.TCP_NODELAY, true)
-            .handler(new HttpClientInitializer());
-
-    public static HttpResponse sendRequest(String host, int port, HttpRequest request) throws InterruptedException {
-        Channel channel = BOOTSTRAP.connect(host, port).sync().channel();
-
-        channel.writeAndFlush(request);
-
-        HttpResponse response = channel.attr(AttributeKey.valueOf("response")).get();
-        channel.closeFuture().sync();
-
-        return response;
-    }
-
-    static class HttpClientInitializer extends ChannelInitializer<SocketChannel> {
-        @Override
-        protected void initChannel(SocketChannel ch) throws Exception {
-            ChannelPipeline pipeline = ch.pipeline();
-            pipeline.addLast(new HttpClientCodec());
-            pipeline.addLast(new HttpObjectAggregator(1024 * 1024));
-            pipeline.addLast(new HttpClientHandler());
-        }
-    }
-
-    static class HttpClientHandler extends SimpleChannelInboundHandler<HttpObject> {
-        private HttpResponse response;
-
-        @Override
-        public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
-            response = new HttpResponse();
-            ctx.channel().attr(AttributeKey.valueOf("response")).set(response);
-        }
-
-        @Override
-        protected void channelRead0(ChannelHandlerContext ctx, HttpObject msg) throws Exception {
-            if (msg instanceof HttpResponse) {
-                response.setResponse((HttpResponse) msg);
-            }
-            if (msg instanceof HttpContent) {
-                response.appendContent((HttpContent) msg);
-            }
-        }
-    }
-
-}
-```
 
 
 # 参考资料

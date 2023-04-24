@@ -441,5 +441,11 @@ https://www.cnblogs.com/w1570631036/p/9665385.html
 
 [netty实现http客户端请求远程http服务](https://blog.csdn.net/feinifi/article/details/102981475)
 
+https://github.com/lfz757077613/RocketHttp
+
+https://cloud.tencent.com/developer/article/1940307
+
+[Netty实战5——Netty实现HTTP客户端](https://blog.csdn.net/feinifi/article/details/102981475)
+
 * any list
 {:toc}
