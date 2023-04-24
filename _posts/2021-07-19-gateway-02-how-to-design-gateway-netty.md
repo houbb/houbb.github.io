@@ -29,6 +29,8 @@ published: true
 
 > [netty 如何实现作为 http 的服务端和客户端？](https://houbb.github.io/2018/11/21/gateway-02-how-to-design-gateway-netty-basic)
 
+> [如何从零实现属于自己的 API 网关？](https://houbb.github.io/2018/11/21/gateway-02-how-to-design-gateway)
+
 # 代码实现
 
 PS: 此处为了简单，日志输出通过控台，仅作为演示。
