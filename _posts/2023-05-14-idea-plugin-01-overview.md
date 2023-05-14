@@ -321,6 +321,164 @@ org.gradle.api.plugins.UnknownPluginException: Plugin [id: 'org.jetbrains.intell
 
 如果仍然无法解决问题，可以搜索相关的错误信息，或者在 IntelliJ IDEA 官方论坛或 Stack Overflow 上发帖求助。
 
+OR
+
+这个错误通常是由于Gradle构建无法找到所需的插件引起的。在这种情况下，似乎找不到 `org.jetbrains.intellij` 插件。
+
+以下是您可以尝试解决此问题的几种方法：
+
+1. 检查 `build.gradle` 文件中是否包含该插件。您可以在文件中查找以下行：`id 'org.jetbrains.intellij' version '1.13.2'`。如果没有，请将其添加到文件的 `plugins` 块中。
+
+2. 确保您具有插件的正确版本。`build.gradle` 文件中指定的版本必须与存储库中可用的版本匹配。您可以访问Gradle插件门户网站上的插件页面来检查可用版本。
+
+3. 检查您是否有互联网连接，并且Gradle构建能够访问必要的存储库。您可以检查 `build.gradle` 文件中的 `repositories` 块。
+
+4. 尝试通过在命令行中运行 `./gradlew cleanBuildCache` 来清理Gradle缓存。
+
+5. 如果上述任何步骤都无效，请尝试删除 `~/.gradle` 目录并重新运行Gradle构建。这将强制Gradle从头开始下载所有依赖项。
+
+希望这些步骤中的其中一个可以帮助您解决 `UnknownPluginException` 错误，并成功将 `org.jetbrains.intellij` 插件包含在Gradle构建中。
+
+
+--------------------------------
+
+- Gradle插件门户网站上的插件访问网址
+
+Gradle插件门户网站的网址是 https://plugins.gradle.org/。
+
+在该网站上，您可以搜索并找到各种Gradle插件，包括 `org.jetbrains.intellij` 插件。通过访问插件页面，您可以查看插件的文档、示例和可用版本等信息。
+
+是有的 
+
+> [https://plugins.gradle.org/plugin/org.jetbrains.intellij](https://plugins.gradle.org/plugin/org.jetbrains.intellij)
+
+------------------------
+
+### 国内 gradle plugins 下载太慢，如何配置解决？比如修改 plugin 仓库地址
+
+如果您在国内使用Gradle时下载插件很慢，可以通过以下几种方式来加速下载：
+
+1. 修改Gradle的全局配置文件（`~/.gradle/init.gradle`），将插件仓库地址修改为国内镜像站点，例如阿里云、清华大学等。以下是一个示例配置文件：
+
+   ```
+   allprojects {
+       repositories {
+           maven { url 'https://maven.aliyun.com/repository/public/' }
+           maven { url 'https://maven.aliyun.com/repository/jcenter' }
+           maven { url 'https://maven.aliyun.com/repository/google' }
+           mavenLocal()
+           mavenCentral()
+           jcenter()
+       }
+   }
+   ```
+
+2. 在项目的 `build.gradle` 文件中设置插件仓库地址。例如：
+
+   ```
+   buildscript {
+       repositories {
+           maven { url 'https://maven.aliyun.com/repository/public/' }
+           maven { url 'https://maven.aliyun.com/repository/jcenter' }
+           maven { url 'https://maven.aliyun.com/repository/google' }
+           mavenLocal()
+           mavenCentral()
+           jcenter()
+       }
+   }
+   ```
+
+3. 使用代理工具，例如 Shadowsocks、V2Ray 等，来加速网络连接。
+
+使用以上方法之一应该能够加速Gradle插件的下载速度。
+
+# 缺失的包
+
+https://github.com/JetBrains/gradle-intellij-plugin
+
+TODO..
+
+应该是网络问题，无法下载到 gradle 依赖的包。
+
+## 查看具体的报错信息
+
+```
+gradle --debug
+```
+
+以 debug 的模式输出日志。
+
+
+# 报错
+
+```
+A problem occurred configuring root project 'demo1'.
+> Could not resolve all dependencies for configuration ':classpath'.
+   > Using insecure protocols with repositories, without explicit opt-in, is unsupported. Switch Maven repository 'maven(http://maven.aliyun.com/nexus/content/repositories/jcenter)' to redirect to a secure protocol (like HTTPS) or allow insecure protocols. See https://docs.gradle.org/8.0.2/dsl/org.gradle.api.artifacts.repositories.UrlArtifactRepository.html#org.gradle.api.artifacts.repositories.UrlArtifactRepository:allowInsecureProtocol for more details. 
+
+```
+
+这个是上面的对应的仓库配置调整，全部改为 https 即可。
+
+# 链接插件超时
+
+```
+2023-05-14T16:09:25.143+0800 [DEBUG] [org.apache.http.impl.conn.PoolingHttpClientConnectionManager] Connection request: [route: {s}->https://plugins.gradle.org:443][total available: 0; route allocated: 0 of 20; total allocated: 0 of 20]
+2023-05-14T16:09:25.143+0800 [DEBUG] [org.apache.http.impl.conn.PoolingHttpClientConnectionManager] Connection leased: [id: 4][route: {s}->https://plugins.gradle.org:443][total available: 0; route allocated: 1 of 20; total allocated: 1 of 20]
+2023-05-14T16:09:25.143+0800 [DEBUG] [org.apache.http.impl.execchain.MainClientExec] Opening connection {s}->https://plugins.gradle.org:443
+2023-05-14T16:09:25.179+0800 [DEBUG] [org.apache.http.impl.conn.DefaultHttpClientConnectionOperator] Connecting to plugins.gradle.org/104.17.10.66:443
+2023-05-14T16:09:25.179+0800 [DEBUG] [org.apache.http.conn.ssl.SSLConnectionSocketFactory] Connecting socket to plugins.gradle.org/104.17.10.66:443 with timeout 30000
+```
+
+or
+
+```
+Caused by: org.gradle.api.resources.ResourceException: Could not get resource 'https://plugins.gradle.org/m2/org/jetbrains/intellij/org.jetbrains.intellij.gradle.plugin/1.13.3/org.jetbrains.intellij.gradle.plugin-1.13.3.pom'.
+```
+
+## 解决方案
+
+调整 maven 仓库
+
+```
+repositories {
+    maven("https://maven.aliyun.com/repository/public")
+    maven("https://maven.aliyun.com/repository/jcenter")
+    maven("https://maven.aliyun.com/repository/google")
+    maven("https://maven.aliyun.com/nexus/content/repositories/jcenter")
+    maven("https://maven.aliyun.com/repository/gradle-plugin")
+
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+}
+```
+
+# 依赖包不存在
+
+## 报错
+
+```
+A problem occurred configuring root project 'idea-plugin-with-plugins'.
+> Could not resolve all files for configuration ':classpath'.
+   > Could not find kotlinx-serialization-core-jvm-1.5.0.jar (org.jetbrains.kotlinx:kotlinx-serialization-core-jvm:1.5.0).
+     Searched in the following locations:
+         https://maven.aliyun.com/repository/jcenter/org/jetbrains/kotlinx/kotlinx-serialization-core-jvm/1.5.0/kotlinx-serialization-core-jvm-1.5.0.jar
+   > Could not find commons-compress-1.22.jar (org.apache.commons:commons-compress:1.22).
+     Searched in the following locations:
+         https://maven.aliyun.com/repository/jcenter/org/apache/commons/commons-compress/1.22/commons-compress-1.22.jar
+
+Possible solution:
+ - Declare repository providing the artifact, see the documentation at https://docs.gradle.org/current/userguide/declaring_repositories.html
+```
+
+## 如何设置的地址
+
+https://docs.gradle.org/current/userguide/declaring_repositories.html
+
+
+
+
 
 
 
@@ -346,6 +504,16 @@ https://blog.csdn.net/qq_63815371/article/details/128722976
 [系统性解决IntelliJ IDEA插件开发环境问题](https://juejin.cn/post/7122385701257084941)
 
 https://stackoverflow.com/questions/68256252/plugin-id-org-jetbrains-intellij-version-1-1-2-was-not-found-in-any-of
+
+https://younghz.github.io/jetbrains-plugins
+
+[彻底解决gradle与gradle plugin匹配关系以及gradle下载缓慢的问题](https://blog.csdn.net/fxjzzyo/article/details/113776278)
+
+[IDEA 插件开发入门](http://idea.javaguide.cn/tips/plug-in-development-intro.html#_01-%E6%96%B0%E5%BB%BA%E4%B8%80%E4%B8%AA%E5%9F%BA%E4%BA%8E-gradle-%E7%9A%84%E6%8F%92%E4%BB%B6%E9%A1%B9%E7%9B%AE)
+
+[IDEA-插件开发踩坑记录-第一坑-创建gradle工程编译失败](https://blog.csdn.net/u013205724/article/details/122856601)
+
+[IntelliJ IDEA插件开发入门](https://blog.csdn.net/cccying/article/details/123182669)
 
 * any list
 {:toc}
