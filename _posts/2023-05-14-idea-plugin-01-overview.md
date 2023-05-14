@@ -345,5 +345,7 @@ https://blog.csdn.net/qq_63815371/article/details/128722976
 
 [系统性解决IntelliJ IDEA插件开发环境问题](https://juejin.cn/post/7122385701257084941)
 
+https://stackoverflow.com/questions/68256252/plugin-id-org-jetbrains-intellij-version-1-1-2-was-not-found-in-any-of
+
 * any list
 {:toc}
