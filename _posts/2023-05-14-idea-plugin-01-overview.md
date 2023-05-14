@@ -15,6 +15,32 @@ published: false
 
 插件也可以说是一种解决方案，其实与你在代码编程时使用人家已经定义好的标准结构和功能下，扩展出自己的功能时是一样的。而这种方式也可以非常好的解决一些属于代码开发期间不易于放到代码提测后问题场景，并能及时提醒研发人员作出响应的修改处理。
 
+# idea 与 各种依赖的关系
+
+> [系统性解决IntelliJ IDEA插件开发环境问题](https://juejin.cn/post/7122385701257084941)
+
+## 依赖关系
+
+### idea 与 gradle
+
+> [https://www.jetbrains.com/legal/third-party-software/?product=iic&version=2022.1.3](https://www.jetbrains.com/legal/third-party-software/?product=iic&version=2022.1.3)
+
+可以找到 2022.1.3 对应的 gradle 版本是 7.4
+
+### gradle 与 jdk
+
+通过grale版本号，然后确定jdk版本
+
+不同版本的gradle依赖的jdk版本不同，同样可以在idea官网查询，
+
+https://www.jetbrains.com/help/idea/2019.3/gradle-jvm-selection.html
+
+5.4.1+ 对应的是： 1.8 - 12
+
+### 通过gradle版本号确定gradle-intellij-plugin版本号
+
+这个版本号需要到idea gradle插件官方github上查看版本信息，需要从字里行间找对应版本号，比较费劲，地址：github.com/JetBrains/g…
+建议从最高版本依次往下梳理，通过查找适合gradle 5.2.1的版本号是0.4.20，如下图
 
 # 准备工作
 
@@ -69,6 +95,7 @@ https://plugins.jetbrains.com/docs/intellij/intellij-platform.html
 
 https://jb.gg/plugin-template
 
+[官方代码案例](https://github.com/JetBrains/intellij-sdk-code-samples/tree/main)
 
 # 模板方式创建
 
@@ -85,8 +112,6 @@ New -> Project -> IntelliJ Platform Plugin
 ## 文件目录
 
 整体生成的文件目录如下：
-
-
 
 ```
 │  .gitignore
@@ -207,6 +232,99 @@ public class MyAction extends AnAction {
 
 当然如果你要是自己手动创建普通类那样创建 Action 类，则需要自己手动处理配置信息。
 
+## 编译运行
+
+点击 Plugin 绿色箭头，和正常启动程序一样。
+
+这个时候它会打开一个新的 IDEA 工程，并在这个工程中默认安装你开发好的插件
+
+![绿色按钮](https://img-blog.csdnimg.cn/img_convert/d90ead6c1aeda4a6cdeefdac597b504e.png)
+
+### gradle 的配置
+
+项目创建时，默认在根路径下有一个 gradle 文件夹。
+
+下面的文件内容
+
+```
+└─wrapper
+        gradle-wrapper.jar
+        gradle-wrapper.properties
+```
+
+其中 gradle-wrapper.properties 的配置如下：
+
+```
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-7.4.2-bin.zip
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+```
+
+### 报错
+
+```
+Build file 'D:\code\coin\idea-plugin-use-plugin\build.gradle.kts' line: 1
+
+Plugin [id: 'org.jetbrains.intellij', version: '1.5.2'] was not found in any of the following sources:
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+```
+
+详细的报错如下：
+
+```
+* Exception is:
+org.gradle.api.plugins.UnknownPluginException: Plugin [id: 'org.jetbrains.intellij', version: '1.5.2'] was not found in any of the following sources:
+
+- Gradle Core Plugins (plugin is not in 'org.gradle' namespace)
+- Plugin Repositories (could not resolve plugin artifact 'org.jetbrains.intellij:org.jetbrains.intellij.gradle.plugin:1.5.2')
+  Searched in the following repositories:
+    Gradle Central Plugin Repository
+	at org.gradle.plugin.use.internal.DefaultPluginRequestApplicator.resolveToFoundResult(DefaultPluginRequestApplicator.java:238)
+	at org.gradle.plugin.use.internal.DefaultPluginRequestApplicator.lambda$resolvePluginRequests$3(DefaultPluginRequestApplicator.java:168)
+	at org.gradle.util.internal.CollectionUtils.collect(CollectionUtils.java:207)
+	at org.gradle.util.internal.CollectionUtils.collect(CollectionUtils.java:201)
+	at org.gradle.plugin.use.internal.DefaultPluginRequestApplicator.resolvePluginRequests(DefaultPluginRequestApplicator.java:166)
+	at org.gradle.plugin.use.internal.DefaultPluginRequestApplicator.applyPlugins(DefaultPluginRequestApplicator.java:101)
+	at org.gradle.kotlin.dsl.provider.PluginRequestsHandler.handle(PluginRequestsHandler.kt:48)
+	at org.gradle.kotlin.dsl.provider.StandardKotlinScriptEvaluator$InterpreterHost.applyPluginsTo(KotlinScriptEvaluator.kt:195)
+	at org.gradle.kotlin.dsl.execution.Interpreter$ProgramHost.applyPluginsTo(Interpreter.kt:398)
+	at Program.execute(Unknown Source)
+	.....
+```
+
+
+`build.gradle.kts` 是对应的 gradle build 文件。
+
+### 可能的错误原因
+
+这个报错信息可能是由于 Gradle 无法找到指定的插件，可以尝试以下步骤解决问题：
+
+1. 检查插件 ID 和版本号是否正确。
+   确保插件 ID 和版本号与插件清单文件（`plugin.xml`）中指定的相同，否则 Gradle 将无法正确识别插件。
+
+2. 检查 Gradle 仓库配置。
+   确保 Gradle 仓库配置正确。如果使用了自定义的 Maven 仓库，确保添加了正确的仓库地址和认证信息。
+
+3. 检查 Gradle 版本。
+   IntelliJ IDEA 插件开发需要使用 Gradle 4.x 或更高版本。确保已安装正确的 Gradle 版本，并且在项目中指定了正确的 Gradle 版本。
+
+4. 清除 Gradle 缓存。
+   有时候 Gradle 缓存会出现问题，导致插件无法正确加载。可以尝试清除 Gradle 缓存，重新构建项目，看是否能解决问题。
+
+如果以上步骤都没有解决问题，可以尝试查看 Gradle 控制台的详细输出，查找更多有用的信息。
+
+如果仍然无法解决问题，可以搜索相关的错误信息，或者在 IntelliJ IDEA 官方论坛或 Stack Overflow 上发帖求助。
+
+
+
+
+
 # 参考资料
 
 https://blog.csdn.net/qq_63815371/article/details/128722976
@@ -220,6 +338,12 @@ https://blog.csdn.net/qq_63815371/article/details/128722976
 [IDEA插件开发（简单案例助你快速入门）](https://blog.csdn.net/qq_44901906/article/details/124718876)
 
 [新手编写IntelliJ IDEA插件](https://blog.csdn.net/qq_63815371/article/details/128722976)
+
+[开发Idea插件遇到的问题-解决方案](https://www.zhihu.com/tardis/bd/art/258504236?source_id=1001)
+
+[IDEA-插件开发踩坑记录-第一坑-创建gradle工程编译失败](https://blog.csdn.net/u013205724/article/details/122856601)
+
+[系统性解决IntelliJ IDEA插件开发环境问题](https://juejin.cn/post/7122385701257084941)
 
 * any list
 {:toc}
