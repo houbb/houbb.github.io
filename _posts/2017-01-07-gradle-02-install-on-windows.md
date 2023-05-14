@@ -189,11 +189,17 @@ gradle-7.4.2/  gradle-7.4.2-bin.zip  gradle-7.4.2-bin.zip.lck  gradle-7.4.2-bin.
 
 ```
 allprojects {
-    repositories {
-        mavenLocal()
-        maven { url 'http://maven.aliyun.com/nexus/content/repositories/central/' }
-    }
-}
+       repositories {
+           maven { url 'https://maven.aliyun.com/repository/public/' }
+           maven { url 'https://maven.aliyun.com/repository/jcenter' }
+           maven { url 'https://maven.aliyun.com/repository/google' }
+           maven { url 'https://maven.aliyun.com/repository/gradle-plugin' }
+           
+           mavenLocal()
+           mavenCentral()
+           jcenter()
+       }
+   }
 ```
 
 # 如何清空 gradle 缓存
