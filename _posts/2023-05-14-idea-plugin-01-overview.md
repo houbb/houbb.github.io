@@ -477,11 +477,70 @@ Possible solution:
 https://docs.gradle.org/current/userguide/declaring_repositories.html
 
 
+## 报错1-commons-compress-1.22.jar
+
+### 可能原因
+
+这个错误通常表示您在 Gradle 项目中使用了 `org.apache.commons:commons-compress` 依赖项，但 Gradle 无法在 Maven 存储库中找到对应的 `commons-compress-1.22.jar` 文件。
+
+您可以尝试以下几个解决方案：
+
+1. 检查依赖项名称和版本号是否正确。请确保在您的 `build.gradle` 或 `build.gradle.kts` 文件中正确指定了 `org.apache.commons:commons-compress:1.22` 依赖项。
+
+2. 检查您的项目是否可以连接到 Maven 存储库。您可以尝试在浏览器中打开 https://repo.maven.apache.org/maven2/org/apache/commons/commons-compress/1.22/，以确保您的计算机可以访问此存储库。如果您的网络环境存在代理或防火墙，则可能需要在 Gradle 配置文件中配置代理或调整防火墙设置。
+
+3. 尝试清除 Gradle 项目缓存。有时候，Gradle 可能会缓存依赖项文件，从而导致构建问题。您可以尝试运行 `./gradlew clean build --refresh-dependencies` 命令清除 Gradle 项目缓存并重新下载依赖项。
+
+如果上述解决方案均无效，请尝试在 `build.gradle` 或 `build.gradle.kts` 文件中添加 Maven 存储库，以确保 Gradle 可以下载 `org.apache.commons:commons-compress:1.22` 依赖项。您可以在 Gradle 配置文件中添加以下代码：
+
+```
+repositories {
+    mavenCentral()
+}
+```
+
+这将使 Gradle 使用 Maven 中央存储库来解析依赖项。如果仍然无法解决问题，请检查 Gradle 版本是否与您的依赖项兼容。
 
 
+### 尝试1
+
+每次都感觉没有重新加载，直接删除 `C:\Users\dh\.gradle\caches`，重新构建。
+
+发现还是不不行。
+
+### 尝试2
+
+手动下载缺失的 jar 到本地。
 
 
+------------------------ 如何使用？
 
+您可以将手动下载的 JAR 文件添加到项目的类路径中，以便 Gradle 可以将其用作项目的依赖项。
+
+一种常见的方法是使用 `flatDir` 存储库，该存储库可以从本地目录中加载 JAR 文件。在 `build.gradle.kts` 文件中，您可以将以下内容添加到 `repositories` 部分：
+
+```kotlin
+repositories {
+    flatDir {
+        dirs("libs") // 将本地目录 "libs" 添加到 flatDir 存储库中
+    }
+}
+```
+
+然后，将手动下载的 JAR 文件复制到本地目录 `libs` 中。最后，在 `dependencies` 部分中添加以下内容，将 JAR 文件添加到项目中：
+
+```kotlin
+dependencies {
+    implementation(fileTree(mapOf("dir" to "libs", "include" to "*.jar")))
+}
+```
+
+这将扫描 `libs` 目录中的所有 JAR 文件，并将它们添加到您的项目中。
+
+请注意，使用 `flatDir` 存储库可能会导致依赖项冲突和版本控制问题，因此建议您使用其他存储库来管理依赖项。
+
+
+还是不行，暂时不搞了，浪费时间。
 
 # 参考资料
 
