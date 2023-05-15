@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Mybatis 拦截器
+title: Mybatis 拦截器 mybatis interceptor
 date:  2019-1-23 08:49:44 +0800
 categories: [Mybatis]
 tags: [mybatis, TODO, sh]
 published: true
-excerpt: Mybatis 拦截器
 ---
 
 # 分页插件
@@ -675,7 +674,147 @@ public class SqlCostInterceptor implements Interceptor {
 }
 ```
 
+# 注册插件并且使用
 
+下面是 springboot + mybatis 的整合例子：
+
+## 核心配置
+
+```java
+@Bean(value = "mySqlSessionFactory")
+public SqlSessionFactory mySqlSessionFactory(@Qualifier("myDataSource") DataSource dataSource) throws Exception {
+    MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
+    sqlSessionFactoryBean.setDataSource(dataSource);
+    sqlSessionFactoryBean.setTypeAliasesPackage("com.github.houbb.opensource.server.dal.entity");
+    String[] mapperLocations = new String[1];
+    mapperLocations[0] = "classpath*:com/github/houbb/opensource/server/dal/mapper/*Mapper.xml";
+    sqlSessionFactoryBean.setMapperLocations(resolveMapperLocations(mapperLocations));
+    sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageInterceptor});
+    sqlSessionFactoryBean.setConfiguration(mybatisConfiguration);
+    sqlSessionFactoryBean.setGlobalConfig(globalConfiguration);
+    return sqlSessionFactoryBean.getObject();
+}
+```
+
+## 完整配置
+
+完整配置如下：
+
+```java
+package com.github.houbb.opensource.server.dal.config;
+
+
+import com.baomidou.mybatisplus.MybatisConfiguration;
+import com.baomidou.mybatisplus.entity.GlobalConfiguration;
+import com.baomidou.mybatisplus.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean;
+import org.apache.ibatis.plugin.Interceptor;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.support.TransactionTemplate;
+
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * 数据源相关配置
+ *
+ * @author binbin.hou
+ * @since 1.0.0
+ */
+@Configuration
+@Import({Datasource.class})
+@EnableTransactionManagement
+@MapperScan(basePackages = {"com.github.houbb.opensource.server.dal.mapper"},
+        sqlSessionTemplateRef = "mySqlSessionTemplate")
+public class DatasourceConfig {
+
+    @Autowired
+    @Qualifier("myPageInterceptor")
+    private PaginationInterceptor pageInterceptor;
+
+    @Autowired
+    @Qualifier("myGlobalConfiguration")
+    private GlobalConfiguration globalConfiguration;
+
+    @Autowired
+    @Qualifier("myMybatisConfiguration")
+    private MybatisConfiguration mybatisConfiguration;
+
+    @Bean(value = "mySqlSessionTemplate")
+    public SqlSessionTemplate sqlSessionTemplate(@Qualifier("mySqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
+        return new SqlSessionTemplate(sqlSessionFactory);
+    }
+
+    @Bean(value = "mySqlSessionFactory")
+    public SqlSessionFactory mySqlSessionFactory(@Qualifier("myDataSource") DataSource dataSource) throws Exception {
+        MybatisSqlSessionFactoryBean sqlSessionFactoryBean = new MybatisSqlSessionFactoryBean();
+        sqlSessionFactoryBean.setDataSource(dataSource);
+        sqlSessionFactoryBean.setTypeAliasesPackage("com.github.houbb.opensource.server.dal.entity");
+        String[] mapperLocations = new String[1];
+        mapperLocations[0] = "classpath*:com/github/houbb/opensource/server/dal/mapper/*Mapper.xml";
+        sqlSessionFactoryBean.setMapperLocations(resolveMapperLocations(mapperLocations));
+        sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageInterceptor});
+        sqlSessionFactoryBean.setConfiguration(mybatisConfiguration);
+        sqlSessionFactoryBean.setGlobalConfig(globalConfiguration);
+        return sqlSessionFactoryBean.getObject();
+    }
+
+    @Bean(value = "myTransactionTemplate")
+    public TransactionTemplate transactionTemplate(@Qualifier("myTransactionManager") PlatformTransactionManager transactionManager) {
+        TransactionTemplate transactionTemplate = new TransactionTemplate();
+        transactionTemplate.setTransactionManager(transactionManager);
+        return transactionTemplate;
+    }
+
+    @Bean(value = "myTransactionManager")
+    @Primary
+    public DataSourceTransactionManager myTransactionManager(@Qualifier("myDataSource") DataSource dataSource) {
+        DataSourceTransactionManager dataSourceTransactionManager = new DataSourceTransactionManager();
+        dataSourceTransactionManager.setDataSource(dataSource);
+        return dataSourceTransactionManager;
+    }
+
+    /**
+     * 解析 mapper 位置
+     * @param mapperLocations 位置
+     * @return 结果
+     * @since 1.0.0
+     */
+    private Resource[] resolveMapperLocations(String[] mapperLocations) {
+        ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
+        List<Resource> resources = new ArrayList<>();
+        if (mapperLocations != null) {
+            for (String mapperLocation : mapperLocations) {
+                try {
+                    Resource[] mappers = resourceResolver.getResources(mapperLocation);
+                    resources.addAll(Arrays.asList(mappers));
+                } catch (IOException e) {
+                    // ignore
+                }
+            }
+        }
+        return resources.toArray(new Resource[resources.size()]);
+    }
+
+}
+```
 
 # 总结
 
@@ -690,6 +829,9 @@ mybatis 这种责任链和允许用户自定义注解的设计非常不错。
 # TODO
 
 自己开源实现一个 myabtis 的加密解密插件。
+
+
+
 
 # 参考资料
 
