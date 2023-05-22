@@ -1,11 +1,10 @@
 ---
 layout: post
-title: jvisualvm
+title: jvisualvm java 性能分析工具
 date:  2018-11-12 21:22:26 +0800
-categories: [SQL]
-tags: [sql, ex, sh]
+categories: [JVM]
+tags: [jvm, tool, sh]
 published: true
-excerpt: jvisualvm 入门介绍
 ---
 
 # jvisualvm
@@ -25,6 +24,12 @@ Java VisualVM使开发人员能够生成和分析堆转储，跟踪内存泄漏�
 
 # 使用方式
 
+打开文件夹:
+
+```
+cd D:\tool\Java\jdk1.8.0_102\bin 
+```
+
 直接命令行输入
 
 ```
@@ -32,6 +37,73 @@ jvisualvm
 ```
 
 即可。
+
+
+# 监控进程
+
+## java
+
+我们使用 idea 启动一个单元测试。
+
+## 启动 jvisualvm
+
+可以在首页。【应用程序】-【本地】看到我们启动的应用进程。
+
+![首页](https://img-blog.csdnimg.cn/669115c415cf4848a2763a6526234de0.png#pic_center)
+
+选择点击打开，可以进行监控分析。
+
+# jvisualvm 几个特性
+
+打开之后，右边有几个特性
+
+## 概述
+
+基本的 jvm 等信息
+
+```
+PID: 16264
+主机: localhost
+主类: com.intellij.rt.junit.JUnitStarter
+参数: -ideVersion5 -junit4 com.github.houbb.chars.scan.benchmark.CharsScanBsHelperBenchmarkTest,testWTimes
+
+JVM: Java HotSpot(TM) Client VM (25.102-b14, mixed mode)
+Java: 版本 1.8.0_102, 供应商 Oracle Corporation
+Java Home 目录: C:\Program Files (x86)\Java\jdk1.8.0_102\jre
+JVM 标志: <无>
+
+出现 OOME 时生成堆 dump: 禁用
+```
+
+## 监视
+
+可以看到 cpu/堆内存 等信息。
+
+![监视](https://img-blog.csdnimg.cn/e1b01e1ce2fc4812bca1b60c29e19c30.png#pic_center)
+
+## 线程
+
+各种线程信息
+
+## 抽样器
+
+抽样可以选择 CPU、内存。
+
+### CPU
+
+可以看到对应执行方法的耗时情况。
+
+![CPU](https://img-blog.csdnimg.cn/cccf72fa0c5e43e2877a2497d988ee70.png#pic_center)
+
+这样我们优化程序的思路也就有了。
+
+### 内存
+
+当然也可以实时分析对应的内存情况。
+
+## profiler 
+
+可以用于分析。
 
 # 参考资料
 
