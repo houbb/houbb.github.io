@@ -22,6 +22,25 @@ Java VisualVM使开发人员能够生成和分析堆转储，跟踪内存泄漏�
 
 您可以通过选择Tools，然后选择Java VisualVM菜单中的Plugins，从标准Ja​​va VisualVM插件目录中进行选择
 
+# 下载安装
+
+[visualvm](https://visualvm.github.io/) is a visual tool integrating commandline JDK tools and lightweight profiling capabilities.
+
+Designed for both development and production time use.
+
+## Download
+
+VisualVM is distributed as a standalone tool at GitHub, and as an optional component of the GraalVM. 
+
+Both are the same bits with the same features. Standalone tool runs on any compatible JDK, component is configured to run using the host GraalVM.
+
+VisualVM has also been distributed in Oracle JDK 6~8 as Java VisualVM. It has been discontinued in Oracle JDK 9. 
+
+See the Upgrading Java VisualVM page to learn how to upgrade to the latest VisualVM. 
+
+## 插件整合
+
+> [https://visualvm.github.io/idesupport.html](https://visualvm.github.io/idesupport.html)
 
 # 使用方式
 
