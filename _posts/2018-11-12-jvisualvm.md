@@ -124,6 +124,74 @@ JVM 标志: <无>
 
 可以用于分析。
 
+# 插件介绍 
+
+VisualVM功能可以通过官方和第三方插件轻松扩展。
+
+使用Tools | Plugins | Available Plugins从VisualVM Plugins Center下载插件。这里有IDE集成插件。
+
+要在离线环境中扩展VisualVM功能，请在plugins Centers页面获取插件，并使用Tools | plugins | downloads安装它们。
+
+由于VisualVM 2.0的变化，一些第三方插件可能无法工作。请联系他们的供应商并要求更新。
+
+## mbean浏览器-MBeans Browser
+
+MBeans Browser插件提供了类似于JConsole中的MBeans Browser的功能:显示应用程序的MBeans，显示值、操作和通知。
+
+在VisualVM中，浏览器得到了进一步改进，以提供更好的可用性和对最新JMX特性的支持。
+
+## 可视化GC插件-Visual GC Plugin
+
+可视化垃圾收集监控工具集成到VisualVM中。
+
+Visual GC附加到应用程序上，收集并图形化显示垃圾收集、类加载器和HotSpot编译器性能数据。有关详细信息，请参见Visual GC工具页面。
+
+## Tracer
+
+用于详细监视和分析Java应用程序的框架和GUI。
+
+Tracer使用各种探针从应用程序收集指标，并在时间轴中显示数据。
+
+数据以图形和表格两种形式显示，并且可以导出为通用格式，以便外部工具进行进一步处理。
+
+## Kill Application
+
+Kill Application 插件允许轻松地杀死一个监控进程，活着或死锁，只需一个单一的鼠标点击。
+
+最后，它对没有响应的进程使用硬终止。
+
+## 启动分析器
+
+Startup Profiler插件可以从本地Java 5+应用程序启动时就对其进行仪器化分析，并帮助分析短时间运行的进程。
+
+有关更多详细信息，请参阅Startup Profiler插件页面。
+
+## 其他插件:
+
+Go To Source: 增加了对在VisualVM中开源代码的支持。有关详细信息，请参阅源代码支持页面。
+
+Threads Inspector: 可以在线程选项卡中分析一个或多个线程的堆栈跟踪。
+
+Buffer Monitor: 监视ByteBuffer创建的直接缓冲区的使用情况。分配直接和映射缓冲区由filecchannel.map创建。
+
+Security: 用于在VisualVM中设置SSL/TLS连接的密钥库、信任库、协议和密码的GUI，相当于设置适当的系统属性javax.net.ssl.*和javax.rmi.ssl.client.*
+
+OQL Syntax Support: HeapWalker中OQL控制台的增强编辑器，提供语法着色和基本的代码完成。
+
+JConsole Plugins Container: 支持在VisualVM中使用现有的JConsole插件(如JTop)。
+
+VisualVM Extensions: 支持在VisualVM发布时VisualVM核心模块不支持的附加功能(如新的jdk、jvm、HotSpot版本等)。
+
+## 第三方插件:
+
+BTrace插件: 支持直接从VisualVM创建、部署和保存BTrace脚本。
+
+Coherence插件: 为启用JMX的Coherence集群总结统计数据和信息。
+
+CRaSH插件: 在VisualVM (VisualVM 1)中支持Java平台的CRaSH开源shell x
+
+TDA插件: 线程转储分析器是一个GUI，用于分析Java虚拟机生成的线程转储。
+
 # 参考资料
 
 https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jvisualvm.html
@@ -131,6 +199,8 @@ https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jvisualvm.html
 [jvisualvm 工具使用](https://www.cnblogs.com/kongzhongqijing/articles/3625340.html)
 
 [使用 VisualVM 进行性能分析及调优](https://www.ibm.com/developerworks/cn/java/j-lo-visualvm/)
+
+https://visualvm.github.io/
 
 * any list
 {:toc}
