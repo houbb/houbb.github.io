@@ -429,6 +429,13 @@ EXPLAIN update test_perf T set T.batch_id = 'P001', T.update_time=now() where id
 +----+--------------------+------------+------------+----------------+---------------+-------------+---------+-------+---------+----------+---------------------------------------+
 ```
 
+### v2. 简化脚本
+
+```sql
+update test_perf T set T.batch_id = 'P001', T.update_time=now() 
+where id in (SELECT id from test_perf where status = 'P' order by create_time DESC limit 100 );
+```
+
 ### chatGPT 的分析
 
 根据提供的执行计划，可以看到以下信息：
