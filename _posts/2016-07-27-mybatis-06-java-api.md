@@ -548,14 +548,14 @@ List<User> getUsersByName(String name);
 
 class UserSqlBuilder {
   public static String buildGetUsersByName(final String name) {
-    return new SQL(){{
+    return new SQL(){
       SELECT("*");
       FROM("users");
       if (name != null) {
         WHERE("name like #{value} || '%'");
       }
       ORDER_BY("id");
-    }}.toString();
+    }.toString();
   }
 }
 ```
@@ -572,22 +572,22 @@ class UserSqlBuilder {
   // 如果不使用 @Param，就应该定义与 mapper 方法相同的参数
   public static String buildGetUsersByName(
       final String name, final String orderByColumn) {
-    return new SQL(){{
+    return new SQL(){
       SELECT("*");
       FROM("users");
       WHERE("name like #{name} || '%'");
       ORDER_BY(orderByColumn);
-    }}.toString();
+  }.toString();
   }
 
   // 如果使用 @Param，就可以只定义需要使用的参数
   public static String buildGetUsersByName(@Param("orderByColumn") final String orderByColumn) {
-    return new SQL(){{
+    return new SQL(){
       SELECT("*");
       FROM("users");
       WHERE("name like #{name} || '%'");
       ORDER_BY(orderByColumn);
-    }}.toString();
+    }.toString();
   }
 }
 ```
@@ -626,14 +626,14 @@ List<User> getUsersByName(String name);
 class UserSqlProvider implements ProviderMethodResolver {
   // 默认实现中，会将映射器方法的调用解析到实现的同名方法上
   public static String getUsersByName(final String name) {
-    return new SQL(){{
+    return new SQL(){
       SELECT("*");
       FROM("users");
       if (name != null) {
         WHERE("name like #{value} || '%'");
       }
       ORDER_BY("id");
-    }}.toString();
+    }.toString();
   }
 }
 ```
