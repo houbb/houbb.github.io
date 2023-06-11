@@ -47,7 +47,7 @@ MyBatis 3 提供了方便的工具类来帮助解决此问题。
 
 ```java
 private String selectPersonSql() {
-  return new SQL() {{
+  return new SQL() {
     SELECT("P.ID, P.USERNAME, P.PASSWORD, P.FULL_NAME");
     SELECT("P.LAST_NAME, P.CREATED_ON, P.UPDATED_ON");
     FROM("PERSON P");
@@ -64,7 +64,7 @@ private String selectPersonSql() {
     HAVING("P.FIRST_NAME like ?");
     ORDER_BY("P.ID");
     ORDER_BY("P.FULL_NAME");
-  }}.toString();
+  }.toString();
 }
 ```
 
@@ -79,10 +79,10 @@ SQL 类已经为你处理了哪里应该插入 "WHERE"、哪里应该使用 "AND
 ```java
 // 匿名内部类风格
 public String deletePersonSql() {
-  return new SQL() {{
+  return new SQL() {
     DELETE_FROM("PERSON");
     WHERE("ID = #{id}");
-  }}.toString();
+  }.toString();
 }
 
 // Builder / Fluent 风格
@@ -97,7 +97,7 @@ public String insertPersonSql() {
 
 // 动态条件（注意参数需要使用 final 修饰，以便匿名内部类对它们进行访问）
 public String selectPersonLike(final String id, final String firstName, final String lastName) {
-  return new SQL() {{
+  return new SQL() {
     SELECT("P.ID, P.USERNAME, P.PASSWORD, P.FIRST_NAME, P.LAST_NAME");
     FROM("PERSON P");
     if (id != null) {
@@ -110,30 +110,30 @@ public String selectPersonLike(final String id, final String firstName, final St
       WHERE("P.LAST_NAME like #{lastName}");
     }
     ORDER_BY("P.LAST_NAME");
-  }}.toString();
+  }.toString();
 }
 
 public String deletePersonSql() {
-  return new SQL() {{
+  return new SQL() {
     DELETE_FROM("PERSON");
     WHERE("ID = #{id}");
-  }}.toString();
+  }.toString();
 }
 
 public String insertPersonSql() {
-  return new SQL() {{
+  return new SQL() {
     INSERT_INTO("PERSON");
     VALUES("ID, FIRST_NAME", "#{id}, #{firstName}");
     VALUES("LAST_NAME", "#{lastName}");
-  }}.toString();
+  }.toString();
 }
 
 public String updatePersonSql() {
-  return new SQL() {{
+  return new SQL() {
     UPDATE("PERSON");
     SET("FIRST_NAME = #{firstName}");
     WHERE("ID = #{id}");
-  }}.toString();
+  }.toString();
 }
 
 ```
