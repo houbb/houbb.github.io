@@ -86,7 +86,19 @@ database ${database_name};
 ```
 
 
+# windows 19c 安装
 
+全局数据库名：orcl
+
+设置口令，8个字符以上，包含数字和字母。
+
+取消勾选 【创建为容器库】
+
+ps: Aliyun 如果可以引入这个服务就好了。
+
+# 参考资料
+
+https://blog.csdn.net/qq_33593667/article/details/130494033
 
 * any list
 {:toc}
