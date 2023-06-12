@@ -155,6 +155,30 @@ JVM:          1.8.0_192 (Oracle Corporation 25.192-b12)
 OS:           Windows 10 10.0 amd64
 ```
 
+## 设置 GRADLE_HOME
+
+后续使用中，发现这个变量也需要设置下。
+
+新建系统变量 **GRADLE_HOME**，对应的值：
+
+```
+D:\tool\gradle\gradle-7.4.2-bin\gradle-7.4.2
+```
+
+# 启动报错
+
+启动遇到报错:
+
+```
+org.gradle.internal.metaobject.AbstractDynamicObject$CustomMessageMissingMethodException异常处理
+```
+
+## 解决方式
+
+1） 首先设置对应的 gradle_home
+
+2） idea 中设置对应的 gradle_home，默认为 c 盘。
+
 # idea 中配置 gradle
 
 使用IDEA创建gradle之时，时长感到缓慢无比，上网搜索良久，终于找到解决方法，特于此分享，经本人亲测，确实有光速提升。
