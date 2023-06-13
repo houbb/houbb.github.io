@@ -1,11 +1,213 @@
 ---
 layout: post
-title:  Idea Plugin Dev-13-01-I18N 国际化 Localization
+title:  Idea Plugin Dev-13-01-I18N 国际化 Localization 与 java 的 ResourceBundle 读取 i18n 配置
 date:  2017-10-13 10:24:52 +0800
 categories: [Java]
 tags: [java, idea, idea-plugin]
 published: true
 ---
+
+# idea 中 properties 文件打开强制为  iso-8859-1  编码打开，如何修改为 utf-8
+
+setting=>Editor=>File Encoding，设置配置文件的默认编码，勾选上 Transparent native-to-ascii conversion
+
+--------------------------------------------------------------------------------------------------------------------
+
+在 IntelliJ IDEA 中，`.properties` 文件默认以 ISO-8859-1 编码打开。如果你想将其改为以 UTF-8 编码打开，可以按照以下步骤操作：
+
+1. 打开 IntelliJ IDEA，并转到 "File"（文件）菜单，然后选择 "Settings"（设置）。
+2. 在弹出的设置对话框中，找到 "Editor"（编辑器）选项，然后展开它。
+3. 在 "Editor" 下，选择 "File Encodings"（文件编码）。
+4. 在右侧窗格中，找到 "Properties Files"（属性文件）。
+5. 在 "Properties Files" 下，你会看到 "Default encoding for properties files"（属性文件的默认编码）。
+6. 将其从 "ISO-8859-1" 改为 "UTF-8"。
+7. 点击 "OK" 保存更改并关闭设置对话框。
+
+现在，当你打开 `.properties` 文件时，IntelliJ IDEA 将使用 UTF-8 编码进行显示和编辑。
+
+请注意，这只会影响 IntelliJ IDEA 中的文件打开和编辑，而不会更改实际的文件编码。确保你的文件实际上使用 UTF-8 编码，以便与其他工具和系统正确交互。
+
+# java 中如何使用 ResourceBundle 读取 i18n 配置
+
+在 Java 中，你可以使用 `ResourceBundle` 类来读取 i18n（国际化）配置文件。
+
+首先，确保你的 i18n 配置文件（资源包）按照约定的命名规则存放在指定的位置，例如在 `src/main/resources` 目录下。然后，可以使用 `ResourceBundle.getBundle()` 方法来加载指定的资源包文件。
+
+下面是一个使用 `ResourceBundle` 读取 i18n 配置的简单示例：
+
+```java
+import java.util.Locale;
+import java.util.ResourceBundle;
+
+public class I18nExample {
+    public static void main(String[] args) {
+        // 指定要读取的资源包文件名和语言环境
+        String baseName = "messages";
+        Locale locale = Locale.getDefault(); // 默认语言环境
+
+        // 加载资源包
+        ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale);
+
+        // 根据键获取对应的国际化文本
+        String greeting = bundle.getString("greeting");
+        String farewell = bundle.getString("farewell");
+
+        // 打印国际化文本
+        System.out.println(greeting);
+        System.out.println(farewell);
+    }
+}
+```
+
+在上述示例中，我们使用 `ResourceBundle.getBundle()` 方法加载名为 `messages` 的资源包文件，并根据默认的语言环境获取对应的国际化文本。
+
+你可以根据需要，通过传入不同的语言环境参数来读取不同的资源包文件，例如 `Locale.US`（美式英语）或 `Locale.CHINA`（中国大陆地区）等。
+
+注意，`ResourceBundle` 类默认使用 Java 的标准属性文件（.properties）作为资源包文件格式，但也支持其他格式，如 XML 格式的资源包。
+
+# properties 中文内容发现打包之后乱码 如何解决？
+
+当在 properties 文件中使用中文内容时，确保以下步骤来避免乱码问题：
+
+1. 使用 UTF-8 编码：确保你的 properties 文件以 UTF-8 编码保存，以支持中文字符。在大多数编辑器中，你可以选择文件编码为 UTF-8，以确保正确保存中文字符。
+
+2. properties 文件名：确保你的 properties 文件名不包含任何特殊字符或中文字符，最好使用英文命名。
+
+3. 资源包加载时指定编码：在加载资源包时，明确指定 UTF-8 编码。你可以使用 `ResourceBundle.Control` 类来自定义资源包的加载方式，并指定编码方式。以下是一个示例：
+
+   ```java
+   import java.nio.charset.StandardCharsets;
+   import java.util.Locale;
+   import java.util.ResourceBundle;
+
+   public class I18nExample {
+       public static void main(String[] args) {
+           String baseName = "messages";
+           Locale locale = Locale.getDefault();
+
+           // 自定义资源包加载方式
+           ResourceBundle.Control control = new ResourceBundle.Control() {
+               @Override
+               public ResourceBundle newBundle(String baseName, Locale locale, String format, ClassLoader loader, boolean reload) {
+                   String bundleName = toBundleName(baseName, locale);
+                   String resourceName = toResourceName(bundleName, "properties");
+                   try (var stream = loader.getResourceAsStream(resourceName)) {
+                       if (stream != null) {
+                           return new PropertyResourceBundle(new InputStreamReader(stream, StandardCharsets.UTF_8));
+                       }
+                   } catch (IOException e) {
+                       e.printStackTrace();
+                   }
+                   return null;
+               }
+           };
+
+           // 加载资源包，并指定编码为 UTF-8
+           ResourceBundle bundle = ResourceBundle.getBundle(baseName, locale, control);
+
+           // 读取国际化文本
+           String greeting = bundle.getString("greeting");
+           String farewell = bundle.getString("farewell");
+
+           System.out.println(greeting);
+           System.out.println(farewell);
+       }
+   }
+   ```
+
+   在上述示例中，我们自定义了 `ResourceBundle.Control` 类，并在 `newBundle()` 方法中使用 `PropertyResourceBundle` 加载资源包时指定了 UTF-8 编码。
+
+4. 构建项目时检查编码设置：如果你是通过构建工具（如 Maven 或 Gradle）构建项目，确保在项目的构建配置中设置了正确的编码，如 Maven 的 `pom.xml` 文件中的 `<project.build.sourceEncoding>` 配置。
+
+遵循上述步骤，你应该能够解决 properties 文件中中文内容乱码的问题，并在打包后正确显示中文字符。
+
+## 发现 messages.properties 文件只能是 iso-8859-1 是吗？
+
+在 Java 中，`.properties` 文件默认采用 ISO-8859-1 编码。这是因为早期版本的 Java 平台仅支持该编码。因此，当你创建一个名为 `messages.properties` 的文件时，默认情况下，它会被假设为 ISO-8859-1 编码。
+
+然而，如果你想在 `.properties` 文件中使用其他字符集，例如 UTF-8，你可以采取一些额外的步骤来确保正确的编码：
+
+1. 将文件的编码格式更改为 UTF-8。在许多文本编辑器中，你可以选择另存为并选择 UTF-8 作为编码选项。
+2. 在你的 Java 代码中，使用 `ResourceBundle` 时，指定正确的编码，例如：
+
+```java
+ResourceBundle bundle = ResourceBundle.getBundle("messages", StandardCharsets.UTF_8);
+```
+
+这将以 UTF-8 编码加载名为 `messages.properties` 的资源文件。确保在代码中指定与文件实际编码相匹配的编码。
+
+需要注意的是，当使用 UTF-8 编码时，确保你的 Java 代码、构建脚本和其他相关工具都正确地处理和识别 UTF-8 编码。
+
+例如，在 Gradle 构建中，你需要确保使用了正确的编码设置来处理资源文件，如前面提到的 Gradle 配置示例中的 `processResources` 部分。
+
+## gradle 如何指定项目构建的编码
+
+在 Gradle 中指定项目构建的编码，可以通过在 `build.gradle` 文件中设置 `compileJava` 任务的编码选项来实现。以下是一个示例：
+
+```groovy
+compileJava {
+    options.encoding = 'UTF-8'
+}
+```
+
+在上述示例中，我们将 `compileJava` 任务的 `options.encoding` 属性设置为 `'UTF-8'`，指定了编译 Java 源代码时使用的编码。
+
+请注意，这只会影响编译过程中源代码的编码，而不会直接影响资源文件（如 properties 文件）的编码。如果你的项目中有其他资源文件需要指定编码，你需要相应地设置其他任务的选项。例如，如果你使用了 `processResources` 任务处理资源文件，你可以通过类似的方式设置其编码选项：
+
+```groovy
+processResources {
+    options.encoding = 'UTF-8'
+}
+```
+
+确保将上述代码放置在 `build.gradle` 文件的适当位置，通常是在顶层的 `build.gradle` 文件或模块的 `build.gradle` 文件中的 `dependencies` 块之后。完成后，运行 Gradle 构建命令时，Gradle 将使用指定的编码进行项目构建。
+
+## 另一种配置方式
+
+要在 Gradle 中指定资源文件的编码格式，你可以使用如下的配置：
+
+```groovy
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}
+
+processResources {
+    filesMatching('**/*.properties') {
+        filter {
+            it.replaceCharset('ISO-8859-1', 'UTF-8')
+        }
+    }
+}
+```
+
+上述代码片段中，`processResources` 任务用于处理资源文件。通过 `filesMatching('**/*.properties')` 指定了要处理的资源文件类型，这里以 `.properties` 文件为例。然后使用 `filter` 方法来替换资源文件的字符编码。
+
+在 `filter` 方法中，使用 `replaceCharset('ISO-8859-1', 'UTF-8')` 将资源文件的编码从 ISO-8859-1 转换为 UTF-8。你可以根据实际情况调整字符编码的参数。
+
+请确保将这段代码放置在适当的位置，例如在 `build.gradle` 文件的顶层或适当的任务配置块内。这样，在构建过程中，资源文件就会使用指定的编码格式进行处理。
+
+# i18n 语言国际化中，创建资源包（Resource Bundle） 文件夹的位置和名字？
+
+在 i18n 语言国际化中，资源包（Resource Bundle）文件通常存放在项目的 `src/main/resources` 目录下。
+
+对于 Java 项目，资源包文件的命名约定是使用基本名称和语言标签的组合。
+
+例如，基本名称可以是 `messages`，然后根据语言不同创建不同的资源包文件。命名约定如下：
+
+- 默认资源包：`messages.properties`
+- 英文资源包：`messages_en.properties`
+- 中文资源包：`messages_zh.properties`
+
+- 其他语言资源包：根据语言标签创建对应的资源包，例如 `messages_fr.properties`（法语）、`messages_de.properties`（德语）等。
+
+在创建这些资源包文件时，你可以将其放置在一个名为 `i18n` 或 `locales` 的文件夹中，以便更好地组织和管理国际化资源文件。
+
+总结起来，资源包文件的位置和命名约定如下：
+
+- 位置：`src/main/resources`
+- 命名约定：基本名称 + 语言标签 + `.properties`
+
+请根据项目需要和个人偏好来选择合适的文件夹名称和命名约定。
 
 
 # 介绍一下 idea 插件的 Localization 语言国际化
@@ -160,6 +362,8 @@ IDEA 核心功能有一个这样的 jar 文件位于 `INSTALL_HOME\lib\resources
 # 参考资料
 
 https://plugins.jetbrains.com/docs/intellij/localization-guide.html
+
+https://blog.csdn.net/HaHa_Sir/article/details/122851700
 
 * any list
 {:toc}
