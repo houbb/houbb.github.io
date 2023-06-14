@@ -55,6 +55,41 @@ png -> svg
 
 通过自定义图标，可以为插件的不同部分提供个性化和专业化的外观，增强用户体验并使插件更加可识别和易于使用。
 
+## 实战
+
+- toolWindows 添加
+
+```java
+toolWindow.setIcon(IconUtils.getIcon());
+```
+
+这里没法指定大小，所以建议使用 16*16 的 icon 即可。
+
+- JDialog 添加
+
+```java
+JDialog dialog = new JDialog();
+dialog.setIconImage(IconUtils.getImage());
+```
+
+对应的工具类为：
+
+```java
+public class IconUtils {
+
+    public static Icon getIcon() {
+        // 加载图标文件
+        return IconLoader.getIcon("/icon.png");
+    }
+
+    public static Image getImage() {
+        ImageIcon img = new ImageIcon(IconUtils.class.getResource("/icon.png"));
+        return img.getImage();
+    }
+
+}
+```
+
 # 参考资料
 
 https://blog.csdn.net/wl1411956542/article/details/130241033
