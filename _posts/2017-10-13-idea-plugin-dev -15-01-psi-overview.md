@@ -220,6 +220,87 @@ MethodListDlg methodListDlg = new MethodListDlg(psiClass, new Condition<PsiMetho
 
 这里其实理解每一个方法的每一句话在执行什么。
 
+# GlobalSearchScope
+
+## 入门
+
+详细解释一下
+
+```java
+GlobalSearchScope searchScope = GlobalSearchScope.fileScope(psiClass.getContainingFile());
+```
+
+在 IDEA 插件开发中，`GlobalSearchScope` 是一个类，用于指定搜索的范围。
+
+`searchScope` 是一个变量，其类型为 `GlobalSearchScope`，用于表示搜索的范围。
+
+在给定的代码片段中，`searchScope` 被初始化为 `GlobalSearchScope.fileScope(psiClass.getContainingFile())`。
+
+让我们逐步解释这段代码的含义：
+
+1. 首先，`psiClass` 是一个代表代码中的类的 `PsiClass` 对象。它是 PSI 的一种元素类型，用于表示源代码中的类。
+
+2. `psiClass.getContainingFile()` 是 `PsiClass` 接口中的一个方法，用于获取包含该类的文件的 `PsiFile` 对象。`PsiFile` 是 PSI 的另一种元素类型，用于表示源代码文件。
+
+3. `GlobalSearchScope.fileScope(psiClass.getContainingFile())` 是一个静态方法调用，用于创建一个表示特定文件范围的 `GlobalSearchScope` 对象。它接受一个 `PsiFile` 参数，表示要搜索的文件。在这种情况下，我们使用 `psiClass.getContainingFile()` 返回的文件作为搜索范围。
+
+综上所述，`GlobalSearchScope.fileScope(psiClass.getContainingFile())` 的作用是创建一个搜索范围，该范围限定在包含给定 `PsiClass` 的文件中。这意味着在后续的代码中，使用 `searchScope` 变量进行搜索操作时，将仅在包含该类的文件中进行搜索，而不是整个项目或其他范围。这有助于提高搜索效率并减少不必要的搜索结果。
+
+# SearchUtils
+
+## 问题
+
+详细解释一下 
+
+```java
+Iterable<PsiReference> psiReferenceIterable = SearchUtils.findAllReferences(psiMethod, searchScope)`;
+```
+
+在这段代码中，`Iterable<PsiReference> psiReferenceIterable` 是一个变量，用于存储搜索到的对给定 `psiMethod` 的引用。
+
+`SearchUtils.findAllReferences(psiMethod, searchScope)` 是一个方法调用，用于执行搜索操作。
+
+让我们逐步解释这段代码的含义：
+
+1. `psiMethod` 是一个代表代码中方法的 `PsiMethod` 对象。它是 PSI 的一种元素类型，用于表示源代码中的方法。
+
+2. `searchScope` 是一个 `GlobalSearchScope` 对象，用于指定搜索的范围。它确定了搜索操作在哪些文件或区域中进行。
+
+3. `SearchUtils.findAllReferences(psiMethod, searchScope)` 是一个方法调用，它调用名为 `findAllReferences` 的方法，并传入 `psiMethod` 和 `searchScope` 作为参数。`SearchUtils` 是一个自定义的工具类或实用程序类，其中定义了执行搜索操作的逻辑。
+
+4. `findAllReferences` 方法执行搜索操作，查找给定方法 `psiMethod` 的所有引用。它使用 `searchScope` 来限定搜索范围。
+
+5. 返回的结果是一个 `Iterable<PsiReference>` 对象，表示搜索到的对给定方法的引用。`Iterable` 是 Java 中的一个接口，表示可迭代的集合。`PsiReference` 是 PSI 的元素类型之一，表示代码中的引用关系。
+
+因此，`Iterable<PsiReference> psiReferenceIterable = SearchUtils.findAllReferences(psiMethod, searchScope);` 的作用是执行搜索操作，查找给定方法 `psiMethod` 的所有引用，并将结果存储在 `psiReferenceIterable` 变量中。
+
+开发者可以使用 `psiReferenceIterable` 对象来遍历和处理这些引用，进一步分析代码或执行其他操作。
+
+# PsiTreeUtil
+
+## 详细解释一下 PsiTreeUtil.getParentOfType(psiElement, PsiMethod.class) 
+
+在 IDEA 插件开发中，`PsiTreeUtil.getParentOfType(psiElement, PsiMethod.class)` 是一个方法调用，用于查找给定 `psiElement` 的父级中的特定类型的元素（在这种情况下是 `PsiMethod`）。
+
+让我们逐步解释这段代码的含义：
+
+1. `psiElement` 是一个代表代码中某个元素的 `PsiElement` 对象。`PsiElement` 是 PSI 的基本元素类型，用于表示源代码中的不同部分，例如类、方法、语句等。
+
+2. `PsiMethod.class` 是一个表示 `PsiMethod` 类的对象。`PsiMethod` 是 PSI 的元素类型，用于表示源代码中的方法。
+
+3. `PsiTreeUtil.getParentOfType(psiElement, PsiMethod.class)` 是一个静态方法调用，它调用名为 `getParentOfType` 的方法，并传入 `psiElement` 和 `PsiMethod.class` 作为参数。`PsiTreeUtil` 是 IDEA 提供的一个实用程序类，其中定义了许多用于处理 PSI 树的工具方法。
+
+4. `getParentOfType` 方法执行向上遍历父级的操作，查找给定 `psiElement` 的父级中的特定类型的元素（在这种情况下是 `PsiMethod`）。它会沿着 PSI 树从 `psiElement` 开始向上遍历，直到找到满足条件的父级元素，或者到达树的顶部（例如文件级别）。
+
+5. 返回的结果是找到的满足条件的父级元素，如果没有找到，则返回 `null`。
+
+因此，`PsiTreeUtil.getParentOfType(psiElement, PsiMethod.class)` 的作用是在给定 `psiElement` 的父级中查找特定类型（`PsiMethod`）的元素。
+
+这对于需要根据代码结构进行导航、查找或修改的插件功能非常有用。开发者可以根据实际需求使用返回的父级元素进行进一步的操作。
+
+
+
+
 # 意外发现 PsiDocComment
 
 可以拿到文档，所以直接生成对应的文档，非常的方便。
@@ -281,6 +362,22 @@ PsiManager.addPsiTreeChangeListener() 允许您接收有关项目 PSI 树的所�
 # 与 PSI 合作有哪些规则？
 
 对 PSI 文件内容所做的任何更改都会反映在文档中，因此所有处理文档的规则（读/写操作、命令、只读状态处理）都有效。
+
+# 如何系统的学习 psi 接口。给出学习资料，包含网址
+
+要系统地学习 PSI（Program Structure Interface）接口以及相关概念和使用方法，以下是一些建议的学习资料和资源：
+
+1. JetBrains 官方文档：IntelliJ Platform SDK Documentation - PSI (https://www.jetbrains.org/intellij/sdk/docs/reference_guide/custom_language_support/psi.html) 是 JetBrains 官方提供的关于 PSI 的详细文档。它包含了 PSI 的概述、基本概念、API 文档和示例代码，是学习 PSI 的权威参考资料。
+
+2. IntelliJ IDEA 插件开发教程：如果你想结合实际开发来学习 PSI，可以参考 IntelliJ IDEA 插件开发的相关教程和示例。官方提供了一系列教程和示例，帮助你了解如何使用 PSI 来开发功能丰富的插件。可以从官方插件开发文档（https://plugins.jetbrains.com/docs/intellij/welcome.html）开始，逐步学习插件开发和 PSI 的相关内容。
+
+3. 书籍和博客文章：有一些书籍和博客文章专门介绍了 IntelliJ IDEA 插件开发和 PSI 的使用。例如，《IntelliJ IDEA插件开发权威指南》（IntelliJ IDEA Plugin Development: Beginner's Guide）一书涵盖了 PSI 的内容。此外，一些开发者也在个人博客上分享了他们的经验和教程，你可以搜索相关博客文章来获取更多学习资源。
+
+4. 示例项目和开源插件：研究一些开源的 IntelliJ IDEA 插件项目可以帮助你学习 PSI 的实际应用。可以浏览 GitHub 上的一些知名插件项目，如 JetBrains 官方的插件、Lombok 插件等。阅读其源代码可以帮助你理解 PSI 的使用方式和最佳实践。
+
+5. 社区论坛和讨论组：加入 IntelliJ IDEA 插件开发的社区论坛和讨论组，与其他开发者交流经验和学习资源。JetBrains 官方提供了插件开发者社区论坛（https://intellij-support.jetbrains.com/hc/en-us/community/topics/200366979-IntelliJ-IDEA-Open-API-and-Plugin-Development），你可以在这里提问和寻求帮助。
+
+通过结合阅读官方文档、学习教程、阅读源代码和参与社区讨论，你可以逐步深入学习 PSI 接口并掌握其使用方法。不断实践和开发小项目也是提高技能的关键。
 
 # 参考资料
 
