@@ -298,6 +298,46 @@ Iterable<PsiReference> psiReferenceIterable = SearchUtils.findAllReferences(psiM
 
 这对于需要根据代码结构进行导航、查找或修改的插件功能非常有用。开发者可以根据实际需求使用返回的父级元素进行进一步的操作。
 
+# 把搜索范围限定在一个 JavaFile 中
+
+要将搜索范围限定在一个 `JavaFile` 中，你可以使用 `LocalSearchScope` 类来创建一个本地搜索范围。以下是实现的步骤：
+
+1. 获取目标 `JavaFile` 对应的 `PsiFile` 对象。
+
+   ```java
+   PsiFile psiFile = ...; // 获取目标 JavaFile 对应的 PsiFile 对象
+   ```
+
+2. 创建一个 `LocalSearchScope` 对象，将目标 `PsiFile` 作为参数传递进去。
+
+   ```java
+   LocalSearchScope searchScope = new LocalSearchScope(psiFile);
+   ```
+
+   `LocalSearchScope` 是 PSI 中的一个类，用于表示局部搜索范围，即限定在特定文件内的范围。
+
+3. 使用 `PsiSearchHelper` 类的 `findReferencesTo` 方法来搜索对目标 `PsiField` 的引用，并将搜索结果存储在一个数组或列表中。
+
+   ```java
+   PsiSearchHelper searchHelper = PsiSearchHelper.getInstance(project);
+   PsiReference[] references = searchHelper.findReferencesTo(psiField, searchScope);
+   ```
+
+   这里的 `project` 是指插件的项目对象，你需要替换成你实际的项目对象。
+
+4. 遍历搜索结果，筛选出引用所在的 `PsiMethod` 对象。
+
+   ```java
+   for (PsiReference reference : references) {
+       PsiElement referenceElement = reference.getElement();
+       PsiMethod psiMethod = PsiTreeUtil.getParentOfType(referenceElement, PsiMethod.class);
+       // 对获取到的 PsiMethod 进行处理
+   }
+   ```
+
+   在遍历结果时，可以使用 `PsiTreeUtil.getParentOfType` 方法获取引用所在的父级元素，即 `PsiMethod` 对象。对获取到的 `PsiMethod` 进行处理，如记录、打印或执行其他操作，根据你的具体需求进行处理。
+
+通过以上步骤，你可以将搜索范围限定在一个 `JavaFile` 中，并获取到 `PsiField` 被哪些 `PsiMethod` 引用，并对这些引用进行进一步的操作或分析。
 
 
 
