@@ -408,7 +408,7 @@ JVM 中通过 javaagent 参数指定特定的 jar 文件启动 Instrumentation �
 直接运行以下命令，会自动下载jacoco依赖，同时忽略运行过程中的测试错误
 
 ```
-mvn clean test org.jacoco:jacoco-maven-plugin:prepare-agent install -Dmaven.test.failure.ignore=true
+mvn clean test org.jacoco:jacoco-maven-plugin:0.8.3:prepare-agent install -Dmaven.test.failure.ignore=true
 ```
 
 执行完成后会在当前目录target目录下生成jacoco.exec文件
@@ -519,6 +519,8 @@ https://www.pkslow.com/archives/maven-jacoco-sonar
 https://developer.aliyun.com/article/917448
 
 [Maven整合JaCoCo和Sonar，看看你的测试写够了没](https://www.pkslow.com/archives/maven-jacoco-sonar)
+
+[Intellij IDEA中代码覆盖率测试工具 JaCoCo 简单使用](https://summer2zz.blog.csdn.net/article/details/102887144)
 
 * any list
 {:toc}
