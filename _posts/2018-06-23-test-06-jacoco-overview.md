@@ -522,5 +522,7 @@ https://developer.aliyun.com/article/917448
 
 [Intellij IDEA中代码覆盖率测试工具 JaCoCo 简单使用](https://summer2zz.blog.csdn.net/article/details/102887144)
 
+[Java单元测试jacoco IDEA使用教程（配合JUnit）](https://blog.csdn.net/u014772376/article/details/115379984)
+
 * any list
 {:toc}
