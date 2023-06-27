@@ -213,6 +213,10 @@ mvn clean test org.jacoco:jacoco-maven-plugin:0.7.3.201502191951:prepare-agent i
 
 此时运行mvn test生成index.html（即覆盖率报告）位置在：
 
+```
+${PROJECT_PATH}\target\site\jacoco\index.html
+```
+
 也可以指定输出目录：
 
 ```xml
