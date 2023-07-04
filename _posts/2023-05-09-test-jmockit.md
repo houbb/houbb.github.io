@@ -220,6 +220,85 @@ public class UserBizMockedTest {
 }
 ```
 
+# Q: 详细解释一下 jmockit
+
+JMockit是一个用于Java的开源测试框架，用于编写单元测试和集成测试。它提供了一组功能强大的工具和API，可以帮助开发人员进行测试驱动开发（Test-Driven Development，TDD）和行为驱动开发（Behavior-Driven Development，BDD）。
+
+JMockit的主要特点是它的能力可以在测试中模拟和修改代码的行为。它允许开发人员在测试中创建假对象（mock objects）来替代真实的依赖项，并且可以在测试运行时定义和验证这些对象的行为。这使得开发人员能够专注于测试目标代码的逻辑，而不需要实际调用和管理真实的依赖项。
+
+下面是JMockit的一些主要功能：
+
+1. Mock对象创建和管理：JMockit允许开发人员创建假对象，称为mock对象，来替代真实的依赖项。这些mock对象可以在测试中模拟外部依赖项的行为，如方法的返回值、异常抛出等。
+
+2. 期望与验证：开发人员可以使用JMockit来定义对mock对象的期望行为，比如指定方法的参数和返回值。在测试运行期间，可以验证这些期望是否得到满足。
+
+3. 录制与重放：JMockit可以自动记录对mock对象的调用，并在后续的测试中重放这些调用。这样，开发人员可以更轻松地设置和验证测试的预期行为。
+
+4. Mock构造函数：JMockit还提供了能力来mock构造函数，这使得可以创建没有无参构造函数的对象实例，或者在测试中避免实际调用构造函数。
+
+5. 非侵入性：使用JMockit进行测试不需要修改被测试的代码。开发人员只需在测试代码中添加JMockit的注解和API调用，就可以模拟和控制依赖项的行为。
+
+总的来说，JMockit提供了一种方便、灵活且功能丰富的方法来编写Java测试。它使得测试代码的编写更加简单，并且能够有效地隔离和控制测试环境中的依赖项。
+
+# Q: jmockit 如何测试 static 和 private 方法
+
+JMockit提供了一些特殊的功能和技术，可以用于测试静态（static）方法和私有（private）方法。
+
+下面是使用JMockit进行静态方法和私有方法测试的一般步骤：
+
+## 1. 针对静态方法的测试：
+
+   - 使用JMockit的`Mocked`注解来模拟静态方法所在的类。在测试类中，使用`@Mocked`注解标记该类即可。
+   - 在测试方法中，可以直接调用该静态方法并验证其行为。
+
+   示例代码：
+   ```java
+   import mockit.Mocked;
+   import mockit.Tested;
+
+   public class StaticMethodTest {
+       @Tested
+       private YourClass yourClass; // 要测试的类
+
+       @Test
+       public void testStaticMethod() {
+           // 使用@Mocked注解模拟静态方法所在的类
+           try (MockedStatic<YourClass> mockedStatic = MockedStatic.mockStatic(YourClass.class)) {
+               // 设置模拟方法的行为
+               mockedStatic.when(() -> YourClass.staticMethod()).thenReturn("mockedResult");
+
+               // 调用静态方法并验证结果
+               String result = yourClass.callStaticMethod();
+               assertEquals("mockedResult", result);
+           }
+       }
+   }
+   ```
+
+## 2. 针对私有方法的测试：
+
+   - 使用JMockit的`Deencapsulation`类，它提供了对私有方法的访问和调用。
+   - 使用`Deencapsulation.invoke()`方法来调用私有方法，并验证其行为。
+
+   示例代码：
+   ```java
+   import mockit.Deencapsulation;
+
+   public class PrivateMethodTest {
+       @Test
+       public void testPrivateMethod() {
+           YourClass yourClass = new YourClass(); // 要测试的类的实例
+
+           // 调用私有方法并验证结果
+           String result = Deencapsulation.invoke(yourClass, "privateMethod");
+           assertEquals("expectedResult", result);
+       }
+   }
+   ```
+
+需要注意的是，在使用JMockit进行静态方法和私有方法的测试时，要确保正确设置模拟方法的行为并验证预期结果。
+
+
 # 参考资料
 
 https://blog.csdn.net/qq_29698805/article/details/105588023
