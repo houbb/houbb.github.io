@@ -192,6 +192,18 @@ b可以选择:【30-37或40-47】
 30 — 37 设置前景色
 40 — 47 设置背景色
 
+# 查看时过滤指定信息
+
+比如想查询一个 queryUserInfo 查询，然后把 userName != null 的查询出来。
+
+```
+less *.log | grep queryUserInfo | grep userName | grep -v 'userName=null' --col
+```
+
+查询方式：包含关键词，并且排除不满足条件的饿信息。
+
+--col 可以按照最后一个 grep 进行高亮。
+
 # 参考资料
 
 [linux 命令大全](http://www.runoob.com/linux/linux-command-manual.html)
