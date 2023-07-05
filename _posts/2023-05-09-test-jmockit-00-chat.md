@@ -333,10 +333,10 @@ public class RecordingReplayTest {
         MyClass myObject = new MyClass();
 
         // 录制测试数据
-        new Expectations(myObject) {{
+        new Expectations(myObject) {% {{ %}
             myObject.getValue();
             result = "mocked";
-        }            };
+        {% }} %};
 
         // 执行被测试代码
         String result = myObject.getValue();
@@ -345,10 +345,10 @@ public class RecordingReplayTest {
         Assert.assertEquals("mocked", result);
 
         // 重放测试数据
-        new Verifications() {{
+        new Verifications() {% {{ %}
             myObject.getValue();
             times = 1;
-        }            };
+        {% }} %};
     }
 }
 ```
@@ -476,10 +476,10 @@ public class ExceptionHandlingTest {
         MyClass myObject = new MyClass();
 
         // 模拟异常的抛出
-        new Expectations(myObject) {{
+        new Expectations(myObject) {% {{ %}
             myObject.doSomething();
             result = new IllegalArgumentException("Mocked exception");
-        }            };
+        {% }} %};
 
         try {
             // 执行被测试代码
@@ -491,10 +491,10 @@ public class ExceptionHandlingTest {
         }
 
         // 验证异常的抛出
-        new Verifications() {{
+        new Verifications() {% {{ %}
             myObject.doSomething();
             times = 1;
-        }            };
+        {% }} %};
     }
 }
 ```

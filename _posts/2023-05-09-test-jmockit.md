@@ -198,9 +198,9 @@ public class UserBizMockedTest {
     @Test
     public void test2() {
         // 录制(Record)
-        new Expectations() {{
+        new Expectations() {% {{ %}
             userService.queryById((String) any); result = new UserInfo("any-other", "any-other-name");
-        }};
+        {% }} %};
 
         //重放(Replay)
         UserInfo userInfo1 = userService.queryById("1");
@@ -211,10 +211,10 @@ public class UserBizMockedTest {
         Assert.assertTrue(userInfo1.getName().equals("any-other-name"));
 
         // 验证，验证被调用，且被调用了3次
-        new Verifications() {{
+        new Verifications() {% {{ %}
             userService.queryById((String) any);
             times = 3;
-        }};
+        {% }} %};
     }
 
 }

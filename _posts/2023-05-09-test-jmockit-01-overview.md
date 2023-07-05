@@ -171,14 +171,14 @@ public final class MyBusinessServiceTest
       businessService.doBusinessOperationXyz();
 
 (2)   assertNotEquals(0, data.getId()); // implies "data" was persisted
-(4)   new Verifications() {          { anyEmail.send(); times = 1; }            };
+(4)   new Verifications() {% {{ %} anyEmail.send(); times = 1; {% }} %};
    }
 
    @Test
    public void doBusinessOperationXyzWithInvalidEmailAddress() throws Exception {
       String email = "invalid address";
       data.setCustomerEmail(email);
-(3)   new Expectations() {          { anyEmail.addTo(email); result = new EmailException(); }            };
+(3)   new Expectations() {% {{ %} anyEmail.addTo(email); result = new EmailException(); {% }} %};
       thrown.expect(EmailException.class);
 
       businessService.doBusinessOperationXyz();

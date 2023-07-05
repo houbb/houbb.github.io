@@ -39,19 +39,19 @@ published: true
 @Test
 void doBusinessOperationXyz(@Mocked AnotherDependency anotherMock) {
    ...
-   new Expectations() {     { // an "expectation block"
+   new Expectations() {% {{ %} // an "expectation block"
       ...
       // Record an expectation, with a given value to be returned:
       mockInstance.mockedMethod(...); result = 123;
       ...
-   }       };
+   {% }} %};
    ...
    // Call the code under test.
    ...
-   new Verifications() {     { // a "verification block"
+   new Verifications() {% {{ %} // a "verification block"
       // Verifies an expected invocation:
       anotherMock.save(any); times = 1;
-   }       };
+   {% }} %};
    ...
 }
 ```
@@ -104,12 +104,12 @@ JMockit 创建的模拟实例可以在测试代码中正常使用（用于记录
 @Test
 void doBusinessOperationXyz(@Mocked Dependency mockInstance) {
    ...
-   new Expectations() {     {
+   new Expectations() {% {{ %}
       ...
       // An expectation for an instance method:
       mockInstance.someMethod(1, "test"); result = "mocked";
       ...
-   }       };
+   {% }} %};
 
    // A call to code under test occurs here, leading to mock invocations
    // that may or may not match specified expectations.
@@ -171,11 +171,11 @@ class SomeTest {
    void testWithRecordAndReplayOnly(mock parameters) {
       // Preparation code not specific to JMockit, if any.
 
-      new Expectations() {     { // an "expectation block"
+      new Expectations() {% {{ %} // an "expectation block"
          // One or more invocations to mocked types, causing expectations to be recorded.
          // Invocations to non-mocked types are also allowed anywhere inside this block
          // (though not recommended).
-      }       };
+      {% }} %};
 
       // Code under test is exercised.
 
@@ -188,11 +188,11 @@ class SomeTest {
 
       // Code under test is exercised.
 
-      new Verifications() {     { // a "verification block"
+      new Verifications() {% {{ %} // a "verification block"
          // One or more invocations to mocked types, causing expectations to be verified.
          // Invocations to non-mocked types are also allowed anywhere inside this block
          // (though not recommended).
-      }       };
+      {% }} %};
 
       // Additional verification code, if any, either here or before the verification block.
    }
@@ -201,16 +201,16 @@ class SomeTest {
    void testWithBothRecordAndVerify(mock parameters) {
       // Preparation code not specific to JMockit, if any.
 
-      new Expectations() {     {
+      new Expectations() {% {{ %}
          // One or more invocations to mocked types, causing expectations to be recorded.
-      }       };
+      {% }} %};
 
       // Code under test is exercised.
 
-      new VerificationsInOrder() {     { // an ordered verification block
+      new VerificationsInOrder() {% {{ %} // an ordered verification block
          // One or more invocations to mocked types, causing expectations to be verified
          // in the specified order.
-      }       };
+      {% }} %};
 
       // Additional verification code, if any, either here or before the verification block.
    }
@@ -323,13 +323,13 @@ public class ClassUnderTest {
 
 @Test
 void doSomethingHandlesSomeCheckedException(@Mocked DependencyAbc abc) throws Exception {
-   new Expectations() {     {
+   new Expectations() {% {{ %}
 (1)   abc.intReturningMethod(); result = 3;
 
 (2)   abc.stringReturningMethod();
       returns("str1", "str2");
       result = new SomeCheckedException();
-   }       };
+   {% }} %};
 
    cut.doSomething();
 }
@@ -366,18 +366,18 @@ void doSomethingHandlesSomeCheckedException(@Mocked DependencyAbc abc) throws Ex
 void someTestMethod(@Mocked DependencyAbc abc) {
    DataItem item = new DataItem(...);
 
-   new Expectations() {     {
+   new Expectations() {% {{ %}
       // Will match "voidMethod(String, List)" invocations where the first argument is
       // any string and the second any list.
       abc.voidMethod(anyString, (List<?>) any);
-   }       };
+   {% }} %};
 
    cut.doSomething(item);
 
-   new Verifications() {     {
+   new Verifications() {% {{ %}
       // Matches invocations to the specified method with any value of type long or Long.
       abc.anotherVoidMethod(anyLong);
-   }       };
+   {% }} %};
 }
 ```
 
@@ -402,7 +402,7 @@ void someTestMethod(@Mocked DependencyAbc abc) {
 void someTestMethod(@Mocked DependencyAbc abc) {
    DataItem item = new DataItem(...);
 
-   new Expectations() {     {
+   new Expectations() {% {{ %}
       // Will match "voidMethod(String, List)" invocations with the first argument
       // equal to "str" and the second not null.
       abc.voidMethod("str", (List<?>) withNotNull());
@@ -410,14 +410,14 @@ void someTestMethod(@Mocked DependencyAbc abc) {
       // Will match invocations to DependencyAbc#stringReturningMethod(DataItem, String)
       // with the first argument pointing to "item" and the second one containing "xyz".
       abc.stringReturningMethod(withSameInstance(item), withSubstring("xyz"));
-   }       };
+   {% }} %};
 
    cut.doSomething(item);
 
-   new Verifications() {     {
+   new Verifications() {% {{ %}
       // Matches invocations to the specified method with any long-valued argument.
       abc.anotherVoidMethod(withAny(1L));
-   }       };
+   {% }} %};
 }
 ```
 
@@ -444,7 +444,7 @@ void someTestMethod(@Mocked DependencyAbc abc) {
 
 @Test
 void someTestMethod(@Mocked DependencyAbc abc) {
-   new Expectations() {     {
+   new Expectations() {% {{ %}
       // By default, at least one invocation is expected, i.e. "minTimes = 1":
       new DependencyAbc();
 
@@ -453,7 +453,7 @@ void someTestMethod(@Mocked DependencyAbc abc) {
 
       // 1 to 5 invocations are expected:
       abc.stringReturningMethod(); minTimes = 1; maxTimes = 5;
-   }       };
+   {% }} %};
 
    cut.doSomething();
 }
@@ -462,13 +462,13 @@ void someTestMethod(@Mocked DependencyAbc abc) {
 void someOtherTestMethod(@Mocked DependencyAbc abc) {
    cut.doSomething();
 
-   new Verifications() {     {
+   new Verifications() {% {{ %}
       // Verifies that zero or one invocations occurred, with the specified argument value:
       abc.anotherVoidMethod(3); maxTimes = 1;
 
       // Verifies the occurrence of at least one invocation with the specified arguments:
       DependencyAbc.someStaticMethod("test", false); // "minTimes = 1" is implied
-   }       };
+   {% }} %};
 }
 ```
 
@@ -495,7 +495,7 @@ void verifyInvocationsExplicitlyAtEndOfTest(@Mocked Dependency mock) {
 
    // Verifies that Dependency#doSomething(int, boolean, String) was called at least once,
    // with arguments that obey the specified constraints:
-   new Verifications() {     { mock.doSomething(anyInt, true, withPrefix("abc")); }       };
+   new Verifications() {% {{ %} mock.doSomething(anyInt, true, withPrefix("abc")); {% }} %};
 }
 ```
 
@@ -522,12 +522,12 @@ void verifyingExpectationsInOrder(@Mocked DependencyAbc abc) {
    abc.anotherMethod(5);
    ...
 
-   new VerificationsInOrder() {     {
+   new VerificationsInOrder() {% {{ %}
       // The order of these invocations must be the same as the order
       // of occurrence during replay of the matching invocations.
       abc.aMethod();
       abc.anotherMethod(anyInt);
-   }       };
+   {% }} %};
 }
 ```
 
@@ -548,11 +548,11 @@ void verifyAllInvocations(@Mocked Dependency mock) {
    mock.setSomething(45);
    mock.save();
 
-   new FullVerifications() {     {
+   new FullVerifications() {% {{ %}
       mock.setSomething(anyInt); // verifies two actual invocations
       mock.setSomethingElse(anyString);
       mock.save(); // if this verification (or any other above) is removed the test will fail
-   }       };
+   {% }} %};
 }
 ```
 
@@ -645,7 +645,7 @@ void capturingArgumentsFromSingleInvocation(@Mocked Collaborator mock) {
 
       assertTrue(d > 0.0);
       assertTrue(s.length() > 1);
-   }       };
+   {% }} %};
 }
 ```
 
@@ -668,7 +668,7 @@ void capturingArgumentsFromMultipleInvocations(@Mocked Collaborator mock) {
    ...
 
    // Back in test code:
-   new Verifications() {     {
+   new Verifications() {% {{ %}
       List<DataObject> dataObjects = new ArrayList<>();
       mock.doSomething(withCapture(dataObjects));
 
@@ -676,7 +676,7 @@ void capturingArgumentsFromMultipleInvocations(@Mocked Collaborator mock) {
       DataObject data1 = dataObjects.get(0);
       DataObject data2 = dataObjects.get(1);
       // Perform arbitrary assertions on data1 and data2.
-   }       };
+   {% }} %};
 }
 ```
 
@@ -696,7 +696,7 @@ void capturingNewInstances(@Mocked Person mockedPerson) {
    ...
 
    // Back in test code:
-   new Verifications() {     {
+   new Verifications() {% {{ %}
       // Captures the new instances created with a specific constructor.
       List<Person> personsInstantiated = withCapture(new Person(anyString, anyInt));
 
@@ -706,7 +706,7 @@ void capturingNewInstances(@Mocked Person mockedPerson) {
 
       // Finally, verifies both lists are the same.
       assertEquals(personsInstantiated, personsCreated);
-   }       };
+   {% }} %};
 }
 ```
 
@@ -726,12 +726,12 @@ void recordAndVerifyExpectationsOnCascadedMocks(
    @Mocked Socket anySocket, // will match any new Socket object created during the test
    @Mocked SocketChannel cascadedChannel // will match cascaded instances
 ) throws Exception {
-   new Expectations() {     {
+   new Expectations() {% {{ %}
       // Calls to Socket#getChannel() will automatically return a cascaded SocketChannel;
       // such an instance will be the same as the second mock parameter, allowing us to
       // use it for expectations that will match all cascaded channel instances:
       cascadedChannel.isConnected(); result = false;
-   }       };
+   {% }} %};
 
    // Inside production code:
    Socket sk = new Socket(); // mocked as "anySocket"
@@ -747,7 +747,7 @@ void recordAndVerifyExpectationsOnCascadedMocks(
    ...
 
    // Back in test code:
-   new Verifications() {     { cascadedChannel.connect((SocketAddress) withNotNull()); }       };
+   new Verifications() {% {{ %} cascadedChannel.connect((SocketAddress) withNotNull()); {% }} %};
 }
 ```
 
@@ -786,11 +786,11 @@ void postErrorMessageToUIForInvalidInputFields(@Mocked FacesContext jsf) {
    ...
 
    // Test code: verify appropriate error message was added to context.
-   new Verifications() {     {
+   new Verifications() {% {{ %}
       FacesMessage msg;
       jsf.addMessage(null, msg = withCapture());
       assertTrue(msg.getSummary().contains("blah blah"));
-   }       };
+   {% }} %};
 }
 ```
 
@@ -815,7 +815,7 @@ void createOSProcessToCopyTempFiles(@Mocked ProcessBuilder pb) throws Exception 
    ...
 
    // Verify the desired process was created with the correct command.
-   new Verifications() {     { pb.command(withSubstring("copy")).start(); }       };
+   new Verifications() {% {{ %} pb.command(withSubstring("copy")).start(); {% }} %};
 }
 ```
 
@@ -884,10 +884,10 @@ public final class ConcatenatingInputStream extends InputStream {
 ```java
 @Test
 void concatenateInputStreams(@Injectable InputStream input1, @Injectable InputStream input2) throws Exception {
-   new Expectations() {     {
+   new Expectations() {% {{ %}
       input1.read(); returns(1, 2, -1);
       input2.read(); returns(3, -1);
-   }       };
+   {% }} %};
 
    InputStream concatenatedInput = new ConcatenatingInputStream(input1, input2);
    byte[] buf = new byte[3];
@@ -908,7 +908,7 @@ void concatenateInputStreams(@Injectable InputStream input1, @Injectable InputSt
 ```java
 @Test
 void matchOnMockInstance(@Mocked Collaborator mock, @Mocked Collaborator otherInstance) {
-   new Expectations() {     { mock.getValue(); result = 12; }       };
+   new Expectations() {% {{ %} mock.getValue(); result = 12; {% }} %};
 
    // Exercise code under test with mocked instance passed from the test:
    int result = mock.getValue();
@@ -938,7 +938,7 @@ void matchOnMockInstance(@Mocked Collaborator mock, @Mocked Collaborator otherIn
 @Test
 void newCollaboratorsWithDifferentBehaviors(@Mocked Collaborator anyCollaborator) {
    // Record different behaviors for each set of instances:
-   new Expectations() {     {
+   new Expectations() {% {{ %}
       // One set, for instances created with "a value":
       Collaborator col1 = new Collaborator("a value");
       col1.doSomething(anyInt); result = 123;
@@ -946,7 +946,7 @@ void newCollaboratorsWithDifferentBehaviors(@Mocked Collaborator anyCollaborator
       // Another set, for instances created with "another value":
       Collaborator col2 = new Collaborator("another value");
       col2.doSomething(anyInt); result = new InvalidStateException();
-   }       };
+   {% }} %};
 
    // Code under test:
    new Collaborator("a value").doSomething(5); // will return 123
@@ -990,10 +990,10 @@ class PartialMockingTest {
    void partiallyMockingASingleInstance() {
       Collaborator collaborator = new Collaborator(2);
 
-      new Expectations(collaborator) {     { // one or more instances to be partially mocked
+      new Expectations(collaborator) {% {{ %} // one or more instances to be partially mocked
          collaborator.getValue(); result = 123;
          collaborator.simpleOperation(1, "", null); result = false;
-      }       };
+      {% }} %};
 
       // Mocked (instance methods recorded on one of the given instances):
       assertEquals(123, collaborator.getValue());
@@ -1029,7 +1029,7 @@ void partiallyMockingAnObjectJustForVerifications() {
    ...
 
    // Unmocked methods can still be verified:
-   new Verifications() {     { c1.simpleOperation(anyInt, anyString, (Date) any); }       };
+   new Verifications() {% {{ %} c1.simpleOperation(anyInt, anyString, (Date) any); {% }} %};
 }
 ```
 
@@ -1073,7 +1073,7 @@ final class UnitTest {
 
    @Test
    void mockingImplementationClassesFromAGivenBaseType() {
-      new Expectations() {     { anyService.doSomething(); returns(3, 4); }       };
+      new Expectations() {% {{ %} anyService.doSomething(); returns(3, 4); {% }} %};
 
       int result = new TestedUnit().businessOperation();
 
