@@ -61,7 +61,9 @@ HATEOAS（Hypertext as the Engine of Application State）是一种设计原则�
 
 它的目标是通过在 API 响应中包含超媒体链接，使客户端能够动态地发现和导航到可用的资源。
 
-Spring HATEOAS 是 Spring Framework 的一个模块，它为构建遵循 HATEOAS 原则的 RESTful API 提供了支持。它提供了一组工具和类，可以轻松地在 Spring 应用程序中创建和处理超媒体链接。
+Spring HATEOAS 是 Spring Framework 的一个模块，它为构建遵循 HATEOAS 原则的 RESTful API 提供了支持。
+
+它提供了一组工具和类，可以轻松地在 Spring 应用程序中创建和处理超媒体链接。
 
 使用 Spring HATEOAS，您可以通过定义资源和链接关系，将超媒体链接嵌入到 API 的响应中。这些链接可以指向其他相关资源，以及支持在不了解 URI 结构的情况下导航和执行操作的链接。通过遵循这些链接，客户端应用程序能够动态地浏览和操作 API 中的资源。
 
@@ -75,7 +77,9 @@ Spring HATEOAS 提供了几个关键的概念和类来实现这一目标：
 
 通过使用 Spring HATEOAS，您可以在控制器方法中创建 `Resource` 对象，将数据和链接添加到该对象中，并将其作为响应返回给客户端。客户端可以使用返回的超媒体链接来导航到其他资源，执行相关操作或获取进一步的信息。
 
-Spring HATEOAS 还提供了一些高级特性，例如链接的嵌入、超媒体链接的自动化创建以及链接关系的管理。这些功能使得构建和维护遵循 HATEOAS 原则的 RESTful API 更加方便和灵活。
+Spring HATEOAS 还提供了一些高级特性，例如链接的嵌入、超媒体链接的自动化创建以及链接关系的管理。
+
+这些功能使得构建和维护遵循 HATEOAS 原则的 RESTful API 更加方便和灵活。
 
 总而言之，Spring HATEOAS 是一个强大的工具，可以帮助您构建遵循 HATEOAS 原则的 RESTful API。
 
