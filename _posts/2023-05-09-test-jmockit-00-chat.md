@@ -314,6 +314,7 @@ public class PrivateMethodTest {
 下面是一个示例代码，演示了JMockit如何录制和重放测试数据：
 
 ```java
+{% raw %}
 import mockit.Expectations;
 import mockit.Verifications;
 import org.junit.Assert;
@@ -333,10 +334,10 @@ public class RecordingReplayTest {
         MyClass myObject = new MyClass();
 
         // 录制测试数据
-        new Expectations(myObject) {% {{ %}
+        new Expectations(myObject) {{
             myObject.getValue();
             result = "mocked";
-        {% }} %};
+        }};
 
         // 执行被测试代码
         String result = myObject.getValue();
@@ -345,12 +346,13 @@ public class RecordingReplayTest {
         Assert.assertEquals("mocked", result);
 
         // 重放测试数据
-        new Verifications() {% {{ %}
+        new Verifications() {{
             myObject.getValue();
             times = 1;
-        {% }} %};
+        }};
     }
 }
+{% endraw %}
 ```
 
 在上述示例中，我们有一个被测试的类`MyClass`，其中包含一个`getValue()`方法。我们想要录制和重放该方法的测试数据。
@@ -457,6 +459,7 @@ JMockit可以处理异常的模拟和验证，以确保被测试代码在异常�
 下面是一个示例代码，演示了JMockit如何处理异常的模拟和验证：
 
 ```java
+{% raw %}
 import mockit.Expectations;
 import mockit.Verifications;
 import org.junit.Assert;
@@ -476,10 +479,10 @@ public class ExceptionHandlingTest {
         MyClass myObject = new MyClass();
 
         // 模拟异常的抛出
-        new Expectations(myObject) {% {{ %}
+        new Expectations(myObject) {{
             myObject.doSomething();
             result = new IllegalArgumentException("Mocked exception");
-        {% }} %};
+        }};
 
         try {
             // 执行被测试代码
@@ -491,12 +494,13 @@ public class ExceptionHandlingTest {
         }
 
         // 验证异常的抛出
-        new Verifications() {% {{ %}
+        new Verifications() {{
             myObject.doSomething();
             times = 1;
-        {% }} %};
+        }};
     }
 }
+{% endraw %}
 ```
 
 在上述示例中，我们有一个被测试的类`MyClass`，其中的`doSomething()`方法会抛出`IllegalArgumentException`异常。我们想要测试在异常情况下的代码行为。

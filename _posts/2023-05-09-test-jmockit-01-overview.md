@@ -145,6 +145,7 @@ Database 类仅包含静态方法和私有构造函数； find 和 persist 方�
 这些验证点是如上所述编号为(1)-(4)的验证点。
 
 ```java
+{% raw %}
 package tutorial.domain;
 
 import org.apache.commons.mail.*;
@@ -171,19 +172,20 @@ public final class MyBusinessServiceTest
       businessService.doBusinessOperationXyz();
 
 (2)   assertNotEquals(0, data.getId()); // implies "data" was persisted
-(4)   new Verifications() {% {{ %} anyEmail.send(); times = 1; {% }} %};
+(4)   new Verifications() {{ anyEmail.send(); times = 1; }};
    }
 
    @Test
    public void doBusinessOperationXyzWithInvalidEmailAddress() throws Exception {
       String email = "invalid address";
       data.setCustomerEmail(email);
-(3)   new Expectations() {% {{ %} anyEmail.addTo(email); result = new EmailException(); {% }} %};
+(3)   new Expectations() {{ anyEmail.addTo(email); result = new EmailException(); }};
       thrown.expect(EmailException.class);
 
       businessService.doBusinessOperationXyz();
    }
 }
+{% endraw %}
 ```
 
 该示例测试使用了 JMockit API 中的几个注释。 

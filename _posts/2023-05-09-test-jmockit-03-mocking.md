@@ -39,19 +39,19 @@ published: true
 @Test
 void doBusinessOperationXyz(@Mocked AnotherDependency anotherMock) {
    ...
-   new Expectations() {% {{ %} // an "expectation block"
+   new Expectations() {{ // an "expectation block"
       ...
       // Record an expectation, with a given value to be returned:
       mockInstance.mockedMethod(...); result = 123;
       ...
-   {% }} %};
+   }};
    ...
    // Call the code under test.
    ...
-   new Verifications() {% {{ %} // a "verification block"
+   new Verifications() {{ // a "verification block"
       // Verifies an expected invocation:
       anotherMock.save(any); times = 1;
-   {% }} %};
+   }};
    ...
 }
 ```
@@ -104,12 +104,12 @@ JMockit 创建的模拟实例可以在测试代码中正常使用（用于记录
 @Test
 void doBusinessOperationXyz(@Mocked Dependency mockInstance) {
    ...
-   new Expectations() {% {{ %}
+   new Expectations() {{
       ...
       // An expectation for an instance method:
       mockInstance.someMethod(1, "test"); result = "mocked";
       ...
-   {% }} %};
+   }};
 
    // A call to code under test occurs here, leading to mock invocations
    // that may or may not match specified expectations.
@@ -171,11 +171,11 @@ class SomeTest {
    void testWithRecordAndReplayOnly(mock parameters) {
       // Preparation code not specific to JMockit, if any.
 
-      new Expectations() {% {{ %} // an "expectation block"
+      new Expectations() {{ // an "expectation block"
          // One or more invocations to mocked types, causing expectations to be recorded.
          // Invocations to non-mocked types are also allowed anywhere inside this block
          // (though not recommended).
-      {% }} %};
+      }};
 
       // Code under test is exercised.
 
@@ -188,11 +188,11 @@ class SomeTest {
 
       // Code under test is exercised.
 
-      new Verifications() {% {{ %} // a "verification block"
+      new Verifications() {{ // a "verification block"
          // One or more invocations to mocked types, causing expectations to be verified.
          // Invocations to non-mocked types are also allowed anywhere inside this block
          // (though not recommended).
-      {% }} %};
+      }};
 
       // Additional verification code, if any, either here or before the verification block.
    }
@@ -201,16 +201,16 @@ class SomeTest {
    void testWithBothRecordAndVerify(mock parameters) {
       // Preparation code not specific to JMockit, if any.
 
-      new Expectations() {% {{ %}
+      new Expectations() {{
          // One or more invocations to mocked types, causing expectations to be recorded.
-      {% }} %};
+      }};
 
       // Code under test is exercised.
 
-      new VerificationsInOrder() {% {{ %} // an ordered verification block
+      new VerificationsInOrder() {{ // an ordered verification block
          // One or more invocations to mocked types, causing expectations to be verified
          // in the specified order.
-      {% }} %};
+      }};
 
       // Additional verification code, if any, either here or before the verification block.
    }
@@ -323,13 +323,13 @@ public class ClassUnderTest {
 
 @Test
 void doSomethingHandlesSomeCheckedException(@Mocked DependencyAbc abc) throws Exception {
-   new Expectations() {% {{ %}
+   new Expectations() {{
 (1)   abc.intReturningMethod(); result = 3;
 
 (2)   abc.stringReturningMethod();
       returns("str1", "str2");
       result = new SomeCheckedException();
-   {% }} %};
+   }};
 
    cut.doSomething();
 }
@@ -366,18 +366,18 @@ void doSomethingHandlesSomeCheckedException(@Mocked DependencyAbc abc) throws Ex
 void someTestMethod(@Mocked DependencyAbc abc) {
    DataItem item = new DataItem(...);
 
-   new Expectations() {% {{ %}
+   new Expectations() {{
       // Will match "voidMethod(String, List)" invocations where the first argument is
       // any string and the second any list.
       abc.voidMethod(anyString, (List<?>) any);
-   {% }} %};
+   }};
 
    cut.doSomething(item);
 
-   new Verifications() {% {{ %}
+   new Verifications() {{
       // Matches invocations to the specified method with any value of type long or Long.
       abc.anotherVoidMethod(anyLong);
-   {% }} %};
+   }};
 }
 ```
 
@@ -402,7 +402,7 @@ void someTestMethod(@Mocked DependencyAbc abc) {
 void someTestMethod(@Mocked DependencyAbc abc) {
    DataItem item = new DataItem(...);
 
-   new Expectations() {% {{ %}
+   new Expectations() {{
       // Will match "voidMethod(String, List)" invocations with the first argument
       // equal to "str" and the second not null.
       abc.voidMethod("str", (List<?>) withNotNull());
@@ -410,14 +410,14 @@ void someTestMethod(@Mocked DependencyAbc abc) {
       // Will match invocations to DependencyAbc#stringReturningMethod(DataItem, String)
       // with the first argument pointing to "item" and the second one containing "xyz".
       abc.stringReturningMethod(withSameInstance(item), withSubstring("xyz"));
-   {% }} %};
+   }};
 
    cut.doSomething(item);
 
-   new Verifications() {% {{ %}
+   new Verifications() {{
       // Matches invocations to the specified method with any long-valued argument.
       abc.anotherVoidMethod(withAny(1L));
-   {% }} %};
+   }};
 }
 ```
 
@@ -444,7 +444,7 @@ void someTestMethod(@Mocked DependencyAbc abc) {
 
 @Test
 void someTestMethod(@Mocked DependencyAbc abc) {
-   new Expectations() {% {{ %}
+   new Expectations() {{
       // By default, at least one invocation is expected, i.e. "minTimes = 1":
       new DependencyAbc();
 
@@ -453,7 +453,7 @@ void someTestMethod(@Mocked DependencyAbc abc) {
 
       // 1 to 5 invocations are expected:
       abc.stringReturningMethod(); minTimes = 1; maxTimes = 5;
-   {% }} %};
+   }};
 
    cut.doSomething();
 }
@@ -462,13 +462,13 @@ void someTestMethod(@Mocked DependencyAbc abc) {
 void someOtherTestMethod(@Mocked DependencyAbc abc) {
    cut.doSomething();
 
-   new Verifications() {% {{ %}
+   new Verifications() {{
       // Verifies that zero or one invocations occurred, with the specified argument value:
       abc.anotherVoidMethod(3); maxTimes = 1;
 
       // Verifies the occurrence of at least one invocation with the specified arguments:
       DependencyAbc.someStaticMethod("test", false); // "minTimes = 1" is implied
-   {% }} %};
+   }};
 }
 ```
 
@@ -495,7 +495,7 @@ void verifyInvocationsExplicitlyAtEndOfTest(@Mocked Dependency mock) {
 
    // Verifies that Dependency#doSomething(int, boolean, String) was called at least once,
    // with arguments that obey the specified constraints:
-   new Verifications() {% {{ %} mock.doSomething(anyInt, true, withPrefix("abc")); {% }} %};
+   new Verifications() {{ mock.doSomething(anyInt, true, withPrefix("abc")); }};
 }
 ```
 
@@ -522,12 +522,12 @@ void verifyingExpectationsInOrder(@Mocked DependencyAbc abc) {
    abc.anotherMethod(5);
    ...
 
-   new VerificationsInOrder() {% {{ %}
+   new VerificationsInOrder() {{
       // The order of these invocations must be the same as the order
       // of occurrence during replay of the matching invocations.
       abc.aMethod();
       abc.anotherMethod(anyInt);
-   {% }} %};
+   }};
 }
 ```
 
@@ -548,11 +548,11 @@ void verifyAllInvocations(@Mocked Dependency mock) {
    mock.setSomething(45);
    mock.save();
 
-   new FullVerifications() {% {{ %}
+   new FullVerifications() {{
       mock.setSomething(anyInt); // verifies two actual invocations
       mock.setSomethingElse(anyString);
       mock.save(); // if this verification (or any other above) is removed the test will fail
-   {% }} %};
+   }};
 }
 ```
 
@@ -645,7 +645,7 @@ void capturingArgumentsFromSingleInvocation(@Mocked Collaborator mock) {
 
       assertTrue(d > 0.0);
       assertTrue(s.length() > 1);
-   {% }} %};
+   }};
 }
 ```
 
@@ -660,6 +660,7 @@ withCapture() 方法只能在验证块中使用。
 如果需要多次调用模拟方法或构造函数，并且我们希望捕获所有这些方法或构造函数的值，则应使用 withCapture(List) 方法，如下例所示。
 
 ```java
+{% raw %}
 @Test
 void capturingArgumentsFromMultipleInvocations(@Mocked Collaborator mock) {
    // Inside tested code:
@@ -668,7 +669,7 @@ void capturingArgumentsFromMultipleInvocations(@Mocked Collaborator mock) {
    ...
 
    // Back in test code:
-   new Verifications() {% {{ %}
+   new Verifications() {{
       List<DataObject> dataObjects = new ArrayList<>();
       mock.doSomething(withCapture(dataObjects));
 
@@ -676,8 +677,9 @@ void capturingArgumentsFromMultipleInvocations(@Mocked Collaborator mock) {
       DataObject data1 = dataObjects.get(0);
       DataObject data2 = dataObjects.get(1);
       // Perform arbitrary assertions on data1 and data2.
-   {% }} %};
+   }};
 }
+{% endraw %}
 ```
 
 与 withCapture() 不同的是，withCapture(List) 重载也可以用在期望记录块中。
@@ -687,6 +689,7 @@ void capturingArgumentsFromMultipleInvocations(@Mocked Collaborator mock) {
 最后，我们可以捕获在测试期间创建的模拟类的新实例。
 
 ```java
+{% raw %}
 @Test
 void capturingNewInstances(@Mocked Person mockedPerson) {
    // From the code under test:
@@ -696,7 +699,7 @@ void capturingNewInstances(@Mocked Person mockedPerson) {
    ...
 
    // Back in test code:
-   new Verifications() {% {{ %}
+   new Verifications() {{
       // Captures the new instances created with a specific constructor.
       List<Person> personsInstantiated = withCapture(new Person(anyString, anyInt));
 
@@ -706,8 +709,9 @@ void capturingNewInstances(@Mocked Person mockedPerson) {
 
       // Finally, verifies both lists are the same.
       assertEquals(personsInstantiated, personsCreated);
-   {% }} %};
+   }};
 }
+{% endraw %}
 ```
 
 # 11 级联模拟-Cascading mocks
@@ -721,17 +725,18 @@ void capturingNewInstances(@Mocked Person mockedPerson) {
 以下测试显示了一个使用 java.net 和 java.nio API 的基本示例。
 
 ```java
+{% raw %}
 @Test
 void recordAndVerifyExpectationsOnCascadedMocks(
    @Mocked Socket anySocket, // will match any new Socket object created during the test
    @Mocked SocketChannel cascadedChannel // will match cascaded instances
 ) throws Exception {
-   new Expectations() {% {{ %}
+   new Expectations() {{
       // Calls to Socket#getChannel() will automatically return a cascaded SocketChannel;
       // such an instance will be the same as the second mock parameter, allowing us to
       // use it for expectations that will match all cascaded channel instances:
       cascadedChannel.isConnected(); result = false;
-   {% }} %};
+   }};
 
    // Inside production code:
    Socket sk = new Socket(); // mocked as "anySocket"
@@ -747,8 +752,9 @@ void recordAndVerifyExpectationsOnCascadedMocks(
    ...
 
    // Back in test code:
-   new Verifications() {% {{ %} cascadedChannel.connect((SocketAddress) withNotNull()); {% }} %};
+   new Verifications() {{ cascadedChannel.connect((SocketAddress) withNotNull()); }};
 }
+{% endraw %}
 ```
 
 在上面的测试中，对模拟 Socket 类中符合条件的方法的调用只要在测试期间发生，就会返回一个级联模拟对象。 
@@ -772,6 +778,7 @@ void recordAndVerifyExpectationsOnCascadedMocks(
 在下面的示例测试中，假设我们要模拟 JSF (Java EE) 中的 javax.faces.context.FacesContext 类。
 
 ```java
+{% raw %}
 @Test
 void postErrorMessageToUIForInvalidInputFields(@Mocked FacesContext jsf) {
    // Set up invalid inputs, somehow.
@@ -786,12 +793,13 @@ void postErrorMessageToUIForInvalidInputFields(@Mocked FacesContext jsf) {
    ...
 
    // Test code: verify appropriate error message was added to context.
-   new Verifications() {% {{ %}
+   new Verifications() {{
       FacesMessage msg;
       jsf.addMessage(null, msg = withCapture());
       assertTrue(msg.getSummary().contains("blah blah"));
-   {% }} %};
+   }};
 }
+{% endraw %}
 ```
 
 上面的测试中有趣的是，我们永远不必担心 FacesContext.getCurrentInstance()，因为“jsf”模拟实例会自动返回。
@@ -805,6 +813,7 @@ void postErrorMessageToUIForInvalidInputFields(@Mocked FacesContext jsf) {
 在下面的示例测试中，我们模拟了 java.lang.ProcessBuilder 类。
 
 ```java
+{% raw %}
 @Test
 void createOSProcessToCopyTempFiles(@Mocked ProcessBuilder pb) throws Exception {
    // Code under test creates a new process to execute an OS-specific command.
@@ -815,8 +824,9 @@ void createOSProcessToCopyTempFiles(@Mocked ProcessBuilder pb) throws Exception 
    ...
 
    // Verify the desired process was created with the correct command.
-   new Verifications() {% {{ %} pb.command(withSubstring("copy")).start(); {% }} %};
+   new Verifications() {{ pb.command(withSubstring("copy")).start(); }};
 }
+{% endraw %}
 ```
 
 上面，方法command(...)、directory(...)和inheritIO()配置了要创建的进程，而start()最终创建了它。 
@@ -882,12 +892,13 @@ public final class ConcatenatingInputStream extends InputStream {
 下面的测试将实现这一点。
 
 ```java
+{% raw %}
 @Test
 void concatenateInputStreams(@Injectable InputStream input1, @Injectable InputStream input2) throws Exception {
-   new Expectations() {% {{ %}
+   new Expectations() {{
       input1.read(); returns(1, 2, -1);
       input2.read(); returns(3, -1);
-   {% }} %};
+   }};
 
    InputStream concatenatedInput = new ConcatenatingInputStream(input1, input2);
    byte[] buf = new byte[3];
@@ -895,6 +906,7 @@ void concatenateInputStreams(@Injectable InputStream input1, @Injectable InputSt
 
    assertArrayEquals(new byte[] {1, 2, 3}, buf);
 }
+{% endraw %}
 ```
 
 请注意，这里确实需要使用 @Injectable，因为被测试的类扩展了模拟类，并且调用来执行 ConcatenatingInputStream 的方法实际上是在基类 InputStream 中定义的。 如果“正常”模拟 InputStream，则 read(byte[]) 方法将始终被模拟，无论调用它的实例如何。
@@ -906,9 +918,10 @@ void concatenateInputStreams(@Injectable InputStream input1, @Injectable InputSt
 为此，我们只需声明相同模拟类型的多个模拟字段或参数，如下一个示例所示。
 
 ```java
+{% raw %}
 @Test
 void matchOnMockInstance(@Mocked Collaborator mock, @Mocked Collaborator otherInstance) {
-   new Expectations() {% {{ %} mock.getValue(); result = 12; {% }} %};
+   new Expectations() {{ mock.getValue(); result = 12; }};
 
    // Exercise code under test with mocked instance passed from the test:
    int result = mock.getValue();
@@ -920,6 +933,7 @@ void matchOnMockInstance(@Mocked Collaborator mock, @Mocked Collaborator otherIn
    // ...we won't get the recorded result, but the default one:
    assertEquals(0, another.getValue());
 }
+{% endraw %}
 ```
 
 仅当测试代码（为了简洁起见，这里嵌入到测试方法本身中）在进行记录调用的完全相同的实例上调用 getValue() 时，上述测试才会通过。 
@@ -938,7 +952,7 @@ void matchOnMockInstance(@Mocked Collaborator mock, @Mocked Collaborator otherIn
 @Test
 void newCollaboratorsWithDifferentBehaviors(@Mocked Collaborator anyCollaborator) {
    // Record different behaviors for each set of instances:
-   new Expectations() {% {{ %}
+   new Expectations() {{
       // One set, for instances created with "a value":
       Collaborator col1 = new Collaborator("a value");
       col1.doSomething(anyInt); result = 123;
@@ -946,7 +960,7 @@ void newCollaboratorsWithDifferentBehaviors(@Mocked Collaborator anyCollaborator
       // Another set, for instances created with "another value":
       Collaborator col2 = new Collaborator("another value");
       col2.doSomething(anyInt); result = new InvalidStateException();
-   {% }} %};
+   }};
 
    // Code under test:
    new Collaborator("a value").doSomething(5); // will return 123
@@ -975,6 +989,7 @@ void newCollaboratorsWithDifferentBehaviors(@Mocked Collaborator anyCollaborator
 以下示例测试将对其进行演示。
 
 ```java
+{% raw %}
 class PartialMockingTest {
    static class Collaborator {
       final int value;
@@ -990,10 +1005,10 @@ class PartialMockingTest {
    void partiallyMockingASingleInstance() {
       Collaborator collaborator = new Collaborator(2);
 
-      new Expectations(collaborator) {% {{ %} // one or more instances to be partially mocked
+      new Expectations(collaborator) {{ // one or more instances to be partially mocked
          collaborator.getValue(); result = 123;
          collaborator.simpleOperation(1, "", null); result = false;
-      {% }} %};
+      }};
 
       // Mocked (instance methods recorded on one of the given instances):
       assertEquals(123, collaborator.getValue());
@@ -1004,6 +1019,7 @@ class PartialMockingTest {
       assertEquals(45, new Collaborator(45).getValue());
    }
 }
+{% endraw %}
 ```
 
 如上所示，Expectations(Object...) 构造函数接受一个或多个要部分模拟的对象。 
@@ -1017,6 +1033,7 @@ class PartialMockingTest {
 例如，考虑以下测试。
 
 ```java
+{% raw %}
 @Test
 void partiallyMockingAnObjectJustForVerifications() {
    Collaborator collaborator = new Collaborator(123);
@@ -1029,8 +1046,9 @@ void partiallyMockingAnObjectJustForVerifications() {
    ...
 
    // Unmocked methods can still be verified:
-   new Verifications() {% {{ %} c1.simpleOperation(anyInt, anyString, (Date) any); {% }} %};
+   new Verifications() {{ c1.simpleOperation(anyInt, anyString, (Date) any); }};
 }
+{% endraw %}
 ```
 
 最后，将部分模拟应用于测试类的一种更简单的方法是在测试类中将一个字段注释为@Tested（请参阅下面的部分）和@Mocked。 
@@ -1068,18 +1086,20 @@ public final class TestedUnit {
 此功能由 `@Capturing` 注释激活，该注释可应用于模拟字段和模拟参数，如下所示。
 
 ```java
+{% raw %}
 final class UnitTest {
    @Capturing Service anyService;
 
    @Test
    void mockingImplementationClassesFromAGivenBaseType() {
-      new Expectations() {% {{ %} anyService.doSomething(); returns(3, 4); {% }} %};
+      new Expectations() {{ anyService.doSomething(); returns(3, 4); }};
 
       int result = new TestedUnit().businessOperation();
 
       assertEquals(7, result);
    }
 }
+{% endraw %}
 ```
 
 在上面的测试中，为 Service#doSomething() 方法指定了两个返回值。 
