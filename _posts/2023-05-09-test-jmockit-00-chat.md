@@ -336,7 +336,7 @@ public class RecordingReplayTest {
         new Expectations(myObject) {{
             myObject.getValue();
             result = "mocked";
-        }};
+        }            };
 
         // 执行被测试代码
         String result = myObject.getValue();
@@ -348,7 +348,7 @@ public class RecordingReplayTest {
         new Verifications() {{
             myObject.getValue();
             times = 1;
-        }};
+        }            };
     }
 }
 ```
@@ -479,7 +479,7 @@ public class ExceptionHandlingTest {
         new Expectations(myObject) {{
             myObject.doSomething();
             result = new IllegalArgumentException("Mocked exception");
-        }};
+        }            };
 
         try {
             // 执行被测试代码
@@ -494,7 +494,7 @@ public class ExceptionHandlingTest {
         new Verifications() {{
             myObject.doSomething();
             times = 1;
-        }};
+        }            };
     }
 }
 ```
