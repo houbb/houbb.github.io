@@ -94,9 +94,6 @@ greetings: empty name
 exit status 1
 ```
 
-
-
-
 # 参考资料
 
 https://go.dev/doc/tutorial/handle-errors
