@@ -166,5 +166,9 @@ IDEA 会使用 JMH 插件来运行你的 JMH 测试，并在运行完成后提�
 
 chat
 
+https://plugins.jetbrains.com/plugin/7529-jmh-java-microbenchmark-harness
+
+https://github.com/openjdk/jmh/tree/master
+
 * any list
 {:toc}
