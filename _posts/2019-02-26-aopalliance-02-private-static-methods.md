@@ -220,6 +220,51 @@ mvn clean package
 
 此时，生成的 class 文件会进行增强。
 
+查看 class 文件，效果如下：
+
+```java
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
+package org.example.controller;
+
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.runtime.reflect.Factory;
+import org.example.aspect.ControllerAspect;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping({"/test"})
+public class TestController {
+    public TestController() {
+    }
+
+    @RequestMapping({"/hello"})
+    public String hello() {
+        JoinPoint var1 = Factory.makeJP(ajc$tjp_0, this, this);
+        return (String)hello_aroundBody1$advice(this, var1, ControllerAspect.aspectOf(), (ProceedingJoinPoint)var1);
+    }
+
+    private void privateRest() {
+        JoinPoint var1 = Factory.makeJP(ajc$tjp_1, this, this);
+        privateRest_aroundBody3$advice(this, var1, ControllerAspect.aspectOf(), (ProceedingJoinPoint)var1);
+    }
+
+    public static void staticTest() {
+        JoinPoint var0 = Factory.makeJP(ajc$tjp_2, (Object)null, (Object)null);
+        staticTest_aroundBody5$advice(var0, ControllerAspect.aspectOf(), (ProceedingJoinPoint)var0);
+    }
+
+    static {
+        ajc$preClinit();
+    }
+}
+```
+
 2）页面访问 
 
 http://localhost:8080/test/hello
