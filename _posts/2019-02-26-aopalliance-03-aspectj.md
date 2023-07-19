@@ -426,5 +426,9 @@ AspectJ和Spring AOP都是面向切面编程（AOP）的实现方式，它们在
 
 [Spring AOP与AspectJ的对比及应用](https://juejin.cn/post/7197366974371364919)
 
+https://programmer.ink/think/the-simplest-helloworld-example-of-aspectj.html
+
+https://github.com/josephpconley/aspectj-java-quickstart
+
 * any list
 {:toc}
