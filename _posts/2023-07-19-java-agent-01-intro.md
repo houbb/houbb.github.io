@@ -41,6 +41,37 @@ published: true
 
 因此，在使用`-javaagent`参数时，建议只使用经过测试和验证的代理程序，并且清楚地了解代理所做的修改。
 
+# javaagent 有哪些优秀的开源组件？
+
+截止到我所掌握的信息（2021年9月），Java Agent是一种Java应用程序的一部分，可以在运行时以字节码级别修改和增强应用程序的行为。Java Agent通常用于实现监控、性能优化、日志记录、安全性增强等功能。
+
+以下是一些在Java Agent领域中比较优秀的开源组件：
+
+1. Byte Buddy（https://bytebuddy.net/）：Byte Buddy是一个轻量级的字节码生成/操作库，它可以作为Java Agent使用。它提供了简单易用的API，用于动态创建和修改类，非常适合在运行时生成代理类。
+
+2. ASM（https://asm.ow2.io/）：ASM是一个用于分析和修改字节码的框架。它非常灵活和强大，但使用起来相对复杂。许多其他Java Agent工具都是基于ASM构建的。
+
+3. Javassist（http://www.javassist.org/）：Javassist是另一个用于编辑字节码的库，它相对于ASM来说更加易用，但在某些高级场景下可能会受到限制。
+
+4. AgentLib（https://github.com/HotswapProjects/AgentLib）：AgentLib是HotswapProjects项目的一部分，它提供了一组用于创建Java Agent的工具和API，使得创建Agent变得更加容易。
+
+5. Prometheus Java Agent（https://github.com/prometheus/jmx_exporter）：Prometheus Java Agent用于导出Java应用程序的JMX指标，从而可以通过Prometheus监控和采集应用程序的性能指标。
+
+# 基于 javagent 有 skywalking, alibaba 的 阿尔萨斯等组件，还有哪些类似的？
+
+截止到我所掌握的信息（2021年9月），除了SkyWalking和阿尔萨斯（Alibaba的Arthas）之外，还有一些类似的基于Java Agent的开源组件，用于监控、诊断和调优Java应用程序。
+
+以下是其中一些：
+
+1. Pinpoint（https://github.com/pinpoint-apm/pinpoint）：Pinpoint是一个来自韩国的开源APM（Application Performance Management）工具，用于实时监控Java应用程序，并提供可视化的性能分析和故障排查功能。
+
+2. New Relic（https://github.com/newrelic/newrelic-java-agent）：New Relic提供实时的应用性能监控解决方案，其Java Agent可以在应用程序中收集性能数据，并将其发送到New Relic的云服务以进行分析和报告。
+
+3. AppDynamics（https://www.appdynamics.com/）：AppDynamics是一种应用性能监控和业务性能监控解决方案，可以监控Java应用程序的性能并提供实时的性能分析和诊断。
+
+4. Instana（https://www.instana.com/）：Instana是一种自动化的APM工具，可以对Java应用程序进行实时监控和性能分析，并提供全自动的故障排除和根本原因分析。
+
+5. Glowroot（https://github.com/glowroot/glowroot）：Glowroot是一个轻量级的开源APM工具，用于监控Java应用程序的性能，并提供事务跟踪和性能指标。
 
 # 参考资料
 
