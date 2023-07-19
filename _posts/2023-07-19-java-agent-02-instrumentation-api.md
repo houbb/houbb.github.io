@@ -196,6 +196,7 @@ Premain-Class: com.github.houbb.agent.learn.agent.MyAgent
 
 需要指定我们定义的 Agent 路径。
 
+
 ## 打包
 
 ```
@@ -206,6 +207,32 @@ mvn clean install
 
 ```
 D:/code/learn/agent-learn/target/agent-learn-1.0-SNAPSHOT.jar
+```
+
+### maven 插件
+
+第一次测试的时候，发现自定义的 MANIFEST.MF 并没有被打包到最总的 jar 中，会导致找不到 Agent 信息。
+
+我们可以在 pom 中指定：
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>3.2.2</version>
+            <configuration>
+                <archive>
+                    <manifestEntries>
+                        <build-time>${maven.build.timestamp}</build-time>
+                    </manifestEntries>
+                    <manifestFile>src/main/resources/META-INF/MANIFEST.MF</manifestFile>
+                </archive>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
 ```
 
 # 定义测试代码
