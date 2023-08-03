@@ -8,6 +8,62 @@ published: true
 ---
 
 
+# 1. dubbo filter 的用法
+
+使用示例
+
+## 创建一个XxxFilter，并实现com.alibaba.dubbo.rpc.Filter 这个类
+
+```java
+public class MyDubboFilter implements Filter {
+    public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
+        // before filter ...
+        Result result = invoker.invoke(invocation);
+        // after filter ...
+        return result;
+    }
+}
+```
+
+## 添加META-INF/dubbo/com.alibaba.dubbo.rpc.Filter 文件，并添加如下内容
+
+用来 spi 自动发现实现类。
+
+```
+myFilter=com.test.MyDubboFilter
+```
+
+## 配置xml
+
+```xml
+<dubbo:reference id="demoService" check="false" interface="com.alibaba.dubbo.demo.DemoService" filter="myFilter">
+    <dubbo:method name="sayHello" retries="0"></dubbo:method>
+</dubbo:reference>
+```
+
+## 配置方式
+
+### xml 配置方式
+
+```xml
+<!-- 消费方调用过程拦截 -->
+<dubbo:reference filter="xxx" />
+<!-- 消费方调用过程缺省拦截器，将拦截所有reference -->
+<dubbo:consumer filter="xxx"/>
+<!-- 提供方调用过程拦截 -->
+<dubbo:service filter="xxx" />
+<!-- 提供方调用过程缺省拦截器，将拦截所有service -->
+<dubbo:provider filter="xxx"/>
+```
+
+### 注解配置方式
+
+```java
+@Activate(group = Constants.CONSUMER, order = -10000)
+public class MyDubboFilter implements Filter {
+}
+```
+
 # dubbo 中的 invoker 实现原理
 
 在Dubbo中，`Invoker`是一个接口，它代表了一个可执行的远程服务。`Invoker`的实现类负责封装远程服务的调用过程，并提供服务的执行和结果的返回。
@@ -131,8 +187,228 @@ public class MyInvoker<T> implements Invoker<T> {
 
 可以结合 spi，或者整个调用列表。
 
+
+# dubbo 的源码解析
+
+## Filter的加载顺序问题
+
+通过 `@Activate` 注解中的order属性，Activate表示激活
+
+```java
+@Activate(group = Constants.CONSUMER, order = -10000)
+public class ConsumerContextFilter implements Filter {   
+}
+
+@Activate(group = Constants.CONSUMER)
+public class FutureFilter implements Filter {
+}
+
+@Activate(group = {Constants.PROVIDER, Constants.CONSUMER})    // 指定消费者和生产者
+public class MonitorFilter implements Filter {
+}
+```
+
+## 原生的Filter
+
+Dubbo原生的Filter很多，RpcContext，accesslog等功能都可以通过Dubbo来实现，下面我们来介绍一下Consumer端用于上下文传递的ConsumerContextFilter
+
+```java
+@Activate(group = Constants.CONSUMER, order = -10000)
+public class ConsumerContextFilter implements Filter {
+
+    public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
+        RpcContext.getContext()
+                .setInvoker(invoker)
+                .setInvocation(invocation)
+                .setLocalAddress(NetUtils.getLocalHost(), 0)
+                .setRemoteAddress(invoker.getUrl().getHost(),
+                        invoker.getUrl().getPort());
+        if (invocation instanceof RpcInvocation) {
+            ((RpcInvocation) invocation).setInvoker(invoker);
+        }
+        try {
+            return invoker.invoke(invocation);
+        } finally {
+            RpcContext.getContext().clearAttachments();
+        }
+    }
+
+}
+```
+
+此Filter记录了调用过程中的状态信息，并且通过invocation对象将客户端设置的attachments参数传递到服务端。
+
+并且在调用完成后清除这些参数，这就是为什么请求状态信息可以按次记录并且进行传递。
+ 
+Dubbo中已经实现的Filter大概有二十几个，它们的入口都是ProtocolFilterWrapper，ProtocolFilterWrapper对Protocol做了Wrapper，会在加载扩展的时候被加载进来，下面我们来看下这个Filter链是如何构造的。
+
+## 加载机制
+
+```java
+private static <T> Invoker<T> buildInvokerChain(final Invoker<T> invoker, String key, String group) {
+    Invoker<T> last = invoker;
+    // 获取已经激活的Filter（调用链，这里的调用链是已经排好序的）
+    List<Filter> filters = ExtensionLoader.getExtensionLoader(Filter.class).getActivateExtension(invoker.getUrl(), key, group);
+    if (filters.size() > 0) {
+        // 遍历
+        for (int i = filters.size() - 1; i >= 0; i--) {
+            final Filter filter = filters.get(i);
+            final Invoker<T> next = last;
+            // 典型的装饰器模式，将invoker用filter逐层进行包装
+            last = new Invoker<T>() {
+
+                public Class<T> getInterface() {
+                    return invoker.getInterface();
+                }
+
+                public URL getUrl() {
+                    return invoker.getUrl();
+                }
+
+                public boolean isAvailable() {
+                    return invoker.isAvailable();
+                }
+                // 重点，每个filter在执行invoke方法时，会触发其下级节点的invoke方法，最后一级节点即为最原始的服务
+                public Result invoke(Invocation invocation) throws RpcException {
+                    return filter.invoke(next, invocation);
+                }
+
+                public void destroy() {
+                    invoker.destroy();
+                }
+
+                @Override
+                public String toString() {
+                    return invoker.toString();
+                }
+            };
+        }
+    }
+    return last;
+}
+
+// 服务端暴露服务
+public <T> Exporter<T> export(Invoker<T> invoker) throws RpcException {
+    if (Constants.REGISTRY_PROTOCOL.equals(invoker.getUrl().getProtocol())) {
+        return protocol.export(invoker);
+    }
+    return protocol.export(buildInvokerChain(invoker, Constants.SERVICE_FILTER_KEY, Constants.PROVIDER));
+}
+
+// 客户端引用服务
+public <T> Invoker<T> refer(Class<T> type, URL url) throws RpcException {
+    if (Constants.REGISTRY_PROTOCOL.equals(url.getProtocol())) {
+        return protocol.refer(type, url);
+    }
+    return buildInvokerChain(protocol.refer(type, url), Constants.REFERENCE_FILTER_KEY, Constants.CONSUMER);
+}
+```
+
+
+通过上述代码我们可以看到，在buildInvokerChain中,先获取所有已经激活的调用链，这里的调用链是已经排好序的。
+
+再通过Invoker来构造出一个Filter的调用链，最后构建出的调用链大致可以表示为：Filter1->Filter2->Filter3->......->Invoker,下面我们来看一下，第一步中获取已经激活的调用链的详细流程
+
+## 调用链流程
+
+```java
+public List<T> getActivateExtension(URL url, String key, String group) {
+    String value = url.getParameter(key);
+    return getActivateExtension(url, value == null || value.length() == 0 ? null : Constants.COMMA_SPLIT_PATTERN.split(value), group);
+}
+
+public List<T> getActivateExtension(URL url, String[] values, String group) {
+    List<T> exts = new ArrayList<T>();
+
+    List<String> names = values == null ? new ArrayList<String>(0) : Arrays.asList(values);
+    // 如果用户配置的filter列表名称中不包含-default，则加载标注了Activate注解的filter列表
+    if (! names.contains(Constants.REMOVE_VALUE_PREFIX + Constants.DEFAULT_KEY)) {
+        // 加载配置文件，获取所有标注有Activate注解的类，存入cachedActivates中
+        getExtensionClasses();
+        for (Map.Entry<String, Activate> entry : cachedActivates.entrySet()) {
+            String name = entry.getKey();
+            Activate activate = entry.getValue();
+            // Activate注解可以指定group，这里是看注解指定的group与我们要求的group是否匹配
+            if (isMatchGroup(group, activate.group())) {
+                T ext = getExtension(name);
+                // 对于每一个dubbo中原生的filter，需要满足以下3个条件才会被加载：
+                // 1.用户配置的filter列表中不包含该名称的filter
+                // 2.用户配置的filter列表中不包含该名称前加了"-"的filter
+                // 3.该Activate注解被激活，具体激活条件随后详解                
+                if (! names.contains(name) && ! names.contains(Constants.REMOVE_VALUE_PREFIX + name) 
+                    && isActive(activate, url)) {
+                    exts.add(ext);
+                }
+            }
+        }
+        // 排序
+        Collections.sort(exts, ActivateComparator.COMPARATOR);
+    }
+    // 加载用户在spring配置文件中配置的filter列表
+    List<T> usrs = new ArrayList<T>();
+    for (int i = 0; i < names.size(); i ++) {
+        String name = names.get(i);
+        if (! name.startsWith(Constants.REMOVE_VALUE_PREFIX)
+            && ! names.contains(Constants.REMOVE_VALUE_PREFIX + name)) {
+            if (Constants.DEFAULT_KEY.equals(name)) {
+                if (usrs.size() > 0) {
+                    exts.addAll(0, usrs);
+                    usrs.clear();
+                }
+            } else {
+                T ext = getExtension(name);
+                usrs.add(ext);
+            }
+        }
+    }
+    if (usrs.size() > 0) {
+        exts.addAll(usrs);
+    }
+    return exts;
+}
+```
+
+通过以上代码可以看到，用户自己配置的Filter中，有些是默认激活，有些是需要通过配置文件来激活。
+
+而所有Filter的加载顺序，也是先处理Dubbo的默认Filter，再来处理用户自己定义并且配置的Filter。
+
+通过"-"配置，可以替换掉Dubbo的原生Filter，通过这样的设计，可以灵活地替换或者修改Filter的加载顺序。
+
+## 总结：
+
+filter被分为两类，一类是标注了Activate注解的filter，包括dubbo原生的和用户自定义的；一类是用户在spring配置文件中手动注入的filter
+
+对标注了Activate注解的filter，可以通过before、after和order属性来控制它们之间的相对顺序，还可以通过group来区分服务端和消费端
+
+手动注入filter时，可以用default来代表所有标注了Activate注解的filter，以此来控制两类filter之间的顺序
+
+手动注入filter时，可以在filter名称前加一个"-"表示排除某一个filter，比如说如果配置了一个-default的filter，将不再加载所有标注了Activate注解的filter
+
+# 想法
+
+对 invoke 类似的拦截器进行统一的抽象。
+
+便于所有的拦截器增强实现。
+
 # 参考资料
 
+[Dubbo之Filter 原理](https://www.cnblogs.com/caoxb/p/13140436.html)
+
+[聊聊Dubbo（六）：核心源码-Filter链原理](https://juejin.cn/post/6844903591568752653)
+
+https://blog.csdn.net/LeoHan163/article/details/121439686
+
+https://blog.csdn.net/qq_31960623/article/details/119959757
+
+[dubbo中的Filter链原理及应用](https://www.jianshu.com/p/f390bb88574d)
+
+https://segmentfault.com/a/1190000040755445
+
+https://developer.aliyun.com/article/721665
+
+https://www.code260.com/2020/04/24/dubbo-rpc-filter-1/
+
+https://blog.51cto.com/u_15288542/3030272
 
 * any list
 {:toc}
