@@ -93,7 +93,7 @@ classpath下创建 log4j2.component.properties 文件
 
 ```properties
 log4j2.asyncLoggerRingBufferSize=65535
-log4j2.AsyncQueueFullPolicy=Discard;
+log4j2.AsyncQueueFullPolicy=Discard
 log4j2.DiscardThreshold=INFO
 ```
 
@@ -163,7 +163,9 @@ log4j2.DiscardThreshold=INFO
 </Configuration>
 ```
 
-## 指定配置文件
+## 指定配置文件-log4j2.component.properties
+
+指定配置文件
 
 ```properties
 # 最多缓存多少个
