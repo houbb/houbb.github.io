@@ -99,6 +99,81 @@ log4j2.DiscardThreshold=INFO
 
 如果两者都配置了，则第二种方式将会覆盖第一种方式的配置。
 
+# 个人思考
+
+## log4j2.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" packages = "com.github.houbb.sensitive.log4j2.layout">
+
+    <Properties>
+        <Property name="DEFAULT_PATTERN">%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+        <Property name="DEFAULT_CHARSET">UTF-8</Property>
+        <Property name="LOG_HOME">/log4j2/logs/test</Property>
+    </Properties>
+
+    <Appenders>
+        <RollingRandomAccessFile name="COMMON-FILE-APPENDER"
+                                 filePattern="${LOG_HOME}/$${date:yyyy-MM}/error-%d{MM-dd-yyyy}-%i.log.gz"
+                                 fileName = "${LOG_HOME}/common.log"
+                                 immediateFlush="true">
+            <ThresholdFilter level="ERROR" onMatch="DENY" onMisMatch="ACCEPT"/>
+            <PatternLayout>
+                <Pattern>${DEFAULT_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
+        </RollingRandomAccessFile>
+
+        <RollingRandomAccessFile name="ERROR-FILE-APPENDER"
+                                 filePattern="${LOG_HOME}/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz"
+                                 fileName = "${LOG_HOME}/error.log"
+                                 immediateFlush="true">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMisMatch="DENY"/>
+            <PatternLayout>
+                <Pattern>${DEFAULT_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
+        </RollingRandomAccessFile>
+
+<!--        <Console name="Console" target="SYSTEM_OUT">-->
+<!--            <SensitivePatternLayout/>-->
+<!--        </Console>-->
+    </Appenders>
+
+    <Loggers>
+
+        <AsyncLogger name="com.github.houbb.sensitive.test" level="INFO" additivity="false">
+            <AppenderRef ref="COMMON-FILE-APPENDER"/>
+            <AppenderRef ref="ERROR-FILE-APPENDER"/>
+        </AsyncLogger>
+
+        <asyncRoot level="INFO">
+            <AppenderRef ref="COMMON-FILE-APPENDER"/>
+            <AppenderRef ref="ERROR-FILE-APPENDER"/>
+        </asyncRoot>
+    </Loggers>
+
+</Configuration>
+```
+
+## 指定配置文件
+
+```properties
+# 最多缓存多少个
+log4j2.asyncLoggerRingBufferSize=100
+# 策略为丢弃
+log4j2.AsyncQueueFullPolicy=Discard
+# 对应的策略隔离级别
+log4j2.DiscardThreshold=INFO
+```
+
 # 参考资料
 
 https://blog.csdn.net/qq_35754073/article/details/104116487
