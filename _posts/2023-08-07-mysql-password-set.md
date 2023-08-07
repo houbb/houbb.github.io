@@ -1,7 +1,7 @@
 ---
 layout: post
 title: mysql reset password 重置密码 You must reset your password using ALTER USER statement before executing this statement
-date:  2023-08-06 +0800
+date:  2023-08-07 +0800
 categories: [Database]
 tags: [database, mysql, sh]
 published: true
