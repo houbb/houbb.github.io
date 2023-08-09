@@ -3,7 +3,7 @@ layout: post
 title: Java Bytecode Kit-00-bytekit 入门介绍
 date:  2023-08-09 +0800
 categories: [JVM]
-tags: [jvm, byte, instrument, ali, sh]
+tags: [jvm, bytecode, instrument, ali, sh]
 published: true
 ---
 
@@ -123,8 +123,287 @@ public String hello(String str) {
 }
 ```
 
+这种方式可以随意插入代码，非常灵活。
 
+参考增强Dubbo Filter的示例：
 
+```java
+package com.alibaba.bytekit.asm.inst;
+
+import org.apache.dubbo.rpc.Invocation;
+import org.apache.dubbo.rpc.Invoker;
+import org.apache.dubbo.rpc.Result;
+import org.apache.dubbo.rpc.RpcException;
+
+import com.alibaba.bytekit.agent.inst.Instrument;
+import com.alibaba.bytekit.agent.inst.InstrumentApi;
+
+/**
+ * @see org.apache.dubbo.rpc.Filter
+ * @author hengyunabc 2020-11-26
+ *
+ */
+@Instrument(Interface = "org.apache.dubbo.rpc.Filter")
+public abstract class DubboFilter_APM {
+
+    public Result invoke(Invoker<?> invoker, Invocation invocation) throws RpcException {
+        DubboUtils.print(invoker);
+        System.err.println("invoker class: " + this.getClass().getName());
+        Result result = InstrumentApi.invokeOrigin();
+
+        return result;
+    }
+}
+```
+
+# 示例
+
+以ByteKitDemo.java为例说明。
+
+```java
+package com.example;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import com.alibaba.deps.org.objectweb.asm.tree.ClassNode;
+import com.alibaba.deps.org.objectweb.asm.tree.MethodNode;
+import com.alibaba.bytekit.asm.MethodProcessor;
+import com.alibaba.bytekit.asm.binding.Binding;
+import com.alibaba.bytekit.asm.interceptor.InterceptorProcessor;
+import com.alibaba.bytekit.asm.interceptor.annotation.AtEnter;
+import com.alibaba.bytekit.asm.interceptor.annotation.AtExceptionExit;
+import com.alibaba.bytekit.asm.interceptor.annotation.AtExit;
+import com.alibaba.bytekit.asm.interceptor.annotation.ExceptionHandler;
+import com.alibaba.bytekit.asm.interceptor.parser.DefaultInterceptorClassParser;
+import com.alibaba.bytekit.utils.AgentUtils;
+import com.alibaba.bytekit.utils.AsmUtils;
+import com.alibaba.bytekit.utils.Decompiler;
+
+/**
+ * 
+ * @author hengyunabc 2020-05-21
+ *
+ */
+public class ByteKitDemo {
+
+    public static class Sample {
+        private int exceptionCount = 0;
+
+        public String hello(String str, boolean exception) {
+            if (exception) {
+                exceptionCount++;
+                throw new RuntimeException("test exception, str: " + str);
+            }
+            return "hello " + str;
+        }
+    }
+
+    public static class PrintExceptionSuppressHandler {
+
+        @ExceptionHandler(inline = true)
+        public static void onSuppress(@Binding.Throwable Throwable e, @Binding.Class Object clazz) {
+            System.out.println("exception handler: " + clazz);
+            e.printStackTrace();
+        }
+    }
+
+    public static class SampleInterceptor {
+
+        @AtEnter(inline = true, suppress = RuntimeException.class, suppressHandler = PrintExceptionSuppressHandler.class)
+        public static void atEnter(@Binding.This Object object, 
+                @Binding.Class Object clazz,
+                @Binding.Args Object[] args, 
+                @Binding.MethodName String methodName,
+                @Binding.MethodDesc String methodDesc) {
+            System.out.println("atEnter, args[0]: " + args[0]);
+        }
+
+        @AtExit(inline = true)
+        public static void atExit(@Binding.Return Object returnObject) {
+            System.out.println("atExit, returnObject: " + returnObject);
+        }
+
+        @AtExceptionExit(inline = true, onException = RuntimeException.class)
+        public static void atExceptionExit(@Binding.Throwable RuntimeException ex,
+                @Binding.Field(name = "exceptionCount") int exceptionCount) {
+            System.out.println("atExceptionExit, ex: " + ex.getMessage() + ", field exceptionCount: " + exceptionCount);
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        AgentUtils.install();
+
+        // 启动Sample，不断执行
+        final Sample sample = new Sample();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 100; ++i) {
+                    try {
+                        TimeUnit.SECONDS.sleep(3);
+                        String result = sample.hello("" + i, (i % 3) == 0);
+                        System.out.println("call hello result: " + result);
+                    } catch (Throwable e) {
+                        // ignore
+                        System.out.println("call hello exception: " + e.getMessage());
+                    }
+                }
+            }
+        });
+        t.start();
+
+        // 解析定义的 Interceptor类 和相关的注解
+        DefaultInterceptorClassParser interceptorClassParser = new DefaultInterceptorClassParser();
+        List<InterceptorProcessor> processors = interceptorClassParser.parse(SampleInterceptor.class);
+
+        // 加载字节码
+        ClassNode classNode = AsmUtils.loadClass(Sample.class);
+
+        // 对加载到的字节码做增强处理
+        for (MethodNode methodNode : classNode.methods) {
+            if (methodNode.name.equals("hello")) {
+                MethodProcessor methodProcessor = new MethodProcessor(classNode, methodNode);
+                for (InterceptorProcessor interceptor : processors) {
+                    interceptor.process(methodProcessor);
+                }
+            }
+        }
+
+        // 获取增强后的字节码
+        byte[] bytes = AsmUtils.toBytes(classNode);
+
+        // 查看反编译结果
+        System.out.println(Decompiler.decompile(bytes));
+
+        // 等待，查看未增强里的输出结果
+        TimeUnit.SECONDS.sleep(10);
+
+        // 通过 reTransform 增强类
+        AgentUtils.reTransform(Sample.class, bytes);
+        System.in.read();
+    }
+
+}
+```
+
+## 1. 定义注入点和Binding数据
+
+- 在下面的 SampleInterceptor 时定义了要注入 @AtEnter/@AtExit/@AtExceptionExit 三个地方，
+
+- 用@Binding绑定了不同的数据
+
+- 在@AtEnter里配置了 inline = true，则说明插入的SampleInterceptor#atEnter函数本身会被inline掉
+
+- 配置了 suppress = RuntimeException.class 和 suppressHandler = PrintExceptionSuppressHandler.class，说明插入的代码会被 try/catch 包围
+
+```java
+public static class SampleInterceptor {
+    @AtEnter(inline = true, suppress = RuntimeException.class, suppressHandler = PrintExceptionSuppressHandler.class)
+    public static void atEnter(@Binding.This Object object, 
+            @Binding.Class Object clazz,
+            @Binding.Args Object[] args, 
+            @Binding.MethodName String methodName,
+            @Binding.MethodDesc String methodDesc) {
+        System.out.println("atEnter, args[0]: " + args[0]);
+    }
+
+    @AtExit(inline = true)
+    public static void atExit(@Binding.Return Object returnObject) {
+        System.out.println("atExit, returnObject: " + returnObject);
+    }
+
+    @AtExceptionExit(inline = true, onException = RuntimeException.class)
+    public static void atExceptionExit(@Binding.Throwable RuntimeException ex,
+            @Binding.Field(name = "exceptionCount") int exceptionCount) {
+        System.out.println("atExceptionExit, ex: " + ex.getMessage() + ", field exceptionCount: " + exceptionCount);
+    }
+}
+```
+
+## 2. @ExceptionHandler
+
+在上面的 @AtEnter配置里，生成的代码会被 try/catch 包围，那么具体的内容是在PrintExceptionSuppressHandler里
+
+```java
+public static class PrintExceptionSuppressHandler {
+    @ExceptionHandler(inline = true)
+    public static void onSuppress(@Binding.Throwable Throwable e, @Binding.Class Object clazz) {
+        System.out.println("exception handler: " + clazz);
+        e.printStackTrace();
+    }
+}
+```
+
+## 3. 查看反编译结果
+
+原始的Sample类是：
+
+```java
+public static class Sample {
+    private int exceptionCount = 0;
+    public String hello(String str, boolean exception) {
+        if (exception) {
+            exceptionCount++;
+            throw new RuntimeException("test exception, str: " + str);
+        }
+        return "hello " + str;
+    }
+}
+```
+
+增强后的字节码，再反编译：
+
+```java
+package com.example;
+
+public static class ByteKitDemo.Sample {
+    private int exceptionCount = 0;
+
+    public String hello(String string, boolean bl) {
+        try {
+            String string2 = "(Ljava/lang/String;Z)Ljava/lang/String;";
+            String string3 = "hello";
+            Object[] arrobject = new Object[]{string, new Boolean(bl)};
+            Class<ByteKitDemo.Sample> class_ = ByteKitDemo.Sample.class;
+            ByteKitDemo.Sample sample = this;
+            System.out.println("atEnter, args[0]: " + arrobject[0]);
+        }
+        catch (RuntimeException runtimeException) {
+            Class<ByteKitDemo.Sample> class_ = ByteKitDemo.Sample.class;
+            RuntimeException runtimeException2 = runtimeException;
+            System.out.println("exception handler: " + class_);
+            runtimeException2.printStackTrace();
+        }
+        try {
+            String string4;
+            void str;
+            void exception;
+            if (exception != false) {
+                ++this.exceptionCount;
+                throw new RuntimeException("test exception, str: " + (String)str);
+            }
+            String string5 = string4 = "hello " + (String)str;
+            System.out.println("atExit, returnObject: " + string5);
+            return string4;
+        }
+        catch (RuntimeException runtimeException) {
+            int n = this.exceptionCount;
+            RuntimeException runtimeException3 = runtimeException;
+            System.out.println("atExceptionExit, ex: " + runtimeException3.getMessage() + ", field exceptionCount: " + n);
+            throw runtimeException;
+        }
+    }
+}
+```
+
+# 开发相关
+
+deploy到远程仓库：
+
+```
+mvn clean deploy -DskipTests -P release
+```
 
 # 参考资料
 
