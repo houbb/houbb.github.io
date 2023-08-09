@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 字节码生成-Byte Buddy
+title: Byte Buddy-01-字节码生成入门介绍
 date:  2019-10-30 11:18:30 +0800
 categories: [Java]
 tags: [java, bytecode, sf]
