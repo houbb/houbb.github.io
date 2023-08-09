@@ -22,7 +22,6 @@ published: true
       - [WAIT: What Anime Is This? - Anime Scene Search Engine][4]
       - [2019年4月新番动漫大全_嘀哩嘀哩][5]
       - [影片搜索结果-星辰影院-Www.VodXc.Com][6]
-      - [2020最新电影_好看的韩国三级片排行榜手机在线观看 - 逗号影视][7]
     - ### 绘图
 
       - [幕布精选 - 幕布][8]
@@ -30,7 +29,7 @@ published: true
       - [Flowchart Maker & Online Diagram Software][10]
       - [Project Showcase - Create a portfolio for your projects][11]
       - [ps线上版本][12]
-      - [Photopea | Online Image Editor][12]
+      - [Photopea-Online Image Editor][12]
     - ### 电子书
 
       - [精选 · Love2.io][13]
@@ -81,7 +80,7 @@ published: true
       - [人人开发 - 集可视化开发，应用市场，威客众包，PaaS云于一体的企业级应用服务平台][49]
       - [项目外包,软件外包,网站外包,软件项目-我要外包网同城外包信息服务平台][50]
       - [码易_企业应用商店_软件众包_软件服务_云市场_云课堂_云计算平台网站！][51]
-      - [在线雇佣威客&寻找自由职业工作 | Freelancer][52]
+      - [在线雇佣威客&寻找自由职业工作-Freelancer][52]
     - ### 招聘网站
 
       - [全国招聘网_全国人才网_求职_找工作_上智联招聘][53]
@@ -124,8 +123,6 @@ published: true
     - [免費圖庫相片 · Pexels][88]
     - [Pixiv Illustration Collection][89]
     - [觅元素_设计元素的免费下载网站_免抠素材51yuansu.com][90]
-    - [人体艺术 库存照片、图片和摄影作品 | Shutterstock][91]
-    - [超过 200 张关于“人体艺术”和“艺术”的免费图片 - Pixabay][92]
     - [百度脑图－便捷的思维工具][93]
     - [Issues · 叶止水/img - Gitee.com][94]
     - [Md2All-排版神器][95]
@@ -138,8 +135,8 @@ published: true
 
     - ### 算法
 
-      - [Java Algorithms Interview Questions | Interview Tips][99]
-      - [B+ 树 - 索引 | Coursera][100]
+      - [Java Algorithms Interview Questions-Interview Tips][99]
+      - [B+ 树 - 索引-Coursera][100]
       - [LeetCode - The World's Leading Online Programming Learning Platform][101]
       - [剑指Offer_编程题_牛客网][102]
       - [算法爱好者][103]
@@ -148,8 +145,8 @@ published: true
       - [计算机书籍推荐 - 第1页 -- 简明现代魔法][106]
     - ### 数据结构
 
-      - [Data structures reference, for coding interviews and computer science classes | Interview Cake][107]
-      - [Graph Data Structures for Beginners | Adrian Mejia Blog][108]
+      - [Data structures reference, for coding interviews and computer science classes-Interview Cake][107]
+      - [Graph Data Structures for Beginners-Adrian Mejia Blog][108]
     - ### web-front
 
       - ### d3-js
@@ -164,10 +161,10 @@ published: true
       - [webpack module bundler][116]
       - [iView介绍 - iView][117]
       - [Vue.js][118]
-      - [VUX 入门教程 | VUX - Vue 移动端 UI 组件库][119]
+      - [VUX 入门教程-VUX - Vue 移动端 UI 组件库][119]
       - [Ant Design - 一个 UI 设计语言][120]
       - [Babel · The compiler for writing next generation JavaScript][121]
-      - [文档 | Electron][122]
+      - [文档-Electron][122]
       - [飞冰 - 让前端开发简单而友好][123]
     - ### 经典书籍
 
@@ -257,14 +254,14 @@ published: true
     - ### BitCoin
     - ### nlp
 
-      - [我爱自然语言处理 | I Love Natural Language Processing][157]
+      - [我爱自然语言处理-I Love Natural Language Processing][157]
       - [yaleimeng/Final_word_Similarity: 综合了同义词词林扩展版与知网（Hownet）的词语相似度计算方法，词汇覆盖更多、结果更准确。][158]
       - [nlp/常用数据集简介.md at master · duoergun0729/nlp][159]
     - ### python
 
       - [PythonStock（1）：python 股票系统设计 - freewebsys的专栏 - CSDN博客][160]
       - [benitoro/stockholm: 一个股票数据（沪深）爬虫和选股策略测试框架][161]
-      - [量化学习 | 量化交易初学者10本必备书籍（附下载链接） - 简书][162]
+      - [量化学习-量化交易初学者10本必备书籍（附下载链接） - 简书][162]
       - [量化交易必读书单，你读了几本？ - 宽客在线的博客 - CSDN博客][163]
   
   - ### 云盘资源
@@ -306,8 +303,8 @@ published: true
   - ### 资源整合
 
     - [阿虚同学的储物间][287]
-    - [网站合集 | 好网站不私藏][288]
-    - [爱达杂货铺 | 收集那些有用的东西|爱达导航][289]
+    - [网站合集-好网站不私藏][288]
+    - [爱达杂货铺-收集那些有用的东西|爱达导航][289]
     - [首页-书签地球-中国首家浏览器书签共享平台][290]
     - [不死鸟 - 分享为王官网][291]
     - [iMyShare - 收集免费实用有趣的东西，做最好的资源导航][292]
@@ -315,17 +312,17 @@ published: true
     - [搜图导航-一款强大且智能的设计师导航][294]
     - [SCI-Hub论文下载可用网址链接（实时更新） - YoviSun工具集][295]
     - [超能搜 - 百度网盘搜索神器][296]
-    - [学吧导航 | 四十万学习爱好者都在用的学习导航网站][297]
+    - [学吧导航-四十万学习爱好者都在用的学习导航网站][297]
     - [科塔学术导航 - 最专业、准确、及时和全面的科研与学术资源导航平台][298]
     - [产品经理导航|运营导航|设计师导航-阿猫阿狗导航][299]
     - [李叔叔 – 办公网址资源导航][300]
     - [大数据导航|大数据从业者的网址大全-学大数据，就上大数据人导航！][301]
-    - [Guidebook | 让工作学习生活更高效！][302]
+    - [Guidebook-让工作学习生活更高效！][302]
     - [LKs - 良心到难以置信的网站推荐][303]
     - [Glgoo 学术搜索][304]
     - [Java工程师成神之路][305]
     - [百度一下][306]
-    - [组件 | Element][307]
+    - [组件-Element][307]
     - [保存存档][308]
   - ### coin
 
@@ -350,7 +347,7 @@ published: true
   - [Google 翻译][325]
   - [分布式链路追踪：集群管理设计][326]
   - [Admin Dashboard - Sales · Moqups][327]
-  - [Technology Radar | An opinionated guide to technology frontiers | Thoughtworks][328]
+  - [Technology Radar-An opinionated guide to technology frontiers-Thoughtworks][328]
 - [My Subscriptions - Vultr.com][329]
 - [Nexus Repository Manager][330]
 - [Docker Hub][331]
@@ -358,12 +355,12 @@ published: true
 - [Chris Blog - Java博文专集][333]
 - [有个博客][334]
 - [PyPI – the Python Package Index · PyPI][335]
-- [Sign in | Coveralls - Test Coverage History & Statistics][336]
+- [Sign in-Coveralls - Test Coverage History & Statistics][336]
 - [Travis CI - Test and Deploy Your Code with Confidence][337]
 - [Turn websites into data][338]
 - [收件箱 (34) - houbinbin.echo@gmail.com - Gmail][339]
 - [Domain Manager][340]
-- [币安最新公告 | 币安][341]
+- [币安最新公告-币安][341]
 - [Open Port Check Tool - Test Port Forwarding on Your Router][342]
 - [端口扫描 - 站长工具][343]
 - [李某龙(@sllyli) · 看云][344]
