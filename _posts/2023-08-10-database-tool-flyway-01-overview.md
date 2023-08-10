@@ -168,16 +168,29 @@ But what about the database?
 > cd flyway
 ```
 
-通过编辑 /conf/flyway.conf 配置 Flyway，如下所示：
+我的是：
 
 ```
-flyway.url=jdbc:sqlite:FlywayQuickStartCLI.db
-flyway.user= 
-flyway.password=
-flyway.locations=filesystem:migrations
+> cd D:\tool\flyway\flyway-commandline-9.21.1-windows-x64\flyway-9.21.1
+
+> ls
+assets/  conf/  drivers/  flyway*  flyway.cmd  jars/  jre/  lib/  licenses/  native/  README.txt  rules/  sql/
 ```
 
-- 创建第一个迁移
+
+### 文件配置
+
+通过编辑 `/conf/flyway.conf` 配置 Flyway，如下所示：
+
+```
+flyway.url=jdbc:mysql://localhost:3306/flyway
+flyway.user=flyway 
+flyway.password=123456
+```
+
+`flyway.locations` 这个属性我们暂时不做配置，默认会在 sql 文件夹中。
+
+### 创建第一个迁移
 
 现在在 /sql 目录中创建第一个迁移，名为 V1__Create_person_table.sql：
 
@@ -188,10 +201,377 @@ create table PERSON (
 );
 ```
 
+- 执行迁移
 
+```
+> flyway migrate
+```
+
+报错
+
+```
+> flyway migrate
+ERROR: Unable to obtain connection from database (jdbc:mysql://localhost:3306/flyway) for user 'flyway': Could not connect to address=(host=localhost)(port=3306)(type=master) : (conn=9) Unknown database 'flyway'
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SQL State  : 42000
+Error Code : 1049
+Message    : Could not connect to address=(host=localhost)(port=3306)(type=master) : (conn=9) Unknown database 'flyway'
+
+Caused by: java.sql.SQLSyntaxErrorException: Could not connect to address=(host=localhost)(port=3306)(type=master) : (conn=9) Unknown database 'flyway'
+Caused by: java.sql.SQLSyntaxErrorException: (conn=9) Unknown database 'flyway'
+```
+
+我们先连接到 mysql，创建对应的数据库 flyway。
+
+```
+λ flyway migrate
+WARNING: A Flyway License was not provided; fell back to Community Edition. Please contact sales at sales@flywaydb.org for license information.
+Flyway Community Edition 9.21.1 by Redgate
+See release notes here: https://rd.gt/416ObMi
+
+Database: jdbc:mysql://localhost:3306/flyway (MySQL 5.7)
+ERROR: Flyway Teams Edition or MySQL upgrade required: MySQL 5.7 is no longer supported by Flyway Community Edition, but still supported by Flyway Teams Edition.
+```
+
+这个信息已经很明白的说明了，现有使用的Flyway开源版本不支持5.7了，如果还想要使用请使用收费的版本。
+
+至此看来只能是升级MySQL到8.0了，而我机器的MySQL暂时还无法升级，这样看来Flyway是不能用了，花了这么长时间没法用，实在不甘心，于是再次上网查了一下，发现了下面的网文给了我启发
+
+https://blog.csdn.net/Alex_81D/article/details/122713943 运行flyway报错， MySQL 5.6 is no longer supported by Flyway Community Edition，问题处理
+
+该文中提到的版本是5.6，解决的方法有两种，
+
+**一是升级MySQL 5.7；另一种是降低Flyway的版本**。
+
+这给了我启发，我也可以降低Flyway版本，早期的Flyway版本肯定可以使用MySQL 5.7。
+
+经过一番测试后发现Flyway从8.0开始不再支持MySQL 5.7，因此它的7.x版本是可以支持MySQL 5.7的，于是找到Flyway 7.x的最后版本7.15.0。
+
+> [maven 等仓库信息官方旧版本访问地址](https://documentation.red-gate.com/fd/accessing-older-versions-of-flyway-184128789.html)
+
+至于命令行，还是要去 github 看比较清晰：
+
+> [client 命令行历史版本](https://github.com/flyway/flyway/releases)
+
+这里我们选择 7.x 的最后一个版本，[7.15.0](https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/7.15.0/)
+
+```
+> cd D:\tool\flyway\flyway-commandline-7.15.0-windows-x64\flyway-7.15.0
+
+> flyway migrate
+```
+
+
+成功日志如下：
+
+```
+WARNING: This version of Flyway is out of date. Upgrade to Flyway 9.0.0: https://rd.gt/3rXiSlV
+
+Flyway Teams Edition 7.15.0 by Redgate
+Database: jdbc:mysql://localhost:3306/flyway (MySQL 5.7)
+----------------------------------------
+Flyway Teams features are enabled by default for the next 28 days. Learn more at https://rd.gt/3A4IWym
+----------------------------------------
+Successfully validated 1 migration (execution time 00:00.011s)
+Creating Schema History table `flyway`.`flyway_schema_history` ...
+Current version of schema `flyway`: << Empty Schema >>
+Migrating schema `flyway` to version "1 - Create person table"
+Successfully applied 1 migration to schema `flyway`, now at version v1 (execution time 00:00.053s)
+```
+
+可以看到数据库中多了两张表：
+
+```
+mysql> show tables;
++-----------------------+
+| Tables_in_flyway      |
++-----------------------+
+| flyway_schema_history |
+| person                |
++-----------------------+
+```
+
+历史表的内容如下：
+
+```
+mysql> select * from flyway_schema_history;
++----------------+---------+---------------------+------+-----------------------------+------------+--------------+---------------------+----------------+---------+
+| installed_rank | version | description         | type | script                      | checksum   | installed_by | installed_on        | execution_time | success |
++----------------+---------+---------------------+------+-----------------------------+------------+--------------+---------------------+----------------+---------+
+|              1 | 1       | Create person table | SQL  | V1__Create_person_table.sql | 1715188512 | flyway       | 2023-08-10 11:12:32 |             28 |       1 |
++----------------+---------+---------------------+------+-----------------------------+------------+--------------+---------------------+----------------+---------+
+```
+
+这里就涉及到一个设计问题，比如这个历史表是应该创建在业务库中，还是应该单独一个数据库？
+
+个人感觉可能后者更好。
+
+### 创建第二次同步
+
+我们第二次往表中添加一些数据：
+
+/sql 文件夹下，新建文件 `V2__Add_people.sql`，内容如下
+
+```sql
+insert into PERSON (ID, NAME) values (1, 'Axel');
+insert into PERSON (ID, NAME) values (2, 'Mr. Foo');
+insert into PERSON (ID, NAME) values (3, 'Ms. Bar');
+```
+
+- 执行同步
+
+```
+> flyway migrate
+
+Flyway Teams Edition 7.15.0 by Redgate
+Database: jdbc:mysql://localhost:3306/flyway (MySQL 5.7)
+----------------------------------------
+Flyway Teams features are enabled by default for the next 28 days. Learn more at https://rd.gt/3A4IWym
+----------------------------------------
+Successfully validated 2 migrations (execution time 00:00.013s)
+Current version of schema `flyway`: 1
+Migrating schema `flyway` to version "2 - Add people"
+Successfully applied 1 migration to schema `flyway`, now at version v2 (execution time 00:00.050s)
+```
+
+- 查看历史表
+
+```
+mysql> select * from flyway_schema_history;
++----------------+---------+---------------------+------+-----------------------------+------------+--------------+---------------------+----------------+---------+
+| installed_rank | version | description         | type | script                      | checksum   | installed_by | installed_on        | execution_time | success |
++----------------+---------+---------------------+------+-----------------------------+------------+--------------+---------------------+----------------+---------+
+|              1 | 1       | Create person table | SQL  | V1__Create_person_table.sql | 1715188512 | flyway       | 2023-08-10 11:12:32 |             28 |       1 |
+|              2 | 2       | Add people          | SQL  | V2__Add_people.sql          |  476766047 | flyway       | 2023-08-10 11:17:10 |             19 |       1 |
++----------------+---------+---------------------+------+-----------------------------+------------+--------------+---------------------+----------------+---------+
+```
+
+# Flyway 常用命令
+
+Flyway 是一个数据库迁移工具，它提供了一组常用的命令，用于管理数据库的版本和结构变化。
+
+以下是一些常用的 Flyway 命令及其解释：
+
+1. **`migrate`：** 执行数据库迁移，将未应用的迁移脚本应用到数据库。
+
+   ```
+   flyway migrate
+   ```
+
+2. **`clean`：** 清空数据库中的所有对象（表、视图等），通常在开发和测试环境中使用。
+
+   ```
+   flyway clean
+   ```
+
+3. **`info`：** 显示当前数据库的状态，包括已应用的迁移脚本版本和未应用的迁移脚本数量。
+
+   ```
+   flyway info
+   ```
+
+4. **`validate`：** 验证迁移脚本的版本和签名是否与数据库中的记录匹配，用于检测脚本是否被篡改。
+
+   ```
+   flyway validate
+   ```
+
+5. **`baseline`：** 在没有历史迁移记录的情况下，为数据库创建一个基线版本。
+
+   ```
+   flyway baseline
+   ```
+
+6. **`repair`：** 修复 Flyway 元数据表，用于恢复数据库状态，适用于元数据表损坏或版本不匹配的情况。
+
+   ```
+   flyway repair
+   ```
+
+7. **`undo`：** 撤消上一次已应用的迁移脚本。
+
+   ```
+   flyway undo
+   ```
+
+8. **`undoLast`：** 撤消最后一次已应用的迁移脚本。
+
+   ```
+   flyway undoLast
+   ```
+
+9. **`baseline`：** 在已存在的数据库上创建一个基线版本，用于初始化 Flyway 版本控制。
+
+   ```
+   flyway baseline
+   ```
+
+10. **`-configFiles`：** 指定额外的配置文件，可以用于覆盖默认的 `flyway.conf`。
+
+    ```
+    flyway -configFiles=myconfig.conf migrate
+    ```
+
+这只是一些常见的 Flyway 命令，还有其他一些命令和选项可以用于特定情况和需求。
+
+使用命令时，务必查阅 Flyway 官方文档，以确保你正确理解每个命令的作用和影响。
+
+Flyway 的官方文档提供了详细的命令行参考：[Flyway Command-line Reference](https://flywaydb.org/documentation/commandline/)。
+
+# api 方式
+
+## maven 引入
+
+```xml
+<dependencies>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>7.15.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.197</version>
+        </dependency>
+</dependencies>
+```
+
+这里直接使用 h2 内存数据库，方便测试验证。
+
+## 创建迁移脚本
+
+新建文件：`~\src\main\resources\db\migration\V1__Create_person_table.sql`
+
+内容如下：
+
+```sql
+create table PERSON
+(
+    ID   int          not null,
+    NAME varchar(100) not null
+);
+```
+
+## 运行代码
+
+```java
+import org.flywaydb.core.Flyway;
+
+public class Main {
+
+    public static void main(String[] args) {
+        // Create the Flyway instance and point it to the database
+        Flyway flyway = Flyway.configure().dataSource("jdbc:h2:file:./target/foobar", "sa", null).load();
+
+        // Start the migration
+        flyway.migrate();
+    }
+
+}
+```
+
+日志：
+
+```
+八月 10, 2023 11:32:16 上午 org.flywaydb.core.internal.license.VersionPrinter printVersionOnly
+信息: Flyway Community Edition 7.15.0 by Redgate
+八月 10, 2023 11:32:16 上午 org.flywaydb.core.internal.database.base.BaseDatabaseType createDatabase
+信息: Database: jdbc:h2:file:./target/foobar (H2 1.4)
+八月 10, 2023 11:32:16 上午 org.flywaydb.core.internal.command.DbValidate validate
+信息: Successfully validated 1 migration (execution time 00:00.026s)
+八月 10, 2023 11:32:16 上午 org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory create
+信息: Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+八月 10, 2023 11:32:16 上午 org.flywaydb.core.internal.command.DbMigrate migrateGroup
+信息: Current version of schema "PUBLIC": << Empty Schema >>
+八月 10, 2023 11:32:16 上午 org.flywaydb.core.internal.command.DbMigrate doMigrateGroup
+信息: Migrating schema "PUBLIC" to version "1 - Create person table"
+八月 10, 2023 11:32:16 上午 org.flywaydb.core.internal.command.DbMigrate logSummary
+信息: Successfully applied 1 migration to schema "PUBLIC", now at version v1 (execution time 00:00.028s)
+```
+
+# maven 插件方式
+
+## maven 插件引入
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-maven-plugin</artifactId>
+            <version>7.15.0</version>
+            <configuration>
+                <url>jdbc:h2:file:./target/foobar</url>
+                <user>sa</user>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                    <version>1.4.197</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+    </plugins>
+</build>
+```
+
+引入 flyway 插件，依赖 h2 内存数据库。
+
+## 创建迁移脚本
+
+新建文件：`~\src\main\resources\db\migration\V1__Create_person_table.sql`
+
+内容如下：
+
+```sql
+create table PERSON
+(
+    ID   int          not null,
+    NAME varchar(100) not null
+);
+```
+
+## 运行脚本
+
+执行 maven 命令：
+
+```
+> mvn flyway:migrate
+```
+
+日志如下：
+
+```
+[INFO] --- flyway-maven-plugin:7.15.0:migrate (default-cli) @ flyway-learn-maven-plugin ---
+[INFO] Flyway Community Edition 7.15.0 by Redgate
+[INFO] Database: jdbc:h2:file:./target/foobar (H2 1.4)
+[INFO] Successfully validated 1 migration (execution time 00:00.020s)
+[INFO] Creating Schema History table "PUBLIC"."flyway_schema_history" ...
+[INFO] Current version of schema "PUBLIC": << Empty Schema >>
+[INFO] Migrating schema "PUBLIC" to version "1 - Create person table"
+[INFO] Successfully applied 1 migration to schema "PUBLIC", now at version v1 (execution time 00:00.018s)
+[INFO] Flyway Community Edition 7.15.0 by Redgate
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.608 s
+```
 
 
 # 拓展阅读
+
+[Quickstart - Flyway Autopilot](https://documentation.red-gate.com/fd/quickstart-flyway-autopilot-215154689.html)
+
+[Quickstart - Using Flyway Desktop with the Flyway Community edition](https://documentation.red-gate.com/fd/quickstart-using-flyway-desktop-with-the-flyway-community-edition-206602598.html)
+
+[Quickstart - Docker](https://documentation.red-gate.com/fd/quickstart-docker-205226373.html)
+
+[Quickstart - Gradle](https://documentation.red-gate.com/fd/quickstart-gradle-184127577.html)
+
+------------------
 
 [DbUnit-01-数据库测试工具入门介绍](https://houbb.github.io/2018/01/10/dbunit)
 
@@ -202,6 +582,8 @@ create table PERSON (
 https://flywaydb.org/
 
 https://documentation.red-gate.com/fd/why-database-migrations-184127574.html
+
+[Flyway管理数据库MySQL5.7入坑记录（三）](https://www.cnblogs.com/xupeixuan/p/16634401.html)
 
 * any list
 {:toc}d
