@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Apache Flink
+title: Apache Flink-01-入门介绍
 date: 2018-11-29 07:32:26 +0800
 categories: [Big Data]
 tags: [big-data, calc-engine, apache, sh]
 published: true
-excerpt: Apache Flink 干货合集
 ---
 
 # Apache Flink
