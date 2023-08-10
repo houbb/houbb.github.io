@@ -11,6 +11,24 @@ published: true
 
 [flyway](https://flywaydb.org/) Increase reliability of deployments by versioning your database.
 
+Flyway是一个开源的数据库迁移工具。 
+
+它强烈支持简单性和约定而不是配置。
+
+它仅基于 7 个基本命令：Migrate, Clean, Info, Validate, Undo, Baseline and Repair.
+
+迁移可以用 SQL（支持特定于数据库的语法（例如 PL/SQL、T-SQL 等））或 Java（用于高级数据转换或处理 LOB）编写。
+
+它有一个命令行客户端。 
+
+如果您使用 JVM，我们建议使用 Java API 在应用程序启动时迁移数据库。 
+
+或者，您也可以使用 Maven 插件或 Gradle 插件。
+
+如果这还不够，还有适用于 Spring Boot、Dropwizard、Grails、Play、SBT、Ant、Griffon、Grunt、Ninja 等的插件！
+
+支持的数据库包括 Oracle、SQL Server（包括 Amazon RDS 和 Azure SQL 数据库）、Azure Synapse（以前称为数据仓库）、DB2、MySQL（包括 Amazon RDS、Azure 数据库和 Google Cloud SQL）、Aurora MySQL、MariaDB、Percona XtraDB Cluster、 测试容器、PostgreSQL（包括 Amazon RDS、Azure 数据库、Google Cloud SQL、TimescaleDB、YugabyteDB 和 Heroku）、Aurora PostgreSQL、Redshift、CockroachDB、SAP HANA、Sybase ASE、Informix、H2、HSQLDB、Derby、Snowflake、SQLite 和 Firebird。
+
 # 快速入门 - Flyway 的工作原理
 
 欢迎来到 Flyway，数据库迁移变得简单。 
