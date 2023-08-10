@@ -513,7 +513,608 @@ Finally clean and migrate again using
 
 - 配置 Flyway 以使用错误覆盖
 
+# Tutorial - Injecting Environments
 
+这个简短的教程将教您如何注入要执行的迁移的环境。
+
+## 介绍
+
+使用数据库时，您经常有不同的环境，例如开发、测试或生产。 
+
+在每个环境中，您可能想要执行不同的迁移，这可以通过占位符和 shouldExecute 脚本配置参数来实现。
+
+shouldExecute 是一个参数，可让您通过向其提供布尔表达式来轻松自定义何时应执行迁移。 
+
+与skipExecutingMigrations 不同，这不会更新架构历史表。 
+
+它还支持布尔表达式中的占位符，这使您可以根据需要灵活地自定义迁移的执行。
+
+如果您还不熟悉脚本配置参数的概念，可以在此处阅读。 
+
+如果您想温习占位符的知识，可以在此处阅读有关它们的内容。
+
+## example
+
+```
+V1__dev_migration_1.sql
+V2__tst_migration_1.sql
+V3__prd_migration_1.sql
+```
+
+V1只能在开发环境中执行，V2在测试环境中执行，V3在生产环境中执行。
+
+迁移V1的脚本配置文件V1__dev_migration_1.sql.conf将需要行shouldExecute=${environment}==development
+迁移V2的脚本配置文件V2__tst_migration_1.sql.conf将需要行shouldExecute=${environment}==test
+迁移V3的脚本配置文件V3__prd_migration_1.sql.conf将需要行shouldExecute=${environment}==production
+
+如果我们设置 `${environment}` 占位符的值来包含我们运行 Flyway 的环境，我们就可以达到我们想要的结果。
+
+### running
+
+```
+flyway -placeholders.environment=development migrate
+```
+
+只会应用V1。 
+
+同样，运行 Will only apply V2：
+
+
+```
+flyway -placeholders.environment=test migrate
+```
+
+
+
+and running Will only apply V3.:
+
+```
+flyway -placeholders.environment=production migrate
+```
+
+## 概括
+
+在这个简短的教程中，我们了解了如何：
+
+使用 shouldExecute 来控制我们的迁移在哪些环境中执行
+
+
+# Tutorial - Integrating Dapr
+
+## 介绍
+
+Dapr 是一个应用程序运行时，它具有秘密管理组件，允许您安全地存储和提供对敏感信息的访问。 
+
+Flyway 与 Dapr 的 Secret Store 集成，让您可以安全地存储并提供对任何机密 Flyway 参数的访问。
+
+本教程假设您已经有一个 Dapr 服务器实例并知道如何在其中配置机密，以及 Dapr 应用程序 sidecar 的本地安装。
+
+# Tutorial - Integrating Google Cloud Secret Manager
+
+## 介绍
+
+Google Cloud Secret Manager (GCSM) 是一项用于机密管理的云服务，可让您安全地存储敏感信息并提供对敏感信息的访问。 
+
+Flyway 与 GCSM 集成，让您可以安全地存储并提供对任何机密 Flyway 参数的访问。
+
+本教程假设您已经有一个 GCSM 项目并且知道如何在其中配置机密。 
+
+如果您以前没有使用过 GCSM，请按照本教程创建包含一些机密的项目。
+
+
+# Tutorial - Integrating Vault
+
+## 介绍
+
+HashiCorp Vault 是一种机密管理解决方案，可让您安全地存储敏感信息并提供对敏感信息的访问。
+
+Flyway 与 Vault 的键值秘密存储集成，让您可以在任何指定的时间内安全地存储和提供对任何机密 Flyway 参数的访问。
+
+本教程假设您已经有一个 Vault 实例并且知道如何在其中配置机密。 有关在 Vault 中配置机密的更多信息以及有关使用 Flyway 的教程，请参阅此博客文章。
+
+# Tutorial - Java-based Migrations
+
+## 代码
+
+参考：[代码](https://github.com/houbb/flyway-learn)
+
+## 教程：基于 Java 的迁移
+
+这个简短的教程将教授如何使用基于 Java 的迁移。 
+
+它将引导您完成如何创建和使用它们的步骤。
+
+## 介绍
+
+基于 Java 的迁移非常适合所有无法使用 SQL 轻松表达的更改。
+
+这些通常是这样的
+
+- BLOB & CLOB changes
+
+- Advanced bulk data changes (Recalculations, advanced format changes, ...)
+
+## 查看状态
+
+完成快速入门：Maven 后，您现在可以执行
+
+```
+> mvn flyway:info
+```
+
+如下：
+
+```
+[INFO] Database: jdbc:h2:file:./target/foobar (H2 1.4)
+[INFO]
++-----------+---------+---------------------+------+---------------------+---------+
+| Category  | Version | Description         | Type | Installed On        | State   |
++-----------+---------+---------------------+------+---------------------+---------+
+| Versioned | 1       | Create person table | SQL  | 2017-12-22 15:26:39 | Success |
+| Versioned | 2       | Add people          | SQL  | 2017-12-22 15:28:17 | Success |
++-----------+---------+---------------------+------+---------------------+---------+
+```
+
+## 创建基于 Java 的迁移
+
+现在让我们创建一个基于 Java 的迁移来匿名化 person 表中的数据。
+
+开始于
+
+- 将 Flyway-core 依赖项添加到我们的 pom.xml 中
+
+- 为 Java 8 配置 Java 编译器
+
+- 配置 Flyway 扫描 Java 类路径以进行迁移
+
+```xml
+<project xmlns="...">
+    ...
+    <dependencies>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>9.21.1</version>
+        </dependency>
+        ...
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>9.21.1</version>
+                <configuration>
+                    <url>jdbc:h2:file:./target/foobar</url>
+                    <user>sa</user>
+                    <locations>
+                        <location>classpath:db/migration</location>
+                    </locations>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.h2database</groupId>
+                        <artifactId>h2</artifactId>
+                        <version>1.4.191</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+```
+
+现在创建迁移目录 src/main/java/db/migration。
+
+接下来是第一个迁移，名为 src/main/java/db/migration/V3__Anonymize.java：
+
+```java
+package db.migration;
+
+import org.flywaydb.core.api.migration.BaseJavaMigration;
+import org.flywaydb.core.api.migration.Context;
+
+import java.sql.ResultSet;
+import java.sql.Statement;
+
+public class V3__Anonymize extends BaseJavaMigration {
+    public void migrate(Context context) throws Exception {
+        try (Statement select = context.getConnection().createStatement()) {
+            try (ResultSet rows = select.executeQuery("SELECT id FROM person ORDER BY id")) {
+                while (rows.next()) {
+                    int id = rows.getInt(1);
+                    String anonymizedName = "Anonymous" + id;
+                    try (Statement update = context.getConnection().createStatement()) {
+                        update.execute("UPDATE person SET name='" + anonymizedName + "' WHERE id=" + id);
+                    }
+                }
+            }
+        }
+    }
+}
+```
+
+最后编译命令：
+
+```
+> mvn compile
+
+> mvn flyway:info
+
+[INFO] Database: jdbc:h2:file:./target/foobar (H2 1.4)
+[INFO]
++-----------+---------+---------------------+------+---------------------+---------+
+| Category  | Version | Description         | Type | Installed On        | State   |
++-----------+---------+---------------------+------+---------------------+---------+
+| Versioned | 1       | Create person table | SQL  | 2017-12-22 15:26:39 | Success |
+| Versioned | 2       | Add people          | SQL  | 2017-12-22 15:28:17 | Success |
+| Versioned | 3       | Anonymize           | JDBC |                     | Pending |
++-----------+---------+---------------------+------+---------------------+---------+
+```
+
+Note the new pending migration of type JDBC.
+
+## 执行迁移
+
+是时候执行我们的新迁移了。
+
+所以继续调用
+
+```
+> mvn flyway:migrate
+```
+
+结果如下：
+
+```
+[INFO] Database: jdbc:h2:file:./target/foobar (H2 1.4)
+[INFO] Successfully validated 3 migrations (execution time 00:00.022s)
+[INFO] Current version of schema "PUBLIC": 2
+[INFO] Migrating schema "PUBLIC" to version 3 - Anonymize
+[INFO] Successfully applied 1 migration to schema "PUBLIC" (execution time 00:00.011s)
+```
+
+查看状态：
+
+```
+> mvn flyway:info
+```
+
+如下：
+
+```
+[INFO] Database: jdbc:h2:file:./target/foobar (H2 1.4)
+[INFO]
++-----------+---------+---------------------+------+---------------------+---------+
+| Category  | Version | Description         | Type | Installed On        | State   |
++-----------+---------+---------------------+------+---------------------+---------+
+| Versioned | 1       | Create person table | SQL  | 2017-12-22 15:26:39 | Success |
+| Versioned | 2       | Add people          | SQL  | 2017-12-22 15:28:17 | Success |
+| Versioned | 3       | Anonymize           | JDBC | 2017-12-22 16:03:37 | Success |
++-----------+---------+---------------------+------+---------------------+---------+
+```
+
+## 概括
+
+在这个简短的教程中，我们了解了如何
+
+- 创建基于 Java 的迁移
+
+- 配置 Flyway 来加载并运行它们
+
+# Tutorial - Repeatable Migrations
+
+这个简短的教程将教授如何使用可重复迁移。 
+
+它将引导您完成如何创建和使用它们的步骤。
+
+## 介绍
+
+可重复迁移对于管理数据库对象非常有用，这些对象的定义可以简单地维护在版本控制的单个文件中。 
+
+它们不是只运行一次，而是在每次校验和更改时（重新）应用。
+
+它们通常用于
+
+- （重新）创建视图/过程/函数/包/。
+
+- 批量参考数据重新插入
+
+## 查看状态
+
+完成快速入门：命令行后，您现在可以执行
+
+```
+> flyway info
+```
+
+如下：
+
+```
+Database: jdbc:h2:file:./foobardb (H2 1.4)
+                     
++-----------+---------+---------------------+------+---------------------+---------+----------+
+| Category  | Version | Description         | Type | Installed On        | State   | Undoable |
++-----------+---------+---------------------+------+---------------------+---------+----------+
+| Versioned | 1       | Create person table | SQL  | 2017-12-21 18:05:10 | Success | No       |
+| Versioned | 2       | Add people          | SQL  | 2017-12-21 18:05:10 | Success | No       |
++-----------+---------+---------------------+------+---------------------+---------+----------+
+```
+
+## 创建可重复的迁移
+
+现在让我们创建一个可重复的迁移来管理 person 表的视图。 
+
+使用 Flyway 的默认命名约定，文件名将与常规迁移类似，除了 V 前缀（现在已替换为 R）并且缺少版本。
+
+因此，继续在 /sql 目录中创建 R__People_view.sql：
+
+```sql
+CREATE OR REPLACE VIEW people AS 
+    SELECT id, name FROM person;
+```
+
+当前状态：
+
+```
+> flyway info
+
+Database: jdbc:h2:file:./foobardb (H2 1.4)
+                     
++------------+---------+---------------------+------+---------------------+---------+----------+
+| Category   | Version | Description         | Type | Installed On        | State   | Undoable |
++------------+---------+---------------------+------+---------------------+---------+----------+
+| Versioned  | 1       | Create person table | SQL  | 2017-12-21 18:05:10 | Success | No       |
+| Versioned  | 2       | Add people          | SQL  | 2017-12-21 18:05:10 | Success | No       |
+| Repeatable |         | People view         | SQL  |                     | Pending |          |
++------------+---------+---------------------+------+---------------------+---------+----------+
+```
+
+## Executing the migration
+
+```
+> flyway migrate
+
+Database: jdbc:h2:file:./foobardb (H2 1.4)
+Successfully validated 3 migrations (execution time 00:00.032s)
+Current version of schema "PUBLIC": 2
+Migrating schema "PUBLIC" with repeatable migration People view
+Successfully applied 1 migration to schema "PUBLIC" (execution time 00:00.023s)
+```
+
+新的状态：
+
+```
+> flyway info
+
++------------+---------+---------------------+------+---------------------+---------+----------+
+| Category   | Version | Description         | Type | Installed On        | State   | Undoable |
++------------+---------+---------------------+------+---------------------+---------+----------+
+| Versioned  | 1       | Create person table | SQL  | 2017-12-21 18:05:10 | Success | No       |
+| Versioned  | 2       | Add people          | SQL  | 2017-12-21 18:05:10 | Success | No       |
+| Repeatable |         | People view         | SQL  | 2017-12-21 18:08:29 | Success |          |
++------------+---------+---------------------+------+---------------------+---------+----------+
+```
+
+## 修改迁移
+
+现在让我们看看当我们修改迁移文件时会发生什么。
+
+更新 /sql 目录中的 R__People_view.sql，如下所示：
+
+```sql
+CREATE OR REPLACE VIEW people AS 
+    SELECT id, name FROM person WHERE name like 'M%';
+```
+
+再次确认状态：
+
+```
+> flyway info
+
+Database: jdbc:h2:file:./foobardb (H2 1.4)
+                     
++------------+---------+---------------------+------+---------------------+----------+----------+
+| Category   | Version | Description         | Type | Installed On        | State    | Undoable |
++------------+---------+---------------------+------+---------------------+----------+----------+
+| Versioned  | 1       | Create person table | SQL  | 2017-12-21 18:05:10 | Success  | No       |
+| Versioned  | 2       | Add people          | SQL  | 2017-12-21 18:05:10 | Success  | No       |
+| Repeatable |         | People view         | SQL  | 2017-12-21 18:08:29 | Outdated |          |
+| Repeatable |         | People view         | SQL  |                     | Pending  |          |
++------------+---------+---------------------+------+---------------------+----------+----------+
+```
+
+我们的审计跟踪现在清楚地表明，之前应用的可重复迁移已经过时，现在再次标记为待处理，准备重新应用。
+
+执行迁移
+
+```
+> flyway migrate
+
+Database: jdbc:h2:file:./foobardb (H2 1.4)
+Successfully validated 4 migrations (execution time 00:00.019s)
+Current version of schema "PUBLIC": 2
+Migrating schema "PUBLIC" with repeatable migration People view
+Successfully applied 1 migration to schema "PUBLIC" (execution time 00:00.027s)
+```
+
+状态如下：
+
+```
+> flyway info
+
+Database: jdbc:h2:file:./foobardb (H2 1.4)
+
++------------+---------+---------------------+------+---------------------+------------+----------+
+| Category   | Version | Description         | Type | Installed On        | State      | Undoable |
++------------+---------+---------------------+------+---------------------+------------+----------+
+| Versioned  | 1       | Create person table | SQL  | 2017-12-21 18:05:10 | Success    | No       |
+| Versioned  | 2       | Add people          | SQL  | 2017-12-21 18:05:10 | Success    | No       |
+| Repeatable |         | People view         | SQL  | 2017-12-21 18:08:29 | Superseded |          |
+| Repeatable |         | People view         | SQL  | 2017-12-21 18:15:35 | Success    |          |
++------------+---------+---------------------+------+---------------------+------------+----------+
+```
+
+我们最初的运行现在已经被我们刚刚运行的运行所取代。 
+
+因此，每当您管理的对象（我们示例中的人员视图）需要更改时，只需就地更新文件并再次运行迁移即可。
+
+# 概括
+
+在这个简短的教程中，我们了解了如何
+
+- 创建可重复的迁移
+
+- 运行并重新运行可重复的迁移
+
+# Tutorial - Undo Migrations
+
+## 介绍
+
+撤消迁移与常规版本化迁移相反。 撤消迁移负责撤消具有相同版本的版本化迁移的影响。 
+
+撤消迁移是可选的，并且不需要运行常规版本化迁移。
+
+## 查看状态
+
+```
+> flyway info
+
+Database: jdbc:h2:file:./foobardb (H2 1.4)
+
++-----------+---------+---------------------+------+---------------------+---------+----------+
+| Category  | Version | Description         | Type | Installed On        | State   | Undoable |
++-----------+---------+---------------------+------+---------------------+---------+----------+
+| Versioned | 1       | Create person table | SQL  | 2017-12-17 19:57:28 | Success | No       |
+| Versioned | 2       | Add people          | SQL  | 2017-12-17 20:01:13 | Success | No       |
++-----------+---------+---------------------+------+---------------------+---------+----------+
+```
+
+## 创建撤消迁移
+
+现在让我们为这两个应用的版本化迁移创建撤消迁移。 使用 Flyway 的默认命名约定，文件名将与常规迁移相同，除了 V 前缀（现在已替换为 U）。
+
+因此，继续在 /sql 目录中创建 U2__Add_people.sql：
+
+```sql
+DELETE FROM PERSON;
+```
+
+And add a U1__Create_person_table.sql as well:
+
+```sql
+DROP TABLE PERSON;
+```
+
+查看当前状态：
+
+```
+> flyway info
+
+Database: Database: jdbc:h2:file:./foobardb (H2 1.4)
+
++-----------+---------+---------------------+------+---------------------+---------+----------+
+| Category  | Version | Description         | Type | Installed On        | State   | Undoable |
++-----------+---------+---------------------+------+---------------------+---------+----------+
+| Versioned | 1       | Create person table | SQL  | 2017-12-17 19:57:28 | Success | Yes      |
+| Versioned | 2       | Add people          | SQL  | 2017-12-17 20:01:13 | Success | Yes      |
++-----------+---------+---------------------+------+---------------------+---------+----------+
+```
+
+请注意，这两个迁移现在都已标记为不可撤消。
+
+## 撤消上次迁移
+
+默认情况下，撤消会撤消上次应用的版本化迁移。
+
+所以继续调用
+
+```
+> flyway undo
+
+Database: Database: jdbc:h2:file:./foobardb (H2 1.4)
+Current version of schema "PUBLIC": 2
+Undoing migration of schema "PUBLIC" to version 2 - Add people
+Successfully undid 1 migration to schema "PUBLIC" (execution time 00:00.030s)
+```
+
+新的状态：
+
+```
+> flyway info
+
+Database: Database: jdbc:h2:file:./foobardb (H2 1.4)
+
++-----------+---------+---------------------+----------+---------------------+---------+----------+
+| Category  | Version | Description         | Type     | Installed On        | State   | Undoable |
++-----------+---------+---------------------+----------+---------------------+---------+----------+
+| Versioned | 1       | Create person table | SQL      | 2017-12-17 19:57:28 | Success | Yes      |
+| Versioned | 2       | Add people          | SQL      | 2017-12-17 20:01:13 | Undone  |          |
+| Undo      | 2       | Add people          | UNDO_SQL | 2017-12-17 22:45:56 | Success |          |
+| Versioned | 2       | Add people          | SQL      |                     | Pending | Yes      |
++-----------+---------+---------------------+----------+---------------------+---------+----------+
+```
+
+我们的审计跟踪现在清楚地表明，版本 2 首先被应用，然后被撤消，现在再次处于待处理状态。
+
+我们现在可以安全地重新应用它
+
+```
+> flyway migrate
+
+Database: Database: jdbc:h2:file:./foobardb (H2 1.4)
+Successfully validated 5 migrations (execution time 00:00.020s)
+Current version of schema "PUBLIC": 1
+Migrating schema "PUBLIC" to version 2 - Add people
+Successfully applied 1 migration to schema "PUBLIC" (execution time 00:00.017s)
+```
+
+信息如下：
+
+```
+> flyway info
+
+Database: Database: jdbc:h2:file:./foobardb (H2 1.4)
+
++-----------+---------+---------------------+----------+---------------------+---------+----------+
+| Category  | Version | Description         | Type     | Installed On        | State   | Undoable |
++-----------+---------+---------------------+----------+---------------------+---------+----------+
+| Versioned | 1       | Create person table | SQL      | 2017-12-17 19:57:28 | Success | Yes      |
+| Versioned | 2       | Add people          | SQL      | 2017-12-17 20:01:13 | Undone  |          |
+| Undo      | 2       | Add people          | UNDO_SQL | 2017-12-17 22:45:56 | Success |          |
+| Versioned | 2       | Add people          | SQL      | 2017-12-17 22:50:49 | Success | Yes      |
++-----------+---------+---------------------+----------+---------------------+---------+----------+
+```
+
+## 概括
+
+在这个简短的教程中，我们了解了如何
+
+- 创建撤消迁移
+
+- 撤消和重做现有迁移
+
+# Tutorial - Using Flyway Check with SQL Server
+
+## 介绍
+
+新的检查命令在迁移之前运行，通过生成报告让您更有信心，让您更好地了解计划迁移的后果。
+
+必须设置以下一个或多个标志，以确定报告包含的内容：
+
+-changes 生成将在下次迁移中应用于架构的所有更改的报告。
+-drift 生成一个报告，显示架构中的对象，这些对象不是当前应用的任何迁移的结果，即在 Flyway 之外进行的更改。
+更多信息可以在检查命令页面上找到。
+
+本教程举例说明了您可以访问目标数据库 (url) 和构建数据库 (buildUrl) 的场景。
 
 # 参考资料
 
