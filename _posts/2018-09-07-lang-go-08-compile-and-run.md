@@ -132,6 +132,9 @@ Hello, world!
 
 这个示例演示了如何使用 `go install` 命令将一个简单的 Go 程序编译并安装到工作环境中。通过执行这个命令，你可以将生成的可执行文件保存在 `$GOPATH/bin` 目录中，以便在任何地方直接调用。
 
+# TODO
+
+> [继续学习](https://go.dev/doc/tutorial/)
 
 # 参考资料
 
