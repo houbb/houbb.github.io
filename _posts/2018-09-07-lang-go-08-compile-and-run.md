@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Go Lang-08-
+title:  Go Lang-08-compile and run 编译并安装应用程序
 date:  2018-09-07 09:51:23 +0800
 categories: [Lang]
 tags: [go, lang, sh]
