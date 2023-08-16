@@ -23,7 +23,6 @@ $   git reset #{HASH}
 
 可以回滚到对应哈希值的提交。
 
-
 # git reset 用法详解
 
 git reset 命令用于回退版本，可以指定退回某一次提交的版本。
