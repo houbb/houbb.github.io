@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Git rollback 回滚到指定版本的内容 + git revert 撤销操作 
+title: Git rollback 回滚到指定版本的内容 + git revert 撤销操作  + git cherry-pick 当前分支上选择性地应用另一个分支上的一个或多个提交
 date: 2019-1-17 09:34:35 +0800
 categories: [Git]
 tags: [git, devops, sh]
@@ -233,6 +233,31 @@ git revert -n commit_id_3
 idea 可以选中提交记录，然后点击 revert commits。
 
 这时会把选中的提交记录，都声称对应的 revert 操作，我们最后做一次 push 即可。
+
+# git cheery pick
+
+`git cherry-pick` 是 Git 提供的一个命令，用于在当前分支上选择性地应用另一个分支上的一个或多个提交。这个命令允许你从其他分支中挑选单个提交并将它们应用到当前分支，而无需合并整个分支的更改。
+
+使用 `git cherry-pick` 的基本语法如下：
+
+```bash
+git cherry-pick <commit-hash>
+```
+
+其中，`<commit-hash>` 是要应用的目标提交的哈希值。
+
+你可以在一个分支上使用 `git cherry-pick` 来选择性地应用另一个分支上的提交。这在以下情况下可能会很有用：
+
+1. **单独应用特定的修复或功能提交：** 如果你在一个分支上工作，但需要在另一个分支上应用某些修复或功能，可以使用 `git cherry-pick` 将这些提交应用到你的分支。
+
+2. **从一个分支中获取一部分更改：** 有时候你可能只需要另一个分支上的某个提交，而不想合并整个分支。这时可以使用 `git cherry-pick` 来选择性地获取这些更改。
+
+3. **解决冲突：** 如果在合并或 rebase 过程中发生冲突，你可以使用 `git cherry-pick` 来选择性地应用某些提交，并解决冲突。
+
+需要注意的是，`git cherry-pick` 可能会引起冲突，特别是如果你选择的提交在当前分支的上下文中无法简单地应用。在这种情况下，你需要解决冲突，然后使用 `git cherry-pick --continue` 完成操作。
+
+总之，`git cherry-pick` 是一个强大的命令，可以在不合并整个分支的情况下选择性地应用提交，但在使用时要小心处理可能出现的冲突情况。
+
 
 # 参考资料
 
