@@ -5,7 +5,6 @@ date: 2019-1-17 09:34:35 +0800
 categories: [Git]
 tags: [git, devops, sh]
 published: true
-excerpt: Git 工具之重置解密-7.7
 ---
 
 # 回滚方式
