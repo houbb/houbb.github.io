@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Aopalliance
+title: Aopalliance-01-AOP 核心包之 Aopalliance
 date:  2019-2-26 09:48:47 +0800
 categories: [Java]
 tags: [java, aop, sh]
 published: true
-excerpt: AOP 核心包之 Aopalliance
 ---
 
 # Aopalliance
