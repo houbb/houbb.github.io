@@ -1,6 +1,6 @@
 ---
 layout: post
-title: java 死锁应用卡死 thread dump 分析记录
+title: jstack-java 死锁应用卡死 thread dump 分析记录
 date: 2023-08-16 21:01:55 +0800
 categories: [JVM]
 tags: [jvm, thread, lock, sh]
