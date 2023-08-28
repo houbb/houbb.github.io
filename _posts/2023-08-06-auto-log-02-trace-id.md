@@ -8,7 +8,7 @@ published: true
 ---
 
 
-# # MDC 的必要性
+# MDC 的必要性
 
 ## 日志框架
 
