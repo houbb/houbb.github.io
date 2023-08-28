@@ -1,6 +1,6 @@
 ---
 layout: post
-title: autoLog-06-自适应采样
+title: 日志开源组件（六）Adaptive Sampling 自适应采样 
 date:  2023-08-06 +0800
 categories: [Trace]
 tags: [spring, aop, cglib, log, sh]
@@ -14,17 +14,404 @@ published: true
 
 ## 拓展阅读
 
-[java 注解结合 spring aop 实现自动输出日志](https://houbb.github.io/2023/08/06/auto-log-01-overview)
+[日志开源组件（一）java 注解结合 spring aop 实现自动输出日志](https://houbb.github.io/2023/08/06/auto-log-01-overview)
 
-[java 注解结合 spring aop 实现日志traceId唯一标识](https://houbb.github.io/2023/08/06/auto-log-02-trace-id)
+[日志开源组件（二）java 注解结合 spring aop 实现日志traceId唯一标识](https://houbb.github.io/2023/08/06/auto-log-02-trace-id)
 
-[java 注解结合 spring aop 自动输出日志新增拦截器与过滤器](https://houbb.github.io/2023/08/06/auto-log-03-filter)
+[日志开源组件（三）java 注解结合 spring aop 自动输出日志新增拦截器与过滤器](https://houbb.github.io/2023/08/06/auto-log-03-filter)
 
-[如何动态修改 spring aop 切面信息？让自动日志输出框架更好用](https://houbb.github.io/2023/08/06/auto-log-04-dynamic-aop)
+[日志开源组件（四）如何动态修改 spring aop 切面信息？让自动日志输出框架更好用](https://houbb.github.io/2023/08/06/auto-log-04-dynamic-aop)
 
-[如何将 dubbo filter 拦截器原理运用到日志拦截器中？](https://houbb.github.io/2023/08/06/auto-log-05-dubbo-interceptor)
+[日志开源组件（五）如何将 dubbo filter 拦截器原理运用到日志拦截器中？](https://houbb.github.io/2023/08/06/auto-log-05-dubbo-interceptor)
 
-![chain](https://img-blog.csdnimg.cn/03cca9b818374ee587465b7aff2a1e1d.jpeg#pic_center)
+# 自适应采样
+
+## 是什么？
+
+系统生成的日志可以包含大量信息，包括错误、警告、性能指标等，但在实际应用中，处理和分析所有的日志数据可能会对系统性能和资源产生负担。
+
+自适应采样在这种情况下发挥作用，它能够根据当前系统状态和日志信息的重要性，智能地决定哪些日志需要被采样记录，从而有效地管理和分析日志数据。
+
+## 采样的必要性
+
+日志采样系统会给业务系统额外增加消耗，很多系统在接入的时候会比较排斥。
+
+给他们一个百分比的选择，或许是一个不错的开始，然后根据实际需要选择合适的比例。
+
+自适应采样是一个对用户透明，同时又非常优雅的方案。
+
+![自适应](https://img-blog.csdnimg.cn/310494eb3fde4db0bd3e0c1c61df1dd8.jpeg#pic_center)
+
+# 如何通过 java 实现自适应采样?
+
+## 接口定义
+
+首先我们定义一个接口，返回 boolean。
+
+根据是否为 true 来决定是否输出日志。
+
+```java
+/**
+ * 采样条件
+ * @author binbin.hou
+ * @since 0.5.0
+ */
+public interface IAutoLogSampleCondition {
+
+    /**
+     * 条件
+     *
+     * @param context 上下文
+     * @return 结果
+     * @since 0.5.0
+     */
+    boolean sampleCondition(IAutoLogContext context);
+
+}
+```
+
+## 百分比概率采样
+
+我们先实现一个简单的概率采样。
+
+0-100 的值，让用户指定，按照百分比决定是否采样。
+
+```java
+public class InnerRandomUtil {
+
+    /**
+     * 1. 计算一个 1-100 的随机数 randomVal
+     * 2. targetRatePercent 值越大，则返回 true 的概率越高
+     * @param targetRatePercent 目标百分比
+     * @return 结果
+     */
+    public static boolean randomRateCondition(int targetRatePercent) {
+        if(targetRatePercent <= 0) {
+            return false;
+        }
+        if(targetRatePercent >= 100) {
+            return true;
+        }
+
+        // 随机
+        ThreadLocalRandom threadLocalRandom = ThreadLocalRandom.current();
+        int value = threadLocalRandom.nextInt(1, 100);
+
+        // 随机概率
+        return targetRatePercent >= value;
+    }
+
+}
+```
+
+实现起来也非常简单，直接一个随机数，然后比较大小即可。
+
+## 自适应采样
+
+### 思路
+
+我们计算一下当前日志的 QPS，让输出的概率和 QPS 称反比。
+
+```java
+/**
+ * 自适应采样
+ *
+ * 1. 初始化采样率为 100%，全部采样
+ *
+ * 2. QPS 如果越来越高，那么采样率应该越来越低。这样避免 cpu 等资源的损耗。最低为 1%
+ * 如果 QPS 越来越低，采样率应该越来越高。增加样本，最高为 100%
+ *
+ * 3. QPS 如何计算问题
+ *
+ * 直接设置大小为 100 的队列，每一次在里面放入时间戳。
+ * 当大小等于 100 的时候，计算首尾的时间差，currentQps = 100 / (endTime - startTime) * 1000
+ *
+ * 触发 rate 重新计算。
+ *
+ * 3.1 rate 计算逻辑
+ *
+ * 这里我们存储一下 preRate = 100, preQPS = ?
+ *
+ * newRate = (preQps / currentQps) * rate
+ *
+ * 范围限制：
+ * newRate = Math.min(100, newRate);
+ * newRate = Math.max(1, newRate);
+ *
+ * 3.2 时间队列的清空
+ *
+ * 更新完 rate 之后，对应的队列可以清空？
+ *
+ * 如果额外使用一个 count，好像也可以。
+ * 可以调整为 atomicLong 的计算器，和 preTime。
+ *
+```
+
+### 代码实现
+
+```java
+public class AutoLogSampleConditionAdaptive implements IAutoLogSampleCondition {
+
+    private static final AutoLogSampleConditionAdaptive INSTANCE = new AutoLogSampleConditionAdaptive();
+
+    /**
+     * 单例的方式获取实例
+     * @return 结果
+     */
+    public static AutoLogSampleConditionAdaptive getInstance() {
+        return INSTANCE;
+    }
+
+    /**
+     * 次数大小限制，即接收到多少次请求更新一次 adaptive 计算
+     *
+     * TODO: 这个如何可以让用户可以自定义呢？后续考虑配置从默认的配置文件中读取。
+     */
+    private static final int COUNT_LIMIT = 1000;
+
+    /**
+     * 自适应比率，初始化为 100.全部采集
+     */
+    private volatile int adaptiveRate = 100;
+
+    /**
+     * 上一次的 QPS
+     *
+     * TODO: 这个如何可以让用户可以自定义呢？后续考虑配置从默认的配置文件中读取。
+     */
+    private volatile double preQps = 100.0;
+
+    /**
+     * 上一次的时间
+     */
+    private volatile long preTime;
+
+    /**
+     * 总数，请求计数器
+     */
+    private final AtomicInteger counter;
+
+    public AutoLogSampleConditionAdaptive() {
+        preTime = System.currentTimeMillis();
+        counter = new AtomicInteger(0);
+    }
+
+    @Override
+    public boolean sampleCondition(IAutoLogContext context) {
+        int count = counter.incrementAndGet();
+
+        // 触发一次重新计算
+        if(count >= COUNT_LIMIT) {
+            updateAdaptiveRate();
+        }
+
+        // 直接计算是否满足
+        return InnerRandomUtil.randomRateCondition(adaptiveRate);
+    }
+
+}
+```
+
+每次累加次数超过限定次数之后，我们就更新一下对应的日志概率。
+
+最后的概率计算和上面的百分比类似，不再赘述。
+
+```java
+/**
+ * 更新自适应的概率
+ *
+ * 100 计算一次，其实还好。实际应该可以适当调大这个阈值，本身不会经常变化的东西。
+ */
+private synchronized void updateAdaptiveRate() {
+    //消耗的毫秒数
+    long costTimeMs = System.currentTimeMillis() - preTime;
+    //qps 的计算，时间差是毫秒。所以次数需要乘以 1000
+    double currentQps = COUNT_LIMIT*1000.0 / costTimeMs;
+    // preRate * preQps = currentRate * currentQps; 保障采样均衡，服务器压力均衡
+    // currentRate = (preRate * preQps) / currentQps;
+    // 更新比率
+    int newRate = 100;
+    if(currentQps > 0) {
+        newRate = (int) ((adaptiveRate * preQps) / currentQps);
+        newRate = Math.min(100, newRate);
+        newRate = Math.max(1, newRate);
+    }
+    // 更新 rate
+    adaptiveRate = newRate;
+    // 更新 QPS
+    preQps = currentQps;
+    // 更新上一次的时间内戳
+    preTime = System.currentTimeMillis();
+    // 归零
+    counter.set(0);
+}
+```
+
+## 自适应代码-改良
+
+### 问题
+
+上面的自适应算法一般情况下都可以运行的很好。
+
+但是有一种情况会不太好，那就是流量从高峰期到低峰期。
+
+比如凌晨11点是请求高峰期，我们的输出日志概率很低。深夜之后请求数会很少，想达到累计值就会很慢，这个时间段就会导致日志输出很少。
+
+如何解决这个问题呢？
+
+### 思路
+
+我们可以通过固定时间窗口的方式，来定时调整流量概率。
+
+### java 实现
+
+我们初始化一个定时任务，1min 定时更新一次。
+
+```java
+public class AutoLogSampleConditionAdaptiveSchedule implements IAutoLogSampleCondition {
+
+    private static final ScheduledExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
+
+    /**
+     * 时间分钟间隔
+     */
+    private static final int TIME_INTERVAL_MINUTES = 5;
+
+    /**
+     * 自适应比率，初始化为 100.全部采集
+     */
+    private volatile int adaptiveRate = 100;
+
+    /**
+     * 上一次的总数
+     *
+     * TODO: 这个如何可以让用户可以自定义呢？后续考虑配置从默认的配置文件中读取。
+     */
+    private volatile long preCount;
+
+    /**
+     * 总数，请求计数器
+     */
+    private final AtomicLong counter;
+
+    public AutoLogSampleConditionAdaptiveSchedule() {
+        counter = new AtomicLong(0);
+        preCount = TIME_INTERVAL_MINUTES * 60 * 100;
+
+        //1. 1min 后开始执行
+        //2. 中间默认 5 分钟更新一次
+        EXECUTOR_SERVICE.scheduleAtFixedRate(new Runnable() {
+            @Override
+            public void run() {
+                updateAdaptiveRate();
+            }
+        }, 60, TIME_INTERVAL_MINUTES * 60, TimeUnit.SECONDS);
+    }
+
+    @Override
+    public boolean sampleCondition(IAutoLogContext context) {
+        counter.incrementAndGet();
+
+        // 直接计算是否满足
+        return InnerRandomUtil.randomRateCondition(adaptiveRate);
+    }
+
+}
+```
+
+其中更新概率的逻辑和上面类似：
+
+```java
+/**
+ * 更新自适应的概率
+ *
+ * QPS = count / time_interval
+ *
+ * 其中时间维度是固定的，所以可以不用考虑时间。
+ */
+private synchronized void updateAdaptiveRate() {
+    // preRate * preCount = currentRate * currentCount; 保障采样均衡，服务器压力均衡
+    // currentRate = (preRate * preCount) / currentCount;
+    // 更新比率
+    long currentCount = counter.get();
+    int newRate = 100;
+    if(currentCount != 0) {
+        newRate = (int) ((adaptiveRate * preCount) / currentCount);
+        newRate = Math.min(100, newRate);
+        newRate = Math.max(1, newRate);
+    }
+    // 更新自适应频率
+    adaptiveRate = newRate;
+    // 更新 QPS
+    preCount = currentCount;
+    // 归零
+    counter.set(0);
+}
+```
+
+
+# 小结
+
+让系统自动化分配资源，是一种非常好的思路，可以让资源利用最大化。
+
+实现起来也不是很困难，实际要根据我们的业务量进行观察和调整。
+
+# 开源地址
+
+> auto-log [https://github.com/houbb/auto-log](https://github.com/houbb/auto-log)
+
+# 其他
+
+## Q2-为什么需要？
+
+自适应采样在不同领域中有多种应用，这是因为它可以解决许多问题和优化资源利用。以下是一些需要自适应采样的情况：
+
+1. **大数据处理：** 在大数据环境中，处理和分析所有数据可能是不切实际的，因为它可能会占用大量计算资源和存储空间。自适应采样可以帮助识别和保留关键数据，从而减少分析和处理的成本。
+
+2. **日志监控：** 系统产生的日志可能非常庞大，但并非所有日志都是关键的。自适应采样可以帮助捕获重要的错误和事件，而忽略不重要的信息，以便更好地进行故障排查和系统监控。
+
+3. **传感器数据采集：** 在传感器网络中，大量传感器可能会产生大量数据。自适应采样可以帮助选择哪些传感器的数据需要被采集，以优化资源使用和数据分析。
+
+4. **优化问题：** 在优化问题中，可能需要对不同参数或变量进行采样以寻找最优解。自适应采样可以帮助调整采样策略，集中在可能获得更好结果的区域。
+
+5. **资源限制：** 当资源有限时，如计算资源、存储空间或网络带宽，自适应采样可以帮助最大程度地利用有限资源，同时仍然获取足够多的信息。
+
+6. **实验设计：** 在科学实验中，自适应采样可以帮助选择哪些实验条件或参数设置需要被测试，从而更有效地探索问题空间。
+
+7. **网络流量分析：** 在网络安全领域，自适应采样可以帮助捕获潜在的攻击流量，而减少不相关的数据。
+
+综上所述，自适应采样的需求源于资源有限和数据的不均匀性。
+
+它可以帮助优化资源利用、提高数据分析效率、捕获关键信息，并在各种领域中提供更好的结果。
+
+## Q3-如何实现？给出思路
+
+实现自适应采样涉及多个步骤和决策，具体方法可以根据应用领域和需求的不同而有所调整。
+
+以下是一个一般性的思路，可以用来实现自适应采样：
+
+1. **定义初始策略：** 首先，你需要定义一个初始的采样策略，可以根据经验、数据分布等设定初始的采样率或规则。这个策略将在开始阶段使用。
+
+2. **收集样本：** 开始收集数据样本，并根据初始策略进行采样。这个阶段可以帮助你获取初始数据来进行后续的分析和优化。
+
+3. **分析样本：** 对已采样的数据样本进行分析。这可以包括计算关键事件的出现频率、错误率、性能指标等。分析将帮助你了解数据的特点和分布。
+
+4. **重要性评估：** 对不同类型的数据或事件进行重要性评估。这可以基于业务需求、风险等因素。你可以确定哪些数据或事件对系统或任务的影响更大。
+
+5. **动态调整：** 根据分析和重要性评估的结果，调整采样策略。这可能包括增加关键事件的采样率，降低不重要数据的采样率，或者更精细地设定采样规则。
+
+6. **实时监控：** 在运行时，实时监控系统状态和数据流。根据实际情况动态地调整采样策略。例如，当系统负载上升时，可以减少日志采样率以减轻系统压力。
+
+7. **迭代优化：** 根据实际效果不断迭代优化采样策略。分析新的采样数据，评估是否达到了预期的目标，然后根据需要进行调整。
+
+8. **记录和分析结果：** 记录采样策略的调整和实际效果。这将有助于你在未来优化自适应采样策略，甚至可以用于建立模型来预测何时需要调整策略。
+
+根据实际情况不断优化和调整策略，以达到更好的数据分析效果。
+
+
+
+
+
 
 # 自适应采样算法在全链路跟踪中的应用
 
