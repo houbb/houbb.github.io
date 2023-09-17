@@ -44,6 +44,166 @@ Dubbo是一个分布式的高性能RPC框架，可为应用程序提供服务导
 
 这样直接看一遍还是没啥感觉，我们通过 3 种方式的入门案例，加深一下大家的理解。
 
+
+# 根据官方的 example 例子
+
+> [dubbo-learn](https://github.com/houbb/dubbo-learn)
+
+## 启动服务注册中心
+
+启用内嵌的 zk 服务，或者使用 zookeeper 作为注册中心。
+
+```java
+package com.github.houbb.dubbo.learn.zk;
+
+import java.io.File;
+import java.util.Properties;
+import java.util.UUID;
+
+import org.apache.zookeeper.server.ServerConfig;
+import org.apache.zookeeper.server.ZooKeeperServerMain;
+import org.apache.zookeeper.server.quorum.QuorumPeerConfig;
+
+public class EmbeddedZooKeeper {
+
+    public static void main(String[] args) throws Exception {
+        int port = 2181;
+        if (args.length == 1) {
+            port = Integer.parseInt(args[0]);
+        }
+
+        Properties properties = new Properties();
+        File file = new File(System.getProperty("java.io.tmpdir")
+                + File.separator + UUID.randomUUID());
+        file.deleteOnExit();
+        properties.setProperty("dataDir", file.getAbsolutePath());
+        properties.setProperty("clientPort", String.valueOf(port));
+
+        QuorumPeerConfig quorumPeerConfig = new QuorumPeerConfig();
+        quorumPeerConfig.parseProperties(properties);
+
+        ZooKeeperServerMain zkServer = new ZooKeeperServerMain();
+        ServerConfig configuration = new ServerConfig();
+        configuration.readFrom(quorumPeerConfig);
+
+        try {
+            zkServer.runFromConfig(configuration);
+            System.out.println("----------------- EmbeddedZooKeeper started on port 2181");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+}
+```
+
+## maven 依赖
+
+上面的 maven 依赖如下：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.example</groupId>
+        <artifactId>dubbo-learn</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>dubbo-learn-zk</artifactId>
+
+
+    <properties>
+        <zookeeper.version>3.8.0</zookeeper.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.apache.zookeeper</groupId>
+                <artifactId>parent</artifactId>
+                <version>${zookeeper.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>${zookeeper.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>netty-handler</artifactId>
+                    <groupId>io.netty</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>netty-transport-native-epoll</artifactId>
+                    <groupId>io.netty</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-servlet</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>jline</groupId>
+            <artifactId>jline</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.xerial.snappy</groupId>
+            <artifactId>snappy-java</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <mainClass>org.apache.dubbo.samples.EmbeddedZooKeeper</mainClass>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+```
+
 # 基于 api 实现
 
 个人理解最简单的 dubbo 入门案例应该是基于 api 的定义实现，因为 dubbo 是完全可以独立于 spring 存在的。
