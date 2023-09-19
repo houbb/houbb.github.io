@@ -4,7 +4,7 @@ title: JMX获取jvm参数，cpu使用率，内存，线程，类等信息,实现
 date: 2023-09-11 21:01:55 +0800
 categories: [JVM]
 tags: [jvm, tool, sh]
-published: false
+published: true
 ---
 
 
