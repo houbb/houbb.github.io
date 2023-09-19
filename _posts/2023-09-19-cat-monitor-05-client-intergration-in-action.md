@@ -181,9 +181,36 @@ public class CatFilterConfigure {
 
 ![cat-monitor](https://img-blog.csdnimg.cn/c5a0c4e1dbd34e179ebe12250c4a645e.png#pic_center)
 
+# 日志组件整合
+
+## Log4j2 配置
+
+如果需要使用Cat自定义的Appender，需要在log4j2.xml中添加如下配置：
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info">
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5p]  %c {%F:%L} - %m%n" />
+        </Console>
+        <CatAppender name="CatAppender"/>
+    </Appenders>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="console" />
+            <AppenderRef ref="CatAppender" />
+        </Root>
+    </Loggers>
+</Configuration>
+```
+
 # 参考资料
 
 https://github.com/dianping/cat/blob/master/lib/java/README.zh-CN.md
+
+https://github.com/dianping/cat/blob/master/integration/log4j2/README.md
 
 * any list
 {:toc}
