@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Spring Boot 01-入门案例
+title:  Spring Boot-01-入门案例
 date:  2017-12-19 14:43:25 +0800
 categories: [Spring]
 tags: [spring, spring, springboot]

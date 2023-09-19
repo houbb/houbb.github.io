@@ -1,6 +1,6 @@
 ---
 layout: post
-title: cat monitor-04-cat 部署实战
+title: cat monitor-04-cat 服务端部署实战
 date: 2023-09-19 21:01:55 +0800
 categories: [Monitor]
 tags: [monitor, sh]
@@ -373,4 +373,4 @@ https://stackoverflow.com/questions/70797971/docker-error-response-from-daemon-p
 [docker启动容器，端口被占用：An attempt was made to access a socket in a way forbidden by its access permissions](https://blog.csdn.net/xiaoxiao_ziteng/article/details/123988145)
 
 * any list
-{:toc}s
+{:toc}
