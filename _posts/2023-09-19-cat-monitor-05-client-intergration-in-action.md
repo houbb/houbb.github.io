@@ -193,7 +193,7 @@ public class CatFilterConfigure {
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
             <ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY" />
-            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5p]  %c {%F:%L} - %m%n" />
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] [%-5p]  %c - %m%n" />
         </Console>
         <CatAppender name="CatAppender"/>
     </Appenders>
