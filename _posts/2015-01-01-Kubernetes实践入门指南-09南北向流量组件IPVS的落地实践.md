@@ -45,26 +45,42 @@ iptables 一直是 Kubernetes 集群依赖的系统组件，它同时也是 Liin
 ### IPVS 使用简介
 
 安装 ipvsadm，这是 LVS 的管理工具：
+
+```
 sudo apt-get install -y ipvsadm
+```
 
 创建虚拟服务：
 
+```
 sudo ipvsadm -A -t 100.100.100.100:80 -s rr
+```
 
 使用容器创建 2 个实例：
 
+```
 $ docker run -d -p 8000:8000 --name first -t jwilder/whoami cd977829ae0c76236a1506c497d5ce1628f1f701f8ed074916b21fc286f3d0d1 $ docker run -d -p 8001:8000 --name second -t jwilder/whoami 5886b1ed7bd4095cb02b32d1642866095e6f4ce1750276bd9fc07e91e2fbc668
+```
 
 查出容器地址：
 
 ```
+{% raw %}
 
-$ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' first 172.17.0.2 $ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' second 172.17.0.3 $ curl 172.17.0.2:8000 I'm cd977829ae0c
+$ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' first 172.17.0.2 
+$ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' second 172.17.0.3 
+$ curl 172.17.0.2:8000 I'm cd977829ae0c
+
+{% endraw %}
 ```
 
 配置 IP 组绑定到虚拟服务 IP 上：
 
-$ sudo ipvsadm -a -t 100.100.100.100:80 -r 172.17.0.2:8000 -m $ sudo ipvsadm -a -t 100.100.100.100:80 -r 172.17.0.3:8000 -m $ ipvsadm -l IP Virtual Server version 1.2.1 (size=4096) Prot LocalAddress:Port Scheduler Flags -> RemoteAddress:Port Forward Weight ActiveConn InActConn TCP 100.100.100.100:http rr -> 172.17.0.2:8000 Masq 1 0 0 -> 172.17.0.3:8000 Masq 1 0 0
+```
+$ sudo ipvsadm -a -t 100.100.100.100:80 -r 172.17.0.2:8000 -m 
+$ sudo ipvsadm -a -t 100.100.100.100:80 -r 172.17.0.3:8000 -m 
+$ ipvsadm -l IP Virtual Server version 1.2.1 (size=4096) Prot LocalAddress:Port Scheduler Flags -> RemoteAddress:Port Forward Weight ActiveConn InActConn TCP 100.100.100.100:http rr -> 172.17.0.2:8000 Masq 1 0 0 -> 172.17.0.3:8000 Masq 1 0 0
+```
 
 到此，IPVS 的负载配置步骤就给大家演示完了，kube-proxy 也是如此操作 IPVS 的。
 
@@ -91,7 +107,10 @@ IPVS 毕竟是为了负载均衡流量使用的，还有一些场景下它是爱
 * 支持 Loadbalancer 类型的 Service
 * 支持 NodePort 类型的 Service
 
-当然，为了优化 iptables 的过多规则生成，kube-proxy 还引入 ipset 工具来减少 iptables 规则。以下表格就是 IPVS 模式下维护的 ipset 规则：
+当然，为了优化 iptables 的过多规则生成，kube-proxy 还引入 ipset 工具来减少 iptables 规则。
+
+以下表格就是 IPVS 模式下维护的 ipset 规则：
+
 **set name** **members** **usage** KUBE-CLUSTER-IP All Service IP + port masquerade for cases that
 
 masquerade-all=true

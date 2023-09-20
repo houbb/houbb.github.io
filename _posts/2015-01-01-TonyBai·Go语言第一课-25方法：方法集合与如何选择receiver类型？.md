@@ -46,7 +46,34 @@ F2(t /*T)
 据此我们也可以得出结论：当我们的方法M2采用类型为/*T的receiver参数时，代表/*T类型实例的receiver参数以值传递方式传递到M2方法体中的，实际上是**T类型实例的地址**，M2方法体通过该地址可以对原T类型实例进行任何修改操作。
 
 我们再通过一个更直观的例子，证明一下上面这个分析结果，看一下Go方法选择不同的receiver类型对原类型实例的影响：
-package main type T struct { a int } func (t T) M1() { t.a = 10 } func (t /*T) M2() { t.a = 11 } func main() { var t T println(t.a) // 0 t.M1() println(t.a) // 0 p := &t p.M2() println(t.a) // 11 }
+
+```go
+package main
+  
+type T struct {
+    a int
+}
+
+func (t T) M1() {
+    t.a = 10
+}
+
+func (t *T) M2() {
+    t.a = 11
+}
+
+func main() {
+    var t T
+    println(t.a) // 0
+
+    t.M1()
+    println(t.a) // 0
+
+    p := &t
+    p.M2()
+    println(t.a) // 11
+}
+```
 
 在这个示例中，我们为基类型T定义了两个方法M1和M2，其中M1的receiver参数类型为T，而M2的receiver参数类型为/*T。M1和M2方法体都通过receiver参数t对t的字段a进行了修改。
 
@@ -60,12 +87,47 @@ package main type T struct { a int } func (t T) M1() { t.a = 10 } func (t /*T) M
 
 基于上面的影响分析，我们可以得到选择receiver参数类型的第一个原则：**如果Go方法要把对receiver参数代表的类型实例的修改，反映到原类型实例上，那么我们应该选择/*T作为receiver参数的类型**。
 
-这个原则似乎很好掌握，不过这个时候，你可能会有个疑问：如果我们选择了/*T作为Go方法receiver参数的类型，那么我们是不是只能通过/*T类型变量调用该方法，而不能通过T类型变量调用了呢？这个问题恰恰也是上节课我们遗留的一个问题。我们改造一下上面例子看一下：
-type T struct { a int } func (t T) M1() { t.a = 10 } func (t /*T) M2() { t.a = 11 } func main() { var t1 T println(t1.a) // 0 t1.M1() println(t1.a) // 0 t1.M2() println(t1.a) // 11 var t2 = &T{} println(t2.a) // 0 t2.M1() println(t2.a) // 0 t2.M2() println(t2.a) // 11 }
+这个原则似乎很好掌握，不过这个时候，你可能会有个疑问：如果我们选择了/*T作为Go方法receiver参数的类型，那么我们是不是只能通过/*T类型变量调用该方法，而不能通过T类型变量调用了呢？这个问题恰恰也是上节课我们遗留的一个问题。
 
-我们先来看看类型为T的实例t1。我们看到它不仅可以调用receiver参数类型为T的方法M1，它还可以直接调用receiver参数类型为/*T的方法M2，并且调用完M2方法后，t1.a的值被修改为11了。
+我们改造一下上面例子看一下：
 
-其实，T类型的实例t1之所以可以调用receiver参数类型为/*T的方法M2，都是Go编译器在背后自动进行转换的结果。或者说，t1.M2()这种用法是Go提供的“语法糖”：Go判断t1的类型为T，也就是与方法M2的receiver参数类型/*T不一致后，会自动将
+```go
+type T struct {
+      a int
+  }
+  
+  func (t T) M1() {
+      t.a = 10
+  }
+ 
+ func (t *T) M2() {
+     t.a = 11
+ }
+ 
+ func main() {
+     var t1 T
+     println(t1.a) // 0
+     t1.M1()
+     println(t1.a) // 0
+     t1.M2()
+     println(t1.a) // 11
+ 
+     var t2 = &T{}
+     println(t2.a) // 0
+     t2.M1()
+     println(t2.a) // 0
+     t2.M2()
+     println(t2.a) // 11
+ }
+```
+
+我们先来看看类型为T的实例t1。
+
+我们看到它不仅可以调用receiver参数类型为T的方法M1，它还可以直接调用receiver参数类型为`*T`的方法M2，并且调用完M2方法后，t1.a的值被修改为11了。
+
+其实，T类型的实例t1之所以可以调用receiver参数类型为`*T`的方法M2，都是Go编译器在背后自动进行转换的结果。
+
+或者说，t1.M2()这种用法是Go提供的“语法糖”：Go判断t1的类型为T，也就是与方法M2的receiver参数类型/*T不一致后，会自动将
 
 t1.M2()
 转换为
@@ -75,13 +137,12 @@ t1.M2()
 
 同理，类型为/*T的实例t2，它不仅可以调用receiver参数类型为/*T的方法M2，还可以调用receiver参数类型为T的方法M1，这同样是因为Go编译器在背后做了转换。也就是，Go判断t2的类型为/*T，与方法M1的receiver参数类型T不一致，就会自动将
 
-t2.M1()
-转换为
-
-(/*t2).M1()
+t2.M1() 转换为 `(*t2).M1()`
 。
 
-通过这个实例，我们知道了这样一个结论：**无论是T类型实例，还是/*T类型实例，都既可以调用receiver为T类型的方法，也可以调用receiver为/*T类型的方法**。这样，我们在为方法选择receiver参数的类型的时候，就不需要担心这个方法不能被与receiver参数类型不一致的类型实例调用了。
+通过这个实例，我们知道了这样一个结论：**无论是T类型实例，还是/*T类型实例，都既可以调用receiver为T类型的方法，也可以调用receiver为/*T类型的方法**。
+
+这样，我们在为方法选择receiver参数的类型的时候，就不需要担心这个方法不能被与receiver参数类型不一致的类型实例调用了。
 
 ## 选择receiver参数类型的第二个原则
 
@@ -89,7 +150,9 @@ t2.M1()
 
 这也得分情况。一般情况下，我们通常会为receiver参数选择T类型，因为这样可以缩窄外部修改类型实例内部状态的“接触面”，也就是尽量少暴露可以修改类型内部状态的方法。
 
-不过也有一个例外需要你特别注意。考虑到Go方法调用时，receiver参数是以值拷贝的形式传入方法中的。那么，**如果receiver参数类型的size较大**，以值拷贝形式传入就会导致较大的性能开销，这时我们选择/*T作为receiver类型可能更好些。
+不过也有一个例外需要你特别注意。考虑到Go方法调用时，receiver参数是以值拷贝的形式传入方法中的。
+
+那么，**如果receiver参数类型的size较大**，以值拷贝形式传入就会导致较大的性能开销，这时我们选择/*T作为receiver类型可能更好些。
 
 以上这些可以作为我们**选择receiver参数类型的第二个原则**。
 
@@ -100,7 +163,28 @@ t2.M1()
 ## 方法集合
 
 在了解方法集合是什么之前，我们先通过一个示例，直观了解一下为什么要有方法集合，它主要用来解决什么问题：
-type Interface interface { M1() M2() } type T struct{} func (t T) M1() {} func (t /*T) M2() {} func main() { var t T var pt /*T var i Interface i = pt i = t // cannot use t (type T) as type Interface in assignment: T does not implement Interface (M2 method has pointer receiver) }
+
+```go
+type Interface interface {
+    M1()
+    M2()
+}
+
+type T struct{}
+
+func (t T) M1()  {}
+func (t *T) M2() {}
+
+func main() {
+    var t T
+    var pt *T
+    var i Interface
+
+    i = pt
+    i = t // cannot use t (type T) as type Interface in assignment: T does not implement Interface (M2 method has pointer receiver)
+}
+```
+
 
 在这个例子中，我们定义了一个接口类型Interface以及一个自定义类型T。Interface接口类型包含了两个方法M1和M2，代码中还定义了基类型为T的两个方法M1和M2，但它们的receiver参数类型不同，一个为T，另一个为/*T。在main函数中，我们分别将T类型实例t和/*T类型实例pt赋值给Interface类型变量i。
 
@@ -120,17 +204,74 @@ Go中任何一个类型都有属于自己的方法集合，或者说方法集合
 接口类型相对特殊，它只会列出代表接口的方法列表，不会具体定义某个方法，它的方法集合就是它的方法列表中的所有方法，我们可以一目了然地看到。因此，我们下面重点讲解的是非接口类型的方法集合。
 
 为了方便查看一个非接口类型的方法集合，我这里提供了一个函数dumpMethodSet，用于输出一个非接口类型的方法集合：
-func dumpMethodSet(i interface{}) { dynTyp := reflect.TypeOf(i) if dynTyp == nil { fmt.Printf("there is no dynamic type\n") return } n := dynTyp.NumMethod() if n == 0 { fmt.Printf("%s's method set is empty!\n", dynTyp) return } fmt.Printf("%s's method set:\n", dynTyp) for j := 0; j < n; j++ { fmt.Println("-", dynTyp.Method(j).Name) } fmt.Printf("\n") }
+
+```go
+func dumpMethodSet(i interface{}) {
+    dynTyp := reflect.TypeOf(i)
+
+    if dynTyp == nil {
+        fmt.Printf("there is no dynamic type\n")
+        return
+    }
+
+    n := dynTyp.NumMethod()
+    if n == 0 {
+        fmt.Printf("%s's method set is empty!\n", dynTyp)
+        return
+    }
+
+    fmt.Printf("%s's method set:\n", dynTyp)
+    for j := 0; j < n; j++ {
+        fmt.Println("-", dynTyp.Method(j).Name)
+    }
+    fmt.Printf("\n")
+}
+```
+
 
 下面我们利用这个函数，试着输出一下Go原生类型以及自定义类型的方法集合，看下面代码：
 
-type T struct{} func (T) M1() {} func (T) M2() {} func (/*T) M3() {} func (/*T) M4() {} func main() { var n int dumpMethodSet(n) dumpMethodSet(&n) var t T dumpMethodSet(t) dumpMethodSet(&t) }
+```go
+type T struct{}
+
+func (T) M1() {}
+func (T) M2() {}
+
+func (*T) M3() {}
+func (*T) M4() {}
+
+func main() {
+    var n int
+    dumpMethodSet(n)
+    dumpMethodSet(&n)
+
+    var t T
+    dumpMethodSet(t)
+    dumpMethodSet(&t)
+}
+```
 
 运行这段代码，我们得到如下结果：
 
-int's method set is empty! /*int's method set is empty! main.T's method set: - M1 - M2 /*main.T's method set: - M1 - M2 - M3 - M4
+```
+int's method set is empty!
+*int's method set is empty!
+main.T's method set:
+- M1
+- M2
 
-我们看到以int、/*int为代表的Go原生类型由于没有定义方法，所以它们的方法集合都是空的。自定义类型T定义了方法M1和M2，因此它的方法集合包含了M1和M2，也符合我们预期。但/*T的方法集合中除了预期的M3和M4之外，居然还包含了类型T的方法M1和M2！
+*main.T's method set:
+- M1
+- M2
+- M3
+- M4
+```
+
+我们看到以int、`*int`为代表的Go原生类型由于没有定义方法，所以它们的方法集合都是空的。
+
+自定义类型T定义了方法M1和M2，因此它的方法集合包含了M1和M2，也符合我们预期。
+
+但`*T`的方法集合中除了预期的M3和M4之外，居然还包含了类型T的方法M1和M2！
 
 不过，这里程序的输出并没有错误。
 
@@ -140,11 +281,37 @@ int's method set is empty! /*int's method set is empty! main.T's method set: - M
 
 i = pt
 没有报编译错误的原因了呢？我们同样可以使用dumpMethodSet工具函数，输出一下那个例子中pt与t各自所属类型的方法集合：
-type Interface interface { M1() M2() } type T struct{} func (t T) M1() {} func (t /*T) M2() {} func main() { var t T var pt /*T dumpMethodSet(t) dumpMethodSet(pt) }
+
+
+```go
+type Interface interface {
+    M1()
+    M2()
+}
+
+type T struct{}
+
+func (t T) M1()  {}
+func (t *T) M2() {}
+
+func main() {
+    var t T
+    var pt *T
+    dumpMethodSet(t)
+    dumpMethodSet(pt)
+}
+```
 
 运行上述代码，我们得到如下结果：
 
-main.T's method set: - M1 /*main.T's method set: - M1 - M2
+```
+main.T's method set:
+- M1
+
+*main.T's method set:
+- M1
+- M2
+```
 
 通过这个输出结果，我们可以一目了然地看到T、/*T各自的方法集合。
 
