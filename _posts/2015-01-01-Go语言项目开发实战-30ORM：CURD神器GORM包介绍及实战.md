@@ -31,8 +31,16 @@ GORM有两个版本，[V1](https://github.com/jinzhu/gorm)和[V2](https://github
 
 ## 通过示例学习GORM
 
-接下来，我们先快速看一个使用GORM的示例，通过该示例来学习GORM。示例代码存放在[marmotedu/gopractise-demo/gorm/main.go](https://github.com/marmotedu/gopractise-demo/blob/main/gorm/main.go)文件中。因为代码比较长，你可以使用以下命令克隆到本地查看：
-$ mkdir -p $GOPATH/src/github.com/marmotedu $ cd $GOPATH/src/github.com/marmotedu $ git clone https://github.com/marmotedu/gopractise-demo $ cd gopractise-demo/gorm/
+接下来，我们先快速看一个使用GORM的示例，通过该示例来学习GORM。示例代码存放在[marmotedu/gopractise-demo/gorm/main.go](https://github.com/marmotedu/gopractise-demo/blob/main/gorm/main.go)文件中。
+
+因为代码比较长，你可以使用以下命令克隆到本地查看：
+
+```
+$ mkdir -p $GOPATH/src/github.com/marmotedu 
+$ cd $GOPATH/src/github.com/marmotedu 
+$ git clone https://github.com/marmotedu/gopractise-demo 
+$ cd gopractise-demo/gorm/
+```
 
 假设我们有一个MySQL数据库，连接地址和端口为
 
@@ -43,9 +51,14 @@ iam
 ，密码为
 
 iam1234
-。创建完main.go文件后，执行以下命令来运行：
+。
 
+
+创建完main.go文件后，执行以下命令来运行：
+
+```
 $ go run main.go -H 127.0.0.1:3306 -u iam -p iam1234 -d test 2020/10/17 15:15:50 totalcount: 1 2020/10/17 15:15:50 code: D42, price: 100 2020/10/17 15:15:51 totalcount: 1 2020/10/17 15:15:51 code: D42, price: 200 2020/10/17 15:15:51 totalcount: 0
+```
 
 在企业级Go项目开发中，使用GORM库主要用来完成以下数据库操作：
 
@@ -236,7 +249,12 @@ sqlDB, err := db.DB() sqlDB.SetMaxIdleConns(100) // 设置MySQL的最大空闲�
 
 db.Create
 方法来创建一条记录：
-type User struct { gorm.Model Name string Age uint8 Birthday /*time.Time } user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()} result := db.Create(&user) // 通过数据的指针来创建
+
+```sql
+type User struct { gorm.Model Name string Age uint8 Birthday /*time.Time } user := User{Name: "Jinzhu", Age: 18, Birthday: time.Now()} result := db.Create(&user) // 通过
+```
+
+数据的指针来创建
 
 db.Create函数会返回如下3个值：
 
@@ -245,12 +263,23 @@ db.Create函数会返回如下3个值：
 * result.RowsAffected：返回插入记录的条数。
 
 当需要插入的数据量比较大时，可以批量插入，以提高插入性能：
-var users = []User{{Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}} DB.Create(&users) for _, user := range users { user.ID // 1,2,3 }
+
+```js
+var users = []User{
+    
+    {Name: "jinzhu1"}, {Name: "jinzhu2"}, {Name: "jinzhu3"}
+}; 
+    
+DB.Create(&users) for _, user := range users { user.ID // 1,2,3 }
+```
 
 ### 删除记录
 
 我们可以通过Delete方法删除记录：
+
+```sql
 // DELETE from users where id = 10 AND name = "jinzhu"; db.Where("name = ?", "jinzhu").Delete(&user)
+```
 
 GORM也支持根据主键进行删除，例如：
 
@@ -478,6 +507,7 @@ db
 ## 总结
 
 在Go项目中，我们需要使用ORM来进行数据库的CURD操作。在Go生态中，当前最受欢迎的ORM是GORM，IAM项目也使用了GORM。GORM有很多功能，常用的功能有模型定义、连接数据库、创建记录、删除记录、更新记录和查询数据。这些常用功能的常见使用方式如下：
+
 package main import ( "fmt" "log" "github.com/spf13/pflag" "gorm.io/driver/mysql" "gorm.io/gorm" ) type Product struct { gorm.Model Code  string `gorm:"column:code"` Price uint   `gorm:"column:price"` } // TableName maps to mysql table name. func (p /*Product) TableName() string { return "product" } var ( host     = pflag.StringP("host", "H", "127.0.0.1:3306", "MySQL service host address") username = pflag.StringP("username", "u", "root", "Username for access to mysql service") password = pflag.StringP("password", "p", "root", "Password for access to mysql, should be used pair with password") database = pflag.StringP("database", "d", "test", "Database name to use") help     = pflag.BoolP("help", "h", false, "Print this help message") ) func main() { // Parse command line flags pflag.CommandLine.SortFlags = false pflag.Usage = func() { pflag.PrintDefaults() } pflag.Parse() if /*help { pflag.Usage() return } dsn := fmt.Sprintf(`%s:%s@tcp(%s)/%s?charset=utf8&parseTime=%t&loc=%s`, /*username, /*password, /*host, /*database, true, "Local") db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{}) if err != nil { panic("failed to connect database") } // 1. Auto migration for given models db.AutoMigrate(&Product{}) // 2. Insert the value into database if err := db.Create(&Product{Code: "D42", Price: 100}).Error; err != nil { log.Fatalf("Create error: %v", err) } PrintProducts(db) // 3. Find first record that match given conditions product := &Product{} if err := db.Where("code= ?", "D42").First(&product).Error; err != nil { log.Fatalf("Get product error: %v", err) } // 4. Update value in database, if the value doesn't have primary key, will insert it product.Price = 200 if err := db.Save(product).Error; err != nil { log.Fatalf("Update product error: %v", err) } PrintProducts(db) // 5. Delete value match given conditions if err := db.Where("code = ?", "D42").Delete(&Product{}).Error; err != nil { log.Fatalf("Delete product error: %v", err) } PrintProducts(db) } // List products func PrintProducts(db /*gorm.DB) { products := make([]/*Product, 0) var count int64 d := db.Where("code like ?", "%D%").Offset(0).Limit(2).Order("id desc").Find(&products).Offset(-1).Limit(-1).Count(&count) if d.Error != nil { log.Fatalf("List products error: %v", d.Error) } log.Printf("totalcount: %d", count) for _, product := range products { log.Printf("\tcode: %s, price: %d\n", product.Code, product.Price) } }
 
 此外，GORM还支持原生查询SQL和原生执行SQL，可以满足更加复杂的SQL场景。
