@@ -9,10 +9,15 @@ published: true
 
 
 
-09 南北向流量组件 IPVS 的落地实践
-我们知道 Kubernetes 工作节点的流量管理都是由 kube-proxy 来管理的。kube-proxy 利用了 iptables 的网络流量转换能力，在整个集群的数据层面创建了一层集群虚拟网络，也就是大家在 Service 对象中会看到的术语 ClusterIP，即集群网络 IP。既然 iptables 已经很完美的支持流量的负载均衡，并能实现南北向流量的反向代理功能，为什么我们还要让用户使用另外一个系统组件 IPVS 来代替它呢？
+# 09 南北向流量组件 IPVS 的落地实践
 
-主要原因还是 iptables 能承载的 Service 对象规模有限，超过 1000 个以上就开始出现性能瓶颈了。目前 Kubernetes 默认推荐代理就是 IPVS 模式，这个推荐方案迫使我们需要开始了解 IPVS 的机制，熟悉它的应用范围和对比 iptables 的优缺点，让我们能有更多的精力放在应用开发上。
+我们知道 Kubernetes 工作节点的流量管理都是由 kube-proxy 来管理的。kube-proxy 利用了 iptables 的网络流量转换能力，在整个集群的数据层面创建了一层集群虚拟网络，也就是大家在 Service 对象中会看到的术语 ClusterIP，即集群网络 IP。
+
+既然 iptables 已经很完美的支持流量的负载均衡，并能实现南北向流量的反向代理功能，为什么我们还要让用户使用另外一个系统组件 IPVS 来代替它呢？
+
+主要原因还是 iptables 能承载的 Service 对象规模有限，超过 1000 个以上就开始出现性能瓶颈了。
+
+目前 Kubernetes 默认推荐代理就是 IPVS 模式，这个推荐方案迫使我们需要开始了解 IPVS 的机制，熟悉它的应用范围和对比 iptables 的优缺点，让我们能有更多的精力放在应用开发上。
 
 ### 一次大规模的 Service 性能评测引入的 IPVS
 
@@ -59,12 +64,16 @@ sudo ipvsadm -A -t 100.100.100.100:80 -s rr
 使用容器创建 2 个实例：
 
 ```
-$ docker run -d -p 8000:8000 --name first -t jwilder/whoami cd977829ae0c76236a1506c497d5ce1628f1f701f8ed074916b21fc286f3d0d1 $ docker run -d -p 8001:8000 --name second -t jwilder/whoami 5886b1ed7bd4095cb02b32d1642866095e6f4ce1750276bd9fc07e91e2fbc668
+$ docker run -d -p 8000:8000 --name first -t jwilder/whoami
+cd977829ae0c76236a1506c497d5ce1628f1f701f8ed074916b21fc286f3d0d1
+
+$ docker run -d -p 8001:8000 --name second -t jwilder/whoami
+5886b1ed7bd4095cb02b32d1642866095e6f4ce1750276bd9fc07e91e2fbc668
 ```
 
 查出容器地址：
 
-```
+```sh
 {% raw %}
 
 $ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' first 172.17.0.2 
@@ -76,7 +85,7 @@ $ curl 172.17.0.2:8000 I'm cd977829ae0c
 
 配置 IP 组绑定到虚拟服务 IP 上：
 
-```
+```sh
 $ sudo ipvsadm -a -t 100.100.100.100:80 -r 172.17.0.2:8000 -m 
 $ sudo ipvsadm -a -t 100.100.100.100:80 -r 172.17.0.3:8000 -m 
 $ ipvsadm -l IP Virtual Server version 1.2.1 (size=4096) Prot LocalAddress:Port Scheduler Flags -> RemoteAddress:Port Forward Weight ActiveConn InActConn TCP 100.100.100.100:http rr -> 172.17.0.2:8000 Masq 1 0 0 -> 172.17.0.3:8000 Masq 1 0 0
@@ -99,10 +108,7 @@ $ ipvsadm -l IP Virtual Server version 1.2.1 (size=4096) Prot LocalAddress:Port 
 
 IPVS 毕竟是为了负载均衡流量使用的，还有一些场景下它是爱莫能助的。比如包过滤、端口回流、SNAT 等需求下还是要依靠 iptables 来完成。另外，还有 4 种情况下 IPVS 模式会回退到 iptables 模式。
 
-* kube-proxy 启动并开启
-
---masquerade-all=true
-参数
+* kube-proxy 启动并开启 --masquerade-all=true 参数
 * kube-proxy 启动时定义了集群网络
 * 支持 Loadbalancer 类型的 Service
 * 支持 NodePort 类型的 Service
@@ -113,35 +119,83 @@ IPVS 毕竟是为了负载均衡流量使用的，还有一些场景下它是爱
 
 **set name** **members** **usage** KUBE-CLUSTER-IP All Service IP + port masquerade for cases that
 
-masquerade-all=true
-or
+<table>
+<thead>
+<tr>
+<th align="left"><strong>set name</strong></th>
+<th align="left"><strong>members</strong></th>
+<th align="left"><strong>usage</strong></th>
+</tr>
+</thead>
 
-clusterCIDR
-specified KUBE-LOOP-BACK All Service IP + port + IP masquerade for resolving hairpin issue KUBE-EXTERNAL-IP Service External IP + port masquerade for packets to external IPs KUBE-LOAD-BALANCER Load Balancer ingress IP + port masquerade for packets to Load Balancer type service KUBE-LOAD-BALANCER-LOCAL Load Balancer ingress IP + port with
+<tbody>
+<tr>
+<td align="left">KUBE-CLUSTER-IP</td>
+<td align="left">All Service IP + port</td>
+<td align="left">masquerade for cases that <code>masquerade-all=true</code> or <code>clusterCIDR</code> specified</td>
+</tr>
 
-externalTrafficPolicy=local
- accept packets to Load Balancer with
+<tr>
+<td align="left">KUBE-LOOP-BACK</td>
+<td align="left">All Service IP + port + IP</td>
+<td align="left">masquerade for resolving hairpin issue</td>
+</tr>
 
-externalTrafficPolicy=local KUBE-LOAD-BALANCER-FW Load Balancer ingress IP + port with
+<tr>
+<td align="left">KUBE-EXTERNAL-IP</td>
+<td align="left">Service External IP + port</td>
+<td align="left">masquerade for packets to external IPs</td>
+</tr>
 
-loadBalancerSourceRanges
- Drop packets for Load Balancer type Service with
+<tr>
+<td align="left">KUBE-LOAD-BALANCER</td>
+<td align="left">Load Balancer ingress IP + port</td>
+<td align="left">masquerade for packets to Load Balancer type service</td>
+</tr>
 
-loadBalancerSourceRanges
-specified KUBE-LOAD-BALANCER-SOURCE-CIDR Load Balancer ingress IP + port + source CIDR accept packets for Load Balancer type Service with
+<tr>
+<td align="left">KUBE-LOAD-BALANCER-LOCAL</td>
+<td align="left">Load Balancer ingress IP + port with <code>externalTrafficPolicy=local</code></td>
+<td align="left">accept packets to Load Balancer with <code>externalTrafficPolicy=local</code></td>
+</tr>
 
-loadBalancerSourceRanges
-specified KUBE-NODE-PORT-TCP NodePort type Service TCP port masquerade for packets to NodePort(TCP) KUBE-NODE-PORT-LOCAL-TCP NodePort type Service TCP port with
+<tr>
+<td align="left">KUBE-LOAD-BALANCER-FW</td>
+<td align="left">Load Balancer ingress IP + port with <code>loadBalancerSourceRanges</code></td>
+<td align="left">Drop packets for Load Balancer type Service with <code>loadBalancerSourceRanges</code> specified</td>
+</tr>
 
-externalTrafficPolicy=local
- accept packets to NodePort Service with
+<tr>
+<td align="left">KUBE-LOAD-BALANCER-SOURCE-CIDR</td>
+<td align="left">Load Balancer ingress IP + port + source CIDR</td>
+<td align="left">accept packets for Load Balancer type Service with <code>loadBalancerSourceRanges</code> specified</td>
+</tr>
 
-externalTrafficPolicy=local KUBE-NODE-PORT-UDP NodePort type Service UDP port masquerade for packets to NodePort(UDP) KUBE-NODE-PORT-LOCAL-UDP NodePort type service UDP port with
+<tr>
+<td align="left">KUBE-NODE-PORT-TCP</td>
+<td align="left">NodePort type Service TCP port</td>
+<td align="left">masquerade for packets to NodePort(TCP)</td>
+</tr>
 
-externalTrafficPolicy=local
- accept packets to NodePort Service with
+<tr>
+<td align="left">KUBE-NODE-PORT-LOCAL-TCP</td>
+<td align="left">NodePort type Service TCP port with <code>externalTrafficPolicy=local</code></td>
+<td align="left">accept packets to NodePort Service with <code>externalTrafficPolicy=local</code></td>
+</tr>
 
-externalTrafficPolicy=local
+<tr>
+<td align="left">KUBE-NODE-PORT-UDP</td>
+<td align="left">NodePort type Service UDP port</td>
+<td align="left">masquerade for packets to NodePort(UDP)</td>
+</tr>
+
+<tr>
+<td align="left">KUBE-NODE-PORT-LOCAL-UDP</td>
+<td align="left">NodePort type service UDP port with <code>externalTrafficPolicy=local</code></td>
+<td align="left">accept packets to NodePort Service with <code>externalTrafficPolicy=local</code></td>
+</tr>
+</tbody>
+</table>
 
 ### 使用 IPVS 的注意事项
 

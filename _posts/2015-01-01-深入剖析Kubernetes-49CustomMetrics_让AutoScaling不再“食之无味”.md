@@ -9,7 +9,8 @@ published: true
 
 
 
-49 Custom Metrics_ 让Auto Scaling不再“食之无味”
+# 49 Custom Metrics_ 让Auto Scaling不再“食之无味”
+
 你好，我是张磊。今天我和你分享的主题是：Custom Metrics，让Auto Scaling不再“食之无味”。
 
 在上一篇文章中，我为你详细讲述了 Kubernetes 里的核心监控体系的架构。不难看到，Prometheus 项目在其中占据了最为核心的位置。
@@ -30,7 +31,10 @@ custom.metrics.k8s.io
 而Custom Metrics APIServer 的实现，其实就是一个 Prometheus 项目的 Adaptor。
 
 比如，现在我们要实现一个根据指定 Pod 收到的 HTTP 请求数量来进行 Auto Scaling 的 Custom Metrics，这个 Metrics 就可以通过访问如下所示的自定义监控 URL 获取到：
+
+```
 https://<apiserver_ip>/apis/custom-metrics.metrics.k8s.io/v1beta1/namespaces/default/pods/sample-metrics-app/http_requests
+```
 
 这里的工作原理是，当你访问这个 URL 的时候，Custom Metrics APIServer就会去 Prometheus 里查询名叫sample-metrics-app这个Pod 的http_requests指标的值，然后按照固定的格式返回给访问者。
 
@@ -43,23 +47,79 @@ https://<apiserver_ip>/apis/custom-metrics.metrics.k8s.io/v1beta1/namespaces/def
 
 **首先**，我们当然是先部署 Prometheus 项目。这一步，我当然会使用 Prometheus Operator来完成，如下所示：
 
-$ kubectl apply -f demos/monitoring/prometheus-operator.yaml clusterrole "prometheus-operator" created serviceaccount "prometheus-operator" created clusterrolebinding "prometheus-operator" created deployment "prometheus-operator" created $ kubectl apply -f demos/monitoring/sample-prometheus-instance.yaml clusterrole "prometheus" created serviceaccount "prometheus" created clusterrolebinding "prometheus" created prometheus "sample-metrics-prom" created service "sample-metrics-prom" created
+```sh
+$ kubectl apply -f demos/monitoring/prometheus-operator.yaml
+clusterrole "prometheus-operator" created
+serviceaccount "prometheus-operator" created
+clusterrolebinding "prometheus-operator" created
+deployment "prometheus-operator" created
+
+$ kubectl apply -f demos/monitoring/sample-prometheus-instance.yaml
+clusterrole "prometheus" created
+serviceaccount "prometheus" created
+clusterrolebinding "prometheus" created
+prometheus "sample-metrics-prom" created
+service "sample-metrics-prom" created
+```
 
 **第二步**，我们需要把 Custom Metrics APIServer 部署起来，如下所示：
 
-$ kubectl apply -f demos/monitoring/custom-metrics.yaml namespace "custom-metrics" created serviceaccount "custom-metrics-apiserver" created clusterrolebinding "custom-metrics:system:auth-delegator" created rolebinding "custom-metrics-auth-reader" created clusterrole "custom-metrics-read" created clusterrolebinding "custom-metrics-read" created deployment "custom-metrics-apiserver" created service "api" created apiservice "v1beta1.custom-metrics.metrics.k8s.io" created clusterrole "custom-metrics-server-resources" created clusterrolebinding "hpa-controller-custom-metrics" created
+```sh
+$ kubectl apply -f demos/monitoring/custom-metrics.yaml
+namespace "custom-metrics" created
+serviceaccount "custom-metrics-apiserver" created
+clusterrolebinding "custom-metrics:system:auth-delegator" created
+rolebinding "custom-metrics-auth-reader" created
+clusterrole "custom-metrics-read" created
+clusterrolebinding "custom-metrics-read" created
+deployment "custom-metrics-apiserver" created
+service "api" created
+apiservice "v1beta1.custom-metrics.metrics.k8s.io" created
+clusterrole "custom-metrics-server-resources" created
+clusterrolebinding "hpa-controller-custom-metrics" created
+```
 
 **第三步**，我们需要为 Custom Metrics APIServer 创建对应的 ClusterRoleBinding，以便能够使用curl来直接访问 Custom Metrics 的 API：
 
-$ kubectl create clusterrolebinding allowall-cm --clusterrole custom-metrics-server-resources --user system:anonymous clusterrolebinding "allowall-cm" created
+```sh
+$ kubectl create clusterrolebinding allowall-cm --clusterrole custom-metrics-server-resources --user system:anonymous
+clusterrolebinding "allowall-cm" created
+```
 
 **第四步**，我们就可以把待监控的应用和 HPA 部署起来了，如下所示：
 
-$ kubectl apply -f demos/monitoring/sample-metrics-app.yaml deployment "sample-metrics-app" created service "sample-metrics-app" created servicemonitor "sample-metrics-app" created horizontalpodautoscaler "sample-metrics-app-hpa" created ingress "sample-metrics-app" created
+```sh
+$ kubectl apply -f demos/monitoring/sample-metrics-app.yaml
+deployment "sample-metrics-app" created
+service "sample-metrics-app" created
+servicemonitor "sample-metrics-app" created
+horizontalpodautoscaler "sample-metrics-app-hpa" created
+ingress "sample-metrics-app" created
+```
 
 这里，我们需要关注一下 HPA 的配置，如下所示：
 
-kind: HorizontalPodAutoscaler apiVersion: autoscaling/v2beta1 metadata: name: sample-metrics-app-hpa spec: scaleTargetRef: apiVersion: apps/v1 kind: Deployment name: sample-metrics-app minReplicas: 2 maxReplicas: 10 metrics: - type: Object object: target: kind: Service name: sample-metrics-app metricName: http_requests targetValue: 100
+```yml
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v2beta1
+metadata:
+  name: sample-metrics-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: sample-metrics-app
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+  - type: Object
+    object:
+      target:
+        kind: Service
+        name: sample-metrics-app
+      metricName: http_requests
+      targetValue: 100
+```
 
 可以看到，**HPA 的配置，就是你设置 Auto Scaling 规则的地方。**
 
@@ -68,21 +128,68 @@ kind: HorizontalPodAutoscaler apiVersion: autoscaling/v2beta1 metadata: name: sa
 在metrics字段，我们指定了这个 HPA 进行 Scale 的依据，是名叫http_requests的 Metrics。而获取这个 Metrics 的途径，则是访问名叫sample-metrics-app的 Service。
 
 有了这些字段里的定义， HPA 就可以向如下所示的 URL 发起请求来获取 Custom Metrics 的值了：
+
+```
 https://<apiserver_ip>/apis/custom-metrics.metrics.k8s.io/v1beta1/namespaces/default/services/sample-metrics-app/http_requests
+```
 
 需要注意的是，上述这个 URL 对应的被监控对象，是我们的应用对应的 Service。这跟本文一开始举例用到的 Pod 对应的 Custom Metrics URL 是不一样的。当然，**对于一个多实例应用来说，通过 Service 来采集 Pod 的 Custom Metrics 其实才是合理的做法。**
 
 这时候，我们可以通过一个名叫hey的测试工具来为我们的应用增加一些访问压力，具体做法如下所示：
-$ /# Install hey $ docker run -it -v /usr/local/bin:/go/bin golang:1.8 go get github.com/rakyll/hey $ export APP_ENDPOINT=$(kubectl get svc sample-metrics-app -o template --template {{.spec.clusterIP}}); echo ${APP_ENDPOINT} $ hey -n 50000 -c 1000 http://${APP_ENDPOINT}
+
+```sh
+{% raw %}
+
+$ # Install hey
+$ docker run -it -v /usr/local/bin:/go/bin golang:1.8 go get github.com/rakyll/hey
+
+$ export APP_ENDPOINT=$(kubectl get svc sample-metrics-app -o template --template {{.spec.clusterIP}}); echo ${APP_ENDPOINT}
+$ hey -n 50000 -c 1000 http://${APP_ENDPOINT}
+
+{% endraw %}
+```
+
 
 与此同时，如果你去访问应用 Service 的 Custom Metircs URL，就会看到这个 URL 已经可以为你返回应用收到的 HTTP 请求数量了，如下所示：
 
-$ curl -sSLk https://<apiserver_ip>/apis/custom-metrics.metrics.k8s.io/v1beta1/namespaces/default/services/sample-metrics-app/http_requests { "kind": "MetricValueList", "apiVersion": "custom-metrics.metrics.k8s.io/v1beta1", "metadata": { "selfLink": "/apis/custom-metrics.metrics.k8s.io/v1beta1/namespaces/default/services/sample-metrics-app/http_requests" }, "items": [ { "describedObject": { "kind": "Service", "name": "sample-metrics-app", "apiVersion": "/__internal" }, "metricName": "http_requests", "timestamp": "2018-11-30T20:56:34Z", "value": "501484m" } ] }
+```json
+$ curl -sSLk https://<apiserver_ip>/apis/custom-metrics.metrics.k8s.io/v1beta1/namespaces/default/services/sample-metrics-app/http_requests
+{
+  "kind": "MetricValueList",
+  "apiVersion": "custom-metrics.metrics.k8s.io/v1beta1",
+  "metadata": {
+    "selfLink": "/apis/custom-metrics.metrics.k8s.io/v1beta1/namespaces/default/services/sample-metrics-app/http_requests"
+  },
+  "items": [
+    {
+      "describedObject": {
+        "kind": "Service",
+        "name": "sample-metrics-app",
+        "apiVersion": "/__internal"
+      },
+      "metricName": "http_requests",
+      "timestamp": "2018-11-30T20:56:34Z",
+      "value": "501484m"
+    }
+  ]
+}
+```
 
 **这里需要注意的是，Custom Metrics API 为你返回的 Value 的格式。**
 
-在为被监控应用编写/metrics API 的返回值时，我们其实比较容易计算的，是该 Pod 收到的 HTTP request 的总数。所以，我们这个[应用的代码](https://github.com/resouer/kubeadm-workshop/blob/master/images/autoscaling/server.js)其实是如下所示的样子：
-if (request.url == "/metrics") { response.end("/# HELP http_requests_total The amount of requests served by the server in total\n/# TYPE http_requests_total counter\nhttp_requests_total " + totalrequests + "\n"); return; }
+在为被监控应用编写/metrics API 的返回值时，我们其实比较容易计算的，是该 Pod 收到的 HTTP request 的总数。
+
+所以，我们这个[应用的代码](https://github.com/resouer/kubeadm-workshop/blob/master/images/autoscaling/server.js)其实是如下所示的样子：
+
+```js
+ if (request.url == "/metrics") {
+    response.end("# HELP http_requests_total The amount of requests served by the server in total\n# TYPE http_requests_total counter\nhttp_requests_total " + totalrequests + "\n");
+    return;
+  }
+```
+
+
+
 
 可以看到，我们的应用在/metrics 对应的 HTTP response 里返回的，其实是http_requests_total的值。这，也就是 Prometheus 收集到的值。
 
@@ -95,7 +202,22 @@ if (request.url == "/metrics") { response.end("/# HELP http_requests_total The a
 不过，在这里你可能会有一个疑问，Prometheus 项目，又是如何知道采集哪些 Pod 的 /metrics API 作为监控指标的来源呢。
 
 实际上，如果仔细观察一下我们前面创建应用的输出，你会看到有一个类型是ServiceMonitor的对象也被创建了出来。它的 YAML 文件如下所示：
-apiVersion: monitoring.coreos.com/v1 kind: ServiceMonitor metadata: name: sample-metrics-app labels: service-monitor: sample-metrics-app spec: selector: matchLabels: app: sample-metrics-app endpoints: - port: web
+
+```yml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: sample-metrics-app
+  labels:
+    service-monitor: sample-metrics-app
+spec:
+  selector:
+    matchLabels:
+      app: sample-metrics-app
+  endpoints:
+  - port: web
+```
+
 
 这个ServiceMonitor对象，正是 Prometheus Operator 项目用来指定被监控 Pod 的一个配置文件。可以看到，我其实是通过Label Selector 为Prometheus 来指定被监控应用的。
 
