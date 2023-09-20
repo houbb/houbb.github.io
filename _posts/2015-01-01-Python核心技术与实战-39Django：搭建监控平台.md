@@ -132,31 +132,57 @@ position.html
 模板文件，其实就是 HTML 文件和部分代码的综合。你可以想象成，这个HTML 在最终送给用户之前，需要被我们预先处理一下，而预先处理的方式就是找到对应的地方进行替换。
 
 我们来看下面这段示例代码：
+
+```
+{% raw %}
+
 /# TradingMonitor/templates/positions.html <!DOCTYPE html> <html lang="en-US"> <head> <title>Positions for {{asset}}</title> </head> <body> <h1>Positions for {{asset}}</h1> <table> <tr> <th>Time</th> <th>Amount</th> </tr> {% for position in positions %} <tr> <th>{{position.timestamp}}</th> <th>{{position.amount}}</th> </tr> {% endfor %} </table> </body>
+
+{% endraw %}
+```
 
 我重点说一下几个地方。首先是
 
+```xml
+{% raw %}
+
 <title>Positions for {{asset}}</title>
+
+{% endraw %}
+```
+
 ，这里双大括号括住 asset 这个变量，这个变量对应的正是前面 context 字典中的 asset key。Django 的渲染引擎会将 asset ，替换成 context 中 asset 对应的内容，此处是替换成了 btc。
 
 再来看
 
+```
 {% for position in positions %}
+```
+
 ，这是个很关键的地方。我们需要处理一个列表的情况，用 for 对 positions 进行迭代就行了。这里的 positions ，同样对应的是 context 中的 positions。
 
 末尾的
 
+```
 {% endfor %}
+```
+
 ，自然就表示结束了。这样，我们就将数据封装到了一个列表之中。
 
 ### 设计链接 Urls
 
 最后，我们需要为我们的操作提供 URL 接口，具体操作我放在了下面的代码中，内容比较简单，我就不详细展开讲解了。
+
+```
 /# TradingMonitor/urls.py from django.contrib import admin from django.urls import path from . import views urlpatterns = [ path('admin/', admin.site.urls), path('positions/<str:asset>', views.render_positions), ]
+```
 
 到这里，我们就可以通过
 
+```
 http://127.0.0.1:8000/positions/btc
+```
+
 来访问啦！
 
 ### 测试
@@ -166,24 +192,31 @@ http://127.0.0.1:8000/positions/btc
 第一步，在
 
 TradingMonitor/TradingMonitor
+
 下，新建一个文件夹 migrations；并在这个文件夹中，新建一个空文件
 
+```
 __init__.py
 。
 mkdir TradingMonitor/migrations touch TradingMonitor/migrations/__init__.py
+```
 
 此时，你的目录结构应该长成下面这样：
 
+```
 TradingMonitor/ ├── TradingMonitor │ ├── migrations │ └── __init__.py │ ├── templates │ └── positions.html │ ├── __init__.py │ ├── settings.py │ ├── urls.py │ ├── models.py │ ├── views.py │ └── wsgi.py ├── db.sqlite3 └── manage.py
+```
 
 第二步，修改
 
+```
 TradingMonitor/settings.py
 ：
 
 INSTALLED_APPS = [ 'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes', 'django.contrib.sessions', 'django.contrib.messages', 'django.contrib.staticfiles', 'TradingMonitor', /# 这里把我们的 app 加上 ]
  
 TEMPLATES = [ { 'BACKEND': 'django.template.backends.django.DjangoTemplates', 'DIRS': [os.path.join(BASE_DIR, 'TradingMonitor/templates')], /# 这里把 templates 的目录加上 'APP_DIRS': True, 'OPTIONS': { 'context_processors': [ 'django.template.context_processors.debug', 'django.template.context_processors.request', 'django.contrib.auth.context_processors.auth', 'django.contrib.messages.context_processors.messages', ], }, }, ]
+```
 
 第三步，运行
 

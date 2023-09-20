@@ -57,7 +57,10 @@ $ docker run -d -p 8000:8000 --name first -t jwilder/whoami cd977829ae0c76236a15
 
 查出容器地址：
 
+```
+
 $ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' first 172.17.0.2 $ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' second 172.17.0.3 $ curl 172.17.0.2:8000 I'm cd977829ae0c
+```
 
 配置 IP 组绑定到虚拟服务 IP 上：
 

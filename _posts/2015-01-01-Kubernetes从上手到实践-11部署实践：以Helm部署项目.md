@@ -169,12 +169,24 @@ YAML
 格式的配置，所以它非常的灵活，即可以使用如上面例子中的
 
 backend
-那种字典类型的， 也可以写成简单的 k-v 形式。但通常来讲，应该尽可能的将它写的清晰明确。并且容易被替换。
+那种字典类型的， 也可以写成简单的 k-v 形式。
+
+但通常来讲，应该尽可能的将它写的清晰明确。并且容易被替换。
+
+```
+{% raw %}
 /# templates/backend-service.yaml apiVersion: v1 kind: Service metadata: labels: app: backend name: saythx-backend namespace: {{ .Values.namespace }} spec: ports: - protocol: TCP port: 8080 targetPort: 8080 selector: app: backend type: {{ .Values.service.type }}
+{% endraw %}
+```
+
 
 将我们之前写的部署文件模板化，与配置项进行组装。
 
+```
+{% raw %}
 1. Get the application URL by running these commands: {{- if contains "NodePort" .Values.service.type }} export NODE_PORT=$(kubectl get --namespace {{ .Values.namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services saythx-frontend) export NODE_IP=$(kubectl get nodes --namespace {{ .Values.namespace }} -o jsonpath="{.items[0].status.addresses[0].address}") echo http://$NODE_IP:$NODE_PORT {{- else if contains "ClusterIP" .Values.service.type }} export POD_NAME=$(kubectl get pods --namespace {{ .Values.namespace }} -l "app=frontend" -o jsonpath="{.items[0].metadata.name}") echo "Visit http://127.0.0.1:8080 to use your application" kubectl --namespace {{ .Values.namespace }} port-forward $POD_NAME 8080:80 {{- end }}
+{% endraw %}
+```
 
 上面这是
 

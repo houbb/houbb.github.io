@@ -38,14 +38,22 @@ Failed to open /opt/bitnami/php/lib/php/extensions/opcache.so, continuing withou
 **第二个方法，在容器内部运行 perf**。不过，这需要容器运行在特权模式下，但实际的应用程序往往只以普通容器的方式运行。所以，容器内部一般没有权限执行 perf 分析。
 
 比方说，如果你在普通容器内部运行 perf record ，你将会看到下面这个错误提示：
+
+```
 $ perf_4.9 record -a -g perf_event_open(..., PERF_FLAG_FD_CLOEXEC) failed with unexpected error 1 (Operation not permitted) perf_event_open(..., 0) failed unexpectedly with error 1 (Operation not permitted)
+```
 
 当然，其实你还可以通过配置 /proc/sys/kernel/perf_event_paranoid （比如改成-1），来允许非特权用户执行 perf 事件分析。
 
 不过还是那句话，为了安全起见，这种方法我也不推荐。
 
 **第三个方法，指定符号路径为容器文件系统的路径**。比如对于第05讲的应用，你可以执行下面这个命令：
+
+```
+{% raw %}
 $ mkdir /tmp/foo $ PID=$(docker inspect --format {{.State.Pid}} phpfpm) $ bindfs /proc/$PID/root /tmp/foo $ perf report --symfs /tmp/foo /# 使用完成后不要忘记解除绑定 $ umount /tmp/foo/
+{% endraw %}
+```
 
 不过这里要注意，bindfs 这个工具需要你额外安装。bindfs 的基本功能是实现目录绑定（类似于 mount –bind），这里需要你安装的是 1.13.10 版本（这也是它的最新发布版）。
 
@@ -56,22 +64,32 @@ $ mkdir /tmp/foo $ PID=$(docker inspect --format {{.State.Pid}} phpfpm) $ bindfs
 比如，你可以这么做。先运行 perf record -g -p < pid>，执行一会儿（比如15秒）后，按Ctrl+C停止。
 
 然后，把生成的 perf.data 文件，拷贝到容器里面来分析：
+
+```
 $ docker cp perf.data phpfpm:/tmp $ docker exec -i -t phpfpm bash
+```
 
 接下来，在容器的 bash 中继续运行下面的命令，安装 perf 并使用 perf report 查看报告：
 
+```
 $ cd /tmp/ $ apt-get update && apt-get install -y linux-tools linux-perf procps $ perf_4.9 report
+```
 
 不过，这里也有两点需要你注意。
 
 首先是perf工具的版本问题。在最后一步中，我们运行的工具是容器内部安装的版本 perf_4.9，而不是普通的 perf 命令。这是因为， perf 命令实际上是一个软连接，会跟内核的版本进行匹配，但镜像里安装的perf版本跟虚拟机的内核版本有可能并不一致。
 
 另外，php-fpm 镜像是基于 Debian 系统的，所以安装 perf 工具的命令，跟 Ubuntu 也并不完全一样。比如， Ubuntu 上的安装方法是下面这样：
+
+```
 $ apt-get install -y linux-tools-common linux-tools-generic linux-tools-$(uname -r)）
+```
 
 而在 php-fpm 容器里，你应该执行下面的命令来安装 perf：
 
+```
 $ apt-get install -y linux-perf
+```
 
 当你按照前面这几种方法操作后，你就可以在容器内部看到 sqrt 的堆栈：
 
@@ -110,7 +128,10 @@ perf report 是一个可视化展示 perf.data 的工具。在第 08 讲的案�
 这个界面可以清楚看到，perf report 的输出中，只有 swapper 显示了调用栈，其他所有符号都不能查看堆栈情况，包括我们案例中的 app 应用。
 
 这种情况我们以前也遇到过，当你发现性能工具的输出无法理解时，应该怎么办呢？当然还是查工具的手册。比如，你可以执行 man perf-report 命令，找到 -g 参数的说明：
+
+```
 -g, --call-graph=<print_type,threshold[,print_limit],order,sort_key[,branch],value> Display call chains using type, min percent threshold, print limit, call order, sort key, optional branch and value. Note that ordering is not fixed so any parameter can be given in an arbitrary order. One exception is the print_limit which should be preceded by threshold. print_type can be either: - flat: single column, linear exposure of call chains. - graph: use a graph tree, displaying absolute overhead rates. (default) - fractal: like graph, but displays relative rates. Each branch of the tree is considered as a new profiled object. - folded: call chains are displayed in a line, separated by semicolons - none: disable call chain display. threshold is a percentage value which specifies a minimum percent to be included in the output call graph. Default is 0.5 (%). print_limit is only applied when stdio interface is used. It's to limit number of call graph entries in a single hist entry. Note that it needs to be given after threshold (but not necessarily consecutive). Default is 0 (unlimited). order can be either: - callee: callee based call graph. - caller: inverted caller based call graph. Default is 'caller' when --children is used, otherwise 'callee'. sort_key can be: - function: compare on functions (default) - address: compare on individual code addresses - srcline: compare on source filename and line number branch can be: - branch: include last branch information in callgraph when available. Usually more convenient to use --branch-history for this. value can be: - percent: diplay overhead percent (default) - period: display event period - count: display event count
+```
 
 通过这个说明可以看到，-g 选项等同于 –call-graph，它的参数是后面那些被逗号隔开的选项，意思分别是输出类型、最小阈值、输出限制、排序方法、排序关键词、分支以及值的类型。
 
@@ -121,7 +142,10 @@ perf report 是一个可视化展示 perf.data 的工具。在第 08 讲的案�
 threshold 的默认值为 0.5%，也就是说，事件比例超过 0.5%时，调用栈才能被显示。再观察我们案例应用 app 的事件比例，只有 0.34%，低于 0.5%，所以看不到 app 的调用栈就很正常了。
 
 这种情况下，你只需要给 perf report 设置一个小于 0.34% 的阈值，就可以显示我们想看到的调用图了。比如执行下面的命令：
+
+```
 $ perf report -g graph,0.3
+```
 
 你就可以得到下面这个新的输出界面，展开 app 后，就可以看到它的调用栈了。
 

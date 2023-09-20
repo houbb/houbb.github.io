@@ -311,7 +311,10 @@ Create status badge
 ### 使用构建矩阵
 
 如果我们想在多个系统或者多个语言版本上测试构建，就需要设置构建矩阵。例如，我们想在多个操作系统、多个Go版本下跑测试，可以使用如下workflow配置：
+
+{% raw %}
 name: Go Test on: [push, pull_request] jobs: helloci-build: name: Test with go ${{ matrix.go_version }} on ${{ matrix.os }} runs-on: ${{ matrix.os }} strategy: matrix: go_version: [1.15, 1.16] os: [ubuntu-latest, macOS-latest] steps: - name: Set up Go ${{ matrix.go_version }} uses: actions/setup-go@v2 with: go-version: ${{ matrix.go_version }} id: go
+{% endraw %}
 
 上面的workflow配置，通过
 
@@ -360,7 +363,10 @@ secret
 ![图片](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Go%20%e8%af%ad%e8%a8%80%e9%a1%b9%e7%9b%ae%e5%bc%80%e5%8f%91%e5%ae%9e%e6%88%98/assets/39006d86b0ab4d068ed9afc87983a1b5.jpg)
 
 配置文件中的使用方法如下：
+
+{% raw %}
 name: Go Test on: [push, pull_request] jobs: helloci-build: name: Test with go runs-on: [ubuntu-latest] environment: name: helloci steps: - name: use secrets env: super_secret: ${{ secrets.YourSecrets }}
+{% endraw %}
 
 secret name不区分大小写，所以如果新建secret的名字是name，使用时用
 
@@ -431,7 +437,10 @@ $ mkdir -p .github/workflows
 
 helloci.yml
 文件，内容如下：
+
+{% raw %}
 name: Go Test on: [push, pull_request] jobs: helloci-build: name: Test with go ${{ matrix.go_version }} on ${{ matrix.os }} runs-on: ${{ matrix.os }} environment: name: helloci strategy: matrix: go_version: [1.16] os: [ubuntu-latest] steps: - name: Set up Go ${{ matrix.go_version }} uses: actions/setup-go@v2 with: go-version: ${{ matrix.go_version }} id: go - name: Check out code into the Go module directory uses: actions/checkout@v2 - name: Tidy run: | go mod tidy - name: Build run: | go build -v -o helloci . - name: Collect main.go file uses: actions/[[email protected]](https://learn.lianglianglee.com/cdn-cgi/l/email-protection) with: name: main-output path: main.go - name: Publish to Registry uses: elgohr/Publish-Docker-GitHub-Action@master with: name: ccr.ccs.tencentyun.com/marmotedu/helloci:beta /# docker image 的名字 username: ${{ secrets.DOCKER_USERNAME}} /# 用户名 password: ${{ secrets.DOCKER_PASSWORD }} /# 密码 registry: ccr.ccs.tencentyun.com /# 腾讯云Registry dockerfile: Dockerfile /# 指定 Dockerfile 的位置 tag_names: true /# 是否将 release 的 tag 作为 docker image 的 tag
+{% endraw %}
 
 上面的workflow文件定义了当GitHub仓库有
 
@@ -523,7 +532,10 @@ Complete job
 
 ${IAM_ROOT}
 ，它的workflow配置文件为：
+
+{% raw %}
 $ cat ${IAM_ROOT}/.github/workflows/iamci.yaml name: IamCI on: push: branchs: - '/*' pull_request: types: [opened, reopened] jobs: iamci: name: Test with go ${{ matrix.go_version }} on ${{ matrix.os }} runs-on: ${{ matrix.os }} environment: name: iamci strategy: matrix: go_version: [1.16] os: [ubuntu-latest] steps: - name: Set up Go ${{ matrix.go_version }} uses: actions/setup-go@v2 with: go-version: ${{ matrix.go_version }} id: go - name: Check out code into the Go module directory uses: actions/checkout@v2 - name: Run go modules Tidy run: | make tidy - name: Generate all necessary files, such as error code files run: | make gen - name: Check syntax and styling of go sources run: | make lint - name: Run unit test and get test coverage run: | make cover - name: Build source code for host platform run: | make build - name: Collect Test Coverage File uses: actions/[[email protected]](https://learn.lianglianglee.com/cdn-cgi/l/email-protection) with: name: main-output path: _output/coverage.out - name: Set up Docker Buildx uses: docker/setup-buildx-action@v1 - name: Login to DockerHub uses: docker/login-action@v1 with: username: ${{ secrets.DOCKERHUB_USERNAME }} password: ${{ secrets.DOCKERHUB_TOKEN }} - name: Build docker images for host arch and push images to registry run: | make push
+{% endraw %}
 
 上面的workflow依次执行了以下步骤：
 

@@ -114,23 +114,36 @@ apiVersion: v1 kind: Service metadata: name: nginx labels: app: nginx spec: port
 ### 业务运维类容器部署策略
 
 在我们部署 Kubernetes 扩展 DNS、Ingress、Calico 能力时需要在每个工作节点部署守护进程的程序，这个时候需要采用 DaemonSet 来部署系统业务容器。默认 DaemonSet 采用滚动更新策略来更新容器，可以通过执行如下命令确认：
+
+```
+{% raw %}
 kubectl get ds/<daemonset-name> -o go-template='{{.spec.updateStrategy.type}}{{"\n"}}' RollingUpdate
+{% endraw %}
+```
 
 在日常工作中，我们对守护进程只需要执行更换镜像的操作：
 
+```
 kubectl set image ds/<daemonset-name> <container-name>=<container-new-image>
+```
 
 查看滚动更新状态确认当前进度：
 
+```
 kubectl rollout status ds/<daemonset-name>
+```
 
 当滚动更新完成时，输出结果如下：
 
+```
 daemonset "<daemonset-name>" successfully rolled out
+```
 
 此外，我们还有一些定期执行脚本任务的需求，这些需求可以通过 Kubernetes 提供的 CronJob 对象来管理，示例如下：
 
+```
 apiVersion: batch/v1beta1 kind: CronJob metadata: name: hello spec: schedule: "/*/1 /* /* /* /*" successfulJobsHistoryLimit: 0 failedJobsHistoryLimit: 0 jobTemplate: spec: template: spec: containers: - name: hello image: busybox args: - /bin/sh - -c - date; echo Hello from the Kubernetes cluster restartPolicy: OnFailure
+```
 
 ### 总结
 
