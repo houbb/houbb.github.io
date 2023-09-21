@@ -255,7 +255,7 @@ id 是step的唯一标识。
 
 如果我们想在多个系统或者多个语言版本上测试构建，就需要设置构建矩阵。例如，我们想在多个操作系统、多个Go版本下跑测试，可以使用如下workflow配置：
 
-```
+```yml
 {% raw %}
 
 name: Go Test
@@ -505,7 +505,7 @@ Go Test
 ${IAM_ROOT} ，它的workflow配置文件为：
 
 
-```
+```yml
 {% raw %}
 
 $ cat ${IAM_ROOT}/.github/workflows/iamci.yaml
