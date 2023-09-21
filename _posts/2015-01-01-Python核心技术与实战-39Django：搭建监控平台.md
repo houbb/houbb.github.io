@@ -235,12 +235,14 @@ def render_positions(request, asset):
     <th>Time</th>
     <th>Amount</th>
 </tr>
-{% for position in positions %}
+
+for position in positions
 <tr>
     <th>{{position.timestamp}}</th>
     <th>{{position.amount}}</th>
 </tr>
-{% endfor %}
+endfor
+
 </table>
 </body>
 
@@ -263,11 +265,13 @@ def render_positions(request, asset):
 
 Django 的渲染引擎会将 asset ，替换成 context 中 asset 对应的内容，此处是替换成了 btc。
 
-再来看 `{% for position in positions %}`，这是个很关键的地方。
+再来看 `for position in positions`，这是个很关键的地方。
 
 我们需要处理一个列表的情况，用 for 对 positions 进行迭代就行了。这里的 positions ，同样对应的是 context 中的 positions。
 
-末尾的 `{% endfor %}` ，自然就表示结束了。这样，我们就将数据封装到了一个列表之中。
+末尾的 `endfor` ，自然就表示结束了。
+
+这样，我们就将数据封装到了一个列表之中。
 
 ### 设计链接 Urls
 
