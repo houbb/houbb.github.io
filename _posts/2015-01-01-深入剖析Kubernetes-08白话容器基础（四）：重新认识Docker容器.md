@@ -218,13 +218,16 @@ $ docker commit 4ddf4638572d geektime/helloworld:v2
 
 比如，通过如下指令，你可以看到当前正在运行的Docker容器的进程号（PID）是25686：
 
-```sh
+
 {% raw %}
 
+```
 $ docker inspect --format '{{ .State.Pid }}' 4ddf4638572d 25686
+```
 
 {% endraw %}
-```
+
+`${}` 替换为双花括号。
 
 这时，你可以通过查看宿主机的proc文件，看到这个25686进程的所有Namespace对应的文件：
 
