@@ -219,13 +219,9 @@ $ docker commit 4ddf4638572d geektime/helloworld:v2
 比如，通过如下指令，你可以看到当前正在运行的Docker容器的进程号（PID）是25686：
 
 
-{% raw %}
-
 ```
-$ docker inspect --format '{{ .State.Pid }}' 4ddf4638572d 25686
+$ docker inspect --format '${ .State.Pid }' 4ddf4638572d 25686
 ```
-
-{% endraw %}
 
 `${}` 替换为双花括号。
 
