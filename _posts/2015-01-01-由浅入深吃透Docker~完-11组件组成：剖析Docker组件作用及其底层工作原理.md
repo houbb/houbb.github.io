@@ -28,7 +28,24 @@ UNIX
 ### Docker 组件剖析
 
 Docker 到底有哪些组件呢？我们可以在 Docker 安装路径下执行 ls 命令，这样可以看到以下与 Docker 有关的组件。
--rwxr-xr-x 1 root root 27941976 Dec 12 2019 containerd -rwxr-xr-x 1 root root 4964704 Dec 12 2019 containerd-shim -rwxr-xr-x 1 root root 15678392 Dec 12 2019 ctr -rwxr-xr-x 1 root root 50683148 Dec 12 2019 docker -rwxr-xr-x 1 root root 764144 Dec 12 2019 docker-init -rwxr-xr-x 1 root root 2837280 Dec 12 2019 docker-proxy -rwxr-xr-x 1 root root 54320560 Dec 12 2019 dockerd -rwxr-xr-x 1 root root 7522464 Dec 12 2019 runc
+
+```
+-rwxr-xr-x 1 root root 27941976 Dec 12  2019 containerd
+
+-rwxr-xr-x 1 root root  4964704 Dec 12  2019 containerd-shim
+
+-rwxr-xr-x 1 root root 15678392 Dec 12  2019 ctr
+
+-rwxr-xr-x 1 root root 50683148 Dec 12  2019 docker
+
+-rwxr-xr-x 1 root root   764144 Dec 12  2019 docker-init
+
+-rwxr-xr-x 1 root root  2837280 Dec 12  2019 docker-proxy
+
+-rwxr-xr-x 1 root root 54320560 Dec 12  2019 dockerd
+
+-rwxr-xr-x 1 root root  7522464 Dec 12  2019 runc
+```
 
 这些组件根据工作职责可以分为以下三大类。
 
@@ -63,12 +80,39 @@ Docker 客户端和服务端的通信形式必须保持一致，否则将无法�
 如果你熟悉 Linux 系统，你应该知道在 Linux 系统中，1 号进程是 init 进程，是所有进程的父进程。主机上的进程出现问题时，init 进程可以帮我们回收这些问题进程。同样的，在容器内部，当我们自己的业务进程没有回收子进程的能力时，在执行 docker run 启动容器时可以添加 –init 参数，此时 Docker 会使用 docker-init 作为1号进程，帮你管理容器内子进程，例如回收僵尸进程等。
 
 下面我们通过启动一个 busybox 容器来演示下：
-$ docker run -it busybox sh / /# ps aux PID USER TIME COMMAND 1 root 0:00 sh 6 root 0:00 ps aux / /#
+
+```sh
+$ docker run -it busybox sh
+
+/ # ps aux
+
+PID   USER     TIME  COMMAND
+
+    1 root      0:00 sh
+
+    6 root      0:00 ps aux
+
+/ #
+```
+
 
 可以看到容器启动时如果没有添加 –init 参数，1 号进程就是 sh 进程。
 
 我们使用 Crtl + D 退出当前容器，重新启动一个新的容器并添加 –init 参数，然后看下进程：
-$ docker run -it --init busybox sh / /# ps aux PID USER TIME COMMAND 1 root 0:00 /sbin/docker-init -- sh 6 root 0:00 sh 7 root 0:00 ps aux
+
+```sh
+$ docker run -it --init busybox sh
+
+/ # ps aux
+
+PID   USER     TIME  COMMAND
+
+    1 root      0:00 /sbin/docker-init -- sh
+
+    6 root      0:00 sh
+
+    7 root      0:00 ps aux
+```
 
 可以看到此时容器内的 1 号进程已经变为 /sbin/docker-init，而不再是 sh 了。
 
@@ -79,26 +123,130 @@ docker-proxy 主要是用来做端口映射的。当我们使用 docker run 命�
 下面我们通过一个实例演示下。
 
 使用以下命令启动一个 nginx 容器并把容器的 80 端口映射到主机的 8080 端口。
+
+```sh
 $ docker run --name=nginx -d -p 8080:80 nginx
+```
 
 然后通过以下命令查看一下启动的容器 IP：
 
-$ docker inspect --format '{{ .NetworkSettings.IPAddress }}' nginx 172.17.0.2
+```sh
+{% raw %}
+
+$ docker inspect --format '{{ .NetworkSettings.IPAddress }}' nginx
+
+172.17.0.2
+
+{% endraw %}
+```
 
 可以看到，我们启动的 nginx 容器 IP 为 172.17.0.2。
 
 此时，我们使用 ps 命令查看一下主机上是否有 docker-proxy 进程：
-$ sudo ps aux |grep docker-proxy root 9100 0.0 0.0 290772 9160 ? Sl 07:48 0:00 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 8080 -container-ip 172.17.0.2 -container-port 80 root 9192 0.0 0.0 112784 992 pts/0 S+ 07:51 0:00 grep --color=auto docker-proxy
+
+```sh
+$ sudo ps aux |grep docker-proxy
+
+root      9100  0.0  0.0 290772  9160 ?        Sl   07:48   0:00 /usr/bin/docker-proxy -proto tcp -host-ip 0.0.0.0 -host-port 8080 -container-ip 172.17.0.2 -container-port 80
+
+root      9192  0.0  0.0 112784   992 pts/0    S+   07:51   0:00 grep --color=auto docker-proxy
+```
 
 可以看到当我们启动一个容器时需要端口映射时， Docker 为我们创建了一个 docker-proxy 进程，并且通过参数把我们的容器 IP 和端口传递给 docker-proxy 进程，然后 docker-proxy 通过 iptables 实现了 nat 转发。
 
 我们通过以下命令查看一下主机上 iptables nat 表的规则：
-$ sudo iptables -L -nv -t nat Chain PREROUTING (policy ACCEPT 35 packets, 2214 bytes) pkts bytes target prot opt in out source destination 398 21882 DOCKER all -- /* /* 0.0.0.0/0 0.0.0.0/0 ADDRTYPE match dst-type LOCAL Chain INPUT (policy ACCEPT 35 packets, 2214 bytes) pkts bytes target prot opt in out source destination Chain OUTPUT (policy ACCEPT 1 packets, 76 bytes) pkts bytes target prot opt in out source destination 0 0 DOCKER all -- /* /* 0.0.0.0/0 !127.0.0.0/8 ADDRTYPE match dst-type LOCAL Chain POSTROUTING (policy ACCEPT 1 packets, 76 bytes) pkts bytes target prot opt in out source destination 0 0 MASQUERADE all -- /* !docker0 172.17.0.0/16 0.0.0.0/0 0 0 MASQUERADE tcp -- /* /* 172.17.0.2 172.17.0.2 tcp dpt:80 Chain DOCKER (2 references) pkts bytes target prot opt in out source destination 0 0 RETURN all -- docker0 /* 0.0.0.0/0 0.0.0.0/0 0 0 DNAT tcp -- !docker0 /* 0.0.0.0/0 0.0.0.0/0 tcp dpt:8080 to:172.17.0.2:80
+
+```sh
+$  sudo iptables -L -nv -t nat
+
+Chain PREROUTING (policy ACCEPT 35 packets, 2214 bytes)
+
+ pkts bytes target     prot opt in     out     source               destination
+
+  398 21882 DOCKER     all  --  *      *       0.0.0.0/0            0.0.0.0/0            ADDRTYPE match dst-type LOCAL
+
+Chain INPUT (policy ACCEPT 35 packets, 2214 bytes)
+
+ pkts bytes target     prot opt in     out     source               destination
+
+Chain OUTPUT (policy ACCEPT 1 packets, 76 bytes)
+
+ pkts bytes target     prot opt in     out     source               destination
+
+    0     0 DOCKER     all  --  *      *       0.0.0.0/0           !127.0.0.0/8          ADDRTYPE match dst-type LOCAL
+
+Chain POSTROUTING (policy ACCEPT 1 packets, 76 bytes)
+
+ pkts bytes target     prot opt in     out     source               destination
+
+    0     0 MASQUERADE  all  --  *      !docker0  172.17.0.0/16        0.0.0.0/0
+
+    0     0 MASQUERADE  tcp  --  *      *       172.17.0.2           172.17.0.2           tcp dpt:80
+
+Chain DOCKER (2 references)
+
+ pkts bytes target     prot opt in     out     source               destination
+
+    0     0 RETURN     all  --  docker0 *       0.0.0.0/0            0.0.0.0/0
+
+    0     0 DNAT       tcp  --  !docker0 *       0.0.0.0/0            0.0.0.0/0            tcp dpt:8080 to:172.17.0.2:80
+```
+
 
 通过最后一行规则我们可以得知，当我们访问主机的 8080 端口时，iptables 会把流量转发到 172.17.0.2 的 80 端口，从而实现了我们从主机上可以直接访问到容器内的业务。
 
 我们通过 curl 命令访问一下 nginx 容器：
-$ curl http://localhost:8080 <!DOCTYPE html> <html> <head> <title>Welcome to nginx!</title> <style> body { width: 35em; margin: 0 auto; font-family: Tahoma, Verdana, Arial, sans-serif; } </style> </head> <body> <h1>Welcome to nginx!</h1> <p>If you see this page, the nginx web server is successfully installed and working. Further configuration is required.</p> <p>For online documentation and support please refer to <a href="http://nginx.org/">nginx.org</a>.<br/> Commercial support is available at <a href="http://nginx.com/">nginx.com</a>.</p> <p><em>Thank you for using nginx.</em></p> </body> </html>
+
+```html
+$ curl http://localhost:8080
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>Welcome to nginx!</title>
+
+<style>
+
+    body {
+
+        width: 35em;
+
+        margin: 0 auto;
+
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+
+    }
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Welcome to nginx!</h1>
+
+<p>If you see this page, the nginx web server is successfully installed and
+
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+
+Commercial support is available at
+
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+
+</body>
+
+</html>
+```
+
 
 通过上面的输出可以得知我们已经成功访问到了 nginx 容器。
 
@@ -140,24 +288,414 @@ runc 是一个标准的 OCI 容器运行时的实现，它是一个命令行工�
 下面我们通过一个实例来演示一下 runc 的神奇之处。
 
 第一步，准备容器运行时文件：进入 /home/centos 目录下，创建 runc 文件夹，并导入 busybox 镜像文件。
-$ cd /home/centos /#/# 创建 runc 运行根目录 $ mkdir runc /#/# 导入 rootfs 镜像文件 $ mkdir rootfs && docker export $(docker create busybox) | tar -C rootfs -xvf -
+
+```sh
+$ cd /home/centos
+
+ ## 创建 runc 运行根目录
+
+ $ mkdir runc
+
+ ## 导入 rootfs 镜像文件
+
+ $ mkdir rootfs && docker export $(docker create busybox) | tar -C rootfs -xvf -
+```
 
 第二步，生成 runc config 文件。我们可以使用 runc spec 命令根据文件系统生成对应的 config.json 文件。命令如下：
 
+```sh
 $ runc spec
+```
 
 此时会在当前目录下生成 config.json 文件，我们可以使用 cat 命令查看一下 config.json 的内容：
 
-$ cat config.json { "ociVersion": "1.0.1-dev", "process": { "terminal": true, "user": { "uid": 0, "gid": 0 }, "args": [ "sh" ], "env": [ "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin", "TERM=xterm" ], "cwd": "/", "capabilities": { "bounding": [ "CAP_AUDIT_WRITE", "CAP_KILL", "CAP_NET_BIND_SERVICE" ], "effective": [ "CAP_AUDIT_WRITE", "CAP_KILL", "CAP_NET_BIND_SERVICE" ], "inheritable": [ "CAP_AUDIT_WRITE", "CAP_KILL", "CAP_NET_BIND_SERVICE" ], "permitted": [ "CAP_AUDIT_WRITE", "CAP_KILL", "CAP_NET_BIND_SERVICE" ], "ambient": [ "CAP_AUDIT_WRITE", "CAP_KILL", "CAP_NET_BIND_SERVICE" ] }, "rlimits": [ { "type": "RLIMIT_NOFILE", "hard": 1024, "soft": 1024 } ], "noNewPrivileges": true }, "root": { "path": "rootfs", "readonly": true }, "hostname": "runc", "mounts": [ { "destination": "/proc", "type": "proc", "source": "proc" }, { "destination": "/dev", "type": "tmpfs", "source": "tmpfs", "options": [ "nosuid", "strictatime", "mode=755", "size=65536k" ] }, { "destination": "/dev/pts", "type": "devpts", "source": "devpts", "options": [ "nosuid", "noexec", "newinstance", "ptmxmode=0666", "mode=0620", "gid=5" ] }, { "destination": "/dev/shm", "type": "tmpfs", "source": "shm", "options": [ "nosuid", "noexec", "nodev", "mode=1777", "size=65536k" ] }, { "destination": "/dev/mqueue", "type": "mqueue", "source": "mqueue", "options": [ "nosuid", "noexec", "nodev" ] }, { "destination": "/sys", "type": "sysfs", "source": "sysfs", "options": [ "nosuid", "noexec", "nodev", "ro" ] }, { "destination": "/sys/fs/cgroup", "type": "cgroup", "source": "cgroup", "options": [ "nosuid", "noexec", "nodev", "relatime", "ro" ] } ], "linux": { "resources": { "devices": [ { "allow": false, "access": "rwm" } ] }, "namespaces": [ { "type": "pid" }, { "type": "network" }, { "type": "ipc" }, { "type": "uts" }, { "type": "mount" } ], "maskedPaths": [ "/proc/acpi", "/proc/asound", "/proc/kcore", "/proc/keys", "/proc/latency_stats", "/proc/timer_list", "/proc/timer_stats", "/proc/sched_debug", "/sys/firmware", "/proc/scsi" ], "readonlyPaths": [ "/proc/bus", "/proc/fs", "/proc/irq", "/proc/sys", "/proc/sysrq-trigger" ] } }
+```json
+$ cat config.json
 
-config.json 文件定义了 runc 启动容器时的一些配置，如根目录的路径，文件挂载路径等配置。 第三步，使用 runc 启动容器。我们可以使用 runc run 命令直接启动 busybox 容器。
+{
 
+	"ociVersion": "1.0.1-dev",
+
+	"process": {
+
+		"terminal": true,
+
+		"user": {
+
+			"uid": 0,
+
+			"gid": 0
+
+		},
+
+		"args": [
+
+			"sh"
+
+		],
+
+		"env": [
+
+			"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+
+			"TERM=xterm"
+
+		],
+
+		"cwd": "/",
+
+		"capabilities": {
+
+			"bounding": [
+
+				"CAP_AUDIT_WRITE",
+
+				"CAP_KILL",
+
+				"CAP_NET_BIND_SERVICE"
+
+			],
+
+			"effective": [
+
+				"CAP_AUDIT_WRITE",
+
+				"CAP_KILL",
+
+				"CAP_NET_BIND_SERVICE"
+
+			],
+
+			"inheritable": [
+
+				"CAP_AUDIT_WRITE",
+
+				"CAP_KILL",
+
+				"CAP_NET_BIND_SERVICE"
+
+			],
+
+			"permitted": [
+
+				"CAP_AUDIT_WRITE",
+
+				"CAP_KILL",
+
+				"CAP_NET_BIND_SERVICE"
+
+			],
+
+			"ambient": [
+
+				"CAP_AUDIT_WRITE",
+
+				"CAP_KILL",
+
+				"CAP_NET_BIND_SERVICE"
+
+			]
+
+		},
+
+		"rlimits": [
+
+			{
+
+				"type": "RLIMIT_NOFILE",
+
+				"hard": 1024,
+
+				"soft": 1024
+
+			}
+
+		],
+
+		"noNewPrivileges": true
+
+	},
+
+	"root": {
+
+		"path": "rootfs",
+
+		"readonly": true
+
+	},
+
+	"hostname": "runc",
+
+	"mounts": [
+
+		{
+
+			"destination": "/proc",
+
+			"type": "proc",
+
+			"source": "proc"
+
+		},
+
+		{
+
+			"destination": "/dev",
+
+			"type": "tmpfs",
+
+			"source": "tmpfs",
+
+			"options": [
+
+				"nosuid",
+
+				"strictatime",
+
+				"mode=755",
+
+				"size=65536k"
+
+			]
+
+		},
+
+		{
+
+			"destination": "/dev/pts",
+
+			"type": "devpts",
+
+			"source": "devpts",
+
+			"options": [
+
+				"nosuid",
+
+				"noexec",
+
+				"newinstance",
+
+				"ptmxmode=0666",
+
+				"mode=0620",
+
+				"gid=5"
+
+			]
+
+		},
+
+		{
+
+			"destination": "/dev/shm",
+
+			"type": "tmpfs",
+
+			"source": "shm",
+
+			"options": [
+
+				"nosuid",
+
+				"noexec",
+
+				"nodev",
+
+				"mode=1777",
+
+				"size=65536k"
+
+			]
+
+		},
+
+		{
+
+			"destination": "/dev/mqueue",
+
+			"type": "mqueue",
+
+			"source": "mqueue",
+
+			"options": [
+
+				"nosuid",
+
+				"noexec",
+
+				"nodev"
+
+			]
+
+		},
+
+		{
+
+			"destination": "/sys",
+
+			"type": "sysfs",
+
+			"source": "sysfs",
+
+			"options": [
+
+				"nosuid",
+
+				"noexec",
+
+				"nodev",
+
+				"ro"
+
+			]
+
+		},
+
+		{
+
+			"destination": "/sys/fs/cgroup",
+
+			"type": "cgroup",
+
+			"source": "cgroup",
+
+			"options": [
+
+				"nosuid",
+
+				"noexec",
+
+				"nodev",
+
+				"relatime",
+
+				"ro"
+
+			]
+
+		}
+
+	],
+
+	"linux": {
+
+		"resources": {
+
+			"devices": [
+
+				{
+
+					"allow": false,
+
+					"access": "rwm"
+
+				}
+
+			]
+
+		},
+
+		"namespaces": [
+
+			{
+
+				"type": "pid"
+
+			},
+
+			{
+
+				"type": "network"
+
+			},
+
+			{
+
+				"type": "ipc"
+
+			},
+
+			{
+
+				"type": "uts"
+
+			},
+
+			{
+
+				"type": "mount"
+
+			}
+
+		],
+
+		"maskedPaths": [
+
+			"/proc/acpi",
+
+			"/proc/asound",
+
+			"/proc/kcore",
+
+			"/proc/keys",
+
+			"/proc/latency_stats",
+
+			"/proc/timer_list",
+
+			"/proc/timer_stats",
+
+			"/proc/sched_debug",
+
+			"/sys/firmware",
+
+			"/proc/scsi"
+
+		],
+
+		"readonlyPaths": [
+
+			"/proc/bus",
+
+			"/proc/fs",
+
+			"/proc/irq",
+
+			"/proc/sys",
+
+			"/proc/sysrq-trigger"
+
+		]
+
+	}
+
+}
+```
+
+
+
+config.json 文件定义了 runc 启动容器时的一些配置，如根目录的路径，文件挂载路径等配置。 
+
+第三步，使用 runc 启动容器。我们可以使用 runc run 命令直接启动 busybox 容器。
+
+```sh
 $ runc run busybox / /#
+```
 
 此时，我们已经创建并启动了一个 busybox 容器。
 
 我们新打开一个命令行窗口，可以使用 run list 命令看到刚才启动的容器。
-$ cd /home/centos/runc/ $ runc list D PID STATUS BUNDLE CREATED OWNER busybox 9778 running /home/centos/runc 2020-09-06T09:25:32.441957273Z root
+
+```sh
+$ cd /home/centos/runc/
+
+$ runc list
+
+D          PID         STATUS      BUNDLE              CREATED                          OWNER
+
+busybox     9778        running     /home/centos/runc   2020-09-06T09:25:32.441957273Z   root
+```
 
 通过上面的输出，我们可以看到，当前已经有一个 busybox 容器处于运行状态。
 
