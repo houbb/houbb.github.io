@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  SQL 分布式锁
+title:  分布式锁-02-SQL 数据库实现分布式锁
 date:  2018-09-08 10:14:05 +0800
 categories: [Distributed]
 tags: [distributed, lock, sql,sh]
 published: true
-excerpt: SQL 数据库实现分布式锁
 ---
 
 # 实现方式

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  ZooKeeper 分布式锁-04-基于 mysql 实现分布式锁
+title:  分布式锁-03-基于 mysql 实现分布式锁
 date:  2018-09-08 10:30:55 +0800
 categories: [Distributed]
 tags: [distributed, redis, lock, sql, zookeeper, sh]

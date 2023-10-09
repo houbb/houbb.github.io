@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Apache Curator 
+title:  zookeeper-01-Apache Curator 
 date:  2018-09-08 10:30:55 +0800
 categories: [Distributed]
 tags: [distributed, lock, apache, sh]
