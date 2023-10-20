@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Oracle 系统学习-06-oracle windows install windows 安装 oracle
+title:  Oracle 系统学习-06-oracle windows install oracle windows 安装 oracle
 date:  2018-06-20 10:46:06 +0800
 categories: [Oracle]
 tags: [oracle, windows, install]
