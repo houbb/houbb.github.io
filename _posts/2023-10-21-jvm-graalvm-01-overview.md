@@ -94,6 +94,8 @@ Java HotSpot(TM) 64-Bit Server VM Oracle GraalVM 21.0.1+12.1 (build 21.0.1+12-jv
 
 3) 在主窗口中勾选“Desktop development with C++”复选框。同时，在右侧的“Installation Details”下，选择“Windows SDK”，然后点击“安装”按钮。
 
+我们选择 17.7.5 开源社区版本。
+
 ![tools](https://www.graalvm.org/docs/getting-started/img/desktop_development_with_C.png)
 
 这个下载会比较耗时，需要耐心等待。
@@ -182,6 +184,112 @@ Error: To prevent native-toolchain checking provide command-line option -H:-Chec
 Finished generating 'helloworld' in 2.6s.
 ```
 
+说明我们要安装比较新的版本。卸载重新安装。
+
+然后依然报错：
+
+```
+Error: Native-image building on Windows currently only supports target architecture: AMD64 (?? unsupported)
+Error: To prevent native-toolchain checking provide command-line option -H:-CheckToolchain
+```
+
+我们直接忽略进行编译：
+
+```
+$ native-image.cmd HelloWorld -H:-CheckToolchain
+```
+
+日志如下：
+
+```
+$ native-image.cmd HelloWorld -H:-CheckToolchain
+Warning: The option '-H:-CheckToolchain' is experimental and must be enabled via '-H:+UnlockExperimentalVMOptions' in the future.
+Warning: Please re-evaluate whether any experimental option is required, and either remove or unlock it. The build output lists all active experimental options, including where they come from and possible alternatives. If you think an experimental option should be considered as stable, please file an issue.
+========================================================================================================================
+GraalVM Native Image: Generating 'helloworld' (executable)...
+========================================================================================================================
+For detailed information and explanations on the build output, visit:
+https://github.com/oracle/graal/blob/master/docs/reference-manual/native-image/BuildOutput.md
+------------------------------------------------------------------------------------------------------------------------
+Warning: The host machine does not support all features of 'x86-64-v3'. Falling back to '-march=compatibility' for best compatibility.
+[1/8] Initializing...                                                                                   (10.9s @ 0.12GB)
+ Java version: 21.0.1+12, vendor version: Oracle GraalVM 21.0.1+12.1
+ Graal compiler: optimization level: 2, target machine: compatibility, PGO: ML-inferred
+ C compiler: cl.exe (null, null, 0.0.0)
+ Garbage collector: Serial GC (max heap size: 80% of RAM)
+ 1 user-specific feature(s):
+ - com.oracle.svm.thirdparty.gson.GsonFeature
+------------------------------------------------------------------------------------------------------------------------
+ 1 experimental option(s) unlocked:
+ - '-H:-CheckToolchain' (origin(s): command line)
+------------------------------------------------------------------------------------------------------------------------
+Build resources:
+ - 24.98GB of memory (78.2% of 31.94GB system memory, determined at start)
+ - 20 thread(s) (100.0% of 20 available processor(s), determined at start)
+[2/8] Performing analysis...  [******]                                                                   (5.6s @ 0.19GB)
+    2,080 reachable types   (61.3% of    3,394 total)
+    1,994 reachable fields  (45.8% of    4,351 total)
+    9,610 reachable methods (38.4% of   25,047 total)
+      764 types,   109 fields, and   474 methods registered for reflection
+       53 types,    30 fields, and    48 methods registered for JNI access
+        1 native library: version
+[3/8] Building universe...                                                                               (1.5s @ 0.25GB)
+[4/8] Parsing methods...      [*]                                                                        (1.6s @ 0.30GB)
+[5/8] Inlining methods...     [***]                                                                      (0.7s @ 0.28GB)
+[6/8] Compiling methods...    [***]                                                                     (11.6s @ 0.23GB)
+[7/8] Layouting methods...    [*]                                                                        (1.6s @ 0.28GB)
+[8/8] Creating image...       [**]                                                                       (2.2s @ 0.28GB)
+   3.38MB (46.78%) for code area:     4,540 compilation units
+   3.77MB (52.16%) for image heap:   57,035 objects and 71 resources
+  78.88kB ( 1.06%) for other data
+   7.23MB in total
+------------------------------------------------------------------------------------------------------------------------
+Top 10 origins of code area:                                Top 10 object types in image heap:
+   1.82MB java.base                                          880.80kB byte[] for code metadata
+   1.30MB svm.jar (Native Image)                             720.49kB byte[] for java.lang.String
+  94.52kB com.oracle.svm.svm_enterprise                      433.70kB heap alignment
+  30.02kB org.graalvm.nativeimage.base                       382.17kB java.lang.String
+  29.51kB org.graalvm.collections                            330.67kB java.lang.Class
+  21.17kB jdk.internal.vm.ci                                 155.28kB java.util.HashMap$Node
+  20.14kB jdk.proxy3                                         114.01kB char[]
+  18.18kB jdk.proxy1                                         100.83kB byte[] for reflection metadata
+  17.21kB jdk.internal.vm.compiler                            91.66kB java.lang.Object[]
+   7.77kB jdk.proxy2                                          81.25kB com.oracle.svm.core.hub.DynamicHubCompanion
+  805.00B for 1 more packages                                573.13kB for 548 more object types
+                              Use '-H:+BuildReport' to create a report with more details.
+------------------------------------------------------------------------------------------------------------------------
+Security report:
+ - Binary does not include Java deserialization.
+ - Use '--enable-sbom' to embed a Software Bill of Materials (SBOM) in the binary.
+Warning: The host machine does not support all features of 'x86-64-v3'. Falling back to '-march=compatibility' for best compatibility.
+------------------------------------------------------------------------------------------------------------------------
+Recommendations:
+ PGO:  Use Profile-Guided Optimizations ('--pgo') for improved throughput.
+ INIT: Adopt '--strict-image-heap' to prepare for the next GraalVM release.
+ HEAP: Set max heap for improved and more predictable memory usage.
+ CPU:  Enable more CPU features with '-march=native' for improved performance.
+ QBM:  Use the quick build mode ('-Ob') to speed up builds during development.
+------------------------------------------------------------------------------------------------------------------------
+                        1.7s (4.4% of total time) in 258 GCs | Peak RSS: 0.90GB | CPU load: 9.46
+------------------------------------------------------------------------------------------------------------------------
+Produced artifacts:
+ D:\tools\graalvm\code\helloworld.exe (executable)
+========================================================================================================================
+Finished generating 'helloworld' in 36.6s.
+```
+
+生成结果
+
+```
+HelloWorld.class  HelloWorld.java  helloworld.exe*
+```
+
+直接执行
+
+```
+$ $ ./helloworld.exe
+Hello, Native World!
+```
 
 # windows10 WSL2 安装
 
@@ -370,6 +478,8 @@ HelloWorld.class  HelloWorld.java  ai  helloworld  svm_err_b_20231021T233609.989
 $ ./helloworld
 Hello, World!
 ```
+
+当然，这个 helloworld 的文件内容依然非常复杂。
 
 # chat
 
