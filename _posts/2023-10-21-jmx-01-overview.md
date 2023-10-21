@@ -1,24 +1,28 @@
 ---
 layout: post
-title:  JMX
-date:  2017-11-18 13:41:43 +0800
+title:  JMX-01-jmx 介绍及入门案例
+date:  2021-10-21 13:41:43 +0800
 categories: [Java]
-tags: [java]
+tags: [java, jmx, monitor]
 published: true
 ---
 
 
 # JMX
 
+[JMX](http://www.oracle.com/technetwork/java/javase/tech/javamanagement-140525.html)（Java Management Extensions）技术提供了构建分布式、基于Web的、模块化和动态解决方案的工具，用于管理和监控设备、应用程序和服务驱动的网络。
 
-The [JMX](http://www.oracle.com/technetwork/java/javase/tech/javamanagement-140525.html)(Java Management Extensions) 
-technology provides the tools for building distributed, Web-based, modular and dynamic solutions for managing and monitoring devices, applications, 
-and service-driven networks. By design, this standard is suitable for adapting legacy systems, implementing new management and monitoring solutions, 
-and plugging into those of the future.
- 
+按设计，这个标准适用于适应传统系统，实施新的管理和监控解决方案，并与未来的系统进行对接。
 
+## 拓展阅读
 
-## 缘起
+[Log4j2-15-JMX](https://houbb.github.io/2016/05/21/Log4j2-15-jmx)
+
+[ZooKeeper-09-JMX](https://houbb.github.io/2016/09/25/zookeeper-09-jmx)
+
+[JVM核心技术32讲（完）-12JMX与相关工具：山高月小，水落石出](https://houbb.github.io/2015/01/01/JVM%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF32%E8%AE%B2-%E5%AE%8C-12JMX%E4%B8%8E%E7%9B%B8%E5%85%B3%E5%B7%A5%E5%85%B7-%E5%B1%B1%E9%AB%98%E6%9C%88%E5%B0%8F-%E6%B0%B4%E8%90%BD%E7%9F%B3%E5%87%BA)
+
+# 缘起
 
 最近想写一个系统监控系统。(运行状况，调用次数，调用时间等信息)
 
@@ -29,13 +33,6 @@ and plugging into those of the future.
 - mina/netty 长连接
  
 同事有提及这项技术，就做简单了解，学习一下。
-
-
-## 参考
-
-> [从零开始玩转JMX](http://blog.csdn.net/u013256816/article/details/52800742)
-
-> [JMX 系列](http://blog.csdn.net/s464036801/article/category/1565125)
 
 # 基础概念
 
@@ -88,7 +85,6 @@ Adapter是使用某种Internet协议来与JMX Agent获得联系，Agent端会有
 
 JMX Agent可以带有**任意多个** Adapter，因此可以使用多种不同的方式访问 Agent。
 
-
 ## 设计架构
 
 ![2017-11-18-java-jmx-struct.png]({{ site.utl }}/static/app/img/java/jmx/2017-11-18-java-jmx-struct.png)
@@ -110,7 +106,6 @@ Agent层主要定义了各种服务以及通信模型。该层的核心是一MBe
 Distributed层关心Agent如何被远端用户访问的细节。它定义了一系列用来访问Agent的接口和组件，包括Adapter和Connector的描述。
 如果一个Java对象可以由一个遵循JMX规范的管理器应用管理，那么这个Java对象就可以由JMX管理资源。要使一个Java对象可管理，则必须创建相应的MBean对象，
 并通过这些MBean对象管理相应的Java对象。当拥有MBean类后，需要将其实例化并注册到MBeanServer上。
-
 
 # Hello World
 
@@ -317,6 +312,12 @@ Hello world, ryo
 比如某些属性的配置，一般我们会写在配置文件中，但是修改后还需要重启服务。
 
 使用这个技术可以**不用重启服务**达到修改配置的目的。
+
+# 参考资料
+
+> [从零开始玩转JMX](http://blog.csdn.net/u013256816/article/details/52800742)
+
+> [JMX 系列](http://blog.csdn.net/s464036801/article/category/1565125)
 
 * any list
 {:toc}

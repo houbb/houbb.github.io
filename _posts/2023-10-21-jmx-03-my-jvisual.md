@@ -1,9 +1,9 @@
 ---
 layout: post
-title: JMX获取jvm参数，cpu使用率，内存，线程，类等信息,实现一个简单的web版jvisualvm
-date: 2023-09-11 21:01:55 +0800
-categories: [JVM]
-tags: [jvm, tool, sh]
+title: jmx-03-JMX获取jvm参数，cpu使用率，内存，线程，类等信息,实现一个简单的web版jvisualvm
+date:  2021-10-21 13:41:43 +0800
+categories: [Java]
+tags: [java, jmx, monitor]
 published: true
 ---
 
