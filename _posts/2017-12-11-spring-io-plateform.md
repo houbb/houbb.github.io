@@ -94,7 +94,7 @@ mvn clean install
 如果你想修改某个版本号，直接指定修改即可。
 
 
-```
+```xml
 <properties>
     <spring-integration-flow.version>1.0.0.RELEASE</spring-integration-flow.version>
     <spring-integration-kafka.version>1.3.1.RELEASE</spring-integration-kafka.version>

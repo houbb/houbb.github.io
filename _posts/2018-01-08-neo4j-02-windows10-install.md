@@ -1,52 +1,64 @@
 ---
 layout: post
-title:  Neo4j
+title:  Neo4j-02-图数据库 neo4j windows10 install 安装笔记
 date:  2018-1-8 14:18:33 +0800
 categories: [SQL]
-tags: [nosql, stay hungry]
+tags: [nosql, neo4j]
 published: true
 ---
 
 
-# Neo4j
 
-[Neo4j’s](https://neo4j.com/product/) Graph Platform is bringing a connections-first approach to applications 
-and analytics across the enterprise.
+# 3 种安装方式
 
-## Why Neo4j?
+## 安装Neo4j Community Server
 
-> [top-ten-reasons](https://neo4j.com/top-ten-reasons/)
+注意： neo4j 4.3及以上版本对应的java版本是jdk11
 
-> [为什么选择图形数据库，为什么选择Neo4j？](http://blog.csdn.net/rubinorth/article/details/52451043)
+jdk8可以下载Neo4j Community Edition 3.5.28
+
+下载：https://pan.baidu.com/s/1lvn55ZSUknaicVNdMblPEQ
+
+提取码：8a54
+
+文档：https://neo4j.com/docs/operations-manual/3.5/
+
+进入到bin目录，执行 neo4j console
+
+在浏览器中访问：http://localhost:7474
+
+使用用户名neo4j和默认密码neo4j进行连接，然后会提示更改密码。
+
+## docker 安装Neo4j Community Server
+
+注意需要开放以下端口：
+
+7474 for HTTP
+7473 for HTTPS
+7687 for Bolt
+
+拉取镜像
+
+```
+docker pull neo4j:3.5.22-community
+```
+
+运行镜像
+
+```
+docker run -d -p 7474:7474 -p 7687:7687 --name neo4j \
+-e "NEO4J_AUTH=neo4j/123456" \
+-v /usr/local/soft/neo4j/data:/data \
+-v /usr/local/soft/neo4j/logs:/logs \
+-v /usr/local/soft/neo4j/conf:/var/lib/neo4j/conf \
+-v /usr/local/soft/neo4j/import:/var/lib/neo4j/import \
+neo4j:3.5.22-community
+```
 
 
-- 更快的数据库操作
+我们这里重点记录下第三种。 Neo4j Desktop 安装。
 
-当然，有一个前提条件，那就是数据量较大，在MySql中存储的话需要许多表，并且表之间联系较多（即有不少的操作需要join表）。
-
-- 数据更直观
-
-相应的SQL语句也更好写（Neo4j使用Cypher语言，与传统SQL有很大不同）。
-
-- 更灵活
-
-不管有什么新的数据需要存储，都是一律的节点和边，只需要考虑节点属性和边属性。而MySql中即意味着新的表，还要考虑和其他表的关系。
-
-- 性能更好
-
-数据库操作的速度并不会随着数据库的增大有明显的降低。这得益于Neo4j特殊的数据存储结构和专门优化的图算法。
-
-
-## 简单对比
-
-目前，[arangodb](https://www.arangodb.com/2016/04/index-free-adjacency-hybrid-indexes-graph-databases/) 速度相对更快，但是 neo4j 更稳定。
-
-注意：
-
-图形数据库是这几年兴起的，**整体还不是很完善，而且适用面也是比较窄的**。只有在明确自己的需求之后，才能确定是否选择图形数据库。
-
-
-# Quick Start
+# windows10 安装 Neo4j Desktop
 
 ## Download
 
@@ -56,13 +68,15 @@ and analytics across the enterprise.
 
 本次测试环境为 win7 系统，neo4j-1.0.9 版本。
 
-运行程序 `neo4j-desktop-1.0.9-setup.exe` 
+运行程序 `Neo4j Desktop Setup 1.5.9.exe` 
 
 安装的步骤及其简单，直接 Accept 一下协议就行。然后自动下载组件安装即可。
 
+目标文件：C:\Users\Administrator\AppData\Local\Programs\Neo4j Desktop
+
 完成后首页界面如下：
 
-![2018-01-08-neo4j-index.png](https://raw.githubusercontent.com/houbb/resource/master/img/sql/nosql/neo4j/2018-01-08-neo4j-index.png)
+![首页界面](https://img-blog.csdnimg.cn/828c64f105f94b2b8e72f9a3d3d8856b.png)
 
 ## New Database
 
@@ -217,6 +231,14 @@ DELETE r;
 
 文档写的很赞，以后有时间定当拜读一下。
 
+
+# 参考资料
+
+> [top-ten-reasons](https://neo4j.com/top-ten-reasons/)
+
+> [为什么选择图形数据库，为什么选择Neo4j？](http://blog.csdn.net/rubinorth/article/details/52451043)
+
+https://www.cnblogs.com/liaozk/p/17138133.html
 
 * any list
 {:toc}
