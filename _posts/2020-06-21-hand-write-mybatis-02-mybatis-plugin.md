@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  手写 mybatis 系列（二）mybatis interceptor 插件机制详解
+title:  从零手写实现 mybatis 系列（二）mybatis interceptor 插件机制详解
 date:  2020-6-21 15:11:16 +0800
 categories: [Java]
 tags: [java, hand-write, middleware, orm, mybatis, sql, sh]

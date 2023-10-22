@@ -25,8 +25,6 @@ Hibernate 属于比较早的框架了，后期将实现一套 mybatis。
 
 # 导航
 
-[手写 Hibernate ORM 框架-00-环境准备](https://mp.csdn.net/mdeditor/80172300)
-
 [手写 Hibernate ORM 框架-01-注解定义、常量定义](https://blog.csdn.net/ryo1060732496/article/details/80172494)
 
 [手写 Hibernate ORM 框架-02-实体 Bean 定义，建表语句自动生成](https://blog.csdn.net/ryo1060732496/article/details/80173002)
