@@ -1,6 +1,6 @@
 ---
 layout: post
-title: test 之 jmockit
+title: jmockit-01-test 之 jmockit 入门使用案例
 date:  2023-05-09 +0800
 categories: [Test]
 tags: [junit, test, sh]
