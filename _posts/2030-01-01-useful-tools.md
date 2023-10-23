@@ -9,13 +9,40 @@ published: true
 
 # 绘图/UI
 
+开源免费 online:    [draw.io 在线流程图绘制](https://app.diagrams.net/)
+
+![效果图](https://markdownpicture.oss-cn-qingdao.aliyuncs.com/20210130232121.png)
+
+## 手绘风格
+
+excalidraw
+
+如果你觉得这个是不是太正式了？我想让图片更像手绘的，安排！！！
+
+![效果](https://markdownpicture.oss-cn-qingdao.aliyuncs.com/20210130234851.png)
+
+excalidraw就是这么一个软件，也是开源的： https://github.com/excalidraw/excalidraw
+
+中文字体地址：https://board.oktangle.com/
+
+地址：https://excalidraw.com/
+
+如果使用docker安装怎么办？地址：https://hub.docker.com/r/excalidraw/excalidraw
+
+命令：
+
+```
+docker pull excalidraw/excalidraw
+```
+
+## other
+
 [幕布精选社区](https://mubu.com/explore)
 
 [蓝湖](https://lanhuapp.com/web/#/item)
 
 [百度脑图](https://naotu.baidu.com/)
 
-[draw.io 在线流程图绘制](https://app.diagrams.net/)
 
 [processon 免费在线流程图思维导图](https://www.processon.com/)
 
