@@ -237,6 +237,45 @@ public class PrisonRules /* Maybe use Runnable? */ extends Thread {
 
 ps: 这个注释无敌了。。
 
+
+# Q: JavaParser 可以获取代码的注释信息吗
+
+是的，JavaParser 可以用于获取Java代码中的注释信息。
+
+JavaParser 解析Java源代码，并将其表示为抽象语法树（AST）。AST 包含了源代码的所有结构，包括注释。
+
+您可以使用 JavaParser 的 API 来遍历 AST，并从中提取注释信息。
+
+以下是一个简单的示例，演示了如何使用 JavaParser 获取Java代码中的注释：
+
+```java
+import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.comments.Comment;
+
+import java.io.File;
+
+public class CommentExtractor {
+    public static void main(String[] args) throws Exception {
+        // 从文件中读取Java源代码
+        File file = new File("Example.java");
+        CompilationUnit cu = StaticJavaParser.parse(file);
+
+        // 获取所有注释
+        cu.getAllComments().forEach(comment -> {
+            // 处理注释，例如打印注释内容
+            System.out.println("Comment: " + comment.getContent());
+        });
+    }
+}
+```
+
+在上述示例中，`cu.getAllComments()` 返回源代码中的所有注释。
+
+您可以遍历这些注释并执行所需的操作，比如将其输出到控制台或保存到文件中。
+
+请确保在代码中使用适当的异常处理，以便处理文件读取和解析时可能出现的异常情况。
+
 # 参考资料
 
 官方语法书
