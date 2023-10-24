@@ -89,6 +89,26 @@ install sandbox successful.
 
 这样沙箱将会伴随着JVM启动而主动启动并加载对应的沙箱模块。
 
+
+# agent 挂载方式实战
+
+## 下载
+
+http://ompc.oss-cn-hangzhou.aliyuncs.com/jvm-sandbox/release/sandbox-stable-bin.zip
+
+解压到指定路径：
+
+```
+D:\tool\jvmsandbox\sandbox\lib\sandbox-agent.jar
+```
+
+## 指定 jvm 参数
+
+```
+-javaagent:D:\tool\jvmsandbox\sandbox\lib\\sandbox-agent.jar
+```
+
+
 # 个人收获
 
 这个看起来非常强大，实际上原理可能还是 JDK6 的 Agent+Instruments
