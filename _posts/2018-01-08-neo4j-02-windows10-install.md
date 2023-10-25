@@ -78,6 +78,24 @@ neo4j:3.5.22-community
 
 ![首页界面](https://img-blog.csdnimg.cn/828c64f105f94b2b8e72f9a3d3d8856b.png)
 
+## 相关说明
+
+![neo4j](https://p6-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0cd40b54be4c4d0fa33fb2cad42f568b~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
+
+相关说明：
+
+1. ConnectURL：数据库连接地址；
+
+2. Database-leave empty for default：数据库；
+
+3. Authentication type：鉴权方式（有三种：① 账号/密码登录；②无密码登录；③单点登录SSO）
+
+⚠注意：由于我们通过 docker/podman 的方式启动时指定了 neo4j 的账号/密码（neo4j/secret），所以此处必须用第①种方式登录到 neo4j；
+
+登录的首页：
+
+![登录首页](https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a42bc6921f1241648dbbdf5bfd02b8a9~tplv-k3u1fbpfcp-zoom-in-crop-mark:1512:0:0:0.awebp?)
+
 ## New Database
 
 直接点击【New Database】 新建一个本地数据库，并且点击【Start】运行。
@@ -91,6 +109,7 @@ neo4j:3.5.22-community
 可以在命令行输入框执行对应的 SQL 脚本，后面直接运行即可。
 
 SQL 脚本为 [Cypher](https://neo4j.com/cypher-graph-query-language/) 语法。
+
 
 ## CRUD
 
@@ -243,3 +262,14 @@ https://www.cnblogs.com/liaozk/p/17138133.html
 * any list
 {:toc}
 
+
+// 创建应用节点  
+CREATE (appA:Application {name: '应用A'})  
+CREATE (appB:Application {name: '应用B'})  
+  
+// 创建方法节点  
+CREATE (methodA:Method {name: 'methodA', app: appA})  
+CREATE (methodB:Method {name: 'methodB', app: appB})  
+  
+// 创建调用关系  
+CREATE (methodA)-[:CALLS]->(methodB)

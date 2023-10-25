@@ -105,7 +105,7 @@ D:\tool\jvmsandbox\sandbox\lib\sandbox-agent.jar
 ## 指定 jvm 参数
 
 ```
--javaagent:D:\tool\jvmsandbox\sandbox\lib\\sandbox-agent.jar
+-javaagent:D:\tool\jvmsandbox\sandbox\lib\sandbox-agent.jar
 ```
 
 
