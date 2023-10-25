@@ -16,23 +16,83 @@ published: true
 
 以下是插入这些节点和关系的Neo4j Cypher语句：
 
+## 清空
+
+```sql
+MATCH (n)  
+DETACH DELETE n;
+```
+
+## 操作
+
+### 应用与方法
+
 ```sql
 // 创建应用节点  
-CREATE (appA:Application {name: '应用A', id:'appA'})  
-CREATE (appB:Application {name: '应用B', id:'appB'})  
+CREATE (appA:Application {name: '应用A', id:'appA'});  
+CREATE (appB:Application {name: '应用B', id:'appB'});  
+CREATE (appC:Application {name: '应用C', id:'appC'});  
   
 // 创建方法节点  
-CREATE (methodA:Method {name: 'methodA', id: 'methodA', app: 'appA'})  
-CREATE (methodB:Method {name: 'methodB', id: 'methodB', app: 'appB'})  
+CREATE (methodA:Method {name: 'appA-methodA', id: 'methodA', app: 'appA'});  
+CREATE (methodB:Method {name: 'appB-methodB', id: 'methodB', app: 'appB'});  
+CREATE (methodC1:Method {name: 'appC-methodC1', id: 'methodC1', app: 'appC'});  
+CREATE (methodC2:Method {name: 'appC-methodC2', id: 'methodC2', app: 'appC'});  
+
+// 创建所属关系
+MATCH (node1:Method), (node2:Application)  
+WHERE node1.id = 'methodA' AND node2.id = 'appA'  
+CREATE (node1)-[:REF]->(node2);
+
+MATCH (node1:Method), (node2:Application)  
+WHERE node1.id = 'methodB' AND node2.id = 'appB'  
+CREATE (node1)-[:REF]->(node2);
+
+MATCH (node1:Method), (node2:Application)  
+WHERE node1.id = 'methodC1' AND node2.id = 'appC'  
+CREATE (node1)-[:REF]->(node2);
+
+MATCH (node1:Method), (node2:Application)  
+WHERE node1.id = 'methodC2' AND node2.id = 'appC'  
+CREATE (node1)-[:REF]->(node2);
+
+// 创建 chain 节点
+CREATE (chain1:Chain {name: 'appA-methodA-chain1', id:'chain1', method: 'methodA'});  
+CREATE (chain2:Chain {name: 'appB-methodB-chain2', id:'chain2', method: 'methodB'});  
+CREATE (chain3:Chain {name: 'appC-methodC1-chain3', id:'chain3', method: 'methodC1'});  
+CREATE (chain4:Chain {name: 'appC-methodC2-chain4', id:'chain4', method: 'methodC2'}); 
+
+// 链路的从属关系
+MATCH (node1:Chain), (node2:Method)  
+WHERE node1.id = 'chain1' AND node2.id = 'methodA'  
+CREATE (node1)-[:REF]->(node2);
+
+MATCH (node1:Chain), (node2:Method)  
+WHERE node1.id = 'chain2' AND node2.id = 'methodB'  
+CREATE (node1)-[:REF]->(node2);
+
+MATCH (node1:Chain), (node2:Method)  
+WHERE node1.id = 'chain3' AND node2.id = 'methodC1'  
+CREATE (node1)-[:REF]->(node2);
+
+MATCH (node1:Chain), (node2:Method)  
+WHERE node1.id = 'chain4' AND node2.id = 'methodC2'  
+CREATE (node1)-[:REF]->(node2);
+
+// 链路的调用关系
+MATCH (node1:Chain), (node2:Chain)  
+WHERE node1.id = 'chain1' AND node2.id = 'chain2'  
+CREATE (node1)-[:CALLS]->(node2);
+
+MATCH (node1:Chain), (node2:Chain)  
+WHERE node1.id = 'chain2' AND node2.id = 'chain3'  
+CREATE (node1)-[:CALLS]->(node2);
+
+MATCH (node1:Chain), (node2:Chain)  
+WHERE node1.id = 'chain2' AND node2.id = 'chain4'  
+CREATE (node1)-[:CALLS]->(node2);
 ```
 
-// 创建调用关系  
-
-```sql
-MATCH (node1:Method), (node2:Method)  
-WHERE node1.name = 'methodA' AND node2.name = 'methodB'  
-CREATE (node1)-[r:CALLS]->(node2)
-```
 
 这个模型假设每个方法都属于一个应用，并且我们用一个CALLS关系表示一个方法调用另一个方法。
 
