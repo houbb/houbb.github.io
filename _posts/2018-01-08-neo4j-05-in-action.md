@@ -50,7 +50,7 @@ return startM, r, endM
 ```sql
 match p=(startM)-[r:METHOD_CALLS]->(endM) 
 where (r.startMethodFullName='appD,methodD1') 
-return startM, r, endM
+return r
 ```
 
 ## 过滤
