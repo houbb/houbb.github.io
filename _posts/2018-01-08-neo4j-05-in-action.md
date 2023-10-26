@@ -62,6 +62,13 @@ RETURN startM, r, endM
 LIMIT 1000
 ```
 
+## 根据节点直接查询
+
+```
+MATCH (n)-[r]-(m)
+WHERE ID(n) = node_id
+RETURN r
+```
 
 ## 操作
 
