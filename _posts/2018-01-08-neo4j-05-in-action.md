@@ -23,6 +23,46 @@ MATCH (n)
 DETACH DELETE n;
 ```
 
+
+# 查询
+
+作为入口：
+
+```sql
+match p=(startM)-[r:METHOD_CALLS]->(endM) 
+where (r.endMethodFullName='appD,methodD1') 
+return startM, r, endM
+```
+
+作为出口：
+
+```sql
+match p=(startM)-[r:METHOD_CALLS]->(endM) 
+where (r.startMethodFullName='appD,methodD1') 
+return startM, r, endM
+```
+
+必须要有方向性。
+
+
+------------------ 
+
+```sql
+match p=(startM)-[r:METHOD_CALLS]->(endM) 
+where (r.startMethodFullName='appD,methodD1') 
+return startM, r, endM
+```
+
+## 过滤
+
+```sql
+MATCH p=(startM)-[r:METHOD_CALLS]->(endM) 
+where r.tid='T0001'
+RETURN startM, r, endM 
+LIMIT 1000
+```
+
+
 ## 操作
 
 ### 应用与方法
@@ -99,6 +139,37 @@ CREATE (node1)-[:CALLS]->(node2);
 你可以根据你的具体需求调整这个模型。
 
 例如，如果一个方法可以调用多个其他方法，或者一个方法可以被多个方法调用，你可能需要调整这个模型以反映这些情况。
+
+
+# method-scene 设计
+
+## scene
+
+```
+sceneCode 编码
+sceneName 名称
+sceneRemark 备注
+```
+
+## method
+
+固定的属性
+
+```
+appName: 应用名称
+methodName: 方法全称（唯一索引）
+methodType: 方法类别 DAL/WEB/SERVICE
+```
+
+主要考虑方法，不先关注场景/APP 的从属关系。
+
+## 链路假设
+
+简单，为了便于分析。指定两条不同的链路。
+
+
+TODO:...
+
 
 # 小结
 
