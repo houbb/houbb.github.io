@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Neo4j-04-图数据库 neo4j java 整合
+title:  Neo4j-04-图数据库 neo4j java 整合 增删改查入门例子
 date:  2018-1-8 14:18:33 +0800
 categories: [SQL]
 tags: [nosql, neo4j]
@@ -132,9 +132,233 @@ Record<{n: node<1>}>
 
 Record 两行已经输出。
 
+
+# CRUD
+
+## 说明
+
+上面只是一个启动的例子，我们还是给出一个完整的 CRUD 的入门例子
+
+## 实体
+
+我们创建一个实体。
+
+```java
+public class PersonBean {
+
+    private String id;
+    private String name;
+
+    // get&set
+
+}
+```
+
+针对 id 添加唯一索引
+
+```sql
+CREATE CONSTRAINT ON (p:Person) ASSERT p.id IS UNIQUE;
+```
+
+## insert
+
+```java
+package com.github.houbb.neo4j.learn;
+
+import com.github.houbb.neo4j.learn.model.PersonBean;
+import org.neo4j.driver.*;
+
+public class InsertDemo {
+
+    public static void main(String[] args) {
+        // Neo4j数据库连接信息
+        String uri = "bolt://localhost:7687"; // Neo4j数据库地址
+        String user = "neo4j"; // 数据库用户名
+        String password = "12345678"; // 数据库密码
+
+        // 创建驱动程序
+        Driver driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
+
+        // 创建一个Person对象
+        PersonBean person = new PersonBean();
+        person.setName("John Doe");
+        person.setId("1");
+
+        // 执行插入操作
+        try (Session session = driver.session()) {
+            session.writeTransaction(transaction -> {
+                transaction.run("CREATE (p:Person {id: $id, name: $name})",
+                        Values.parameters("id", person.getId(), "name", person.getName()));
+                return null;
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // 关闭驱动程序
+            driver.close();
+        }
+    }
+    
+}
+```
+
+我们可以通过上面的方式插入。
+
+但是插入 2 次会有报错：
+
+```
+org.neo4j.driver.exceptions.ClientException: Node(15) already exists with label `Person` and property `id` = '1'
+	at org.neo4j.driver.internal.util.Futures.blockingGet(Futures.java:143)
+	at org.neo4j.driver.internal.InternalTransaction.commit(InternalTransaction.java:39)
+	at org.neo4j.driver.internal.InternalSession.lambda$transaction$4(InternalSession.java:154)
+	at org.neo4j.driver.internal.retry.ExponentialBackoffRetryLogic.retry(ExponentialBackoffRetryLogic.java:101)
+	at org.neo4j.driver.internal.InternalSession.transaction(InternalSession.java:146)
+	at org.neo4j.driver.internal.InternalSession.writeTransaction(InternalSession.java:124)
+	at org.neo4j.driver.internal.InternalSession.writeTransaction(InternalSession.java:118)
+	at com.github.houbb.neo4j.learn.InsertDemo.main(InsertDemo.java:24)
+	Suppressed: org.neo4j.driver.exceptions.ClientException: Transaction can't be committed. It has been rolled back either because of an error or explicit termination
+		at org.neo4j.driver.internal.async.UnmanagedTransaction.doCommitAsync(UnmanagedTransaction.java:195)
+```
+
+## merge 
+
+有没有什么方法可以让不存在时插入，存在时更新呢？
+
+```java
+package com.github.houbb.neo4j.learn;
+
+import com.github.houbb.neo4j.learn.model.PersonBean;
+import org.neo4j.driver.*;
+
+public class MergeDemo {
+
+    public static void main(String[] args) {
+        // Neo4j数据库连接信息
+        String uri = "bolt://localhost:7687"; // Neo4j数据库地址
+        String user = "neo4j"; // 数据库用户名
+        String password = "12345678"; // 数据库密码
+
+        // 执行插入操作
+        try (Driver driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
+             Session session = driver.session()) {
+            String cypherQuery = "MERGE (p:Person {id: $id}) SET p.name = $name";
+            session.run(cypherQuery, Values.parameters("id", "2", "name", "John Doe New"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 关闭驱动程序
+    }
+    
+}
+```
+
+## update
+
+```java
+package com.github.houbb.neo4j.learn;
+
+import org.neo4j.driver.*;
+
+public class UpdateDemo {
+
+    public static void main(String[] args) {
+        // Neo4j数据库连接信息
+        String uri = "bolt://localhost:7687"; // Neo4j数据库地址
+        String user = "neo4j"; // 数据库用户名
+        String password = "12345678"; // 数据库密码
+
+        try (Driver driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
+             Session session = driver.session()) {
+            String cypherQuery = "MATCH (p:Person {id: $id}) SET p.name = $newName";
+            session.run(cypherQuery, Values.parameters("id", "1", "newName", "Updated Name"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+}
+```
+
+把 id=1 的名称改掉。
+
+## query
+
+根据 id 查询对应的 neo4j 信息。
+
+```java
+package com.github.houbb.neo4j.learn;
+
+import org.neo4j.driver.*;
+import org.neo4j.driver.types.Node;
+
+public class QueryDemo {
+
+    public static void main(String[] args) {
+        // Neo4j数据库连接信息
+        String uri = "bolt://localhost:7687"; // Neo4j数据库地址
+        String user = "neo4j"; // 数据库用户名
+        String password = "12345678"; // 数据库密码
+
+        try (Driver driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
+             Session session = driver.session()) {
+            // 执行Cypher查询
+            String cypherQuery = "MATCH (p:Person) RETURN p LIMIT 10";
+            Result result = session.run(cypherQuery);
+
+            while (result.hasNext()) {
+                // 首先获取节点
+                Record record = result.next();
+                Node personNode = record.get("p").asNode();
+
+                // 从节点中获取属性
+                String name = personNode.get("name").asString();
+                String id = personNode.get("id").asString();
+                System.out.println(id + "=" + name);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // 关闭驱动程序
+    }
+
+}
+```
+
+## remove
+
+```java
+package com.github.houbb.neo4j.learn;
+
+import org.neo4j.driver.*;
+
+public class RemoveDemo {
+
+    public static void main(String[] args) {
+        // Neo4j数据库连接信息
+        String uri = "bolt://localhost:7687"; // Neo4j数据库地址
+        String user = "neo4j"; // 数据库用户名
+        String password = "12345678"; // 数据库密码
+
+        // 执行插入操作
+        try (Driver driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
+             Session session = driver.session()) {
+            String cypherQuery = "MATCH (p:Person {id: $id}) DELETE p";
+            session.run(cypherQuery, Values.parameters("id", "1"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+}
+```
+
 # 小结
 
-这只是一个简单的 java 直连代码，相信 spring 整合等常见的整合一定可以。后续有时间继续整理。
+这只是一个简单的 java 直连代码，相信 spring 整合等常见的整合一定可以。
+
+后续有时间继续整理。
+
+下一节我们先来看一下以 ORM 思想的操作。
 
 # 参考资料
 
