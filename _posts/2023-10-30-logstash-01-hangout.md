@@ -53,6 +53,164 @@ This product includes GeoLite2 data created by MaxMind, available from
 
 不压测吞吐量, 正常消费的情况下, CPU使用率大概是Logstash的50%到25%.
 
+
+
+# 本地运行实战
+
+
+``
+
+## 如何安装
+
+> [如何安装](https://github.com/childe/hangout/issues/2)
+
+简单说的话
+
+如果是想自己从源码编译, git clone之后, mvn package 打包. 
+
+```sh
+mvn package  -DskipTests=true
+```
+
+然后运行:
+
+```
+java -cp target/hangout-0.1.2-with-dependencies.jar -f app.yml -l /var/log/hangout/app.yml.log
+```
+
+也有我打包好的, 你可以直接下载 https://github.com/childe/hangout/releases. 下载解压后运行
+
+bin/hangout -f app.yml -l /var/log/hangout/app.yml.log
+
+## windows10 实际运行笔记
+
+我们下在 release 文件，并且解压
+
+文件夹
+
+```
+PS D:\tool\hangout-dist-0.4.0-release-bin> ls
+
+
+    目录: D:\tool\hangout-dist-0.4.0-release-bin
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----         2018/8/16     15:59                bin
+d-----         2018/8/16     13:43                conf
+d-----          2018/9/7     16:24                libs
+d-----          2018/9/7     16:24                modules
+-a----          2017/5/3     17:01           1100 LICENSE
+-a----         2017/9/12     17:45            362 log4j2.xml
+-a----         2018/8/16     15:59          15774 README.MD
+```
+
+然后运行命令
+
+```sh
+bin/hangout.cmd -f simpletest.yml
+```
+
+
+### 报错1
+
+```
+program files is not a xxx
+```
+
+这个是 jdk 目录包含空格导致的。
+
+
+解决思路：移除 jdk 的空格。
+
+JAVA_HOME 调整：
+
+```
+C:\Program Files\Java\jdk1.8.0_192
+```
+
+改为
+
+```
+D:\tools\jdk\jdk1.8.0_192
+```
+
+避免出现空格。
+
+### 报错 2
+
+```
+Hangout  Version:0.4.0  Copyright @Ctrip   Author : childe@github, gnuhpc@github
+2023-10-30 23:58:54,505 [main] ERROR com.ctrip.ops.sysdev.cmd.Main - failed to pares config file : simpletest.yml
+java.io.FileNotFoundException: simpletest.yml (系统找不到指定的文件。)
+        at java.io.FileInputStream.open0(Native Method) ~[?:1.8.0_192]
+        at java.io.FileInputStream.open(FileInputStream.java:195) ~[?:1.8.0_192]
+        at java.io.FileInputStream.<init>(FileInputStream.java:138) ~[?:1.8.0_192]
+        at config.HangoutConfig.parse(HangoutConfig.java:28) ~[hangout-cmd-0.4.0.jar:?]
+        at com.ctrip.ops.sysdev.cmd.Main.main(Main.java:40) [hangout-cmd-0.4.0.jar:?]
+```
+
+对应的配置文件找不到。
+
+```sh
+bin/hangout.cmd -f conf/simpletest.yml
+```
+
+### 报错 3
+
+```
+java.lang.reflect.InvocationTargetException
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+        at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+        at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+        at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+        at com.ctrip.ops.sysdev.cmd.TopologyBuilder.lambda$null$2(TopologyBuilder.java:94)
+        at java.util.Iterator.forEachRemaining(Iterator.java:116)
+        at java.util.Spliterators$IteratorSpliterator.forEachRemaining(Spliterators.java:1801)
+        at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:580)
+        at com.ctrip.ops.sysdev.cmd.TopologyBuilder.lambda$buildFilters$3(TopologyBuilder.java:78)
+        at java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1382)
+        at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:580)
+        at com.ctrip.ops.sysdev.cmd.TopologyBuilder.buildFilters(TopologyBuilder.java:77)
+        at com.ctrip.ops.sysdev.cmd.TopologyBuilder.buildTopology(TopologyBuilder.java:182)
+        at com.ctrip.ops.sysdev.cmd.Main.main(Main.java:58)
+Caused by: java.lang.NoClassDefFoundError: org/apache/logging/log4j/util/ReflectionUtil
+        at org.apache.logging.slf4j.Log4jLoggerFactory.getContext(Log4jLoggerFactory.java:42)
+        at org.apache.logging.log4j.spi.AbstractLoggerAdapter.getLogger(AbstractLoggerAdapter.java:47)
+        at org.apache.logging.slf4j.Log4jLoggerFactory.getLogger(Log4jLoggerFactory.java:29)
+        at org.slf4j.LoggerFactory.getLogger(LoggerFactory.java:358)
+        at freemarker.log.SLF4JLoggerFactory.getLogger(SLF4JLoggerFactory.java:28)
+        at freemarker.log.Logger.getLogger(Logger.java:357)
+        at freemarker.template.Configuration.<clinit>(Configuration.java:125)
+        at com.ctrip.ops.sysdev.render.FreeMarkerRender.<init>(FreeMarkerRender.java:17)
+        at com.ctrip.ops.sysdev.baseplugin.BaseFilter.<init>(BaseFilter.java:37)
+        at com.ctrip.ops.sysdev.filters.Filters.<init>(Filters.java:15)
+        ... 14 more
+Caused by: java.lang.ClassNotFoundException: org.apache.logging.log4j.util.ReflectionUtil
+        at java.net.URLClassLoader.findClass(URLClassLoader.java:382)
+        at java.lang.ClassLoader.loadClass(ClassLoader.java:424)
+        at java.lang.ClassLoader.loadClass(ClassLoader.java:357)
+        ... 24 more
+Stdin Input shutdown...
+```
+
+这里应该是配置的 slf4j 和 Log4j2 根本就不匹配导致的。
+
+正常启动如下：
+
+```
+l likely be removed in a future release
+Java HotSpot(TM) 64-Bit Server VM warning: UseCMSCompactAtFullCollection is deprecated and will likely be removed in a future release.
+Hangout  Version:0.4.0  Copyright @Ctrip   Author : childe@github, gnuhpc@github
+123456465465465
+{addfield1=field1content, addfield2=field2content, hostname=PC-20230404XHIO, @timestamp=2023-10-31T00:07:49.748+08:00, message=123456465465465, type=stdin1}
+45646465465464654654
+{addfield1=field1content, addfield2=field2content, hostname=PC-20230404XHIO, @timestamp=2023-10-31T00:07:53.003+08:00, message=45646465465464654654, type=stdin1}
+```
+
+
+
 # 运行
 
 ```
