@@ -19,10 +19,10 @@ published: true
 ## 清空
 
 ```sql
-MATCH (n)  
-DETACH DELETE n;
+MATCH (n)  DETACH DELETE n;
 ```
 
+DETACH DELETE 是一个组合操作，它会删除节点，同时删除所有连接到这些节点的关系，而不会删除关系的另一端节点。
 
 # 查询
 
