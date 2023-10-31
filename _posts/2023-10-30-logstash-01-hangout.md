@@ -211,6 +211,83 @@ Hangout  Version:0.4.0  Copyright @Ctrip   Author : childe@github, gnuhpc@github
 
 
 
+
+
+
+
+
+# 本地如何 debug 启动
+
+## 命令
+
+我们可以看到启动日志中的 jvm 参数：
+
+```sh
+D:\github\hangout\hangout-dist-0.4.0-release-bin>D:\tool\jdk\jdk-1.8\bin\java.exe  -server -Xms2g -Xmx2g -Xmn1g -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=320m -XX:+UseConcMarkSweepGC -XX:+UseCMSCompactAtFullCollection -XX:CMSInitiatingOccupancyFraction=70 -XX:+CMSParallelRemarkEnabled -XX:SoftRefLRUPolicyMSPerMB=0 -XX:+CMSClassUnloadingEnabled -XX:SurvivorRatio=8 -XX:-UseParNewGC -verbose:gc -Xloggc:"C:\Users\dh\hangout.log" -XX:+PrintGCDetails -XX:-OmitStackTraceInFastThrow -XX:-UseLargePages -Djava.ext.dirs=D:\github\hangout\hangout-dist-0.4.0-release-bin\libs;D:\github\hangout\hangout-dist-0.4.0-release-bin\modules -cp .;D:\tool\jdk\jdk-1.8\lib;D:\tool\jdk\jdk-1.8\lib\tools.jar com.ctrip.ops.sysdev.cmd.Main -f conf/simpletest.yml
+```
+
+这里一些是 jvm 的配置，我们可以本地启动时简化一下：
+
+```sh
+-Djava.ext.dirs=D:\github\hangout\hangout-dist-0.4.0-release-bin\libs;D:\github\hangout\hangout-dist-0.4.0-release-bin\modules  -f conf/simpletest.yml
+```
+
+
+## idea 配置
+
+我们首先编译项目：
+
+```
+mvn package  -DskipTests=true
+```
+
+然后找到 `com.ctrip.ops.sysdev.cmd.Main` 这个启动类，直接运行缺少参数会失败。
+
+我们配置一下。Main=>【Edit Configration】
+
+1）添加 vm 参数
+
+```sh
+-Djava.ext.dirs=D:\github\hangout\hangout-dist-0.4.0-release-bin\libs;D:\github\hangout\hangout-dist-0.4.0-release-bin\modules  
+```
+
+2) 添加项目配置文件指定  program argumens
+
+```
+-f conf/simpletest.yml
+```
+
+![配置](https://img-blog.csdnimg.cn/b7b0dd06742f47be9a99ebcbfa7afd8c.png#pic_center)
+
+3）启动 java Main
+
+然后和启动 java 程序一样，直接 debug 启动。
+
+## debug 信息
+
+我们再去 debug 信息，命令行输入 hello
+
+Stdout 对应的 Map event 信息是：
+
+```
+"addfield1" -> "field1content"
+"addfield2" -> "field2content"
+"hostname" -> "d"
+"@timestamp" -> {DateTime@2519} "2023-10-31T09:46:13.881+08:00"
+"message" -> "hello"
+"type" -> "stdin1"
+```
+
+对应的效果如下：
+
+```
+hello
+{addfield1=field1content, addfield2=field2content, hostname=d, @timestamp=2023-10-31T09:46:13.881+08:00, message=hello, type=stdin1}
+```
+
+下面是官方文档：
+
+
 # 运行
 
 ```
