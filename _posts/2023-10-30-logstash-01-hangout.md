@@ -251,6 +251,23 @@ mvn package  -DskipTests=true
 -Djava.ext.dirs=D:\github\hangout\hangout-dist-0.4.0-release-bin\libs;D:\github\hangout\hangout-dist-0.4.0-release-bin\modules  
 ```
 
+
+
+如果是本地的项目，可以：
+
+`D:\code\github\hangout\hangout-dist\target\hangout-dist-0.4.0-release-bin.zip` 解压：
+
+```
+D:\code\github\hangout\hangout-dist\target\hangout-dist-0.4.0-release-bin
+```
+
+可以修改 vm 参数为
+
+```sh
+-Djava.ext.dirs=D:\code\github\hangout\hangout-dist\target\hangout-dist-0.4.0-release-bin\libs;D:\code\github\hangout\hangout-dist\target\hangout-dist-0.4.0-release-bin\modules
+```
+
+
 2) 添加项目配置文件指定  program argumens
 
 ```
