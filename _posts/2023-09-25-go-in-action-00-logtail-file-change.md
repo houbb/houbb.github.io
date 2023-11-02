@@ -1,6 +1,6 @@
 ---
 layout: post
-title: go 实现日志采集-01-如何监听文件的变化？
+title: go 实现日志采集-00-与 chat 沟通如何监听文件的变化？
 date: 2023-09-25 21:01:55 +0800
 categories: [Go]
 tags: [monitor, go, log-collect, sh]

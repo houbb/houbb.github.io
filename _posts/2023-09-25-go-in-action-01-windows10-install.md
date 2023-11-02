@@ -1,6 +1,6 @@
 ---
 layout: post
-title: go 实现日志采集-00-windows10 install go 并实现基本的文件监听功能
+title: go 实现日志采集-01-windows10 install go 并初步实现基本的文件监听功能
 date: 2023-09-25 21:01:55 +0800
 categories: [Go]
 tags: [monitor, go, log-collect, sh]
