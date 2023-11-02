@@ -1,6 +1,6 @@
 ---
 layout: post
-title: go 实现日志采集-02-特别大的日志文件如何逐行读取？
+title: go 实现日志采集-02-如何实现读取日志文件？
 date: 2023-09-25 21:01:55 +0800
 categories: [Go]
 tags: [monitor, go, log-collect, sh]
@@ -983,6 +983,399 @@ func processLine(line string) {
 
 
 
+### Q11: 如何判断文件是否以  `.log` 结尾。
+
+在Go语言中，你可以使用标准库中的`strings`包来判断文件名的后缀是否为`.log`。以下是一个示例代码：
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+)
+
+func main() {
+	fileName := "example.log"
+	if strings.HasSuffix(fileName, ".log") {
+		fmt.Println("文件名的后缀是 .log")
+	} else {
+		fmt.Println("文件名的后缀不是 .log")
+	}
+}
+```
+
+在这个例子中，`strings.HasSuffix`函数接受两个参数：第一个参数是要检查的字符串，第二个参数是要匹配的后缀。
+
+如果第一个参数以第二个参数作为后缀，该函数将返回`true`，否则返回`false`。
+
+在这里，我们检查`fileName`变量的后缀是否为`.log`。
+
+### Q12-fsnotify.Rename 重命名时，如何获取文件原来的路径path和现在的路径path？
+
+rename 实际上会触发两个事件。
+
+文件的 rename
+
+新文件的 create
+
+
+### Q13: 为什么下面的代码。显示的内容会重复？
+
+```go
+bufferSize := 65535
+buffer := make([]byte, bufferSize)
+scanner := bufio.NewScanner(file)
+scanner.Buffer(buffer, bufferSize)
+for scanner.Scan() {
+	line := scanner.Text()
+	log.Println("当前行内容为", line)
+}
+```
+
+
+# 完整的实现
+
+```go
+package main
+
+import (
+	"log"
+	"os"
+	"bufio"
+	"fmt"
+	"io/ioutil"	
+	"time"
+	"strings"
+	"encoding/json"
+
+	"github.com/fsnotify/fsnotify"
+	"github.com/axgle/mahonia"
+)
+
+
+
+// 存放每一个文件，读取到的文件路径 pos。用于重启时，便于下一次的内容恢复
+//1. 启动时，从指定的文件加载初始化
+//2. 文件写入的时候，更新这个属性值。
+// 声明一个全局变量map，key是string，value是int
+var fileOffsets map[string]int64
+// 存储文件偏移量的地址
+var fileOffsetStorePath string
+
+// chan
+var fileWorkers map[string]chan struct{}
+
+func scheduleStore() {
+	// 创建一个Ticker，每5分钟触发一次
+	ticker := time.NewTicker(1 * time.Minute)
+
+	// 启动一个goroutine来处理定时任务
+	go func() {
+		for {
+			select {
+			case <-ticker.C:
+				// 在这里执行你的定时任务的代码
+				storeOffsetIntoLocal()
+			}
+		}
+	}()
+}
+
+// 保存 offset 
+func storeOffsetIntoLocal() {
+	fmt.Println("storeOffsetIntoLocal start....")
+
+	// 将map序列化为JSON字符串
+	jsonData, err := json.Marshal(fileOffsets)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	// 使用os.OpenFile函数以写入模式打开文件，权限为0666（读写权限）
+	file, err := os.OpenFile(fileOffsetStorePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer file.Close()
+
+	_, err = file.Write(jsonData)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	fmt.Println("JSON数据已写入到文件:", fileOffsetStorePath)
+}
+
+func createOffsetLocalFile() {
+	// 使用os.Stat函数判断文件是否存在
+	_, err := os.Stat(fileOffsetStorePath)
+
+	if err == nil {
+		fmt.Println("文件存在")
+	} else if os.IsNotExist(err) {
+		fmt.Println("文件不存在")
+		_, err := os.Create(fileOffsetStorePath)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+		// defer file.Close()
+	} else {
+		fmt.Println("发生错误:", err)
+	}
+}
+
+// 根据本地的文件进度，根据本地的文件
+func initFileOffsetByLocal() {
+	// 读取文件
+	jsonData := getFileContent(fileOffsetStorePath)
+	if(len(jsonData) > 0) {
+		err := json.Unmarshal([]byte(jsonData), &fileOffsets)
+		if err != nil {
+			fmt.Println("initFileOffsetByLocal Error:", err)
+		} else {
+			// fmt.Println("初始化完成 : ", fileOffsets)
+		}
+	} else {
+		fileOffsets = make(map[string]int64)
+	}
+
+	fmt.Println("初始化完成 fileOffsets=", fileOffsets)
+}
+
+func main() {
+	fileOffsetStorePath = "D:\\logsdata\\config\\fileOffset.json";
+	// create file
+	createOffsetLocalFile()
+	// 初始化文件的偏移量
+	initFileOffsetByLocal()
+	// 定时存储
+	scheduleStore()
+
+	// 使用map存储每个文件的goroutine的停止通道
+	fileWorkers = make(map[string]chan struct{}) 
+
+	// 创建一个新的文件系统监视器
+	watcher, err := fsnotify.NewWatcher()
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer watcher.Close()
+
+	// 指定要监听的文件夹路径
+	dirPath := "D:\\logsdata"
+	log.Println("开始处理文件夹：", dirPath)
+
+	// 递归遍历文件夹及其子文件夹，并将它们添加到监视器中
+	err = watchDir(dirPath, watcher)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 启动一个无限循环来监听文件事件
+	for {
+		select {
+		case event, ok := <-watcher.Events:
+			if !ok {
+				return
+			}
+			switch event.Op {
+				case fsnotify.Create:
+					fmt.Println("文件或文件夹被创建:", event.Name)
+
+					// 文件名称
+					addNewChan(event.Name)
+				case fsnotify.Write:
+				case fsnotify.Remove:
+					fmt.Println("文件或文件夹被删除:", event.Name)
+
+					removeChan(event.Name)
+				case fsnotify.Rename:
+					// 文件重命名会触发两个事件：旧文件的 rename, 新文件的 create
+					fmt.Println("文件或文件夹被重命名:", event.Name)
+					// 移除旧的
+					removeChan(event.Name)
+				case fsnotify.Chmod:
+					fmt.Println("文件或文件夹权限被修改:", event.Name)
+			}
+		case err, ok := <-watcher.Errors:
+			if !ok {
+				return
+			}
+			log.Println("错误:", err)
+		}
+	}
+}
+
+// 移除对应的 chann
+func removeChan(filePath string) {
+	// 文件删除，停止或销毁goroutine
+	stopCh, ok := fileWorkers[filePath]
+	if ok {
+		stopCh <- struct{}{}
+		delete(fileWorkers, filePath)
+	}
+}
+
+// 添加新的任务
+func addNewChan(filePath string) {
+	if strings.HasSuffix(filePath, ".log") {
+		fmt.Println("文件名的后缀是 .log")
+
+		_, ok := fileWorkers[filePath]
+		if ok {
+			// 已经存在
+		} else {
+			// 文件创建，启动goroutine处理文件
+			stopCh := make(chan struct{})
+			fileWorkers[filePath] = stopCh
+			go processFile(filePath, stopCh)
+		}
+	} else {
+		fmt.Println("文件名的后缀不是 .log")
+	}
+}
+
+
+// 处理文件
+func processFile(filePath string, stopCh <-chan struct{}) {
+	// 在这里编写处理文件的逻辑
+	log.Println("处理文件:", filePath)
+
+	// 模拟文件处理过程
+	for {
+		select {
+			case <-stopCh:
+				log.Println("停止处理文件:", filePath)
+				return
+			default:
+				// 处理文件的具体操作
+				// 不停的处理，记录每一次的内容？
+				// log.Println("停止处理文件:", filePath)	
+				readFileByBuffer(filePath);
+		}
+	}
+}
+
+// 通过缓存阅读文件
+func readFileByBuffer(filePath string) {
+	file, err := os.Open(filePath)
+	if err != nil {
+		log.Println(err)
+	}
+	defer file.Close()
+
+	// 缓存中加载当前行的偏移量
+	offset := fileOffsets[filePath] 
+
+	// 直接从 offset 开始读取
+	_, err = file.Seek(offset, os.SEEK_CUR)
+	if err != nil {
+		log.Println("Seek error", err)
+	}
+
+	// 通过逐行读取
+	lineReader := bufio.NewReader(file)
+	for {
+		lineBytes, _, lineErr := lineReader.ReadLine()
+		if(lineErr != nil) {
+			// log.Println("line err", lineErr)	
+		}
+
+		line := string(lineBytes)
+
+		// 获取当前行的偏移量
+		byteLen := len([]byte(line))
+		
+		// 处理每一行日志数据, 比如解析发送到 kafka
+		if(byteLen > 0) {
+			len64 := int64(byteLen)
+			offset += len64
+
+			// 处理逻辑，比如发送到 kafka	
+			log.Println("当前行内容为", line)
+
+			// 更新偏移量
+			fileOffsets[filePath] = offset
+		}
+
+		// 这里会存在一个问题，可能会导致内容输出重复？
+		//try sleep?
+		// time.Sleep(time.Millisecond) // 设置沉睡1毫秒
+	}
+}
+
+
+//默认以 UTF-8 的编码读取文件内容
+func getFileContent(filePath string) string {
+	// 默认编码
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		fmt.Println("无法读取文件:", err)
+		return "";
+	}
+
+	text := string(content)
+
+	// 指定其他编码, 转 GBK
+	if(filePath == "D:\\logsdata\\gbk.txt") {
+		text = mahonia.NewDecoder("gbk").ConvertString(text)
+	}
+
+	return text;
+}
+
+// 递归遍历文件夹及其子文件夹，并将它们添加到监视器中
+func watchDir(dirPath string, watcher *fsnotify.Watcher) error {
+	err := watcher.Add(dirPath)
+	if err != nil {
+		return err
+	}
+
+	// 打开文件夹
+	dir, err := os.Open(dirPath)
+	if err != nil {
+		return err
+	}
+	defer dir.Close()
+
+	// 读取文件夹中的所有文件和子文件夹
+	fileInfos, err := dir.Readdir(-1)
+	if err != nil {
+		return err
+	}
+
+	// 遍历文件夹中的文件和子文件夹
+	for _, fileInfo := range fileInfos {
+		// 如果是子文件夹，则递归调用 watchDir 函数
+		if fileInfo.IsDir() {
+			subDirPath := dirPath + "/" + fileInfo.Name()
+			err = watchDir(subDirPath, watcher)
+			if err != nil {
+				log.Println(err)
+			}
+		} else {
+			// 如果是文件，则将其添加到监视器中
+			filePath := dirPath + "/" + fileInfo.Name()
+			err = watcher.Add(filePath)
+			if err != nil {
+				log.Println(err)
+			}
+
+			// 添加文件的监听处理
+			addNewChan(filePath);
+		}
+	}
+
+	return nil
+}
+
+func getTimeMs() int64 {
+	return  time.Now().UnixNano() / int64(time.Millisecond);
+}
+```
 
 # 后期的 ROAD-MAP
 
