@@ -638,12 +638,20 @@ public class LogstashExample {
 是的，Java生态系统中有一些类似Logstash的开源组件，用于处理日志、数据收集和数据处理。以下是其中一些常见的开源组件：
 
 1. **Fluentd**：
-   Fluentd是一个用于数据收集和转发的开源数据流引擎。它支持多种输入和输出插件，可以将日志和事件数据收集、转换和路由到不同的目的地。Fluentd使用JSON进行数据的传输和存储，支持丰富的插件系统，允许用户定制数据处理流程。
+
+   Fluentd是一个用于数据收集和转发的开源数据流引擎。
+   
+   它支持多种输入和输出插件，可以将日志和事件数据收集、转换和路由到不同的目的地。
+   
+   Fluentd使用JSON进行数据的传输和存储，支持丰富的插件系统，允许用户定制数据处理流程。
 
    官方网站：[Fluentd](https://www.fluentd.org/)
 
 2. **Apache Flume**：
-   Apache Flume是一个可靠的、分布式的、高可用的日志收集系统。它支持多种数据源（包括日志文件、消息队列等）和多种数据目的地（包括Hadoop HDFS、HBase等），具有灵活的配置和可扩展性。
+
+   Apache Flume是一个可靠的、分布式的、高可用的日志收集系统。
+   
+   它支持多种数据源（包括日志文件、消息队列等）和多种数据目的地（包括Hadoop HDFS、HBase等），具有灵活的配置和可扩展性。
 
    官方网站：[Apache Flume](https://flume.apache.org/)
 
@@ -653,7 +661,10 @@ public class LogstashExample {
    官方网站：[Log4j 2](https://logging.apache.org/log4j/2.x/)
 
 4. **Scribe**：
-   Scribe是Facebook开源的一个简单的日志收集系统，用于收集大规模分布式系统中的日志数据。它具有轻量级和可扩展性的特点，适用于大规模日志收集需求。
+
+   Scribe是Facebook开源的一个简单的日志收集系统，用于收集大规模分布式系统中的日志数据。
+   
+   它具有轻量级和可扩展性的特点，适用于大规模日志收集需求。
 
    GitHub地址：[Scribe](https://github.com/facebookarchive/scribe)
 
