@@ -118,7 +118,9 @@ MyBatis和Hibernate是两个常用的持久层框架，它们在一些方面有�
 
 ## Q4-mybatis 和 spring jpa 对比起来如何？
 
-MyBatis和Spring Data JPA（简称为Spring JPA）是两个常用的持久层框架，它们在一些方面有所不同。下面是它们之间的一些对比：
+MyBatis和Spring Data JPA（简称为Spring JPA）是两个常用的持久层框架，它们在一些方面有所不同。
+
+下面是它们之间的一些对比：
 
 1. 编程模型：
    - MyBatis：MyBatis是一种基于SQL的持久层框架，开发者需要手动编写SQL语句，并使用MyBatis提供的API执行SQL查询和操作。MyBatis提供了更细粒度的数据库访问控制和灵活性，适用于对SQL有更高要求的场景。
@@ -136,7 +138,11 @@ MyBatis和Spring Data JPA（简称为Spring JPA）是两个常用的持久层框
    - MyBatis：MyBatis拥有庞大的生态系统和活跃的社区支持，提供了丰富的插件和工具，可以满足各种需求。它可以与各种数据库（如MySQL、Oracle、PostgreSQL等）无缝集成。
    - Spring JPA：Spring JPA是Spring框架的一部分，与Spring生态系统紧密集成。它可以与Spring Boot等其他Spring项目无缝集成，并享受Spring提供的各种功能和工具。
 
-综上所述，选择MyBatis还是Spring JPA取决于您的具体需求、技术栈和项目特点。如果您对SQL有较高的要求、需要更大的灵活性或对MyBatis已经熟悉，可以选择MyBatis。如果您希望快速开发、简化数据访问或已经使用Spring框架，可以选择Spring JPA。
+综上所述，选择MyBatis还是Spring JPA取决于您的具体需求、技术栈和项目特点。
+
+如果您对SQL有较高的要求、需要更大的灵活性或对MyBatis已经熟悉，可以选择MyBatis。
+
+如果您希望快速开发、简化数据访问或已经使用Spring框架，可以选择Spring JPA。
 
 # 想法
 
