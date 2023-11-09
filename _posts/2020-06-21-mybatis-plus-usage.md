@@ -48,6 +48,8 @@ queryWrapper.and(wq -> {
 and (bln_up_brh_id='brhId' or id='brhId')
 ```
 
+ps: mybatis-plus 的版本为 3.5.2
+
 ## MP 的 andNew
 
 看了下 MP 对应的 andNew 的语法。
