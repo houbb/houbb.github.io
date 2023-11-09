@@ -388,7 +388,11 @@ Node.js作为服务端的优缺点如下：
 
 ## Q: node 支持 ts 吗？和直接使用 js 区别是什么
 
-Node.js是支持TypeScript（TS）的。TypeScript是JavaScript的超集，它添加了静态类型和其他一些特性，以提供更强大的开发工具和更好的代码可维护性。与直接使用JavaScript相比，使用TypeScript在以下几个方面有所区别：
+Node.js是支持TypeScript（TS）的。
+
+TypeScript是JavaScript的超集，它添加了静态类型和其他一些特性，以提供更强大的开发工具和更好的代码可维护性。
+
+与直接使用JavaScript相比，使用TypeScript在以下几个方面有所区别：
 
 1. 类型系统：TypeScript引入了静态类型检查，允许开发者在代码编写阶段捕获潜在的类型错误。这有助于提高代码的可靠性和可维护性，并提供更好的自动补全和代码导航功能。
 
@@ -398,7 +402,11 @@ Node.js是支持TypeScript（TS）的。TypeScript是JavaScript的超集，它�
 
 4. 生态系统和工具支持：TypeScript拥有自己的生态系统和工具链，包括编译器、调试器、编辑器插件等。这些工具提供了更好的开发体验和更强大的工具支持。
 
-总的来说，使用TypeScript可以提供更强大的类型检查和语言特性，以及更好的工具支持。但同时，学习和使用TypeScript也需要额外的学习成本和编译步骤。因此，选择使用JavaScript还是TypeScript取决于项目需求、团队技能和个人偏好。
+总的来说，使用TypeScript可以提供更强大的类型检查和语言特性，以及更好的工具支持。
+
+但同时，学习和使用TypeScript也需要额外的学习成本和编译步骤。
+
+因此，选择使用JavaScript还是TypeScript取决于项目需求、团队技能和个人偏好。
 
 # 参考资料
 

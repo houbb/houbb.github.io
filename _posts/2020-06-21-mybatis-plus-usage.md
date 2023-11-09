@@ -18,6 +18,7 @@ published: true
 文章表：learn_content，通过 privilge 字段存储，多个之间逗号隔开。没有采用一对多表的设计。
 
 
+
 # 实现
 
 ## mybatis-plus 版本
@@ -25,6 +26,27 @@ published: true
 不同版本的语法可能不同，但是原理是一样的。
 
 当前测试版本较低为：2.3.3
+
+## mp 的 querywrapper
+
+因为直接拼多个wrapper条件加or会产生数据混乱，需要使用and括号括起来or条件
+
+```java
+QueryWrapper<BranchInfo> queryWrapper = new QueryWrapper<BranchInfo>();
+
+queryWrapper.and(wq -> {
+    wq.eq("bln_up_brh_id", brhId)
+            .or()
+            .eq("id",brhId);
+});
+```
+
+
+这个就相当于 
+
+```sql
+and (bln_up_brh_id='brhId' or id='brhId')
+```
 
 ## MP 的 andNew
 
@@ -91,6 +113,7 @@ public Wrapper<LearnContent> selectWithAuth (Wrapper<LearnContent> entityWrapper
 
 # 参考资料
 
+https://blog.csdn.net/menghuannvxia/article/details/127049644
 
 * any list
 {:toc}
