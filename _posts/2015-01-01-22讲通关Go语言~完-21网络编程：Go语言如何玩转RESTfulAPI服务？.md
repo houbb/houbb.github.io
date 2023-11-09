@@ -9,7 +9,8 @@ published: true
 
 
 
-21 网络编程：Go 语言如何玩转 RESTful API 服务？
+# 21 网络编程：Go 语言如何玩转 RESTful API 服务？
+
 从这一讲开始，我将带你学习本专栏的第五模块，在这个模块中，你将学到我们项目中最常用的编码操作，也就是编写 RESTful API 和 RPC 服务。在实际开发项目中，你编写的这些服务可以被其他服务使用，这样就组成了微服务的架构；也可以被前端调用，这样就可以前后端分离。
 
 今天我就先来为你介绍什么是 RESTful API，以及 Go 语言是如何玩转 RESTful API 的。
@@ -49,7 +50,12 @@ RESTful API 是一套规范，它可以规范我们如何对服务器上的资�
 以上 HTTP 方法在 RESTful API 规范中是一个操作，操作的就是服务器的资源，服务器的资源通过特定的 URL 表示。
 
 现在我们通过一些示例让你更好地理解 RESTful API，如下所示：
-HTTP GET https://www.flysnow.org/users HTTP GET https://www.flysnow.org/users/123
+
+```
+HTTP GET https://www.flysnow.org/users
+
+HTTP GET https://www.flysnow.org/users/123
+```
 
 以上是两个 GET 方法的示例：
 
@@ -57,23 +63,34 @@ HTTP GET https://www.flysnow.org/users HTTP GET https://www.flysnow.org/users/12
 * 第二个表示获取 ID 为 123 用户的信息。
 
 下面再看一个 POST 方法的示例，如下所示：
+
+```
 HTTP POST https://www.flysnow.org/users
+```
 
 这个示例表示创建一个用户，通过 POST 方法给服务器提供创建这个用户所需的全部信息。
 
 注意：这里 users 是个复数。
 
-现在你已经知道了如何创建一个用户，那么如果要更新某个特定的用户怎么做呢？其实也非常简单，示例代码如下所示：
+现在你已经知道了如何创建一个用户，那么如果要更新某个特定的用户怎么做呢？
 
+其实也非常简单，示例代码如下所示：
+
+```
 HTTP PUT https://www.flysnow.org/users/123
+```
 
-这表示要更新 / 替换 ID 为 123 的这个用户，在更新的时候，会通过 PUT 方法提供更新这个用户需要的全部用户信息。这里 PUT 方法和 POST 方法不太一样的是，从 URL 上看，PUT 方法操作的是单个资源，比如这里 ID 为 123 的用户。
+这表示要更新 / 替换 ID 为 123 的这个用户，在更新的时候，会通过 PUT 方法提供更新这个用户需要的全部用户信息。
+
+这里 PUT 方法和 POST 方法不太一样的是，从 URL 上看，PUT 方法操作的是单个资源，比如这里 ID 为 123 的用户。
 
 小提示：如果要更新一个用户的部分信息，使用 PATCH 方法更恰当。
 
 看到这里，相信你已经知道了如何删除一个用户，示例代码如下所示：
 
+```
 HTTP DELETE https://www.flysnow.org/users/123
+```
 
 DELETE 方法的使用和 PUT 方法一样，也是操作单个资源，这里是删除 ID 为 123 的这个用户。
 
@@ -86,18 +103,68 @@ Go 语言的一个很大的优势，就是可以很容易地开发出网络后�
 下面我们来看一个简单的 HTTP 服务的 Go 语言实现，代码如下所示：
 
 *ch21/main.go*
-func main() { http.HandleFunc("/users",handleUsers) http.ListenAndServe(":8080", nil) } func handleUsers(w http.ResponseWriter, r /*http.Request){ fmt.Fprintln(w,"ID:1,Name:张三") fmt.Fprintln(w,"ID:2,Name:李四") fmt.Fprintln(w,"ID:3,Name:王五") }
+
+```go
+func main() {
+
+   http.HandleFunc("/users",handleUsers)
+
+   http.ListenAndServe(":8080", nil)
+
+}
+
+func handleUsers(w http.ResponseWriter, r *http.Request){
+
+   fmt.Fprintln(w,"ID:1,Name:张三")
+
+   fmt.Fprintln(w,"ID:2,Name:李四")
+
+   fmt.Fprintln(w,"ID:3,Name:王五")
+
+}
+```
 
 这个示例运行后，你在浏览器中输入 [http://localhost:8080/users](http://localhost:8080/users), 就可以看到如下内容信息：
 
-ID:1,Name:张三 ID:2,Name:李四 ID:3,Name:王五
+```
+ID:1,Name:张三
+
+ID:2,Name:李四
+
+ID:3,Name:王五
+```
 
 也就是获取所有的用户信息，但是这并不是一个 RESTful API，因为使用者不仅可以通过 HTTP GET 方法获得所有的用户信息，还可以通过 POST、DELETE、PUT 等 HTTP 方法获得所有的用户信息，这显然不符合 RESTful API 的规范。
 
 现在我对以上示例进行修改，使它符合 RESTful API 的规范，修改后的示例代码如下所示：
 
 *ch20/main.go*
-func handleUsers(w http.ResponseWriter, r /*http.Request){ switch r.Method { case "GET": w.WriteHeader(http.StatusOK) fmt.Fprintln(w,"ID:1,Name:张三") fmt.Fprintln(w,"ID:2,Name:李四") fmt.Fprintln(w,"ID:3,Name:王五") default: w.WriteHeader(http.StatusNotFound) fmt.Fprintln(w,"not found") } }
+
+```go
+func handleUsers(w http.ResponseWriter, r *http.Request){
+
+   switch r.Method {
+
+   case "GET":
+
+      w.WriteHeader(http.StatusOK)
+
+      fmt.Fprintln(w,"ID:1,Name:张三")
+
+      fmt.Fprintln(w,"ID:2,Name:李四")
+
+      fmt.Fprintln(w,"ID:3,Name:王五")
+
+   default:
+
+      w.WriteHeader(http.StatusNotFound)
+
+      fmt.Fprintln(w,"not found")
+
+   }
+
+}
+```
 
 这里我只修改了 handleUsers 函数，在该函数中增加了只在使用 GET 方法时，才获得所有用户的信息，其他情况返回 not found。
 
@@ -110,12 +177,73 @@ func handleUsers(w http.ResponseWriter, r /*http.Request){ switch r.Method { cas
 同样用上面的示例，我把它改造成可以返回 JSON 内容的方式，示例代码如下所示：
 
 *ch20/main.go*
-//数据源，类似MySQL中的数据 var users = []User{ {ID: 1,Name: "张三"}, {ID: 2,Name: "李四"}, {ID: 3,Name: "王五"}, } func handleUsers(w http.ResponseWriter, r /*http.Request){ switch r.Method { case "GET": users,err:=json.Marshal(users) if err!=nil { w.WriteHeader(http.StatusInternalServerError) fmt.Fprint(w,"{\"message\": \""+err.Error()+"\"}") }else { w.WriteHeader(http.StatusOK) w.Write(users) } default: w.WriteHeader(http.StatusNotFound) fmt.Fprint(w,"{\"message\": \"not found\"}") } } //用户 type User struct { ID int Name string }
 
-从以上代码可以看到，这次的改造主要是新建了一个 User 结构体，并且使用 users 这个切片存储所有的用户，然后在 handleUsers 函数中把它转化为一个 JSON 数组返回。这样，就实现了基于 JSON 数据格式的 RESTful API。
+```go
+//数据源，类似MySQL中的数据
+
+var users = []User{
+
+   {ID: 1,Name: "张三"},
+
+   {ID: 2,Name: "李四"},
+
+   {ID: 3,Name: "王五"},
+
+}
+
+func handleUsers(w http.ResponseWriter, r *http.Request){
+
+   switch r.Method {
+
+   case "GET":
+
+      users,err:=json.Marshal(users)
+
+      if err!=nil {
+
+         w.WriteHeader(http.StatusInternalServerError)
+
+         fmt.Fprint(w,"{\"message\": \""+err.Error()+"\"}")
+
+      }else {
+
+         w.WriteHeader(http.StatusOK)
+
+         w.Write(users)
+
+      }
+
+   default:
+
+      w.WriteHeader(http.StatusNotFound)
+
+      fmt.Fprint(w,"{\"message\": \"not found\"}")
+
+   }
+
+}
+
+//用户
+
+type User struct {
+
+   ID int
+
+   Name string
+
+}
+```
+
+
+从以上代码可以看到，这次的改造主要是新建了一个 User 结构体，并且使用 users 这个切片存储所有的用户，然后在 handleUsers 函数中把它转化为一个 JSON 数组返回。
+
+这样，就实现了基于 JSON 数据格式的 RESTful API。
 
 运行这个示例，在浏览器中输入 [http://localhost:8080/users，可以看到如下信息：](http://localhost:8080/users，可以看到如下信息：)
+
+```json
 [{"ID":1,"Name":"张三"},{"ID":2,"Name":"李四"},{"ID":3,"Name":"王五"}]
+```
 
 这已经是 JSON 格式的用户信息，包含了所有用户。
 
@@ -139,11 +267,16 @@ Gin 框架是一个在 Github 上开源的 Web 框架，封装了很多 Web 开�
 Gin 框架其实是一个模块，也就是 Go Mod，所以采用 Go Mod 的方法引入即可。我在第 18讲的时候详细介绍过如何引入第三方的模块，这里再复习一下。
 
 首先需要下载安装 Gin 框架，安装代码如下：
+
+```
 $ go get -u github.com/gin-gonic/gin
+```
 
 然后就可以在 Go 语言代码中导入使用了，导入代码如下：
 
+```go
 import "github.com/gin-gonic/gin"
+```
 
 通过以上安装和导入这两个步骤，就可以在你的 Go 语言项目中使用 Gin 框架了。
 
@@ -152,7 +285,25 @@ import "github.com/gin-gonic/gin"
 现在，已经引入了 Gin 框架，下面我就是用 Gin 框架重写上面的示例，修改的代码如下所示：
 
 *ch21/main.go*
-func main() { r:=gin.Default() r.GET("/users", listUser) r.Run(":8080") } func listUser(c /*gin.Context) { c.JSON(200,users) }
+
+```go
+func main() {
+
+   r:=gin.Default()
+
+   r.GET("/users", listUser)
+
+   r.Run(":8080")
+
+}
+
+func listUser(c *gin.Context)  {
+
+   c.JSON(200,users)
+
+}
+```
+
 
 相比 net/http 包，Gin 框架的代码非常简单，通过它的 GET 方法就可以创建一个只处理 HTTP GET 方法的服务，而且输出 JSON 格式的数据也非常简单，使用 c.JSON 方法即可。
 
@@ -163,14 +314,66 @@ func main() { r:=gin.Default() r.GET("/users", listUser) r.Run(":8080") } func l
 现在你已经掌握了如何使用 Gin 框架创建一个简单的 RESTful API，并且可以返回所有的用户信息，那么如何获取特定用户的信息呢？
 
 我们知道，如果要获得特定用户的信息，需要使用的是 GET 方法，并且 URL 格式如下所示：
+
+```
 http://localhost:8080/users/2
+```
 
 以上示例中的 2 是用户的 ID，也就是通过 ID 来获取特定的用户。
 
 下面我通过 Gin 框架 Path 路径参数来实现这个功能，示例代码如下：
 
 *ch21/main.go*
-func main() { //省略没有改动的代码 r.GET("/users/:id", getUser) } func getUser(c /*gin.Context) { id := c.Param("id") var user User found := false //类似于数据库的SQL查询 for _, u := range users { if strings.EqualFold(id, strconv.Itoa(u.ID)) { user = u found = true break } } if found { c.JSON(200, user) } else { c.JSON(404, gin.H{ "message": "用户不存在", }) } }
+
+```go
+func main() {
+
+   //省略没有改动的代码
+
+   r.GET("/users/:id", getUser)
+
+}
+
+func getUser(c *gin.Context) {
+
+   id := c.Param("id")
+
+   var user User
+
+   found := false
+
+   //类似于数据库的SQL查询
+
+   for _, u := range users {
+
+      if strings.EqualFold(id, strconv.Itoa(u.ID)) {
+
+         user = u
+
+         found = true
+
+         break
+
+      }
+
+   }
+
+   if found {
+
+      c.JSON(200, user)
+
+   } else {
+
+      c.JSON(404, gin.H{
+
+         "message": "用户不存在",
+
+      })
+
+   }
+
+}
+```
 
 在 Gin 框架中，路径中使用冒号表示 Path 路径参数，比如示例中的 :id，然后在 getUser 函数中可以通过 c.Param(“id”) 获取需要查询用户的 ID 值。
 
@@ -178,12 +381,17 @@ func main() { //省略没有改动的代码 r.GET("/users/:id", getUser) } func 
 
 现在运行这个示例，通过浏览器访问 [http://localhost:8080/users/2](http://localhost:8080/users/2)，就可以获得 ID 为 2 的用户，输出信息如下所示：
 
+```json
 {"ID":2,"Name":"李四"}
+```
 
 可以看到，已经正确的获取到了 ID 为 2 的用户，他的名字叫李四。
 
 假如我们访问一个不存在的 ID，会得到什么结果呢？比如 99，示例如下所示：
+
+```
 ➜ curl http://localhost:8080/users/99 {"message":"用户不存在"}%
+```
 
 从以上示例输出可以看到，返回了『用户不存在』的信息，和我们代码中处理的逻辑一样。
 
@@ -194,14 +402,50 @@ func main() { //省略没有改动的代码 r.GET("/users/:id", getUser) } func 
 根据 RESTful API 规范，实现新增使用的是 POST 方法，并且 URL 的格式为 [http://localhost:8080/users](http://localhost:8080/users) ，向这个 URL 发送数据，就可以新增一个用户，然后返回创建的用户信息。
 
 现在我使用 Gin 框架实现新增一个用户，示例代码如下：
-func main() { //省略没有改动的代码 r.POST("/users", createUser) } func createUser(c /*gin.Context) { name := c.DefaultPostForm("name", "") if name != "" { u := User{ID: len(users) + 1, Name: name} users = append(users, u) c.JSON(http.StatusCreated,u) } else { c.JSON(http.StatusOK, gin.H{ "message": "请输入用户名称", }) } }
+
+```go
+func main() {
+
+   //省略没有改动的代码
+
+   r.POST("/users", createUser)
+
+}
+
+func createUser(c *gin.Context) {
+
+   name := c.DefaultPostForm("name", "")
+
+   if name != "" {
+
+      u := User{ID: len(users) + 1, Name: name}
+
+      users = append(users, u)
+
+      c.JSON(http.StatusCreated,u)
+
+   } else {
+
+      c.JSON(http.StatusOK, gin.H{
+
+         "message": "请输入用户名称",
+
+      })
+
+   }
+
+}
+```
 
 以上新增用户的主要逻辑是获取客户端上传的 name 值，然后生成一个 User 用户，最后把它存储到 users 集合中，达到新增用户的目的。
 
 在这个示例中，使用 POST 方法来新增用户，所以只能通过 POST 方法才能新增用户成功。
 
 现在运行这个示例，然后通过如下命令发送一个新增用户的请求，查看结果：
+
+```
 ➜ curl -X POST -d 'name=飞雪' http://localhost:8080/users {"ID":4,"Name":"飞雪"}
+```
 
 可以看到新增用户成功，并且返回了新增的用户，还有分配的 ID。
 
