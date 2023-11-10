@@ -3,7 +3,7 @@ layout: post
 title: ZooKeeper-26-ZooKeeper 原理之服务端启动 server start
 date:  2016-09-25 12:21:05 +0800
 categories: [Apache]
-tags: [zookeeper]
+tags: [zookeeper, config-center]
 published: true
 ---
 

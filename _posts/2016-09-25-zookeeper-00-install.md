@@ -1,9 +1,9 @@
 ---
 layout: post
-title: ZooKeeper 入门使用介绍
+title: ZooKeeper-00-入门使用介绍 windows 安装 
 date:  2016-09-25 12:21:05 +0800
 categories: [Apache]
-tags: [zookeeper]
+tags: [zookeeper, config-center]
 published: true
 ---
 

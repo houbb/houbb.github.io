@@ -3,7 +3,7 @@ layout: post
 title: ZooKeeper-14-了解 ZooKeeper 基础知识
 date:  2016-09-25 12:21:05 +0800
 categories: [Apache]
-tags: [zookeeper]
+tags: [zookeeper, config-center]
 published: true
 ---
 

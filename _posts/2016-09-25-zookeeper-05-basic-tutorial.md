@@ -3,7 +3,7 @@ layout: post
 title: ZooKeeper-05-基本使用例子
 date:  2016-09-25 12:21:05 +0800
 categories: [Apache]
-tags: [zookeeper]
+tags: [zookeeper, config-center]
 published: true
 ---
 
