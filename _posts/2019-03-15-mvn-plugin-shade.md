@@ -72,9 +72,66 @@ com.xx.xxx
 
 可以指定的包下面进行查看。
 
+
+# 包的重命名
+
+## nacos 中有这么一段话
+
+```
+由于Nacos Java SDK在2.0版本后引入了gRPC，为了避免用户业务引入的gRPC版本不同导致冲突，使用了shaded技术将部分依赖直接封装进nacos-client中。这里的 shaded 技术是什么？
+```
+
+"Shading" 是一种将一个库（或者依赖）及其所有依赖项移动到另一个命名空间的技术。它通常用于解决依赖冲突的问题，特别是在构建Java应用程序时。
+
+在上下文中，Nacos Java SDK使用 shaded 技术将部分依赖直接封装进 `nacos-client` 中。
+
+这样做的主要目的是为了避免与用户业务引入的 gRPC 版本不同导致冲突。
+
+具体来说，shaded 技术会修改库的代码和依赖项的包名，使其不与其他可能存在的相同库或依赖项发生冲突。这可以通过重新命名包、类等来实现。
+
+在这种情况下，Nacos Java SDK将 gRPC 以及相关的依赖项移动到 `nacos-client` 命名空间中，以确保与用户业务引入的 gRPC 版本不会发生冲突。
+
+这种做法使得应用程序可以在同一类路径上同时包含不同版本的相同库，而不会导致命名冲突或其他类加载问题。这对于解决依赖版本冲突的问题是一种有效的方法。
+
+## 入门例子
+
+当使用 shaded 技术时，一般会使用构建工具，例如 Maven 或 Gradle。
+
+下面是一个简单的 Maven shaded 插件的例子，演示如何将一个库及其依赖项 shading 到一个不同的命名空间。
+
+首先，在 Maven 项目的 pom.xml 文件中，你需要添加 shaded 插件的配置：
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-shade-plugin</artifactId>
+            <version>3.2.4</version><!-- 使用最新版本 -->
+            <executions>
+                <execution>
+                    <phase>package</phase>
+                    <goals>
+                        <goal>shade</goal>
+                    </goals>
+                    <configuration>
+                        <relocations>
+                            <relocation>
+                                <pattern>com.example.library</pattern><!-- 原始库的包名 -->
+                                <shadedPattern>shaded.com.example.library</shadedPattern><!-- 新的命名空间 -->
+                            </relocation>
+                        </relocations>
+                    </configuration>
+                </execution>
+            </executions>
+        </plugin>
+    </plugins>
+</build>
+```
+
 # 参考资料 
 
-
+chat
 
 * any list
 {:toc}
