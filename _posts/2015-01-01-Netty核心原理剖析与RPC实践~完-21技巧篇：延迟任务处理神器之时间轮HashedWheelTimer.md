@@ -9,8 +9,15 @@ published: true
 
 
 
-21 技巧篇：延迟任务处理神器之时间轮 HashedWheelTimer
-Netty 中有很多场景依赖定时任务实现，比较典型的有客户端连接的超时控制、通信双方连接的心跳检测等场景。在学习 Netty Reactor 线程模型时，我们知道 NioEventLoop 不仅负责处理 I/O 事件，而且兼顾执行任务队列中的任务，其中就包括定时任务。为了实现高性能的定时任务调度，Netty 引入了时间轮算法驱动定时任务的执行。时间轮到底是什么呢？为什么 Netty 一定要用时间轮来处理定时任务呢？JDK 原生的实现方案不能满足要求吗？本节课我将一步步为你深入剖析时间轮的原理以及 Netty 中是如何实现时间轮算法的。
+# 21 技巧篇：延迟任务处理神器之时间轮 HashedWheelTimer
+
+Netty 中有很多场景依赖定时任务实现，比较典型的有客户端连接的超时控制、通信双方连接的心跳检测等场景。
+
+在学习 Netty Reactor 线程模型时，我们知道 NioEventLoop 不仅负责处理 I/O 事件，而且兼顾执行任务队列中的任务，其中就包括定时任务。
+
+为了实现高性能的定时任务调度，Netty 引入了时间轮算法驱动定时任务的执行。
+
+时间轮到底是什么呢？为什么 Netty 一定要用时间轮来处理定时任务呢？JDK 原生的实现方案不能满足要求吗？本节课我将一步步为你深入剖析时间轮的原理以及 Netty 中是如何实现时间轮算法的。
 说明：本文参考的 Netty 源码版本为 4.1.42.Final。
 
 ### 定时任务的基础知识
@@ -30,20 +37,115 @@ JDK 原生提供了三种常用的定时器实现方式，分别为 Timer、Dela
 ### Timer
 
 Timer 属于 JDK 比较早期版本的实现，它可以实现固定周期的任务，以及延迟任务。Timer 会起动一个异步线程去执行到期的任务，任务可以只被调度执行一次，也可以周期性反复执行多次。我们先来看下 Timer 是如何使用的，示例代码如下。
-Timer timer = new Timer(); timer.scheduleAtFixedRate(new TimerTask() { @Override public void run() { // do something } }, 10000, 1000); // 10s 后调度一个周期为 1s 的定时任务
+
+```java
+Timer timer = new Timer();
+
+timer.scheduleAtFixedRate(new TimerTask() {
+
+    @Override
+
+    public void run() {
+
+        // do something
+
+    }
+
+}, 10000, 1000);  // 10s 后调度一个周期为 1s 的定时任务
+```
 
 可以看出，任务是由 TimerTask 类实现，TimerTask 是实现了 Runnable 接口的抽象类，Timer 负责调度和执行 TimerTask。接下来我们看下 Timer 的内部构造。
 
-public class Timer { private final TaskQueue queue = new TaskQueue(); private final TimerThread thread = new TimerThread(queue); public Timer(String name) { thread.setName(name); thread.start(); } }
+```java
+public class Timer {
 
-TaskQueue 是由数组结构实现的小根堆，deadline 最近的任务位于堆顶端，queue[1] 始终是最优先被执行的任务。所以使用小根堆的数据结构，Run 操作时间复杂度 O(1)，新增 Schedule 和取消 Cancel 操作的时间复杂度都是 O(logn)。
+    private final TaskQueue queue = new TaskQueue();
 
-Timer 内部启动了一个 TimerThread 异步线程，不论有多少任务被加入数组，始终都是由 TimerThread 负责处理。TimerThread 会定时轮询 TaskQueue 中的任务，如果堆顶的任务的 deadline 已到，那么执行任务；如果是周期性任务，执行完成后重新计算下一次任务的 deadline，并再次放入小根堆；如果是单次执行的任务，执行结束后会从 TaskQueue 中删除。
+    private final TimerThread thread = new TimerThread(queue);
+    public Timer(String name) {
+
+        thread.setName(name);
+
+        thread.start();
+
+    }
+
+}
+```
+
+TaskQueue 是由数组结构实现的小根堆，deadline 最近的任务位于堆顶端，queue[1] 始终是最优先被执行的任务。
+
+所以使用小根堆的数据结构，Run 操作时间复杂度 O(1)，新增 Schedule 和取消 Cancel 操作的时间复杂度都是 O(logn)。
+
+Timer 内部启动了一个 TimerThread 异步线程，不论有多少任务被加入数组，始终都是由 TimerThread 负责处理。
+
+TimerThread 会定时轮询 TaskQueue 中的任务，如果堆顶的任务的 deadline 已到，那么执行任务；如果是周期性任务，执行完成后重新计算下一次任务的 deadline，并再次放入小根堆；如果是单次执行的任务，执行结束后会从 TaskQueue 中删除。
 
 ### DelayedQueue
 
-DelayedQueue 是 JDK 中一种可以延迟获取对象的阻塞队列，其内部是采用优先级队列 PriorityQueue 存储对象。DelayQueue 中的每个对象都必须实现 Delayed 接口，并重写 compareTo 和 getDelay 方法。DelayedQueue 的使用方法如下：
-public class DelayQueueTest { public static void main(String[] args) throws Exception { BlockingQueue<SampleTask> delayQueue = new DelayQueue<>(); long now = System.currentTimeMillis(); delayQueue.put(new SampleTask(now + 1000)); delayQueue.put(new SampleTask(now + 2000)); delayQueue.put(new SampleTask(now + 3000)); for (int i = 0; i < 3; i++) { System.out.println(new Date(delayQueue.take().getTime())); } } static class SampleTask implements Delayed { long time; public SampleTask(long time) { this.time = time; } public long getTime() { return time; } @Override public int compareTo(Delayed o) { return Long.compare(this.getDelay(TimeUnit.MILLISECONDS), o.getDelay(TimeUnit.MILLISECONDS)); } @Override public long getDelay(TimeUnit unit) { return unit.convert(time - System.currentTimeMillis(), TimeUnit.MILLISECONDS); } } }
+DelayedQueue 是 JDK 中一种可以延迟获取对象的阻塞队列，其内部是采用优先级队列 PriorityQueue 存储对象。
+
+DelayQueue 中的每个对象都必须实现 Delayed 接口，并重写 compareTo 和 getDelay 方法。DelayedQueue 的使用方法如下：
+
+```java
+public class DelayQueueTest {
+
+    public static void main(String[] args) throws Exception {
+
+        BlockingQueue<SampleTask> delayQueue = new DelayQueue<>();
+
+        long now = System.currentTimeMillis();
+
+        delayQueue.put(new SampleTask(now + 1000));
+
+        delayQueue.put(new SampleTask(now + 2000));
+
+        delayQueue.put(new SampleTask(now + 3000));
+
+        for (int i = 0; i < 3; i++) {
+
+            System.out.println(new Date(delayQueue.take().getTime()));
+
+        }
+
+    }
+
+    static class SampleTask implements Delayed {
+
+        long time;
+
+        public SampleTask(long time) {
+
+            this.time = time;
+
+        }
+
+        public long getTime() {
+
+            return time;
+
+        }
+
+        @Override
+
+        public int compareTo(Delayed o) {
+
+            return Long.compare(this.getDelay(TimeUnit.MILLISECONDS), o.getDelay(TimeUnit.MILLISECONDS));
+
+        }
+
+        @Override
+
+        public long getDelay(TimeUnit unit) {
+
+            return unit.convert(time - System.currentTimeMillis(), TimeUnit.MILLISECONDS);
+
+        }
+
+    }
+
+}
+```
 
 DelayQueue 提供了 put() 和 take() 的阻塞方法，可以向队列中添加对象和取出对象。对象被添加到 DelayQueue 后，会根据 compareTo() 方法进行优先级排序。getDelay() 方法用于计算消息延迟的剩余时间，只有 getDelay <=0 时，该对象才能从 DelayQueue 中取出。
 
@@ -60,7 +162,20 @@ DelayQueue 在日常开发中最常用的场景就是实现重试机制。例如
 * TimerTask 如果执行出现异常，Timer 并不会捕获，会导致线程终止，其他任务永远不会执行。
 
 为了解决 Timer 的设计缺陷，JDK 提供了功能更加丰富的 ScheduledThreadPoolExecutor。ScheduledThreadPoolExecutor 提供了周期执行任务和延迟执行任务的特性，下面通过一个例子先看下 ScheduledThreadPoolExecutor 如何使用。
-public class ScheduledExecutorServiceTest { public static void main(String[] args) { ScheduledExecutorService executor = Executors.newScheduledThreadPool(5); executor.scheduleAtFixedRate(() -> System.out.println("Hello World"), 1000, 2000, TimeUnit.MILLISECONDS); // 1s 延迟后开始执行任务，每 2s 重复执行一次 } }
+
+```java
+public class ScheduledExecutorServiceTest {
+
+    public static void main(String[] args) {
+
+        ScheduledExecutorService executor = Executors.newScheduledThreadPool(5);
+
+        executor.scheduleAtFixedRate(() -> System.out.println("Hello World"), 1000, 2000, TimeUnit.MILLISECONDS); // 1s 延迟后开始执行任务，每 2s 重复执行一次
+
+    }
+
+}
+```
 
 ScheduledThreadPoolExecutor 继承于 ThreadPoolExecutor，因此它具备线程池异步处理任务的能力。线程池主要负责管理创建和管理线程，并从自身的阻塞队列中不断获取任务执行。线程池有两个重要的角色，分别是任务和阻塞队列。ScheduledThreadPoolExecutor 在 ThreadPoolExecutor 的基础上，重新设计了任务 ScheduledFutureTask 和阻塞队列 DelayedWorkQueue。ScheduledFutureTask 继承于 FutureTask，并重写了 run() 方法，使其具备周期执行任务的能力。DelayedWorkQueue 内部是优先级队列，deadline 最近的任务在队列头部。对于周期执行的任务，在执行完会重新设置时间，并再次放入队列中。ScheduledThreadPoolExecutor 的实现原理可以用下图表示。
 
@@ -87,11 +202,44 @@ ScheduledThreadPoolExecutor 继承于 ThreadPoolExecutor，因此它具备线程
 ### 接口定义
 
 HashedWheelTimer 实现了接口 io.netty.util.Timer，Timer 接口是我们研究 HashedWheelTimer 一个很好的切入口。一起看下 Timer 接口的定义：
-public interface Timer { Timeout newTimeout(TimerTask task, long delay, TimeUnit unit); Set<Timeout> stop(); }
 
-Timer 接口提供了两个方法，分别是创建任务 newTimeout() 和停止所有未执行任务 stop()。从方法的定义可以看出，Timer 可以认为是上层的时间轮调度器，通过 newTimeout() 方法可以提交一个任务 TimerTask，并返回一个 Timeout。TimerTask 和 Timeout 是两个接口类，它们有什么作用呢？我们分别看下 TimerTask 和 Timeout 的接口定义：
+```java
+public interface Timer {
 
-public interface TimerTask { void run(Timeout timeout) throws Exception; } public interface Timeout { Timer timer(); TimerTask task(); boolean isExpired(); boolean isCancelled(); boolean cancel(); }
+    Timeout newTimeout(TimerTask task, long delay, TimeUnit unit);
+
+    Set<Timeout> stop();
+
+}
+```
+
+Timer 接口提供了两个方法，分别是创建任务 newTimeout() 和停止所有未执行任务 stop()。
+
+从方法的定义可以看出，Timer 可以认为是上层的时间轮调度器，通过 newTimeout() 方法可以提交一个任务 TimerTask，并返回一个 Timeout。
+
+TimerTask 和 Timeout 是两个接口类，它们有什么作用呢？我们分别看下 TimerTask 和 Timeout 的接口定义：
+
+```java
+public interface TimerTask {
+
+    void run(Timeout timeout) throws Exception;
+
+}
+
+public interface Timeout {
+
+    Timer timer();
+
+    TimerTask task();
+
+    boolean isExpired();
+
+    boolean isCancelled();
+
+    boolean cancel();
+
+}
+```
 
 Timeout 持有 Timer 和 TimerTask 的引用，而且通过 Timeout 接口可以执行取消任务的操作。Timer、Timeout 和 TimerTask 之间的关系如下图所示：
 
@@ -100,20 +248,125 @@ Timeout 持有 Timer 和 TimerTask 的引用，而且通过 Timeout 接口可以
 ### 快速上手
 
 通过下面这个简单的例子，我们看下 HashedWheelTimer 是如何使用的。
-public class HashedWheelTimerTest { public static void main(String[] args) { Timer timer = new HashedWheelTimer(); Timeout timeout1 = timer.newTimeout(new TimerTask() { @Override public void run(Timeout timeout) { System.out.println("timeout1: " + new Date()); } }, 10, TimeUnit.SECONDS); if (!timeout1.isExpired()) { timeout1.cancel(); } timer.newTimeout(new TimerTask() { @Override public void run(Timeout timeout) throws InterruptedException { System.out.println("timeout2: " + new Date()); Thread.sleep(5000); } }, 1, TimeUnit.SECONDS); timer.newTimeout(new TimerTask() { @Override public void run(Timeout timeout) { System.out.println("timeout3: " + new Date()); } }, 3, TimeUnit.SECONDS); } }
+
+```java
+public class HashedWheelTimerTest {
+
+    public static void main(String[] args) {
+
+        Timer timer = new HashedWheelTimer();
+
+        Timeout timeout1 = timer.newTimeout(new TimerTask() {
+
+            @Override
+
+            public void run(Timeout timeout) {
+
+                System.out.println("timeout1: " + new Date());
+
+            }
+
+        }, 10, TimeUnit.SECONDS);
+
+        if (!timeout1.isExpired()) {
+
+            timeout1.cancel();
+
+        }
+
+        timer.newTimeout(new TimerTask() {
+
+            @Override
+
+            public void run(Timeout timeout) throws InterruptedException {
+
+                System.out.println("timeout2: " + new Date());
+
+                Thread.sleep(5000);
+
+            }
+
+        }, 1, TimeUnit.SECONDS);
+
+        timer.newTimeout(new TimerTask() {
+
+            @Override
+
+            public void run(Timeout timeout) {
+
+                System.out.println("timeout3: " + new Date());
+
+            }
+
+        }, 3, TimeUnit.SECONDS);
+
+    }
+
+}
+```
 
 代码运行结果如下：
 
-timeout2: Mon Nov 09 19:57:04 CST 2020 timeout3: Mon Nov 09 19:57:09 CST 2020
+```
+timeout2: Mon Nov 09 19:57:04 CST 2020
 
-简单的几行代码，基本展示了 HashedWheelTimer 的大部分用法。示例中我们通过 newTimeout() 启动了三个 TimerTask，timeout1 由于被取消了，所以并没有执行。timeout2 和 timeout3 分别应该在 1s 和 3s 后执行。然而从结果输出看并不是，timeout2 和 timeout3 的打印时间相差了 5s，这是由于 timeout2 阻塞了 5s 造成的。由此可以看出，时间轮中的任务执行是**串行**的，当一个任务执行的时间过长，会影响后续任务的调度和执行，很可能产生任务堆积的情况。
+timeout3: Mon Nov 09 19:57:09 CST 2020
+```
+
+简单的几行代码，基本展示了 HashedWheelTimer 的大部分用法。
+
+示例中我们通过 newTimeout() 启动了三个 TimerTask，timeout1 由于被取消了，所以并没有执行。
+
+timeout2 和 timeout3 分别应该在 1s 和 3s 后执行。然而从结果输出看并不是，timeout2 和 timeout3 的打印时间相差了 5s，这是由于 timeout2 阻塞了 5s 造成的。由此可以看出，时间轮中的任务执行是**串行**的，当一个任务执行的时间过长，会影响后续任务的调度和执行，很可能产生任务堆积的情况。
 
 至此，对 HashedWheelTimer 的基本使用方法已经有了初步了解，下面我们开始深入研究 HashedWheelTimer 的实现原理。
 
 ### 内部结构
 
 我们先从 HashedWheelTimer 的构造函数看起，结合上文中介绍的时间轮算法，一起梳理出 HashedWheelTimer 的内部实现结构。
-public HashedWheelTimer( ThreadFactory threadFactory, long tickDuration, TimeUnit unit, int ticksPerWheel, boolean leakDetection, long maxPendingTimeouts) { // 省略其他代码 wheel = createWheel(ticksPerWheel); // 创建时间轮的环形数组结构 mask = wheel.length - 1; // 用于快速取模的掩码 long duration = unit.toNanos(tickDuration); // 转换成纳秒处理 // 省略其他代码 workerThread = threadFactory.newThread(worker); // 创建工作线程 leak = leakDetection || !workerThread.isDaemon() ? leakDetector.track(this) : null; // 是否开启内存泄漏检测 this.maxPendingTimeouts = maxPendingTimeouts; // 最大允许等待任务数，HashedWheelTimer 中任务超出该阈值时会抛出异常 // 如果 HashedWheelTimer 的实例数超过 64，会打印错误日志 if (INSTANCE_COUNTER.incrementAndGet() > INSTANCE_COUNT_LIMIT && WARNED_TOO_MANY_INSTANCES.compareAndSet(false, true)) { reportTooManyInstances(); } }
+
+```java
+public HashedWheelTimer(
+
+        ThreadFactory threadFactory,
+
+        long tickDuration, 
+
+        TimeUnit unit, 
+
+        int ticksPerWheel, 
+
+        boolean leakDetection,
+
+        long maxPendingTimeouts) {
+
+    // 省略其他代码
+    wheel = createWheel(ticksPerWheel); // 创建时间轮的环形数组结构
+
+    mask = wheel.length - 1; // 用于快速取模的掩码
+
+    long duration = unit.toNanos(tickDuration); // 转换成纳秒处理
+
+    // 省略其他代码
+
+    workerThread = threadFactory.newThread(worker); // 创建工作线程
+
+    leak = leakDetection || !workerThread.isDaemon() ? leakDetector.track(this) : null; // 是否开启内存泄漏检测
+
+    this.maxPendingTimeouts = maxPendingTimeouts; // 最大允许等待任务数，HashedWheelTimer 中任务超出该阈值时会抛出异常
+
+    // 如果 HashedWheelTimer 的实例数超过 64，会打印错误日志
+
+    if (INSTANCE_COUNTER.incrementAndGet() > INSTANCE_COUNT_LIMIT &&
+
+        WARNED_TOO_MANY_INSTANCES.compareAndSet(false, true)) {
+
+        reportTooManyInstances();
+
+    }
+
+}
+```
 
 HashedWheelTimer 的构造函数清晰地列举出了几个核心属性：
 
@@ -125,13 +378,76 @@ HashedWheelTimer 的构造函数清晰地列举出了几个核心属性：
 * **maxPendingTimeouts**，最大允许等待任务数。
 
 下面我们看下 HashedWheelTimer 是如何创建出来的，我们直接跟进 createWheel() 方法的源码：
-private static HashedWheelBucket[] createWheel(int ticksPerWheel) { // 省略其他代码 ticksPerWheel = normalizeTicksPerWheel(ticksPerWheel); HashedWheelBucket[] wheel = new HashedWheelBucket[ticksPerWheel]; for (int i = 0; i < wheel.length; i ++) { wheel[i] = new HashedWheelBucket(); } return wheel; } private static int normalizeTicksPerWheel(int ticksPerWheel) { int normalizedTicksPerWheel = 1; while (normalizedTicksPerWheel < ticksPerWheel) { normalizedTicksPerWheel <<= 1; } return normalizedTicksPerWheel; } private static final class HashedWheelBucket { private HashedWheelTimeout head; private HashedWheelTimeout tail; // 省略其他代码 }
+
+```java
+private static HashedWheelBucket[] createWheel(int ticksPerWheel) {
+
+    // 省略其他代码
+
+    ticksPerWheel = normalizeTicksPerWheel(ticksPerWheel);
+
+    HashedWheelBucket[] wheel = new HashedWheelBucket[ticksPerWheel];
+
+    for (int i = 0; i < wheel.length; i ++) {
+
+        wheel[i] = new HashedWheelBucket();
+
+    }
+
+    return wheel;
+
+}
+
+private static int normalizeTicksPerWheel(int ticksPerWheel) {
+
+    int normalizedTicksPerWheel = 1;
+
+    while (normalizedTicksPerWheel < ticksPerWheel) {
+
+        normalizedTicksPerWheel <<= 1;
+
+    }
+
+    return normalizedTicksPerWheel;
+
+}
+
+private static final class HashedWheelBucket {
+
+    private HashedWheelTimeout head;
+
+    private HashedWheelTimeout tail;
+
+    // 省略其他代码
+
+}
+```
 
 时间轮的创建就是为了创建 HashedWheelBucket 数组，每个 HashedWheelBucket 表示时间轮中一个 slot。从 HashedWheelBucket 的结构定义可以看出，HashedWheelBucket 内部是一个双向链表结构，双向链表的每个节点持有一个 HashedWheelTimeout 对象，HashedWheelTimeout 代表一个定时任务。每个 HashedWheelBucket 都包含双向链表 head 和 tail 两个 HashedWheelTimeout 节点，这样就可以实现不同方向进行链表遍历。关于 HashedWheelBucket 和 HashedWheelTimeout 的具体功能下文再继续介绍。
 
 因为时间轮需要使用 & 做取模运算，所以数组的长度需要是 2 的次幂。normalizeTicksPerWheel() 方法的作用就是找到不小于 ticksPerWheel 的最小 2 次幂，这个方法实现的并不好，可以参考 JDK HashMap 扩容 tableSizeFor 的实现进行性能优化，如下所示。当然 normalizeTicksPerWheel() 只是在初始化的时候使用，所以并无影响。
-static final int MAXIMUM_CAPACITY = 1 << 30; private static int normalizeTicksPerWheel(int ticksPerWheel) { int n = ticksPerWheel - 1; n |= n >>> 1; n |= n >>> 2; n |= n >>> 4; n |= n >>> 8; n |= n >>> 16; return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1; }
 
+```java
+static final int MAXIMUM_CAPACITY = 1 << 30;
+
+private static int normalizeTicksPerWheel(int ticksPerWheel) {
+
+    int n = ticksPerWheel - 1;
+
+    n |= n >>> 1;
+
+    n |= n >>> 2;
+
+    n |= n >>> 4;
+
+    n |= n >>> 8;
+
+    n |= n >>> 16;
+
+    return (n < 0) ? 1 : (n >= MAXIMUM_CAPACITY) ? MAXIMUM_CAPACITY : n + 1;
+
+}
+```
 HashedWheelTimer 初始化的主要工作我们已经介绍完了，其内部结构与上文中介绍的时间轮算法类似，如下图所示。
 
 ![图片2.png](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/Netty%20%e6%a0%b8%e5%bf%83%e5%8e%9f%e7%90%86%e5%89%96%e6%9e%90%e4%b8%8e%20RPC%20%e5%ae%9e%e8%b7%b5-%e5%ae%8c/assets/CgqCHl_okUGATnXpAAPdCRAt-n0348.png)
@@ -141,11 +457,97 @@ HashedWheelTimer 初始化的主要工作我们已经介绍完了，其内部结
 ### 添加任务
 
 HashedWheelTimer 初始化完成后，如何向 HashedWheelTimer 添加任务呢？我们自然想到 HashedWheelTimer 提供的 newTimeout() 方法。
-public Timeout newTimeout(TimerTask task, long delay, TimeUnit unit) { // 省略其他代码 long pendingTimeoutsCount = pendingTimeouts.incrementAndGet(); if (maxPendingTimeouts > 0 && pendingTimeoutsCount > maxPendingTimeouts) { pendingTimeouts.decrementAndGet(); throw new RejectedExecutionException("Number of pending timeouts (" + pendingTimeoutsCount + ") is greater than or equal to maximum allowed pending " + "timeouts (" + maxPendingTimeouts + ")"); } start(); // 1. 如果 worker 线程没有启动，需要启动 long deadline = System.nanoTime() + unit.toNanos(delay) - startTime; // 计算任务的 deadline if (delay > 0 && deadline < 0) { deadline = Long.MAX_VALUE; } HashedWheelTimeout timeout = new HashedWheelTimeout(this, task, deadline); // 2. 创建定时任务 timeouts.add(timeout); // 3. 添加任务到 Mpsc Queue return timeout; } private final Queue<HashedWheelTimeout> timeouts = PlatformDependent.newMpscQueue();
 
-newTimeout() 方法主要做了三件事，分别为启动工作线程，创建定时任务，并把任务添加到 Mpsc Queue。HashedWheelTimer 的工作线程采用了懒启动的方式，不需要用户显示调用。这样做的好处是在时间轮中没有任务时，可以避免工作线程空转而造成性能损耗。先看下启动工作线程 start() 的源码：
+```java
+public Timeout newTimeout(TimerTask task, long delay, TimeUnit unit) {
 
-public void start() { switch (WORKER_STATE_UPDATER.get(this)) { case WORKER_STATE_INIT: if (WORKER_STATE_UPDATER.compareAndSet(this, WORKER_STATE_INIT, WORKER_STATE_STARTED)) { workerThread.start(); } break; case WORKER_STATE_STARTED: break; case WORKER_STATE_SHUTDOWN: throw new IllegalStateException("cannot be started once stopped"); default: throw new Error("Invalid WorkerState"); } while (startTime == 0) { try { startTimeInitialized.await(); } catch (InterruptedException ignore) { } } }
+    // 省略其他代码
+
+    long pendingTimeoutsCount = pendingTimeouts.incrementAndGet();
+
+    if (maxPendingTimeouts > 0 && pendingTimeoutsCount > maxPendingTimeouts) {
+
+        pendingTimeouts.decrementAndGet();
+
+        throw new RejectedExecutionException("Number of pending timeouts ("
+
+            + pendingTimeoutsCount + ") is greater than or equal to maximum allowed pending "
+
+            + "timeouts (" + maxPendingTimeouts + ")");
+
+    }
+
+    start(); // 1. 如果 worker 线程没有启动，需要启动
+
+    long deadline = System.nanoTime() + unit.toNanos(delay) - startTime; // 计算任务的 deadline
+
+    if (delay > 0 && deadline < 0) {
+
+        deadline = Long.MAX_VALUE;
+
+    }
+
+    HashedWheelTimeout timeout = new HashedWheelTimeout(this, task, deadline); //  2. 创建定时任务
+
+    timeouts.add(timeout); // 3. 添加任务到 Mpsc Queue
+
+    return timeout;
+
+}
+
+private final Queue<HashedWheelTimeout> timeouts = PlatformDependent.newMpscQueue();
+```
+
+
+newTimeout() 方法主要做了三件事，分别为启动工作线程，创建定时任务，并把任务添加到 Mpsc Queue。
+
+HashedWheelTimer 的工作线程采用了懒启动的方式，不需要用户显示调用。这样做的好处是在时间轮中没有任务时，可以避免工作线程空转而造成性能损耗。
+
+先看下启动工作线程 start() 的源码：
+
+```java
+public void start() {
+
+    switch (WORKER_STATE_UPDATER.get(this)) {
+
+        case WORKER_STATE_INIT:
+
+            if (WORKER_STATE_UPDATER.compareAndSet(this, WORKER_STATE_INIT, WORKER_STATE_STARTED)) {
+
+                workerThread.start();
+
+            }
+
+            break;
+
+        case WORKER_STATE_STARTED:
+
+            break;
+
+        case WORKER_STATE_SHUTDOWN:
+
+            throw new IllegalStateException("cannot be started once stopped");
+
+        default:
+
+            throw new Error("Invalid WorkerState");
+
+    }
+
+    while (startTime == 0) {
+
+        try {
+
+            startTimeInitialized.await();
+
+        } catch (InterruptedException ignore) {
+
+        }
+
+    }
+
+}
+```
 
 工作线程的启动之前，会通过 CAS 操作获取工作线程的状态，如果已经启动，则直接跳过。如果没有启动，再次通过 CAS 操作更改工作线程状态，然后启动工作线程。启动的过程是直接调用的 Thread/#start() 方法，我们暂且先不关注工作线程具体做了什么，下文再继续分析。
 
@@ -156,7 +558,86 @@ public void start() { switch (WORKER_STATE_UPDATER.get(this)) { case WORKER_STAT
 ### 工作线程 Worker
 
 工作线程 Worker 是时间轮的核心引擎，随着时针的转动，到期任务的处理都由 Worker 处理完成。下面我们定位到 Worker 的 run() 方法一探究竟。
-private final class Worker implements Runnable { private final Set<Timeout> unprocessedTimeouts = new HashSet<Timeout>(); // 未处理任务列表 private long tick; @Override public void run() { startTime = System.nanoTime(); if (startTime == 0) { startTime = 1; } startTimeInitialized.countDown(); do { final long deadline = waitForNextTick(); // 1. 计算下次 tick 的时间, 然后sleep 到下次 tick if (deadline > 0) { // 可能因为溢出或者线程中断，造成 deadline <= 0 int idx = (int) (tick & mask); // 2. 获取当前 tick 在 HashedWheelBucket 数组中对应的下标 processCancelledTasks(); // 3. 移除被取消的任务 HashedWheelBucket bucket = wheel[idx]; transferTimeoutsToBuckets(); // 4. 从 Mpsc Queue 中取出任务加入对应的 slot 中 bucket.expireTimeouts(deadline); // 5. 执行到期的任务 tick++; } } while (WORKER_STATE_UPDATER.get(HashedWheelTimer.this) == WORKER_STATE_STARTED); // 时间轮退出后，取出 slot 中未执行且未被取消的任务，并加入未处理任务列表，以便 stop() 方法返回 for (HashedWheelBucket bucket: wheel) { bucket.clearTimeouts(unprocessedTimeouts); } // 将还没来得及添加到 slot 中的任务取出，如果任务未取消则加入未处理任务列表，以便 stop() 方法返回 for (;;) { HashedWheelTimeout timeout = timeouts.poll(); if (timeout == null) { break; } if (!timeout.isCancelled()) { unprocessedTimeouts.add(timeout); } } processCancelledTasks(); } }
+
+```java
+private final class Worker implements Runnable {
+
+    private final Set<Timeout> unprocessedTimeouts = new HashSet<Timeout>(); // 未处理任务列表
+
+    private long tick;
+
+    @Override
+
+    public void run() {
+
+        startTime = System.nanoTime();
+
+        if (startTime == 0) {
+
+            startTime = 1;
+
+        }
+
+        startTimeInitialized.countDown();
+
+        do {
+
+            final long deadline = waitForNextTick(); // 1. 计算下次 tick 的时间, 然后sleep 到下次 tick
+
+            if (deadline > 0) { // 可能因为溢出或者线程中断，造成 deadline <= 0
+
+                int idx = (int) (tick & mask); // 2. 获取当前 tick 在 HashedWheelBucket 数组中对应的下标
+
+                processCancelledTasks(); // 3. 移除被取消的任务
+
+                HashedWheelBucket bucket =
+
+                        wheel[idx];
+
+                transferTimeoutsToBuckets(); // 4. 从 Mpsc Queue 中取出任务加入对应的 slot 中
+
+                bucket.expireTimeouts(deadline); // 5. 执行到期的任务
+
+                tick++;
+
+            }
+
+        } while (WORKER_STATE_UPDATER.get(HashedWheelTimer.this) == WORKER_STATE_STARTED);
+
+        // 时间轮退出后，取出 slot 中未执行且未被取消的任务，并加入未处理任务列表，以便 stop() 方法返回
+
+        for (HashedWheelBucket bucket: wheel) {
+
+            bucket.clearTimeouts(unprocessedTimeouts);
+
+        }
+
+        // 将还没来得及添加到 slot 中的任务取出，如果任务未取消则加入未处理任务列表，以便 stop() 方法返回
+
+        for (;;) {
+
+            HashedWheelTimeout timeout = timeouts.poll();
+
+            if (timeout == null) {
+
+                break;
+
+            }
+
+            if (!timeout.isCancelled()) {
+
+                unprocessedTimeouts.add(timeout);
+
+            }
+
+        }
+
+        processCancelledTasks();
+
+    }
+
+}
+```
 
 工作线程 Worker 的核心执行流程是代码中的 do-while 循环，只要 Worker 处于 STARTED 状态，就会执行 do-while 循环，我们把该过程拆分成为以下几个步骤，逐一分析。
 
@@ -167,7 +648,56 @@ private final class Worker implements Runnable { private final Set<Timeout> unpr
 * 执行当前 HashedWheelBucket 中的到期任务。
 
 首先看下 waitForNextTick() 方法是如何计算等待时间的，源码如下：
-private long waitForNextTick() { long deadline = tickDuration /* (tick + 1); for (;;) { final long currentTime = System.nanoTime() - startTime; long sleepTimeMs = (deadline - currentTime + 999999) / 1000000; if (sleepTimeMs <= 0) { if (currentTime == Long.MIN_VALUE) { return -Long.MAX_VALUE; } else { return currentTime; } } if (PlatformDependent.isWindows()) { sleepTimeMs = sleepTimeMs / 10 /* 10; } try { Thread.sleep(sleepTimeMs); } catch (InterruptedException ignored) { if (WORKER_STATE_UPDATER.get(HashedWheelTimer.this) == WORKER_STATE_SHUTDOWN) { return Long.MIN_VALUE; } } } }
+
+```java
+private long waitForNextTick() {
+
+    long deadline = tickDuration * (tick + 1);
+
+    for (;;) {
+
+        final long currentTime = System.nanoTime() - startTime;
+
+        long sleepTimeMs = (deadline - currentTime + 999999) / 1000000;
+
+        if (sleepTimeMs <= 0) {
+
+            if (currentTime == Long.MIN_VALUE) {
+
+                return -Long.MAX_VALUE;
+
+            } else {
+
+                return currentTime;
+
+            }
+
+        }
+
+        if (PlatformDependent.isWindows()) {
+
+            sleepTimeMs = sleepTimeMs / 10 * 10;
+
+        }
+
+        try {
+
+            Thread.sleep(sleepTimeMs);
+
+        } catch (InterruptedException ignored) {
+
+            if (WORKER_STATE_UPDATER.get(HashedWheelTimer.this) == WORKER_STATE_SHUTDOWN) {
+
+                return Long.MIN_VALUE;
+
+            }
+
+        }
+
+    }
+
+}
+```
 
 根据 tickDuration 可以推算出下一次 tick 的 deadline，deadline 减去当前时间就可以得到需要 sleep 的等待时间。所以 tickDuration 的值越小，时间的精准度也就越高，同时 Worker 的繁忙程度越高。如果 tickDuration 设置过小，为了防止系统会频繁地 sleep 再唤醒，会保证 Worker 至少 sleep 的时间为 1ms 以上。
 
@@ -176,23 +706,187 @@ Worker 从 sleep 状态唤醒后，接下来会执行第二步流程，通过按
 接下来 Worker 会调用 processCancelledTasks() 方法处理被取消的任务，所有取消的任务都会加入 cancelledTimeouts 队列中，Worker 会从队列中取出任务，然后将其从对应的 HashedWheelBucket 中删除，删除操作为基本的链表操作。processCancelledTasks() 的源码比较简单，我们在此就不展开了。
 
 之前我们还留了一个疑问，Mpsc Queue 中的任务什么时候加入时间轮的呢？答案就在 transferTimeoutsToBuckets() 方法中。
-private void transferTimeoutsToBuckets() { // 每次时针 tick 最多只处理 100000 个任务，以防阻塞 Worker 线程 for (int i = 0; i < 100000; i++) { HashedWheelTimeout timeout = timeouts.poll(); if (timeout == null) { break; } if (timeout.state() == HashedWheelTimeout.ST_CANCELLED) { continue; } long calculated = timeout.deadline / tickDuration; // 计算任务需要经过多少个 tick timeout.remainingRounds = (calculated - tick) / wheel.length; // 计算任务需要在时间轮中经历的圈数 remainingRounds final long ticks = Math.max(calculated, tick); // 如果任务在 timeouts 队列里已经过了执行时间, 那么会加入当前 HashedWheelBucket 中 int stopIndex = (int) (ticks & mask); HashedWheelBucket bucket = wheel[stopIndex]; bucket.addTimeout(timeout); } }
+
+```java
+private void transferTimeoutsToBuckets() {
+
+    // 每次时针 tick 最多只处理 100000 个任务，以防阻塞 Worker 线程
+
+    for (int i = 0; i < 100000; i++) {
+
+        HashedWheelTimeout timeout = timeouts.poll();
+
+        if (timeout == null) {
+
+            break;
+
+        }
+
+        if (timeout.state() == HashedWheelTimeout.ST_CANCELLED) {
+
+            continue;
+
+        }
+
+        long calculated = timeout.deadline / tickDuration; // 计算任务需要经过多少个 tick
+
+        timeout.remainingRounds = (calculated - tick) / wheel.length; // 计算任务需要在时间轮中经历的圈数 remainingRounds
+
+        final long ticks = Math.max(calculated, tick); // 如果任务在 timeouts 队列里已经过了执行时间, 那么会加入当前 HashedWheelBucket 中
+
+        int stopIndex = (int) (ticks & mask);
+
+        HashedWheelBucket bucket = wheel[stopIndex];
+
+        bucket.addTimeout(timeout);
+
+    }
+
+}
+```
 
 transferTimeoutsToBuckets() 的主要工作就是从 Mpsc Queue 中取出任务，然后添加到时间轮对应的 HashedWheelBucket 中。每次时针 tick 最多只处理 100000 个任务，一方面避免取任务的操作耗时过长，另一方面为了防止执行太多任务造成 Worker 线程阻塞。
 
 根据用户设置的任务 deadline，可以计算出任务需要经过多少次 tick 才能开始执行以及需要在时间轮中转动圈数 remainingRounds，remainingRounds 会记录在 HashedWheelTimeout 中，在执行任务的时候 remainingRounds 会被使用到。因为时间轮中的任务并不能够保证及时执行，假如有一个任务执行的时间特别长，那么任务在 timeouts 队列里已经过了执行时间，也没有关系，Worker 会将这些任务直接加入当前HashedWheelBucket 中，所以过期的任务并不会被遗漏。
 
 任务被添加到时间轮之后，重新再回到 Worker/#run() 的主流程，接下来就是执行当前 HashedWheelBucket 中的到期任务，跟进 HashedWheelBucket/#expireTimeouts() 方法的源码：
-public void expireTimeouts(long deadline) { HashedWheelTimeout timeout = head; while (timeout != null) { HashedWheelTimeout next = timeout.next; if (timeout.remainingRounds <= 0) { next = remove(timeout); if (timeout.deadline <= deadline) { timeout.expire(); // 执行任务 } else { throw new IllegalStateException(String.format( "timeout.deadline (%d) > deadline (%d)", timeout.deadline, deadline)); } } else if (timeout.isCancelled()) { next = remove(timeout); } else { timeout.remainingRounds --; // 未到执行时间，remainingRounds 减 1 } timeout = next; } }
+
+```java
+public void expireTimeouts(long deadline) {
+
+    HashedWheelTimeout timeout = head;
+
+    while (timeout != null) {
+
+        HashedWheelTimeout next = timeout.next;
+
+        if (timeout.remainingRounds <= 0) {
+
+            next = remove(timeout);
+
+            if (timeout.deadline <= deadline) {
+
+                timeout.expire(); // 执行任务
+
+            } else {
+
+                throw new IllegalStateException(String.format(
+
+                        "timeout.deadline (%d) > deadline (%d)", timeout.deadline, deadline));
+
+            }
+
+        } else if (timeout.isCancelled()) {
+
+            next = remove(timeout);
+
+        } else {
+
+            timeout.remainingRounds --; // 未到执行时间，remainingRounds 减 1
+
+        }
+
+        timeout = next;
+
+    }
+
+}
+```
 
 执行任务的操作比较简单，就是从头开始遍历 HashedWheelBucket 中的双向链表。如果 remainingRounds <=0，则调用 expire() 方法执行任务，timeout.expire() 内部就是调用了 TimerTask 的 run() 方法。如果任务已经被取消，直接从链表中移除。否则表示任务的执行时间还没到，remainingRounds 减 1，等待下一圈即可。
 
-至此，工作线程 Worker 的核心逻辑 do-while 循环我们已经讲完了。当时间轮退出后，Worker 还会执行一些后置的收尾工作。Worker 会从每个 HashedWheelBucket 取出未执行且未取消的任务，以及还来得及添加到 HashedWheelBucket 中的任务，然后加入未处理任务列表，以便 stop() 方法统一处理。
+至此，工作线程 Worker 的核心逻辑 do-while 循环我们已经讲完了。当时间轮退出后，Worker 还会执行一些后置的收尾工作。
+
+Worker 会从每个 HashedWheelBucket 取出未执行且未取消的任务，以及还来得及添加到 HashedWheelBucket 中的任务，然后加入未处理任务列表，以便 stop() 方法统一处理。
 
 ### 停止时间轮
 
 回到 Timer 接口两个方法，newTimeout() 上文已经分析完了，接下来我们就以 stop() 方法为入口，看下时间轮停止都做了哪些工作。
-@Override public Set<Timeout> stop() { // Worker 线程无法停止时间轮 if (Thread.currentThread() == workerThread) { throw new IllegalStateException( HashedWheelTimer.class.getSimpleName() + ".stop() cannot be called from " + TimerTask.class.getSimpleName()); } // 尝试通过 CAS 操作将工作线程的状态更新为 SHUTDOWN 状态 if (!WORKER_STATE_UPDATER.compareAndSet(this, WORKER_STATE_STARTED, WORKER_STATE_SHUTDOWN)) { if (WORKER_STATE_UPDATER.getAndSet(this, WORKER_STATE_SHUTDOWN) != WORKER_STATE_SHUTDOWN) { INSTANCE_COUNTER.decrementAndGet(); if (leak != null) { boolean closed = leak.close(this); assert closed; } return Collections.emptySet(); } try { boolean interrupted = false; while (workerThread.isAlive()) { workerThread.interrupt(); // 中断 Worker 线程 try { workerThread.join(100); } catch (InterruptedException ignored) { interrupted = true; } } if (interrupted) { Thread.currentThread().interrupt(); } } finally { INSTANCE_COUNTER.decrementAndGet(); if (leak != null) { boolean closed = leak.close(this); assert closed; } } return worker.unprocessedTimeouts(); // 返回未处理任务的列表 }
+
+```java
+@Override
+
+public Set<Timeout> stop() {
+
+    // Worker 线程无法停止时间轮
+
+    if (Thread.currentThread() == workerThread) {
+
+        throw new IllegalStateException(
+
+                HashedWheelTimer.class.getSimpleName() +
+
+                        ".stop() cannot be called from " +
+
+                        TimerTask.class.getSimpleName());
+
+    }
+
+    // 尝试通过 CAS 操作将工作线程的状态更新为 SHUTDOWN 状态
+
+    if (!WORKER_STATE_UPDATER.compareAndSet(this, WORKER_STATE_STARTED, WORKER_STATE_SHUTDOWN)) {
+
+        if (WORKER_STATE_UPDATER.getAndSet(this, WORKER_STATE_SHUTDOWN) != WORKER_STATE_SHUTDOWN) {
+
+            INSTANCE_COUNTER.decrementAndGet();
+
+            if (leak != null) {
+
+                boolean closed = leak.close(this);
+
+                assert closed;
+
+            }
+
+            return Collections.emptySet();
+
+    }
+
+    try {
+
+        boolean interrupted = false;
+
+        while (workerThread.isAlive()) {
+
+            workerThread.interrupt(); // 中断 Worker 线程
+
+            try {
+
+                workerThread.join(100);
+
+            } catch (InterruptedException ignored) {
+
+                interrupted = true;
+
+            }
+
+        }
+
+        if (interrupted) {
+
+            Thread.currentThread().interrupt();
+
+        }
+
+    } finally {
+
+        INSTANCE_COUNTER.decrementAndGet();
+
+        if (leak != null) {
+
+            boolean closed = leak.close(this);
+
+            assert closed;
+
+        }
+
+    }
+
+    return worker.unprocessedTimeouts(); // 返回未处理任务的列表
+
+}
+```
+
 
 如果当前线程是 Worker 线程，它是不能发起停止时间轮的操作的，是为了防止有定时任务发起停止时间轮的恶意操作。停止时间轮主要做了三件事，首先尝试通过 CAS 操作将工作线程的状态更新为 SHUTDOWN 状态，然后中断工作线程 Worker，最后将未处理的任务列表返回给上层。
 
