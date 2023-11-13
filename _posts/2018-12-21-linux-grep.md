@@ -1,11 +1,10 @@
 ---
 layout: post
-title: linux grep
+title: linux grep 匹配过滤 egrep 正则匹配过滤 zgrep 压缩文件匹配过滤
 date: 2018-12-21 11:28:06 +0800
 categories: [Linux]
 tags: [linux, shell, sh]
 published: true
-excerpt: linux grep 命令
 ---
 
 # grep
@@ -203,6 +202,47 @@ less *.log | grep queryUserInfo | grep userName | grep -v 'userName=null' --col
 查询方式：包含关键词，并且排除不满足条件的饿信息。
 
 --col 可以按照最后一个 grep 进行高亮。
+
+# linux grep 匹配 zip 文件的内容？
+
+## 方式1：解压+匹配
+
+在Linux中，你可以使用`grep`命令来在zip文件中搜索内容。但是，首先你需要使用`unzip`命令将zip文件解压缩，然后再使用`grep`命令搜索解压缩后的文件。
+
+以下是一个示例：
+
+```bash
+# 解压缩zip文件
+unzip your_file.zip -d unzip_folder
+
+# 使用grep搜索解压缩后的文件内容
+grep "your_pattern" unzip_folder/*
+
+# 或者你可以使用通配符直接在解压缩的文件夹中搜索
+grep "your_pattern" unzip_folder/*
+```
+
+在这个示例中，`your_file.zip`是你要搜索的zip文件的名称，而`your_pattern`是你要查找的内容。
+
+解压缩后的文件将存储在`unzip_folder`文件夹中。你可以根据需要修改这些参数。
+
+## 方式2：zgrep
+
+在Linux上，你可以使用`zgrep`命令来直接在zip文件中搜索内容，而不需要先解压缩文件。
+
+`zgrep`命令实际上是一个脚本，它会调用`grep`命令来搜索压缩文件的内容。
+
+以下是一个示例：
+
+```bash
+zgrep "your_pattern" your_file.zip
+```
+
+在这个示例中，`your_file.zip`是你要搜索的zip文件的名称，而`your_pattern`是你要查找的内容。
+
+这样可以省去解压缩步骤，直接在压缩文件中搜索内容。
+
+请注意，`zgrep`命令通常默认搜索gzip格式的压缩文件，如果你的zip文件不是gzip格式的，可能需要额外的配置。
 
 # 参考资料
 
