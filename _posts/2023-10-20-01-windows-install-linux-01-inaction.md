@@ -170,7 +170,9 @@ C:\Users\YourUsername\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindo
 \\wsl$\Ubuntu-20.04  # 这是Ubuntu 20.04的一个示例路径
 ```
 
-在这个路径中，Ubuntu-20.04是你安装的Linux分发版的名称。你可以通过Windows资源管理器、命令提示符或PowerShell等方式访问这个路径。
+在这个路径中，Ubuntu-20.04是你安装的Linux分发版的名称。
+
+你可以通过Windows资源管理器、命令提示符或PowerShell等方式访问这个路径。
 
 比如我这个就是在 
 
