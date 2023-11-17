@@ -492,6 +492,62 @@ public boolean containsDuplicate(int[] nums) {
 
 感觉这一题的测试案例还是不够彻底，如果数量足够多，二分法应该会明显优于逐个运算才对。
 
+## 性能对比
+
+如何证明性能存在差异呢？
+
+我们来构造一组数据：
+
+数据量足够大。10W 条数据。然后对比上面的算法和最初的算法差异。
+
+### 数据构造
+
+```java
+public static int[] buildTestNums() {
+    int size = 100000;
+    int[] nums = new int[size+1];
+    int ix = 0;
+    for(int i = size; i >= 0; i--) {
+        nums[ix++] = i;
+    }
+    return nums;
+}
+```
+
+## 测试
+
+```java
+public static void main(String[] args) {
+    int[] nums = buildTestNums();
+    int[] nums2 = buildTestNums();
+
+    // 原始解法1
+    long start1 = System.currentTimeMillis();
+    T217_ContainsDuplicateV3InsertSort insertSort = new T217_ContainsDuplicateV3InsertSort();
+    insertSort.containsDuplicate(nums);
+    long end1 = System.currentTimeMillis();
+    System.out.println("1=" + (end1-start1));
+
+    // 原始解法2
+    long start2 = System.currentTimeMillis();
+    T217_ContainsDuplicateV4InsertSortOptimize optimize = new T217_ContainsDuplicateV4InsertSortOptimize();
+    optimize.containsDuplicate(nums2);
+    long end2 = System.currentTimeMillis();
+    System.out.println("2=" + (end2-start2));
+}
+```
+
+耗时如下：
+
+```
+1=976
+2=311
+```
+
+第二种算法一般而言还是比第一种好的，只是测试用例太少。完全无法体现。
+
+其实更加离谱的还是 hash 的效率竟然不如这个，测试下来其实是比较好的，估计还是用例问题。
+
 # 小结
 
 最基本思路是通过哈希去重。
