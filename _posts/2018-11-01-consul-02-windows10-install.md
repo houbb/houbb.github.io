@@ -167,7 +167,36 @@ docker: Error response from daemon: manifest for consul:latest not found: manife
 See 'docker run --help'.
 ```
 
+> [https://github.com/hashicorp/consul/issues/17973](https://github.com/hashicorp/consul/issues/17973)
 
+github 上说，使用 hashicorp/consul:latest instead
+
+
+改为：
+
+```
+docker run -d --name=consul-server -p 8500:8500 hashicorp/consul:latest agent -server -bootstrap-expect=1 -ui -client=0.0.0.0
+```
+
+拉取日志：
+
+```
+> docker run -d --name=consul-server -p 8500:8500 hashicorp/consul:latest agent -server -bootstrap-expect=1 -ui -client=0.0.0.0
+Unable to find image 'hashicorp/consul:latest' locally
+latest: Pulling from hashicorp/consul
+96526aa774ef: Pull complete
+8a755a53c1aa: Pull complete
+fd305fe2d878: Pull complete
+01d12fe0b370: Pull complete
+cbc103c13062: Pull complete
+4f4fb700ef54: Pull complete
+3a5b5f5fe822: Pull complete
+Digest: sha256:712fe02d2f847b6a28f4834f3dd4095edb50f9eee136621575a1e837334aaf09
+Status: Downloaded newer image for hashicorp/consul:latest
+b442b1a6c2a15ed1a580364e9598d927956964c41e18f48c4841bbd10f734a06
+```
+
+启动了？但是没有效果？
 
 # 参考资料
 
