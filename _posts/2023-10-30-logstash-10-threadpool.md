@@ -8,6 +8,146 @@ published: true
 ---
 
 
+# Q: java 的线程池可以添加对应的监听吗？如何添加？
+
+Java 的线程池（`ExecutorService`）本身并没有提供专门的监听器接口来监听线程池的状态变化，但你可以通过一些手段实现类似的监听功能，例如通过使用 `ThreadPoolExecutor` 提供的钩子方法或者通过自定义扩展。
+
+以下是一些方法：
+
+### 1. **通过钩子方法：**
+
+`ThreadPoolExecutor` 提供了一些钩子方法，可以在特定的时间点执行你的代码。
+
+这包括 `beforeExecute`、`afterExecute` 和 `terminated` 方法。
+
+```java
+ThreadPoolExecutor executor = new ThreadPoolExecutor(
+        corePoolSize,
+        maxPoolSize,
+        keepAliveTime,
+        TimeUnit.SECONDS,
+        new LinkedBlockingQueue<>()
+) {
+    @Override
+    protected void beforeExecute(Thread t, Runnable r) {
+        super.beforeExecute(t, r);
+        // 在任务执行前调用
+        System.out.println("Before Execute: " + r.toString());
+    }
+
+    @Override
+    protected void afterExecute(Runnable r, Throwable t) {
+        super.afterExecute(r, t);
+        // 在任务执行完成后调用
+        System.out.println("After Execute: " + r.toString());
+    }
+
+    @Override
+    protected void terminated() {
+        super.terminated();
+        // 在线程池终止时调用
+        System.out.println("Thread Pool Terminated");
+    }
+};
+
+executor.submit(() -> {
+    // 任务逻辑
+});
+```
+
+### 2. **通过自定义监听器：**
+
+你可以定义一个监听器接口，并在线程池中维护一个监听器列表，然后在关键的地方触发监听器的方法。
+
+例如：
+
+```java
+public interface ThreadPoolListener {
+    void beforeExecute(Thread t, Runnable r);
+    void afterExecute(Runnable r, Throwable t);
+    void terminated();
+}
+
+public class MyThreadPoolExecutor extends ThreadPoolExecutor {
+    private List<ThreadPoolListener> listeners = new ArrayList<>();
+
+    public MyThreadPoolExecutor(
+            int corePoolSize,
+            int maximumPoolSize,
+            long keepAliveTime,
+            TimeUnit unit,
+            BlockingQueue<Runnable> workQueue
+    ) {
+        super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue);
+    }
+
+    public void addListener(ThreadPoolListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    protected void beforeExecute(Thread t, Runnable r) {
+        super.beforeExecute(t, r);
+        for (ThreadPoolListener listener : listeners) {
+            listener.beforeExecute(t, r);
+        }
+    }
+
+    @Override
+    protected void afterExecute(Runnable r, Throwable t) {
+        super.afterExecute(r, t);
+        for (ThreadPoolListener listener : listeners) {
+            listener.afterExecute(r, t);
+        }
+    }
+
+    @Override
+    protected void terminated() {
+        super.terminated();
+        for (ThreadPoolListener listener : listeners) {
+            listener.terminated();
+        }
+    }
+}
+```
+
+然后，你可以使用 `MyThreadPoolExecutor` 替代普通的 `ThreadPoolExecutor`，并通过 `addListener` 方法添加监听器。
+
+```java
+MyThreadPoolExecutor executor = new MyThreadPoolExecutor(
+        corePoolSize,
+        maxPoolSize,
+        keepAliveTime,
+        TimeUnit.SECONDS,
+        new LinkedBlockingQueue<>()
+);
+
+executor.addListener(new ThreadPoolListener() {
+    @Override
+    public void beforeExecute(Thread t, Runnable r) {
+        System.out.println("Before Execute: " + r.toString());
+    }
+
+    @Override
+    public void afterExecute(Runnable r, Throwable t) {
+        System.out.println("After Execute: " + r.toString());
+    }
+
+    @Override
+    public void terminated() {
+        System.out.println("Thread Pool Terminated");
+    }
+});
+
+executor.submit(() -> {
+    // 任务逻辑
+});
+```
+
+通过上述方法，你可以实现对线程池的一些关键操作进行监听。
+
+
+
 # Q: 系统的介绍一下 java 的线程池
 
 Java的线程池（ThreadPool）是一种用于管理和重用线程的机制，它可以提高多线程应用程序的性能和资源管理效率。
