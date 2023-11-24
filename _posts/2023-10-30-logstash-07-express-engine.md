@@ -1,6 +1,6 @@
 ---
 layout: post
-title: logstash 日志加工处理-08-表达式执行引擎
+title: logstash 日志加工处理-08-表达式执行引擎 AviatorScript+MVEL+OGNL+SpEL+JEXL+JUEL+Janino
 date: 2023-10-30 21:01:55 +0800
 categories: [Log]
 tags: [log, sh]
