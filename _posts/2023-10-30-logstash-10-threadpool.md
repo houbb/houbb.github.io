@@ -147,6 +147,105 @@ executor.submit(() -> {
 通过上述方法，你可以实现对线程池的一些关键操作进行监听。
 
 
+# Q: RejectedExecutionHandler 有哪些 java 内置的实现？
+
+`RejectedExecutionHandler` 是 Java 线程池中用于处理任务被拒绝的策略接口。当线程池已经饱和，并且无法处理新的任务时，`RejectedExecutionHandler` 定义了在这种情况下应该采取的操作。Java 中提供了几个内置的实现类，主要包括以下几种：
+
+### 1. **AbortPolicy（默认策略）:**
+   - `AbortPolicy` 是默认的拒绝策略，它会直接抛出 `RejectedExecutionException` 异常，表示任务被拒绝。这是默认的策略，当线程池饱和时，新任务将被拒绝。
+
+```java
+ThreadPoolExecutor executor = new ThreadPoolExecutor(
+        corePoolSize,
+        maxPoolSize,
+        keepAliveTime,
+        TimeUnit.SECONDS,
+        new LinkedBlockingQueue<>(capacity),
+        new ThreadPoolExecutor.AbortPolicy()
+);
+```
+
+### 2. **CallerRunsPolicy:**
+   - `CallerRunsPolicy` 策略会将被拒绝的任务返回给提交任务的调用者（Caller），由调用者线程直接执行。这样做可以减轻提交任务的速度，直接在调用线程中执行被拒绝的任务。
+
+```java
+ThreadPoolExecutor executor = new ThreadPoolExecutor(
+        corePoolSize,
+        maxPoolSize,
+        keepAliveTime,
+        TimeUnit.SECONDS,
+        new LinkedBlockingQueue<>(capacity),
+        new ThreadPoolExecutor.CallerRunsPolicy()
+);
+```
+
+### 3. **DiscardPolicy:**
+   - `DiscardPolicy` 策略会默默地丢弃无法处理的任务，不给予任何提示。这样做可能会导致数据的丢失，因为没有记录被丢弃的任务。
+
+```java
+ThreadPoolExecutor executor = new ThreadPoolExecutor(
+        corePoolSize,
+        maxPoolSize,
+        keepAliveTime,
+        TimeUnit.SECONDS,
+        new LinkedBlockingQueue<>(capacity),
+        new ThreadPoolExecutor.DiscardPolicy()
+);
+```
+
+### 4. **DiscardOldestPolicy:**
+   - `DiscardOldestPolicy` 策略会丢弃最老的一个请求任务，并尝试再次提交当前任务。
+
+```java
+ThreadPoolExecutor executor = new ThreadPoolExecutor(
+        corePoolSize,
+        maxPoolSize,
+        keepAliveTime,
+        TimeUnit.SECONDS,
+        new LinkedBlockingQueue<>(capacity),
+        new ThreadPoolExecutor.DiscardOldestPolicy()
+);
+```
+
+### 自定义策略：
+除了上述内置的拒绝策略，你也可以通过实现 `RejectedExecutionHandler` 接口来定义自己的拒绝策略。你需要实现接口的 `rejectedExecution` 方法，并在该方法中定义任务被拒绝时的处理逻辑。例如：
+
+```java
+class CustomRejectedExecutionHandler implements RejectedExecutionHandler {
+    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+        // 自定义的拒绝逻辑
+        System.out.println("Custom Rejected Execution: " + r.toString());
+    }
+}
+
+ThreadPoolExecutor executor = new ThreadPoolExecutor(
+        corePoolSize,
+        maxPoolSize,
+        keepAliveTime,
+        TimeUnit.SECONDS,
+        new LinkedBlockingQueue<>(capacity),
+        new CustomRejectedExecutionHandler()
+);
+```
+
+通过选择合适的拒绝策略，可以使线程池在饱和时以一种合理的方式处理无法接受的新任务。选择策略时需要根据应用场景和需求来决定。
+
+
+# Q: logstash 是为一个 input 做一个独立的线程吗？还是每一次 input 请求创建一个 thread?
+
+Logstash 是一个用于数据处理的工具，它采用插件化架构，其中输入（input）、过滤器（filter）、输出（output）各自为一个插件。
+
+在 Logstash 中，每个输入插件通常都会在自己的线程中独立运行，以便并行处理来自不同来源的数据。
+
+具体来说，Logstash 为每个配置的输入插件创建一个独立的线程，这样可以实现多输入源的并发处理。
+
+每个输入插件线程独立运行，不会阻塞其他插件的执行，从而提高整体的性能和吞吐量。
+
+需要注意的是，虽然每个输入插件通常在独立的线程中运行，但并不代表每个 input 请求都会创建一个新的线程。
+
+线程的创建和管理是由 Logstash 的底层框架和线程池来处理的，以确保资源的有效利用和性能的最优化。线程池的使用可以帮助避免过多的线程创建和销毁的开销。
+
+总的来说，Logstash 通过在独立的线程中运行每个输入插件来实现多输入源的并行处理，这是为了提高数据处理的效率和性能。
 
 # Q: 系统的介绍一下 java 的线程池
 
