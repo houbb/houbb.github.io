@@ -7,6 +7,104 @@ tags: [log, sh]
 published: true
 ---
 
+
+# Q: 表达式引擎把字符串转换为小写的一个例子？
+
+## A1: springex
+
+在Java中，你可以使用一些库来实现表达式引擎，比如Apache Commons JEXL、Spring的Expression Language（SpEL）或者使用JavaScript引擎（例如Rhino或Nashorn）。在这里，我将使用Spring的Expression Language（SpEL）作为例子。
+
+首先，确保你的项目中包含了Spring相关的依赖。然后，你可以使用`StandardEvaluationContext`类来设置输入变量，并通过`ExpressionParser`和`Expression`来进行表达式的解析和计算。
+
+以下是一个简单的例子，演示如何将输入的字符串转为小写：
+
+```java
+import org.springframework.expression.Expression;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
+
+public class ExpressionEngineExample {
+    public static void main(String[] args) {
+        // 创建表达式解析器
+        ExpressionParser parser = new SpelExpressionParser();
+
+        // 创建表达式
+        Expression expression = parser.parseExpression("#inputString.toLowerCase()");
+
+        // 创建EvaluationContext，并设置变量
+        StandardEvaluationContext context = new StandardEvaluationContext();
+        context.setVariable("inputString", "Hello World");
+
+        // 计算表达式
+        String result = expression.getValue(context, String.class);
+
+        // 输出结果
+        System.out.println("Original String: Hello World");
+        System.out.println("Result after conversion to lowercase: " + result);
+    }
+}
+```
+
+在这个例子中，我们使用了SpEL表达式 `#inputString.toLowerCase()` 来将输入字符串转为小写。
+
+在`StandardEvaluationContext`中，我们设置了变量 `inputString` 的值为 "Hello World"，然后通过 `expression.getValue()` 方法计算表达式的值。
+
+请注意，为了运行这个例子，你需要在项目中包含Spring相关的库。如果你使用Maven，可以在 `pom.xml` 文件中添加以下依赖：
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter</artifactId>
+</dependency>
+```
+
+确保你的项目中包含了这个依赖，然后你就可以运行这个例子了。
+
+## A2-Aviator 的例子呢？
+
+Aviator 是一个轻量级的、快速的Java表达式求值引擎，可以用于在运行时动态计算表达式的值。以下是一个简单的例子，演示如何使用 Aviator 将字符串转为小写：
+
+首先，确保你的项目中包含了 Aviator 的依赖。
+
+如果使用 Maven，可以在 `pom.xml` 文件中添加以下依赖：
+
+```xml
+<dependency>
+    <groupId>com.googlecode.aviator</groupId>
+    <artifactId>aviator</artifactId>
+    <version>5.0.0</version> <!-- 查看最新的版本号 -->
+</dependency>
+```
+
+然后，你可以使用 Aviator 执行表达式。以下是一个例子：
+
+```java
+import com.googlecode.aviator.AviatorEvaluator;
+
+public class AviatorExample {
+    public static void main(String[] args) {
+        // 设置变量
+        String inputString = "Hello World";
+
+        // 定义表达式
+        String expression = "string.toLowerCase()";
+
+        // 计算表达式
+        Object result = AviatorEvaluator.execute(expression, AviatorEvaluator.newMap("string", inputString));
+
+        // 输出结果
+        System.out.println("Original String: " + inputString);
+        System.out.println("Result after conversion to lowercase: " + result);
+    }
+}
+```
+
+在这个例子中，我们使用 AviatorEvaluator.execute 方法来计算表达式的值。表达式中的 `string.toLowerCase()` 将输入字符串转为小写。我们通过 AviatorEvaluator.newMap 方法设置了变量 `string` 的值为 "Hello World"。
+
+请确保在项目中包含了 Aviator 的依赖，然后你就可以运行这个例子了。你可以根据 Aviator 的文档来了解更多关于 Aviator 表达式语法和功能的信息。
+
+
 # 1 简介
 
 我们项目组主要负责面向企业客户的业务系统，企业的需求往往是多样化且复杂的，对接不同企业时会有不同的定制化的业务模型和流程。
