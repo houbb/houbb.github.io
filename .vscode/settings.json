@@ -4,5 +4,5 @@
     "picgo.picBed.github.token": "e38d056f7d0499d5db3957a09361e26023c83957",
     "picgo.picBed.github.repo": "houbb/resource",
     "picgo.picBed.github.path": "images",
-    "editor.inlineSuggest.showToolbar": "always"
+    "editor.inlineSuggest.showToolbar": "onHover"
 }
