@@ -236,6 +236,42 @@ public class DatabaseAccessExample {
 
 请注意，上述代码中的异常处理非常简化，实际上，在真实的应用程序中，你可能需要更详细和健壮的错误处理。
 
+# Q: statement => "INSERT INTO mytable (column1, column2) VALUES (?, ?)"  这种写法，数据的入参怎么确定的呢？
+
+在 Logstash 的 JDBC Output 插件中，`statement` 用于指定插入数据的 SQL 语句。在这种语句中，插入参数通常使用问号 `?` 占位符，这样可以通过 Logstash 配置中的 `bind_vars` 选项提供实际的参数值。
+
+以下是一个简单的示例，演示了如何通过 `bind_vars` 提供参数值：
+
+```ruby
+output {
+  jdbc {
+    jdbc_connection_string => "jdbc:mysql://localhost:3306/mydatabase"
+    jdbc_user => "myuser"
+    jdbc_password => "mypassword"
+    jdbc_driver_library => "/path/to/mysql-connector-java.jar"
+    jdbc_driver_class => "com.mysql.cj.jdbc.Driver"
+    statement => "INSERT INTO mytable (column1, column2) VALUES (?, ?)"
+    bind_vars => ["field1", "field2"]
+  }
+}
+```
+
+在这个例子中，`bind_vars` 是一个数组，包含了要插入的实际字段值。Logstash 将在执行 SQL 语句时使用这些值替换问号占位符。请确保 `bind_vars` 的顺序与 SQL 语句中占位符的顺序匹配。
+
+需要注意的是，`bind_vars` 的值可以是字段引用，例如 `"%{[fieldname]}"`，这样它将使用事件中的实际字段值。这对于动态地从事件中提取数据并插入数据库非常有用。例如：
+
+```ruby
+output {
+  jdbc {
+    # 其他配置...
+    statement => "INSERT INTO mytable (column1, column2) VALUES (?, ?)"
+    bind_vars => ["%{[field1]}", "%{[field2]}"]
+  }
+}
+```
+
+这里，`%{[field1]}` 和 `%{[field2]}` 将从 Logstash 事件中提取 `field1` 和 `field2` 字段的值用于插入数据库。
+
 # Q3: 如果我把 mysql-connect-java 的 jar 包放在指定的 path 下面，不是直接在 java 项目中。java 项目要如何引用到这个 jar 包？
 
 如果你将MySQL Connector/J的JAR文件放在指定的路径下，而不是直接在Java项目中引用，你有几种方法可以使Java项目能够访问到这个JAR包：
