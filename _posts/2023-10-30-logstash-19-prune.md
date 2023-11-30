@@ -141,7 +141,9 @@ filter {
 
 具体来说，Logstash 的事件结构是一个由字段组成的哈希表，其中字段的键（key）是字段名，值（value）是字段的具体值。`tags` 字段也是其中之一，用于存储表示事件类别、状态或其他标识的标签。
 
-当 Logstash 处理事件时，可以通过添加或移除 `tags` 字段中的值来标记事件。例如，可以使用 `add_tag` 和 `remove_tag` 过滤器来动态地修改事件的标签。这些标签可以在后续的配置中用于条件判断、过滤或路由。
+当 Logstash 处理事件时，可以通过添加或移除 `tags` 字段中的值来标记事件。
+
+例如，可以使用 `add_tag` 和 `remove_tag` 过滤器来动态地修改事件的标签。这些标签可以在后续的配置中用于条件判断、过滤或路由。
 
 以下是一个简单的示例，演示了如何在 Logstash 中添加和使用标签：
 
@@ -168,6 +170,21 @@ filter {
 如果 `user_type` 字段值为 "important"，就会添加 "important" 标签。
 
 这样，后续的配置可以根据标签来执行相应的操作。
+
+# 我们的设计
+
+## 属性
+
+whitelist_names (required): 要保留的字段名的数组。只有在白名单中的字段才会被保留，其他字段将被删除。
+blacklist_names (optional): 要删除的字段名的数组。在黑名单中的字段将会被删除，即使它们在白名单中。
+whitelist_classes (optional): 要保留的字段的 Java 类名的数组。只有字段的类名在白名单中时，该字段才会被保留。
+blacklist_classes (optional): 要删除的字段的 Java 类名的数组。在黑名单中的字段的类名将会被删除，即使它们在白名单中。
+remove_field_if_empty (optional): 如果字段的值为空，则移除该字段。
+
+## tag/field
+
+关于 field/tag 的 crud，单独已经有了，不再杂糅到这里。
+
 
 
 
