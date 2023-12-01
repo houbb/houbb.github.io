@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Apache Kafka-04-windows7 安装笔记
+title:  Apache Kafka-04-kafka install on windows7 安装笔记
 date:  2017-8-9 09:32:36 +0800
 categories: [MQ]
 tags: [apache, kafka, mq, stream, mq]
