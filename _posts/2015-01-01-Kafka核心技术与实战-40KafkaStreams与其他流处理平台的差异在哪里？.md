@@ -3,7 +3,7 @@ layout: post
 title:  Kafka核心技术与实战-40KafkaStreams与其他流处理平台的差异在哪里？
 date:   2015-01-01 23:20:27 +0800
 categories: [Kafka核心技术与实战]
-tags: [Kafka核心技术与实战, other]
+tags: [Kafka核心技术与实战, other, kafka]
 published: true
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title:  Kafka核心技术与实战-13Java生产者是如何管理TCP连接的？
 date:   2015-01-01 23:20:27 +0800
 categories: [Kafka核心技术与实战]
-tags: [Kafka核心技术与实战, other]
+tags: [Kafka核心技术与实战, other, kafka]
 published: true
 ---
 
