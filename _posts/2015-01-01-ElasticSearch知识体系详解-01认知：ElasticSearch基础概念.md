@@ -9,7 +9,8 @@ published: true
 
 
 
-01 认知：ElasticSearch基础概念
+# 01 认知：ElasticSearch基础概念
+
 ## 为什么需要学习ElasticSearch
 
 根据[DB Engine的排名](https://db-engines.com/en/ranking)显示，ElasticSearch是最受欢迎的企业级搜索引擎。

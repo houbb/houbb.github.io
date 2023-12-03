@@ -9,7 +9,8 @@ published: true
 
 
 
-02 认知：Elastic Stack生态和场景方案
+# 02 认知：Elastic Stack生态和场景方案
+
 ## Elastic Stack生态
 
 Beats + Logstash + ElasticSearch + Kibana
