@@ -212,6 +212,7 @@ https://stackoverflow.com/questions/49324252/difference-between-group-id-client-
 
 [@KafkaListener注解](https://www.cnblogs.com/dayu123/p/16486317.html)
 
+
 * any list
 {:toc}
 
