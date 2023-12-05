@@ -28,6 +28,8 @@ Grafana 允许您查询、可视化、设置警报并理解您的度量数据，
 
 # windows10 安装笔记
 
+> [开发者参考手册](https://github.com/grafana/grafana/blob/main/contribute/developer-guide.md)
+
 ## 准备工作
 
 - git
@@ -123,30 +125,237 @@ yarn install
 
 这个命令才可以正常执行，然后等待包下载。
 
+实际效果：
+
+```
+➤ YN0002: │ @grafana/plugin-configs@workspace:packages/grafana-plugin-configs doesn't provide typescript (pcebad), requested by fork-ts-checker-webpack-plugin.
+➤ YN0086: │ Some peer dependencies are incorrectly met; run yarn explain peer-requirements <hash> for details, where <hash> is the six-letter p-prefixed code.
+➤ YN0068: │ react-compat-css-styled ➤ dependencies ➤ react-simple-compat: No matching package in the dependency tree; you may not need this rule anymore.
+➤ YN0068: │ react-icons ➤ peerDependencies ➤ prop-types: No matching package in the dependency tree; you may not need this rule anymore.
+➤ YN0068: │ react-resizable ➤ peerDependencies ➤ react-dom: No matching package in the dependency tree; you may not need this rule anymore.
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Fetch step
+➤ YN0013: │ 2782 packages were added to the project (+ 273.86 MiB).
+➤ YN0000: └ Completed in 2m 8s
+➤ YN0000: ┌ Link step
+➤ YN0000: │ ESM support for PnP uses the experimental loader API and is therefore experimental
+➤ YN0007: │ esbuild@npm:0.18.12 must be built because it never has been before or the last one failed
+➤ YN0007: │ @swc/core@npm:1.3.38 must be built because it never has been before or the last one failed
+➤ YN0007: │ core-js@npm:3.33.0 must be built because it never has been before or the last one failed
+➤ YN0007: │ protobufjs@npm:7.2.4 must be built because it never has been before or the last one failed
+➤ YN0007: │ cypress@npm:13.1.0 must be built because it never has been before or the last one failed
+➤ YN0007: │ @parcel/watcher@npm:2.0.4 must be built because it never has been before or the last one failed
+➤ YN0007: │ core-js@npm:2.6.12 must be built because it never has been before or the last one failed
+➤ YN0007: │ esbuild@npm:0.18.20 must be built because it never has been before or the last one failed
+➤ YN0007: │ @swc/core@npm:1.3.90 [4e715] must be built because it never has been before or the last one failed
+➤ YN0007: │ core-js-pure@npm:3.30.2 must be built because it never has been before or the last one failed
+➤ YN0007: │ esbuild@npm:0.17.19 must be built because it never has been before or the last one failed
+➤ YN0007: │ msw@npm:1.3.2 [655a6] must be built because it never has been before or the last one failed
+➤ YN0007: │ cypress@npm:9.5.1 must be built because it never has been before or the last one failed
+➤ YN0007: │ nx@npm:16.10.0 [aedfc] must be built because it never has been before or the last one failed
+➤ YN0000: └ Completed in 3m 58s
+➤ YN0000: · Done with warnings in 6m 8s
+```
 
 ### 编译前端代码：
 
 ```bash
-yarn dev
+yarn start
+```
+
+启动日志：
+
+```
+Type-checking in progress...
+assets by status 95.1 MiB [cached] 359 assets
+asset assets-manifest.json 244 KiB [emitted]
+Entrypoint app 28.2 MiB (28.9 MiB) = runtime~app.27c08a9f68af7e92fb70.js 33.4 KiB app.4637a8c44c163a0c58f6.js 28.2 MiB 2 auxiliary assets
+Entrypoint dark 270 KiB (5.05 KiB) = runtime~dark.17b4d1c541b0624fca31.js 5.44 KiB grafana.dark.5a6c38de282ddca58f82.css 264 KiB dark.d1451cb7139b373d9b65.js 638 bytes 2 auxiliary assets
+Entrypoint light 269 KiB (5.05 KiB) = runtime~light.6e52bb965b366de4b171.js 5.44 KiB grafana.light.1eb7e955dcb272501f67.css 263 KiB light.43fe4e93df8c0f730f97.js 642 bytes 2 auxiliary assets
+cached modules 48.6 MiB (javascript) 515 KiB (css/mini-extract) 72.3 KiB (asset) 36.1 KiB (runtime) [cached] 10069 modules
+javascript modules 2.64 KiB
+  ./public/app/ sync extensions\/index.ts 160 bytes [built]
+  ./public/app/ sync \.html$ 2.49 KiB [built]
+webpack 5.89.0 compiled successfully in 184279 ms
+No errors found.
 ```
 
 
 ## 编译后端代码：
 
+这里按理说应该不通过，我们先尝试一下。
+
 ```bash
-go run build.go setup
+go run build.go setup # 通常用于运行一个名为 `setup` 的 Go 程序或脚本
+go run build.go build # 通常用于运行一个名为 `build` 的 Go 程序或脚本
+```
+
+
+日志：
+
+```
+λ go run build.go setup
+Version: 10.3.0, Linux Version: 10.3.0, Package Iteration: 1701789185pre
+go install -v -buildmode=exe ./pkg/cmd/grafana-server
+go: downloading github.com/fatih/color v1.15.0
+go: downloading github.com/mattn/go-colorable v0.1.13
+go: downloading github.com/mattn/go-isatty v0.0.18
+go: downloading golang.org/x/sys v0.14.0
+github.com/mattn/go-isatty
+golang.org/x/sys/windows
+github.com/mattn/go-colorable
+github.com/fatih/color
+github.com/grafana/grafana/pkg/util/cmd
+github.com/grafana/grafana/pkg/cmd/grafana-server
+
+λ go run build.go build
+Version: 10.3.0, Linux Version: 10.3.0, Package Iteration: 1701789339pre
+building binaries build
+building grafana ./pkg/cmd/grafana
+rm -r ./bin/windows-amd64/grafana.exe
+rm -r ./bin/windows-amd64/grafana.exe.md5
+go build -ldflags -w -X main.version=10.3.0-pre -X main.commit=unknown-dev -X main.buildstamp=1701789339 -X main.buildBranch=main -buildmode=exe -o ./bin/windows-amd64/grafana.exe ./pkg/cmd/grafan
+...
+go: downloading github.com/segmentio/asm v1.2.0
+# runtime/cgo
+cgo: C compiler "gcc" not found: exec: "gcc": executable file not found in %PATH%
+exit status 1
+exit status 1
+```
+
+这里会有一个报错。
+
+### windows10 下的报错
+
+#### 1、安装 GCC
+
+Grafana 后端包含 SQLite，需要 GCC 进行编译。
+
+因此，在 Windows 上编译 Grafana 时，您需要安装 GCC。
+
+我们建议使用 [TDM-GCC](http://tdm-gcc.tdragon.net/download)。
+
+如果您使用 Scoop，最终可以通过 [Scoop](https://scoop.sh/) 安装 GCC。
+
+#### 2、安装 wire 
+
+您可以按照以下步骤构建后端：
+
+1） 按照安装 Wire 工具的说明进行安装: https://github.com/google/wire#installing
+
+
+```
+go install github.com/google/wire/cmd/wire@latest
+```
+
+and ensuring that `$GOPATH/bin` is added to your `$PATH`.
+
+2) 使用 Wire 生成代码：
+
+```
+λ wire gen -tags oss ./pkg/server ./pkg/cmd/grafana-cli/runner
+wire: github.com/grafana/grafana/pkg/server: wrote D:\_go\grafana-main\grafana-main\pkg\server\wire_gen.go
+```
+
+3) 运行二进制
+
+```
 go run build.go build
 ```
+
+编译日志如下：
+
+```
+D:\_go\grafana-main\grafana-main
+λ go run build.go build
+Version: 10.3.0, Linux Version: 10.3.0, Package Iteration: 1701791482pre
+building binaries build
+building grafana ./pkg/cmd/grafana
+rm -r ./bin/windows-amd64/grafana.exe
+rm -r ./bin/windows-amd64/grafana.exe.md5
+go build -ldflags -w -X main.version=10.3.0-pre -X main.commit=unknown-dev -X main.buildstamp=1701791483 -X main.buildBranch=main -buildmode=exe -o ./bin/windows-amd64/grafana.exe ./pkg/cmd/grafana
+go version
+go version go1.21.3 windows/amd64
+Targeting windows/amd64
+building binaries build
+building grafana-server ./pkg/cmd/grafana-server
+rm -r ./bin/windows-amd64/grafana-server.exe
+rm -r ./bin/windows-amd64/grafana-server.exe.md5
+go build -ldflags -w -X main.version=10.3.0-pre -X main.commit=unknown-dev -X main.buildstamp=1701791556 -X main.buildBranch=main -buildmode=exe -o ./bin/windows-amd64/grafana-server.exe ./pkg/cmd/grafana-server
+go version
+go version go1.21.3 windows/amd64
+Targeting windows/amd64
+building binaries build
+building grafana-cli ./pkg/cmd/grafana-cli
+rm -r ./bin/windows-amd64/grafana-cli.exe
+rm -r ./bin/windows-amd64/grafana-cli.exe.md5
+go build -ldflags -w -X main.version=10.3.0-pre -X main.commit=unknown-dev -X main.buildstamp=1701791558 -X main.buildBranch=main -buildmode=exe -o ./bin/windows-amd64/grafana-cli.exe ./pkg/cmd/grafana-cli
+go version
+go version go1.21.3 windows/amd64
+Targeting windows/amd64
+```
+
+Wire 是一个代码生成工具，它通过依赖注入自动连接组件。
+
+在 Wire 中，组件之间的依赖关系被表示为函数参数，鼓励显式初始化而不是使用全局变量。
+
+由于 Wire 在没有运行时状态或反射的情况下操作，因此使用 Wire 编写的代码即使用于手动编写的初始化，也是有用的。
+
 
 ## 启动 Grafana 服务器：
 
 ```bash
-go run build.go run
+grafana.exe server -homepath "D:\_go\grafana-main\grafana-main"
 ```
 
-在执行这些步骤后，你可以通过浏览器访问 [http://localhost:3000](http://localhost:3000) 来打开 Grafana Web 界面。
+-homepath 必须指定对应的项目 root 所在的路径。
+
+## 效果
+
+然后就可以访问：[http://localhost:3000/login](http://localhost:3000/login)
+
+默认的账户：admin/admin
+
+然后就可以登录成功了。
 
 
+
+------------------------------------------------------------------------------------
+
+# windows10 下后端 make 编译
+
+## 说明
+
+感觉基于 gcc 的方式真的麻烦，整了一大堆。
+
+试一下 make 的方式。
+
+## install
+
+> [https://gnuwin32.sourceforge.net/packages/make.htm](https://gnuwin32.sourceforge.net/packages/make.htm)
+
+安装完成后，配置完环境变量 PATH。
+
+我们尝试一下。
+
+```
+>make -v
+GNU Make 3.81
+```
+
+## 编译后端
+
+```
+make run
+```
+
+运行这个命令，需要使用 linux 的 shell，比如 git bash。
+
+但是估计会有各种参数报错，好像不影响。
+
+PS: 这种的好处就是相对比较方便一些，但是也应该会依赖前面的一些包下载。
+
+------------------------------------------------------------------------------------
 
 # yarn 报错
 
@@ -336,8 +545,169 @@ yarn install
 如果你遇到与依赖项或构建相关的问题，这是一个常用的操作来解决问题。但在执行之前，请确保你真的需要清空缓存，因为这会增加重新下载依赖项的时间。
 
 
+## 解释一下 make run 命令
+
+`make run` 是一个常见的命令，通常用于执行 Makefile 中定义的名为 "run" 的目标（target）。Makefile 是一个包含了构建项目规则的文件，其中包括了如何编译、链接和运行程序的规定。
+
+具体而言，`make run` 命令的执行过程如下：
+
+1. **make：** 这是一个构建工具，用于根据 Makefile 中的规则构建项目。`make` 命令会读取 Makefile 文件，查找并执行指定的目标。
+
+2. **run：** 这是 Makefile 中的一个目标（target）的名称。在 Makefile 中，可能定义了多个目标，每个目标代表一组构建规则。
+
+3. **执行规则：** 当执行 `make run` 时，`make` 会查找 Makefile 中定义的 "run" 目标，并执行与之相关联的规则。这些规则通常包括了运行程序的命令。
+
+举例来说，一个简单的 Makefile 可能如下所示：
+
+```make
+CC = gcc
+CFLAGS = -Wall
+
+all: myprogram
+
+myprogram: main.c utils.c
+    $(CC) $(CFLAGS) main.c utils.c -o myprogram
+
+run: myprogram
+    ./myprogram
+```
+
+在这个例子中：
+
+- `all` 是默认目标，它依赖于 `myprogram`。
+- `myprogram` 目标依赖于 `main.c` 和 `utils.c`，执行 `gcc` 命令将它们编译链接为可执行文件 `myprogram`。
+- `run` 目标依赖于 `myprogram`，执行 `./myprogram` 命令来运行程序。
+
+因此，当你运行 `make run` 时，`make` 会先构建 `myprogram`，然后执行 `./myprogram` 来运行程序。这使得 `make` 成为一个强大的自动化构建工具，可以管理复杂项目的构建过程。
+
+对于 grafana 来说，对应的 Makefile 很多。
+
+> [grafana Makefile](https://github.com/grafana/grafana/blob/main/Makefile)
+
+## 解释一下 go run build.go setup
+
+`go run build.go setup` 命令是在 Go 语言项目中使用的一种命令，通常用于运行一个名为 `setup` 的 Go 程序或脚本。该命令的含义可以分解为以下几个部分：
+
+- **`go`：** 这是 Go 语言的官方命令行工具，用于执行各种 Go 相关的操作，包括构建、运行、测试等。
+
+- **`run`：** 这是 `go` 工具的一个子命令，用于编译并运行 Go 源代码文件或通过 main 包执行的 Go 程序。
+
+- **`build.go`：** 这是一个 Go 源代码文件，通常包含了一些与项目构建相关的逻辑。文件名中的 `.go` 扩展名表明这是一个 Go 源代码文件。
+
+- **`setup`：** 这是 `build.go` 文件中的一个可执行的 Go 程序或函数名称。在 Go 语言中，可以通过在代码中定义一个 `main` 包并包含一个 `main` 函数来创建可执行程序。`setup` 是该程序或函数的名称，表示执行构建过程中的设置操作。
+
+因此，`go run build.go setup` 的目的是使用 Go 工具运行 `build.go` 文件中名为 `setup` 的可执行程序或函数。具体的操作取决于 `setup` 的实现，可能包括项目的初始化、依赖项的安装、配置文件的生成等。
+
+在实际项目中，这样的命令通常用于自动化项目的构建和设置过程，以确保项目能够顺利地编译、运行或进行其他必要的初始化步骤。
 
 
+## Q: 介绍一下 windows 下的 Scoop
+
+Scoop 是一个用于 Windows 操作系统的命令行包管理器，类似于其他操作系统上的包管理器（如 Linux 上的 apt、yum，macOS 上的 Homebrew）。
+
+Scoop 的目标是简化 Windows 上软件的安装、更新和卸载过程，使得管理开发工具、实用程序和其他软件变得更加方便。
+
+以下是 Scoop 的一些特点和使用方法：
+
+1. **简单安装：** Scoop 本身可以通过一行命令进行安装。在 PowerShell 中运行以下命令即可：
+
+    ```powershell
+    iwr -useb get.scoop.sh | iex
+    ```
+
+2. **用户级安装：** Scoop 安装在用户的主目录下，无需管理员权限。这使得用户可以在没有管理员权限的情况下自由管理软件。
+
+3. **软件安装：** 通过 Scoop，您可以使用类似下面的命令来安装软件：
+
+    ```powershell
+    scoop install <软件名称>
+    ```
+
+    例如，要安装 Git，可以运行：
+
+    ```powershell
+    scoop install git
+    ```
+
+4. **软件更新：** 使用 Scoop 可以轻松更新已安装的软件：
+
+    ```powershell
+    scoop update
+    ```
+
+5. **软件卸载：** Scoop 允许您卸载已安装的软件：
+
+    ```powershell
+    scoop uninstall <软件名称>
+    ```
+
+6. **桶（Buckets）：** Scoop 使用桶来组织软件的安装脚本和元数据。有许多社区维护的桶，用于支持大量常见的开源软件。
+
+7. **自定义桶：** 用户可以创建自己的桶，以添加、修改或删除软件。
+
+8. **环境变量管理：** Scoop 可以自动添加软件安装目录到系统的 PATH 环境变量中，方便直接在命令行中运行已安装的工具。
+
+总体而言，Scoop 是一个强大而灵活的工具，使得在 Windows 环境中管理软件变得更加便捷。
+
+### 实际 windows10 安装笔记
+
+```
+PS C:\Users\Administrator> iwr -useb get.scoop.sh | iex                                                                 Initializing...
+Running the installer as administrator is disabled by default, see https://github.com/ScoopInstaller/Install#for-admin for details.
+Abort.
+```
+
+直接报错，查文档，建议：
+
+```sh
+iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+```
+
+继续报错：
+
+```
+PS C:\Users\Administrator> iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+Initializing...
+PowerShell requires an execution policy in [Unrestricted, RemoteSigned, ByPass] to run Scoop. For example, to set the execution policy to 'RemoteSigned' please run 'Set-ExecutionPolicy RemoteSigned -Scope CurrentUser'.
+Abort.
+```
+
+执行下面的脚本；
+
+```sh
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+选择 A:
+
+```
+执行策略更改
+执行策略可帮助你防止执行不信任的脚本。更改执行策略可能会产生安全风险，如 https:/go.microsoft.com/fwlink/?LinkID=135170
+中的 about_Execution_Policies 帮助主题所述。是否要更改执行策略?
+[Y] 是(Y)  [A] 全是(A)  [N] 否(N)  [L] 全否(L)  [S] 暂停(S)  [?] 帮助 (默认值为“N”): A
+```
+
+重新运行：
+
+```sh
+iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+```
+
+安装成功日志：
+
+```
+Initializing...
+Downloading ...
+fatal: fetch-pack: invalid index-pack output
+fetch-pack: unexpected disconnect while reading sideband packet
+PS C:\Users\Administrator> ^C
+PS C:\Users\Administrator> iex "& {$(irm get.scoop.sh)} -RunAsAdmin"
+Initializing...
+Downloading ...
+Creating shim...
+Adding ~\scoop\shims to your path.
+Scoop was installed successfully!
+```
 
 # 参考资料
 
