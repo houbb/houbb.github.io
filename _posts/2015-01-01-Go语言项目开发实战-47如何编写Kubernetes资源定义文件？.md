@@ -3,7 +3,7 @@ layout: post
 title:  Go语言项目开发实战-47如何编写Kubernetes资源定义文件？
 date:   2015-01-01 23:20:27 +0800
 categories: [Go语言项目开发实战]
-tags: [Go语言项目开发实战, other]
+tags: [Go语言项目开发实战, go, other]
 published: true
 ---
 

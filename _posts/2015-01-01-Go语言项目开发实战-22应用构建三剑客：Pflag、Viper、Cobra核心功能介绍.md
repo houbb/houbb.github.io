@@ -3,7 +3,7 @@ layout: post
 title:  Go语言项目开发实战-22应用构建三剑客：Pflag、Viper、Cobra核心功能介绍
 date:   2015-01-01 23:20:27 +0800
 categories: [Go语言项目开发实战]
-tags: [Go语言项目开发实战, other]
+tags: [Go语言项目开发实战, go, other]
 published: true
 ---
 
