@@ -156,6 +156,8 @@ type User struct {
 	Name string `json:"name"`
 }
 
+
+
 func handler(w http.ResponseWriter, r *http.Request) {
 	// Parse query parameters
 	requestID := r.URL.Query().Get("requestId")
@@ -220,7 +222,239 @@ Request ID: 123
 Request Date: 20231206[{"id":"1","name":"John"},{"id":"2","name":"Jane"}]
 ```
 
+# 04-加签
+
+## 说明
+
+接口调用，需要add一个简单那的校验，保障安全。
+
+约定字段：
+
+requestId
+requestTime
+checksum
+
+## 加签算法
+
+checksum = md5(requestId+token);
+
+token 是一个双方约定的字符串秘钥。
+
+
+
+## 实现
+
+```go
+package main
+
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"encoding/json"
+	"fmt"
+	"net/http"
+)
+
+type User struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+func calculateMD5(input string) string {
+	// 创建 MD5 散列算法的实例
+	hasher := md5.New()
+
+	// 将字符串转换为字节数组并写入 hasher
+	hasher.Write([]byte(input))
+
+	// 计算 MD5 散列值
+	hash := hasher.Sum(nil)
+
+	// 将字节数组转换为十六进制字符串
+	md5String := hex.EncodeToString(hash)
+
+	return md5String
+}
+
+// 写一个方法参数有三个：requestId, requestTime, checksum 要求不可为空。
+func validateRequest(requestID, requestTime, checksum string) bool {
+	fmt.Printf("requestID: %s, requestTime: %s, checksum: %s \n", requestID, requestTime, checksum)
+
+	// 检查参数是否为空
+	if requestID == "" || requestTime == "" || checksum == "" {
+		return false
+	}
+
+	// md5 签名校验
+	token := "123456"
+
+	expectChecksum := calculateMD5(requestID + token)
+	if expectChecksum != checksum {
+		fmt.Println("签名校验失败，expect=" + expectChecksum)
+		return false
+	}
+
+	return true
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	// Parse query parameters
+	requestID := r.URL.Query().Get("requestId")
+	requestTime := r.URL.Query().Get("requestTime")
+	checksum := r.URL.Query().Get("checksum")
+
+	//参数校验
+	valid := validateRequest(requestID, requestTime, checksum)
+	if !valid {
+		// 参数校验
+		http.Error(w, "paramCheckFailed", http.StatusBadRequest)
+		return
+	}
+
+	// fmt.Fprintf(w, "Request ID: %s\nRequest Date: %s", requestID, requestDate)
+
+	// Create a list of users (for demonstration purposes)
+	users := []User{
+		{ID: "1", Name: "John"},
+		{ID: "2", Name: "Jane"},
+		// Add more users as needed
+	}
+
+	// Convert the list of users to JSON
+	responseJSON, err := json.Marshal(users)
+	if err != nil {
+		http.Error(w, "Error encoding JSON", http.StatusInternalServerError)
+		return
+	}
+
+	// Set the Content-Type header to indicate JSON response
+	w.Header().Set("Content-Type", "application/json")
+
+	// Respond with the JSON-encoded list of users
+	w.Write(responseJSON)
+}
+
+func main() {
+	// Register the handler function
+	http.HandleFunc("/", handler)
+
+	// Start the HTTP server and listen on port 8080
+	port := 8080
+	fmt.Printf("Server is listening on :%d...\n", port)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+}
+```
+
+
+## 测试
+
+访问 http://localhost:8080/?requestId=123&requestTime=20231206&checksum=567
+
+
+返回：
+
+```
+paramCheckFailed
+```
+
+我们把签名修正一下  http://localhost:8080/?requestId=123&requestTime=20231206&checksum=1e191d851b3b49a248f4ea62f6b06410
+
+正常返回：
+
+```json
+[{"id":"1","name":"John"},{"id":"2","name":"Jane"}]
+```
+
+# 拓展阅读
+
+> [go 访问 neo4j](https://houbb.github.io/2018/01/08/neo4j-11-go-access)
+
 # chat
+
+## Q: fmt 输出一行内容到控台 go 怎么实现？
+
+在 Go 中，可以使用 `fmt` 包中的 `Print`、`Printf`、`Println` 函数来输出内容到控制台。以下是一些简单的例子：
+
+1. **Print 函数：** 输出不带换行符的内容。
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Print("Hello, World!")
+}
+```
+
+2. **Printf 函数：** 使用格式化字符串输出内容。
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    name := "Alice"
+    age := 30
+    fmt.Printf("Name: %s, Age: %d\n", name, age)
+}
+```
+
+3. **Println 函数：** 输出带换行符的内容。
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello, World!")
+}
+```
+
+在这些例子中，使用 `fmt` 包中的不同函数可以实现向控制台输出不同格式的内容。你可以根据需要选择适当的函数。
+
+## Q: 写一个方法参数有三个：requestId, requestTime, checksum 要求不可为空。
+
+你可以创建一个函数来验证这三个参数是否都不为空，并返回一个布尔值表示验证结果。以下是一个示例：
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func validateRequest(requestID, requestTime, checksum string) bool {
+	// 检查参数是否为空
+	if requestID == "" || requestTime == "" || checksum == "" {
+		return false
+	}
+	return true
+}
+
+func main() {
+	// 示例调用
+	valid := validateRequest("123", "2023-01-01", "abcdef123456")
+	if valid {
+		fmt.Println("Request is valid.")
+	} else {
+		fmt.Println("Invalid request: One or more parameters are empty.")
+	}
+}
+```
+
+在这个例子中，`validateRequest` 函数接受三个字符串参数：`requestID`、`requestTime`、`checksum`。
+
+它通过检查这三个参数是否为空来进行验证，如果有任何一个为空，则返回 `false` 表示验证失败，否则返回 `true` 表示验证通过。
+
+在 `main` 函数中，进行了一个示例调用并输出相应的信息。
+
+你可以根据实际需要进行修改和集成到你的代码中。
 
 ## Q: go 如何实现 http server?
 
@@ -414,8 +648,6 @@ envTag: prod/test
 # 参考资料
 
 chat
-
-
 
 * any list
 {:toc}
