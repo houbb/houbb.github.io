@@ -3,7 +3,7 @@ layout: post
 title:  22讲通关Go语言~完-04集合类型：如何正确使用array、slice和map？
 date:   2015-01-01 23:20:27 +0800
 categories: [22讲通关Go语言~完]
-tags: [22讲通关Go语言~完, other]
+tags: [22讲通关Go语言~完, go, other]
 published: true
 ---
 

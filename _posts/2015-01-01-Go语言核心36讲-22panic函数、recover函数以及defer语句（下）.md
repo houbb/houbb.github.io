@@ -3,7 +3,7 @@ layout: post
 title:  Go语言核心36讲-22panic函数、recover函数以及defer语句（下）
 date:   2015-01-01 23:20:27 +0800
 categories: [Go语言核心36讲]
-tags: [Go语言核心36讲, other]
+tags: [Go语言核心36讲, go, other]
 published: true
 ---
 

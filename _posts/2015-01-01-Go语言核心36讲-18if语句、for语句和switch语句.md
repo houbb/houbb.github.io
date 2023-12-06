@@ -3,7 +3,7 @@ layout: post
 title:  Go语言核心36讲-18if语句、for语句和switch语句
 date:   2015-01-01 23:20:27 +0800
 categories: [Go语言核心36讲]
-tags: [Go语言核心36讲, other]
+tags: [Go语言核心36讲, go, other]
 published: true
 ---
 

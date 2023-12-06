@@ -3,7 +3,7 @@ layout: post
 title:  22讲通关Go语言~完-21网络编程：Go语言如何玩转RESTfulAPI服务？
 date:   2015-01-01 23:20:27 +0800
 categories: [22讲通关Go语言~完]
-tags: [22讲通关Go语言~完, other]
+tags: [22讲通关Go语言~完, go, other]
 published: true
 ---
 

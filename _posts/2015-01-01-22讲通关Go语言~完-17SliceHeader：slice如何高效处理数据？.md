@@ -3,7 +3,7 @@ layout: post
 title:  22讲通关Go语言~完-17SliceHeader：slice如何高效处理数据？
 date:   2015-01-01 23:20:27 +0800
 categories: [22讲通关Go语言~完]
-tags: [22讲通关Go语言~完, other]
+tags: [22讲通关Go语言~完, go, other]
 published: true
 ---
 
