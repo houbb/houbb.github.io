@@ -3,7 +3,7 @@ layout: post
 title:  TonyBai·Go语言第一课-31并发：Go的并发方案实现方案是怎样的？
 date:   2015-01-01 23:20:27 +0800
 categories: [TonyBai·Go语言第一课]
-tags: [TonyBai·Go语言第一课, other]
+tags: [TonyBai·Go语言第一课, go, go-lang, other]
 published: true
 ---
 

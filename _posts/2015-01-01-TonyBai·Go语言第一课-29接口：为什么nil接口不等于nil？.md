@@ -3,7 +3,7 @@ layout: post
 title:  TonyBai·Go语言第一课-29接口：为什么nil接口不等于nil？
 date:   2015-01-01 23:20:27 +0800
 categories: [TonyBai·Go语言第一课]
-tags: [TonyBai·Go语言第一课, other]
+tags: [TonyBai·Go语言第一课, go, go-lang, other]
 published: true
 ---
 

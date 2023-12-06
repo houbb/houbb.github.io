@@ -3,7 +3,7 @@ layout: post
 title:  TonyBai·Go语言第一课-14常量：Go在“常量”设计上的创新有哪些？
 date:   2015-01-01 23:20:27 +0800
 categories: [TonyBai·Go语言第一课]
-tags: [TonyBai·Go语言第一课, other]
+tags: [TonyBai·Go语言第一课, go, go-lang, other]
 published: true
 ---
 

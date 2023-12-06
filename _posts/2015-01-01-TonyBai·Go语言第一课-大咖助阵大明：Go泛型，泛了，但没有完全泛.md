@@ -3,7 +3,7 @@ layout: post
 title:  TonyBai·Go语言第一课-大咖助阵大明：Go泛型，泛了，但没有完全泛
 date:   2015-01-01 23:20:27 +0800
 categories: [TonyBai·Go语言第一课]
-tags: [TonyBai·Go语言第一课, other]
+tags: [TonyBai·Go语言第一课, go, go-lang, other]
 published: true
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title:  TonyBai·Go语言第一课-加餐我“私藏”的那些优质且权威的Go语言学习资料
 date:   2015-01-01 23:20:27 +0800
 categories: [TonyBai·Go语言第一课]
-tags: [TonyBai·Go语言第一课, other]
+tags: [TonyBai·Go语言第一课, go, go-lang, other]
 published: true
 ---
 

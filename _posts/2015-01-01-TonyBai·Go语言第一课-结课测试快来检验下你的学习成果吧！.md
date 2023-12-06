@@ -3,7 +3,7 @@ layout: post
 title:  TonyBai·Go语言第一课-结课测试快来检验下你的学习成果吧！
 date:   2015-01-01 23:20:27 +0800
 categories: [TonyBai·Go语言第一课]
-tags: [TonyBai·Go语言第一课, other]
+tags: [TonyBai·Go语言第一课, go, go-lang, other]
 published: true
 ---
 
