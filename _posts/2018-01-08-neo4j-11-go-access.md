@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Neo4j-11-neo4j go access go 直接访问 neo4j
+title:  Neo4j-11-neo4j go access go 直接访问 neo4j go neo4j
 date:  2018-1-8 14:18:33 +0800
 categories: [SQL]
-tags: [nosql, neo4j]
+tags: [nosql, neo4j, go, go-lang]
 published: true
 ---
 
