@@ -11,6 +11,22 @@ published: true
 
 本地直接定时加载。
 
+## 设计
+
+总体的数据加载，需要一个开关 configPullFlag
+
+定时调度的模式：configPullScheduleMode: all/update   
+
+all: 全量（默认）
+
+update: 更新增量。
+
+----------------------
+
+匹配时，有一个专门的匹配策略。
+
+
+
 
 
 # chat
