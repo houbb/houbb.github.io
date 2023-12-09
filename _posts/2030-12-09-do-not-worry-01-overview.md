@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 解忧杂货铺（开源项目/数据结构与算法/常用工具/实用项目/技术专题）汇总梳理
+title: 解忧杂货铺
 date: 2030-12-09 21:01:55 +0800
 categories: [Tool]
 tags: [tool, index, sh]
@@ -15,7 +15,7 @@ published: true
 
 老板娘笑着说：“我们没有豆浆和油条，这里是江湖客栈，有少年侠客，有硝烟浪漫，有平静下涌动的暗流，有消灭下猜不透的人心。开玩笑的，一共四块八毛八。”
 
-![解忧杂货铺](https://houbb.github.io/no-worry.png)
+![解忧杂货铺](https://houbb.github.io/no-worry.jpg)
 
 # 开源项目
 

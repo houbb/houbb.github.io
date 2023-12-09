@@ -18,6 +18,10 @@ published: true
 
 [java 如何实现开箱即用的敏感词控台服务？](https://mp.weixin.qq.com/s/rQo75cfMU_OEbTJa0JGMGg)
 
+[各大平台连敏感词库都没有的吗？](https://mp.weixin.qq.com/s?__biz=MzUyNjE3OTAyMw==&mid=2247485308&idx=1&sn=8ebb39b0cecde7f2458769a79396b2d3&chksm=fa1388dccd6401cabd640c3e3f4de33262d4e68d049ca478d18a0cd2f10deecdd87e0060394e&token=617356039&lang=zh_CN#rd)
+
+[sensitive-word 敏感词/脏词开源工具-v.0.10.0-脏词分类标签支持](https://juejin.cn/post/7308782855941292058?searchId=20231209140414C082B3CCF1E7B2316EF9)
+
 # 忽略字符
 
 ## 说明
@@ -128,7 +132,7 @@ Assert.assertEquals("[政-治, 国家]", sensitiveWordBs.tags("五星红旗").to
 
 梳理了大量的敏感词标签文件，可以让我们的敏感词更加方便。
 
-关注【老马啸西风】gzh，回复【敏感词】即可获取。
+关注 gzh【老马啸西风】，回复【敏感词】即可获取。
 
 # 开源框架
 
