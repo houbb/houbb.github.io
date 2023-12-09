@@ -7,26 +7,11 @@ tags: [tree, data-struct, github, sensitive, sf]
 published: true
 ---
 
-
-# 拓展阅读
-
-[敏感词工具实现思路](https://houbb.github.io/2020/01/07/sensitive-word)
-
-[DFA 算法讲解](https://houbb.github.io/2020/01/07/sensitive-word-dfa)
-
-[敏感词库优化流程](https://houbb.github.io/2020/01/07/sensitive-word-slim)
-
-[java 如何实现开箱即用的敏感词控台服务？](https://mp.weixin.qq.com/s/rQo75cfMU_OEbTJa0JGMGg)
-
-[各大平台连敏感词库都没有的吗？](https://mp.weixin.qq.com/s?__biz=MzUyNjE3OTAyMw==&mid=2247485308&idx=1&sn=8ebb39b0cecde7f2458769a79396b2d3&chksm=fa1388dccd6401cabd640c3e3f4de33262d4e68d049ca478d18a0cd2f10deecdd87e0060394e&token=617356039&lang=zh_CN#rd)
-
-[sensitive-word 敏感词/脏词开源工具-v.0.10.0-脏词分类标签支持](https://juejin.cn/post/7308782855941292058?searchId=20231209140414C082B3CCF1E7B2316EF9)
-
 # 忽略字符
 
 ## 说明
 
-我们的敏感词一般都是比较连续的，比如【傻帽】
+我们的敏感词一般都是比较连续的，比如 傻帽
 
 那就有大聪明发现，可以在中间加一些字符，比如【傻!@#$帽】跳过检测，但是骂人等攻击力不减。
 
@@ -35,6 +20,8 @@ published: true
 我们可以指定特殊字符的跳过集合，忽略掉这些无意义的字符即可。
 
 v0.11.0 开始支持
+
+![忽略字符](https://img-blog.csdnimg.cn/direct/1fd8876512a24d1c92e73bb29dcbf1e3.jpeg#pic_center)
 
 ## 例子
 
@@ -132,7 +119,23 @@ Assert.assertEquals("[政-治, 国家]", sensitiveWordBs.tags("五星红旗").to
 
 梳理了大量的敏感词标签文件，可以让我们的敏感词更加方便。
 
-关注 gzh【老马啸西风】，回复【敏感词】即可获取。
+这两个资料阅读可在下方文章获取：
+
+> [v0.11.0-敏感词新特性](https://mp.weixin.qq.com/s/m40ZnR6YF6WgPrArUSZ_0g)
+
+# 拓展阅读
+
+[敏感词工具实现思路](https://houbb.github.io/2020/01/07/sensitive-word)
+
+[DFA 算法讲解](https://houbb.github.io/2020/01/07/sensitive-word-dfa)
+
+[敏感词库优化流程](https://houbb.github.io/2020/01/07/sensitive-word-slim)
+
+[java 如何实现开箱即用的敏感词控台服务？](https://mp.weixin.qq.com/s/rQo75cfMU_OEbTJa0JGMGg)
+
+[各大平台连敏感词库都没有的吗？](https://mp.weixin.qq.com/s?__biz=MzUyNjE3OTAyMw==&mid=2247485308&idx=1&sn=8ebb39b0cecde7f2458769a79396b2d3&chksm=fa1388dccd6401cabd640c3e3f4de33262d4e68d049ca478d18a0cd2f10deecdd87e0060394e&token=617356039&lang=zh_CN#rd)
+
+[sensitive-word 敏感词/脏词开源工具-v.0.10.0-脏词分类标签支持](https://juejin.cn/post/7308782855941292058?searchId=20231209140414C082B3CCF1E7B2316EF9)
 
 # 开源框架
 
