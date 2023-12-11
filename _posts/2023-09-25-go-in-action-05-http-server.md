@@ -635,6 +635,64 @@ func main() {
 
 这些库都是在 Go 社区中广受欢迎的，并且有着丰富的功能和活跃的维护者。根据具体的需求和偏好，你可以选择适合自己项目的库。
 
+## Q: go 如何添加多个 http 请求地址？
+
+在 Go 中，你可以使用 `http.ServeMux` 来创建多个 HTTP 请求地址的处理器。
+
+每个请求地址都可以与一个处理函数关联。
+
+以下是一个简单的例子，演示如何使用 `http.ServeMux` 处理多个请求地址：
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+)
+
+func main() {
+	// 创建一个 ServeMux
+	mux := http.NewServeMux()
+
+	// 注册处理函数
+	mux.HandleFunc("/", handleRoot)
+	mux.HandleFunc("/hello", handleHello)
+	mux.HandleFunc("/goodbye", handleGoodbye)
+
+	// 启动 HTTP 服务器并监听端口
+	port := 8080
+	fmt.Printf("Server is listening on :%d...\n", port)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+}
+
+func handleRoot(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Welcome to the root page!")
+}
+
+func handleHello(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Hello, World!")
+}
+
+func handleGoodbye(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, "Goodbye, World!")
+}
+```
+
+在这个例子中：
+
+1. 使用 `http.NewServeMux()` 创建一个 `http.ServeMux`。
+
+2. 使用 `mux.HandleFunc` 注册处理函数，将不同的请求地址与不同的处理函数关联起来。
+
+3. 使用 `http.ListenAndServe` 启动一个 HTTP 服务器，并将创建的 `ServeMux` 作为处理器传递给服务器。
+
+现在，你可以通过访问不同的路径，如 `http://localhost:8080/`、`http://localhost:8080/hello`、`http://localhost:8080/goodbye` 来测试不同的处理函数。每个路径都会触发相应的处理函数。
+
+
 # todo
 
 每天定时拉取。
