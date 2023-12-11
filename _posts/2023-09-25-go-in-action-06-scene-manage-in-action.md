@@ -522,9 +522,168 @@ localhost:8080/edit
 
 我们把 service 方法改为具体的 neo4j 实现。
 
+> [Neo4j-11-neo4j go access go 直接访问 neo4j go neo4j](https://houbb.github.io/2018/01/08/neo4j-11-go-access)
+
 # 5. http 测试验证
 
 # chat
+
+## Q: go 如何访问 neo4j
+
+在 Go 中，可以使用第三方的驱动程序来访问 Neo4j 数据库。一个常用的 Neo4j 驱动是 `github.com/neo4j/neo4j-go-driver`。以下是一个简单的例子，演示如何使用该驱动连接 Neo4j 数据库并执行一些基本的操作：
+
+首先，你需要安装该驱动：
+
+```bash
+go get -u github.com/neo4j/neo4j-go-driver/v4
+```
+
+然后，你可以使用以下示例代码来连接 Neo4j 数据库：
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/neo4j/neo4j-go-driver/v4"
+)
+
+func main() {
+	// Neo4j 数据库连接 URI
+	uri := "bolt://localhost:7687"
+
+	// 用户名和密码
+	username := "your_username"
+	password := "your_password"
+
+	// 创建 Neo4j 驱动的配置
+	config := neo4j.NewConfig()
+	config.Encrypted = false // 如果 Neo4j 未启用加密，设置为 false
+
+	// 建立连接
+	driver, err := neo4j.NewDriver(uri, neo4j.BasicAuth(username, password, ""), config)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer driver.Close()
+
+	// 获取 Neo4j 会话
+	session := driver.NewSession(neo4j.SessionConfig{})
+	defer session.Close()
+
+	// 执行 Cypher 查询
+	result, err := session.Run("CREATE (n:Person {name: 'John Doe'}) RETURN n", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 处理查询结果
+	for result.Next() {
+		fmt.Println(result.Record().GetByIndex(0).(string))
+	}
+
+	if err := result.Err(); err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+请注意，这只是一个简单的示例，实际情况下，你可能需要根据你的数据库配置、认证方式等进行适当的修改。确保你的 Neo4j 服务器正在运行，并根据实际情况修改连接字符串、用户名和密码。
+
+这个例子中，我们创建了一个名为 `Person` 的节点，并通过 Cypher 查询语句返回了该节点的信息。
+
+你可以根据你的需求编写适当的 Cypher 查询语句和相应的处理逻辑。
+
+## Q: go 中有没有类似于 ogm 的，直接操作对象的访问 neo4j 的组件？
+
+在 Go 中，虽然没有像某些其他语言（如 Java）中那样成熟的 Object-Graph Mapping（OGM）库，但有一些轻量级的 Neo4j 驱动和库，可以帮助你在 Go 中进行 Neo4j 数据库的操作。
+
+以下是一个常用的 Neo4j 驱动 `github.com/neo4j/neo4j-go-driver/v4` 的一个使用示例，演示如何操作 Neo4j 数据库，并将结果映射到 Go 对象：
+
+首先，确保你已经安装了 Neo4j Go 驱动：
+
+```bash
+go get -u github.com/neo4j/neo4j-go-driver/v4
+```
+
+然后，你可以使用以下示例代码来进行简单的数据操作：
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/neo4j/neo4j-go-driver/v4"
+)
+
+// Person 结构体定义
+type Person struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+func main() {
+	// Neo4j 数据库连接 URI
+	uri := "bolt://localhost:7687"
+
+	// 用户名和密码
+	username := "your_username"
+	password := "your_password"
+
+	// 创建 Neo4j 驱动的配置
+	config := neo4j.NewConfig()
+	config.Encrypted = false // 如果 Neo4j 未启用加密，设置为 false
+
+	// 建立连接
+	driver, err := neo4j.NewDriver(uri, neo4j.BasicAuth(username, password, ""), config)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer driver.Close()
+
+	// 获取 Neo4j 会话
+	session := driver.NewSession(neo4j.SessionConfig{})
+	defer session.Close()
+
+	// 执行 Cypher 查询
+	result, err := session.Run("MATCH (n:Person) RETURN n", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 处理查询结果
+	var people []Person
+	for result.Next() {
+		record := result.Record()
+		person := Person{
+			ID:   fmt.Sprintf("%v", record.Get("n").(neo4j.Node).Id()),
+			Name: record.Get("n").(neo4j.Node).Props()["name"].(string),
+		}
+		people = append(people, person)
+	}
+
+	if err := result.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	// 打印查询结果
+	fmt.Printf("People: %+v\n", people)
+}
+```
+
+在这个例子中：
+
+- 定义了一个 `Person` 结构体，用于表示 Neo4j 中的节点。
+- 执行了一个简单的 Cypher 查询，将查询结果映射到 `Person` 结构体中。
+- 注意，这只是一个基础示例，实际应用中可能需要更复杂的映射逻辑和更灵活的查询。
+
+请注意，由于 Go 中没有类似于 Java 中强大的反射机制，目前没有像一些 OGM 那样全面的对象映射工具。
+
+你可能需要手动处理查询结果和结构体之间的映射。
 
 ## Q: add service
 
