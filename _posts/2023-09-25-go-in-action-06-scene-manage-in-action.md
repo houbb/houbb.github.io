@@ -984,7 +984,128 @@ if err != nil {
 
 上述代码中，`jsonData` 是编码后的 JSON 数据，而 `err` 是可能的错误信息。确保检查和处理错误是 Go 代码的良好实践。
 
+## Q: go 如何将对象插入到数据库中?
 
+go 实现一个 add 方法，入参是一个对象，每个属性都是 srting 类型。
+
+requestId 
+checksum
+appName
+methodName
+sceneCode
+sceneName
+sceneStatus
+conditionJson
+
+如何把这个对象插入到 neo4j 数据库中？
+
+要将一个对象插入到 Neo4j 数据库中，你需要使用 Neo4j 驱动程序执行一个 Cypher 查询，将对象的属性映射到相应的节点。以下是一个示例代码，演示如何使用 `github.com/neo4j/neo4j-go-driver/v4` 驱动将对象插入到 Neo4j 数据库中：
+
+首先，确保你已经安装了 Neo4j Go 驱动：
+
+```bash
+go get -u github.com/neo4j/neo4j-go-driver/v4
+```
+
+然后，你可以使用以下示例代码：
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"github.com/neo4j/neo4j-go-driver/v4"
+)
+
+// RequestData 结构体定义
+type RequestData struct {
+	RequestID      string `json:"requestId"`
+	Checksum       string `json:"checksum"`
+	AppName        string `json:"appName"`
+	MethodName     string `json:"methodName"`
+	SceneCode      string `json:"sceneCode"`
+	SceneName      string `json:"sceneName"`
+	SceneStatus    string `json:"sceneStatus"`
+	ConditionJSON  string `json:"conditionJson"`
+}
+
+func main() {
+	// Neo4j 数据库连接 URI
+	uri := "bolt://localhost:7687"
+
+	// 用户名和密码
+	username := "your_username"
+	password := "your_password"
+
+	// 创建 Neo4j 驱动的配置
+	config := neo4j.NewConfig()
+	config.Encrypted = false // 如果 Neo4j 未启用加密，设置为 false
+
+	// 建立连接
+	driver, err := neo4j.NewDriver(uri, neo4j.BasicAuth(username, password, ""), config)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer driver.Close()
+
+	// 获取 Neo4j 会话
+	session := driver.NewSession(neo4j.SessionConfig{})
+	defer session.Close()
+
+	// 创建一个 RequestData 对象
+	requestData := RequestData{
+		RequestID:     "123",
+		Checksum:      "abcdef",
+		AppName:       "MyApp",
+		MethodName:    "add",
+		SceneCode:     "001",
+		SceneName:     "Scene1",
+		SceneStatus:   "active",
+		ConditionJSON: `{"key": "value"}`,
+	}
+
+	// 执行插入节点的 Cypher 查询
+	result, err := session.Run(
+		`CREATE (r:RequestData {requestId: $requestId, checksum: $checksum, appName: $appName, methodName: $methodName, 
+			sceneCode: $sceneCode, sceneName: $sceneName, sceneStatus: $sceneStatus, conditionJson: $conditionJson}) RETURN r`,
+		map[string]interface{}{
+			"requestId":      requestData.RequestID,
+			"checksum":       requestData.Checksum,
+			"appName":        requestData.AppName,
+			"methodName":     requestData.MethodName,
+			"sceneCode":      requestData.SceneCode,
+			"sceneName":      requestData.SceneName,
+			"sceneStatus":    requestData.SceneStatus,
+			"conditionJson":  requestData.ConditionJSON,
+		},
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// 处理查询结果
+	for result.Next() {
+		record := result.Record()
+		node := record.GetByIndex(0).(neo4j.Node)
+		fmt.Printf("Created Node ID: %d\n", node.Id())
+	}
+
+	if err := result.Err(); err != nil {
+		log.Fatal(err)
+	}
+}
+```
+
+在这个例子中：
+
+- 定义了一个 `RequestData` 结构体，表示要插入到 Neo4j 中的节点。
+- 创建了一个 `RequestData` 对象，并使用 Cypher 查询将其插入到 Neo4j 数据库中。
+- 注意 Cypher 查询中使用了参数占位符 `$requestId`、`$checksum` 等，并通过 `map[string]interface{}` 提供了参数值。这有助于防止 Cypher 注入攻击。
+- 打印了插入节点后的 ID，可以根据实际需要进行处理。
+
+请确保你的 Neo4j 服务器正在运行，并根据实际情况修改连接字符串、用户名和密码。此外，考虑到安全性，实际应用中应该进行错误处理、参数验证等更全面的处理。
 
 # 参考资料
 
