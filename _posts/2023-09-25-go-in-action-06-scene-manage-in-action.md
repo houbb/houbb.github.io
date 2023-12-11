@@ -838,6 +838,301 @@ CREATE CONSTRAINT FOR (p:SceneData) REQUIRE p.sceneCode IS UNIQUE;
 {"requestId":"123","checksum":"abcdef","sceneCode":"001"}
 ```
 
+# 6. 添加统一的参数校验
+
+所有的参数不可为空：
+
+
+## 源码
+
+```go
+package scene
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+
+	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
+)
+
+// HTTPService 结构体定义
+type SceneService struct {
+}
+
+// RequestInfo 结构体定义
+type AddRequestInfo struct {
+	RequestID     string `json:"requestId"`
+	Checksum      string `json:"checksum"`
+	AppName       string `json:"appName"`
+	MethodName    string `json:"methodName"`
+	SceneCode     string `json:"sceneCode"`
+	SceneName     string `json:"sceneName"`
+	SceneStatus   string `json:"sceneStatus"`
+	ConditionJSON string `json:"conditionJson"`
+}
+
+// GetNeo4jSession 函数用于获取 Neo4j 会话
+func GetNeo4jSession() (neo4j.Session, error) {
+	// Neo4j数据库连接信息
+	neo4jURI := "bolt://localhost:7687"
+	username := "neo4j"
+	password := "12345678"
+
+	// 创建Neo4j数据库驱动
+	driver, err := neo4j.NewDriver(neo4jURI, neo4j.BasicAuth(username, password, ""))
+	if err != nil {
+		fmt.Println("Error creating Neo4j driver:", err)
+		return nil, err
+	}
+	// defer driver.Close()
+
+	// 创建数据库会话
+	session, err := driver.Session(neo4j.AccessModeWrite)
+	if err != nil {
+		fmt.Println("Error creating Neo4j session:", err)
+		return nil, err
+	}
+	// defer session.Close()
+
+	return session, nil
+}
+
+// 让数据景区到毫秒
+func getUnixTimestamp() int64 {
+	// 获取当前时间的纳秒级 Unix 时间戳
+	unixTimestampNano := time.Now().UnixNano()
+
+	// 转换为毫秒级 Unix 时间戳
+	unixTimestampMillis := unixTimestampNano / int64(time.Millisecond)
+
+	return unixTimestampMillis
+}
+
+// 是否为空
+func isEmpty(text string) bool {
+	if text == "" {
+		return true
+	}
+	if len(text) == 0 {
+		return true
+	}
+	return false
+}
+
+// add 方法，接受一个 RequestInfo 对象，并输出 JSON 格式的字符串
+func (s *SceneService) Add(w http.ResponseWriter, r *http.Request) {
+	// 转换为 json
+	var requestData AddRequestInfo
+	err := json.NewDecoder(r.Body).Decode(&requestData)
+	if err != nil {
+		http.Error(w, "Error decoding JSON request body", http.StatusBadRequest)
+		return
+	}
+	// 改为日志？
+	fmt.Printf("req, %s\n", requestData)
+
+	// 参数校验
+	if isEmpty(requestData.AppName) || isEmpty(requestData.MethodName) || isEmpty(requestData.SceneCode) || isEmpty(requestData.SceneName) || isEmpty(requestData.SceneStatus) || isEmpty(requestData.ConditionJSON) {
+		http.Error(w, "paramCheckFailed", http.StatusBadRequest)
+		return
+	}
+
+	// 签名校验
+
+	// neo4j 持久化
+	// 执行插入节点的 Cypher 查询
+	session, err := GetNeo4jSession()
+	if err != nil {
+		// 日志输出
+		http.Error(w, "Error GetNeo4jSession", http.StatusInternalServerError)
+		return
+	}
+	defer session.Close()
+	_, runErr := session.Run(
+		`CREATE (s:SceneData {appName: $appName, methodName: $methodName, 
+			sceneCode: $sceneCode, sceneName: $sceneName, sceneStatus: $sceneStatus, conditionJson: $conditionJson,
+			createTime: $createTime, updateTime: $updateTime}) RETURN s`,
+		map[string]interface{}{
+			"appName":       requestData.AppName,
+			"methodName":    requestData.MethodName,
+			"sceneCode":     requestData.SceneCode,
+			"sceneName":     requestData.SceneName,
+			"sceneStatus":   requestData.SceneStatus,
+			"conditionJson": requestData.ConditionJSON,
+			"createTime":    getUnixTimestamp(),
+			"updateTime":    getUnixTimestamp(),
+		},
+	)
+
+	if runErr != nil {
+		// error 后续改为日志
+		log.Printf("Error occurred: %v\n", runErr)
+
+		http.Error(w, "Error Add", http.StatusInternalServerError)
+		return
+	}
+
+	// 成功
+	fmt.Fprintln(w, "Request was successful!")
+	w.WriteHeader(http.StatusOK)
+}
+
+// RequestInfo 结构体定义
+type RemoveRequestInfo struct {
+	RequestID string `json:"requestId"`
+	Checksum  string `json:"checksum"`
+	SceneCode string `json:"sceneCode"`
+}
+
+// remove 方法，接受一个 RequestInfo 对象，并输出 JSON 格式的字符串
+func (s *SceneService) Remove(w http.ResponseWriter, r *http.Request) {
+	// 转换为 json
+	var requestData RemoveRequestInfo
+	err := json.NewDecoder(r.Body).Decode(&requestData)
+	if err != nil {
+		http.Error(w, "Error decoding Remove request body", http.StatusBadRequest)
+		return
+	}
+	// 改为日志？
+	fmt.Printf("Remove req, %s\n", requestData)
+
+	// 参数校验
+	if isEmpty(requestData.SceneCode) {
+		http.Error(w, "paramCheckFailed", http.StatusBadRequest)
+		return
+	}
+
+	// neo4j 持久化
+	// 执行插入节点的 Cypher 查询
+	session, err := GetNeo4jSession()
+	if err != nil {
+		// 日志输出
+		http.Error(w, "Error GetNeo4jSession", http.StatusInternalServerError)
+		return
+	}
+	defer session.Close()
+	// 执行删除逻辑
+	_, runErr := session.Run(
+		`MATCH (s:SceneData {sceneCode: $sceneCode}) DELETE s`,
+		map[string]interface{}{
+			"sceneCode": requestData.SceneCode,
+		},
+	)
+	if runErr != nil {
+		// error 后续改为日志
+		log.Printf("Error occurred: %v\n", runErr)
+
+		http.Error(w, "Error Remove", http.StatusInternalServerError)
+		return
+	}
+
+	// 返回成功响应
+	fmt.Fprintln(w, "SceneData deleted successfully")
+	w.WriteHeader(http.StatusOK)
+}
+
+// RequestInfo 结构体定义
+type EditRequestInfo struct {
+	RequestID     string `json:"requestId"`
+	Checksum      string `json:"checksum"`
+	SceneCode     string `json:"sceneCode"`
+	SceneName     string `json:"sceneName"`
+	SceneStatus   string `json:"sceneStatus"`
+	ConditionJSON string `json:"conditionJson"`
+}
+
+// edit 方法，接受一个 RequestInfo 对象，并输出 JSON 格式的字符串
+func (s *SceneService) Edit(w http.ResponseWriter, r *http.Request) {
+	// 转换为 json
+	var requestData EditRequestInfo
+	err := json.NewDecoder(r.Body).Decode(&requestData)
+	if err != nil {
+		http.Error(w, "Error decoding Edit request body", http.StatusBadRequest)
+		return
+	}
+	// 改为日志？
+	fmt.Printf("Edit req, %s\n", requestData)
+
+	// 参数校验
+	if isEmpty(requestData.SceneCode) || isEmpty(requestData.SceneName) || isEmpty(requestData.SceneStatus) || isEmpty(requestData.ConditionJSON) {
+		http.Error(w, "paramCheckFailed", http.StatusBadRequest)
+		return
+	}
+
+	// neo4j 持久化
+	// 执行插入节点的 Cypher 查询
+	session, err := GetNeo4jSession()
+	if err != nil {
+		// 日志输出
+		http.Error(w, "Error GetNeo4jSession", http.StatusInternalServerError)
+		return
+	}
+	defer session.Close()
+
+	// 更新
+	// 执行更新节点的 Cypher 查询
+	_, runErr := session.Run(
+		`MATCH (s:SceneData {sceneCode: $sceneCode}) 
+		SET s.sceneName = $sceneName, s.sceneStatus = $sceneStatus, s.conditionJson = $conditionJson, s.updateTime = $ updateTime
+		RETURN s`,
+		map[string]interface{}{
+			"sceneCode":     requestData.SceneCode,
+			"sceneName":     requestData.SceneName,
+			"sceneStatus":   requestData.SceneStatus,
+			"conditionJson": requestData.ConditionJSON,
+			"updateTime":    getUnixTimestamp(),
+		},
+	)
+	if runErr != nil {
+		// error 后续改为日志
+		log.Printf("Error occurred: %v\n", runErr)
+
+		// error 日志
+		http.Error(w, "Error Edit", http.StatusInternalServerError)
+		return
+	}
+
+	// 返回成功响应
+	fmt.Fprintln(w, "SceneData edit successfully")
+	w.WriteHeader(http.StatusOK)
+}
+```
+
+## 吐槽
+
+go 中判断空字符串和 java 的思路并不同，不能使用 text == nil
+
+而应该使用：
+
+```go
+// 是否为空
+func isEmpty(text string) bool {
+	if text == "" {
+		return true
+	}
+	if len(text) == 0 {
+		return true
+	}
+	return false
+}
+```
+
+go 在使用多个 if 条件的时候，`||` 不能换行。
+
+要写在同一行：
+
+```go
+	if isEmpty(requestData.SceneCode) || isEmpty(requestData.SceneName) || isEmpty(requestData.SceneStatus) || isEmpty(requestData.ConditionJSON) {
+		http.Error(w, "paramCheckFailed", http.StatusBadRequest)
+		return
+	}
+```
+
+
+
 --------------------------------------------------------------------------------------------------------------------
 
 # chat
