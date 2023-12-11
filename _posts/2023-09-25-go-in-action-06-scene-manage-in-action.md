@@ -352,6 +352,13 @@ go mod tidy
 
 PS：这里我在想是不是引入的时候，直接使用 `../service` 也可以。
 
+实际验证，项目路径是无法使用的：
+
+```
+example.com/main imports
+        ../scene: "../scene" is relative, but relative import paths are not supported in module mode
+```
+
 ### 运行
 
 ```
@@ -524,7 +531,314 @@ localhost:8080/edit
 
 > [Neo4j-11-neo4j go access go 直接访问 neo4j go neo4j](https://houbb.github.io/2018/01/08/neo4j-11-go-access)
 
+## 代码实现
+
+### scene.go
+
+
+```go
+package scene
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"time"
+
+	"github.com/neo4j/neo4j-go-driver/v4/neo4j"
+)
+
+// HTTPService 结构体定义
+type SceneService struct {
+}
+
+// RequestInfo 结构体定义
+type AddRequestInfo struct {
+	RequestID     string `json:"requestId"`
+	Checksum      string `json:"checksum"`
+	AppName       string `json:"appName"`
+	MethodName    string `json:"methodName"`
+	SceneCode     string `json:"sceneCode"`
+	SceneName     string `json:"sceneName"`
+	SceneStatus   string `json:"sceneStatus"`
+	ConditionJSON string `json:"conditionJson"`
+}
+
+// GetNeo4jSession 函数用于获取 Neo4j 会话
+func GetNeo4jSession() (neo4j.Session, error) {
+	// Neo4j数据库连接信息
+	neo4jURI := "bolt://localhost:7687"
+	username := "neo4j"
+	password := "12345678"
+
+	// 创建Neo4j数据库驱动
+	driver, err := neo4j.NewDriver(neo4jURI, neo4j.BasicAuth(username, password, ""))
+	if err != nil {
+		fmt.Println("Error creating Neo4j driver:", err)
+		return nil, err
+	}
+	// defer driver.Close()
+
+	// 创建数据库会话
+	session, err := driver.Session(neo4j.AccessModeWrite)
+	if err != nil {
+		fmt.Println("Error creating Neo4j session:", err)
+		return nil, err
+	}
+	// defer session.Close()
+
+	return session, nil
+}
+
+// 让数据景区到毫秒
+func getUnixTimestamp() int64 {
+	// 获取当前时间的纳秒级 Unix 时间戳
+	unixTimestampNano := time.Now().UnixNano()
+
+	// 转换为毫秒级 Unix 时间戳
+	unixTimestampMillis := unixTimestampNano / int64(time.Millisecond)
+
+	return unixTimestampMillis
+}
+
+// add 方法，接受一个 RequestInfo 对象，并输出 JSON 格式的字符串
+func (s *SceneService) Add(w http.ResponseWriter, r *http.Request) {
+	// 转换为 json
+	var requestData AddRequestInfo
+	err := json.NewDecoder(r.Body).Decode(&requestData)
+	if err != nil {
+		http.Error(w, "Error decoding JSON request body", http.StatusBadRequest)
+		return
+	}
+	// 改为日志？
+	fmt.Printf("req, %s\n", requestData)
+
+	// neo4j 持久化
+	// 执行插入节点的 Cypher 查询
+	session, err := GetNeo4jSession()
+	if err != nil {
+		// 日志输出
+		http.Error(w, "Error GetNeo4jSession", http.StatusInternalServerError)
+		return
+	}
+	defer session.Close()
+	_, runErr := session.Run(
+		`CREATE (s:SceneData {appName: $appName, methodName: $methodName, 
+			sceneCode: $sceneCode, sceneName: $sceneName, sceneStatus: $sceneStatus, conditionJson: $conditionJson,
+			createTime: $createTime, updateTime: $updateTime}) RETURN s`,
+		map[string]interface{}{
+			"appName":       requestData.AppName,
+			"methodName":    requestData.MethodName,
+			"sceneCode":     requestData.SceneCode,
+			"sceneName":     requestData.SceneName,
+			"sceneStatus":   requestData.SceneStatus,
+			"conditionJson": requestData.ConditionJSON,
+			"createTime":    getUnixTimestamp(),
+			"updateTime":    getUnixTimestamp(),
+		},
+	)
+
+	if runErr != nil {
+		// error 后续改为日志
+		log.Printf("Error occurred: %v\n", runErr)
+
+		http.Error(w, "Error Add", http.StatusInternalServerError)
+		return
+	}
+
+	// 成功
+	fmt.Fprintln(w, "Request was successful!")
+	w.WriteHeader(http.StatusOK)
+}
+
+// RequestInfo 结构体定义
+type RemoveRequestInfo struct {
+	RequestID string `json:"requestId"`
+	Checksum  string `json:"checksum"`
+	SceneCode string `json:"sceneCode"`
+}
+
+// remove 方法，接受一个 RequestInfo 对象，并输出 JSON 格式的字符串
+func (s *SceneService) Remove(w http.ResponseWriter, r *http.Request) {
+	// 转换为 json
+	var requestData RemoveRequestInfo
+	err := json.NewDecoder(r.Body).Decode(&requestData)
+	if err != nil {
+		http.Error(w, "Error decoding Remove request body", http.StatusBadRequest)
+		return
+	}
+	// 改为日志？
+	fmt.Printf("Remove req, %s\n", requestData)
+
+	// neo4j 持久化
+	// 执行插入节点的 Cypher 查询
+	session, err := GetNeo4jSession()
+	if err != nil {
+		// 日志输出
+		http.Error(w, "Error GetNeo4jSession", http.StatusInternalServerError)
+		return
+	}
+	defer session.Close()
+	// 执行删除逻辑
+	_, runErr := session.Run(
+		`MATCH (s:SceneData {sceneCode: $sceneCode}) DELETE s`,
+		map[string]interface{}{
+			"sceneCode": requestData.SceneCode,
+		},
+	)
+	if runErr != nil {
+		// error 后续改为日志
+		log.Printf("Error occurred: %v\n", runErr)
+
+		http.Error(w, "Error Remove", http.StatusInternalServerError)
+		return
+	}
+
+	// 返回成功响应
+	fmt.Fprintln(w, "SceneData deleted successfully")
+	w.WriteHeader(http.StatusOK)
+}
+
+// RequestInfo 结构体定义
+type EditRequestInfo struct {
+	RequestID     string `json:"requestId"`
+	Checksum      string `json:"checksum"`
+	SceneCode     string `json:"sceneCode"`
+	SceneName     string `json:"sceneName"`
+	SceneStatus   string `json:"sceneStatus"`
+	ConditionJSON string `json:"conditionJson"`
+}
+
+// edit 方法，接受一个 RequestInfo 对象，并输出 JSON 格式的字符串
+func (s *SceneService) Edit(w http.ResponseWriter, r *http.Request) {
+	// 转换为 json
+	var requestData EditRequestInfo
+	err := json.NewDecoder(r.Body).Decode(&requestData)
+	if err != nil {
+		http.Error(w, "Error decoding Edit request body", http.StatusBadRequest)
+		return
+	}
+	// 改为日志？
+	fmt.Printf("Edit req, %s\n", requestData)
+
+	// neo4j 持久化
+	// 执行插入节点的 Cypher 查询
+	session, err := GetNeo4jSession()
+	if err != nil {
+		// 日志输出
+		http.Error(w, "Error GetNeo4jSession", http.StatusInternalServerError)
+		return
+	}
+	defer session.Close()
+
+	// 更新
+	// 执行更新节点的 Cypher 查询
+	_, runErr := session.Run(
+		`MATCH (s:SceneData {sceneCode: $sceneCode}) 
+		SET s.sceneName = $sceneName, s.sceneStatus = $sceneStatus, s.conditionJson = $conditionJson, s.updateTime = $ updateTime
+		RETURN s`,
+		map[string]interface{}{
+			"sceneCode":     requestData.SceneCode,
+			"sceneName":     requestData.SceneName,
+			"sceneStatus":   requestData.SceneStatus,
+			"conditionJson": requestData.ConditionJSON,
+			"updateTime":    getUnixTimestamp(),
+		},
+	)
+	if runErr != nil {
+		// error 后续改为日志
+		log.Printf("Error occurred: %v\n", runErr)
+
+		// error 日志
+		http.Error(w, "Error Edit", http.StatusInternalServerError)
+		return
+	}
+
+	// 返回成功响应
+	fmt.Fprintln(w, "SceneData edit successfully")
+	w.WriteHeader(http.StatusOK)
+}
+```
+
+### main.go
+
+```go
+package main
+
+import (
+	"fmt"
+	"net/http"
+
+	"example.com/scene"
+)
+
+func main() {
+	// 新建
+	service := &scene.SceneService{}
+	// 注册处理函数
+	http.HandleFunc("/add", service.Add)
+	http.HandleFunc("/remove", service.Remove)
+	http.HandleFunc("/edit", service.Edit)
+
+	// 启动 HTTP 服务器并监听端口
+	port := 8080
+	fmt.Printf("Server is listening on :%d...\n", port)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+}
+```
+
 # 5. http 测试验证
+
+## 初始化唯一约束
+
+```
+create constraint on (p:SceneData) assert p.sceneCode is unique;
+```
+
+但是会报错:
+
+```
+Invalid constraint syntax, ON and ASSERT should not be used. Replace ON with FOR and ASSERT with REQUIRE. (line 1, column 1 (offset: 0))
+"create constraint on (p:SceneData) assert p.sceneCode is unique"
+```
+
+neo4j 的版本是 5.12，应该改成：
+
+在Neo4j 4.0版本及以上，唯一约束的语法已经发生了变化。
+
+新的语法中，`ON`关键字被替换为`FOR`，`ASSERT`被替换为`REQUIRE`。
+
+因此，创建唯一约束的Cypher语句应该使用新的语法。
+
+以下是使用新语法创建唯一约束的示例：
+
+```cypher
+CREATE CONSTRAINT FOR (p:SceneData) REQUIRE p.sceneCode IS UNIQUE;
+```
+
+## add
+
+```json
+{"requestId":"123","checksum":"abcdef","appName":"MyApp","methodName":"add","sceneCode":"001","sceneName":"Scene1","sceneStatus":"active","conditionJson":"{\"key\": \"value\"}"}
+```
+
+## edit
+
+```json
+{"requestId":"123","checksum":"abcdef","sceneCode":"001","sceneName":"Scene1-edit","sceneStatus":"N","conditionJson":"{\"key\": \"value-edit\"}"}
+```
+
+## remove
+
+```json
+{"requestId":"123","checksum":"abcdef","sceneCode":"001"}
+```
+
+--------------------------------------------------------------------------------------------------------------------
 
 # chat
 
@@ -988,8 +1302,6 @@ if err != nil {
 
 go 实现一个 add 方法，入参是一个对象，每个属性都是 srting 类型。
 
-requestId 
-checksum
 appName
 methodName
 sceneCode
@@ -999,7 +1311,9 @@ conditionJson
 
 如何把这个对象插入到 neo4j 数据库中？
 
-要将一个对象插入到 Neo4j 数据库中，你需要使用 Neo4j 驱动程序执行一个 Cypher 查询，将对象的属性映射到相应的节点。以下是一个示例代码，演示如何使用 `github.com/neo4j/neo4j-go-driver/v4` 驱动将对象插入到 Neo4j 数据库中：
+### 回答
+
+同样，要将一个对象插入到 Neo4j 数据库中，你需要使用 Neo4j 驱动程序执行一个 Cypher 查询，将对象的属性映射到相应的节点。以下是一个示例代码，演示如何使用 `github.com/neo4j/neo4j-go-driver/v4` 驱动将对象插入到 Neo4j 数据库中：
 
 首先，确保你已经安装了 Neo4j Go 驱动：
 
@@ -1019,16 +1333,14 @@ import (
 	"github.com/neo4j/neo4j-go-driver/v4"
 )
 
-// RequestData 结构体定义
-type RequestData struct {
-	RequestID      string `json:"requestId"`
-	Checksum       string `json:"checksum"`
-	AppName        string `json:"appName"`
-	MethodName     string `json:"methodName"`
-	SceneCode      string `json:"sceneCode"`
-	SceneName      string `json:"sceneName"`
-	SceneStatus    string `json:"sceneStatus"`
-	ConditionJSON  string `json:"conditionJson"`
+// SceneData 结构体定义
+type SceneData struct {
+	AppName       string `json:"appName"`
+	MethodName    string `json:"methodName"`
+	SceneCode     string `json:"sceneCode"`
+	SceneName     string `json:"sceneName"`
+	SceneStatus   string `json:"sceneStatus"`
+	ConditionJSON string `json:"conditionJson"`
 }
 
 func main() {
@@ -1054,10 +1366,8 @@ func main() {
 	session := driver.NewSession(neo4j.SessionConfig{})
 	defer session.Close()
 
-	// 创建一个 RequestData 对象
-	requestData := RequestData{
-		RequestID:     "123",
-		Checksum:      "abcdef",
+	// 创建一个 SceneData 对象
+	sceneData := SceneData{
 		AppName:       "MyApp",
 		MethodName:    "add",
 		SceneCode:     "001",
@@ -1068,17 +1378,15 @@ func main() {
 
 	// 执行插入节点的 Cypher 查询
 	result, err := session.Run(
-		`CREATE (r:RequestData {requestId: $requestId, checksum: $checksum, appName: $appName, methodName: $methodName, 
-			sceneCode: $sceneCode, sceneName: $sceneName, sceneStatus: $sceneStatus, conditionJson: $conditionJson}) RETURN r`,
+		`CREATE (s:SceneData {appName: $appName, methodName: $methodName, 
+			sceneCode: $sceneCode, sceneName: $sceneName, sceneStatus: $sceneStatus, conditionJson: $conditionJson}) RETURN s`,
 		map[string]interface{}{
-			"requestId":      requestData.RequestID,
-			"checksum":       requestData.Checksum,
-			"appName":        requestData.AppName,
-			"methodName":     requestData.MethodName,
-			"sceneCode":      requestData.SceneCode,
-			"sceneName":      requestData.SceneName,
-			"sceneStatus":    requestData.SceneStatus,
-			"conditionJson":  requestData.ConditionJSON,
+			"appName":       sceneData.AppName,
+			"methodName":    sceneData.MethodName,
+			"sceneCode":     sceneData.SceneCode,
+			"sceneName":     sceneData.SceneName,
+			"sceneStatus":   sceneData.SceneStatus,
+			"conditionJson": sceneData.ConditionJSON,
 		},
 	)
 	if err != nil {
@@ -1098,14 +1406,174 @@ func main() {
 }
 ```
 
-在这个例子中：
+这个例子与之前的例子非常相似，主要区别在于结构体的定义和对象的属性。
 
-- 定义了一个 `RequestData` 结构体，表示要插入到 Neo4j 中的节点。
-- 创建了一个 `RequestData` 对象，并使用 Cypher 查询将其插入到 Neo4j 数据库中。
-- 注意 Cypher 查询中使用了参数占位符 `$requestId`、`$checksum` 等，并通过 `map[string]interface{}` 提供了参数值。这有助于防止 Cypher 注入攻击。
-- 打印了插入节点后的 ID，可以根据实际需要进行处理。
+同样，确保你的 Neo4j 服务器正在运行，并根据实际情况修改连接字符串、用户名和密码。
 
-请确保你的 Neo4j 服务器正在运行，并根据实际情况修改连接字符串、用户名和密码。此外，考虑到安全性，实际应用中应该进行错误处理、参数验证等更全面的处理。
+此外，考虑到安全性，实际应用中应该进行错误处理、参数验证等更全面的处理。
+
+
+## go 如何实现 SceneData 的删除，传入一个 sceneCode，根据 sceneCode 删除对应的一条数据。
+
+要实现根据 `sceneCode` 删除对应的 `SceneData` 数据，你可以编写一个处理 HTTP 请求的处理函数，并从请求中获取 `sceneCode` 参数，然后使用 `neo4j.Session` 执行 Cypher 查询进行删除。以下是一个简单的例子：
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+	"net/http"
+
+	"github.com/neo4j/neo4j-go-driver/v4"
+)
+
+// SceneData 结构体定义
+type SceneData struct {
+	AppName       string `json:"appName"`
+	MethodName    string `json:"methodName"`
+	SceneCode     string `json:"sceneCode"`
+	SceneName     string `json:"sceneName"`
+	SceneStatus   string `json:"sceneStatus"`
+	ConditionJSON string `json:"conditionJson"`
+}
+
+func main() {
+	http.HandleFunc("/delete", handleDelete)
+	http.ListenAndServe(":8080", nil)
+}
+
+func handleDelete(w http.ResponseWriter, r *http.Request) {
+	// 从请求中获取 sceneCode 参数
+	sceneCode := r.URL.Query().Get("sceneCode")
+	if sceneCode == "" {
+		http.Error(w, "Missing sceneCode parameter", http.StatusBadRequest)
+		return
+	}
+
+	// Neo4j 数据库连接 URI
+	uri := "bolt://localhost:7687"
+
+	// 用户名和密码
+	username := "your_username"
+	password := "your_password"
+
+	// 获取写模式的 Neo4j 会话
+	session, err := GetNeo4jSession(uri, username, password)
+	if err != nil {
+		http.Error(w, "Error creating Neo4j session", http.StatusInternalServerError)
+		return
+	}
+	defer session.Close()
+
+	// 执行删除节点的 Cypher 查询
+	err = DeleteSceneData(session, sceneCode)
+	if err != nil {
+		http.Error(w, "Error deleting SceneData: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// 返回成功响应
+	fmt.Fprintln(w, "SceneData deleted successfully")
+}
+
+// GetNeo4jSession 函数用于获取 Neo4j 会话
+func GetNeo4jSession(uri, username, password string) (neo4j.Session, error) {
+	// 创建 Neo4j 驱动的配置
+	config := neo4j.NewConfig()
+	config.Encrypted = false // 如果 Neo4j 未启用加密，设置为 false
+
+	// 建立连接
+	driver, err := neo4j.NewDriver(uri, neo4j.BasicAuth(username, password, ""), config)
+	if err != nil {
+		return nil, err
+	}
+	defer driver.Close()
+
+	// 获取 Neo4j 会话
+	session := driver.NewSession(neo4j.SessionConfig{AccessMode: neo4j.AccessModeWrite})
+	return session, nil
+}
+
+// DeleteSceneData 函数用于删除指定 sceneCode 的 SceneData 数据
+func DeleteSceneData(session neo4j.Session, sceneCode string) error {
+	// 执行删除节点的 Cypher 查询
+	result, err := session.Run(
+		`MATCH (s:SceneData {sceneCode: $sceneCode}) DELETE s`,
+		map[string]interface{}{
+			"sceneCode": sceneCode,
+		},
+	)
+	if err != nil {
+		return err
+	}
+
+	// 处理查询结果
+	for result.Next() {
+		// 在这里处理可能的删除后的结果，如果有需要的话
+	}
+
+	if err := result.Err(); err != nil {
+		return err
+	}
+
+	return nil
+}
+```
+
+在这个例子中，`handleDelete` 处理函数从请求中获取 `sceneCode` 参数，并使用 `GetNeo4jSession` 函数获取 Neo4j 会话。然后，它调用 `DeleteSceneData` 函数执行删除操作，并返回相应的 HTTP 响应。`DeleteSceneData` 函数执行了一个 Cypher 查询，通过 `MATCH` 语句找到具有指定 `sceneCode` 的节点，并使用 `DELETE` 语句删除它。你可以根据实际需求修改 Cypher 查询。
+
+## 如何实现更新？
+
+如何实现 go 的更新操作？
+
+入参对象为：
+
+```go
+type EditRequestInfo struct {
+	SceneCode     string `json:"sceneCode"`
+	SceneName     string `json:"sceneName"`
+	SceneStatus   string `json:"sceneStatus"`
+	ConditionJSON string `json:"conditionJson"`
+}
+```
+
+根据 sceneCode 更新对应的 sceneName、sceneStatus、conditionJSON
+
+
+### 回答
+
+```go
+// UpdateSceneData 函数用于更新指定 sceneCode 的 SceneData 数据
+func UpdateSceneData(session neo4j.Session, editRequest EditRequestInfo) error {
+	// 执行更新节点的 Cypher 查询
+	result, err := session.Run(
+		`MATCH (s:SceneData {sceneCode: $sceneCode}) 
+		SET s.sceneName = $sceneName, s.sceneStatus = $sceneStatus, s.conditionJson = $conditionJson
+		RETURN s`,
+		map[string]interface{}{
+			"sceneCode":      editRequest.SceneCode,
+			"sceneName":      editRequest.SceneName,
+			"sceneStatus":    editRequest.SceneStatus,
+			"conditionJson":  editRequest.ConditionJSON,
+		},
+	)
+	if err != nil {
+		return err
+	}
+
+	// 处理查询结果
+	for result.Next() {
+		// 在这里处理可能的更新后的结果，如果有需要的话
+	}
+
+	if err := result.Err(); err != nil {
+		return err
+	}
+
+	return nil
+}
+```
 
 # 参考资料
 
