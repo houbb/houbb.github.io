@@ -57,6 +57,12 @@ dh@d:~$ node -v
 v12.22.9
 ```
 
+改为国内镜像：
+
+```
+npm config set registry=https://registry.npmmirror.com
+```
+
 ## yarn
 
 ```
@@ -204,7 +210,7 @@ npm config set registry=https://registry.npmmirror.com
 改回来：
 
 ```
-npm config set registry=https://registry.npmmirror.com
+npm config set registry=https://registry.npmjs.org
 ```
 
 ## npm install 报错
