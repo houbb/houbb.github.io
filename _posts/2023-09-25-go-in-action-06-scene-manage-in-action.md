@@ -884,7 +884,7 @@ func GetNeo4jSession() (neo4j.Session, error) {
 	// 创建Neo4j数据库驱动
 	driver, err := neo4j.NewDriver(neo4jURI, neo4j.BasicAuth(username, password, ""))
 	if err != nil {
-		fmt.Println("Error creating Neo4j driver:", err)
+		log.Println("Error creating Neo4j driver:", err)
 		return nil, err
 	}
 	// defer driver.Close()
@@ -892,7 +892,7 @@ func GetNeo4jSession() (neo4j.Session, error) {
 	// 创建数据库会话
 	session, err := driver.Session(neo4j.AccessModeWrite)
 	if err != nil {
-		fmt.Println("Error creating Neo4j session:", err)
+		log.Println("Error creating Neo4j session:", err)
 		return nil, err
 	}
 	// defer session.Close()
@@ -932,7 +932,7 @@ func (s *SceneService) Add(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// 改为日志？
-	fmt.Printf("req, %s\n", requestData)
+	log.Printf("req, %s\n", requestData)
 
 	// 参数校验
 	if isEmpty(requestData.AppName) || isEmpty(requestData.MethodName) || isEmpty(requestData.SceneCode) || isEmpty(requestData.SceneName) || isEmpty(requestData.SceneStatus) || isEmpty(requestData.ConditionJSON) {
@@ -997,7 +997,7 @@ func (s *SceneService) Remove(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// 改为日志？
-	fmt.Printf("Remove req, %s\n", requestData)
+	log.Printf("Remove req, %s\n", requestData)
 
 	// 参数校验
 	if isEmpty(requestData.SceneCode) {
@@ -1054,7 +1054,7 @@ func (s *SceneService) Edit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	// 改为日志？
-	fmt.Printf("Edit req, %s\n", requestData)
+	log.Printf("Edit req, %s\n", requestData)
 
 	// 参数校验
 	if isEmpty(requestData.SceneCode) || isEmpty(requestData.SceneName) || isEmpty(requestData.SceneStatus) || isEmpty(requestData.ConditionJSON) {
@@ -1101,7 +1101,7 @@ func (s *SceneService) Edit(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-## 吐槽
+### 吐槽
 
 go 中判断空字符串和 java 的思路并不同，不能使用 text == nil
 
@@ -1131,6 +1131,11 @@ go 在使用多个 if 条件的时候，`||` 不能换行。
 	}
 ```
 
+## 测试
+
+```
+cd D:\_go\scene-server-v2\web
+```
 
 
 --------------------------------------------------------------------------------------------------------------------
