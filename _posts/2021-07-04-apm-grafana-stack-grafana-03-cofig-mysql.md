@@ -266,7 +266,7 @@ go env -w GOPROXY=https://goproxy.io
 
 ```bash
 # init
-go mod init github.com/grafana/grafana/pkg/build
+go mod init github.com/grafana/grafana
 go mod tidy
 ```
 
