@@ -316,6 +316,16 @@ go: github.com/grafana/grafana/pkg/extensions imports
 # go 设置代理
 
 
+## 方式1
+
+```
+go env -w GO111MODULE=on
+
+go env -w GOPROXY=https://goproxy.cn,direct
+```
+
+## 方式2
+
 pS: 仅供参考，设置后导致下载依然失败。作用不大。
 
 1、开启go module模式，这个模式开启下回忽略GOPATH和vendor文件夹
