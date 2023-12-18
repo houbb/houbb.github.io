@@ -1,11 +1,29 @@
 ---
 layout: post
-title: java 敏感词之字典瘦身
+title: java sensitive-word 敏感词之字典瘦身
 date:  2020-1-7 10:09:32 +0800
 categories: [Java]
 tags: [java, github, sensitive, sf]
 published: true
 ---
+
+# 拓展阅读
+
+[敏感词工具实现思路](https://houbb.github.io/2020/01/07/sensitive-word)
+
+[DFA 算法讲解](https://houbb.github.io/2020/01/07/sensitive-word-dfa)
+
+[敏感词库优化流程](https://houbb.github.io/2020/01/07/sensitive-word-slim)
+
+[java 如何实现开箱即用的敏感词控台服务？](https://mp.weixin.qq.com/s/rQo75cfMU_OEbTJa0JGMGg)
+
+[各大平台连敏感词库都没有的吗？](https://mp.weixin.qq.com/s?__biz=MzUyNjE3OTAyMw==&mid=2247485308&idx=1&sn=8ebb39b0cecde7f2458769a79396b2d3&chksm=fa1388dccd6401cabd640c3e3f4de33262d4e68d049ca478d18a0cd2f10deecdd87e0060394e&token=617356039&lang=zh_CN#rd)
+
+[v0.10.0-脏词分类标签初步支持](https://juejin.cn/post/7308782855941292058?searchId=20231209140414C082B3CCF1E7B2316EF9)
+
+[v0.11.0-敏感词新特性：忽略无意义的字符，词标签字典](https://mp.weixin.qq.com/s/m40ZnR6YF6WgPrArUSZ_0g)
+
+[v0.12.0-敏感词/脏词词标签能力进一步增强](https://mp.weixin.qq.com/s/-wa-if7uAy2jWsZC13C0cQ)
 
 # 背景
 
