@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 敏感词/脏词 v0.12.0 词标签能力进一步增强
+title: v0.12.0-敏感词/脏词词标签能力进一步增强
 date:  2020-1-7 10:09:32 +0800
 categories: [Java]
 tags: [tree, data-struct, github, sensitive, sf]
@@ -22,6 +22,10 @@ published: true
 [v0.10.0-脏词分类标签初步支持](https://juejin.cn/post/7308782855941292058?searchId=20231209140414C082B3CCF1E7B2316EF9)
 
 [v0.11.0-敏感词新特性：忽略无意义的字符，词标签字典](https://mp.weixin.qq.com/s/m40ZnR6YF6WgPrArUSZ_0g)
+
+[v0.12.0-敏感词/脏词词标签能力进一步增强](https://mp.weixin.qq.com/s/-wa-if7uAy2jWsZC13C0cQ)
+
+![词标签增强](https://img-blog.csdnimg.cn/direct/6082b1eb2ce043c79fafedb9d467d520.png#pic_center)
 
 # 敏感词标签
 
