@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Distributed System
+title: Distributed System 什么是分布式系统？分布式系统介绍
 date:  2018-11-19 08:38:35 +0800
 categories: [Distributed]
 tags: [distributed, sh]
 published: true
-excerpt: 什么是分布式系统？分布式系统介绍
 ---
 
 # 分布式系统

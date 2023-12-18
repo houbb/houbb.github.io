@@ -3,7 +3,7 @@ layout: post
 title: Elasticsearch-01-快速入门
 date:  2016-10-16 09:07:21 +0800
 categories: [Search]
-tags: [search, overview, index, sh]
+tags: [search, overview, index, es, sh]
 published: true
 ---
 

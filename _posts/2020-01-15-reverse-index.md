@@ -3,7 +3,7 @@ layout: post
 title: 倒排索引原理与实现
 date:  2020-1-9 10:09:32 +0800
 categories: [Search]
-tags: [search, reverse-index, index, sh]
+tags: [search, reverse-index, index, lucene, sh]
 published: true
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title: 搜索引擎-03-搜索引擎原理
 date:  2017-2-24 09:53:51 +0800
 categories: [Search-Engine]
-tags: [search-engine, index, sh]
+tags: [search-engine, index, es, lucene, sh]
 published: true
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title: Lucene-03-lucene 索引原理
 date:  2018-11-15 08:38:35 +0800
 categories: [Search]
-tags: [apache, index, sh]
+tags: [apache, index, lucene, sh]
 published: true
 ---
 

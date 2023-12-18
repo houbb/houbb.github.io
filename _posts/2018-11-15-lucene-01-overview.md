@@ -3,7 +3,7 @@ layout: post
 title: Lucene-01-lucene 入门教程
 date:  2018-11-15 08:38:35 +0800
 categories: [Search]
-tags: [index, search, sh]
+tags: [index, search, lucene, sh]
 published: true
 ---
 
@@ -39,6 +39,16 @@ published: true
 
 它是一种适用于几乎所有需要全文搜索的应用程序的技术，尤其是跨平台搜索。
 
+
+# Lucene
+
+Apache LuceneTM 项目开发开源搜索软件，包括：
+
+- **Lucene Core**，我们的旗舰子项目，提供基于Java的索引和搜索技术，以及拼写检查、命中高亮和先进的分析/分词功能。
+
+- **Solr** 是一个高性能的搜索服务器，使用 Lucene Core 构建，具有基于 XML/HTTP 和 JSON/Python/Ruby 的 API，命中高亮、分面搜索、缓存、复制和Web管理界面。
+
+- **PyLucene** 是 Core 项目的 Python 移植版本。
 
 # Lucene 功能
 

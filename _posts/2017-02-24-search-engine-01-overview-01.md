@@ -3,7 +3,7 @@ layout: post
 title: 搜索引擎-01-Overview
 date:  2017-2-24 09:53:51 +0800
 categories: [Search-Engine]
-tags: [search-engine, overview, index, sh]
+tags: [search-engine, overview, index, es, lucene, sh]
 published: true
 ---
 

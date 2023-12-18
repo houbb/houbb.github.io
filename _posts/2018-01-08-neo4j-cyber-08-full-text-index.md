@@ -3,7 +3,7 @@ layout: post
 title:  Neo4j-Cypher-08-Full-text search index
 date:  2018-1-8 14:18:33 +0800
 categories: [SQL]
-tags: [nosql, neo4j]
+tags: [nosql, neo4j,  es, lucene]
 published: true
 ---
 
