@@ -25,6 +25,12 @@ published: true
 
 [v0.12.0-敏感词/脏词词标签能力进一步增强](https://mp.weixin.qq.com/s/-wa-if7uAy2jWsZC13C0cQ)
 
+# 开源地址
+
+为了便于大家学习，项目开源地址如下，欢迎 fork+star 鼓励一下老马~
+
+> [sensitive-word](https://github.com/houbb/sensitive-word)
+
 # 背景
 
 默认收集的敏感词字典，实际上有非常多的重复信息。

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: java sensitive-word 敏感词之 StopWord 停止词优化与特殊符号 
+title: sensitive-word 敏感词之 StopWord 停止词优化与特殊符号 
 date:  2020-1-7 10:09:32 +0800
 categories: [Java]
 tags: [java, github, sensitive, sf]

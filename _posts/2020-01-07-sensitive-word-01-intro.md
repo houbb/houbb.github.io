@@ -1,6 +1,6 @@
 ---
 layout: post
-title: sensitive-word-01-java 敏感词工具实现思路 
+title: sensitive-word java 如何实现一个敏感词工具？违禁词实现思路梳理
 date:  2020-1-7 10:09:32 +0800
 categories: [Java]
 tags: [java, github, sensitive, sf]
@@ -24,6 +24,12 @@ published: true
 [v0.11.0-敏感词新特性：忽略无意义的字符，词标签字典](https://mp.weixin.qq.com/s/m40ZnR6YF6WgPrArUSZ_0g)
 
 [v0.12.0-敏感词/脏词词标签能力进一步增强](https://mp.weixin.qq.com/s/-wa-if7uAy2jWsZC13C0cQ)
+
+# 开源地址
+
+为了便于大家学习，项目开源地址如下，欢迎 fork+star 鼓励一下老马~
+
+> [sensitive-word](https://github.com/houbb/sensitive-word)
 
 # 敏感词
 
