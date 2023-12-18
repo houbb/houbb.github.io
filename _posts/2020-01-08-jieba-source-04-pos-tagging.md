@@ -1,11 +1,21 @@
 ---
 layout: post
-title: 结巴分词之词性标注实现思路 speechTagging
+title: jieba-fenci 结巴分词之词性标注实现思路 speechTagging segment
 date:  2020-1-8 10:09:32 +0800
 categories: [NLP]
 tags: [java, nlp, speech-tagging, sh]
 published: true
 ---
+
+# 拓展阅读
+
+[DFA 算法详解](https://houbb.github.io/2020/01/07/sensitive-word-dfa)
+
+为了便于大家学习，项目开源地址如下，欢迎 fork+star 鼓励一下老马~
+
+> [敏感词 sensitive-word](https://github.com/houbb/sensitive-word)
+
+> [分词 segment](https://github.com/houbb/segment)
 
 # 词性标注
 

@@ -1,11 +1,21 @@
 ---
 layout: post
-title: 结巴分词原理讲解之数据归一化
+title: jieba-fenci 结巴分词原理讲解之数据归一化 segment
 date:  2020-1-8 10:09:32 +0800
 categories: [NLP]
 tags: [java, nlp, sf]
 published: true
 ---
+
+# 拓展阅读
+
+[DFA 算法详解](https://houbb.github.io/2020/01/07/sensitive-word-dfa)
+
+为了便于大家学习，项目开源地址如下，欢迎 fork+star 鼓励一下老马~
+
+> [敏感词 sensitive-word](https://github.com/houbb/sensitive-word)
+
+> [分词 segment](https://github.com/houbb/segment)
 
 # 结巴分词的归一化
 
