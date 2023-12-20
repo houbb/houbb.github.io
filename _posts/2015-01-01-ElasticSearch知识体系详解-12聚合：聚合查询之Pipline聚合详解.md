@@ -9,7 +9,8 @@ published: true
 
 
 
-12 聚合：聚合查询之Pipline聚合详解
+# 12 聚合：聚合查询之Pipline聚合详解
+
 ## 如何理解pipeline聚合
 
 如何理解管道聚合呢？最重要的是要站在设计者角度看这个功能的要实现的目的：让上一步的聚合结果成为下一个聚合的输入，这就是管道。
@@ -55,10 +56,7 @@ published: true
 
 比如前置聚合可能是Bucket聚合，后置的可能是基于Metric聚合，那么它就可以成为一类管道
 
-进而引出了：
-
-xxx bucket
-(是不是很容易理解了 @pdai)
+进而引出了：xxx bucket (是不是很容易理解了 @pdai)
 
 * Bucket聚合 -> Metric聚合
 
@@ -79,7 +77,36 @@ xxx bucket
 
 ### Average bucket 聚合
 
-POST _search { "size": 0, "aggs": { "sales_per_month": { "date_histogram": { "field": "date", "calendar_interval": "month" }, "aggs": { "sales": { "sum": { "field": "price" } } } }, "avg_monthly_sales": { // tag::avg-bucket-agg-syntax[] "avg_bucket": { "buckets_path": "sales_per_month>sales", "gap_policy": "skip", "format": "/#,/#/#0.00;(/#,/#/#0.00)" } // end::avg-bucket-agg-syntax[] } } }
+```
+POST _search
+{
+  "size": 0,
+  "aggs": {
+    "sales_per_month": {
+      "date_histogram": {
+        "field": "date",
+        "calendar_interval": "month"
+      },
+      "aggs": {
+        "sales": {
+          "sum": {
+            "field": "price"
+          }
+        }
+      }
+    },
+    "avg_monthly_sales": {
+// tag::avg-bucket-agg-syntax[]               
+      "avg_bucket": {
+        "buckets_path": "sales_per_month>sales",
+        "gap_policy": "skip",
+        "format": "#,##0.00;(#,##0.00)"
+      }
+// end::avg-bucket-agg-syntax[]               
+    }
+  }
+}
+```
 
 * 嵌套的bucket聚合：聚合出按月价格的直方图
 * Metic聚合：对上面的聚合再求平均值。
@@ -92,16 +119,128 @@ POST _search { "size": 0, "aggs": { "sales_per_month": { "date_histogram": { "fi
 * format 用于格式化聚合桶的输出(key)。
 
 输出结果如下
-{ "took": 11, "timed_out": false, "_shards": ..., "hits": ..., "aggregations": { "sales_per_month": { "buckets": [ { "key_as_string": "2015/01/01 00:00:00", "key": 1420070400000, "doc_count": 3, "sales": { "value": 550.0 } }, { "key_as_string": "2015/02/01 00:00:00", "key": 1422748800000, "doc_count": 2, "sales": { "value": 60.0 } }, { "key_as_string": "2015/03/01 00:00:00", "key": 1425168000000, "doc_count": 2, "sales": { "value": 375.0 } } ] }, "avg_monthly_sales": { "value": 328.33333333333333, "value_as_string": "328.33" } } }
+
+```
+{
+  "took": 11,
+  "timed_out": false,
+  "_shards": ...,
+  "hits": ...,
+  "aggregations": {
+    "sales_per_month": {
+      "buckets": [
+        {
+          "key_as_string": "2015/01/01 00:00:00",
+          "key": 1420070400000,
+          "doc_count": 3,
+          "sales": {
+            "value": 550.0
+          }
+        },
+        {
+          "key_as_string": "2015/02/01 00:00:00",
+          "key": 1422748800000,
+          "doc_count": 2,
+          "sales": {
+            "value": 60.0
+          }
+        },
+        {
+          "key_as_string": "2015/03/01 00:00:00",
+          "key": 1425168000000,
+          "doc_count": 2,
+          "sales": {
+            "value": 375.0
+          }
+        }
+      ]
+    },
+    "avg_monthly_sales": {
+      "value": 328.33333333333333,
+      "value_as_string": "328.33"
+    }
+  }
+}
+```
 
 ### Stats bucket 聚合
 
 进一步的stat bucket也很容易理解了
-POST /sales/_search { "size": 0, "aggs": { "sales_per_month": { "date_histogram": { "field": "date", "calendar_interval": "month" }, "aggs": { "sales": { "sum": { "field": "price" } } } }, "stats_monthly_sales": { "stats_bucket": { "buckets_path": "sales_per_month>sales" } } } }
+
+```
+POST /sales/_search
+{
+  "size": 0,
+  "aggs": {
+    "sales_per_month": {
+      "date_histogram": {
+        "field": "date",
+        "calendar_interval": "month"
+      },
+      "aggs": {
+        "sales": {
+          "sum": {
+            "field": "price"
+          }
+        }
+      }
+    },
+    "stats_monthly_sales": {
+      "stats_bucket": {
+        "buckets_path": "sales_per_month>sales" 
+      }
+    }
+  }
+}
+```
 
 返回
 
-{ "took": 11, "timed_out": false, "_shards": ..., "hits": ..., "aggregations": { "sales_per_month": { "buckets": [ { "key_as_string": "2015/01/01 00:00:00", "key": 1420070400000, "doc_count": 3, "sales": { "value": 550.0 } }, { "key_as_string": "2015/02/01 00:00:00", "key": 1422748800000, "doc_count": 2, "sales": { "value": 60.0 } }, { "key_as_string": "2015/03/01 00:00:00", "key": 1425168000000, "doc_count": 2, "sales": { "value": 375.0 } } ] }, "stats_monthly_sales": { "count": 3, "min": 60.0, "max": 550.0, "avg": 328.3333333333333, "sum": 985.0 } } }
+```
+{
+   "took": 11,
+   "timed_out": false,
+   "_shards": ...,
+   "hits": ...,
+   "aggregations": {
+      "sales_per_month": {
+         "buckets": [
+            {
+               "key_as_string": "2015/01/01 00:00:00",
+               "key": 1420070400000,
+               "doc_count": 3,
+               "sales": {
+                  "value": 550.0
+               }
+            },
+            {
+               "key_as_string": "2015/02/01 00:00:00",
+               "key": 1422748800000,
+               "doc_count": 2,
+               "sales": {
+                  "value": 60.0
+               }
+            },
+            {
+               "key_as_string": "2015/03/01 00:00:00",
+               "key": 1425168000000,
+               "doc_count": 2,
+               "sales": {
+                  "value": 375.0
+               }
+            }
+         ]
+      },
+      "stats_monthly_sales": {
+         "count": 3,
+         "min": 60.0,
+         "max": 550.0,
+         "avg": 328.3333333333333,
+         "sum": 985.0
+      }
+   }
+}
+```
 
 ## 参考文章
 
