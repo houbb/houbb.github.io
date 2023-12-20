@@ -1,14 +1,23 @@
 ---
 layout: post
-title:  Neo4j-14-linux install linux 环境如何安装 neo4j
+title:  Neo4j-14-linux install linux 环境如何安装 neo4j, linux 安装 jdk
 date:  2018-1-8 14:18:33 +0800
 categories: [SQL]
 tags: [nosql, neo4j, go, go-lang]
 published: true
 ---
 
-# chat
+# 前言
 
+真正的安装记录这里就不记录了。
+
+neo4j 依赖 java，所以需要先配置 jdk。
+
+## linux 安装 jdk
+
+> [CentOS7 安装 jdk8 笔记](https://houbb.github.io/2021/08/02/centos7-07-jdk)
+
+# chat
 
 ## Q1: linux 如何安装 neo4j
 
@@ -109,6 +118,42 @@ published: true
 4. 如果已经登录，你也可以通过点击右上角的用户名，选择 "Change Password" 来修改密码。
 
 无论使用哪种方法，都请确保在修改密码后，你的应用程序或脚本中也更新了连接数据库所需的新密码。
+
+### 方法三：通过 cypher-shell 修改密码
+
+在Neo4j 4.1.1 版本及更高版本中，你可以使用 `cypher-shell` 工具来初始化密码。
+
+注意：这个密码只会让你确认输入一次，所以最好先保存原始密码，复制过去。
+
+以下是在命令行中执行的步骤：
+
+1. 打开命令行终端。
+
+2. 使用以下命令连接到 Neo4j 数据库（默认情况下，Neo4j数据库在本地运行并监听 `bolt://localhost:7687`）：
+
+    ```bash
+    cypher-shell -u neo4j -p your_current_password
+    ```
+
+    请用当前的密码替换 `your_current_password`。
+
+3. 连接成功后，使用以下命令修改密码：
+
+    ```cypher
+    ALTER USER neo4j SET PASSWORD 'your_new_password';
+    ```
+
+    请用你希望设置的新密码替换 `your_new_password`。
+
+4. 如果需要，可以退出 `cypher-shell`：
+
+    ```cypher
+    :exit
+    ```
+
+    然后，你可以使用新密码重新连接数据库。
+
+请确保在修改密码后更新你的应用程序或脚本中的连接信息，以使用新的密码进行连接。
 
 # 小结
 
