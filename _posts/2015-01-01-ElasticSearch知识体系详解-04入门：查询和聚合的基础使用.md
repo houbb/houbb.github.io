@@ -9,11 +9,18 @@ published: true
 
 
 
-04 入门：查询和聚合的基础使用
+# 04 入门：查询和聚合的基础使用
+
 ## 入门：从索引文档开始
 
 * 索引一个文档
-PUT /customer/_doc/1 { "name": "John Doe" }
+
+```
+PUT /customer/_doc/1
+{
+  "name": "John Doe"
+}
+```
 
 为了方便测试，我们使用kibana的dev tool来进行学习测试：
 
@@ -34,20 +41,43 @@ ES 还提供了批量操作，比如这里我们可以使用批量操作来插�
 数据是index为bank，accounts.json [下载地址](https://raw.githubusercontent.com/elastic/elasticsearch/master/docs/src/test/resources/accounts.json)（如果你无法下载，也可以clone ES的[官方仓库](https://github.com/elastic/elasticsearch)，然后进入/docs/src/test/resources/accounts.json目录获取）
 
 数据的格式如下
-{ "account_number": 0, "balance": 16623, "firstname": "Bradshaw", "lastname": "Mckenzie", "age": 29, "gender": "F", "address": "244 Columbus Place", "employer": "Euron", "email": "[[email protected]](https://learn.lianglianglee.com/cdn-cgi/l/email-protection)", "city": "Hobucken", "state": "CO" }
+
+```json
+{
+  "account_number": 0,
+  "balance": 16623,
+  "firstname": "Bradshaw",
+  "lastname": "Mckenzie",
+  "age": 29,
+  "gender": "F",
+  "address": "244 Columbus Place",
+  "employer": "Euron",
+  "email": "bradshawmckenzie@euron.com",
+  "city": "Hobucken",
+  "state": "CO"
+}
+```
+
 
 * **批量插入数据**
 
-将accounts.json拷贝至指定目录，我这里放在
-
-/opt/
-下面,
+将accounts.json拷贝至指定目录，我这里放在 /opt/ 下面,
 
 然后执行
+
+```
 curl -H "Content-Type: application/json" -XPOST "localhost:9200/bank/_bulk?pretty&refresh" --data-binary "@/opt/accounts.json"
+```
 
 * **查看状态**
-[elasticsearch@VM-0-14-centos root]$ curl "localhost:9200/_cat/indices?v=true" | grep bank % Total % Received % Xferd Average Speed Time Time Time Current Dload Upload Total Spent Left Speed 100 1524 100 1524 0 0 119k 0 --:--:-- --:--:-- --:--:-- 124k yellow open bank yq3eSlAWRMO2Td0Sl769rQ 1 1 1000 0 379.2kb 379.2kb [elasticsearch@VM-0-14-centos root]$
+
+```
+[elasticsearch@VM-0-14-centos root]$ curl "localhost:9200/_cat/indices?v=true" | grep bank
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  1524  100  1524    0     0   119k      0 --:--:-- --:--:-- --:--:--  124k
+yellow open   bank                            yq3eSlAWRMO2Td0Sl769rQ   1   1       1000            0    379.2kb        379.2kb
+```
 
 ## 查询数据
 
@@ -55,12 +85,18 @@ curl -H "Content-Type: application/json" -XPOST "localhost:9200/bank/_bulk?prett
 
 ### 查询所有
 
-match_all
-表示查询所有的数据，
+match_all表示查询所有的数据，sort即按照什么字段排序
 
-sort
-即按照什么字段排序
-GET /bank/_search { "query": { "match_all": {} }, "sort": [ { "account_number": "asc" } ] }
+
+```
+GET /bank/_search
+{
+  "query": { "match_all": {} },
+  "sort": [
+    { "account_number": "asc" }
+  ]
+}
+```
 
 结果
 
@@ -86,7 +122,18 @@ GET /bank/_search { "query": { "match_all": {} }, "sort": [ { "account_number": 
 ### 分页查询(from+size)
 
 本质上就是from和size两个字段
-GET /bank/_search { "query": { "match_all": {} }, "sort": [ { "account_number": "asc" } ], "from": 10, "size": 10 }
+
+```
+GET /bank/_search
+{
+  "query": { "match_all": {} },
+  "sort": [
+    { "account_number": "asc" }
+  ],
+  "from": 10,
+  "size": 10
+}
+```
 
 结果
 
@@ -94,11 +141,15 @@ GET /bank/_search { "query": { "match_all": {} }, "sort": [ { "account_number": 
 
 ### 指定字段查询：match
 
-如果要在字段中搜索特定字词，可以使用
+如果要在字段中搜索特定字词，可以使用 match ; 如下语句将查询address 字段中包含 mill 或者 lane的数据
 
-match
-; 如下语句将查询address 字段中包含 mill 或者 lane的数据
-GET /bank/_search { "query": { "match": { "address": "mill lane" } } }
+
+```
+GET /bank/_search
+{
+  "query": { "match": { "address": "mill lane" } }
+}
+```
 
 结果
 
@@ -108,10 +159,14 @@ GET /bank/_search { "query": { "match": { "address": "mill lane" } } }
 
 ### 查询段落匹配：match_phrase
 
-如果我们希望查询的条件是 address字段中包含 “mill lane”，则可以使用
+如果我们希望查询的条件是 address字段中包含 “mill lane”，则可以使用 match_phrase
 
-match_phrase
-GET /bank/_search { "query": { "match_phrase": { "address": "mill lane" } } }
+```
+GET /bank/_search
+{
+  "query": { "match_phrase": { "address": "mill lane" } }
+}
+```
 
 结果
 
@@ -119,55 +174,102 @@ GET /bank/_search { "query": { "match_phrase": { "address": "mill lane" } } }
 
 ### 多条件查询: bool
 
-如果要构造更复杂的查询，可以使用
-
-bool
-查询来组合多个查询条件。
+如果要构造更复杂的查询，可以使用 bool 查询来组合多个查询条件。
 
 例如，以下请求在bank索引中搜索40岁客户的帐户，但不包括居住在爱达荷州（ID）的任何人
-GET /bank/_search { "query": { "bool": { "must": [ { "match": { "age": "40" } } ], "must_not": [ { "match": { "state": "ID" } } ] } } }
+
+```
+GET /bank/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        { "match": { "age": "40" } }
+      ],
+      "must_not": [
+        { "match": { "state": "ID" } }
+      ]
+    }
+  }
+}
+```
 
 结果
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-usage-7.png)
 
-must
-,
-
-should
-,
-
-must_not
-和
-
-filter
-都是
-
-bool
-查询的子句。那么
-
-filter
-和上述
-
-query
-子句有啥区别呢？
+must, should, must_not 和 filter 都是bool查询的子句。那么filter和上述query子句有啥区别呢？
 
 ### 查询条件：query or filter
 
-先看下如下查询, 在
+先看下如下查询, 在 bool 查询的子句中同时具备query/must 和 filter
 
-bool
-查询的子句中同时具备query/must 和 filter
-GET /bank/_search { "query": { "bool": { "must": [ { "match": { "state": "ND" } } ], "filter": [ { "term": { "age": "40" } }, { "range": { "balance": { "gte": 20000, "lte": 30000 } } } ] } } }
+```
+GET /bank/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "state": "ND"
+          }
+        }
+      ],
+      "filter": [
+        {
+          "term": {
+            "age": "40"
+          }
+        },
+        {
+          "range": {
+            "balance": {
+              "gte": 20000,
+              "lte": 30000
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
 
 结果
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-usage-8.png)
 
-两者都可以写查询条件，而且语法也类似。区别在于，**query 上下文的条件是用来给文档打分的，匹配越好 _score 越高；filter 的条件只产生两种结果：符合与不符合，后者被过滤掉**。
+两者都可以写查询条件，而且语法也类似。
+
+区别在于，**query 上下文的条件是用来给文档打分的，匹配越好 _score 越高；filter 的条件只产生两种结果：符合与不符合，后者被过滤掉**。
 
 所以，我们进一步看只包含filter的查询
-GET /bank/_search { "query": { "bool": { "filter": [ { "term": { "age": "40" } }, { "range": { "balance": { "gte": 20000, "lte": 30000 } } } ] } } }
+
+```
+GET /bank/_search
+{
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "term": {
+            "age": "40"
+          }
+        },
+        {
+          "range": {
+            "balance": {
+              "gte": 20000,
+              "lte": 30000
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+```
 
 结果，显然无_score
 
@@ -179,17 +281,21 @@ GET /bank/_search { "query": { "bool": { "filter": [ { "term": { "age": "40" } }
 
 ### 简单聚合
 
-比如我们希望计算出account每个州的统计数量， 使用
+比如我们希望计算出account每个州的统计数量， 使用aggs关键字对state字段聚合，被聚合的字段无需对分词统计，所以使用state.keyword对整个字段统计
 
-aggs
-关键字对
-
-state
-字段聚合，被聚合的字段无需对分词统计，所以使用
-
-state.keyword
-对整个字段统计
-GET /bank/_search { "size": 0, "aggs": { "group_by_state": { "terms": { "field": "state.keyword" } } } }
+```
+GET /bank/_search
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword"
+      }
+    }
+  }
+}
+```
 
 结果
 
@@ -197,15 +303,34 @@ GET /bank/_search { "size": 0, "aggs": { "group_by_state": { "terms": { "field":
 
 因为无需返回条件的具体数据, 所以设置size=0，返回hits为空。
 
-doc_count
-表示bucket中每个州的数据条数。
+doc_count 表示bucket中每个州的数据条数。
 
 ### 嵌套聚合
 
 ES还可以处理个聚合条件的嵌套。
 
 比如承接上个例子， 计算每个州的平均结余。涉及到的就是在对state分组的基础上，嵌套计算avg(balance):
-GET /bank/_search { "size": 0, "aggs": { "group_by_state": { "terms": { "field": "state.keyword" }, "aggs": { "average_balance": { "avg": { "field": "balance" } } } } } }
+
+```
+GET /bank/_search
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword"
+      },
+      "aggs": {
+        "average_balance": {
+          "avg": {
+            "field": "balance"
+          }
+        }
+      }
+    }
+  }
+}
+```
 
 结果
 
@@ -216,14 +341,40 @@ GET /bank/_search { "size": 0, "aggs": { "group_by_state": { "terms": { "field":
 可以通过在aggs中对嵌套聚合的结果进行排序
 
 比如承接上个例子， 对嵌套计算出的avg(balance)，这里是average_balance，进行排序
-GET /bank/_search { "size": 0, "aggs": { "group_by_state": { "terms": { "field": "state.keyword", "order": { "average_balance": "desc" } }, "aggs": { "average_balance": { "avg": { "field": "balance" } } } } } }
 
 结果
 
+```
+GET /bank/_search
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state.keyword",
+        "order": {
+          "average_balance": "desc"
+        }
+      },
+      "aggs": {
+        "average_balance": {
+          "avg": {
+            "field": "balance"
+          }
+        }
+      }
+    }
+  }
+}
+```
+
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-usage-12.png)
 
+# 小结
 
+ES 的语法，对于解析器应该比较友好。
 
+对于写习惯了 SQL 的人估计不是特别友好，这种一段时间不使用，就会忘记。
 
 # 参考资料
 

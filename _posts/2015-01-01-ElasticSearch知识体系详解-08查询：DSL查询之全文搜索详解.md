@@ -9,7 +9,8 @@ published: true
 
 
 
-08 查询：DSL查询之全文搜索详解
+# 08 查询：DSL查询之全文搜索详解
+
 ## 写在前面:谈谈如何从官网学习
 
 提示
@@ -45,10 +46,34 @@ published: true
 * **准备一些数据**
 
 这里我们准备一些数据，通过实例看match 查询的步骤
-PUT /test-dsl-match { "settings": { "number_of_shards": 1 }} POST /test-dsl-match/_bulk { "index": { "_id": 1 }} { "title": "The quick brown fox" } { "index": { "_id": 2 }} { "title": "The quick brown fox jumps over the lazy dog" } { "index": { "_id": 3 }} { "title": "The quick brown fox jumps over the quick dog" } { "index": { "_id": 4 }} { "title": "Brown fox brown dog" }
+
+```
+PUT /test-dsl-match
+{ "settings": { "number_of_shards": 1 }} 
+
+POST /test-dsl-match/_bulk
+{ "index": { "_id": 1 }}
+{ "title": "The quick brown fox" }
+{ "index": { "_id": 2 }}
+{ "title": "The quick brown fox jumps over the lazy dog" }
+{ "index": { "_id": 3 }}
+{ "title": "The quick brown fox jumps over the quick dog" }
+{ "index": { "_id": 4 }}
+{ "title": "Brown fox brown dog" }
+```
 
 * **查询数据**
-GET /test-dsl-match/_search { "query": { "match": { "title": "QUICK!" } } }
+
+```
+GET /test-dsl-match/_search
+{
+    "query": {
+        "match": {
+            "title": "QUICK!"
+        }
+    }
+}
+```
 
 Elasticsearch 执行上面这个 match 查询的步骤是：
 
@@ -79,14 +104,45 @@ Elasticsearch 执行上面这个 match 查询的步骤是：
 * **match多个词的本质**
 
 查询多个词”BROWN DOG!”
-GET /test-dsl-match/_search { "query": { "match": { "title": "BROWN DOG" } } }
+
+```
+GET /test-dsl-match/_search
+{
+    "query": {
+        "match": {
+            "title": "BROWN DOG"
+        }
+    }
+}
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-dsl-full-text-5.png)
 
 因为 match 查询必须查找两个词（ [“brown”,“dog”] ），它在内部实际上先执行两次 term 查询，然后将两次查询的结果合并作为最终结果输出。为了做到这点，它将两个 term 查询包入一个 bool 查询中，
 
 所以上述查询的结果，和如下语句查询结果是等同的
-GET /test-dsl-match/_search { "query": { "bool": { "should": [ { "term": { "title": "brown" } }, { "term": { "title": "dog" } } ] } } }
+
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "term": {
+            "title": "brown"
+          }
+        },
+        {
+          "term": {
+            "title": "dog"
+          }
+        }
+      ]
+    }
+  }
+}
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-dsl-full-text-6.png)
 
@@ -95,15 +151,60 @@ GET /test-dsl-match/_search { "query": { "bool": { "should": [ { "term": { "titl
 上面等同于should（任意一个满足），是因为 match还有一个operator参数，默认是or, 所以对应的是should。
 
 所以上述查询也等同于
-GET /test-dsl-match/_search { "query": { "match": { "title": { "query": "BROWN DOG", "operator": "or" } } } }
+
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "match": {
+      "title": {
+        "query": "BROWN DOG",
+        "operator": "or"
+      }
+    }
+  }
+}
+```
 
 那么我们如果是需要and操作呢，即同时满足呢？
 
-GET /test-dsl-match/_search { "query": { "match": { "title": { "query": "BROWN DOG", "operator": "and" } } } }
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "match": {
+      "title": {
+        "query": "BROWN DOG",
+        "operator": "and"
+      }
+    }
+  }
+}
+```
 
 等同于
 
-GET /test-dsl-match/_search { "query": { "bool": { "must": [ { "term": { "title": "brown" } }, { "term": { "title": "dog" } } ] } } }
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "term": {
+            "title": "brown"
+          }
+        },
+        {
+          "term": {
+            "title": "dog"
+          }
+        }
+      ]
+    }
+  }
+}
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-dsl-full-text-7.png)
 
@@ -111,15 +212,49 @@ GET /test-dsl-match/_search { "query": { "bool": { "must": [ { "term": { "title"
 
 如果用户给定 3 个查询词，想查找只包含其中 2 个的文档，该如何处理？将 operator 操作符参数设置成 and 或者 or 都是不合适的。
 
-match 查询支持 minimum_should_match 最小匹配参数，这让我们可以指定必须匹配的词项数用来表示一个文档是否相关。我们可以将其设置为某个具体数字，更常用的做法是将其设置为一个百分数，因为我们无法控制用户搜索时输入的单词数量：
-GET /test-dsl-match/_search { "query": { "match": { "title": { "query": "quick brown dog", "minimum_should_match": "75%" } } } }
+match 查询支持 minimum_should_match 最小匹配参数，这让我们可以指定必须匹配的词项数用来表示一个文档是否相关。
 
-当给定百分比的时候， minimum_should_match 会做合适的事情：在之前三词项的示例中， 75% 会自动被截断成 66.6% ，即三个里面两个词。无论这个值设置成什么，至少包含一个词项的文档才会被认为是匹配的。
+我们可以将其设置为某个具体数字，更常用的做法是将其设置为一个百分数，因为我们无法控制用户搜索时输入的单词数量：
+
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "match": {
+      "title": {
+        "query":                "quick brown dog",
+        "minimum_should_match": "75%"
+      }
+    }
+  }
+}
+```
+
+当给定百分比的时候， minimum_should_match 会做合适的事情：
+
+在之前三词项的示例中， 75% 会自动被截断成 66.6% ，即三个里面两个词。
+
+无论这个值设置成什么，至少包含一个词项的文档才会被认为是匹配的。
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-dsl-full-text-8.png)
 
 当然也等同于
-GET /test-dsl-match/_search { "query": { "bool": { "should": [ { "match": { "title": "quick" }}, { "match": { "title": "brown" }}, { "match": { "title": "dog" }} ], "minimum_should_match": 2 } } }
+
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        { "match": { "title": "quick" }},
+        { "match": { "title": "brown"   }},
+        { "match": { "title": "dog"   }}
+      ],
+      "minimum_should_match": 2 
+    }
+  }
+}
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-dsl-full-text-9.png)
 
@@ -128,12 +263,36 @@ GET /test-dsl-match/_search { "query": { "bool": { "should": [ { "match": { "tit
 * **match_pharse**
 
 match_phrase在前文中我们已经有了解，我们再看下另外一个例子。
-GET /test-dsl-match/_search { "query": { "match_phrase": { "title": { "query": "quick brown" } } } }
+
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "match_phrase": {
+      "title": {
+        "query": "quick brown"
+      }
+    }
+  }
+}
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-dsl-full-text-11.png)
 
 很多人对它仍然有误解的，比如如下例子：
-GET /test-dsl-match/_search { "query": { "match_phrase": { "title": { "query": "quick brown f" } } } }
+
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "match_phrase": {
+      "title": {
+        "query": "quick brown f"
+      }
+    }
+  }
+}
+```
 
 这样的查询是查不出任何数据的，因为前文中我们知道了match本质上是对term组合，match_phrase本质是连续的term的查询，所以f并不是一个分词，不满足term查询，所以最终查不出任何内容了。
 
@@ -141,14 +300,22 @@ GET /test-dsl-match/_search { "query": { "match_phrase": { "title": { "query": "
 
 * **match_pharse_prefix**
 
-那有没有可以查询出
+那有没有可以查询出 quick brown f 的方式呢？
 
-quick brown f
-的方式呢？ELasticSearch在match_phrase基础上提供了一种可以查最后一个词项是前缀的方法，这样就可以查询
+ELasticSearch在match_phrase基础上提供了一种可以查最后一个词项是前缀的方法，这样就可以查询 quick brown f 了
 
-quick brown f
-了
-GET /test-dsl-match/_search { "query": { "match_phrase_prefix": { "title": { "query": "quick brown f" } } } }
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "match_phrase_prefix": {
+      "title": {
+        "query": "quick brown f"
+      }
+    }
+  }
+}
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-dsl-full-text-13.png)
 
@@ -157,22 +324,57 @@ GET /test-dsl-match/_search { "query": { "match_phrase_prefix": { "title": { "qu
 * **match_bool_prefix**
 
 除了match_phrase_prefix，ElasticSearch还提供了match_bool_prefix查询
-GET /test-dsl-match/_search { "query": { "match_bool_prefix": { "title": { "query": "quick brown f" } } } }
+
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "match_bool_prefix": {
+      "title": {
+        "query": "quick brown f"
+      }
+    }
+  }
+}
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-dsl-full-text-14.png)
 
 它们两种方式有啥区别呢？match_bool_prefix本质上可以转换为：
-GET /test-dsl-match/_search { "query": { "bool" : { "should": [ { "term": { "title": "quick" }}, { "term": { "title": "brown" }}, { "prefix": { "title": "f"}} ] } } }
+
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "bool" : {
+      "should": [
+        { "term": { "title": "quick" }},
+        { "term": { "title": "brown" }},
+        { "prefix": { "title": "f"}}
+      ]
+    }
+  }
+}
+```
 
 所以这样你就能理解，match_bool_prefix查询中的quick,brown,f是无序的。
 
 * **multi_match**
 
 如果我们期望一次对多个字段查询，怎么办呢？ElasticSearch提供了multi_match查询的方式
-{ "query": { "multi_match" : { "query": "Will Smith", "fields": [ "title", "/*_name" ] } } }
 
-/*
-表示前缀匹配字段。
+```json
+{
+  "query": {
+    "multi_match" : {
+      "query":    "Will Smith",
+      "fields": [ "title", "*_name" ] 
+    }
+  }
+}
+```
+
+`*` 表示前缀匹配字段。
 
 ## query string类型
 
@@ -182,10 +384,23 @@ GET /test-dsl-match/_search { "query": { "bool" : { "should": [ { "term": { "tit
 
 此查询使用语法根据运算符（例如AND或）来解析和拆分提供的查询字符串NOT。然后查询在返回匹配的文档之前独立分析每个拆分的文本。
 
-可以使用该query_string查询创建一个复杂的搜索，其中包括通配符，跨多个字段的搜索等等。尽管用途广泛，但查询是严格的，如果查询字符串包含任何无效语法，则返回错误。
+可以使用该query_string查询创建一个复杂的搜索，其中包括通配符，跨多个字段的搜索等等。
+
+尽管用途广泛，但查询是严格的，如果查询字符串包含任何无效语法，则返回错误。
 
 例如：
-GET /test-dsl-match/_search { "query": { "query_string": { "query": "(lazy dog) OR (brown dog)", "default_field": "title" } } }
+
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "query_string": {
+      "query": "(lazy dog) OR (brown dog)",
+      "default_field": "title"
+    }
+  }
+}
+```
 
 这里查询结果，你需要理解本质上查询这四个分词（term）or的结果而已，所以doc 3和4也在其中
 
@@ -200,7 +415,19 @@ GET /test-dsl-match/_search { "query": { "query_string": { "query": "(lazy dog) 
 尽管其语法比query_string查询更受限制 ，但**simple_query_string 查询不会针对无效语法返回错误。而是，它将忽略查询字符串的任何无效部分**。
 
 举例：
-GET /test-dsl-match/_search { "query": { "simple_query_string" : { "query": "\"over the\" + (lazy | quick) + dog", "fields": ["title"], "default_operator": "and" } } }
+
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "simple_query_string" : {
+        "query": "\"over the\" + (lazy | quick) + dog",
+        "fields": ["title"],
+        "default_operator": "and"
+    }
+  }
+}
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-dsl-full-text-16.png)
 
@@ -213,11 +440,44 @@ GET /test-dsl-match/_search { "query": { "simple_query_string" : { "query": "\"o
 Intervals是时间间隔的意思，本质上将多个规则按照顺序匹配。
 
 比如：
-GET /test-dsl-match/_search { "query": { "intervals" : { "title" : { "all_of" : { "ordered" : true, "intervals" : [ { "match" : { "query" : "quick", "max_gaps" : 0, "ordered" : true } }, { "any_of" : { "intervals" : [ { "match" : { "query" : "jump over" } }, { "match" : { "query" : "quick dog" } } ] } } ] } } } } }
+
+```
+GET /test-dsl-match/_search
+{
+  "query": {
+    "intervals" : {
+      "title" : {
+        "all_of" : {
+          "ordered" : true,
+          "intervals" : [
+            {
+              "match" : {
+                "query" : "quick",
+                "max_gaps" : 0,
+                "ordered" : true
+              }
+            },
+            {
+              "any_of" : {
+                "intervals" : [
+                  { "match" : { "query" : "jump over" } },
+                  { "match" : { "query" : "quick dog" } }
+                ]
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-dsl-full-text-17.png)
 
-因为interval之间是可以组合的，所以它可以表现的很复杂。更多请参考[官网](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-intervals-query.html)
+因为interval之间是可以组合的，所以它可以表现的很复杂。
+
+更多请参考[官网](https://www.elastic.co/guide/en/elasticsearch/reference/current/query-dsl-intervals-query.html)
 
 ## 参考文章
 

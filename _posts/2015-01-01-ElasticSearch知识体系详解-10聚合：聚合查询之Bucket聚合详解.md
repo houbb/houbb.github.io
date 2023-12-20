@@ -9,25 +9,21 @@ published: true
 
 
 
-10 聚合：聚合查询之Bucket聚合详解
+# 10 聚合：聚合查询之Bucket聚合详解
+
 ## 聚合的引入
 
 我们在SQL结果中常有：
-SELECT COUNT(color) FROM table GROUP BY color
 
-ElasticSearch中**桶**在概念上类似于 SQL 的分组（
+```sql
+SELECT COUNT(color) 
+FROM table
+GROUP BY color 
+```
 
-GROUP BY
-），而**指标**则类似于
+ElasticSearch中**桶**在概念上类似于 SQL 的分组（GROUP BY），
 
-COUNT()
-、
-
-SUM()
-、
-
-MAX()
-等统计方法。
+而**指标**则类似于 COUNT() 、 SUM() 、 MAX() 等统计方法。
 
 进而引入了两个概念：
 
@@ -69,12 +65,46 @@ MAX()
 让我们先看一个例子。我们将会创建一些对汽车经销商有用的聚合，数据是关于汽车交易的信息：车型、制造商、售价、何时被出售等。
 
 首先我们批量索引一些数据：
-POST /test-agg-cars/_bulk { "index": {}} { "price" : 10000, "color" : "red", "make" : "honda", "sold" : "2014-10-28" } { "index": {}} { "price" : 20000, "color" : "red", "make" : "honda", "sold" : "2014-11-05" } { "index": {}} { "price" : 30000, "color" : "green", "make" : "ford", "sold" : "2014-05-18" } { "index": {}} { "price" : 15000, "color" : "blue", "make" : "toyota", "sold" : "2014-07-02" } { "index": {}} { "price" : 12000, "color" : "green", "make" : "toyota", "sold" : "2014-08-19" } { "index": {}} { "price" : 20000, "color" : "red", "make" : "honda", "sold" : "2014-11-05" } { "index": {}} { "price" : 80000, "color" : "red", "make" : "bmw", "sold" : "2014-01-01" } { "index": {}} { "price" : 25000, "color" : "blue", "make" : "ford", "sold" : "2014-02-12" }
+
+```
+POST /test-agg-cars/_bulk
+{ "index": {}}
+{ "price" : 10000, "color" : "red", "make" : "honda", "sold" : "2014-10-28" }
+{ "index": {}}
+{ "price" : 20000, "color" : "red", "make" : "honda", "sold" : "2014-11-05" }
+{ "index": {}}
+{ "price" : 30000, "color" : "green", "make" : "ford", "sold" : "2014-05-18" }
+{ "index": {}}
+{ "price" : 15000, "color" : "blue", "make" : "toyota", "sold" : "2014-07-02" }
+{ "index": {}}
+{ "price" : 12000, "color" : "green", "make" : "toyota", "sold" : "2014-08-19" }
+{ "index": {}}
+{ "price" : 20000, "color" : "red", "make" : "honda", "sold" : "2014-11-05" }
+{ "index": {}}
+{ "price" : 80000, "color" : "red", "make" : "bmw", "sold" : "2014-01-01" }
+{ "index": {}}
+{ "price" : 25000, "color" : "blue", "make" : "ford", "sold" : "2014-02-12" }
+```
 
 ### 标准的聚合
 
-有了数据，开始构建我们的第一个聚合。汽车经销商可能会想知道哪个颜色的汽车销量最好，用聚合可以轻易得到结果，用 terms 桶操作：
-GET /test-agg-cars/_search { "size" : 0, "aggs" : { "popular_colors" : { "terms" : { "field" : "color.keyword" } } } }
+有了数据，开始构建我们的第一个聚合。
+
+汽车经销商可能会想知道哪个颜色的汽车销量最好，用聚合可以轻易得到结果，用 terms 桶操作：
+
+```
+GET /test-agg-cars/_search
+{
+    "size" : 0,
+    "aggs" : { 
+        "popular_colors" : { 
+            "terms" : { 
+              "field" : "color.keyword"
+            }
+        }
+    }
+}
+```
 
 * 聚合操作被置于顶层参数 aggs 之下（如果你愿意，完整形式 aggregations 同样有效）。
 * 然后，可以为聚合指定一个我们想要名称，本例中是： popular_colors 。
@@ -92,7 +122,25 @@ GET /test-agg-cars/_search { "size" : 0, "aggs" : { "popular_colors" : { "terms"
 ### 多个聚合
 
 同时计算两种桶的结果：对color和对make。
-GET /test-agg-cars/_search { "size" : 0, "aggs" : { "popular_colors" : { "terms" : { "field" : "color.keyword" } }, "make_by" : { "terms" : { "field" : "make.keyword" } } } }
+
+```
+GET /test-agg-cars/_search
+{
+    "size" : 0,
+    "aggs" : { 
+        "popular_colors" : { 
+            "terms" : { 
+              "field" : "color.keyword"
+            }
+        },
+        "make_by" : { 
+            "terms" : { 
+              "field" : "make.keyword"
+            }
+        }
+    }
+}
+```
 
 结果如下：
 
@@ -100,19 +148,63 @@ GET /test-agg-cars/_search { "size" : 0, "aggs" : { "popular_colors" : { "terms"
 
 ### 聚合的嵌套
 
-这个新的聚合层让我们可以将 avg 度量嵌套置于 terms 桶内。实际上，这就为每个颜色生成了平均价格。
-GET /test-agg-cars/_search { "size" : 0, "aggs": { "colors": { "terms": { "field": "color.keyword" }, "aggs": { "avg_price": { "avg": { "field": "price" } } } } } }
+这个新的聚合层让我们可以将 avg 度量嵌套置于 terms 桶内。
+
+实际上，这就为每个颜色生成了平均价格。
+
+```
+GET /test-agg-cars/_search
+{
+   "size" : 0,
+   "aggs": {
+      "colors": {
+         "terms": {
+            "field": "color.keyword"
+         },
+         "aggs": { 
+            "avg_price": { 
+               "avg": {
+                  "field": "price" 
+               }
+            }
+         }
+      }
+   }
+}
+```
 
 结果如下：
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-agg-bucket-5.png)
 
-正如 颜色 的例子，我们需要给度量起一个名字（ avg_price ）这样可以稍后根据名字获取它的值。最后，我们指定度量本身（ avg ）以及我们想要计算平均值的字段（ price ）
+正如 颜色 的例子，我们需要给度量起一个名字（ avg_price ）这样可以稍后根据名字获取它的值。
+
+最后，我们指定度量本身（ avg ）以及我们想要计算平均值的字段（ price ）
 
 ### 动态脚本的聚合
 
 这个例子告诉你，ElasticSearch还支持一些基于脚本（生成运行时的字段）的复杂的动态聚合。
-GET /test-agg-cars/_search { "runtime_mappings": { "make.length": { "type": "long", "script": "emit(doc['make.keyword'].value.length())" } }, "size" : 0, "aggs": { "make_length": { "histogram": { "interval": 1, "field": "make.length" } } } }
+
+```
+GET /test-agg-cars/_search
+{
+  "runtime_mappings": {
+    "make.length": {
+      "type": "long",
+      "script": "emit(doc['make.keyword'].value.length())"
+    }
+  },
+  "size" : 0,
+  "aggs": {
+    "make_length": {
+      "histogram": {
+        "interval": 1,
+        "field": "make.length"
+      }
+    }
+  }
+}
+```
 
 结果如下：
 
@@ -126,8 +218,24 @@ histogram可以参考后文内容。
 
 ### 前置条件的过滤：filter
 
-在当前文档集上下文中定义与指定过滤器(Filter)匹配的所有文档的单个存储桶。通常，这将用于将当前聚合上下文缩小到一组特定的文档。
-GET /test-agg-cars/_search { "size": 0, "aggs": { "make_by": { "filter": { "term": { "type": "honda" } }, "aggs": { "avg_price": { "avg": { "field": "price" } } } } } }
+在当前文档集上下文中定义与指定过滤器(Filter)匹配的所有文档的单个存储桶。
+
+通常，这将用于将当前聚合上下文缩小到一组特定的文档。
+
+```
+GET /test-agg-cars/_search
+{
+  "size": 0,
+  "aggs": {
+    "make_by": {
+      "filter": { "term": { "type": "honda" } },
+      "aggs": {
+        "avg_price": { "avg": { "field": "price" } }
+      }
+    }
+  }
+}
+```
 
 结果如下：
 
@@ -136,11 +244,38 @@ GET /test-agg-cars/_search { "size": 0, "aggs": { "make_by": { "filter": { "term
 ### 对filter进行分组聚合：filters
 
 设计一个新的例子, 日志系统中，每条日志都是在文本中，包含warning/info等信息。
-PUT /test-agg-logs/_bulk?refresh { "index" : { "_id" : 1 } } { "body" : "warning: page could not be rendered" } { "index" : { "_id" : 2 } } { "body" : "authentication error" } { "index" : { "_id" : 3 } } { "body" : "warning: connection timed out" } { "index" : { "_id" : 4 } } { "body" : "info: hello pdai" }
+
+```
+PUT /test-agg-logs/_bulk?refresh
+{ "index" : { "_id" : 1 } }
+{ "body" : "warning: page could not be rendered" }
+{ "index" : { "_id" : 2 } }
+{ "body" : "authentication error" }
+{ "index" : { "_id" : 3 } }
+{ "body" : "warning: connection timed out" }
+{ "index" : { "_id" : 4 } }
+{ "body" : "info: hello pdai" }
+```
 
 我们需要对包含不同日志类型的日志进行分组，这就需要filters:
 
-GET /test-agg-logs/_search { "size": 0, "aggs" : { "messages" : { "filters" : { "other_bucket_key": "other_messages", "filters" : { "infos" : { "match" : { "body" : "info" }}, "warnings" : { "match" : { "body" : "warning" }} } } } } }
+```
+GET /test-agg-logs/_search
+{
+  "size": 0,
+  "aggs" : {
+    "messages" : {
+      "filters" : {
+        "other_bucket_key": "other_messages",
+        "filters" : {
+          "infos" :   { "match" : { "body" : "info"   }},
+          "warnings" : { "match" : { "body" : "warning" }}
+        }
+      }
+    }
+  }
+}
+```
 
 结果如下：
 
@@ -148,8 +283,30 @@ GET /test-agg-logs/_search { "size": 0, "aggs" : { "messages" : { "filters" : { 
 
 ### 对number类型聚合：Range
 
-基于多桶值源的聚合，使用户能够定义一组范围-每个范围代表一个桶。在聚合过程中，将从每个存储区范围中检查从每个文档中提取的值，并“存储”相关/匹配的文档。请注意，此聚合包括from值，但不包括to每个范围的值。
-GET /test-agg-cars/_search { "size": 0, "aggs": { "price_ranges": { "range": { "field": "price", "ranges": [ { "to": 20000 }, { "from": 20000, "to": 40000 }, { "from": 40000 } ] } } } }
+基于多桶值源的聚合，使用户能够定义一组范围-每个范围代表一个桶。
+
+在聚合过程中，将从每个存储区范围中检查从每个文档中提取的值，并“存储”相关/匹配的文档。
+
+请注意，此聚合包括from值，但不包括to每个范围的值。
+
+```
+GET /test-agg-cars/_search
+{
+  "size": 0,
+  "aggs": {
+    "price_ranges": {
+      "range": {
+        "field": "price",
+        "ranges": [
+          { "to": 20000 },
+          { "from": 20000, "to": 40000 },
+          { "from": 40000 }
+        ]
+      }
+    }
+  }
+}
+```
 
 结果如下：
 
@@ -158,39 +315,209 @@ GET /test-agg-cars/_search { "size": 0, "aggs": { "price_ranges": { "range": { "
 ### 对IP类型聚合：IP Range
 
 专用于IP值的范围聚合。
-GET /ip_addresses/_search { "size": 10, "aggs": { "ip_ranges": { "ip_range": { "field": "ip", "ranges": [ { "to": "10.0.0.5" }, { "from": "10.0.0.5" } ] } } } }
+
+```
+GET /ip_addresses/_search
+{
+  "size": 10,
+  "aggs": {
+    "ip_ranges": {
+      "ip_range": {
+        "field": "ip",
+        "ranges": [
+          { "to": "10.0.0.5" },
+          { "from": "10.0.0.5" }
+        ]
+      }
+    }
+  }
+}
+```
 
 返回
 
-{ ... "aggregations": { "ip_ranges": { "buckets": [ { "key": "/*-10.0.0.5", "to": "10.0.0.5", "doc_count": 10 }, { "key": "10.0.0.5-/*", "from": "10.0.0.5", "doc_count": 260 } ] } } }
+```
+{
+  ...
+
+  "aggregations": {
+    "ip_ranges": {
+      "buckets": [
+        {
+          "key": "*-10.0.0.5",
+          "to": "10.0.0.5",
+          "doc_count": 10
+        },
+        {
+          "key": "10.0.0.5-*",
+          "from": "10.0.0.5",
+          "doc_count": 260
+        }
+      ]
+    }
+  }
+}
+```
 
 * **CIDR Mask分组**
 
 此外还可以用CIDR Mask分组
-GET /ip_addresses/_search { "size": 0, "aggs": { "ip_ranges": { "ip_range": { "field": "ip", "ranges": [ { "mask": "10.0.0.0/25" }, { "mask": "10.0.0.127/25" } ] } } } }
+
+```
+GET /ip_addresses/_search
+{
+  "size": 0,
+  "aggs": {
+    "ip_ranges": {
+      "ip_range": {
+        "field": "ip",
+        "ranges": [
+          { "mask": "10.0.0.0/25" },
+          { "mask": "10.0.0.127/25" }
+        ]
+      }
+    }
+  }
+}
+```
 
 返回
 
-{ ... "aggregations": { "ip_ranges": { "buckets": [ { "key": "10.0.0.0/25", "from": "10.0.0.0", "to": "10.0.0.128", "doc_count": 128 }, { "key": "10.0.0.127/25", "from": "10.0.0.0", "to": "10.0.0.128", "doc_count": 128 } ] } } }
+```json
+{
+  ...
+
+  "aggregations": {
+    "ip_ranges": {
+      "buckets": [
+        {
+          "key": "10.0.0.0/25",
+          "from": "10.0.0.0",
+          "to": "10.0.0.128",
+          "doc_count": 128
+        },
+        {
+          "key": "10.0.0.127/25",
+          "from": "10.0.0.0",
+          "to": "10.0.0.128",
+          "doc_count": 128
+        }
+      ]
+    }
+  }
+}
+```
 
 * **增加key显示**
-GET /ip_addresses/_search { "size": 0, "aggs": { "ip_ranges": { "ip_range": { "field": "ip", "ranges": [ { "to": "10.0.0.5" }, { "from": "10.0.0.5" } ], "keyed": true // here } } } }
+
+```
+GET /ip_addresses/_search
+{
+  "size": 0,
+  "aggs": {
+    "ip_ranges": {
+      "ip_range": {
+        "field": "ip",
+        "ranges": [
+          { "to": "10.0.0.5" },
+          { "from": "10.0.0.5" }
+        ],
+        "keyed": true // here
+      }
+    }
+  }
+}
+```
 
 返回
 
-{ ... "aggregations": { "ip_ranges": { "buckets": { "/*-10.0.0.5": { "to": "10.0.0.5", "doc_count": 10 }, "10.0.0.5-/*": { "from": "10.0.0.5", "doc_count": 260 } } } } }
+```
+{
+  ...
+
+  "aggregations": {
+    "ip_ranges": {
+      "buckets": {
+        "*-10.0.0.5": {
+          "to": "10.0.0.5",
+          "doc_count": 10
+        },
+        "10.0.0.5-*": {
+          "from": "10.0.0.5",
+          "doc_count": 260
+        }
+      }
+    }
+  }
+}
+```
 
 * **自定义key显示**
-GET /ip_addresses/_search { "size": 0, "aggs": { "ip_ranges": { "ip_range": { "field": "ip", "ranges": [ { "key": "infinity", "to": "10.0.0.5" }, { "key": "and-beyond", "from": "10.0.0.5" } ], "keyed": true } } } }
+
+```
+GET /ip_addresses/_search
+{
+  "size": 0,
+  "aggs": {
+    "ip_ranges": {
+      "ip_range": {
+        "field": "ip",
+        "ranges": [
+          { "key": "infinity", "to": "10.0.0.5" },
+          { "key": "and-beyond", "from": "10.0.0.5" }
+        ],
+        "keyed": true
+      }
+    }
+  }
+}
+```
 
 返回
 
-{ ... "aggregations": { "ip_ranges": { "buckets": { "infinity": { "to": "10.0.0.5", "doc_count": 10 }, "and-beyond": { "from": "10.0.0.5", "doc_count": 260 } } } } }
+```
+{
+  ...
+
+  "aggregations": {
+    "ip_ranges": {
+      "buckets": {
+        "infinity": {
+          "to": "10.0.0.5",
+          "doc_count": 10
+        },
+        "and-beyond": {
+          "from": "10.0.0.5",
+          "doc_count": 260
+        }
+      }
+    }
+  }
+}
+```
 
 ### 对日期类型聚合：Date Range
 
 专用于日期值的范围聚合。
-GET /test-agg-cars/_search { "size": 0, "aggs": { "range": { "date_range": { "field": "sold", "format": "yyyy-MM", "ranges": [ { "from": "2014-01-01" }, { "to": "2014-12-31" } ] } } } }
+
+```
+GET /test-agg-cars/_search
+{
+  "size": 0,
+  "aggs": {
+    "range": {
+      "date_range": {
+        "field": "sold",
+        "format": "yyyy-MM",
+        "ranges": [
+          { "from": "2014-01-01" },  
+          { "to": "2014-12-31" } 
+        ]
+      }
+    }
+  }
+}
+```
 
 结果如下：
 
@@ -207,7 +534,28 @@ GET /test-agg-cars/_search { "size": 0, "aggs": { "range": { "date_range": { "fi
 对于仪表盘来说，我们希望知道每个售价区间内汽车的销量。我们还会想知道每个售价区间内汽车所带来的收入，可以通过对每个区间内已售汽车的售价求和得到。
 
 可以用 histogram 和一个嵌套的 sum 度量得到我们想要的答案：
-GET /test-agg-cars/_search { "size" : 0, "aggs":{ "price":{ "histogram":{ "field": "price.keyword", "interval": 20000 }, "aggs":{ "revenue": { "sum": { "field" : "price" } } } } } }
+
+```
+GET /test-agg-cars/_search
+{
+   "size" : 0,
+   "aggs":{
+      "price":{
+         "histogram":{ 
+            "field": "price.keyword",
+            "interval": 20000
+         },
+         "aggs":{
+            "revenue": {
+               "sum": { 
+                 "field" : "price"
+               }
+             }
+         }
+      }
+   }
+}
+```
 
 * histogram 桶要求两个参数：一个数值字段以及一个定义桶大小间隔。
 * sum 度量嵌套在每个售价区间内，用来显示每个区间内的总收入。
@@ -225,7 +573,28 @@ GET /test-agg-cars/_search { "size" : 0, "aggs":{ "price":{ "histogram":{ "field
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-agg-bucket-33.png)
 
 当然，我们可以为任何聚合输出的分类和统计结果创建条形图，而不只是 直方图 桶。让我们以最受欢迎 10 种汽车以及它们的平均售价、标准差这些信息创建一个条形图。 我们会用到 terms 桶和 extended_stats 度量：
-GET /test-agg-cars/_search { "size" : 0, "aggs": { "makes": { "terms": { "field": "make.keyword", "size": 10 }, "aggs": { "stats": { "extended_stats": { "field": "price" } } } } } }
+
+```
+GET /test-agg-cars/_search
+{
+  "size" : 0,
+  "aggs": {
+    "makes": {
+      "terms": {
+        "field": "make.keyword",
+        "size": 10
+      },
+      "aggs": {
+        "stats": {
+          "extended_stats": {
+            "field": "price"
+          }
+        }
+      }
+    }
+  }
+}
+```
 
 上述代码会按受欢迎度返回制造商列表以及它们各自的统计信息。我们对其中的 stats.avg 、 stats.count 和 stats.std_deviation 信息特别感兴趣，并用 它们计算出标准差：
 

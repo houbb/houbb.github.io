@@ -9,29 +9,69 @@ published: true
 
 
 
-05 索引：索引管理详解
+# 05 索引：索引管理详解
+
 ## 索引管理的引入
 
 我们在前文中增加文档时，如下的语句会动态创建一个customer的index：
-PUT /customer/_doc/1 { "name": "John Doe" }
+
+```
+PUT /customer/_doc/1
+{
+  "name": "John Doe"
+}
+```
 
 而这个index实际上已经自动创建了它里面的字段（name）的类型。我们不妨看下它自动创建的mapping：
 
-{ "mappings": { "_doc": { "properties": { "name": { "type": "text", "fields": { "keyword": { "type": "keyword", "ignore_above": 256 } } } } } } }
+```
+{
+  "mappings": {
+    "_doc": {
+      "properties": {
+        "name": {
+          "type": "text",
+          "fields": {
+            "keyword": {
+              "type": "keyword",
+              "ignore_above": 256
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+PS: 这里实际上对应的就是 lucene 的索引创建。默认是一个 text 的类别。
+
 
 那么如果我们需要对这个建立索引的过程做更多的控制：比如想要确保这个索引有数量适中的主分片，并且在我们索引任何数据之前，分析器和映射已经被建立好。那么就会引入两点：第一个**禁止自动创建索引**，第二个是**手动创建索引**。
 
 * 禁止自动创建索引
 
 可以通过在 config/elasticsearch.yml 的每个节点下添加下面的配置：
+
+```yaml
 action.auto_create_index: false
+```
 
 手动创建索引就是接下来文章的内容。
 
 ## 索引的格式
 
 在请求体里面传入设置或类型映射，如下所示：
-PUT /my_index { "settings": { ... any settings ... }, "mappings": { "properties": { ... any properties ... } } }
+
+```
+PUT /my_index
+{
+    "settings": { ... any settings ... },
+    "mappings": {
+        "properties": { ... any properties ... }
+    }
+}
+```
 
 * **settings**: 用来设置分片,副本等配置信息
 * mappings 
@@ -47,9 +87,36 @@ PUT /my_index { "settings": { ... any settings ... }, "mappings": { "properties"
 
 我们创建一个user 索引
 
-test-index-users
-，其中包含三个属性：name，age, remarks; 存储在一个分片一个副本上。
-PUT /test-index-users { "settings": { "number_of_shards": 1, "number_of_replicas": 1 }, "mappings": { "properties": { "name": { "type": "text", "fields": { "keyword": { "type": "keyword", "ignore_above": 256 } } }, "age": { "type": "long" }, "remarks": { "type": "text" } } } }
+test-index-users ，其中包含三个属性：name，age, remarks; 存储在一个分片一个副本上。
+
+```
+PUT /test-index-users
+{
+  "settings": {
+		"number_of_shards": 1,
+		"number_of_replicas": 1
+	},
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "age": {
+        "type": "long"
+      },
+      "remarks": {
+        "type": "text"
+      }
+    }
+  }
+}
+```
 
 执行结果
 
@@ -64,7 +131,15 @@ PUT /test-index-users { "settings": { "number_of_shards": 1, "number_of_replicas
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-index-manage-3.png)
 
 * 我们再**测试下不匹配的数据类型**(age)：
-POST /test-index-users/_doc { "name": "test user", "age": "error_age", "remarks": "hello eeee" }
+
+```
+POST /test-index-users/_doc
+{
+  "name": "test user",
+  "age": "error_age",
+  "remarks": "hello eeee"
+}
+```
 
 你可以看到无法类型不匹配的错误：
 
@@ -74,21 +149,31 @@ POST /test-index-users/_doc { "name": "test user", "age": "error_age", "remarks"
 
 查看刚才的索引,
 
+```
 curl 'localhost:9200/_cat/indices?v' | grep users
 yellow open test-index-users LSaIB57XSC6uVtGQHoPYxQ 1 1 1 0 4.4kb 4.4kb
+```
 
-我们注意到刚创建的索引的状态是yellow的，因为我测试的环境是单点环境，无法创建副本，但是在上述
-
-number_of_replicas
-配置中设置了副本数是1； 所以在这个时候我们需要修改索引的配置。
+我们注意到刚创建的索引的状态是yellow的，因为我测试的环境是单点环境，无法创建副本，但是在上述 number_of_replicas 配置中设置了副本数是1； 所以在这个时候我们需要修改索引的配置。
 
 修改副本数量为0
-PUT /test-index-users/_settings { "settings": { "number_of_replicas": 0 } }
+
+```
+PUT /test-index-users/_settings
+{
+  "settings": {
+    "number_of_replicas": 0
+  }
+}
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-index-manage-5.png)
 
 再次查看状态：
+
+```
 green open test-index-users LSaIB57XSC6uVtGQHoPYxQ 1 1 1 0 4.4kb 4.4kb
+```
 
 ### 打开/关闭索引
 
@@ -122,12 +207,18 @@ DELETE /test-index-users
 由于test-index-users被删除，所以我们看下之前bank的索引的信息
 
 * **mapping**
+
+```
 GET /bank/_mapping
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-index-manage-12.png)
 
 * **settings**
+
+```
 GET /bank/_settings
+```
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-index-manage-13.png)
 
@@ -147,8 +238,11 @@ GET /bank/_settings
 
 [https://www.cnblogs.com/quanxiaoha/p/11515057.html](https://www.cnblogs.com/quanxiaoha/p/11515057.html)
 
+# 小结
 
+如果我们自己设计一个类似 ES 的平台，首先要理解 lucene。
 
+然后结合 http 等协议，做一些高可用方面的工作。
 
 # 参考资料
 
