@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Jekyll-构建 github pages 博客
+title:  Jekyll-01-通过 jekyll 构建 github pages 博客实战笔记
 date:   2016-04-13 23:20:27 +0800
 categories: [Github]
 tags: [jekyll, seo, github]
@@ -13,40 +13,37 @@ published: true
 
 # Gem
 
-Install ruby, here is the [download](http://rubyinstaller.org/downloads) address.
-
+安装 Ruby，请访问 [下载地址](http://rubyinstaller.org/downloads)。
 
 # Jekyll
 
-[Jekyll](https://jekyllrb.com/docs/home/) is a simple, blog-aware, static site generator.
+[Jekyll](https://jekyllrb.com/docs/home/) 是一个简单且具备博客特性的静态网站生成器。
 
-> [jekyll doc zh_CN](http://jekyllcn.com)
+> [Jekyll 中文文档](http://jekyllcn.com)
 
-> [jike zh_CN](http://wiki.jikexueyuan.com/project/jekyll/)
+> [极客学院中文文档](http://wiki.jikexueyuan.com/project/jekyll/)
 
-
-Use command to install jekyll as following.
+使用以下命令安装 Jekyll。
 
 ```
 $ gem install jekyll
 ```
 
-You may need use **Proxy Software** in China. Then, wait and learn how to use it.
+在中国可能需要使用**代理软件**。然后，请等待并学习如何使用它。
 
-Or you can use [rails](https://ruby.taobao.org/) instead of jekyll.
+或者，您可以使用 [rails](https://ruby.taobao.org/) 替代 Jekyll。
 
-If you are use mac, use this.
+如果您使用的是 Mac，请使用以下命令。
 
 ```
 $ sudo gem install jekyll
-
 ```
 
 - Git
 
-You need know how to use Git.
+您需要了解如何使用 Git。
 
-> [Git doc](http://www.runoob.com/git/git-tutorial.html "Git")
+> [Git 文档](http://www.runoob.com/git/git-tutorial.html "Git")
 
 # In Windows
 
@@ -194,7 +191,7 @@ $ sudo gem install jekyll-paginate
 
 > [TOC](http://loudou.info/blog/2014/08/01/wei-octopress-tian-jia-toc/)
 
-add these code in your file.
+把这个添加到文件中，就可以生成目录。
 
 ```
 * any list
