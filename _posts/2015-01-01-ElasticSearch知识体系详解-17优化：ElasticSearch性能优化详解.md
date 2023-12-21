@@ -53,20 +53,34 @@ published: true
 
 原因是：已知JDK 8附带的HotSpot JVM的早期版本存在一些问题，当启用G1GC收集器时，这些问题可能导致索引损坏。受影响的版本早于JDK 8u40随附的HotSpot版本。来源于[官方说明](https://www.elastic.co/guide/en/elasticsearch/reference/current/_g1gc_check.html)
 
-实际上如果你使用的JDK8较高版本，或者JDK9+，我推荐你使用G1 GC； 因为我们目前的项目使用的就是G1 GC，运行效果良好，对Heap大对象优化尤为明显。修改jvm.options文件，将下面几行:
--XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=75 -XX:+UseCMSInitiatingOccupancyOnly
+实际上如果你使用的JDK8较高版本，或者JDK9+，我推荐你使用G1 GC； 因为我们目前的项目使用的就是G1 GC，运行效果良好，对Heap大对象优化尤为明显。
+
+修改jvm.options文件，将下面几行:
+
+```
+-XX:+UseConcMarkSweepGC
+-XX:CMSInitiatingOccupancyFraction=75
+-XX:+UseCMSInitiatingOccupancyOnly
+```
 
 更改为
 
--XX:+UseG1GC -XX:MaxGCPauseMillis=50
+```
+-XX:+UseG1GC
+-XX:MaxGCPauseMillis=50
+```
 
-其中 -XX:MaxGCPauseMillis是控制预期的最高GC时长，默认值为200ms，如果线上业务特性对于GC停顿非常敏感，可以适当设置低一些。但是 这个值如果设置过小，可能会带来比较高的cpu消耗。
+其中 -XX:MaxGCPauseMillis是控制预期的最高GC时长，默认值为200ms，如果线上业务特性对于GC停顿非常敏感，可以适当设置低一些。
+
+但是 这个值如果设置过小，可能会带来比较高的cpu消耗。
 
 G1对于集群正常运作的情况下减轻G1停顿对服务时延的影响还是很有效的，但是如果是你描述的GC导致集群卡死，那么很有可能换G1也无法根本上解决问题。 通常都是集群的数据模型或者Query需要优化。
 
 ### 磁盘
 
-硬盘对所有的集群都很重要，对大量写入的集群更是加倍重要（例如那些存储日志数据的）。硬盘是服务器上最慢的子系统，这意味着那些写入量很大的集群很容易让硬盘饱和，使得它成为集群的瓶颈。
+硬盘对所有的集群都很重要，对大量写入的集群更是加倍重要（例如那些存储日志数据的）。
+
+硬盘是服务器上最慢的子系统，这意味着那些写入量很大的集群很容易让硬盘饱和，使得它成为集群的瓶颈。
 
 **在经济压力能承受的范围下，尽量使用固态硬盘（SSD）**。固态硬盘相比于任何旋转介质（机械硬盘，磁带等），无论随机写还是顺序写，都会对 IO 有较大的提升。
 * 如果你正在使用 SSDs，确保你的系统 I/O 调度程序是配置正确的。当你向硬盘写数据，I/O 调度程序决定何时把数据实际发送到硬盘。大多数默认 /*nix 发行版下的调度程序都叫做 cfq（完全公平队列）。
@@ -99,7 +113,12 @@ G1对于集群正常运作的情况下减轻G1停顿对服务时延的影响还�
 
 为了提高索引性能，Elasticsearch 在写入数据的时候，采用延迟写入的策略，即数据先写到内存中，当超过默认1秒（index.refresh_interval）会进行一次写入操作，就是将内存中 segment 数据刷新到磁盘中，此时我们才能将数据搜索出来，所以这就是为什么 Elasticsearch 提供的是近实时搜索功能，而不是实时搜索功能。
 
-如果我们的系统对数据延迟要求不高的话，我们可以**通过延长 refresh 时间间隔，可以有效地减少 segment 合并压力，提高索引速度**。比如在做全链路跟踪的过程中，我们就将 index.refresh_interval 设置为30s，减少 refresh 次数。再如，在进行全量索引时，可以将 refresh 次数临时关闭，即 index.refresh_interval 设置为-1，数据导入成功后再打开到正常模式，比如30s。
+如果我们的系统对数据延迟要求不高的话，我们可以**通过延长 refresh 时间间隔，可以有效地减少 segment 合并压力，提高索引速度**。
+
+比如在做全链路跟踪的过程中，我们就将 index.refresh_interval 设置为30s，减少 refresh 次数。
+
+再如，在进行全量索引时，可以将 refresh 次数临时关闭，即 index.refresh_interval 设置为-1，数据导入成功后再打开到正常模式，比如30s。
+
 在加载大量数据时候可以暂时不用 refresh 和 repliccas，index.refresh_interval 设置为-1，index.number_of_replicas 设置为0。
 
 相关原理，请参考[原理：ES原理之索引文档流程详解]
@@ -107,18 +126,29 @@ G1对于集群正常运作的情况下减轻G1停顿对服务时延的影响还�
 ### 修改 index_buffer_size 的设置
 
 索引缓冲的设置可以控制多少内存分配给索引进程。这是一个全局配置，会应用于一个节点上所有不同的分片上。
-indices.memory.index_buffer_size: 10% indices.memory.min_index_buffer_size: 48mb
 
-indices.memory.index_buffer_size 接受一个百分比或者一个表示字节大小的值。默认是10%，意味着分配给节点的总内存的10%用来做索引缓冲的大小。这个数值被分到不同的分片（shards）上。如果设置的是百分比，还可以设置 min_index_buffer_size （默认 48mb）和 max_index_buffer_size（默认没有上限）。
+```
+indices.memory.index_buffer_size: 10%
+indices.memory.min_index_buffer_size: 48mb
+```
+
+indices.memory.index_buffer_size 接受一个百分比或者一个表示字节大小的值。默认是10%，意味着分配给节点的总内存的10%用来做索引缓冲的大小。
+
+这个数值被分到不同的分片（shards）上。如果设置的是百分比，还可以设置 min_index_buffer_size （默认 48mb）和 max_index_buffer_size（默认没有上限）。
 
 ### 修改 translog 相关的设置
 
 一是控制数据从内存到硬盘的操作频率，以减少硬盘 IO。可将 sync_interval 的时间设置大一些。默认为5s。
+
+```
 index.translog.sync_interval: 5s
+```
 
 也可以控制 tranlog 数据块的大小，达到 threshold 大小时，才会 flush 到 lucene 索引文件。默认为512m。
 
+```
 index.translog.flush_threshold_size: 512mb
+```
 
 translog我们在[原理：ES原理之索引文档流程详解]也有介绍。
 
@@ -147,7 +177,10 @@ Elasticsearch 作为业务搜索的近实时查询时，查询效率的优化显
 ### 路由优化
 
 当我们查询文档的时候，Elasticsearch 如何知道一个文档应该存放到哪个分片中呢？它其实是通过下面这个公式来计算出来的。
+
+```
 shard = hash(routing) % number_of_primary_shards
+```
 
 routing 默认值是文档的 id，也可以采用自定义值，比如用户 ID。
 
@@ -177,7 +210,11 @@ Elasticsearch 针对 Filter 查询只需要回答「是」或者「否」，不�
 
 在使用 Elasticsearch 过程中，应尽量避免大翻页的出现。
 
-正常翻页查询都是从 from 开始 size 条数据，这样就需要在每个分片中查询打分排名在前面的 from+size 条数据。协同节点收集每个分配的前 from+size 条数据。协同节点一共会受到 N/*(from+size) 条数据，然后进行排序，再将其中 from 到 from+size 条数据返回出去。如果 from 或者 size 很大的话，导致参加排序的数量会同步扩大很多，最终会导致 CPU 资源消耗增大。
+正常翻页查询都是从 from 开始 size 条数据，这样就需要在每个分片中查询打分排名在前面的 from+size 条数据。
+
+协同节点收集每个分配的前 from+size 条数据。协同节点一共会受到 N/*(from+size) 条数据，然后进行排序，再将其中 from 到 from+size 条数据返回出去。
+
+如果 from 或者 size 很大的话，导致参加排序的数量会同步扩大很多，最终会导致 CPU 资源消耗增大。
 
 可以通过使用 Elasticsearch scroll 和 scroll-scan 高效滚动的方式来解决这样的问题。
 
@@ -185,21 +222,21 @@ Elasticsearch 针对 Filter 查询只需要回答「是」或者「否」，不�
 
 ### 脚本（script）合理使用
 
-我们知道脚本使用主要有 3 种形式，内联动态编译方式、_script 索引库中存储和文件脚本存储的形式；一般脚本的使用场景是粗排，尽量用第二种方式先将脚本存储在 _script 索引库中，起到提前编译，然后通过引用脚本 id，并结合 params 参数使用，即可以达到模型（逻辑）和数据进行了分离，同时又便于脚本模块的扩展与维护。
+我们知道脚本使用主要有 3 种形式，内联动态编译方式、_script 索引库中存储和文件脚本存储的形式；
+
+一般脚本的使用场景是粗排，尽量用第二种方式先将脚本存储在 _script 索引库中，起到提前编译，然后通过引用脚本 id，并结合 params 参数使用，即可以达到模型（逻辑）和数据进行了分离，同时又便于脚本模块的扩展与维护。
 
 ### Cache的设置及使用
 
-* QueryCache
-: ES查询的时候，使用filter查询会使用query cache, 如果业务场景中的过滤查询比较多，建议将querycache设置大一些，以提高查询速度。
+* QueryCache: ES查询的时候，使用filter查询会使用query cache, 如果业务场景中的过滤查询比较多，建议将querycache设置大一些，以提高查询速度。
 
 indices.queries.cache.size： 10%（默认），可设置成百分比，也可设置成具体值，如256mb。
 
 当然也可以禁用查询缓存（默认是开启）， 通过index.queries.cache.enabled：false设置。
 
-* FieldDataCache
-: 在聚类或排序时，field data cache会使用频繁，因此，设置字段数据缓存的大小，在聚类或排序场景较多的情形下很有必要，可通过indices.fielddata.cache.size：30% 或具体值10GB来设置。但是如果场景或数据变更比较频繁，设置cache并不是好的做法，因为缓存加载的开销也是特别大的。
-* ShardRequestCache
-: 查询请求发起后，每个分片会将结果返回给协调节点(Coordinating Node), 由协调节点将结果整合。 如果有需求，可以设置开启; 通过设置index.requests.cache.enable: true来开启。 不过，shard request cache只缓存hits.total, aggregations, suggestions类型的数据，并不会缓存hits的内容。也可以通过设置indices.requests.cache.size: 1%（默认）来控制缓存空间大小。
+* FieldDataCache: 在聚类或排序时，field data cache会使用频繁，因此，设置字段数据缓存的大小，在聚类或排序场景较多的情形下很有必要，可通过indices.fielddata.cache.size：30% 或具体值10GB来设置。但是如果场景或数据变更比较频繁，设置cache并不是好的做法，因为缓存加载的开销也是特别大的。
+
+* ShardRequestCache: 查询请求发起后，每个分片会将结果返回给协调节点(Coordinating Node), 由协调节点将结果整合。 如果有需求，可以设置开启; 通过设置index.requests.cache.enable: true来开启。 不过，shard request cache只缓存hits.total, aggregations, suggestions类型的数据，并不会缓存hits的内容。也可以通过设置indices.requests.cache.size: 1%（默认）来控制缓存空间大小。
 
 ### 更多查询优化经验
 
@@ -214,11 +251,58 @@ indices.queries.cache.size： 10%（默认），可设置成百分比，也可�
 ### 通过开启慢查询配置定位慢查询
 
 不论是数据库还是搜索引擎，对于问题的排查，开启慢查询日志是十分必要的，ES 开启慢查询的方式有多种，但是最常用的是调用模板 API 进行全局设置：
-PUT /_template/{TEMPLATE_NAME} { "template":"{INDEX_PATTERN}", "settings" : { "index.indexing.slowlog.level": "INFO", "index.indexing.slowlog.threshold.index.warn": "10s", "index.indexing.slowlog.threshold.index.info": "5s", "index.indexing.slowlog.threshold.index.debug": "2s", "index.indexing.slowlog.threshold.index.trace": "500ms", "index.indexing.slowlog.source": "1000", "index.search.slowlog.level": "INFO", "index.search.slowlog.threshold.query.warn": "10s", "index.search.slowlog.threshold.query.info": "5s", "index.search.slowlog.threshold.query.debug": "2s", "index.search.slowlog.threshold.query.trace": "500ms", "index.search.slowlog.threshold.fetch.warn": "1s", "index.search.slowlog.threshold.fetch.info": "800ms", "index.search.slowlog.threshold.fetch.debug": "500ms", "index.search.slowlog.threshold.fetch.trace": "200ms" }, "version" : 1 } PUT {INDEX_PAATERN}/_settings { "index.indexing.slowlog.level": "INFO", "index.indexing.slowlog.threshold.index.warn": "10s", "index.indexing.slowlog.threshold.index.info": "5s", "index.indexing.slowlog.threshold.index.debug": "2s", "index.indexing.slowlog.threshold.index.trace": "500ms", "index.indexing.slowlog.source": "1000", "index.search.slowlog.level": "INFO", "index.search.slowlog.threshold.query.warn": "10s", "index.search.slowlog.threshold.query.info": "5s", "index.search.slowlog.threshold.query.debug": "2s", "index.search.slowlog.threshold.query.trace": "500ms", "index.search.slowlog.threshold.fetch.warn": "1s", "index.search.slowlog.threshold.fetch.info": "800ms", "index.search.slowlog.threshold.fetch.debug": "500ms", "index.search.slowlog.threshold.fetch.trace": "200ms" }
+
+```
+PUT  /_template/{TEMPLATE_NAME}
+{
+ 
+  "template":"{INDEX_PATTERN}",
+  "settings" : {
+    "index.indexing.slowlog.level": "INFO",
+    "index.indexing.slowlog.threshold.index.warn": "10s",
+    "index.indexing.slowlog.threshold.index.info": "5s",
+    "index.indexing.slowlog.threshold.index.debug": "2s",
+    "index.indexing.slowlog.threshold.index.trace": "500ms",
+    "index.indexing.slowlog.source": "1000",
+    "index.search.slowlog.level": "INFO",
+    "index.search.slowlog.threshold.query.warn": "10s",
+    "index.search.slowlog.threshold.query.info": "5s",
+    "index.search.slowlog.threshold.query.debug": "2s",
+    "index.search.slowlog.threshold.query.trace": "500ms",
+    "index.search.slowlog.threshold.fetch.warn": "1s",
+    "index.search.slowlog.threshold.fetch.info": "800ms",
+    "index.search.slowlog.threshold.fetch.debug": "500ms",
+    "index.search.slowlog.threshold.fetch.trace": "200ms"
+  },
+  "version"  : 1
+}
+ 
+PUT {INDEX_PAATERN}/_settings
+{
+    "index.indexing.slowlog.level": "INFO",
+    "index.indexing.slowlog.threshold.index.warn": "10s",
+    "index.indexing.slowlog.threshold.index.info": "5s",
+    "index.indexing.slowlog.threshold.index.debug": "2s",
+    "index.indexing.slowlog.threshold.index.trace": "500ms",
+    "index.indexing.slowlog.source": "1000",
+    "index.search.slowlog.level": "INFO",
+    "index.search.slowlog.threshold.query.warn": "10s",
+    "index.search.slowlog.threshold.query.info": "5s",
+    "index.search.slowlog.threshold.query.debug": "2s",
+    "index.search.slowlog.threshold.query.trace": "500ms",
+    "index.search.slowlog.threshold.fetch.warn": "1s",
+    "index.search.slowlog.threshold.fetch.info": "800ms",
+    "index.search.slowlog.threshold.fetch.debug": "500ms",
+    "index.search.slowlog.threshold.fetch.trace": "200ms"
+}
+```
 
 这样，在日志目录下的慢查询日志就会有输出记录必要的信息了。
 
-{CLUSTER_NAME}_index_indexing_slowlog.log {CLUSTER_NAME}_index_search_slowlog.log
+```
+{CLUSTER_NAME}_index_indexing_slowlog.log
+{CLUSTER_NAME}_index_search_slowlog.log
+```
 
 ## 数据结构优化
 
@@ -228,17 +312,28 @@ PUT /_template/{TEMPLATE_NAME} { "template":"{INDEX_PATTERN}", "settings" : { "i
 
 如果 Elasticsearch 用于业务搜索服务，一些不需要用于搜索的字段最好不存到 ES 中，这样即节省空间，同时在相同的数据量下，也能提高搜索性能。
 
-避免使用动态值作字段，动态递增的 mapping，会导致集群崩溃；同样，也需要控制字段的数量，业务中不使用的字段，就不要索引。控制索引的字段数量、mapping 深度、索引字段的类型，对于 ES 的性能优化是重中之重。
+避免使用动态值作字段，动态递增的 mapping，会导致集群崩溃；同样，也需要控制字段的数量，业务中不使用的字段，就不要索引。
+
+控制索引的字段数量、mapping 深度、索引字段的类型，对于 ES 的性能优化是重中之重。
 
 以下是 ES 关于字段数、mapping 深度的一些默认设置：
-index.mapping.nested_objects.limit: 10000 index.mapping.total_fields.limit: 1000 index.mapping.depth.limit: 20
+
+```
+index.mapping.nested_objects.limit: 10000
+index.mapping.total_fields.limit: 1000
+index.mapping.depth.limit: 20
+```
 
 ### Nested Object vs Parent/Child
 
 尽量避免使用 nested 或 parent/child 的字段，能不用就不用；nested query 慢，parent/child query 更慢，比 nested query 慢上百倍；因此能在 mapping 设计阶段搞定的（大宽表设计或采用比较 smart 的数据结构），就不要用父子关系的 mapping。
 
 如果一定要使用 nested fields，保证 nested fields 字段不能过多，目前 ES 默认限制是 50。因为针对 1 个 document，每一个 nested field，都会生成一个独立的 document，这将使 doc 数量剧增，影响查询效率，尤其是 JOIN 的效率。
+
+```
 index.mapping.nested_fields.limit: 50
+```
+
  对比 Nested Object Parent/Child 优点 文档存储在一起，因此读取性高 父子文档可以独立更新，互不影响 缺点 更新父文档或子文档时需要更新整个文档 为了维护 join 关系，需要占用部分内存，读取性能较差 场景 子文档偶尔更新，查询频繁 子文档更新频繁
 
 ### 选择静态映射，非必需时，禁止动态映射
@@ -267,7 +362,15 @@ Elasticsearch 的配置文件中有 2 个参数，node.master 和 node.data。�
 
 ### 主（master）节点
 
-配置 node.master:true 和 node.data:false，该 node 服务器只作为一个主节点，但不存储任何索引数据。我们推荐每个集群运行3 个专用的 master 节点来提供最好的弹性。使用时，你还需要将 discovery.zen.minimum_master_nodes setting 参数设置为 2，以免出现脑裂（split-brain）的情况。用 3 个专用的 master 节点，专门负责处理集群的管理以及加强状态的整体稳定性。因为这 3 个 master 节点不包含数据也不会实际参与搜索以及索引操作，在 JVM 上它们不用做相同的事，例如繁重的索引或者耗时，资源耗费很大的搜索。因此不太可能会因为垃圾回收而导致停顿。因此，master 节点的 CPU，内存以及磁盘配置可以比 data 节点少很多的。
+配置 node.master:true 和 node.data:false，该 node 服务器只作为一个主节点，但不存储任何索引数据。
+
+我们推荐每个集群运行3 个专用的 master 节点来提供最好的弹性。使用时，你还需要将 discovery.zen.minimum_master_nodes setting 参数设置为 2，以免出现脑裂（split-brain）的情况。用 3 个专用的 master 节点，专门负责处理集群的管理以及加强状态的整体稳定性。
+
+因为这 3 个 master 节点不包含数据也不会实际参与搜索以及索引操作，在 JVM 上它们不用做相同的事，例如繁重的索引或者耗时，资源耗费很大的搜索。
+
+因此不太可能会因为垃圾回收而导致停顿。
+
+因此，master 节点的 CPU，内存以及磁盘配置可以比 data 节点少很多的。
 
 ### 数据（data）节点
 
@@ -277,27 +380,47 @@ Elasticsearch 的配置文件中有 2 个参数，node.master 和 node.data。�
 
 **hot 节点**：
 
-hot 节点主要是索引节点（写节点），同时会保存近期的一些频繁被查询的索引。由于进行索引非常耗费 CPU 和 IO，即属于 IO 和 CPU 密集型操作，建议使用 SSD 的磁盘类型，保持良好的写性能；我们推荐部署最小化的 3 个 hot 节点来保证高可用性。根据近期需要收集以及查询的数据量，可以增加服务器数量来获得想要的性能。
+hot 节点主要是索引节点（写节点），同时会保存近期的一些频繁被查询的索引。
+
+由于进行索引非常耗费 CPU 和 IO，即属于 IO 和 CPU 密集型操作，建议使用 SSD 的磁盘类型，保持良好的写性能；我们推荐部署最小化的 3 个 hot 节点来保证高可用性。
+
+根据近期需要收集以及查询的数据量，可以增加服务器数量来获得想要的性能。
 
 将节点设置为 hot 类型需要 elasticsearch.yml 如下配置：
+
+```
 node.attr.box_type: hot
+```
 
 如果是针对指定的 index 操作，可以通过 settings 设置 index.routing.allocation.require.box_type: hot 将索引写入 hot 节点。
 
 **warm 节点**：
 
-这种类型的节点是为了处理大量的，而且不经常访问的只读索引而设计的。由于这些索引是只读的，warm 节点倾向于挂载大量磁盘（普通磁盘）来替代 SSD。内存、CPU 的配置跟 hot 节点保持一致即可；节点数量一般也是大于等于 3 个。
+这种类型的节点是为了处理大量的，而且不经常访问的只读索引而设计的。
+
+由于这些索引是只读的，warm 节点倾向于挂载大量磁盘（普通磁盘）来替代 SSD。
+
+内存、CPU 的配置跟 hot 节点保持一致即可；节点数量一般也是大于等于 3 个。
 
 将节点设置为 warm 类型需要 elasticsearch.yml 如下配置：
+
+```
 node.attr.box_type: warm
+```
 
 同时，也可以在 elasticsearch.yml 中设置 index.codec:best_compression 保证 warm 节点的压缩配置。
 
-当索引不再被频繁查询时，可通过 index.routing.allocation.require.box_type:warm，将索引标记为 warm，从而保证索引不写入 hot 节点，以便将 SSD 磁盘资源用在刀刃上。一旦设置这个属性，ES 会自动将索引合并到 warm 节点。
+当索引不再被频繁查询时，可通过 index.routing.allocation.require.box_type:warm，将索引标记为 warm，从而保证索引不写入 hot 节点，以便将 SSD 磁盘资源用在刀刃上。
+
+一旦设置这个属性，ES 会自动将索引合并到 warm 节点。
 
 **协调（coordinating）节点**
 
-协调节点用于做分布式里的协调，将各分片或节点返回的数据整合后返回。该节点不会被选作主节点，也不会存储任何索引数据。该服务器主要用于查询负载均衡。在查询的时候，通常会涉及到从多个 node 服务器上查询数据，并将请求分发到多个指定的 node 服务器，并对各个 node 服务器返回的结果进行一个汇总处理，最终返回给客户端。在 ES 集群中，所有的节点都有可能是协调节点，但是，可以通过设置 node.master、node.data、node.ingest 都为 false 来设置专门的协调节点。需要较好的 CPU 和较高的内存。
+协调节点用于做分布式里的协调，将各分片或节点返回的数据整合后返回。该节点不会被选作主节点，也不会存储任何索引数据。
+
+该服务器主要用于查询负载均衡。在查询的时候，通常会涉及到从多个 node 服务器上查询数据，并将请求分发到多个指定的 node 服务器，并对各个 node 服务器返回的结果进行一个汇总处理，最终返回给客户端。
+
+在 ES 集群中，所有的节点都有可能是协调节点，但是，可以通过设置 node.master、node.data、node.ingest 都为 false 来设置专门的协调节点。需要较好的 CPU 和较高的内存。
 
 * node.master:false和node.data:true，该node服务器只作为一个数据节点，只用于存储索引数据，使该node服务器功能单一，只用于数据存储和数据查询，降低其资源消耗率。
 * node.master:true和node.data:false，该node服务器只作为一个主节点，但不存储任何索引数据，该node服务器将使用自身空闲的资源，来协调各种创建索引请求或者查询请求，并将这些请求合理分发到相关的node服务器上。
@@ -305,9 +428,13 @@ node.attr.box_type: warm
 
 ### 关闭 data 节点服务器中的 http 功能
 
-针对 Elasticsearch 集群中的所有数据节点，不用开启 http 服务。将其中的配置参数这样设置，http.enabled:false，同时也不要安装 head, bigdesk, marvel 等监控插件，这样保证 data 节点服务器只需处理创建/更新/删除/查询索引数据等操作。
+针对 Elasticsearch 集群中的所有数据节点，不用开启 http 服务。
 
-http 功能可以在非数据节点服务器上开启，上述相关的监控插件也安装到这些服务器上，用于监控 Elasticsearch 集群状态等数据信息。这样做一来出于数据安全考虑，二来出于服务性能考虑。
+将其中的配置参数这样设置，http.enabled:false，同时也不要安装 head, bigdesk, marvel 等监控插件，这样保证 data 节点服务器只需处理创建/更新/删除/查询索引数据等操作。
+
+http 功能可以在非数据节点服务器上开启，上述相关的监控插件也安装到这些服务器上，用于监控 Elasticsearch 集群状态等数据信息。
+
+这样做一来出于数据安全考虑，二来出于服务性能考虑。
 
 ### 一台服务器上最好只部署一个 node
 
@@ -317,9 +444,11 @@ http 功能可以在非数据节点服务器上开启，上述相关的监控插
 
 ES 一旦创建好索引后，就无法调整分片的设置，而在 ES 中，一个分片实际上对应一个 lucene 索引，而 lucene 索引的读写会占用很多的系统资源，因此，分片数不能设置过大；所以，在创建索引时，合理配置分片数是非常重要的。一般来说，我们遵循一些原则：
 
-控制每个分片占用的硬盘容量不超过 ES 的最大 JVM 的堆空间设置（一般设置不超过 32 G，参考上面的 JVM 内存设置原则），因此，如果索引的总容量在 500 G 左右，那分片大小在 16 个左右即可；当然，最好同时考虑原则 2。 考虑一下 node 数量，一般一个节点有时候就是一台物理机，如果分片数过多，大大超过了节点数，很可能会导致一个节点上存在多个分片，一旦该节点故障，即使保持了 1 个以上的副本，同样有可能会导致数据丢失，集群无法恢复。所以，一般都设置分片数不超过节点数的 3 倍。
+控制每个分片占用的硬盘容量不超过 ES 的最大 JVM 的堆空间设置（一般设置不超过 32 G，参考上面的 JVM 内存设置原则），因此，如果索引的总容量在 500 G 左右，那分片大小在 16 个左右即可；当然，最好同时考虑原则 2。 
 
+考虑一下 node 数量，一般一个节点有时候就是一台物理机，如果分片数过多，大大超过了节点数，很可能会导致一个节点上存在多个分片，一旦该节点故障，即使保持了 1 个以上的副本，同样有可能会导致数据丢失，集群无法恢复。
 
+所以，一般都设置分片数不超过节点数的 3 倍。
 
 
 # 参考资料

@@ -9,7 +9,8 @@ published: true
 
 
 
-18 大厂实践：腾讯万亿级 Elasticsearch 技术实践
+# 18 大厂实践：腾讯万亿级 Elasticsearch 技术实践
+
 ## 一、ES 在腾讯的海量规模背景
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-tencent-y-2.jpeg)
@@ -29,7 +30,9 @@ getById
 
 ## 二、痛点与挑战
 
-在这些丰富的应用场景，以及海量的规模背景下，我们也遇到了很多的痛点与挑战。主要覆盖在可用性、性能、成本以及扩展性方面。
+在这些丰富的应用场景，以及海量的规模背景下，我们也遇到了很多的痛点与挑战。
+
+主要覆盖在可用性、性能、成本以及扩展性方面。
 
 ![img](https://learn.lianglianglee.com/%e4%b8%93%e6%a0%8f/ElasticSearch%e7%9f%a5%e8%af%86%e4%bd%93%e7%b3%bb%e8%af%a6%e8%a7%a3/assets/es-tencent-y-3.jpeg)
 
