@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  jekyll-02-jekyll 博客引擎介绍，常见博客引擎 jekyll/hugo/Hexo/Pelican/Gatsby/VuePress/Nuxt.js/Middleman  对比
+title:  blog-engine-02-博客引擎jekyll-jekyll 博客引擎介绍，常见博客引擎 jekyll/hugo/Hexo/Pelican/Gatsby/VuePress/Nuxt.js/Middleman  对比
 date:   2016-04-13 23:20:27 +0800
 categories: [Github]
 tags: [jekyll, seo, github]

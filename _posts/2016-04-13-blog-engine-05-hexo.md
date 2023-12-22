@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Hexo 
+title: blog-engine-05-博客引擎 Hexo 入门介绍+安装笔记 
 date:  2017-03-29 20:45:58 +0800
 categories: [UI]
-tags: [hexo, blog]
+tags: [hexo, blog, blog-engine]
 header-img: "static/app/res/img/kon-bg.jpeg"
 published: true
 ---
@@ -13,8 +13,6 @@ published: true
 [Hexo](https://hexo.io/) is a fast, simple & powerful blog framework.
 
 一直使用的是 [jekyll](https://houbb.github.io/2016/04/13/jekyll)，文章越写越多，不太好管理。是时候换个博客尝试一下。
-
-
 
 # Prepare
 

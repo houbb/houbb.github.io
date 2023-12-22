@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Jekyll-01-通过 jekyll 构建 github pages 博客实战笔记
+title:  blog-engine-02-通过博客引擎 jekyll 构建 github pages 博客实战笔记
 date:   2016-04-13 23:20:27 +0800
 categories: [Github]
 tags: [jekyll, seo, github]
