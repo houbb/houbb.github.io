@@ -1,12 +1,11 @@
 ---
 layout: post
-title: test-00-测试一体化
+title: test framework-01-MeterSphere  一站式开源持续测试平台，为软件质量保驾护航
 date:  2016-4-26 12:53:12 +0800
 categories: [Test]
-tags: [junit, test]
+tags: [junit, framework, open-source, test]
 published: true
 ---
-
 
 # MeterSphere
 

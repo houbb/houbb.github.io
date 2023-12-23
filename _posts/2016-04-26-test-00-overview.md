@@ -7,6 +7,29 @@ tags: [junit, test]
 published: true
 ---
 
+# 核心模块
+
+一体化测试平台
+
+test framework
+
+assert
+
+mock
+
+性能perf: jmeter
+
+UI 测试
+
+DBUnit
+
+覆盖率：jacoco
+
+造数：data-factory
+
+对应的代码生成插件
+
+链路分析
 
 # 系统的知识
 

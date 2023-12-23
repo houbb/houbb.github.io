@@ -1,16 +1,15 @@
 ---
 layout: post
-title:  Google Truth
-date:  2018-01-06 14:00:11 +0800
+title:  test assert-01-Google Truth
+date:  2016-4-26 12:53:12 +0800
 categories: [Test]
-tags: [google, test]
+tags: [google, assert, test]
 published: true
 ---
 
 # Truth
 
-[Truth](https://github.com/google/truth) is an assertion framework for Java tests, inspired by FEST, and driven by some extensibility needs, 
-written nearly entirely by Google employees in their spare time or contributing in their capacity as Java core librarians.
+[Truth](https://github.com/google/truth) 是用于Java测试的断言框架，灵感来自于FEST，并受到一些可扩展性需求的驱动，几乎完全由谷歌员工在业余时间编写，或者作为Java核心图书馆管理员的身份做出贡献。
 
 # 作用
 
@@ -99,7 +98,9 @@ java.lang.AssertionError: <[red, green, blue, yellow]> should have contained <or
 
 - 可拓展
 
-用户可以自定义一个 Truth 主题，以对你自定义的类型进行流畅的断言。通过创建你自定义的主题，你的断言API和你的失败消息都可以是特定领域的。
+用户可以自定义一个 Truth 主题，以对你自定义的类型进行流畅的断言。
+
+通过创建你自定义的主题，你的断言API和你的失败消息都可以是特定领域的。
 
 * any list
 {:toc}
