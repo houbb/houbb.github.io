@@ -7,6 +7,21 @@ tags: [junit, test, generate]
 published: true
 ---
 
+
+# 产品小工具
+
+## 说明
+
+直接可以用户使用的工具，不涉及枯燥的技术细节。
+
+## gen-jmockit-idea-plugin 
+
+[gen-jmockit-idea-plugin](https://github.com/houbb/gen-jmockit-idea-plugin) 自动生成 jmockit junit 的单元测试用例。
+
+## gen-test-plugin
+
+[gen-test-plugin](https://github.com/houbb/gen-test-plugin) 自动生成 junit 测试案例的 maven 插件
+
 # JUnitGenerator
 
 这个[插件](http://plugins.jetbrains.com/plugin/3064)允许在右键单击“Generate...”菜单时，针对一个Java类生成JUnit测试。
@@ -196,7 +211,9 @@ public class $testClass {
 }
 #end
 ```
+# 小结
 
+不要把这个面向客户。可以改成一开始自己设计的 gen-test 测试用例 maven 生成插件，以及对应的 idea 插件。
 
 * any list
 {:toc}

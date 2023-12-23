@@ -10,7 +10,9 @@ published: true
 
 # MeterSphere
 
-MeterSphere 一站式开源持续测试平台，为软件质量保驾护航。搞测试，就选 MeterSphere！
+MeterSphere 一站式开源持续测试平台，为软件质量保驾护航。
+
+搞测试，就选 MeterSphere！
 
 MeterSphere 是一站式开源持续测试平台, 涵盖测试跟踪、接口测试、UI 测试和性能测试等功能，全面兼容 JMeter、Selenium 等主流开源标准，有效助力开发和测试团队充分利用云弹性进行高度可扩展的自动化测试，加速高质量的软件交付，推动中国测试行业整体效率的提升。
 
