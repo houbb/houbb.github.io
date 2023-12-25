@@ -168,7 +168,7 @@ JUnit 5 的引入主要是为了满足新的测试需求和应对现代化的软
 10. **JUnit 5与其他测试框架的集成有何优势？**
     - **为什么这个问题重要？** 了解JUnit 5与其他测试框架（如Mockito）的集成优势，以及如何利用这些集成提高测试代码的质量和可维护性。
 
-## 详细介绍 junit5 的 核心组件
+## junit5 的 核心组件
 
 JUnit 5 的核心组件包括 JUnit Jupiter、JUnit Platform 和 JUnit Vintage。
 
@@ -195,8 +195,11 @@ JUnit 5 的核心组件包括 JUnit Jupiter、JUnit Platform 和 JUnit Vintage�
      - **兼容性：** 提供了兼容 JUnit 3 和 JUnit 4 的测试引擎，以便在 JUnit 5 中运行旧有的测试。
      - **无缝过渡：** 允许逐步迁移到 JUnit 5，保留和运行旧有的测试，而新的测试可以使用 JUnit Jupiter。
 
-这三个核心组件共同协作，使得JUnit 5成为一个灵活、现代化的测试框架。JUnit Jupiter提供了丰富的新特性，JUnit Platform提供了通用的测试平台，而JUnit Vintage确保了对旧有测试的兼容性。这种模块化的设计使得JUnit 5更具适应性和可扩展性。
+这三个核心组件共同协作，使得JUnit 5成为一个灵活、现代化的测试框架。
 
+JUnit Jupiter提供了丰富的新特性，JUnit Platform提供了通用的测试平台，而JUnit Vintage确保了对旧有测试的兼容性。
+
+这种模块化的设计使得JUnit 5更具适应性和可扩展性。
 
 # 小结 
 
