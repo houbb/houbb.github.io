@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  test assert-01-Google Truth
+title:  test assert-01-Google Truth 断言
 date:  2016-4-26 12:53:12 +0800
 categories: [Test]
 tags: [google, assert, test]

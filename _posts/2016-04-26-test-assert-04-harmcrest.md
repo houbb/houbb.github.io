@@ -1,6 +1,6 @@
 ---
 layout: post
-title: test assert-04-Java (and original) version of Hamcrest
+title: test assert-04-Java (and original) version of Hamcrest 断言
 date:  2016-4-26 12:53:12 +0800
 categories: [JS]
 tags: [js, assert, sh]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: test assert-02-test assert-01-power-assert-js
+title: test assert-02-power-assert-js 断言
 date:  2016-4-26 12:53:12 +0800
 categories: [JS]
 tags: [js, assert, sh]
