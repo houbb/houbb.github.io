@@ -9,8 +9,6 @@ published: true
 
 # 核心模块
 
-一体化测试平台
-
 test framework
 
 assert
@@ -29,7 +27,9 @@ DBUnit
 
 对应的代码生成插件
 
-链路分析
+链路分析： 应用内链路 + 应用间链路
+
+一体化测试平台
 
 # 系统的知识
 
