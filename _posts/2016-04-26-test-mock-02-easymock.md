@@ -1,6 +1,6 @@
 ---
 layout: post
-title: test mock-02-easymock 
+title: test mock-02-easymock 入门介绍
 date:  2016-4-26 12:53:12 +0800
 categories: [Test]
 tags: [test, mock, sh]
