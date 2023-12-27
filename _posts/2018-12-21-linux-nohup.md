@@ -59,7 +59,9 @@ nohup java -jar xxx.jar&
 
 这样一个启动 java 命令是什么意思？
 
-`nohup java -jar xxx.jar &` 是一个常见的在后台运行 Java 可执行 JAR 文件的命令。让我们详细解释每个部分：
+`nohup java -jar xxx.jar &` 是一个常见的在后台运行 Java 可执行 JAR 文件的命令。
+
+让我们详细解释每个部分：
 
 1. **`nohup`：** 表示 "no hang up"，这个命令会让后面的命令在后台运行，即使终端会话被关闭或注销。
 

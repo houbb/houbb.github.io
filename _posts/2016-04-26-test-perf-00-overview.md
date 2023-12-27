@@ -9,9 +9,9 @@ published: true
 
 # 拓展阅读
 
-[Apache jmeter]()
+[Apache jmeter](https://houbb.github.io/2016/04/26/test-perf-01-jmeter)
 
-[LoadRunner]()
+[LoadRunner](https://houbb.github.io/2016/04/26/test-perf-02-loadrunner)
 
 [Junit performance rely on junit5 and jdk8+.(java 性能测试框架。性能测试。压测。测试报告生成。)](https://github.com/houbb/junitperf)
 
@@ -190,6 +190,23 @@ published: true
 这些工具都有各自的特点和优势，你可以根据项目需求、团队技能以及工具的适用性进行选择。
 
 无论选择哪个工具，都需要根据具体场景和目标进行适当的配置和调整。
+
+## 对比表格
+
+下面是包含Apache JMeter在内的一些性能测试工具的简要对比表格：
+
+| **特性/工具** | **Apache JMeter** | **Gatling** | **Apache Benchmark (ab)** | **Tsung** | **Locust** | **Artillery** |
+|---------------|-------------------|-------------|---------------------------|-----------|------------|---------------|
+| **编写语言** | Java              | Scala (支持 Java DSL) | C                         | Erlang    | Python     | JavaScript    |
+| **协议支持** | 多种协议（HTTP, HTTPS, FTP, JDBC等） | HTTP, HTTPS, WebSocket | HTTP                      | HTTP, WebDAV, SOAP, PostgreSQL | HTTP, WebSocket | HTTP, WebSocket |
+| **分布式测试** | 是                | 是          | 否                        | 是        | 是         | 是            |
+| **脚本语法** | GUI、JMX 文件、支持 BeanShell 脚本 | DSL (Domain-Specific Language) | 命令行参数               | XML       | Python     | YAML/JavaScript |
+| **易用性** | 相对复杂，GUI 提供图形化界面 | 相对复杂，学习曲线较陡 | 简单，适用于基本测试       | 适中      | 简单       | 适中          |
+| **社区支持** | 大                | 较大        | 大                        | 适中      | 不错       | 适中          |
+| **可扩展性** | 非常高，支持插件系统 | 非常高，支持自定义插件 | 有限                      | 有限      | 适中       | 中等          |
+
+这个对比表格提供了一些常见的特性和优缺点。在选择性能测试工具时，建议根据您的具体需求、团队技能和项目背景来进行更详细的比较。
+
 
 ## 介绍一下 Java Microbenchmark Harness (JMH) 
 

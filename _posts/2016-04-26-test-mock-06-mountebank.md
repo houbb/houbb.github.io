@@ -1,6 +1,6 @@
 ---
 layout: post
-title: test mock-06-mountebank Over the wire test doubles
+title: test mock-06-mountebank Over the wire test doubles mock-server/hoverfly/wiremock/mountbank 对比表格
 date:  2016-4-26 12:53:12 +0800
 categories: [Test]
 tags: [test, mock, sh]
@@ -128,6 +128,89 @@ Mountebank 之所以能够支持多协议，是因为其设计上具有灵活性
 通过以上设计特点，Mountebank 实现了对多协议的支持，使其成为一个通用的服务虚拟化工具，而不仅仅局限于特定的通信协议。
 
 这也是为什么 Mountebank 能够灵活适应不同场景和需求的原因。
+
+## 给出深入学习 mountbank 的资料，包含网址
+
+以下是深入学习 Mountebank 的一些建议资源，包括官方文档和其他学习资料的网址：
+
+1. **官方网站：** [Mountebank 官方网站](http://www.mbtest.org/)
+
+2. **GitHub 仓库：** [Mountebank GitHub 仓库](https://github.com/bbyars/mountebank)
+
+3. **文档：** [Mountebank 文档](http://www.mbtest.org/docs/latest/)
+
+4. **博客文章：**
+   - [Getting Started with Mountebank](https://www.steadylearner.com/blog/read/Getting-Started-with-Mountebank)
+   - [Service Virtualization Using Mountebank](https://engineering.zalando.com/posts/2018/03/service-virtualization-using-mountebank.html)
+
+5. **视频教程：**
+   - [Mountebank: A Cross-Language, Cross-Platform Service Virtualization Tool](https://www.youtube.com/watch?v=nGd4b3v-xRk)
+
+通过阅读官方文档，查看 GitHub 仓库，阅读博客文章，以及观看相关的视频教程，您将能够深入了解 Mountebank 的使用方法、高级功能和最佳实践。
+
+官方文档是学习的重要资源，因为它通常提供了详细的用法说明和示例。
+
+同时，GitHub 仓库是获取源代码和参与社区讨论的好地方。
+
+## mock-server/hoverfly/wiremock/mountbank 对比表格
+
+以下是 MockServer、Hoverfly、WireMock 和 Mountebank 的简要对比表格，以帮助您了解它们之间的一些主要特性：
+
+| 特性/功能         | MockServer                                           | Hoverfly                                           | WireMock                                            | Mountebank                                          |
+|-------------------|------------------------------------------------------|----------------------------------------------------|-----------------------------------------------------|-----------------------------------------------------|
+| 支持的协议        | HTTP, HTTPS                                          | HTTP, HTTPS, TCP                                   | HTTP, HTTPS, TCP, SMTP, LDAP, gRPC, WebSockets, GraphQL, SNMP, Telnet, SSH, Netconf     | HTTP, HTTPS, TCP, SMTP, LDAP, gRPC, WebSockets, GraphQL, SNMP, Telnet, SSH, Netconf     |
+| 动态生成响应       | 是                                                   | 是                                                 | 是                                                  | 是                                                  |
+| 请求匹配功能       | 强大的匹配功能，包括 URL、HTTP 方法、请求头、请求体等 | 强大的匹配功能，支持 JSONPath、XPath 等             | 强大的匹配功能，支持 URL、HTTP 方法、请求头、请求体等 | 强大的匹配功能，支持 JSONPath、XPath 等             |
+| 录制和回放         | 是                                                   | 是                                                 | 是                                                  | 是                                                  |
+| 客户端支持         | Java、JavaScript、Ruby                               | Java、Go、JavaScript                               | Java、JavaScript、Ruby、Scala、Go、Groovy           | Java、JavaScript、Python、Ruby                      |
+| 官方文档           | [MockServer 文档](https://www.mock-server.com/mock_server/) | [Hoverfly 文档](https://docs.hoverfly.io/)         | [WireMock 文档](http://wiremock.org/docs/)          | [Mountebank 文档](http://www.mbtest.org/docs/latest/) |
+| GitHub 仓库        | [MockServer GitHub](https://github.com/mock-server/mockserver) | [Hoverfly GitHub](https://github.com/SpectoLabs/hoverfly) | [WireMock GitHub](https://github.com/wiremock/wiremock) | [Mountebank GitHub](https://github.com/bbyars/mountebank) |
+
+请注意，这只是对这四个工具的一些主要特性进行的简要对比。
+
+具体选择取决于您的使用场景、需求和偏好。
+
+建议根据具体情况查看它们的文档和示例，以更好地了解它们的功能和用法。
+
+## 如果让你深入学习 mountbank，你会问哪 10 个问题？为什么
+
+深入学习 Mountebank 的过程中，可能会涉及到多个方面的问题。
+
+以下是一些可能的问题，这些问题有助于理解 Mountebank 的设计、用法和一些高级功能：
+
+1. **Mountebank 的基本原理是什么？**
+   - 了解 Mountebank 是如何工作的，包括其核心概念、架构和关键组件。
+
+2. **Mountebank 支持的协议和服务虚拟化的范围是什么？**
+   - 了解 Mountebank 能够模拟的协议和服务类型，以及它在不同场景中的应用。
+
+3. **Mountebank 的配置文件是如何结构化的？**
+   - 学习 Mountebank 的配置文件语法和结构，了解如何定义模拟的服务和期望的请求/响应。
+
+4. **Mountebank 的 Stub 是什么，如何配置 Stub？**
+   - 理解 Mountebank 中的 Stub 概念，了解如何配置 Stub 来定义期望和响应。
+
+5. **Mountebank 中的 Predicate 是什么，如何使用？**
+   - 学习 Mountebank 中的 Predicate，它是用于匹配请求的条件，控制 Stub 的触发。
+
+6. **Mountebank 中的 Response Injection 是什么，如何实现动态响应？**
+   - 了解 Mountebank 中的 Response Injection，这是一种允许动态生成响应的机制。
+
+7. **Mountebank 的 SSL/TLS 支持是如何实现的？**
+   - 学习 Mountebank 如何支持安全传输层，以及如何配置 SSL/TLS。
+
+8. **Mountebank 中的 Record and Playback 功能是如何工作的？**
+   - 了解 Mountebank 中的录制和回放功能，这是一种自动生成 Stub 的方式。
+
+9. **Mountebank 中的 Proxy Mode 是什么，如何使用？**
+   - 学习 Mountebank 中的 Proxy 模式，它允许将请求代理到实际服务并记录流量。
+
+10. **Mountebank 的可扩展性和插件支持如何？**
+    - 了解 Mountebank 的可扩展性，包括是否支持插件和如何自定义其行为。
+
+这些问题可以帮助深入了解 Mountebank 的各个方面，从而更好地利用它进行服务虚拟化和模拟测试。
+
+
 
 # 小结
 
