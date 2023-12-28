@@ -49,8 +49,9 @@ parameters.put("dataList", dataList);
 session.query("UNWIND $dataList AS data CREATE (:MyNodeEntity {property1: data.property1, property2: data.property2})", parameters);
 session.clear(); // 清理缓存
 
-session.getTransaction().commit();
-session.close();
+try(Transaction transaction = session.beginTransaction()) {
+    transaction.commit();
+}
 ```
 
 这里假设`MyNodeEntity`是你的实体类，包含要插入的节点的属性。
@@ -58,6 +59,13 @@ session.close();
 在这个例子中，`dataList`是要插入的数据列表，通过参数传递给Cypher查询。
 
 请注意，在实际应用中，要根据你的数据模型和需求进行调整。确保你的数据模型和Cypher查询符合你的应用程序的需求。
+
+## 异步
+
+可以在这里使用异步入库。
+
+不过批量就会带来一些问题，比如如果一些数据存在
+
 
 
 # 小结
