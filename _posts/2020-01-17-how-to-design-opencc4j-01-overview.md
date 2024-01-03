@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 如何为中文的繁简体转换 opencc4j-01-overview
+title: java 开源中文的繁简体转换工具 opencc4j-01-overview
 date:  2020-1-9 10:09:32 +0800
 categories: [Search]
 tags: [nlp, java, pinyin, sh]
