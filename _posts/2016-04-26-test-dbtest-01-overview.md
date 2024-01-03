@@ -158,7 +158,35 @@ DbUnit 提供了丰富的 API，可以用于更灵活和定制化的数据库测
 6. **HSQLDB:**
    - HSQLDB 是一个内存数据库，可以轻松集成到 Java 项目中。它常被用于单元测试，因为它可以在内存中运行，避免了与外部数据库的交互。
 
-选择适当的数据库测试工具取决于项目的具体需求和技术栈。一些工具可能更适用于特定的场景，如数据库迁移，而另一些可能更适用于简单的单元测试。根据项目的特点和团队的偏好，选择最适合的工具。
+## 还有哪些类似 Flyway 的数据库管理工具？
+
+除了Flyway和Liquibase之外，还有一些其他类似的数据库管理工具，每个工具都有其独特的特点。以下是一些类似Flyway的数据库迁移和管理工具：
+
+1. **dbDeploy：** dbDeploy是一个轻量级的数据库变更管理工具，它使用纯SQL脚本进行变更。它允许你使用简单的文本脚本定义数据库的变更，并提供命令行工具和Ant任务用于执行变更。
+
+   - GitHub仓库：[dbDeploy](https://github.com/dbdeploy/dbdeploy)
+
+2. **ActiveRecord Migrations：** ActiveRecord Migrations是Ruby on Rails框架中的一个组件，用于管理数据库迁移。尽管最初是为Rails设计的，但也可以用于非Rails项目。
+
+   - 官方文档：[ActiveRecord Migrations](https://guides.rubyonrails.org/v6.0/migrations.html)
+
+3. **Rikyū：** Rikyū是一个基于文本的数据库迁移工具，它使用纯文本脚本描述数据库的变更。它支持多种数据库，并提供简单的命令行界面。
+
+   - GitHub仓库：[Rikyū](https://github.com/agilesteel/Rikyu)
+
+4. **MyBatis Migrations：** MyBatis Migrations是MyBatis框架的一个组件，专注于数据库迁移。它使用XML或注解来定义变更，并提供命令行工具执行这些变更。
+
+   - GitHub仓库：[MyBatis Migrations](https://github.com/mybatis/migrations)
+
+5. **Hibernate Envers：** Hibernate Envers是Hibernate框架的一个模块，专注于实体历史的版本控制。虽然它的主要目的是跟踪实体的历史，但它也可以在某种程度上用于数据库变更管理。
+
+   - 官方文档：[Hibernate Envers](https://docs.jboss.org/envers/docs/)
+
+这些工具在设计和使用上都有一些差异，选择取决于项目的具体需求、团队的偏好以及使用的技术栈。在选择之前，建议仔细研究每个工具的文档和特点，以确保选择符合项目的需求。
+
+选择适当的数据库测试工具取决于项目的具体需求和技术栈。
+
+一些工具可能更适用于特定的场景，如数据库迁移，而另一些可能更适用于简单的单元测试。根据项目的特点和团队的偏好，选择最适合的工具。
 
 ## 给出所有 db 测试工具的对比表格
 
