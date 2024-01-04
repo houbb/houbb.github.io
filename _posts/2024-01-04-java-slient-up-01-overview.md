@@ -55,6 +55,172 @@ published: true
 
 3）提前通知用户，让用户知道这个事情。而且允许用户不做升级操作。
 
+
+# 基于 shell 的实战笔记
+
+## 需求
+
+我们模拟一个 maven 项目的 pomx，期望替换其中的 heaven 版本从 0.6.0=>0.7.0
+
+## 示例
+
+- pom.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>silentup-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!--============================== INTER ==============================-->
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>heaven</artifactId>
+            <version>0.6.0</version>
+        </dependency>
+    </dependencies>
+
+</project>
+```
+
+- slientup.sh
+
+```sh
+targetVersion=0.7.0
+currentPath=`pwd`
+mainPomPath=$currentPath"/pom.xml"
+
+if [ ! -f $mainPomPath ]; then
+  echo "mainPomPath not found in $currentPath!"
+  exit 1;
+fi
+
+sedStr="s#</dependencies>#<dependency><groupId>com.github.houbb</groupId><artifactId>heaven</artifactId><version>$targetVersion</version></dependency></dependencies>#"
+
+sed -i "$sedStr" $mainPomPath
+
+echo "Silent up version to $targetVersion DONE!"
+```
+
+这个脚本比较简单，直接在文件的最后添加我们的新版本，因为 maven 的优先级，后面的会覆盖前面的。
+
+
+## 执行
+
+```
+$ chmod +x silentup.sh
+$ ./silentup.sh
+Silent up version to 0.7.0 DONE!
+```
+
+## 效果
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>silentup-test</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <!--============================== INTER ==============================-->
+        <dependency>
+            <groupId>com.github.houbb</groupId>
+            <artifactId>heaven</artifactId>
+            <version>0.6.0</version>
+        </dependency>
+    <dependency><groupId>com.github.houbb</groupId><artifactId>heaven</artifactId><version>0.7.0</version></dependency></dependencies>
+
+</project>
+```
+
+
+# chat
+
+## 需求
+
+shell 脚本，解析 maven pom.xml 依赖  com.github.houbb:heaven 包
+
+1）如果不存在这个依赖，直接结束。
+
+2）如果存在，判断包的版本。如果版本为 2.0、2.1，则保持不变；如果不是，则修改 version 为 2.1
+
+## A1
+
+您可以使用`xmlstarlet`工具来解析和修改XML文件，下面是一个使用Shell脚本的例子：
+
+```bash
+#!/bin/bash
+
+# 检查是否存在 com.github.houbb:heaven 依赖
+if xmlstarlet sel -t -m "//dependency[groupId='com.github.houbb' and artifactId='heaven']" -o "1" -b pom.xml > /dev/null; then
+    echo "com.github.houbb:heaven 依赖存在"
+else
+    echo "com.github.houbb:heaven 依赖不存在"
+    exit 1
+fi
+
+# 获取当前版本
+current_version=$(xmlstarlet sel -t -m "//dependency[groupId='com.github.houbb' and artifactId='heaven']/version" -v . -n pom.xml)
+
+# 检查版本并修改
+if [[ "$current_version" == "2.0" || "$current_version" == "2.1" ]]; then
+    echo "版本为 2.0 或 2.1，无需修改"
+else
+    echo "修改版本为 2.1"
+    xmlstarlet ed --inplace -u "//dependency[groupId='com.github.houbb' and artifactId='heaven']/version" -v "2.1" pom.xml
+fi
+```
+
+请确保在运行脚本之前备份您的`pom.xml`文件，以防止意外的修改。上述脚本假设您已经安装了`xmlstarlet`工具。您可以使用以下命令来安装：
+
+```bash
+# 使用 apt-get 安装 xmlstarlet
+sudo apt-get install xmlstarlet
+
+# 使用 yum 安装 xmlstarlet
+sudo yum install xmlstarlet
+```
+
+然后，将上述脚本保存到一个文件（例如`update_dependency.sh`），并赋予执行权限：
+
+```bash
+chmod +x update_dependency.sh
+```
+
+最后，运行脚本：
+
+```bash
+./update_dependency.sh
+```
+
+这将根据您的要求检查并更新`pom.xml`文件中的依赖。
+
+
+
+
 # chat
 
 ## java jar sdk 想实现静默升级，有哪些方式
