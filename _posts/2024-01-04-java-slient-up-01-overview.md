@@ -1,11 +1,15 @@
 ---
 layout: post
-title: java 如何让 jar/sdk 包静默升级？
+title: 让 sdk 包静默升级的 SAO 操作，你见过几种？
 date: 2024-01-04 21:01:55 +0800
 categories: [Java]
 tags: [java, sh]
 published: true
 ---
+
+# 拓展阅读
+
+[让 sdk 包静默升级的 SAO 操作，你见过几种？](https://mp.weixin.qq.com/s/fhvT-zqhu0pbaBGuH5Mpkw)
 
 # 业务背景
 
@@ -15,6 +19,9 @@ published: true
 
 那有什么方式，让 sdk 包静默升级呢？
 
+今天学习到一个骚操作，和大家分享一下。
+
+![骚操作](https://img-blog.csdnimg.cn/direct/801bd0acccbf412fb1fb8762f6e3788e.jpeg#pic_center)
 
 # 方式1-snapshot
 
@@ -34,20 +41,15 @@ published: true
 
 方式：直接替换指定版本的仓库中的包。这种方式的核心和上面类似。只不过是看起来不是 snapshot，但是依然无法保障安全。
 
-## 方式3-sh
+## 方式3-shell 脚本结合 CI
 
-方式：使用 sh 脚本，在升级的时候，先备份，再替换。
+方式：使用 shell 脚本，在升级的时候，先备份，再替换。
 
 流程：一般结合 ci 流水线使用，部署打包的时候替换包版本到指定版本，相比较而言更加灵活，也有回旋的余地。
 
 缺点：要求比较多，比较麻烦。且要求应用必须通过 ci 流水线部署，否则就会被绕过。
 
-## 方式4-maven 插件
-
-实现方式一致，不过是时机问题。
-
-
-# 注意点
+### 注意点
 
 1）需要保证 jar 版本之间的向前兼容性，避免升级导致问题。
 
@@ -55,6 +57,13 @@ published: true
 
 3）提前通知用户，让用户知道这个事情。而且允许用户不做升级操作。
 
+# 小结
+
+这种方式给我的感觉是无可奈何，但是又非常巧妙。
+
+上一次有这种感觉的，还是运维怕磁盘爆，预留 500MB 放一个垃圾文件，磁盘满了直接移除，快速解决问题。
+
+你在日常工作中，见到过哪些 SAO 操作？
 
 # 基于 shell 的实战笔记
 
@@ -155,6 +164,7 @@ Silent up version to 0.7.0 DONE!
 
 </project>
 ```
+
 
 
 # chat

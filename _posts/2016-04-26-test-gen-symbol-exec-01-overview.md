@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  test ai-01-人工智能结合测试
+title:  test Symbolic Execution-01-符号执行（Symbolic Execution）简介
 date:  2016-04-26 14:10:52 +0800
 categories: [Test]
 tags: [java, test]
@@ -246,12 +246,12 @@ S2E 提供了一个强大的工具，可以用于对复杂系统进行深入的�
    
    JBSE允许用户指定路径约束和执行目标。
    
-   项目地址：[JBSE](https://github.com/SymbolicPathFinder/jbse)
+   项目地址：[JBSE](https://github.com/pietrobraione/jbse)
 
 2. **Soot:**
    - Soot 是一个综合的Java字节码分析和变换框架，尽管不是专门为符号执行而设计，但它可以用于执行静态分析，包括符号执行的一些方面。
    
-   项目地址：[Soot](https://sable.github.io/soot/)
+   项目地址：[Soot](https://github.com/soot-oss/soot)
 
 3. **JPF (Java PathFinder):**
    - JPF 是一个基于Java的符号执行引擎。它通过扩展Java虚拟机（JVM）以执行符号执行。JPF可以用于执行验证、测试和分析Java程序。
