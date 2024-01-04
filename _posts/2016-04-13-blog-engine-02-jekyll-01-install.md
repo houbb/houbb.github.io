@@ -1,11 +1,21 @@
 ---
 layout: post
-title:  blog-engine-02-通过博客引擎 jekyll 构建 github pages 博客实战笔记
+title:  blog-engine-01-通过博客引擎 jekyll 构建 github pages 博客实战笔记
 date:   2016-04-13 23:20:27 +0800
 categories: [Github]
 tags: [jekyll, seo, github]
 published: true
 ---
+
+# 拓展阅读
+
+[blog-engine-02-通过博客引擎 jekyll 构建 github pages 博客实战笔记](https://houbb.github.io/2016/04/13/blog-engine-02-jekyll-01-install)
+
+[blog-engine-02-博客引擎jekyll-jekyll 博客引擎介绍，常见博客引擎 jekyll/hugo/Hexo/Pelican/Gatsby/VuePress/Nuxt.js/Middleman 对比](https://houbb.github.io/2016/04/13/blog-engine-03-jekyll-02-intro)
+
+[blog-engine-04-博客引擎 hugo intro 入门介绍+安装笔记](https://houbb.github.io/2016/04/13/blog-engine-04-hugo-intro)
+
+[blog-engine-05-博客引擎 Hexo 入门介绍+安装笔记](https://houbb.github.io/2017/03/29/blog-engine-05-hexo)
 
 # jekyll 搭建教程
 
