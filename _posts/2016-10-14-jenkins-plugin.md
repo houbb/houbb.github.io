@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Jenkins Plugin
+title: 持续集成平台-02-Jenkins Plugin
 date:  2016-10-14 23:51:50 +0800
 categories: [Devops]
-tags: [Devops, ci, plugin]
+tags: [devops, ci, plugin]
 published: true
 ---
 
