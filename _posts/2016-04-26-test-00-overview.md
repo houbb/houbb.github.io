@@ -47,6 +47,10 @@ UI 测试
 
 DBUnit
 
+变异测试
+
+属性测试
+
 覆盖率：jacoco
 
 造数：data-factory
