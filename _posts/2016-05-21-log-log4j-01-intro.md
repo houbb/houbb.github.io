@@ -1,11 +1,37 @@
 ---
 layout: post
-title:  Log4j
-date:  2017-09-17 10:58:36 +0800
+title:  log-01-日志组件之 Log4j 入门介绍
+date:  2016-5-21 10:00:13 +0800
 categories: [Log]
-tags: [log, sf]
+tags: [log, log4j, sf]
 published: true
 ---
+
+# 拓展阅读
+
+[Log4j2 系统学习](https://houbb.github.io/2016/05/21/Log4j2-01-overview)
+
+[Logback 系统学习](https://houbb.github.io/2018/11/19/logback-01-intro)
+
+[Slf4j](https://houbb.github.io/2018/08/27/slf4j)
+
+[Slf4j-02-slf4j 与 logback 整合](https://houbb.github.io/2018/08/27/slf4j-02-logback)
+
+[SLF4j MDC-日志添加唯一标识](https://houbb.github.io/2018/12/06/slf4j-mdc)
+
+[分布式链路追踪-05-mdc 等信息如何跨线程? Log4j2 与 logback 的实现方式](https://houbb.github.io/2023/07/25/distributed-trace-06-log4j2-slf4j)
+
+[日志开源组件（一）java 注解结合 spring aop 实现自动输出日志](https://houbb.github.io/2023/08/06/auto-log-01-overview)
+
+[日志开源组件（二）注解结合 spring aop 实现日志traceId唯一标识](https://houbb.github.io/2023/08/06/auto-log-02-trace-id)
+
+[日志开源组件（三）java 注解结合 spring aop 自动输出日志新增拦截器与过滤器](https://houbb.github.io/2023/08/06/auto-log-03-filter)
+
+[日志开源组件（四）如何动态修改 spring aop 切面信息？让自动日志输出框架更好用](https://houbb.github.io/2023/08/06/auto-log-04-dynamic-aop)
+
+[日志开源组件（五）如何将 dubbo filter 拦截器原理运用到日志拦截器中？](https://houbb.github.io/2023/08/06/auto-log-05-dubbo-interceptor)
+
+[日志开源组件（六）Adaptive Sampling 自适应采样](https://houbb.github.io/2023/08/06/auto-log-06-adaptive)
 
 # Log4j
 
