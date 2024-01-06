@@ -267,7 +267,6 @@ prefix 是我们自己定义的一个前缀，过会儿我们可以在 log4j.xml
 
 可以通过日志对信息进行脱敏。
 
-
 # 参考资料
 
 [log4j日志扩展---自定义PatternLayout](https://blog.csdn.net/u010162887/article/details/51736637)
