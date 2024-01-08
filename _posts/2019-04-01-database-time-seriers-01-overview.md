@@ -1,11 +1,22 @@
 ---
 layout: post
-title: 时序数据库有哪些？为什么要使用
+title: 时序数据库-01-时序数据库有哪些？为什么要使用
 date:  2019-4-1 19:24:57 +0800
 categories: [Database]
 tags: [database, dis-database, distributed, time-series, sf]
 published: true
 ---
+
+# 拓展阅读
+
+time-series database 
+
+[https://github.com/armink/FlashDB](About
+An ultra-lightweight database that supports key-value and time series data | 一款支持 KV 数据和时序数据的超轻量级数据库)
+
+[TiDB](https://github.com/pingcap/tidb) TiDB is an open-source, cloud-native, distributed, MySQL-Compatible database for elastic scale and real-time analytics. Try AI-powered Chat2Query free at :
+
+[TDengine](https://github.com/taosdata/TDengine) TDengine is an open source, high-performance, cloud native time-series database optimized for Internet of Things (IoT), Connected Cars, Industrial IoT and DevOps.
 
 # 时序数据库有哪些？为什么要使用
 

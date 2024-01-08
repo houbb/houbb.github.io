@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Opentsdb-分布式时序数据库
+title: 时序数据库-03-pentsdb-分布式时序数据库
 date:  2019-4-1 19:24:57 +0800
 categories: [Database]
 tags: [database, dis-database, distributed, time-series, sf]
