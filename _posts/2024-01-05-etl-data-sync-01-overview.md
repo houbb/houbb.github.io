@@ -13,6 +13,20 @@ published: true
 
 [SymmetricDS](https://houbb.github.io/2017/04/28/symm)
 
+# 概览
+
+ETL
+
+source: kakfa/mysql/oracle/neo4j
+
+target: ES/neo4j/mysql/TDEngine
+
+支持特性：CDC  / checkpoint
+
+自己写的 logstash4j，学习一下别人的长处。
+
+
+
 # chat
 
 ## 详细谈一下 ETL

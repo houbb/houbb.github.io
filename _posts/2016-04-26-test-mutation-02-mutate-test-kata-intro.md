@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  test mutation-01-变异测试 mutate-test-kata Code kata using mutation testing to improve quality of unit tests
+title:  test mutation-02-变异测试 mutate-test-kata Code kata using mutation testing to improve quality of unit tests
 date:  2016-04-26 14:10:52 +0800
 categories: [Test]
 tags: [java, test]
