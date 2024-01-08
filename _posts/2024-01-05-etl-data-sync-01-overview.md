@@ -26,6 +26,134 @@ target: ES/neo4j/mysql/TDEngine
 自己写的 logstash4j，学习一下别人的长处。
 
 
+# 常见的 
+
+数据同步工具调研选型：SeaTunnel 与 DataX 、Sqoop、Flume、Flink CDC 对比
+
+产品概述
+
+Apache SeaTunnel 是一个非常易用的超高性能分布式数据集成产品，支持海量数据的离线及实时同步。
+
+每天可稳定高效同步万亿级数据，已应用于数百家企业生产，也是首个由国人主导贡献到 Apache 基金会的数据集成顶级项目。
+
+SeaTunnel 主要解决数据集成领域的常见问题：
+
+* 数据源多样：常用的数据源有数百种，版本不兼容。随着新技术的出现，出现了更多的数据源。用户很难找到能够全面快速支持这些数据源的工具。
+
+* 复杂同步场景：数据同步需要支持离线-全量同步、离线-增量同步、CDC、实时同步、全库同步等多种同步场景。
+
+* 资源需求高：现有的数据集成和数据同步工具往往需要大量的计算资源或JDBC连接资源来完成海量小表的实时同步。这在一定程度上加重了企业的负担。
+
+* 缺乏质量和监控：数据集成和同步过程经常会丢失或重复数据。同步过程缺乏监控，无法直观了解任务过程中数据的真实情况。
+
+* 技术栈复杂：企业使用的技术组件各不相同，用户需要针对不同的组件开发相应的同步程序来完成数据集成。
+
+* 管理维护困难：市面上的数据集成工具通常受限于不同的底层技术组件（Flink/Spark），使得离线同步和实时同步往往是分开开发和管理的，增加了管理和维护的难度。
+
+![view](https://pic2.zhimg.com/80/v2-fa67de4f1b0e77558fe2b53b63185661_720w.webp)
+
+SeaTunnel 产品实现了高可靠性、集中管理、可视化监控等一体的数据集成统一平台。
+
+平台可以实现了标准化、规范化、界面化操作；实现了数据同步高速化，全量到增量无锁化自动切换，目前已经支持 100+ 种数据源；支持整库同步、表结构自动变更；同时无中心化设计确保系统的高可用机制，整体上做到简单易用，开箱即用。
+
+同类产品横向对比
+2.1、高可用、健壮的容错机制
+DataX 只支持单机，SeaTunnel 和 Flink CDC 支持集群，因此在高可用上 DataX 是不支持的，DataX由于单机设计很易受网络闪断、数据源不稳定等因素的影响造成数据不一致问题。
+
+Apache SeaTunnel具有无中心化的高可用架构设计和完善的容错机制，SeaTunnel支持更细粒度的作业回滚机制，结合多阶段提交与CheckPoint机制，确保数据一致的同时避免大量回滚导致性能下降
+
+Flink CDC采用主从模式的架构设计，容错粒度较粗，多表同步时，Flink 任何表出现问题都会导致整个作业失败停止，导致所有表同步延迟。
+
+在高可用维度上，SeaTunnel 和 Flink CDC 优势很大
+
+2.2、部署难度和运行模式
+Apache SeaTunnel 和 DataX 部署都十分容易。
+Flink CDC 的部署难度中等，但因为它依赖于 Hadoop 生态系统， 所以部署相对 SeaTunnel 会复杂一些。
+2.3、支持的数据源丰富度
+Apache SeaTunnel 支持 MySQL、PostgreSQL、Oracle、SQLServer、Hive、S3、RedShift、HBase、Clickhouse 等 100 多种数据源。
+
+DataX 支持 MySQL、ODPS、PostgreSQL、Hive 等 20 多种数据源。
+
+Flink CDC 支持 MySQL、PostgreSQL、MongoDB、SQLServer 等 10 多种数据源。
+
+Apache SeaTunnel 支持关系型数据库、NOSQL 数据库、数据仓库、实时数仓、大数据、云数据源、 SAAS、消息队列、标准接口、文件、FTP等多种数据源同步,数据可以同步到任一指定的系型数据库、NOSQL 数据库、数据仓库、实时数仓、大数据、云数据源、 SAAS、标准接口、消息队列、文件等目标数据源中,满足政府、企事业单位对于数据流动的绝大多数需求。在这个维度的对比上，显然 SeaTunnel 支持的数据源丰富度是远远高于其他两个的。
+
+2.4、内存资源占用
+Apache SeaTunnel 占用较少的内存资源，SeaTunnel Zeta 引擎的 Dynamic Thread Sharing 技术可提高 CPU 利用率，不依赖 HDFS，Spark 等复杂组件，具备更好单机处理性能。
+
+DataX 和 Flink CDC 会占用较多的内存资源， Flink CDC 每个作业只能同步一张表，多张表同步需要启动多个 Job 运行，造成巨大浪费资源。
+
+2.5、数据库连接占用
+Apache SeaTunnel 占用较少的数据库连接，支持多表或整库同步，解决 JDBC 连接过多的问题； 同时实现了 zero-copy 技术，无需序列化开销。
+
+DataX 和 Flink CDC 占用较多的数据库连接，他们每个 Task 只能处理一张表，每张表至少需要一个JDBC 连接来读取或写入数据。当进行多表同步和整库同步时，需要大量的 JDBC 连接。
+
+这通常是 DBA 们十分关注的，数据同步不能影响业务库正常运行，所以控制连接数占用是十分必要的。
+
+2.6、自动建表
+Apache SeaTunnel 支持自动建表。
+
+DataX 和 Flink CDC 不支持自动建表。
+
+2.7、整库同步
+Apache SeaTunnel 设计有支持整库同步，方便用户使用，不需要为每张表都写一遍配置。
+
+DataX 和 Flink CDC 不支持整库同步，每个表需要单独配置。
+
+试想一下当你有数百张表，每张都单独配置一遍是不是还是太费劲了些！
+
+2.8、断点续传
+断点续传功能在数据同步过程是十分实用的功能，支持断点续传将让数据同步在手动暂停或出问题时能快速恢复继续，Apache SeaTunnel 和 Flink CDC 可以支持断点续传，但 DataX 不支持断点续传。
+
+2.9、多引擎支持
+Apache SeaTunnel 支持 SeaTunnel Zeta、Flink 和 Spark 三个引擎选其一作为运行时。
+
+DataX 只能运行在 DataX 自己的引擎上。
+
+Flink CDC 只能运行在 Flink 上。
+
+在引擎支持丰富度上，SeaTunnel 具有更佳的优势。
+
+2.10、数据转换算子
+Apache SeaTunnel 支持 Copy、Filter、Replace、Split、SQL 和自定义 UDF 等算子。
+
+DataX 支持补全、过滤等算子，还可以使用Groovy自定义算子。
+
+Flink CDC 支持 Filter、Null、SQL 和自定义 UDF 等算子。
+
+在数据转换上，这 3 个支持力度差不多。
+
+2.11、性能
+因为 DataX 只有单机版，所以对比性能时统一使用单机来进行
+
+DataX 和 Flink CDC 的单机性能较好。但 Apache SeaTunnel 的单机性能比 DataX 高 40%-80% 左右。
+
+社区有贡献者曾做过测试，测试场景如下：
+
+本地测试场景：MySQL-Hive, Postgres-Hive, SQLServer-Hive, Orache-Hive
+
+云测试场景：MySQL-S3
+
+列数：32，基本包含大部分数据类型
+
+行数：3000w 行
+
+Hive 文件 text 格式 18G
+
+测试节点：单机 8C16G
+
+测试结果：
+
+在本地测试场景下： SeaTunnel Zeta VS DataX
+
+SeaTunnel Zeta 比 DataX 同步数据快 40-80% 左右。同时SeaTunnel Zeta 对内存的使用比 DataX 少且稳定的多。
+
+在云数据同步场景下：SeaTunnel 在 MySQL 到 S3 场景下性能是 Airbyte 的 30 多倍，是 AWS DMS 和 Glue 的 2 到 5 倍。
+
+
+
+
+
 
 # chat
 
@@ -124,6 +252,8 @@ ETL是数据仓库和商业智能项目中的关键环节，它确保数据从�
 # 参考资料
 
 https://github.com/alibaba/DataX
+
+https://zhuanlan.zhihu.com/p/666726655?utm_id=0
 
 * any list
 {:toc}
