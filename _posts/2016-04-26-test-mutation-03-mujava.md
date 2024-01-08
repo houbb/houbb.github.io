@@ -9,17 +9,11 @@ published: true
 
 # 拓展阅读
 
+[开源 Auto generate mock data for java test.(便于 Java 测试自动生成对象信息)](https://github.com/houbb/data-factory)
+
+[开源 Junit performance rely on junit5 and jdk8+.(java 性能测试框架。性能测试。压测。测试报告生成。)](https://github.com/houbb/junitperf)
+
 [test 系统学习-04-test converate 测试覆盖率 jacoco 原理介绍](https://houbb.github.io/2018/06/23/test-04-test-converage)
-
-[test 系统学习-05-test jacoco 测试覆盖率与 idea 插件](https://houbb.github.io/2018/06/23/test-05-jacoco-idea-plugin)
-
-[test 系统学习-06-test jacoco](https://houbb.github.io/2018/06/23/test-06-jacoco-overview)
-
-[SonarQube](https://houbb.github.io/2016/10/14/sonarQube)
-
-[Docker learn-29-docker 安装 sonarQube with mysql](https://houbb.github.io/2019/12/18/docker-learn-29-install-devops-sonar)
-
-[Ubuntu Sonar](https://houbb.github.io/2018/08/14/ubuntu-sonar)
 
 # **µJava (muJava) 突变测试系统**
 

@@ -51,9 +51,15 @@ DBUnit
 
 变异测试
 
+fuzz testing
+
 属性测试
 
 造数：data-factory
+
+gen-symbol-exec
+
+gen-case
 
 对应的代码生成插件
 
