@@ -9,14 +9,13 @@ published: true
 
 # 拓展阅读
 
-> [junit5 系列](https://houbb.github.io/2018/06/24/junit5-01-hello)
+[junit5 系列](https://houbb.github.io/2018/06/24/junit5-01-hello)
 
-> [基于 junit5 实现 junitperf 源码分析](https://houbb.github.io/2021/07/23/junit-performance-junit5)
+[基于 junit5 实现 junitperf 源码分析](https://houbb.github.io/2021/07/23/junit-performance-junit5)
 
 [Auto generate mock data for java test.(便于 Java 测试自动生成对象信息)](https://github.com/houbb/data-factory)
 
 [Junit performance rely on junit5 and jdk8+.(java 性能测试框架。性能测试。压测。测试报告生成。)](https://github.com/houbb/junitperf)
-
 
 # junit5 的入门例子
 
@@ -71,6 +70,14 @@ public class CalculatorTest {
     }
 }
 ```
+
+# 小结 
+
+junit5 对比 junit4 可以说是划时代的提升。
+
+这么多年过去了，就算是再顽固的系统，现在也开始使用 jdk1.8 了，这一点令人欣慰。
+
+junit5 是新时代的单元测试，所以忘掉你的 junit4 吧。
 
 # chat
 
@@ -205,13 +212,7 @@ JUnit Jupiter提供了丰富的新特性，JUnit Platform提供了通用的测�
 
 这种模块化的设计使得JUnit 5更具适应性和可扩展性。
 
-# 小结 
 
-junit5 对比 junit4 可以说是划时代的提升。
-
-这么多年过去了，就算是再顽固的系统，现在也开始使用 jdk1.8 了，这一点令人欣慰。
-
-junit5 是新时代的单元测试，所以忘掉你的 junit4 吧。
 
 * any list
 {:toc}

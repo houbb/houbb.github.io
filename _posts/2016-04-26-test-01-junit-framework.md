@@ -9,9 +9,9 @@ published: true
 
 # 拓展阅读
 
-> [junit5 系列](https://houbb.github.io/2018/06/24/junit5-01-hello)
+[junit5 系列](https://houbb.github.io/2018/06/24/junit5-01-hello)
 
-> [基于 junit5 实现 junitperf 源码分析](https://houbb.github.io/2021/07/23/junit-performance-junit5)
+[基于 junit5 实现 junitperf 源码分析](https://houbb.github.io/2021/07/23/junit-performance-junit5)
 
 [Auto generate mock data for java test.(便于 Java 测试自动生成对象信息)](https://github.com/houbb/data-factory)
 
