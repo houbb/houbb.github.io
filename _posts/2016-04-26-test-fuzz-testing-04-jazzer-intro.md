@@ -9,7 +9,23 @@ published: true
 
 # 拓展阅读
 
-[便于 Java 测试自动生成对象信息](https://github.com/houbb/data-factory)
+[开源 Auto generate mock data for java test.(便于 Java 测试自动生成对象信息)](https://github.com/houbb/data-factory)
+
+[开源 Junit performance rely on junit5 and jdk8+.(java 性能测试框架。性能测试。压测。测试报告生成。)](https://github.com/houbb/junitperf)
+
+[test fuzz-01-模糊测试（Fuzz Testing）](https://houbb.github.io/2016/04/26/test-fuzz-testing-01-overview)
+
+[test fuzz-02-模糊测试 JQF + Zest Semantic Fuzzing for Java](https://houbb.github.io/2016/04/26/test-fuzz-testing-02-jqf-intro)
+
+[test fuzz-03-模糊测试 Atheris A Coverage-Guided, Native Python Fuzzer](https://houbb.github.io/2016/04/26/test-fuzz-testing-03-atheris-intro)
+
+[test fuzz-04-模糊测试 jazzer Coverage-guided, in-process fuzzing for the JVM](https://houbb.github.io/2016/04/26/test-fuzz-testing-04-jazzer-intro)
+
+[test fuzz-05-模糊测试 kelinci AFL-based fuzzing for Java](https://houbb.github.io/2016/04/26/test-fuzz-testing-05-kelinci-intro)
+
+[test fuzz-06-模糊测试 AFL american fuzzy lop - a security-oriented fuzzer](https://houbb.github.io/2016/04/26/test-fuzz-testing-06-AFL)
+
+[test fuzz-07-模糊测试 libfuzzer](https://houbb.github.io/2016/04/26/test-fuzz-testing-07-libfuzzer)
 
 # jazzer
 
@@ -72,7 +88,8 @@ class ParserTests {
 可以在 examples/junit 中找到一个完整的 Maven 示例项目。
 
 
-CI Fuzz
+# CI Fuzz
+
 开源 CLI 工具 cifuzz 使得通过 Jazzer 为 Maven 和 Gradle 项目设置模糊测试变得轻松。它提供了一个命令行界面用于模糊测试运行，对发现进行去重和管理，并为模糊测试提供覆盖率报告。此外，您可以使用 CI Fuzz 在 CI App 中大规模运行您的模糊测试。
 
 GitHub 发布
