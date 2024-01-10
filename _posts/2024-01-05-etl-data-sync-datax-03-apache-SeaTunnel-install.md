@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ETL-03-数据同步工具 SeaTunnel install 
+title: ETL-03-数据同步工具 SeaTunnel install windows10 WSL 安装笔记
 date: 2024-01-05 21:01:55 +0800
 categories: [ETL]
 tags: [etl, sh]
