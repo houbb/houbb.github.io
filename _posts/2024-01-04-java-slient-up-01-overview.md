@@ -125,6 +125,14 @@ echo "Silent up version to $targetVersion DONE!"
 
 这个脚本比较简单，直接在文件的最后添加我们的新版本，因为 maven 的优先级，后面的会覆盖前面的。
 
+### 一些细节
+
+还有一个就是 maven 优先级的问题。
+
+maven 其实在主 pom 的时候，是前面的覆盖后面的。
+
+所以最好是替换 `</dependencies>`。
+
 
 ## 执行
 
