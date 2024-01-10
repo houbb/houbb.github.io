@@ -1,6 +1,6 @@
 ---
 layout: post
-title: windows install linux 实战笔记 windows 安装 linux
+title: windows install linux 实战笔记 windows 安装 linux WSL 
 date: 2023-10-20 21:01:55 +0800
 categories: [Windows]
 tags: [windows, linux, os, sh]
@@ -178,6 +178,16 @@ C:\Users\YourUsername\AppData\Local\Packages\CanonicalGroupLimited.UbuntuonWindo
 
 ```
 \\wsl.localhost\Ubuntu\home\houbinbin
+```
+
+# WSL 的文件在哪里？
+
+有时候还是希望 linux 的数据可以和 windows 互通。
+
+以自己的账户为例，默认的路径应该是：
+
+```
+\\wsl.localhost\Ubuntu\home\dh
 ```
 
 # 参考资料
