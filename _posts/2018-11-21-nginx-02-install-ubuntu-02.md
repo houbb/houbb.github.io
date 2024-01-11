@@ -1,11 +1,78 @@
 ---
 layout: post
-title: Nginx-02-Nginx Ubuntu 安装
+title: Nginx-02-Nginx Ubuntu 安装 + windows10 + WSL ubuntu 安装 nginx 实战笔记
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [web-server, nginx, ubuntu, install, sh]
 published: true
 ---
+
+# windows10 + WSL ubuntu 安装 nginx 实战笔记
+
+在Ubuntu上安装Nginx通常是一个相对简单的过程。你可以通过以下步骤进行安装：
+
+1. 打开终端。
+2. 运行以下命令以更新系统的软件包列表：
+
+```bash
+sudo apt update
+```
+
+3. 安装Nginx：
+
+```bash
+sudo apt install nginx
+```
+
+4. 安装完成后，可以使用以下命令启动Nginx服务：
+
+```bash
+sudo systemctl start nginx
+```
+
+5. 如果你希望Nginx在系统启动时自动启动，可以运行以下命令：
+
+```bash
+sudo systemctl enable nginx
+```
+
+现在，Nginx已经安装并运行在你的Ubuntu系统上。你可以通过在浏览器中输入服务器的IP地址或域名来验证是否成功安装。
+
+如果一切顺利，你应该能够看到Nginx的欢迎页面。
+
+6. 验证方式
+
+浏览器的话，可以看到对应的欢迎页面。
+
+```
+$ curl http://localhost
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+    body {
+        width: 35em;
+        margin: 0 auto;
+        font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+```
 
 # Nginx in Ubuntu
 
