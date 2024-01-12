@@ -13,17 +13,13 @@ published: true
 
 [Python核心技术与实战-28如何合理利用assert？](https://houbb.github.io/2015/01/01/Python%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%B8%8E%E5%AE%9E%E6%88%98-28%E5%A6%82%E4%BD%95%E5%90%88%E7%90%86%E5%88%A9%E7%94%A8assert)
 
-> [junit5 系列](https://houbb.github.io/2018/06/24/junit5-01-hello)
+[junit5 系列](https://houbb.github.io/2018/06/24/junit5-01-hello)
 
-> [基于 junit5 实现 junitperf 源码分析](https://houbb.github.io/2021/07/23/junit-performance-junit5)
+[基于 junit5 实现 junitperf 源码分析](https://houbb.github.io/2021/07/23/junit-performance-junit5)
 
 [Auto generate mock data for java test.(便于 Java 测试自动生成对象信息)](https://github.com/houbb/data-factory)
 
 [Junit performance rely on junit5 and jdk8+.(java 性能测试框架。性能测试。压测。测试报告生成。)](https://github.com/houbb/junitperf)
-
-
-
-
 
 # chat
 
