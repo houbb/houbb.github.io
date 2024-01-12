@@ -1,29 +1,58 @@
 ---
 layout: post
-title:  Hadoop
-date:  2017-11-12 11:47:35 +0800
+title:  Apache Hadoop-01-hello world 入门例子
+date:  2017-12-05 05:47:35 +0800
 categories: [Apache]
-tags: [apache, big data]
+tags: [apache, big-data, hadoop]
 published: true
 ---
 
 
 # Hadoop
 
+Apache™ [Hadoop®](http://hadoop.apache.org/) 项目致力于开发可靠、可扩展、分布式计算的开源软件。
 
-The Apache™ [Hadoop®](http://hadoop.apache.org/) project develops open-source software for reliable, scalable, distributed computing.
+该项目包括以下模块：
 
+- Hadoop Common：支持其他 Hadoop 模块的通用工具。
 
-The project includes these modules:
+- Hadoop Distributed File System (HDFS™)：提供对应用程序数据的高吞吐量访问的分布式文件系统。
 
-- Hadoop Common: The common utilities that support the other Hadoop modules.
+- Hadoop YARN：用于作业调度和集群资源管理的框架。
 
-- Hadoop Distributed File System (HDFS™): A distributed file system that provides high-throughput access to application data.
+- Hadoop MapReduce：基于 YARN 的用于大规模数据集并行处理的系统。
 
-- Hadoop YARN: A framework for job scheduling and cluster resource management.
+# 相关项目
 
-- Hadoop MapReduce: A YARN-based system for parallel processing of large data sets.
+Apache 下的其他与 Hadoop 相关的项目包括：
 
+Ambari™：一个基于 Web 的工具，用于配置、管理和监控 Apache Hadoop 集群，支持 Hadoop HDFS、Hadoop MapReduce、Hive、HCatalog、HBase、ZooKeeper、Oozie、Pig 和 Sqoop。Ambari 还提供一个仪表板，用于查看集群的健康状况，例如热图，以及以用户友好的方式查看 MapReduce、Pig 和 Hive 应用程序，并提供诊断其性能特征的功能。
+
+Avro™：数据序列化系统。
+
+Cassandra™：可伸缩的多主数据库，没有单点故障。
+
+Chukwa™：用于管理大型分布式系统的数据收集系统。
+
+HBase™：可伸缩的分布式数据库，支持大表的结构化数据存储。
+
+Hive™：提供数据摘要和自由查询的数据仓库基础设施。
+
+Mahout™：可扩展的机器学习和数据挖掘库。
+
+Ozone™：用于 Hadoop 的可伸缩、冗余和分布式对象存储。
+
+Pig™：用于并行计算的高级数据流语言和执行框架。
+
+Spark™：用于 Hadoop 数据的快速和通用计算引擎。Spark 提供了一个简单而富有表达力的编程模型，支持各种应用，包括 ETL、机器学习、流处理和图计算。
+
+Submarine：一个统一的人工智能平台，允许工程师和数据科学家在分布式集群中运行机器学习和深度学习工作负载。
+
+Tez™：一个基于 Hadoop YARN 构建的通用数据流编程框架，提供了一个强大而灵活的引擎，用于执行用于批处理和交互式用例的任意 DAG 任务。
+
+Tez 正在被 Hive™、Pig™ 和 Hadoop 生态系统中的其他框架采用，还被其他商业软件（例如 ETL 工具）采用，以取代 Hadoop™ MapReduce 作为底层执行引擎。
+
+ZooKeeper™：用于分布式应用程序的高性能协调服务。
 
 # Hello World
 

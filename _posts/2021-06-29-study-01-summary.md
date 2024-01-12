@@ -1,10 +1,10 @@
 ---
 layout: post
-title:  HDSF-01-汇总
+title:  考研基本信息汇总
 date:  2021-06-20 16:52:15 +0800
-categories: [HDSF]
-tags: [HDSF, sh]
-published: true
+categories: [Study]
+tags: [study, sh]
+published: false
 ---
 
 # 序言

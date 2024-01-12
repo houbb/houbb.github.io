@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Hadoop 02 - big data 
-date:  2017-12-05 20:25:26 +0800
+title:  Apache-Hadoop-02-big data  大数据入门简介
+date:  2017-12-05 05:47:35 +0800
 categories: [Apache]
-tags: [apache, big data]
+tags: [apache, big-data, hadoop]
 published: true
 ---
 
@@ -138,8 +138,9 @@ Hadoop MapReduce是一个软件框架，用于轻松编写应用程序，以可�
 
 通常输入和输出都存储在文件系统中。该框架负责调度任务，监视它们并重新执行失败的任务。
 
-MapReduce框架由每个集群节点的单个主JobTracker和一个从属TaskTracker组成。主机负责资源管理，跟踪资源消耗/可用性以及调度从机上的作业组件任务，
-监视它们并重新执行失败的任务。从属TaskTracker按主控器指示执行任务，并定期向主控器提供任务状态信息。
+MapReduce框架由每个集群节点的单个主JobTracker和一个从属TaskTracker组成。
+
+主机负责资源管理，跟踪资源消耗/可用性以及调度从机上的作业组件任务，监视它们并重新执行失败的任务。从属TaskTracker按主控器指示执行任务，并定期向主控器提供任务状态信息。
 
 JobTracker 是 Hadoop MapReduce服务的单点故障，这意味着如果JobTracker关闭，所有正在运行的作业都将停止。
 
@@ -176,7 +177,9 @@ Hadoop作业客户端然后将作业（jar /可执行文件等）和配置提交
 
 ## Hadoop的优势
 
-Hadoop框架允许用户快速编写和测试分布式系统。它是高效的，它自动分配数据和工作在整个机器，反过来，利用CPU核心的底层并行性。
+Hadoop框架允许用户快速编写和测试分布式系统。
+
+它是高效的，它自动分配数据和工作在整个机器，反过来，利用CPU核心的底层并行性。
 
 Hadoop不依赖硬件来提供容错和高可用性（FTHA），相反Hadoop库本身设计用于检测和处理应用程序层的故障。
 

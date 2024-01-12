@@ -1,17 +1,16 @@
 ---
 layout: post
-title:  Hadoop 04 - MapReduce 
-date:  2017-12-09 20:14:21 +0800
+title:  Apache Hadoop-04-MapReduce 分布式计算的处理技术和程序模型
+date:  2017-12-05 05:47:35 +0800
 categories: [Apache]
-tags: [apache, big data]
+tags: [apache, big-data, hadoop]
 published: true
 ---
 
-
 # MapReduce
 
-MapReduce是一个框架，我们可以使用它来编写应用程序，以可靠的方式并行地处理大量商品硬件群集上的大量数据。
-
+MapReduce 是一个框架，我们可以使用它来编写应用程序，以可靠的方式并行地处理大量商品硬件群集上的大量数据。
+ 
 
 ## 什么是MapReduce？
 

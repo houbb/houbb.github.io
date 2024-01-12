@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Mina
+title:  Aapche Mina-netty 通讯前身
 date:  2017-11-15 22:25:15 +0800
 categories: [Net]
 tags: [apache, net, framework, sh]
