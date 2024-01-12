@@ -9,7 +9,11 @@ published: true
 
 # 拓展阅读
 
-[便于 Java 测试自动生成对象信息](https://github.com/houbb/data-factory)
+[开源 Auto generate mock data for java test.(便于 Java 测试自动生成对象信息)](https://github.com/houbb/data-factory)
+
+[开源 Junit performance rely on junit5 and jdk8+.(java 性能测试框架。性能测试。压测。测试报告生成。)](https://github.com/houbb/junitperf)
+
+[test fuzz-01-模糊测试（Fuzz Testing）](https://houbb.github.io/2016/04/26/test-fuzz-testing-01-overview)
 
 
 # Soot
