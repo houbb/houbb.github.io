@@ -48,7 +48,6 @@ git clone git@github.com:apache/seatunnel.git
 mvn clean install -DskipTests -U
 ```
 
-
 ### 编译报错 1
 
 ```
@@ -97,6 +96,8 @@ PS: 还是把这个构建一个自己的源码分支。
 [ERROR]
 ```
 
+> [Maven try to download a <packaing>pom</package> pom as a jar file and cannot find it](https://stackoverflow.com/questions/42536845/maven-try-to-download-a-packaingpom-package-pom-as-a-jar-file-and-cannot-fin)
+
 > [包下载失败](https://stackoverflow.com/questions/42536845/maven-try-to-download-a-packaingpom-package-pom-as-a-jar-file-and-cannot-fin)
 
 [下载失败](https://www.programmersought.com/article/76106349302/)
@@ -106,7 +107,6 @@ PS: 还是把这个构建一个自己的源码分支。
 https://mvnrepository.com/artifact/org.pentaho/pentaho-aggdesigner-algorithm/5.1.4-jhyde
 
 网址：https://developer.aliyun.com/mvn/search
-
 
 将jar和pom放到maven对应路径下即可。
 
@@ -125,12 +125,12 @@ pentaho-aggdesigner-algorithm-5.1.5-jhyde.pom
 C:\Users\dh\.m2\repository\org/pentaho/pentaho-aggdesigner-algorithm/5.1.5-jhyde/
 ```
 
-
 2）添加 aliyun 的仓库
 
 用这种方式更方便些。
 
 > [Could not find artifact org.pentaho:pentaho-aggdesigner-algorithm:pom:5.1.5-jhyde](https://www.cnblogs.com/convict/p/16654841.html)
+
 
 是因为这个包不在阿里云公共maven镜像仓库上，需要添加一个新的镜像仓库，修改maven的settings.xml
 
@@ -151,6 +151,114 @@ C:\Users\dh\.m2\repository\org/pentaho/pentaho-aggdesigner-algorithm/5.1.5-jhyde
 ```
 
 在这个包下载完后，可以把新增的阿里云spring-plugin镜像仓库注释掉，依旧优先使用阿里云公共仓库。
+
+### 编译报错3
+
+```
+[ERROR] Failed to execute goal on project connector-file-jindo-oss: Could not resolve dependencies for project org.apache.seatunnel:connector-file-jindo-oss:jar:2.3.4-SNAPSHOT: The following artifacts could not be resolved: com.aliyun.jindodata:jindo-core:jar:4.6.1, com.aliyun.jindodata:jindosdk:jar:4.6.1: Could not find artifact com.aliyun.jindodata:jindo-core:jar:4.6.1 in aliyunmaven (https://maven.aliyun.com/repository/public) -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <goals> -rf :connector-file-jindo-oss
+```
+
+这是因为上面的 aliyun mirror 了所有的 maven，但是阿里云却没有这个包。。。
+
+我们在 https://help.aliyun.com/zh/emr/emr-on-ecs/user-guide/download-jindodata
+
+下载 v4.6.1
+
+[https://emr-public-sh.oss-cn-shanghai.aliyuncs.com/emrjindodata%2Fv4.6.1%2Fjindosdk-4.6.1.tar.gz](https://emr-public-sh.oss-cn-shanghai.aliyuncs.com/emrjindodata%2Fv4.6.1%2Fjindosdk-4.6.1.tar.gz) 
+
+下载完成后，通过 maven 的方式安装：
+
+```
+mvn install:install-file -DgroupId=com.aliyun.jindodata -DartifactId=jindo-core -Dversion=4.6.1 -Dpackaging=jar -Dfile=/home/app/Package/jindosdk-4.6.1/lib/jindo-core-4.6.1.jar
+
+mvn install:install-file -DgroupId=com.aliyun.jindodata -DartifactId=jindosdk -Dversion=4.6.1 -Dpackaging=jar -Dfile=/home/app/Package/jindosdk-4.6.1/lib/jindo-sdk-4.6.1.jar
+```
+
+### 编译报错4
+
+```
+[ERROR] Failed to execute goal on project checkpoint-storage-hdfs: Could not resolve dependencies for project org.apache.seatunnel:checkpoint-storage-hdfs:jar:2.3.4-SNAPSHOT: Failed to collect dependencies at org.apache.hadoop:hadoop-aliyun:jar:3.0.0 -> org.apache.hadoop:hadoop-common:jar:3.0.0 -> org.apache.hadoop:hadoop-auth:jar:3.0.0 -> com.nimbusds:nimbus-jose-jwt:jar:4.41.1 -> net.minidev:json-smart:jar:[1.3.1,2.3]: No versions available for net.minidev:json-smart:jar:[1.3.1,2.3] within specified range -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <goals> -rf :checkpoint-storage-hdfs
+```
+
+参考：
+
+> [https://stackoverflow.com/questions/64128952/maven-cannot-use-correct-version-in-verson-range](https://stackoverflow.com/questions/64128952/maven-cannot-use-correct-version-in-verson-range)
+
+```xml
+<dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-aliyun</artifactId>
+    <version>${hadoop-aliyun.version}</version>
+    <scope>provided</scope>
+</dependency>
+```
+
+改为：
+
+```xml
+<dependency>
+    <groupId>org.apache.hadoop</groupId>
+    <artifactId>hadoop-aliyun</artifactId>
+    <version>${hadoop-aliyun.version}</version>
+    <scope>provided</scope>
+    <exclusions>
+        <exclusion>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>com.nimbusds</groupId>
+    <artifactId>nimbus-jose-jwt</artifactId>
+    <version>4.41.1</version>
+    <exclusions>
+        <exclusion>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+        </exclusion>
+    </exclusions>
+</dependency>
+<dependency>
+    <groupId>net.minidev</groupId>
+    <artifactId>json-smart</artifactId>
+    <version>2.3</version>
+</dependency>
+```
+
+
+### 编译报错 5
+
+```
+[ERROR] Failed to execute goal on project connector-pulsar: Could not resolve dependencies for project org.apache.seatunnel:connector-pulsar:jar:2.3.4-SNAPSHOT: Failed to collect dependencies at org.apache.pulsar:pulsar-broker:jar:2.11.0 -> org.apache.pulsar:pulsar-websocket:jar:2.11.0 -> org.apache.pulsar:pulsar-broker-common:jar:2.11.0 -> org.apache.pulsar:pulsar-metadata:jar:2.11.0 -> io.etcd:jetcd-core:jar:0.5.11 -> io.etcd:jetcd-common:jar:0.5.11 -> io.grpc:grpc-core:jar:1.41.0 -> io.grpc:grpc-api:jar:[1.41.0]: No versions available for io.grpc:grpc-api:jar:[1.41.0] within specified range -> [Help 1]
+[ERROR]
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR]
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
+[ERROR]
+[ERROR] After correcting the problems, you can resume the build with the command
+[ERROR]   mvn <goals> -rf :connector-pulsar
+```
 
 ## 从源代码构建SeaTunnel
 
@@ -255,9 +363,17 @@ sink {
 
 
 
+
+
 # 参考资料
 
+[安装说明](https://github.com/aliyun/alibabacloud-jindodata/blob/master/docs/user/4.x/install_dependeny_jindosdk.md)
+
+[Seatunnel实践及相关报错总结](https://blog.51cto.com/u_16098183/7331698)
+
 https://seatunnel.apache.org/docs/2.3.3/contribution/setup
+
+[alibabacloud-jindodata](https://www.cnblogs.com/exmyth/p/17713394.html)
 
 * any list
 {:toc}
