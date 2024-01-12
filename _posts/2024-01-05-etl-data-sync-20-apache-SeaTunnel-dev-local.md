@@ -152,6 +152,26 @@ C:\Users\dh\.m2\repository\org/pentaho/pentaho-aggdesigner-algorithm/5.1.5-jhyde
 
 在这个包下载完后，可以把新增的阿里云spring-plugin镜像仓库注释掉，依旧优先使用阿里云公共仓库。
 
+
+个人做法：
+
+```xml
+<mirror>
+    <id>repo1</id>
+    <mirrorOf>central</mirrorOf>
+    <url>https://repo1.maven.org/maven2</url>
+  </mirror>
+
+<mirror>
+  <id>aliyunmaven</id>
+  <mirrorOf>*</mirrorOf>
+  <name>spring-plugin</name>
+  <url>https://maven.aliyun.com/repository/spring-plugin</url>
+</mirror>
+```
+
+把 aliyun spring-plugin 放在后面。这样主仓库没有的，才去后面下载。省的删除。
+
 ### 编译报错3
 
 ```
@@ -175,89 +195,15 @@ C:\Users\dh\.m2\repository\org/pentaho/pentaho-aggdesigner-algorithm/5.1.5-jhyde
 
 [https://emr-public-sh.oss-cn-shanghai.aliyuncs.com/emrjindodata%2Fv4.6.1%2Fjindosdk-4.6.1.tar.gz](https://emr-public-sh.oss-cn-shanghai.aliyuncs.com/emrjindodata%2Fv4.6.1%2Fjindosdk-4.6.1.tar.gz) 
 
-下载完成后，通过 maven 的方式安装：
+
+下载完成后，解压，在 lib 中找到对应的jar，放在目录 `D:\doc\seatunnel-resources\other`。
+
+在此目录打开命令行，通过 maven 的方式安装：
 
 ```
-mvn install:install-file -DgroupId=com.aliyun.jindodata -DartifactId=jindo-core -Dversion=4.6.1 -Dpackaging=jar -Dfile=/home/app/Package/jindosdk-4.6.1/lib/jindo-core-4.6.1.jar
+mvn install:install-file -DgroupId=com.aliyun.jindodata -DartifactId=jindo-core -Dversion=4.6.1 -Dpackaging=jar -Dfile=jindo-core-4.6.1.jar
 
-mvn install:install-file -DgroupId=com.aliyun.jindodata -DartifactId=jindosdk -Dversion=4.6.1 -Dpackaging=jar -Dfile=/home/app/Package/jindosdk-4.6.1/lib/jindo-sdk-4.6.1.jar
-```
-
-### 编译报错4
-
-```
-[ERROR] Failed to execute goal on project checkpoint-storage-hdfs: Could not resolve dependencies for project org.apache.seatunnel:checkpoint-storage-hdfs:jar:2.3.4-SNAPSHOT: Failed to collect dependencies at org.apache.hadoop:hadoop-aliyun:jar:3.0.0 -> org.apache.hadoop:hadoop-common:jar:3.0.0 -> org.apache.hadoop:hadoop-auth:jar:3.0.0 -> com.nimbusds:nimbus-jose-jwt:jar:4.41.1 -> net.minidev:json-smart:jar:[1.3.1,2.3]: No versions available for net.minidev:json-smart:jar:[1.3.1,2.3] within specified range -> [Help 1]
-[ERROR]
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR]
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
-[ERROR]
-[ERROR] After correcting the problems, you can resume the build with the command
-[ERROR]   mvn <goals> -rf :checkpoint-storage-hdfs
-```
-
-参考：
-
-> [https://stackoverflow.com/questions/64128952/maven-cannot-use-correct-version-in-verson-range](https://stackoverflow.com/questions/64128952/maven-cannot-use-correct-version-in-verson-range)
-
-```xml
-<dependency>
-    <groupId>org.apache.hadoop</groupId>
-    <artifactId>hadoop-aliyun</artifactId>
-    <version>${hadoop-aliyun.version}</version>
-    <scope>provided</scope>
-</dependency>
-```
-
-改为：
-
-```xml
-<dependency>
-    <groupId>org.apache.hadoop</groupId>
-    <artifactId>hadoop-aliyun</artifactId>
-    <version>${hadoop-aliyun.version}</version>
-    <scope>provided</scope>
-    <exclusions>
-        <exclusion>
-            <groupId>net.minidev</groupId>
-            <artifactId>json-smart</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-<dependency>
-    <groupId>com.nimbusds</groupId>
-    <artifactId>nimbus-jose-jwt</artifactId>
-    <version>4.41.1</version>
-    <exclusions>
-        <exclusion>
-            <groupId>net.minidev</groupId>
-            <artifactId>json-smart</artifactId>
-        </exclusion>
-    </exclusions>
-</dependency>
-<dependency>
-    <groupId>net.minidev</groupId>
-    <artifactId>json-smart</artifactId>
-    <version>2.3</version>
-</dependency>
-```
-
-
-### 编译报错 5
-
-```
-[ERROR] Failed to execute goal on project connector-pulsar: Could not resolve dependencies for project org.apache.seatunnel:connector-pulsar:jar:2.3.4-SNAPSHOT: Failed to collect dependencies at org.apache.pulsar:pulsar-broker:jar:2.11.0 -> org.apache.pulsar:pulsar-websocket:jar:2.11.0 -> org.apache.pulsar:pulsar-broker-common:jar:2.11.0 -> org.apache.pulsar:pulsar-metadata:jar:2.11.0 -> io.etcd:jetcd-core:jar:0.5.11 -> io.etcd:jetcd-common:jar:0.5.11 -> io.grpc:grpc-core:jar:1.41.0 -> io.grpc:grpc-api:jar:[1.41.0]: No versions available for io.grpc:grpc-api:jar:[1.41.0] within specified range -> [Help 1]
-[ERROR]
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR]
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/DependencyResolutionException
-[ERROR]
-[ERROR] After correcting the problems, you can resume the build with the command
-[ERROR]   mvn <goals> -rf :connector-pulsar
+mvn install:install-file -DgroupId=com.aliyun.jindodata -DartifactId=jindosdk -Dversion=4.6.1 -Dpackaging=jar -Dfile=jindo-sdk-4.6.1.jar
 ```
 
 ## 从源代码构建SeaTunnel
@@ -332,6 +278,144 @@ Apache SeaTunnel使用Spotless进行代码风格和格式检查。您可以运�
 ...
 +I[Ricky Huo, 83]
 ```
+
+## 运行报错1
+
+启动时，发现报错如下：
+
+```
+Caused by: java.io.FileNotFoundException: HADOOP_HOME and hadoop.home.dir are unset.
+	at org.apache.hadoop.util.Shell.checkHadoopHomeInner(Shell.java:469) ~[hadoop-common-3.1.4.jar:?]
+	at org.apache.hadoop.util.Shell.checkHadoopHome(Shell.java:440) ~[hadoop-common-3.1.4.jar:?]
+	at org.apache.hadoop.util.Shell.<clinit>(Shell.java:517) ~[hadoop-common-3.1.4.jar:?]
+	... 20 more
+```
+
+> [https://github.com/apache/seatunnel/issues/5892](https://github.com/apache/seatunnel/issues/5892)
+
+Windows 环境，编译这个比较痛苦。
+
+1）debug 定位到 checkpoint 的配置文件。
+
+```
+//file:/D:/_my/seatunnel-2.3.3-release-slim/seatunnel-engine/seatunnel-engine-common/target/classes/seatunnel.yaml
+```
+
+2) 修改对应的配置文件内容为：
+
+把默认的 HDFS 调整为 localfile
+
+```yaml
+seatunnel:
+    engine:
+        backup-count: 1
+        queue-type: blockingqueue
+        print-execution-info-interval: 60
+        slot-service:
+            dynamic-slot: true
+        checkpoint:
+            interval: 300000
+            timeout: 10000
+            storage:
+                type: localfile
+                max-retained: 3
+                plugin-config:
+                    namespace: C:\ProgramData\seatunnel\checkpoint\
+
+#            storage:
+#                type: hdfs
+#                max-retained: 3
+#                plugin-config:
+#                    namespace: /tmp/seatunnel/checkpoint_snapshot/
+#                    storage.type: hdfs
+#                    fs.defaultFS: file:///tmp/
+```
+
+3) 重新打包
+
+```
+mvn clean install -DskipTests=true
+```
+
+重新确认上述路径的文件是否已经按照预期修改。
+
+4）重新执行。
+
+首先启动 exampleServer
+
+然后启动对应的 example
+
+
+## 测试效果
+
+日志：
+
+```
+2024-01-12 18:03:21,229 DEBUG org.apache.seatunnel.connectors.seatunnel.fake.source.FakeSourceReader - reader 0 add splits [FakeSourceSplit(splitId=0, rowNum=5)]
+2024-01-12 18:03:21,235 INFO  org.apache.seatunnel.connectors.seatunnel.fake.source.FakeSourceReader - 5 rows of data have been generated in split(0). Generation time: 1705053801232
+2024-01-12 18:03:21,235 INFO  org.apache.seatunnel.connectors.seatunnel.fake.source.FakeSourceReader - Closed the bounded fake source
+2024-01-12 18:03:21,236 INFO  org.apache.seatunnel.connectors.seatunnel.console.sink.ConsoleSinkWriter - subtaskIndex=0  rowIndex=1:  SeaTunnelRow#tableId= SeaTunnelRow#kind=INSERT : WnRWU, 1011154944
+2024-01-12 18:03:21,236 INFO  org.apache.seatunnel.connectors.seatunnel.console.sink.ConsoleSinkWriter - subtaskIndex=0  rowIndex=2:  SeaTunnelRow#tableId= SeaTunnelRow#kind=INSERT : CAChl, 1231359126
+2024-01-12 18:03:21,236 INFO  org.apache.seatunnel.connectors.seatunnel.console.sink.ConsoleSinkWriter - subtaskIndex=0  rowIndex=3:  SeaTunnelRow#tableId= SeaTunnelRow#kind=INSERT : Bzdjj, 729673747
+2024-01-12 18:03:21,236 INFO  org.apache.seatunnel.connectors.seatunnel.console.sink.ConsoleSinkWriter - subtaskIndex=0  rowIndex=4:  SeaTunnelRow#tableId= SeaTunnelRow#kind=INSERT : YKWUP, 41852707
+2024-01-12 18:03:21,236 INFO  org.apache.seatunnel.connectors.seatunnel.console.sink.ConsoleSinkWriter - subtaskIndex=0  rowIndex=5:  SeaTunnelRow#tableId= SeaTunnelRow#kind=INSERT : Ikbzt, 1583951001
+```
+
+默认的测试配置为：
+
+```yaml
+#
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+######
+###### This config file is a demonstration of streaming processing in seatunnel config
+######
+
+env {
+  # You can set engine configuration here
+  execution.parallelism = 1
+  job.mode = "BATCH"
+  checkpoint.interval = 5000
+  #execution.checkpoint.data-uri = "hdfs://localhost:9000/checkpoint"
+}
+
+source {
+  # This is a example source plugin **only for test and demonstrate the feature source plugin**
+  FakeSource {
+    result_table_name = "fake"
+    parallelism = 1
+    schema = {
+      fields {
+        name = "string"
+        age = "int"
+      }
+    }
+  }
+}
+
+transform {
+}
+
+sink {
+  console {
+    source_table_name="fake"
+  }
+}
+```
+
 
 # 更多信息
 
