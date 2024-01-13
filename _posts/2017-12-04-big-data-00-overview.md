@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Apache Hadoop-00-chat 闲聊
+title:  Big data-00-chat 大数据闲聊
 date:  2017-12-12 05:47:35 +0800
 categories: [Big-Data]
-tags: [big-data, hadoop]
+tags: [big-data, google, paper]
 published: true
 ---
 
@@ -32,6 +32,10 @@ Google 论文的三驾马车指的是三篇经典的技术论文，它们为大�
    - **核心思想：** Bigtable是一种分布式、高性能、高可扩展性的结构化数据存储系统。它以稀疏、分布式、持久化的表格形式存储数据，并提供高度的可用性和可靠性。
 
 这三篇论文共同为构建Google的大规模分布式系统提供了基石，为后来诸多分布式系统和大数据处理框架提供了重要的启示。
+
+# 技术发展流程
+
+![技术发展流程](https://img-blog.csdnimg.cn/direct/215c14bf79214a8488a7a3185cead1f2.png)
 
 # 如果要循序渐进学习大数据，要如何学习呢？给出详细的学习路线图？以及原因
 
