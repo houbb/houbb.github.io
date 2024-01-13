@@ -1,11 +1,15 @@
 ---
 layout: post
-title:  Apache Hadoop-01-GFS The Google File System 谷歌文件系统论文
+title:  Apache Hadoop-01-大数据之谷歌文件系统论文 GFS The Google File System 
 date:  2017-12-12 05:47:35 +0800
 categories: [Big-Data]
 tags: [big-data, google, paper]
 published: true
 ---
+
+# 原文地址
+
+> [谷歌文件系统论文](https://mp.weixin.qq.com/s/jVmRNVMlz8byHfwQwcuffQ)
 
 # 摘要
 
