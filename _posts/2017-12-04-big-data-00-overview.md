@@ -23,7 +23,7 @@ Google 论文的三驾马车指的是三篇经典的技术论文，它们为大�
 
 2. **MapReduce：**
    - **论文标题：** "MapReduce: Simplified Data Processing on Large Clusters"（《MapReduce：大规模集群上的简化数据处理》）
-   - **论文链接：** [MapReduce](https://storage.googleapis.com/pub-tools-public-publication-data/pdf/16cb30b4f6114691f928d01fcbd77b6ca5479816.pdf)
+   - **论文链接：** [MapReduce](https://static.googleusercontent.com/media/research.google.com/zh-CN//archive/mapreduce-osdi04.pdf)
    - **核心思想：** MapReduce是一种用于大规模数据处理的编程模型和执行框架。它通过将计算任务分解成可并行执行的Map和Reduce阶段，以实现对大规模数据集的分布式处理。
 
 3. **Bigtable：**
