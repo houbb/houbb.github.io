@@ -450,6 +450,7 @@ MapReduce 编程模型在 Google 中已成功用于许多不同的目的。我�
 第三，冗余执行可以用于减轻慢机器的影响，并处理机器故障和数据丢失。
 
 # 致谢
+
 Josh Levenberg 在修订和扩展用户级 MapReduce API 方面发挥了关键作用，他根据使用 MapReduce 的经验以及其他人对增强功能的建议进行了许多新功能的开发。MapReduce 从 Google 文件系统 [8] 读取输入并将输出写入该系统。我们要感谢 Mohit Aron、Howard Gobioff、Markus Gutschke、David Kramer、Shun-Tak Leung 和 Josh Redstone 在开发 GFS 时所做的工作。同时，我们还要感谢 Percy Liang 和 Olcan Sercinoglu 在开发 MapReduce 使用的集群管理系统时的贡献。Mike Burrows、Wilson Hsieh、Josh Levenberg、Sharon Perl、Rob Pike 和 Debby Wallach 对本文早期草稿提供了有益的评论。匿名的OSDI审稿人以及我们的指导教师 Eric Brewer 在论文可以改进的许多领域提供了许多有用的建议。最后，我们要感谢 Google 工程组织内所有使用 MapReduce 的用户，他们提供了有益的反馈、建议和错误报告。
 
 # 参考资料
