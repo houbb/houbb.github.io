@@ -1,6 +1,6 @@
 ---
 layout: post
-title: test-03-test case generate 测试用例生成 tcases 快速开始
+title: test-04-test case generate 测试用例生成 tcases 快速开始
 date:  2016-4-26 12:53:12 +0800
 categories: [Test]
 tags: [junit, test, generate]

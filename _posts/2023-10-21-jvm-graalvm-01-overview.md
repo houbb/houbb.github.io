@@ -481,6 +481,35 @@ Hello, World!
 
 当然，这个 helloworld 的文件内容依然非常复杂。
 
+# 通过 sdk 切换 java 版本
+
+查看版本：
+
+```
+sdk list java
+```
+
+切换版本：
+
+```
+sdk use java 8.0.302-zulu
+```
+
+发现没安装：
+
+```
+sdk install java 8.0.302-zulu
+```
+
+版本：
+
+```
+$ java -version
+openjdk version "1.8.0_302"
+OpenJDK Runtime Environment (Zulu 8.56.0.21-CA-linux64) (build 1.8.0_302-b08)
+OpenJDK 64-Bit Server VM (Zulu 8.56.0.21-CA-linux64) (build 25.302-b08, mixed mode)
+```
+
 # chat
 
 ## Q1-谈一谈 java 的 graalVm

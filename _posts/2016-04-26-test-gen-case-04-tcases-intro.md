@@ -1,6 +1,6 @@
 ---
 layout: post
-title: test-03-test case generate 测试用例生成 tcases A model-based test case generator
+title: test-04-test case generate 测试用例生成 tcases A model-based test case generator
 date:  2016-4-26 12:53:12 +0800
 categories: [Test]
 tags: [junit, test, generate]
@@ -21,9 +21,6 @@ published: true
 
 
 # Tcases：基于模型的测试用例生成器 #
-
-[![Maven](https://img.shields.io/badge/maven-4.0.2-green.svg)](https://search.maven.org/search?q=tcases-shell)
-[![Javadoc](https://img.shields.io/badge/javadoc-4.0.2-green.svg)](https://javadoc.io/doc/org.cornutum.tcases/tcases-shell)
 
 ## 新特性 ##
   * 最新版本 ([Tcases 4.0.2](ReleaseNotes.md#402)) 现在已在Maven Central Repository中提供。
