@@ -59,11 +59,80 @@ mysql> GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIE
 mysql> FLUSH PRIVILEGES;
 ```
 
+# 启用MySQL二进制日志
+
+在MySQL复制中，你必须启用二进制日志。二进制日志记录事务更新，以便复制工具传播更改。
+
+1) 检查log-bin选项是否已经开启：
+
+```sql
+mysql> show variables where variable_name in ('log_bin', 'binlog_format', 'binlog_row_image', 'gtid_mode', 'enforce_gtid_consistency');
++--------------------------+----------------+
+| Variable_name            | Value          |
++--------------------------+----------------+
+| binlog_format            | ROW            |
+| binlog_row_image         | FULL           |
+| enforce_gtid_consistency | ON             |
+| gtid_mode                | ON             |
+| log_bin                  | ON             |
++--------------------------+----------------+
+5 rows in set (0.00 sec)
+```
+
+2) 如果与上述结果不一致，请使用以下属性配置你的MySQL服务器配置文件（$MYSQL_HOME/mysql.cnf）。
+
+这些属性在下表中进行了描述：
 
 
+```ini
+# Enable binary replication log and set the prefix, expiration, and log format.
+# The prefix is arbitrary, expiration can be short for integration tests but would
+# be longer on a production system. Row-level info is required for ingest to work.
+# Server ID is required, but this will vary on production systems
+server-id         = 223344
+log_bin           = mysql-bin
+expire_logs_days  = 10
+binlog_format     = row
+binlog_row_image  = FULL
 
+# enable gtid mode
+gtid_mode = on
+enforce_gtid_consistency = on
+```
 
+3) 重启服务
 
+```bash
+/etc/inint.d/mysqld restart
+```
+
+4) 再次确认配置
+
+```sql
+mysql> show variables where variable_name in ('log_bin', 'binlog_format', 'binlog_row_image', 'gtid_mode', 'enforce_gtid_consistency');
++--------------------------+----------------+
+| Variable_name            | Value          |
++--------------------------+----------------+
+| binlog_format            | ROW            |
+| binlog_row_image         | FULL           |
+| enforce_gtid_consistency | ON             |
+| gtid_mode                | ON             |
+| log_bin                  | ON             |
++--------------------------+----------------+
+5 rows in set (0.00 sec)
+```
+
+## 设置MySQL会话超时
+
+在为大型数据库创建初始一致性快照时，当正在读取表时，你建立的连接可能会超时。
+
+你可以通过在MySQL配置文件中配置interactive_timeout和wait_timeout来防止这种情况发生。
+
+- interactive_timeout：在关闭交互连接之前，服务器等待交互连接上的活动的秒数。更多详细信息请参阅MySQL的文档。
+
+- wait_timeout：在关闭非交互连接之前，服务器等待非交互连接上的活动的秒数。更多详细信息请参阅MySQL的文档。
+
+有关更多数据库设置，请参阅Debezium MySQL Connector。
 
 # 选项
 

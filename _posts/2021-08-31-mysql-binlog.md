@@ -1,11 +1,110 @@
 ---
 layout: post
-title: mysql binlog
+title: mysql binlog windows10 环境的开启和解析笔记
 date: 2021-08-29 21:01:55 +0800
 categories: [MySQL]
 tags: [mysql, database, sh]
 published: true
 ---
+
+# windows 下 mysql 如何开启 binlog
+
+## windows10 修改笔记
+
+mysql 安装目录：D:\tool\mysql\mysql-5.7.31-winx64
+
+修改 my.ini 文件：
+
+```ini
+[mysql]
+# 设置mysql客户端默认字符集
+default-character-set=utf8
+[mysqld]
+sql_mode='NO_AUTO_VALUE_ON_ZERO,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,PIPES_AS_CONCAT,ANSI_QUOTES'
+#设置3306端口
+port = 3306
+# 设置mysql的安装目录
+basedir=D:/tool/mysql/mysql-5.7.31-winx64
+# 设置mysql数据库的数据的存放目录
+datadir=D:/tool/mysql/mysql-5.7.31-winx64/data
+# 允许最大连接数
+max_connections=200
+# 服务端使用的字符集默认为8比特编码的latin1字符集
+character-set-server=utf8
+# 创建新表时将使用的默认存储引擎
+default-storage-engine=INNODB
+```
+
+添加对应的 binlog 信息：
+
+```ini
+# Enable binary replication log and set the prefix, expiration, and log format.
+# The prefix is arbitrary, expiration can be short for integration tests but would
+# be longer on a production system. Row-level info is required for ingest to work.
+# Server ID is required, but this will vary on production systems
+server-id         = 223344
+log_bin           = mysql-bin
+expire_logs_days  = 10
+binlog_format     = row
+binlog_row_image  = FULL
+
+# enable gtid mode
+gtid_mode = on
+enforce_gtid_consistency = on
+```
+
+## 重启服务
+
+
+以 admin 权限启动命令行。
+
+```
+$ cd D:\tool\mysql\mysql-5.7.31-winx64\bin
+$ net stop mysql
+$ net start mysql
+```
+
+再次确认配置
+
+```
+mysql> show variables where variable_name in ('log_bin', 'binlog_format', 'binlog_row_image', 'gtid_mode', 'enforce_gtid_consistency');
++--------------------------+-------+
+| Variable_name            | Value |
++--------------------------+-------+
+| binlog_format            | ROW   |
+| binlog_row_image         | FULL  |
+| enforce_gtid_consistency | ON    |
+| gtid_mode                | ON    |
+| log_bin                  | ON    |
++--------------------------+-------+
+5 rows in set, 1 warning (0.00 sec)
+```
+
+## 验证下 binlog 的效果
+
+```sql
+use etl;
+```
+
+插入新的数据：
+
+```sql
+insert into user_info (username) values ('bin-01');
+insert into user_info (username) values ('bin-02');
+insert into user_info (username) values ('bin-03');
+insert into user_info (username) values ('bin-04');
+insert into user_info (username) values ('bin-05');
+```
+
+
+发现会在我们配置的 data 文件夹 `D:\tool\mysql\mysql-5.7.31-winx64\data` 下面，有一个 Binlog
+
+```
+-rw-r--r-- 1 dh 197121     1559  1月 15 15:31 mysql-bin.000001
+-rw-r--r-- 1 dh 197121       19  1月 15 15:26 mysql-bin.index
+```
+
+mysql-bin.000001 内容人应该无法直接读。
 
 # MySQL Binary Log connector
 
