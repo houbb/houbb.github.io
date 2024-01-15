@@ -1,11 +1,10 @@
 ---
 layout: post
-title: JDBC
+title: database JDBC-01-overview
 date:  2018-10-07 14:51:25 +0800
-categories: [Java]
+categories: [Database]
 tags: [sql, java, jdbc, TODO, sf]
 published: true
-excerpt: Java JDBC 系列教程学习
 ---
 
 # JDBC

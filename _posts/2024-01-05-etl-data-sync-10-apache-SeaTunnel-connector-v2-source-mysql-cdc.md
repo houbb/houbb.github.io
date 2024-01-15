@@ -11,6 +11,8 @@ published: true
 
 > [MySQL-CDC](https://seatunnel.apache.org/docs/2.3.3/connector-v2/source/MySQL-CDC)
 
+https://seatunnel.apache.org/docs/connector-v2/source/MySQL-CDC
+
 MySQL CDC source connector
 
 ## 描述
@@ -27,6 +29,41 @@ MySQL CDC 连接器允许从MySQL数据库读取快照数据和增量数据。
 - 列投影 ×
 - 并行性
 - 支持用户定义的拆分
+
+
+# 数据库依赖
+
+## 安装 JDBC 驱动程序
+
+请下载并将 MySQL 驱动程序放置在 ${SEATUNNEL_HOME}/lib/ 目录中。例如：cp mysql-connector-java-xxx.jar $SEATNUNNEL_HOME/lib/
+
+## 创建 MySQL 用户
+
+您需要在 Debezium MySQL 连接器监视的所有数据库上定义一个具有适当权限的MySQL用户。
+
+1) 创建 MySQL 用户：
+
+```sql
+mysql> CREATE USER 'user'@'localhost' IDENTIFIED BY 'password';
+```
+
+2) 指定权限:
+
+```sql
+mysql> GRANT SELECT, RELOAD, SHOW DATABASES, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'user' IDENTIFIED BY 'password';
+```
+
+3) 刷新
+
+```sql
+mysql> FLUSH PRIVILEGES;
+```
+
+
+
+
+
+
 
 # 选项
 

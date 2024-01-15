@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Jdbc PreprareStatement & Statement
-date:  2019-2-18 14:50:42 +0800
-categories: [SQL]
-tags: [sql, sh]
+title: database Jdbc-02-PreprareStatement & Statement
+date:  2018-10-07 14:51:25 +0800
+categories: [Database]
+tags: [database, jdbc, sql, sh]
 published: true
-excerpt: Jdbc PreprareStatement & Statement
 ---
 
 # 执行计划的区别
@@ -32,8 +31,6 @@ select colume from table where colume=:x;
 ```
 
 通过set不同数据只需要生成一次执行计划，可以重用
-
-
 
 # PreparedStatement vs Statement
 
