@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ETL-23-apache SeaTunnel 实战 mysql 到 console 笔记
+title: ETL-23-apache SeaTunnel 实战 mysql 到 console/neo4j 入门测试用例
 date: 2024-01-05 21:01:55 +0800
 categories: [ETL]
 tags: [etl, sh]
