@@ -129,6 +129,39 @@ shell 脚本？
 java 代码触发？这样的话，是不是需要额外一个任务。
 
 
+# ISSUES
+
+The latest in learning seaTunnel, I'm very grateful to the author for providing such a powerful feature. I have a question and, after reading the official documentation and GitHub issues, I haven't found a particularly good solution.
+
+Version: v2.3.3
+
+Engine: Default seaTunnel engine
+
+Scenario: When wanting to execute a task at regular intervals, such as sourcing data from an Elasticsearch database every 5 minutes and processing the recently collected data into a time-series database, how should this be implemented?
+
+Expectation: The ability to specify the time interval for scheduled execution. Ideally, this should be supported by all sources, and incremental queries based on specified conditions.
+
+Considered Approach: Using `job.mode=batch` and then triggering this task at scheduled intervals. However, the question arises: who should trigger the task? It should ideally be part of the component's capabilities. Could you please provide some clarification on this? Thank you very much.
+
+------------------------------------------------------------------------
+
+最新在学习 seaTunnel，非常感谢作者提供这么强大的功能。
+
+有一个疑问，看完官方文档+github issues 没找到特别好的解决方式。
+
+版本：v2.3.3
+
+引擎：默认 seaTunnel 引擎
+
+场景：希望定时去执行一个任务的时候，应该如何实现呢？比如 source 是 ES 数据库，5min 想执行一次最近 5min 的符合条件的数据，落入到时序数据库。
+
+期望：可以指定定时调度的时间间隔。按理说所有的 source 都应该支持。按照条件增量查询。
+
+考虑到的方式：job.mode=batch，然后定时触发这个任务。但是任务应该由谁触发呢？应该是组件能力的一部分，麻烦解惑。多谢
+
+[[Feature][seatunnel-connectors-v2] How to schedule task and config interval?（如何定时执行一个任务，并可以指定时间间隔?）](https://github.com/apache/seatunnel/issues/6236)
+
+
 # 参考资料
 
 > [[Bug] [Connector-V2 JDBC] source读取数据为空时，java.lang.NullPointerException](https://github.com/apache/seatunnel/issues/6013)
