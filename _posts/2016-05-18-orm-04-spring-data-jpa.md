@@ -1,27 +1,25 @@
 ---
 layout: post
-title:  Spring Data JPA
-date:  2017-12-11 22:16:00 +0800
-categories: [Spring]
-tags: [spring]
+title: orm-04-Spring Data JPA
+date:  2016-05-21 18:35:52 +0800
+categories: [ORM]
+tags: [orm, sql, spring]
 published: true
 ---
 
 
 # Spring Data JPA
 
+Spring Data JPA，作为更大的 [Spring Data](https://projects.spring.io/spring-data/) 家族的一部分，使得基于 JPA 的仓库实现变得更加容易。
 
-Spring Data JPA, part of the larger [Spring Data](https://projects.spring.io/spring-data/) family, makes it easy to easily implement JPA based repositories. 
+该模块提供了对基于 JPA 的数据访问层的增强支持。
 
-This module deals with enhanced support for JPA based data access layers. 
-
-It makes it easier to build Spring-powered applications that use data access technologies.
+它使得构建使用数据访问技术的、由 Spring 驱动的应用程序变得更加容易。
 
 > [Spring Data JPA 2.0.2.RELEASE](https://docs.spring.io/spring-data/jpa/docs/2.0.2.RELEASE/reference/html/)
 
 
 ps: spring data 太大了，就从 jpa 一个点入手。学习运用并了解其设计思想。
-
 
 # Hello World
 

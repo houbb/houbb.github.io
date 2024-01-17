@@ -1,18 +1,17 @@
 ---
 layout: post
-title: Hibernate
+title: ORM-02-Hibernate 对象关系映射（ORM）框架
 date:  2016-05-21 18:35:52 +0800
-categories: [redhat]
-tags: [hibernate]
-published: false
+categories: [ORM]
+tags: [orm, sql]
+published: true
 ---
 
-* any list
-{:toc}
-
 # Hibernate
-Hibernate ORM enables developers to more easily write applications whose data outlives the application process.
-As an Object/Relational Mapping (ORM) framework, Hibernate is concerned with data persistence as it applies to relational databases (via JDBC).
+
+Hibernate ORM 允许开发者更轻松地编写那些数据在应用程序进程结束后仍然存在的应用程序。
+
+作为一个对象关系映射（ORM）框架，Hibernate 关注的是与关系数据库（通过 JDBC）相关的数据持久化。
 
 > [hibernate](http://hibernate.org/orm/)
 
@@ -549,6 +548,5 @@ Or, you can write like this...
 ```
 
 
-
-
-
+* any list
+{:toc}

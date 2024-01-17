@@ -1,11 +1,9 @@
 ---
 layout: post
-title: Javalite ActiveJDBC
-date: 2019-1-5 10:10:43 +0800
-categories: [SQL]
-tags: [sql, middle-ware, sh]
-published: true
-excerpt: Javalite ActiveJDBC
+title: ORM-05-javalite activejdbc
+date:  2016-05-21 18:35:52 +0800
+categories: [ORM]
+tags: [orm, sql, jdbc]
 ---
 
 # ActiveJDBC
