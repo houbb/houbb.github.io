@@ -1,19 +1,16 @@
 ---
 layout: post
-title: JFinal
-date:  2016-07-14 08:53:02 +0800
-categories: [Java]
-tags: [jfinal]
+title: web mvc-03-JFinal
+date:  2016-5-14 11:58:26 +0800
+categories: [WEB]
+tags: [web, mvc]
 published: true
 ---
 
-* any list
-{:toc}
 
 # JFinal
 
 JFinal 是基于 Java 语言的极速 WEB + ORM 开发框架，其核心设计目标是开发迅速、代码量少、学习简单、功能强大、轻量级、易扩展、Restful。
-
 
 自动扫描映射设计的若干缺点：引入新概念(如注解)增加学习成本、性能低、jar 包扫描可靠性与安全性低
 
@@ -171,3 +168,5 @@ public class ApplicationConfig extends JFinalConfig {
 ```
 
 
+* any list
+{:toc}

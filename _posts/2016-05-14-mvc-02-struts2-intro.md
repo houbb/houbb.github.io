@@ -1,60 +1,57 @@
 ---
 layout: post
-title: struts2
+title: mvc-02-struts2
 date:  2016-5-14 11:58:26 +0800
-categories: [apache]
-tags: [struts]
+categories: [WEB]
+tags: [web, mvc]
 published: false
 ---
 
-* any list
-{:toc}
+## Struts2
 
-## struts2
-
-Apache Struts is a free, open-source, MVC framework for creating elegant, modern Java web applications.
+Apache Struts是一个用于创建优雅、现代Java Web应用程序的免费、开源的MVC框架。
 
 > [struts](http://struts.apache.org/)
 
-## hello world
+## Hello World
 
-My example is on the base of [maven](http://maven.apache.org/) and the [doc](http://struts.apache.org/docs/home.html) of struts2.
-A recommended way to start with Struts2 archetypes is to work with the archetype catalog.
+我的示例基于[maven](http://maven.apache.org/)和[struts2文档](http://struts.apache.org/docs/home.html)。
+开始使用Struts2原型的推荐方式是使用原型目录。
 
 ```
 mvn archetype:generate -DarchetypeCatalog=http://struts.apache.org/
 ```
 
-The Struts 2 Blank Archetype ("blank-archetype") provides a minimal, but complete, Struts 2 application.
-It demonstrates some of the most basic Struts 2 concepts. It's my style, I choose this.
+Struts 2空白原型（"blank-archetype"）提供了一个最小但完整的Struts 2应用程序。
+它演示了一些最基本的Struts 2概念。这是我的风格，我选择了这个。
 
-use
+使用
 
 ```
 mvn clean install
 ```
 
-to remove previous files and add jars into your repository.
+来删除先前的文件并将JAR文件添加到您的存储库。
 
-use
+使用
 
 ```
 mvn tomcat7:run
 ```
 
-to start your project. Or put the war on the tomcat.
+启动项目。或者将WAR文件放到Tomcat中。
 
-<label class="label label-danger">Error</label>
+<label class="label label-danger">错误</label>
 
-You may meet error like this.
+您可能会遇到类似以下错误。
 
 ```
- no plugin found for prefix 'tomcat 7' in the current project and in the plugin groups
+no plugin found for prefix 'tomcat 7' in the current project and in the plugin groups
 ```
 
-<label class="label label-success">Tips</label>
+<label class="label label-success">提示</label>
 
-Don't worry, here is the way to solve it. Open **pom.xml**, add code into **plugins** as following.
+别担心，这是解决方法。打开**pom.xml**，将以下代码添加到**plugins**中。
 
 ```
 <plugin>
@@ -69,22 +66,19 @@ Don't worry, here is the way to solve it. Open **pom.xml**, add code into **plug
 </plugin>
 ```
 
-and add this into **properties**.
+并将此代码添加到**properties**中。
 
 ```
 <plugin.tomcat.version>2.2</plugin.tomcat.version>
 ```
 
-Okay, enjoy struts2 travel.
-
-![struts2-architecture](https://raw.githubusercontent.com/houbb/resource/master/img/2016-05-15-struts-architecture.png)
+好了，享受Struts2之旅。
 
 ## Configuration Files
 
-> web.xml
+## web.xml
 
-In the web.xml file, Struts defines its FilterDispatcher, the Servlet Filter class that initializes the Struts framework
-and handles all requests. As following...
+在`web.xml`文件中，Struts定义了它的`FilterDispatcher`，这是一个Servlet过滤器类，用于初始化Struts框架并处理所有请求。如下所示...
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -107,26 +101,22 @@ and handles all requests. As following...
 </web-app>
 ```
 
-In the example above we've mapped the Struts 2 dispatcher to /*, so Struts 2 has a crack at all incoming requests.
-This is because Struts 2 serves static content from its jar files, including Dojo JavaScript files (if using S2.0,
-or the Dojo plugin in S2.1+) and FreeMarker templates for the Struts 2 tags that produce HTML.
+在上面的示例中，我们将Struts 2调度程序映射到`/*`，因此Struts 2会处理所有传入的请求。这是因为Struts 2从其JAR文件中提供静态内容，包括Dojo JavaScript文件（如果使用S2.0或S2.1+中的Dojo插件）和用于生成HTML的Struts 2标签的FreeMarker模板。
 
-Since Struts 2.1.7, you are able to provide a comma seperated list of patterns for which when matching against the
-request URL the Filter will just pass by. This is done via the configuration option struts.action.excludePattern, for example in your struts.xml
+自Struts 2.1.7以来，您可以提供一个逗号分隔的模式列表，当匹配请求URL时，过滤器将直接通过。这是通过配置选项`struts.action.excludePattern`完成的，例如在您的`struts.xml`中：
 
 ```xml
 <struts>
     <constant name="struts.action.excludePattern" value=".*unfiltered.*,.*\\.nofilter"/>
     ...
 </struts>
-````
+```
 
-You may ask, what is struts.xml?
+您可能会问，`struts.xml`是什么？
 
-> struts.xml
+## struts.xml
 
-The core configuration file for the framework is the default (struts.xml) file and should reside on the classpath of
-the webapp **(generally /WEB-INF/classes)**.
+该框架的核心配置文件是默认的（`struts.xml`）文件，应存放在Web应用程序的类路径上（通常是`/WEB-INF/classes`）。
 
 ```xml
 <?xml version="1.0" encoding="UTF-8" ?>
@@ -137,20 +127,17 @@ the webapp **(generally /WEB-INF/classes)**.
 </struts>
 ```
 
-<label class="label label-info">dtd</label>
+<label class="label label-info">DTD</label>
 
-A DTD is a Document Type Definition, defines the structure and the legal elements and attributes of an XML document.
+DTD是文档类型定义，定义了XML文档的结构以及合法的元素和属性。
 
-> [dtd](http://www.w3schools.com/xml/xml_dtd_intro.asp)
+> [DTD](http://www.w3schools.com/xml/xml_dtd_intro.asp)
 
 <label class="label label-info">include</label>
 
-Can we break up a large struts.xml file into smaller pieces?
+我们可以将一个大的`struts.xml`文件分解成较小的部分吗？
 
-- You can use
-```<include>```
-elements in your struts.xml interchangeably with <package> elements. The configuration objects
-will be loaded in the order of appearance. The framework reads the configuration from top to bottom and adds objects as they are referenced.
+- 您可以在`struts.xml`中的`<package>`元素中交替使用`<include>`元素。配置对象将按出现的顺序加载。框架从上到下读取配置并在引用时按顺序添加对象。
 
 ```xml
 <struts>
@@ -158,15 +145,17 @@ will be loaded in the order of appearance. The framework reads the configuration
     ...
 </struts>
 ```
+
 <label class="label label-info">Constant</label>
 
-You may find these int the struts.xml, it's constants.
+您可能会在`struts.xml`中找到这些，这是常量。
 
 ```xml
 <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
 <constant name="struts.devMode" value="true"/>
 ```
-Constants provide a simple way to customize a Struts application by defining key settings that modify framework and plugin behavior.
+
+常量提供了一种通过定义修改框架和插件行为的关键设置来自定义Struts应用程序的简单方法。
 
 <label class="label label-info">Packages</label>
 
@@ -182,21 +171,21 @@ Constants provide a simple way to customize a Struts application by defining key
 </package>
 ```
 
-- The package element has one required attribute, **name**, which acts as the key for later reference to the package.
+- `package`元素具有一个必需的属性，即`name`，它充当稍后引用包的键。
 
-- The **namespace** attribute subdivides action configurations into logical modules, each with its own identifying prefix. Namespaces avoid conflicts between action names.
+- `namespace`属性将动作配置细分为逻辑模块，每个模块都有其自己的标识前缀。命名空间避免了动作名称之间的冲突。
 
-- The **extends** attribute is optional and allows one package to inherit the configuration of one or more previous packages.
+- `extends`属性是可选的，允许一个包继承一个或多个先前包的配置。
 
-- The **action** mapping can specify a set of result types, a set of exception handlers, and an interceptor stack.
+- `action`映射可以指定一组结果类型、一组异常处理程序和一个拦截器堆栈。
 
-> struts.properties
+## struts.properties
 
-All properties can also be set using **Constant Configuration** in an XML configuration file.
+所有属性也可以在XML配置文件中使用**Constant Configuration**进行设置。
 
-The list of properties can be found in struts-default.properties (inside struts2.jar).
+属性列表可以在`struts-default.properties`（在`struts2.jar`中）中找到。
 
-```
+```properties
 ### Struts default properties
 ###(can be overridden by a struts.properties file in the root of the classpath)
 ###
@@ -231,12 +220,11 @@ struts.enable.DynamicMethodInvocation = false
 struts.devMode = false
 ```
 
-
 ## Wildcards
 
-As an application grows in size, so will the number of action mappings. Wildcards can be used to **combine similar mappings into one more generic mapping**.
+当应用程序规模增大时，动作映射的数量也会增加。通配符可以用来将相似的映射合并为一个更通用的映射。
 
-The best way to explain wildcards is to show an example and walk through how it works.
+解释通配符的最佳方式是通过示例并逐步演示其工作原理。
 
 - action in struts.xml
 
@@ -270,7 +258,7 @@ public class HelloWorld extends ActionSupport {
 http://localhost:8080/HelloWorld_add
 ```
 
-matches the class struts2.example.HelloWorld, method add. result is /WEB-INF/example/HellWorld_add.jsp
+匹配类`struts2.example.HelloWorld`，方法为`add`。结果是`/WEB-INF/example/HellWorld_add.jsp`。
 
 - url
 
@@ -278,12 +266,13 @@ matches the class struts2.example.HelloWorld, method add. result is /WEB-INF/exa
 http://localhost:8080/HelloWorld_update
 ```
 
-matches the class struts2.example.HelloWorld, method update. result is /WEB-INF/example/HellWorld_update.jsp
+匹配类`struts2.example.HelloWorld`，方法为`update`。结果是`/WEB-INF/example/HellWorld_update.jsp`。
 
 ## Action Default
 
-Usually, if an action is requested, and the framework can't map the request to an action name, the result will be the usual "404 - Page not found" error.
-But, if you would prefer that an omnibus action handle any unmatched requests, you can specify a default action.
+通常，如果请求一个动作，而框架无法将请求映射到动作名称，结果将是通常的"404 - 页面未找到"错误。
+
+但是，如果您希望一个全能的动作处理任何未匹配的请求，您可以指定一个默认动作。
 
 - default action define in struts.xml
 
@@ -306,7 +295,7 @@ But, if you would prefer that an omnibus action handle any unmatched requests, y
 http://localhost:8080/xxx/yyy/zzz
 ```
 
-If no other action matches, the default action is used instead.
+如果没有其他动作匹配，则将使用默认动作。
 
 ## Accept arguments
 
@@ -346,11 +335,13 @@ public class Login extends ActionSupport {
 
 ## Interceptors
 
-Interceptors allow you to define code to be executed before and/or after the execution of an Action method. (The "Filter" pattern.)
-Interceptors can be a powerful tool when developing applications.
+拦截器允许您在执行动作方法之前和/或之后定义要执行的代码（"过滤器"模式）。
+
+在开发应用程序时，拦截器可以是一个强大的工具。
 
 ### 1.interceptors
-Now, we create a time interceptors to show how it works.
+
+现在，我们创建一个时间拦截器来演示它是如何工作的。
 
 - TimerAction.java
 
@@ -414,9 +405,9 @@ public class TimerInterceptor extends AbstractInterceptor {
 
 ### 2.struts-default
 
-You may seen **extends="struts-default"** many times, what's this? It's define in struts-default.xml.
+你可能在很多地方看到过**extends="struts-default"**，这是什么意思呢？这在`struts-default.xml`中有定义。
 
-The default configuration (struts-default.xml) sets up a default Interceptor Stack that will work well for most applications.
+默认配置（`struts-default.xml`）设置了一个默认的拦截器堆栈，适用于大多数应用程序。
 
 ```xml
 <struts>
@@ -465,9 +456,11 @@ The default configuration (struts-default.xml) sets up a default Interceptor Sta
 ```
 
 Now, we input
+
 ```
 http://localhost:8080/authInterceptor/auth
 ```
+
 will access this page without login, that's not good.
 
 - Okay, we define a page for login first.
@@ -588,5 +581,5 @@ public class AuthInterceptor extends AbstractInterceptor {
 
 > <a title="directives" href="{{ site.url }}/static/download/struts/struts.zip"><i class="fa fa-fw fa-download"></i>&nbsp;struts.zip</a>
 
-
-
+* any list
+{:toc}

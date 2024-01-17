@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Apache Wicket
-date:  2018-07-26 10:39:01 +0800
-categories: [Apache]
-tags: [web, apache, sh]
+title:  web mvc-04-Apache Wicket
+date:  2016-5-14 11:58:26 +0800
+categories: [WEB]
+tags: [web, mvc]
 published: true
 ---
 
