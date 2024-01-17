@@ -268,7 +268,8 @@ public class VelocityExample {
 运行这个 Java 程序，将会看到输出的渲染结果。
 
 这只是一个入门级的例子，实际使用中可以根据需要传递更复杂的数据模型，并创建更复杂的模板。
-rker 和 velocity，给出对比表格
+
+# FreeMarker 和 Velocity对比表格
 
 以下是 FreeMarker 和 Velocity 模板引擎的一些比较，包括语法、特性和使用场景等方面：
 
