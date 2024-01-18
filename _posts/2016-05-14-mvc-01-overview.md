@@ -23,7 +23,7 @@ published: true
 
 [web mvc-07-Vaadin](https://houbb.github.io/2016/05/14/mvc-07-Vaadin)
 
-[web mvc-08-Grails]()
+[web mvc-08-Grails](https://houbb.github.io/2016/05/14/mvc-08-Grails)
 
 # chat
 
