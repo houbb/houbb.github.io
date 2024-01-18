@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Apache Hadoop HDFS 快速搭建 HDFS 系统（超详细版） hdfs v3.3.6 inaction
+title:  Apache Hadoop v3.3.6 in action-02-cluster mode 集群部署实战
 date:  2017-12-06 05:47:35 +0800
 categories: [Apache]
 tags: [apache, big-data, hadoop]
