@@ -152,6 +152,25 @@ core-site.xml、hdfs-site.xml、yarn-site.xml、mapred-site.xml 四个配置存�
 
 2.hdfs-site.xml
 
+说明：如果不修改hosts，而是直接指定 ip 地址。dataNode 注册可能会报错：
+
+```
+hadoop 使用ip配置导致hdfs启动失败 Datanode denied communication with namenode
+```
+
+原因：由于配置hadoop没有使用host+hostName的配置方式，导致了hadoop无法解析DataNode，对DataNode的注册失败。
+
+解决方式：hdfs-site.xml中添加
+
+```xml
+<property>
+  <name>dfs.namenode.datanode.registration.ip-hostname-check</name>
+  <value>false</value>
+</property>
+```
+
+常规配置：
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
