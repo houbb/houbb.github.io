@@ -124,10 +124,33 @@ bin/seatunnel.sh --config /data/applications/seatunnel_data/mysql2mysql.config -
 
 但是谁来触发呢？
 
-shell 脚本？
+shell 脚本？cron 表达式触发？
 
 java 代码触发？这样的话，是不是需要额外一个任务。
 
+# v2-streaming 模式自己实现
+
+类似于 http source 模式，支持 batch/stream 模式。
+
+ES 这种不支持的，可以自己定义一个。
+
+两种建议方式：
+
+1）兼容开源版本的方式
+
+自己定义一个新的 es-stream 之类的插件，自定义支持流模式，添加时间间隔支持。
+
+优点：比较快，不必等官方迭代
+
+缺点：不利于社区的创建
+
+2）共建模式
+
+直接官方提 PR，实现 ES 的流模式。
+
+优点：优点官方支持
+
+缺点：迭代周期可能会比较长。
 
 # ISSUES
 
