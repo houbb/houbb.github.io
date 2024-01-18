@@ -7,6 +7,24 @@ tags: [web, mvc]
 published: true
 ---
 
+# 拓展阅读
+
+[Spring Web MVC-00-重学 mvc](https://houbb.github.io/2019/12/25/springmvc-00-index)
+
+[mvc-01-Model-View-Controller 概览](https://houbb.github.io/2016/05/14/mvc-01-overview)
+
+[web mvc-03-JFinal](https://houbb.github.io/2016/05/14/mvc-03-jfinal-intro)
+
+[web mvc-04-Apache Wicket](https://houbb.github.io/2016/05/14/mvc-04-apache-whicket-intro)
+
+[web mvc-05-JSF JavaServer Faces](https://houbb.github.io/2016/05/14/mvc-05-jsf-intro)
+
+[web mvc-06-play framework intro](https://houbb.github.io/2016/05/14/mvc-06-play-framework-intro)
+
+[web mvc-07-Vaadin](https://houbb.github.io/2016/05/14/mvc-07-Vaadin)
+
+[web mvc-08-Grails](https://houbb.github.io/2016/05/14/mvc-08-Grails)
+
 # Apache Wicket
 
 [Apache Wicket](http://wicket.apache.org/) 为全球的网站和应用服务了十多年。有了这个版本，Wicket完全支持Java 8的习惯用法，允许在所有合适的地方使用lambda表达式。
