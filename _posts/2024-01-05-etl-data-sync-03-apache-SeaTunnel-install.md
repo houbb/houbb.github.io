@@ -552,7 +552,7 @@ PS：不过这里的 maven 其他依赖包怎么处理？
 $   cd /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3
 
 # 启动服务
-$   ./bin/seatunnel.sh --config ./config/v2.batch.config.template -e local
+$   ./bin/seatunnel.sh --config ./config/v2.batch.config.template
 ```
 
 测试日志，个人理解应该会自动关闭？

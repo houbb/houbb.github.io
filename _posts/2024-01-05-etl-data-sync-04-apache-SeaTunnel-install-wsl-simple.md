@@ -134,7 +134,6 @@ mysqldump -u admin -p  seatunnel > /home/dh/sql/seatunnel_backup.sql
 ## 创建+下载 backend
 
 
-> 官方下载地址：[https://seatunnel.apache.org/download/](https://seatunnel.apache.org/download/)
 
 创建seatunnel后端服务安装目录
 
@@ -144,6 +143,13 @@ mkdir -p /home/dh/bigdata/
 ```
 
 把对应的压缩包上传，解压。
+
+> 官方下载地址：[https://seatunnel.apache.org/download/](https://seatunnel.apache.org/download/)
+
+```bash
+wget https://dlcdn.apache.org/seatunnel/2.3.3/apache-seatunnel-2.3.3-bin.tar.gz
+tar -zxvf apache-seatunnel-2.3.3-bin.tar.gz
+```
 
 # 配置环境变量
 
@@ -171,6 +177,36 @@ source /etc/profile
 
 # 2. 安装 backend 后端
 
+## 2.0 执行下载依赖包
+
+简化插件内容，过滤掉无关的。
+
+```bash
+cp /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/config/plugin_config /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/config/plugin_config_bak
+
+vi /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/config/plugin_config
+```
+
+指定内容如下，我们只下载需要的，比如 mysql cdc。
+
+```
+--connectors-v2--
+connector-cdc-mysql
+```
+
+执行命令：
+
+```bash
+bash /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/install-plugin.sh
+```
+
+实际上为：
+
+```bash
+cd /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3
+mvn dependency:get -DgroupId=org.apache.seatunnel -Dclassifier=optional -DartifactId=seatunnel-hadoop3-3.1.4-uber -Dversion=2.3.3 -Ddest=/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/lib
+```
+
 ## 2.1 启动验证
 
 ```bash
@@ -186,6 +222,10 @@ $   ./bin/seatunnel.sh --config ./config/v2.batch.config.template -e local
 ```bash
 #进入安装目录
 $   cd /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3
+
+# 关闭
+nohup bash bin/seatunnel-cluster.sh 2>&1 &
+
 
 # 启动服务
 $   nohup bash bin/seatunnel-cluster.sh 2>&1 &
