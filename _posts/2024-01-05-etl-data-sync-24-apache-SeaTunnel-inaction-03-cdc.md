@@ -360,6 +360,265 @@ u: UPDATE
 
 如果一次操作，涉及到多个 node+edge 的变化，能否放在一个事务中？
 
+
+# v2.3.3 mysql cdc release 包的问题
+
+## 现象
+
+用本地代码测试正常，但是用命令行在 wsl 上执行就会报错。
+
+## 命令
+
+```
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --config /home/dh/bigdata/seatunnel-2.3.3/config/mysql_cdc_to_neo4j_multi.conf -elocal
+```
+
+### 配置文件
+
+```conf
+env {
+  # You can set flink configuration here
+  parallelism = 1
+  job.mode = "STREAMING"
+  checkpoint.interval = 10000
+}
+source{
+    MySQL-CDC {
+        base-url = "jdbc:mysql://127.0.0.1:13306/etl?useSSL=false&serverTimezone=Asia/Shanghai"
+        driver = "com.mysql.cj.jdbc.Driver"
+        username = "admin"
+        password = "123456"
+        table-names = ["etl.user_info"]
+
+        startup.mode = "initial"
+    }
+}
+
+transform {
+    # If you would like to get more information about how to configure seatunnel and see full list of transform plugins,
+    # please go to https://seatunnel.apache.org/docs/transform-v2/sql
+}
+
+sink {
+    Console {
+    }
+
+}
+```
+
+## releease 包的形式执行
+
+```
+2024-01-19 13:20:50,734 ERROR org.apache.seatunnel.core.starter.SeaTunnel - Reason:SeaTunnel job executed failed
+
+2024-01-19 13:20:50,735 ERROR org.apache.seatunnel.core.starter.SeaTunnel - Exception StackTrace:org.apache.seatunnel.core.starter.exception.CommandExecuteException: SeaTunnel job executed failed
+        at org.apache.seatunnel.core.starter.seatunnel.command.ClientExecuteCommand.execute(ClientExecuteCommand.java:191)
+        at org.apache.seatunnel.core.starter.SeaTunnel.run(SeaTunnel.java:40)
+        at org.apache.seatunnel.core.starter.seatunnel.SeaTunnelClient.main(SeaTunnelClient.java:34)
+Caused by: org.apache.seatunnel.engine.common.exception.SeaTunnelEngineException: java.lang.RuntimeException: java.util.concurrent.ExecutionException: java.util.concurrent.CompletionException: java.lang.ClassCastException: cannot assign instance of io.debezium.relational.TableId to field org.apache.seatunnel.connectors.cdc.base.source.split.SnapshotSplit.tableId of type io.debezium.relational.TableId in instance of org.apache.seatunnel.connectors.cdc.base.source.split.SnapshotSplit
+        at org.apache.seatunnel.engine.server.task.flow.SourceFlowLifeCycle.requestSplit(SourceFlowLifeCycle.java:223)
+        at org.apache.seatunnel.engine.server.task.context.SourceReaderContext.sendSplitRequest(SourceReaderContext.java:64)
+        at org.apache.seatunnel.connectors.cdc.base.source.reader.IncrementalSourceReader.pollNext(IncrementalSourceReader.java:94)
+        at org.apache.seatunnel.engine.server.task.flow.SourceFlowLifeCycle.collect(SourceFlowLifeCycle.java:150)
+        at org.apache.seatunnel.engine.server.task.SourceSeaTunnelTask.collect(SourceSeaTunnelTask.java:95)
+        at org.apache.seatunnel.engine.server.task.SeaTunnelTask.stateProcess(SeaTunnelTask.java:168)
+        at org.apache.seatunnel.engine.server.task.SourceSeaTunnelTask.call(SourceSeaTunnelTask.java:100)
+        at org.apache.seatunnel.engine.server.TaskExecutionService$BlockingWorker.run(TaskExecutionService.java:613)
+        at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+        at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+        at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+        at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+        at java.lang.Thread.run(Thread.java:750)
+
+Caused by: java.lang.ClassCastException: cannot assign instance of io.debezium.relational.TableId to field org.apache.seatunnel.connectors.cdc.base.source.split.SnapshotSplit.tableId of type io.debezium.relational.TableId in instance of org.apache.seatunnel.connectors.cdc.base.source.split.SnapshotSplit
+        at java.io.ObjectStreamClass$FieldReflector.setObjFieldValues(ObjectStreamClass.java:2301)
+        at java.io.ObjectStreamClass.setObjFieldValues(ObjectStreamClass.java:1431)
+        at java.io.ObjectInputStream.defaultReadFields(ObjectInputStream.java:2437)
+        at java.io.ObjectInputStream.readSerialData(ObjectInputStream.java:2355)
+        at java.io.ObjectInputStream.readOrdinaryObject(ObjectInputStream.java:2213)
+        at java.io.ObjectInputStream.readObject0(ObjectInputStream.java:1669)
+        at java.io.ObjectInputStream.readObject(ObjectInputStream.java:503)
+        at java.io.ObjectInputStream.readObject(ObjectInputStream.java:461)
+        at org.apache.seatunnel.common.utils.SerializationUtils.deserialize(SerializationUtils.java:74)
+        at org.apache.seatunnel.api.serialization.DefaultSerializer.deserialize(DefaultSerializer.java:41)
+        at org.apache.seatunnel.api.serialization.DefaultSerializer.deserialize(DefaultSerializer.java:25)
+        at org.apache.seatunnel.engine.server.task.operation.source.AssignSplitOperation.lambda$run$0(AssignSplitOperation.java:67)
+        at org.apache.seatunnel.common.utils.RetryUtils.retryWithException(RetryUtils.java:48)
+        at org.apache.seatunnel.engine.server.task.operation.source.AssignSplitOperation.run(AssignSplitOperation.java:54)
+        at com.hazelcast.spi.impl.operationservice.Operation.call(Operation.java:189)
+        at com.hazelcast.spi.impl.operationservice.impl.OperationRunnerImpl.call(OperationRunnerImpl.java:273)
+        at com.hazelcast.spi.impl.operationservice.impl.OperationRunnerImpl.run(OperationRunnerImpl.java:248)
+        at com.hazelcast.spi.impl.operationservice.impl.OperationRunnerImpl.run(OperationRunnerImpl.java:213)
+        at com.hazelcast.spi.impl.operationexecutor.impl.OperationThread.process(OperationThread.java:175)
+        at com.hazelcast.spi.impl.operationexecutor.impl.OperationThread.process(OperationThread.java:139)
+        at com.hazelcast.spi.impl.operationexecutor.impl.OperationThread.executeRun(OperationThread.java:123)
+        at com.hazelcast.internal.util.executor.HazelcastManagedThread.run(HazelcastManagedThread.java:102)
+
+        at org.apache.seatunnel.engine.client.job.ClientJobProxy.waitForJobComplete(ClientJobProxy.java:122)
+        at org.apache.seatunnel.core.starter.seatunnel.command.ClientExecuteCommand.execute(ClientExecuteCommand.java:184)
+        ... 2 more
+2024-01-19 12:47:38,125 INFO  org.apache.seatunnel.core.starter.seatunnel.command.ClientExecuteCommand - run shutdown hook because get close signal
+```
+
+
+
+## 猜测原因 v1-connector-cdc-mysql 问题
+
+类似的bug:
+
+https://github.com/apache/seatunnel/issues/4403
+
+https://github.com/apache/seatunnel/issues/5010
+
+说是已经解决，但是实际上问题并没有被解决。
+
+## 尝试解决方式
+
+```
+~/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/lib
+~/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/connectors/seatunnel
+```
+
+这里的 `connector-cdc-mysql-2.3.3.jar` 备份到本地，然后移除。
+
+在本地编译代码，然后把包放进去。
+
+本地编译的 jar: connector-cdc-mysql-2.3.4-SNAPSHOT-2.11.12.jar
+
+对应的 WSL 位置：
+
+```
+\\wsl.localhost\Ubuntu\home\dh\bigdata\seatunnel-2.3.3\backend\apache-seatunnel-2.3.3\lib
+\\wsl.localhost\Ubuntu\home\dh\bigdata\seatunnel-2.3.3\backend\apache-seatunnel-2.3.3\connectors\seatunnel
+```
+
+### 重启服务
+
+```bash
+cd ~/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3
+
+bash bin/stop-seatunnel-cluster.sh
+
+nohup bash bin/seatunnel-cluster.sh 2>&1 &
+```
+
+## 再次验证
+
+
+```bash
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --config /home/dh/bigdata/seatunnel-2.3.3/config/mysql_cdc_to_neo4j_multi.conf -elocal
+```
+
+发现依然报错。
+
+## 猜测原因 v2-connector-cdc-base 问题
+
+### 源码部分
+
+```java
+protected SnapshotSplit createSnapshotSplit(
+        JdbcConnection jdbc,
+        TableId tableId,
+        int chunkId,
+        SeaTunnelRowType splitKeyType,
+        Object chunkStart,
+        Object chunkEnd) {
+    // currently, we only support single split column
+    Object[] splitStart = chunkStart == null ? null : new Object[] {chunkStart};
+    Object[] splitEnd = chunkEnd == null ? null : new Object[] {chunkEnd};
+    return new SnapshotSplit(
+            splitId(tableId, chunkId), tableId, splitKeyType, splitStart, splitEnd);
+}
+```
+
+这里的 tableId 参数：io.debezium.relational.TableId
+
+二者应该确实是同一个才对。
+
+报错：
+
+```
+java.lang.ClassCastException: cannot assign instance of io.debezium.relational.TableId to field org.apache.seatunnel.connectors.cdc.base.source.split.SnapshotSplit.tableId of type io.debezium.relational.TableId in instance of org.apache.seatunnel.connectors.cdc.base.source.split.SnapshotSplit
+这个为什么会类型转换错误呢？二者不都是同一个类 io.debezium.relational.TableId 吗？
+```
+
+### 可能不一样的原因
+
+在 Java 中，`ClassCastException` 表示在运行时尝试将一个对象强制转换为与其实际类型不兼容的类型。
+
+虽然两者看起来相同，但在 Java 中，类加载器的不同实例可能导致两个具有相同类名的类被认为是不同的类。
+
+下面是一些可能导致你遇到这个问题的原因：
+
+1. **类加载器问题：**
+   类加载器负责在 Java 虚拟机中加载类。如果 `io.debezium.relational.TableId` 在运行时由不同的类加载器加载，即使两者的类名相同，它们也被认为是不同的类。在你的错误信息中，可能是在 `org.apache.seatunnel.connectors.cdc.base.source.split.SnapshotSplit` 类的字段 `tableId` 的类型定义上有问题。
+   
+   确保这两个类使用的是相同的类加载器。
+
+2. **版本不匹配：**
+   即使是相同的类，也要确保它们来自于相同版本的库或 JAR 文件。版本不匹配可能导致类的字段、方法等发生变化，从而引发类转换异常。
+
+3. **ClassLoader 和双亲委派模型：**
+   Java 的类加载机制遵循双亲委派模型。如果在不同的类加载器层次结构中加载了相同名称的类，它们会被认为是不同的类。这可能导致在运行时发生类型转换异常。
+
+为了解决这个问题，可以考虑以下步骤：
+
+- **检查类加载器：** 确保 `io.debezium.relational.TableId` 类在运行时由相同的类加载器加载。
+  
+- **检查版本：** 确保你的应用程序使用的所有库和依赖项的版本是一致的。
+
+- **ClassLoader 隔离：** 如果可能，考虑使用类加载器隔离，确保相同的类只由相同的类加载器加载。
+
+- **日志输出：** 在出现异常的代码周围添加日志输出，输出相关对象的 `getClass().getClassLoader()`，以便查看它们的类加载器是否相同。
+
+如果问题仍然存在，更详细的代码片段和相关上下文可能有助于进一步分析问题。
+
+### 验证猜想
+
+我们把 connector 和 lib 中的包备份，然后把其他不需要的的 connector 全部移除掉。
+
+```bash
+cd ~/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/
+cp -r lib lib_bak
+cp -r connectors/seatunnel connectors/seatunnel_bak
+```
+
+我们移除 lib + connectors 下边的其他 cdc 包
+
+```
+rm connector-cdc-mongodb-2.3.3.jar
+```
+
+怀疑这个有问题，不同的 cdc 导致对应的基类冲突了？
+
+### 重新验证
+
+```bash
+cd ~/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3
+
+bash bin/stop-seatunnel-cluster.sh
+
+nohup bash bin/seatunnel-cluster.sh 2>&1 &
+```
+
+```bash
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --config /home/dh/bigdata/seatunnel-2.3.3/config/mysql_cdc_to_neo4j_multi.conf -elocal
+```
+
+还是失败了。。。
+
+是遗漏了什么吗？
+
+
+### 移除 lib 下面的所有 datasource-*.jar
+
+移除过头了。。PS 一定要提前备份。
+
+
+
+
+
+
 # 参考资料
 
 https://seatunnel.apache.org/docs/2.3.3/contribution/contribute-transform-v2-guide
