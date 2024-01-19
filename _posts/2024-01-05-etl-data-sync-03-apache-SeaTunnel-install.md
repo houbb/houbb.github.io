@@ -1548,6 +1548,239 @@ password：admin
 
 [https://pan.baidu.com/s/1x8G8DCixt7SFnd-r5AFkhg](https://pan.baidu.com/s/1x8G8DCixt7SFnd-r5AFkhg)
 
+
+# 集群配置
+
+## 3.1.安装配置Seatunnel引擎集群
+
+在SeaTunnel的Web端机器上需要安装SeaTunnel客户端，如果服务端与Web端在同一台机器，则可直接跳过这个步骤。
+
+本文档的安装过程中，Seatunnel服务端和web是安装在同一台机器上， 所以直接跳过此步安装步骤。
+
+这里所说的Seatunnel引擎客户端其实就是我们章2中安装的Seatunnel服务端， 下面讲解一下如何进行Seatunnel集群的安装配置
+
+### 3.1.1.准备服务器节点
+
+我们现在需要搭建Seatunnel引擎集群，需要准备n台服务器节点， 我这里使用了3台服务器。
+
+比如， 已知我们的3台服务器的IP分别是
+
+```
+192.168.1.110
+
+192.168.1.111
+
+192.168.1.112
+```
+
+我们直接在章2中已经安装部署好的Seatunnel单节点中进行集群的配置,主要的配置修改包含以下几项：
+
+### 3.1.2.修改JVM参数
+
+在seatunnel的安装目录，找到 `$SEATUNNEL_HOME/bin/seatunnel-cluster.sh`
+
+![jvm](https://img-blog.csdnimg.cn/cc5a38f78acc4142bd7707b528b926ff.png)
+
+将 JVM 选项添加到$SEATUNNEL_HOME/bin/seatunnel-cluster.sh第一行
+
+```sh
+JAVA_OPTS=“-Xms2G -Xmx2G”
+```
+
+![配置](https://img-blog.csdnimg.cn/d76a3194d4b64e10a891df191d8ba5d7.png)
+
+如果不想这样进行修改，也可以， 不过需要在进行集群启动时，自行增加JVM参数进行启动， 启动命令如下：
+
+也可以用这种方式启动：
+
+```sh
+nohup sh $SEATUNNEL_HOME/bin/seatunnel-cluster.sh -DJvmOption="-Xms2G -Xmx2G" 2>&1 &
+```
+
+![配置文件](https://img-blog.csdnimg.cn/0889288431174599af233bb0c9010a54.png)
+
+### 3.1.3.SeaTunnel Engine配置
+
+SeaTunnel Engine Server配置是在sh $SEATUNNEL_HOME/config/seatunnel.yaml .
+
+详细配置想可参考官方文档 [4. Config SeaTunnel Engine](https://seatunnel.apache.org/docs/seatunnel-engine/deployment/#4-config-seatunnel-engine)，这里不赘述
+
+### 3.1.4.SeaTunnel Engine Server配置
+
+SeaTunnel Engine Server配置是在 sh $SEATUNNEL_HOME/config/hazelcast.yaml .
+
+### 3.1.4.1.集群名称配置
+
+SeaTunnel Engine 节点使用集群名称来确定对方是否与自己是一个集群。 
+
+如果两个节点之间的集群名称不同，SeaTunnel 引擎将拒绝服务请求。
+
+### 3.1.4.2.网络配置
+
+SeaTunnel Engine 集群基于 Hazelcast，是运行 SeaTunnel Engine Server 的集群成员的网络。 
+
+集群成员自动连接在一起形成集群。 
+
+这种自动加入是通过集群成员用来查找彼此的各种发现机制来实现的。
+
+请注意，集群形成后，集群成员之间的通信始终通过 TCP/IP 进行，无论使用何种发现机制。
+
+SeaTunnel 引擎使用以下发现机制。
+
+## TCP
+
+您可以将 SeaTunnel Engine 配置为完整的 TCP/IP 集群。 
+
+有关配置详细信息，请参阅通过 TCP 发现成员部分。
+
+hazelcast.yaml 配置示例如下：
+
+
+```yaml
+hazelcast:
+  cluster-name: seatunnel
+  network:
+    join:
+      tcp-ip:
+        enabled: true
+        member-list:
+          - hostname1
+    port:
+      auto-increment: false
+      port: 5801
+  properties:
+    hazelcast.logging.type: log4j2
+```
+
+在独立 SeaTunnel 引擎集群中我们建议使用TCP方式。
+
+另一方面，Hazelcast 提供了一些其他的服务发现方法。 详情请参考hazelcast网
+
+### 3.1.4.3 Map配置
+
+type
+imap持久化类型，目前仅支持hdfs。
+
+namespace
+命令空间用于区分不同业务的数据存储位置，例如OSS的桶名。
+
+clusterName
+这个参数主要用于集群隔离，我们可以通过这个来区分不同的集群，比如cluster1、cluster2，这个也可以用来区分不同的业务
+
+fs.defaultFS
+We used hdfs api read/write file, so used this storage need provide hdfs configuration
+
+if you used HDFS, you can config like this:
+
+```yaml
+map:
+    engine*:
+       map-store:
+         enabled: true
+         initial-mode: EAGER
+         factory-class-name: org.apache.seatunnel.engine.server.persistence.FileMapStoreFactory
+         properties:
+           type: hdfs
+           namespace: /tmp/seatunnel/imap
+           clusterName: seatunnel-cluster
+           storage.type: hdfs
+           fs.defaultFS: hdfs://localhost:9000
+```
+
+我也看到最简单的配置：
+
+```yaml
+  map:
+    map-name-template:
+      map-store:
+        enabled: true
+        initial-mode: EAGER
+        class-name: org.apache.seatunnel.engine.server.persistence.FileMapStore
+        properties:
+          path: /tmp/file-store-map
+```
+
+如果没有 HDFS 并且您的集群只有一个节点，您可以配置为使用本地文件，如下所示：
+
+```yaml
+map:
+    engine*:
+       map-store:
+         enabled: true
+         initial-mode: EAGER
+         factory-class-name: org.apache.seatunnel.engine.server.persistence.FileMapStoreFactory
+         properties:
+           type: hdfs
+           namespace: /tmp/seatunnel/imap
+           clusterName: seatunnel-cluster
+           storage.type: hdfs
+           fs.defaultFS: file:///
+```
+
+如果你使用OSS，你可以这样配置：
+
+```yaml
+map:
+    engine*:
+       map-store:
+         enabled: true
+         initial-mode: EAGER
+         factory-class-name: org.apache.seatunnel.engine.server.persistence.FileMapStoreFactory
+         properties:
+           type: hdfs
+           namespace: /tmp/seatunnel/imap
+           clusterName: seatunnel-cluster
+           storage.type: oss
+           block.size: block size(bytes)
+           oss.bucket: oss://bucket name/
+           fs.oss.accessKeyId: OSS access key id
+           fs.oss.accessKeySecret: OSS access key secret
+           fs.oss.endpoint: OSS endpoint
+           fs.oss.credentials.provider: org.apache.hadoop.fs.aliyun.oss.AliyunCredentialsProvider
+```
+
+## 3.1.5.SeaTunnel Engine Client配置
+
+SeaTunnel Engine Client配置是在sh $SEATUNNEL_HOME/config/hazelcast-client.yaml .
+
+### 3.1.5.1.集群名称配置
+
+客户端必须与 SeaTunnel 引擎具有相同的集群名称。 
+
+否则，SeaTunnel 引擎将拒绝客户端请求。
+
+### 3.1.5.2.网络配置
+
+cluster-members
+
+所有 SeaTunnel 引擎服务器节点地址都需要添加到此处。
+
+```yaml
+hazelcast-client:
+  cluster-name: seatunnel
+  properties:
+      hazelcast.logging.type: log4j2
+  network:
+    cluster-members:
+      - hostname1:5801
+```
+
+## 3.1.6.启动Seatunnel引擎服务端节点
+
+```sh
+mkdir -p $SEATUNNEL_HOME/logs
+
+cd $SEATUNNEL_HOME
+
+./bin/seatunnel-cluster.sh -d
+```
+
+如果集群存在多台节点， 需要启动所有节点上的Seatunnel引擎服务。
+
+## 3.1.7.安装Seatunnel引擎客户端并启动
+
+您只需将SeaTunnel引擎节点上的安装目录目录复制到客户端节点主机的相同安装目录下，并像SeaTunnel引擎服务器节点一样配置SEATUNNEL_HOME，之后启动服务即可。
+
 # 参考资料
 
 https://blog.csdn.net/qq_41865652/article/details/134574104
