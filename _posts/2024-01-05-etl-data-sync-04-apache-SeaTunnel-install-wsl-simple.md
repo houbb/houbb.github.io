@@ -207,6 +207,13 @@ cd /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3
 mvn dependency:get -DgroupId=org.apache.seatunnel -Dclassifier=optional -DartifactId=seatunnel-hadoop3-3.1.4-uber -Dversion=2.3.3 -Ddest=/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/lib
 ```
 
+缺失的 mysql 包需要单独下载：
+
+```bash
+cd /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/lib
+wget https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.28/mysql-connector-java-8.0.28.jar
+```
+
 ## 2.1 启动验证
 
 ```bash
@@ -222,11 +229,8 @@ $   ./bin/seatunnel.sh --config ./config/v2.batch.config.template -e local
 ```bash
 #进入安装目录
 $   cd /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3
-
 # 关闭
-nohup bash bin/seatunnel-cluster.sh 2>&1 &
-
-
+bash bin/stop-seatunnel-cluster.sh
 # 启动服务
 $   nohup bash bin/seatunnel-cluster.sh 2>&1 &
 ```

@@ -602,7 +602,7 @@ nohup bash bin/seatunnel-cluster.sh 2>&1 &
 ```
 
 ```bash
-/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --config /home/dh/bigdata/seatunnel-2.3.3/config/mysql_cdc_to_neo4j_multi.conf -elocal
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --config /home/dh/bigdata/seatunnel-2.3.3/config/mysql_cdc_to_neo4j_multi.conf
 ```
 
 还是失败了。。。
@@ -613,6 +613,140 @@ nohup bash bin/seatunnel-cluster.sh 2>&1 &
 ### 移除 lib 下面的所有 datasource-*.jar
 
 移除过头了。。PS 一定要提前备份。
+
+# 成功的版本
+
+看起来应该只需要把 lib 下的移除，只需要保留 connectos 即可。
+
+## 对应的包
+
+```
+b$ ls
+mysql-connector-java-8.0.28.jar  seatunnel-hadoop3-3.1.4-uber-2.3.3-optional.jar  seatunnel-transforms-v2.jar
+
+$ pwd
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/lib
+```
+
+```
+$ pwd
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/connectors/seatunnel
+
+$ ls
+connector-cdc-mysql-2.3.3.jar  connector-console-2.3.3.jar  connector-fake-2.3.3.jar
+```
+
+## 日志
+
+
+```
+2024-01-19 15:05:56,442 INFO  org.apache.seatunnel.core.starter.utils.ConfigShadeUtils - Load config shade spi: [base64]
+2024-01-19 15:05:56,471 INFO  org.apache.seatunnel.core.starter.utils.ConfigBuilder - Parsed config file: {
+    "env" : {
+        "parallelism" : 1,
+        "job.mode" : "STREAMING",
+        "checkpoint.interval" : 10000
+    },
+    "source" : [
+        {
+            "base-url" : "jdbc:mysql://127.0.0.1:13306/etl?useSSL=false&serverTimezone=Asia/Shanghai",
+            "password" : "123456",
+            "startup.mode" : "initial",
+            "driver" : "com.mysql.cj.jdbc.Driver",
+            "table-names" : [
+                "etl.user_info"
+            ],
+            "plugin_name" : "MySQL-CDC",
+            "username" : "admin"
+        }
+    ],
+    "transform" : [],
+    "sink" : [
+        {
+            "plugin_name" : "Console"
+        }
+    ]
+}
+
+2024-01-19 15:05:56,489 INFO  org.apache.seatunnel.api.configuration.ReadonlyConfig - Config uses fallback configuration key 'plugin_name' instead of key 'factory'
+2024-01-19 15:05:56,489 INFO  org.apache.seatunnel.api.configuration.ReadonlyConfig - Config uses fallback configuration key 'plugin_name' instead of key 'factory'
+2024-01-19 15:05:56,493 INFO  org.apache.seatunnel.plugin.discovery.AbstractPluginDiscovery - Load SeaTunnelSink Plugin from /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/connectors/seatunnel
+2024-01-19 15:05:56,498 INFO  org.apache.seatunnel.plugin.discovery.AbstractPluginDiscovery - Discovery plugin jar: MySQL-CDC at: file:/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/connectors/seatunnel/connector-cdc-mysql-2.3.3.jar
+2024-01-19 15:05:56,499 INFO  org.apache.seatunnel.plugin.discovery.AbstractPluginDiscovery - Discovery plugin jar: Console at: file:/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/connectors/seatunnel/connector-console-2.3.3.jar
+2024-01-19 15:05:56,502 INFO  org.apache.seatunnel.engine.core.parse.MultipleTableJobConfigParser - start generating all sources.
+2024-01-19 15:05:56,502 INFO  org.apache.seatunnel.api.configuration.ReadonlyConfig - Config uses fallback configuration key 'plugin_name' instead of key 'factory'
+2024-01-19 15:05:56,519 INFO  org.apache.seatunnel.api.configuration.ReadonlyConfig - Config uses fallback configuration key 'plugin_name' instead of key 'factory'
+2024-01-19 15:05:56,521 INFO  org.apache.seatunnel.plugin.discovery.AbstractPluginDiscovery - Load SeaTunnelSource Plugin from /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/connectors/seatunnel
+2024-01-19 15:05:56,525 INFO  org.apache.seatunnel.plugin.discovery.AbstractPluginDiscovery - Discovery plugin jar: MySQL-CDC at: file:/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/connectors/seatunnel/connector-cdc-mysql-2.3.3.jar
+2024-01-19 15:05:56,527 INFO  org.apache.seatunnel.plugin.discovery.AbstractPluginDiscovery - Load plugin: PluginIdentifier{engineType='seatunnel', pluginType='source', pluginName='MySQL-CDC'} from classpath
+2024-01-19 15:05:56,686 INFO  org.apache.seatunnel.connectors.seatunnel.jdbc.catalog.AbstractJdbcCatalog - Catalog mysql established connection to jdbc:mysql://127.0.0.1:13306/etl?useSSL=false&serverTimezone=Asia/Shanghai
+2024-01-19 15:05:56,738 INFO  org.apache.seatunnel.connectors.seatunnel.jdbc.catalog.AbstractJdbcCatalog - Catalog mysql closing
+2024-01-19 15:05:56,786 INFO  org.apache.seatunnel.engine.core.parse.MultipleTableJobConfigParser - start generating all transforms.
+2024-01-19 15:05:56,786 INFO  org.apache.seatunnel.engine.core.parse.MultipleTableJobConfigParser - start generating all sinks.
+2024-01-19 15:05:56,787 INFO  org.apache.seatunnel.api.configuration.ReadonlyConfig - Config uses fallback configuration key 'plugin_name' instead of key 'factory'
+2024-01-19 15:05:56,790 INFO  org.apache.seatunnel.api.configuration.ReadonlyConfig - Config uses fallback configuration key 'plugin_name' instead of key 'factory'
+2024-01-19 15:05:56,829 INFO  org.apache.seatunnel.engine.client.job.ClientJobProxy - Start submit job, job id: 800621986458894337, with plugin jar [file:/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/connectors/seatunnel/connector-cdc-mysql-2.3.3.jar, file:/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/connectors/seatunnel/connector-console-2.3.3.jar]
+2024-01-19 15:05:56,867 INFO  org.apache.seatunnel.engine.client.job.ClientJobProxy - Submit job finished, job id: 800621986458894337, job name: SeaTunnel
+2024-01-19 15:05:56,874 WARN  org.apache.seatunnel.engine.client.job.JobMetricsRunner - Failed to get job metrics summary, it maybe first-run
+
+
+
+
+
+
+^[[A^[[A^[[B^[[B2024-01-19 15:06:56,916 INFO  org.apache.seatunnel.engine.client.job.JobMetricsRunner -
+***********************************************
+           Job Progress Information
+***********************************************
+Job Id                    :  800621986458894337
+Read Count So Far         :                   6
+Write Count So Far        :                   6
+Average Read Count        :                 0/s
+Average Write Count       :                 0/s
+Last Statistic Time       : 2024-01-19 15:05:56
+Current Statistic Time    : 2024-01-19 15:06:56
+***********************************************
+
+2024-01-19 15:07:56,885 INFO  org.apache.seatunnel.engine.client.job.JobMetricsRunner -
+***********************************************
+           Job Progress Information
+***********************************************
+Job Id                    :  800621986458894337
+Read Count So Far         :                   7
+Write Count So Far        :                   7
+Average Read Count        :                 0/s
+Average Write Count       :                 0/s
+Last Statistic Time       : 2024-01-19 15:06:56
+Current Statistic Time    : 2024-01-19 15:07:56
+***********************************************
+
+2024-01-19 15:08:56,883 INFO  org.apache.seatunnel.engine.client.job.JobMetricsRunner -
+***********************************************
+           Job Progress Information
+***********************************************
+Job Id                    :  800621986458894337
+Read Count So Far         :                   7
+Write Count So Far        :                   7
+Average Read Count        :                 0/s
+Average Write Count       :                 0/s
+Last Statistic Time       : 2024-01-19 15:07:56
+Current Statistic Time    : 2024-01-19 15:08:56
+***********************************************
+
+2024-01-19 15:09:56,882 INFO  org.apache.seatunnel.engine.client.job.JobMetricsRunner -
+***********************************************
+           Job Progress Information
+***********************************************
+Job Id                    :  800621986458894337
+Read Count So Far         :                   7
+Write Count So Far        :                   7
+Average Read Count        :                 0/s
+Average Write Count       :                 0/s
+Last Statistic Time       : 2024-01-19 15:08:56
+Current Statistic Time    : 2024-01-19 15:09:56
+***********************************************
+```
+
 
 
 
