@@ -177,6 +177,37 @@ seatunnel:
 ```
 
 
+### 实际测试
+
+上面的写法本地启动不一定成功，我本地实际测试的配置文件如下：
+
+- seatunnel.yaml
+
+```yaml
+seatunnel:
+    engine:
+        backup-count: 1
+        queue-type: blockingqueue
+        print-execution-info-interval: 60
+        slot-service:
+            dynamic-slot: true
+        checkpoint:
+            interval: 300000
+            timeout: 10000
+            storage:
+                type: localfile
+                max-retained: 3
+                plugin-config:
+                    namespace: C:\ProgramData\seatunnel\checkpoint\
+
+#            storage:
+#                type: hdfs
+#                max-retained: 3
+#                plugin-config:
+#                    namespace: /tmp/seatunnel/checkpoint_snapshot/
+#                    storage.type: hdfs
+#                    fs.defaultFS: file:///tmp/
+```
 
 
 # 参考资料
