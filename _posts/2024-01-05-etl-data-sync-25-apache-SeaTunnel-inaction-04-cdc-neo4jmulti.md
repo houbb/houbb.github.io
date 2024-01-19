@@ -739,6 +739,60 @@ neo4j 中数据：
 └──────────────────────────────────────────────────────────────────────┘
 ```
 
+
+# 服务端模式运行
+
+## 说明
+
+服务端运行时，会有一些不同。
+
+本地 mvn clean install 打包，把对应的包命名为 connector-neo4j-multi-2.3.3.jar 放入到 connectors 下。
+
+但是发现依然会报错，说插件不存在。
+
+为什么内置的可以，我们自己定义不行？
+
+```
+~/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/connectors$ ls
+plugin-mapping.properties  seatunnel
+```
+
+看了下需要改一下 `plugin-mapping.properties`。
+
+加一下我们自定义的插件：
+
+```
+# SeaTunnel Connector-V2
+seatunnel.sink.Neo4jMulti = connector-neo4j-multi
+
+seatunnel.source.FakeSource = connector-fake
+seatunnel.sink.Console = connector-console
+```
+
+后面的版本一定要保持一致。
+
+## 2.2 服务启动
+
+```bash
+cd /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3
+bash bin/stop-seatunnel-cluster.sh
+nohup bash bin/seatunnel-cluster.sh 2>&1 &
+```
+
+### 运行命令：
+
+```bash
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --config /home/dh/bigdata/seatunnel-2.3.3/config/mysql_cdc_to_neo4j_multi.conf
+```
+
+日志查看在 
+
+```bash
+tail -f /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/logs/seatunnel-engine-server.log
+```
+
+
+
 # 小结
 
 到这里，可以发现 seaTunnel 的设计给后续的拓展提供了强大的灵活性基础。

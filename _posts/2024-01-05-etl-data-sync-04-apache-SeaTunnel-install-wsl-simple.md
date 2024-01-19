@@ -228,11 +228,11 @@ $   ./bin/seatunnel.sh --config ./config/v2.batch.config.template -e local
 
 ```bash
 #进入安装目录
-$   cd /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3
+cd /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3
 # 关闭
 bash bin/stop-seatunnel-cluster.sh
 # 启动服务
-$   nohup bash bin/seatunnel-cluster.sh 2>&1 &
+nohup bash bin/seatunnel-cluster.sh 2>&1 &
 ```
 
 日志查看在 
