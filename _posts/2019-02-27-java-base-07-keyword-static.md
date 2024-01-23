@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Static
-date:  2016-05-29 21:22:19 +0800
+title: java base-07-keyword static
+date:  2019-2-27 09:48:47 +0800
 categories: [Java]
-tags: [static]
+tags: [static, java-base]
 published: false
 ---
 * any list

@@ -1,9 +1,9 @@
 ---
 layout: post
 title: java base-04 Error and Exception
-date:  2019-4-16 10:55:13 +0800
+date:  2019-2-27 09:48:47 +0800
 categories: [Java]
-tags: [java, java-base, exception, sh]
+tags: [static, java-base]
 published: true
 ---
 
