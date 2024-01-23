@@ -1,14 +1,12 @@
 ---
 layout: post
-title: Inner Class
-date:  2016-7-1 14:13:31 +0800
+title: java base-08-Inner Class 内部类
+date:  2019-2-27 09:48:47 +0800
 categories: [Java]
-tags: [inner class]
-published: false
+tags: [static, java-base]
+published: true
 ---
 
-* any list
-{:toc}
 
 # Member Inner Class
 
@@ -217,4 +215,5 @@ public void testAnonymousImpl() {
 }
 ```
 
-
+* any list
+{:toc}

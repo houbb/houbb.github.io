@@ -4,10 +4,9 @@ title: java base-07-keyword static
 date:  2019-2-27 09:48:47 +0800
 categories: [Java]
 tags: [static, java-base]
-published: false
+published: true
 ---
-* any list
-{:toc}
+
 
 ## import static
 
@@ -45,4 +44,5 @@ It's not a good way to extends static members from super class. like this code i
 ```
 
 
-
+* any list
+{:toc}
