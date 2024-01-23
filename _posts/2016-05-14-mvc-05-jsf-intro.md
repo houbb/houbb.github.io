@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  web mvc-05-JSF JavaServer Faces
+title:  java web mvc-05-JSF JavaServer Faces
 date:  2016-5-14 11:58:26 +0800
 categories: [WEB]
 tags: [web, mvc]

@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Mybatis Generator
-date:  2016-08-25 22:59:31 +0800
+title: mybatis-12-Mybatis Generator 代码生成
+date:  2016-07-27 10:40:05 16:09:17 +0800
 categories: [SQL]
 tags: [mybatis]
 published: true

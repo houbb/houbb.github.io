@@ -1,6 +1,6 @@
 ---
 layout: post
-title: mvc-02-struts2
+title: java web mvc-02-struts2
 date:  2016-5-14 11:58:26 +0800
 categories: [WEB]
 tags: [web, mvc]

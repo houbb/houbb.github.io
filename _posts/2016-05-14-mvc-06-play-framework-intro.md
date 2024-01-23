@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  web mvc-06-play framework intro
+title:  java web mvc-06-play framework intro
 date:  2016-5-14 11:58:26 +0800
 categories: [WEB]
 tags: [web, mvc]

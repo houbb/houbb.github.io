@@ -1,6 +1,6 @@
 ---
 layout: post
-title: mvc-01-Model-View-Controller 概览 
+title: java web mvc-01-Model-View-Controller 概览 
 date:  2016-5-14 11:58:26 +0800
 categories: [WEB]
 tags: [web, mvc, overview]

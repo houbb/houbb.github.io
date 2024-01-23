@@ -1,6 +1,6 @@
 ---
 layout: post
-title: web mvc-03-JFinal
+title: java web mvc-03-JFinal
 date:  2016-5-14 11:58:26 +0800
 categories: [WEB]
 tags: [web, mvc]

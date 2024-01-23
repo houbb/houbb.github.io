@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Mybatis 查询结果为 null，实际 sql 查询有值
+title: mybatis-11-Mybatis 查询结果为 null，实际 sql 查询有值
 date:  2016-07-27 10:40:05 16:09:17 +0800
 categories: [SQL]
 tags: [mybatis, database]
