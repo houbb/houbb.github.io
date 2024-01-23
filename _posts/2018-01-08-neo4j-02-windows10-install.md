@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Neo4j-02-图数据库 neo4j windows10 install 安装笔记
+title:  Neo4j-02-图数据库 neo4j install on windows10 安装笔记
 date:  2018-1-8 14:18:33 +0800
 categories: [SQL]
 tags: [nosql, neo4j]
