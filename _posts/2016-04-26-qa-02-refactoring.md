@@ -1,21 +1,20 @@
 ---
 layout: post
-title: Refactoring
-date:  2016-6-2 13:21:08 +0800
+title: qa-02-Refactoring
+date:  2016-4-26 12:53:12 +0800
 categories: [Java]
 tags: [refactoring]
-published: false
+published: true
 ---
-* any list
-{:toc}
+
 
 ## If else
 
-You may think too many if else is not elegant, want to solve it. But what is elegant?
+你可能认为太多的 if-else 语句显得不够优雅，想要解决这个问题。但是，什么才是优雅呢？
 
-It's not necessary to replace if else just for refactoring. Do when it's necessary.
+并非一定要为了重构而替换 if-else，只有在必要的时候才进行。
 
-> Here are some skills to instead of if else.
+以下是一些替代 if-else 的技巧。
 
 ### two branches
 
@@ -41,7 +40,7 @@ if(condition) {
 
 <label class="label label-warning">Notice</label>
 
-Some people think it's not a good way to return times during our function, read it here [one return](http://www.theserverside.com/tip/A-return-to-Good-Code) 
+有些人认为在函数中多次使用返回语句并不是一种好的做法，您可以在这里阅读更多信息：[一个返回语句](http://www.theserverside.com/tip/A-return-to-Good-Code)。
 
 - or can replaced by
 
@@ -51,7 +50,7 @@ condition? doSth() : doAnother();
 
 <label class="label label-warning">Notice</label>
 
-This is not a generic way. In a word, use if else as you like when it'e necessary.
+这并不是一种通用的方式。总的来说，当有必要时，可以随心所欲地使用 if-else。
  
 ### many branches
 
@@ -97,7 +96,7 @@ public class ColorInfo {
 
 <label class="label label-success">switch</label>
 
-You can use switch case to solve it, this example switch(String) is depended on jdk1.7.
+你可以使用 switch-case 来解决这个问题，这个例子中的 switch(String) 是依赖于 JDK 1.7。
 
 ```java
 public class ColorInfoEnum {
@@ -223,3 +222,35 @@ public class ColorInfoTest extends TestCase{
 }
 ```
 
+# chat
+
+## 简单谈一谈代码重构
+
+代码重构是指对现有代码进行修改、调整，以改进其结构、设计和可读性，而不改变其外部行为。
+
+重构的目标是提高代码质量、可维护性和可扩展性，减少bug和增加代码的可理解性。
+
+以下是一些关于代码重构的重要方面：
+
+1. **目的：** 代码重构的主要目的是改进代码质量，使其更易于理解、修改和维护。这可能包括消除重复代码、提高性能、改进算法等。
+
+2. **时机：** 代码重构并非总是必要的，而是在特定的时机进行。常见的触发因素包括添加新功能时、修复bug时、代码审查时，或者在团队决定进行技术债务管理时。
+
+3. **步骤：** 重构通常是一个渐进的过程，可以通过小步骤逐渐实施，每一步都确保代码仍然能够正常工作。这有助于降低引入错误的风险。
+
+4. **代码评审：** 在进行代码重构之前，最好通过代码评审来确保团队对于重构的目的和计划有共识。这有助于避免不必要的争议，并提供有益的反馈。
+
+5. **工具支持：** 有许多工具可以辅助代码重构，例如IDE中的重构工具或第三方工具。这些工具可以自动执行一些常见的重构操作，减轻了手动修改代码的负担。
+
+6. **测试：** 重构时需要确保代码的行为不会发生意外变化。因此，在进行重构之前，最好有一套充分的测试覆盖，以确保修改不会引入新的bug。
+
+7. **模式：** 有一些常见的代码重构模式，如提取方法、内联方法、重命名变量等。了解这些模式可以帮助程序员更有效地进行重构。
+
+8. **文档更新：** 随着代码的修改，相关的文档也应该进行更新，以确保文档与代码保持一致。
+
+9. **学习机会：** 通过参与代码重构，团队成员有机会学习和理解代码库的不同部分。这有助于知识传递和团队的整体技术提升。
+
+总体而言，代码重构是软件开发中不可或缺的一部分，它有助于保持代码库的健康状态，促使团队更好地适应变化和不断提高代码质量。
+
+* any list
+{:toc}
