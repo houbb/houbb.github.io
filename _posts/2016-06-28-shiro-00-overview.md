@@ -7,8 +7,6 @@ tags: [shiro]
 published: true
 ---
 
-* any list
-{:toc}
 
 # RBAC
 
@@ -18,25 +16,25 @@ published: true
 
 # Shiro
 
-Apache Shiro is a powerful and easy-to-use Java security framework that performs authentication, authorization, cryptography, and session management.
-With Shiro’s easy-to-understand API, you can quickly and easily secure any application,
-from the smallest mobile applications to the largest web and enterprise applications.
+Apache Shiro 是一个强大且易于使用的 Java 安全框架，负责执行身份验证、授权、加密和会话管理。
 
-> [shiro](http://shiro.apache.org/)
+通过 Shiro 的易于理解的 API，您可以快速而轻松地保护任何应用程序，从最小的移动应用到最大的 Web 和企业应用。
 
-> [shiro zh_CN](http://jinnianshilongnian.iteye.com/blog/2018398)
+Shiro 提供了应用程序安全 API，用于执行以下方面：
 
-Shiro provides the application security API to perform the following aspects:
-
-- Authentication - proving user identity, often called user ‘login’
-- Authorization - access control
-- Cryptography - protecting or hiding data from prying eyes
-- Session Management - per-user time-sensitive state
+- 身份验证 - 验证用户身份，通常称为用户“登录”
+- 授权 - 访问控制
+- 加密 - 保护或隐藏数据免受窥探
+- 会话管理 - 每个用户的时限敏感状态
 
 <uml>
     Subject->SecurityManager:
     SecurityManager->Realms:
 </uml>
+
+> [shiro](http://shiro.apache.org/)
+
+> [shiro zh_CN](http://jinnianshilongnian.iteye.com/blog/2018398)
 
 # Hello world
 
@@ -100,9 +98,9 @@ public void testHelloworld() {
 
 # Realms
 
-Realms act as the ‘bridge’ or ‘connector’ between Shiro and your application’s security data.
-When it comes time to actually interact with security-related data like user accounts to perform authentication (login)
-and authorization (access control), Shiro looks up many of these things from one or more Realms configured for an application.
+Realms（领域）充当 Shiro 与您的应用程序安全数据之间的“桥梁”或“连接器”。
+
+当需要实际与安全相关的数据进行交互，例如从用户帐户执行身份验证（登录）和授权（访问控制）时，Shiro 会查找配置为应用程序的一个或多个领域中的许多信息。
 
 - Realm.java
 
@@ -357,9 +355,9 @@ public void testJDBCRealm() {
 
 # Authenticator
 
-- In a single-realm application, the ```ModularRealmAuthenticator``` will invoke the single Realm directly. 
+- 在单领域应用程序中，```ModularRealmAuthenticator``` 将直接调用单个领域。
 
-- If you wish to configure the SecurityManager with a custom ```Authenticator``` implementation, you can do so in *shiro.ini* for example:
+- 如果您希望使用自定义的 ```Authenticator``` 实现配置 SecurityManager，您可以在 *shiro.ini* 中进行配置，例如：
 
 ```
 [main]
@@ -386,41 +384,40 @@ public interface Authenticator {
 
 # AuthenticationStrategy
 
-When two or more realms are configured for an application, the ```ModularRealmAuthenticator``` relies on an internal ```AuthenticationStrategy``` component to 
-determine the conditions for which an authentication attempt succeeds or fails.
+当为应用程序配置了两个或更多领域时，```ModularRealmAuthenticator``` 依赖于内部的 ```AuthenticationStrategy``` 组件来确定身份验证尝试成功或失败的条件。
 
 <table  id="AuthenticationStrategy" class="table table-bordered table-hover">
     <tr>
-        <th>AuthenticationStrategy class</th>
-        <th>Description</th>
+        <th>AuthenticationStrategy 类</th>
+        <th>描述</th>
     </tr>
     <tr>
         <td>AtLeastOneSuccessfulStrategy</td>
-        <td>If one (or more) Realms authenticate successfully, the overall attempt is considered successful. If none authenticate succesfully, the attempt fails.</td>
+        <td>如果一个或多个领域成功验证，则将考虑整体尝试成功。如果没有一个验证成功，则尝试失败。</td>
     </tr>
     <tr>
         <td>FirstSuccessfulStrategy</td>
-        <td>Only the information returned from the first successfully authenticated Realm will be used. All further Realms will be ignored. If none authenticate successfully, the attempt fails.</td>
+        <td>仅使用从第一个成功验证的领域返回的信息。所有后续领域将被忽略。如果没有一个验证成功，则尝试失败。</td>
     </tr>
     <tr>
         <td>AllSuccessfulStrategy</td>
-        <td>All configured Realms must authenticate successfully for the overall attempt to be considered successful. If any one does not authenticate successfully, the attempt fails.</td>
+        <td>所有配置的领域必须成功验证才能考虑整体尝试成功。如果有任何一个验证不成功，则尝试失败。</td>
     </tr>
 </table>
 
+1、这里定义了三个用于测试的领域：
 
-1、Here I define three realm for test;
+- FirstRealm    ryo/123  成功，返回 ryo/123
 
-- FirstRealm    ryo/123  success,   return ryo/123
+- SecondRealm   wang/123 成功，返回 wang/123   
 
-- SecondRealm   wang/123 success,   return wang/123   
-
-- ThirdRealm    ryo/123 success,    return ryo@gmail.com/123
+- ThirdRealm    ryo/123 成功，返回 ryo@gmail.com/123
 
 2、shiro-authenticator-all-success.ini
 
-The ```ModularRealmAuthenticator``` defaults to the ```AtLeastOneSuccessfulStrategy``` implementation, as this is the most commonly desired strategy. 
-However, you could configure a different strategy if you wanted.
+```ModularRealmAuthenticator``` 默认使用 ```AtLeastOneSuccessfulStrategy``` 实现，因为这是最常用的策略。
+
+但是，如果需要，您可以配置不同的策略。
 
 ```
 [main]
@@ -462,10 +459,9 @@ private Subject getSubjectByPath(String configFilePath) {
 }
 ```
 
-<label class="label label-info">Tips</label>
+```<label class="label label-info">提示</label>```
 
-If you wanted to create your own AuthenticationStrategy implementation yourself, you could use the 
-```org.apache.shiro.authc.pam.AbstractAuthenticationStrategy``` as a starting point.
+如果您想自己创建自己的 ```AuthenticationStrategy``` 实现，您可以使用 ```org.apache.shiro.authc.pam.AbstractAuthenticationStrategy``` 作为起点。
 
 - OnlyOneAuthenticatorStrategy.java
 
@@ -531,7 +527,7 @@ public class OnlyOneAuthenticatorStrategy extends AbstractAuthenticationStrategy
 
 - shiro-authenticator-onlyone-success.ini
 
-```
+```ini
 [main]
 authenticator=org.apache.shiro.authc.pam.ModularRealmAuthenticator
 securityManager.authenticator=$authenticator
@@ -547,7 +543,7 @@ securityManager.realms=$firstRealm,$secondRealm
 
 - test()
 
-```
+```java
 @Test
     public void testOnlyOneAuthenticatorStrategy() {
         Subject subject = getSubjectByPath("classpath:shiro-authenticator-onlyone-success.ini");
@@ -562,7 +558,7 @@ securityManager.realms=$firstRealm,$secondRealm
 
 - if you change the *shiro-authenticator-onlyone-success.ini* into
 
-```
+```ini
 #define and uer realms.
 firstRealm=com.ryo.shiro.FirstRealm
 thirdRealm=com.ryo.shiro.ThirdRealm
@@ -576,3 +572,5 @@ org.apache.shiro.authc.AuthenticationException: Authentication token of type [cl
 could not be authenticated by any configured realms.  Please ensure that only one realm can authenticate these tokens.
 ```
  
+* any list
+{:toc}
