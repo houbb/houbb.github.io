@@ -6,6 +6,13 @@ categories: [ORM]
 tags: [orm, sql, jdbc]
 ---
 
+# 拓展阅读
+
+> [The jdbc pool for java.(java 手写 jdbc 数据库连接池实现)](https://github.com/houbb/jdbc-pool)
+
+> [The simple mybatis.（手写简易版 mybatis）](https://github.com/houbb/mybatis)
+
+
 # 1. EclipseLink概述
 
 本章介绍了EclipseLink及其关键特性：包括在EclipseLink中的组件、元数据、应用程序架构、映射和API。

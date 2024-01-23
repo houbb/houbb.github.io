@@ -25,6 +25,13 @@ published: true
 
 [web mvc-08-Grails](https://houbb.github.io/2016/05/14/mvc-08-Grails)
 
+# 拓展阅读
+
+> [The jdbc pool for java.(java 手写 jdbc 数据库连接池实现)](https://github.com/houbb/jdbc-pool)
+
+> [The simple mybatis.（手写简易版 mybatis）](https://github.com/houbb/mybatis)
+
+
 # JFinal
 
 JFinal 是基于 Java 语言的极速 WEB + ORM 开发框架，其核心设计目标是开发迅速、代码量少、学习简单、功能强大、轻量级、易扩展、Restful。

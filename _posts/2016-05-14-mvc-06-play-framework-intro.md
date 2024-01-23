@@ -25,6 +25,14 @@ published: true
 
 [web mvc-08-Grails](https://houbb.github.io/2016/05/14/mvc-08-Grails)
 
+
+## 开源
+
+> [The jdbc pool for java.(java 手写 jdbc 数据库连接池实现)](https://github.com/houbb/jdbc-pool)
+
+> [The simple mybatis.（手写简易版 mybatis）](https://github.com/houbb/mybatis)
+
+
 # play framework
 
 Play是一个高生产力的Java和Scala Web应用程序框架，集成了现代Web应用程序开发所需的组件和API。

@@ -7,6 +7,13 @@ tags: [orm, sql]
 published: true
 ---
 
+
+# 拓展阅读
+
+> [The jdbc pool for java.(java 手写 jdbc 数据库连接池实现)](https://github.com/houbb/jdbc-pool)
+
+> [The simple mybatis.（手写简易版 mybatis）](https://github.com/houbb/mybatis)
+
 # Hibernate
 
 Hibernate ORM 允许开发者更轻松地编写那些数据在应用程序进程结束后仍然存在的应用程序。
