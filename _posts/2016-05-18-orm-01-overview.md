@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ORM-01-overview
+title: ORM-01-Hibernate、MyBatis、EclipseLink、Spring Data JPA、TopLink、ActiveJDBC、Querydsl 和 JOOQ 对比
 date:  2016-05-21 18:35:52 +0800
 categories: [ORM]
 tags: [orm, sql]
