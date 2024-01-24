@@ -7,6 +7,24 @@ tags: [awesome, tool, sh]
 published: true
 ---
 
+# 有没有可以查看所有开源数据库的网站资源？
+
+以下是一些常用的网站：
+
+1. **DB-Engines：** [DB-Engines](https://db-engines.com) 提供了一个全球最流行数据库的排名和比较的平台。它考虑了多个方面，包括社区活跃度、搜索流行度、职业技能需求等。
+
+2. **Awesome DB：** [Awesome DB](https://github.com/numetriclabz/awesome-db) 是一个GitHub上的项目，列出了各种数据库系统，包括开源和商业数据库。它提供了对每个数据库的简短描述和相关资源的链接。
+
+3. **DBMS Overview：** [DBMS Overview](https://dbms-learn.org) 是一个在线资源，提供对许多数据库管理系统的概述和比较。它包括了许多不同类型的数据库，从关系型数据库到NoSQL数据库。
+
+4. **AlternativeTo：** [AlternativeTo](https://alternativeto.net) 是一个社区驱动的网站，用于发现和分享软件替代品。你可以在这里搜索数据库系统，并查看用户评价和建议的替代品。
+
+5. **GitHub：** 当然，GitHub本身是一个极好的资源，你可以在上面找到各种数据库系统的源代码、文档和社区讨论。你可以使用GitHub的搜索功能来查找感兴趣的数据库项目。
+
+这些资源可以帮助你更好地了解不同数据库系统，了解它们的特性、优势和劣势，以便选择适合你项目需求的数据库。
+
+请注意，这个领域变化很快，最好定期检查这些资源，以获取最新的信息。
+
 # github 访问慢
 
 直接访问 [https://raw.hellogithub.com/hosts](https://raw.hellogithub.com/hosts) 下载 hosts 文件
