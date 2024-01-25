@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ORM-07-querydsl
+title: ORM-07-querydsl 入门介绍
 date:  2016-05-21 18:35:52 +0800
 categories: [ORM]
 tags: [orm, sql, jdbc]
