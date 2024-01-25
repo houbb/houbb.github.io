@@ -12,7 +12,7 @@ published: true
 ## help
 
 ```bash
-~/apache-seatunnel-2.3.3/bin/seatunnel.sh --help
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --help
 ```
 
 如下：
@@ -59,24 +59,97 @@ Usage: seatunnel.sh [options]
 /home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --list
 ```
 
-如下：
+效果如下：
 
 ```
-2024-01-23 10:16:44,757 INFO  com.hazelcast.client.impl.statistics.ClientStatisticsService - Client statistics is enabled with period 5 seconds.
 Job ID              Job Name   Job Status  Submit Time              Finished Time
 ------------------  ---------  ----------  -----------------------  -----------------------
-801997588281688065  SeaTunnel  RUNNING     2024-01-23 10:12:05.805
-801994731839029249  SeaTunnel  FAILED      2024-01-23 10:00:45.014  2024-01-23 10:07:43.266
+802755807811731457  SeaTunnel  RUNNING     2024-01-25 12:24:59.844
+801997588281688065  SeaTunnel  CANCELED    2024-01-23 10:12:05.805  2024-01-25 12:26:31.387
 ```
 
 ## 取消一个任务
 
 ```bash
-/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --can 801994731839029249
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh -can 802755807811731457
+```
+
+后面指定对应的 jobId 处理。
+
+正常处理后，再次查看。
+
+```bash
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --list
+```
+
+发现这里需要指定一个 jobName，后面查看起来应该更加方便。
+
+# 验证一下
+
+```
+vi /home/dh/bigdata/seatunnel-2.3.3/config/mysql_cdc_to_neo4j_multi.conf
+```
+
+添加对应的 job 名称。
+
+重新提交任务：
+
+```bash
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh -c /home/dh/bigdata/seatunnel-2.3.3/config/mysql_cdc_to_neo4j_multi.conf
+```
+
+任务提交之后，查看：
+
+```bash
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --list
+```
+
+发现 jobName 还是不对？
+
+```
+2024-01-25 12:35:17,192 INFO  org.apache.seatunnel.engine.client.job.ClientJobProxy - Submit job finished, job id: 802758398431985665, job name: SeaTunnel
+```
+
+难道是从命令行获取的？
+
+发现代码：
+
+```java
+JobConfig jobConfig = new JobConfig();
+JobExecutionEnvironment jobExecutionEnv;
+jobConfig.setName(clientCommandArgs.getJobName());
 ```
 
 
+### 指定 -n 重新尝试
 
+```bash
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh -c /home/dh/bigdata/seatunnel-2.3.3/config/mysql_cdc_to_neo4j_multi.conf -n myDefineJobName
+```
+
+此时提交日志：
+
+```
+2024-01-25 12:42:39,827 INFO  org.apache.seatunnel.engine.client.job.ClientJobProxy - Submit job finished, job id: 802760255086788609, job name: myDefineJobName
+```
+
+任务查看：
+
+```
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --list
+```
+
+如下：
+
+```
+2024-01-25 12:43:14,071 INFO  com.hazelcast.client.impl.statistics.ClientStatisticsService - Client statistics is enabled with period 5 seconds.
+Job ID              Job Name         Job Status  Submit Time              Finished Time
+------------------  ---------------  ----------  -----------------------  -----------------------
+802760255086788609  myDefineJobName  RUNNING     2024-01-25 12:42:39.785
+802758398431985665  SeaTunnel        RUNNING     2024-01-25 12:35:17.127
+802755807811731457  SeaTunnel        CANCELED    2024-01-25 12:24:59.844  2024-01-25 12:28:11.373
+801997588281688065  SeaTunnel        CANCELED    2024-01-23 10:12:05.805  2024-01-25 12:26:31.387
+```
 
 # 参考资料
 
