@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ETL-27-apache SeaTunnel 实战一些常用的任务命令 command 
+title: ETL-29-apache SeaTunnel 实战一些常用的任务命令 command 
 date: 2024-01-05 21:01:55 +0800
 categories: [ETL]
 tags: [etl, sh]

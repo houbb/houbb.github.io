@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ETL-27-apache SeaTunnel 实战 Checkpoint expired before completing. Please increase checkpoint timeout in the seatunnel.yaml
+title: ETL-30-apache SeaTunnel 实战 Checkpoint expired before completing. Please increase checkpoint timeout in the seatunnel.yaml
 date: 2024-01-05 21:01:55 +0800
 categories: [ETL]
 tags: [etl, sh]
