@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ETL-03-DataX quick-start 快速入门 windows10 WSL 实战笔记
+title: ETL-03-数据同步之 DataX quick start 快速入门 windows10 WSL 实战笔记
 date: 2024-01-05 21:01:55 +0800
 categories: [ETL]
 tags: [etl, in-action, sh]
