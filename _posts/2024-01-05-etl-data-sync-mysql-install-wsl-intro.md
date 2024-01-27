@@ -69,7 +69,7 @@ mysql -uroot -p
 5.7 默认密码应该是空，但是 8.0 需要密码，通过下面方式查看
 
 ```bash
-cat /etc/mysql/debian.cnf
+sudo cat /etc/mysql/debian.cnf
 ```
 
 ```cnf
@@ -129,7 +129,7 @@ sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
 
 把下面 2 行都注释掉：
 
-```cnf
+```ini
 # Instead of skip-networking the default is now to listen only on
 # localhost which is more compatible and is not less secure.
 #bind-address           = 127.0.0.1
@@ -138,7 +138,7 @@ sudo vim /etc/mysql/mysql.conf.d/mysqld.cnf
 
 同时把端口从 3306 改为 13306
 
-```cnf
+```ini
 [mysqld]
 #
 # * Basic Settings
@@ -165,6 +165,43 @@ key_buffer_size         = 16M
 # max_allowed_packet    = 64M
 # thread_stack          = 256K
 ```
+
+### 如果你想 Binlog
+
+`[mysqld]` 下面添加如下内容：s
+
+```ini
+# Enable binary replication log and set the prefix, expiration, and log format.
+# The prefix is arbitrary, expiration can be short for integration tests but would
+# be longer on a production system. Row-level info is required for ingest to work.
+# Server ID is required, but this will vary on production systems
+server-id         = 223344
+log_bin           = mysql-bin
+expire_logs_days  = 10
+binlog_format     = row
+binlog_row_image  = FULL
+
+# enable gtid mode
+gtid_mode = on
+enforce_gtid_consistency = on
+```
+
+启动后确认 mysql 结果如下则说明成功：
+
+```
+mysql> show variables where variable_name in ('log_bin', 'binlog_format', 'binlog_row_image', 'gtid_mode', 'enforce_gtid_consistency');
++--------------------------+-------+
+| Variable_name            | Value |
++--------------------------+-------+
+| binlog_format            | ROW   |
+| binlog_row_image         | FULL  |
+| enforce_gtid_consistency | ON    |
+| gtid_mode                | ON    |
+| log_bin                  | ON    |
++--------------------------+-------+
+```
+
+> [mysql binlog windows10 环境的开启和解析笔记](https://houbb.github.io/2021/08/29/mysql-binlog)
 
 ### 重启服务
 
@@ -284,6 +321,32 @@ msql -uadmin -p
 登录验证。
 
 # 远程访问实际测试
+
+## 简单的 user_info
+
+```sql
+create database test_source;
+use test_source;
+
+drop table if exists user_info;
+create table user_info
+(
+    id int unsigned auto_increment comment '主键' primary key,
+    username varchar(128) not null comment '用户名',
+    create_time timestamp default CURRENT_TIMESTAMP not null comment '创建时间',
+    update_time timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间'
+) comment '用户信息表' ENGINE=Innodb default charset=utf8mb4 auto_increment=1;
+```
+
+初始化数据
+
+```sql
+insert into user_info (username) values ('u1');
+insert into user_info (username) values ('u2');
+insert into user_info (username) values ('u3');
+insert into user_info (username) values ('u4');
+insert into user_info (username) values ('u5');
+```
 
 ## admin 账户初始化测试表
 

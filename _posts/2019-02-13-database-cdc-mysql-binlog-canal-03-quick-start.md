@@ -1,63 +1,103 @@
 ---
 layout: post
-title: canal-03-quick start 快速开始
+title: canal-03-canal windows10 wsl 实战笔记
 date:  2019-2-13 09:48:27 +0800
 categories: [Database]
-tags: [database, sharding, mysql, cdc, canal, sh]
+tags: [database, sharding, mysql, cdc, canal, in-action, sh]
 published: true
 ---
 
-# 准备
+# windows10 WSL 实战笔记
 
-对于自建 MySQL , 需要先开启 Binlog 写入功能，配置 binlog-format 为 ROW 模式，my.cnf 中配置如下
+## 准备工作
 
-```ini
-[mysqld]
-log-bin=mysql-bin # 开启 binlog
-binlog-format=ROW # 选择 ROW 模式
-server_id=1 # 配置 MySQL replaction 需要定义，不要和 canal 的 slaveId 重复
-```
+确保已经开启 binlog
 
-注意：针对阿里云 RDS for MySQL , 默认打开了 binlog , 并且账号默认具有 binlog dump 权限 , 不需要任何权限或者 binlog 设置,可以直接跳过这一步
-
-授权 canal 链接 MySQL 账号具有作为 MySQL slave 的权限, 如果已有账户可直接 grant
+> [binlog 开启](https://houbb.github.io/2021/08/29/mysql-binlog)
 
 ```sql
-CREATE USER canal IDENTIFIED BY 'canal';  
-GRANT SELECT, REPLICATION SLAVE, REPLICATION CLIENT ON *.* TO 'canal'@'%';
--- GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' ;
-FLUSH PRIVILEGES;
+mysql> show variables where variable_name in ('log_bin', 'binlog_format', 'binlog_row_image', 'gtid_mode', 'enforce_gtid_consistency');
++--------------------------+-------+
+| Variable_name            | Value |
++--------------------------+-------+
+| binlog_format            | ROW   |
+| binlog_row_image         | FULL  |
+| enforce_gtid_consistency | ON    |
+| gtid_mode                | ON    |
+| log_bin                  | ON    |
++--------------------------+-------+
 ```
 
-# 启动
+## 创建 canal 账户
 
-下载 canal, 访问 release 页面 , 选择需要的包下载, 如以 1.0.17 版本为例
-
+```sql
+CREATE USER 'canal'@'%' IDENTIFIED BY 'canal';
+GRANT ALL PRIVILEGES ON *.* TO 'canal'@'%' WITH GRANT OPTION;
+flush privileges;
 ```
-wget https://github.com/alibaba/canal/releases/download/canal-1.0.17/canal.deployer-1.0.17.tar.gz
+
+## 创建表
+
+```sql
+create database test_source;
+use test_source;
+
+drop table if exists user_info;
+create table user_info
+(
+    id int unsigned auto_increment comment '主键' primary key,
+    username varchar(128) not null comment '用户名',
+    create_time timestamp default CURRENT_TIMESTAMP not null comment '创建时间',
+    update_time timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间'
+) comment '用户信息表' ENGINE=Innodb default charset=utf8mb4 auto_increment=1;
+```
+
+初始化数据
+
+```sql
+insert into user_info (username) values ('u1');
+insert into user_info (username) values ('u2');
+insert into user_info (username) values ('u3');
+insert into user_info (username) values ('u4');
+insert into user_info (username) values ('u5');
+```
+
+## 下载 canal
+
+```bash
+$ pwd
+/home/houbinbin/canal
+```
+
+下载 canal, [访问 release 页面 , 选择需要的包下载](https://github.com/alibaba/canal/releases/), 如以 `canal.deployer-1.1.7.tar.gz` 为例
+
+```bash
+wget https://github.com/alibaba/canal/releases/download/canal-1.1.7/canal.deployer-1.1.7.tar.gz
 ```
 
 解压缩
 
-```
-mkdir /tmp/canal
-tar zxvf canal.deployer-$version.tar.gz  -C /tmp/canal
-解压完成后，进入 /tmp/canal 目录，可以看到如下结构
-drwxr-xr-x 2 jianghang jianghang  136 2013-02-05 21:51 bin
-drwxr-xr-x 4 jianghang jianghang  160 2013-02-05 21:51 conf
-drwxr-xr-x 2 jianghang jianghang 1.3K 2013-02-05 21:51 lib
-drwxr-xr-x 2 jianghang jianghang   48 2013-02-05 21:29 logs
+```sh
+tar -zxvf canal.deployer-1.1.7.tar.gz
 ```
 
-配置修改
+如下：
 
+```bash
+$ ls
+bin  canal.deployer-1.1.7.tar.gz  canal.deployer-1.1.7.tar.gz:Zone.Identifier  conf  lib  logs  plugin
+```
+
+## 配置修改
+
+修改对应的配置文件
 ```ini
 vi conf/example/instance.properties
 
 ## mysql serverId
 canal.instance.mysql.slaveId = 1234
 #position info，需要改成自己的数据库信息
-canal.instance.master.address = 127.0.0.1:3306 
+canal.instance.master.address = 127.0.0.1:13306 
 canal.instance.master.journal.name = 
 canal.instance.master.position = 
 canal.instance.master.timestamp = 
@@ -74,41 +114,124 @@ canal.instance.connectionCharset = UTF-8
 canal.instance.filter.regex = .\*\\\\..\*
 ```
 
+这里主要改一下 canal.instance.master.address 为自己的本地地址，其他的不变化。
+
 canal.instance.connectionCharset 代表数据库的编码方式对应到 java 中的编码类型，比如 UTF-8，GBK , ISO-8859-1
 
 如果系统是1个 cpu，需要将 canal.instance.parser.parallel 设置为 false
 
-启动
+## 启动
 
-```
+
+```sh
 sh bin/startup.sh
 ```
 
-查看 server 日志
+### 查看 server 日志
 
-```
-vi logs/canal/canal.log</pre>
-2013-02-05 22:45:27.967 [main] INFO  com.alibaba.otter.canal.deployer.CanalLauncher - ## start the canal server.
-2013-02-05 22:45:28.113 [main] INFO  com.alibaba.otter.canal.deployer.CanalController - ## start the canal server[10.1.29.120:11111]
-2013-02-05 22:45:28.210 [main] INFO  com.alibaba.otter.canal.deployer.CanalLauncher - ## the canal server is running now ......
+```sh
+cat logs/canal/canal.log
 ```
 
-查看 instance 的日志
+日志如下：
 
 ```
-vi logs/example/example.log
-
-2013-02-05 22:50:45.636 [main] INFO  c.a.o.c.i.spring.support.PropertyPlaceholderConfigurer - Loading properties file from class path resource [canal.properties]
-2013-02-05 22:50:45.641 [main] INFO  c.a.o.c.i.spring.support.PropertyPlaceholderConfigurer - Loading properties file from class path resource [example/instance.properties]
-2013-02-05 22:50:45.803 [main] INFO  c.a.otter.canal.instance.spring.CanalInstanceWithSpring - start CannalInstance for 1-example 
-2013-02-05 22:50:45.810 [main] INFO  c.a.otter.canal.instance.spring.CanalInstanceWithSpring - start successful....
+2024-01-27 19:46:19.266 [main] INFO  com.alibaba.otter.canal.deployer.CanalLauncher - ## load canal configurations
+2024-01-27 19:46:19.280 [main] INFO  com.alibaba.otter.canal.deployer.CanalStarter - ## start the canal server.
+2024-01-27 19:46:19.333 [main] INFO  com.alibaba.otter.canal.deployer.CanalController - ## start the canal server[172.23.234.67(172.23.234.67):11111]
+2024-01-27 19:46:21.108 [main] INFO  com.alibaba.otter.canal.deployer.CanalStarter - ## the canal server is running now ......
 ```
 
-# 关闭
+### 查看 instance 的日志
+
+```sh
+cat logs/example/example.log
+```
+
+日志如下：
 
 ```
+2024-01-27 19:46:20.101 [main] INFO  c.a.otter.canal.instance.spring.CanalInstanceWithSpring - start CannalInstance for 1-example
+2024-01-27 19:46:21.056 [main] WARN  c.a.o.canal.parse.inbound.mysql.dbsync.LogEventConvert - --> init table filter : ^.*\..*$
+2024-01-27 19:46:21.057 [main] WARN  c.a.o.canal.parse.inbound.mysql.dbsync.LogEventConvert - --> init table black filter : ^mysql\.slave_.*$
+2024-01-27 19:46:21.063 [main] INFO  c.a.otter.canal.instance.core.AbstractCanalInstance - start successful....
+2024-01-27 19:46:21.241 [destination = example , address = /127.0.0.1:13306 , EventParser] WARN  c.a.o.c.p.inbound.mysql.rds.RdsBinlogEventParserProxy - ---> begin to find start position, it will be long time for reset or first position
+2024-01-27 19:46:21.241 [destination = example , address = /127.0.0.1:13306 , EventParser] WARN  c.a.o.c.p.inbound.mysql.rds.RdsBinlogEventParserProxy - prepare to find start position just show master status
+2024-01-27 19:46:22.484 [destination = example , address = /127.0.0.1:13306 , EventParser] WARN  c.a.o.c.p.inbound.mysql.rds.RdsBinlogEventParserProxy - ---> find start position successfully, EntryPosition[included=false,journalName=mysql-bin.000001,position=4,serverId=223344,gtid=<null>,timestamp=1706355127000] cost : 1231ms , the next step is binlog dump
+```
+## 关闭
+
+```sh
 sh bin/stop.sh
 ```
+
+
+# client exmaple
+
+参见：[https://github.com/alibaba/canal/wiki/ClientExample](https://github.com/alibaba/canal/wiki/ClientExample)
+
+## 下载
+
+下载 canal, [访问 release 页面 , 选择需要的包下载](https://github.com/alibaba/canal/releases/), 如以 `canal.example-1.1.7.tar.gz` 为例
+
+```bash
+wget https://github.com/alibaba/canal/releases/download/canal-1.1.7/canal.example-1.1.7.tar.gz
+```
+
+## 解压
+
+```sh
+cd ~/canal/client/
+tar -zxvf canal.example-1.1.7.tar.gz
+
+$ ls
+bin  canal.example-1.1.7.tar.gz  canal.example-1.1.7.tar.gz:Zone.Identifier  conf  lib  logs
+```
+
+## 启动
+
+```sh
+sh startup.sh
+```
+
+直接看一下日志：
+
+```bash
+cd /home/houbinbin/canal/client/logs/example
+tail -fn30 entry.log
+```
+
+## 插入数据
+
+数据库插入数据：
+
+
+```sql
+insert into user_info (username) values ('u7');
+```
+
+对应的客户端日志：
+
+```
+================> binlog[mysql-bin.000001:4325] , executeTime : 1706356761000(2024-01-27 19:59:21) , gtid : () , delay : 335ms
+ BEGIN ----> Thread id: 8
+----------------> binlog[mysql-bin.000001:4481] , name[test_source,user_info] , eventType : INSERT , executeTime : 1706356761000(2024-01-27 19:59:21) , gtid : () , delay : 335 ms
+id : 6    type=int unsigned    update=true
+username : u7    type=varchar(128)    update=true
+create_time : 2024-01-27 19:59:21    type=timestamp    update=true
+update_time : 2024-01-27 19:59:21    type=timestamp    update=true
+----------------
+ END ----> transaction id: 351
+================> binlog[mysql-bin.000001:4533] , executeTime : 1706356761000(2024-01-27 19:59:21) , gtid : () , delay : 336ms
+```
+
+# 小结 
+
+canal 的设计理念其实已经非常先进了，对于日常的 mysql cdc 完全够用。
+
+实际使用时，可以在 exmaple 的基础之上，做自己的业务能力增强。
+
+不过还有一些类似的更强大的设计，比如 [Debezium-01-为捕获数据更改(change data capture,CDC)提供了一个低延迟的流式处理平台](https://houbb.github.io/2019/02/13/database-sharding-cdc-debezium)
 
 # 参考资料 
 
