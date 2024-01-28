@@ -1,11 +1,35 @@
 ---
 layout: post
-title: canal-03-canal windows10 wsl 实战笔记
+title: canal-03-canal windows wsl 实战笔记
 date:  2019-2-13 09:48:27 +0800
 categories: [Database]
 tags: [database, sharding, mysql, cdc, canal, in-action, sh]
 published: true
 ---
+
+# Canal
+
+[Canal](https://github.com/alibaba/canal)，译意为水道/管道/沟渠，主要用途是基于 MySQL 数据库增量日志解析，提供增量数据订阅和消费
+
+早期阿里巴巴因为杭州和美国双机房部署，存在跨机房同步的业务需求，实现方式主要是基于业务 trigger 获取增量变更。
+
+从 2010 年开始，业务逐步尝试数据库日志解析获取增量变更进行同步，由此衍生出了大量的数据库增量订阅和消费业务。
+
+基于日志增量订阅和消费的业务包括
+
+- 数据库镜像
+
+- 数据库实时备份
+
+- 索引构建和实时维护(拆分异构索引、倒排索引等)
+
+- 业务 cache 刷新
+
+- 带业务逻辑的增量数据处理
+
+当前的 canal 支持源端 MySQL 版本包括 5.1.x , 5.5.x , 5.6.x , 5.7.x , 8.0.x
+
+![mysql](https://camo.githubusercontent.com/63881e271f889d4a424c55cea2f9c2065f63494fecac58432eac415f6e47e959/68747470733a2f2f696d672d626c6f672e6373646e696d672e636e2f32303139313130343130313733353934372e706e67)
 
 # windows10 WSL 实战笔记
 
