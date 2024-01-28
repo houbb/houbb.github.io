@@ -137,38 +137,42 @@ create table user_info_bak
 
 ## 配置例子
 
-```
+```conf
+# Defining the runtime environment
+env {
+  # You can set flink configuration here
+  parallelism = 1
+  job.mode = "STREAMING"
+  checkpoint.interval = 10000
+}
+source{
+    MySQL-CDC {
+        base-url = "jdbc:mysql://localhost:3306/migrate_source?useSSL=false&serverTimezone=Asia/Shanghai"
+        driver = "com.mysql.cj.jdbc.Driver"
+        username = "admin"
+        password = "123456"
+        table-names = ["migrate_source.user_info"]
+
+        startup.mode = "initial"
+    }
+}
+
+transform {
+    # If you would like to get more information about how to configure seatunnel and see full list of transform plugins,
+    # please go to https://seatunnel.apache.org/docs/transform-v2/sql
+}
+
 sink {
-    Neo4jMulti {
-            source_table_name = "etl.user_info"
-
-            uri = "bolt://localhost:7687"
-            username = "neo4j"
-            password = "12345678"
-            database = "neo4j"
-
-            max_transaction_retry_time = 1000
-            max_connection_timeout = 1000
-
-            # id,table_name,column_name,key,label,create_time,update_time
-            queryConfigList = [
-                {
-                    rowKind = "INSERT"
-                    query = "CREATE (a:UserInfoCdc {id: $id, username: $username})"
-                    queryParamPosition = {
-                        id = 0
-                        username = 1
-                    }
-                },
-                {
-                    rowKind = "DELETE"
-                    query = "MATCH (a:UserInfoCdc {id: $id, username: $username}) DELETE a"
-                    queryParamPosition = {
-                        id = 0
-                        username = 1
-                    }
-                }
-            ]
+    jdbc {
+        url = "jdbc:mysql://localhost:3306/migrate_target?useSSL=false&serverTimezone=Asia/Shanghai"
+        driver = "com.mysql.cj.jdbc.Driver"
+        user = "admin"
+        password = "123456"
+        database = "migrate_target"
+        table = "user_info_bak"
+        generate_sink_sql = true
+        support_upsert_by_query_primary_key_exist = true
+        primary_keys = ["id"]
     }
 
 }
