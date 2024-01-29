@@ -189,6 +189,42 @@ sink {
 
 ## 测试效果
 
+### rowKind 的枚举
+
+各种类别：
+
+```java
+public enum RowKind {
+    // Note: Enums have no stable hash code across different JVMs, use toByteValue() for
+    // this purpose.
+
+    /** Insertion operation. */
+    INSERT("+I", (byte) 0),
+
+    /**
+     * Update operation with the previous content of the updated row.
+     *
+     * <p>This kind SHOULD occur together with {@link #UPDATE_AFTER} for modelling an update that
+     * needs to retract the previous row first. It is useful in cases of a non-idempotent update,
+     * i.e., an update of a row that is not uniquely identifiable by a key.
+     */
+    UPDATE_BEFORE("-U", (byte) 1),
+
+    /**
+     * Update operation with new content of the updated row.
+     *
+     * <p>This kind CAN occur together with {@link #UPDATE_BEFORE} for modelling an update that
+     * needs to retract the previous row first. OR it describes an idempotent update, i.e., an
+     * update of a row that is uniquely identifiable by a key.
+     */
+    UPDATE_AFTER("+U", (byte) 2),
+
+    /** Deletion operation. */
+    DELETE("-D", (byte) 3);
+
+}
+```
+
 ### 初始化效果
 
 首先是初始化效果：
