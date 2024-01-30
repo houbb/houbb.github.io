@@ -29,6 +29,8 @@ Ask: How to fix this problem? I think mysql-cdc should support config multi-tabl
 
 For simple, sink is console.
 
+- mysql_cdc_to_console.conf
+
 ```conf
 # Defining the runtime environment
 env {
@@ -40,7 +42,7 @@ env {
 }
 source{
     MySQL-CDC {
-        base-url = "jdbc:mysql://127.0.0.1:3306/cdc?useSSL=false&serverTimezone=Asia/Shanghai"
+        base-url = "jdbc:mysql://127.0.0.1:13306/cdc?useSSL=false&serverTimezone=Asia/Shanghai"
         driver = "com.mysql.jdbc.Driver"
         username = "admin"
         password = "123456"
@@ -209,6 +211,12 @@ mysql> select * from role_info;
 
 提了对应的需求：https://github.com/apache/seatunnel/issues/6302
 
+
+# 本地启动
+
+```bash
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh
+```
 
 
 # 小结
