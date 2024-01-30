@@ -455,6 +455,17 @@ mysql> select * from user_info;
 4 rows in set (0.00 sec)
 ```
 
+
+# 变更表结构呢？
+
+## 变更 cdc 源的结构
+
+```sql
+ALTER table user_info add remark varchar(128) null comment '备注';
+```
+
+实际并不生效。
+
 # 参考资料
 
 https://blog.csdn.net/DolphinScheduler/article/details/134855410
