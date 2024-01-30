@@ -215,7 +215,7 @@ mysql> select * from role_info;
 # 本地启动
 
 ```bash
-/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh
+/home/dh/bigdata/seatunnel-2.3.3/backend/apache-seatunnel-2.3.3/bin/seatunnel.sh --config mysql_cdc_to_console.conf -e local
 ```
 
 
