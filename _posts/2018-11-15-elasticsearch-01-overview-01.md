@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Elasticsearch-01-快速入门
-date:  2016-10-16 09:07:21 +0800
+date:  2018-11-15 08:38:35 +0800
 categories: [Search]
 tags: [search, overview, index, es, sh]
 published: true
@@ -15,141 +15,649 @@ published: true
 
 > [User Guide](https://www.elastic.co/guide/index.html)
 
-# Install in Mac
+# chat
 
-<uml>
-    Download->Unzip:
-    Unzip->Run:
-    Run->Visit:
-</uml>
+## 详细介绍一下 Elasticsearch
+
+Elasticsearch是一个开源的分布式搜索和分析引擎，最初由Shay Banon创建。
+
+它是Elastic Stack（以前称为ELK Stack）的核心组件之一，用于存储、搜索和分析大量数据。
+
+Elastic Stack还包括Logstash和Kibana，用于数据的收集、处理和可视化。
+
+以下是Elasticsearch的一些关键特性和概念：
+
+1. **分布式性质：** Elasticsearch是一个分布式系统，能够水平扩展以处理大规模的数据和负载。它通过将数据分散存储在多个节点上来实现高可用性和性能。
+
+2. **文档存储：** Elasticsearch使用文档作为基本存储单元，文档是JSON格式的数据。多个文档被组织在索引（index）中，索引是一系列相关文档的集合。
+
+3. **全文搜索：** Elasticsearch提供强大的全文搜索功能，支持分词、相似度匹配、聚合等搜索和分析操作。它使用倒排索引来快速定位文档，使得搜索效率非常高。
+
+4. **RESTful API：** Elasticsearch使用RESTful API，通过HTTP与其进行通信。这使得它易于集成到各种应用程序和语言中，并与现有的系统进行交互。
+
+5. **实时性：** Elasticsearch提供近实时的搜索和分析能力，数据一旦被索引，就可以立即进行搜索和分析操作。
+
+6. **多种查询类型：** Elasticsearch支持各种查询类型，包括匹配、范围、布尔、模糊等，同时还支持地理空间查询。
+
+7. **聚合框架：** Elasticsearch的聚合框架允许用户对数据执行复杂的分析操作，例如汇总、分组、统计等。
+
+8. **插件生态系统：** Elasticsearch具有丰富的插件生态系统，可以扩展其功能。插件可以用于添加新的存储后端、集成其他系统，或者提供定制的搜索和分析功能。
+
+9. **安全性：** Elasticsearch提供访问控制、身份验证和加密等安全特性，以保护存储在其上的数据。
+
+10. **日志和监控：** Elasticsearch本身也生成详细的日志，同时可以集成到监控工具中，以便实时监控其性能和运行状况。
+
+总体而言，Elasticsearch被广泛用于各种场景，包括日志分析、实时搜索、业务分析、监控和安全信息与事件管理等领域。
+
+其灵活性、可扩展性和丰富的功能使其成为处理大规模数据的理想选择。
+
+## ES 分布式实现原理
+
+Elasticsearch的分布式实现是其设计的关键部分，允许它有效地处理大量数据和请求。
+
+以下是Elasticsearch分布式实现的一些关键原理：
+
+1. **分片（Sharding）：** Elasticsearch将索引分成多个分片，每个分片是一个独立的、自包含的Lucene索引。每个分片可以在集群中的不同节点上存储。分片的引入允许数据在多个节点上水平分布，提高了性能和扩展性。
+
+2. **复制（Replication）：** 为了提高系统的可用性和容错性，Elasticsearch为每个分片创建多个副本。这些副本分布在不同的节点上，如果某个节点失效，副本可以被用来继续提供服务。复制还可以提高读取操作的性能，因为请求可以在多个节点上并行处理。
+
+3. **节点（Node）：** Elasticsearch集群由多个节点组成，每个节点是一个独立的Elasticsearch实例。节点可以运行在不同的物理机器或虚拟机上，通过网络连接进行通信。每个节点都知道整个集群的状态，并可以接受请求，执行搜索和存储数据。
+
+4. **主分片和副本分片：** 每个索引的分片可以有一个主分片和零个或多个副本分片。主分片负责处理写操作，而副本分片用于提供读取操作的冗余和负载均衡。主分片和其副本分布在不同的节点上，确保数据的可靠性和容错性。
+
+5. **路由和分发：** 当客户端发出一个请求时，Elasticsearch使用分片和副本的信息来确定哪些节点上的哪些分片应该处理请求。这个过程被称为路由。一旦确定了目标分片，请求会被分发到相应的节点上进行处理。
+
+6. **集群协调和管理：** Elasticsearch集群使用分布式协调和管理来维护集群的健康和状态。这包括选举主分片、处理节点的加入和离开、负载均衡等任务。集群状态的变化通过内部通信在节点之间进行同步。
+
+7. **Zen发现机制：** Elasticsearch使用Zen发现机制来自动发现新节点，并维护节点的动态变化。Zen发现机制通过多播或单播来探测新节点的加入，以及节点的状态变化。
+
+通过这些分布式实现原理，Elasticsearch实现了高性能、高可用性和可伸缩性，使其成为处理大规模数据的强大工具。
+
+## 有哪些类似 ES 的开源组件？
+
+有几个开源组件类似于Elasticsearch，它们都是用于搜索和分析大规模数据的工具。以下是一些类似于Elasticsearch的开源组件：
+
+1. **Apache Solr：** 与Elasticsearch类似，Solr也是一个基于Lucene的搜索平台，提供全文搜索、分布式搜索、面向文档的存储等功能。Solr是Apache Lucene项目的一部分。
+
+2. **Apache Lucene：** Lucene是一个高性能、全文搜索引擎库，Elasticsearch和Solr都是建立在Lucene之上的。Lucene提供了基本的搜索和索引功能，而Elasticsearch和Solr在此基础上构建了更高级的功能和分布式体系结构。
+
+3. **Amazon OpenSearch：** 由于争议，Elasticsearch的开源分支之一是Amazon OpenSearch。它是一个与Elasticsearch 7.x 兼容的搜索和分析引擎，Amazon OpenSearch保持与开源社区的合作，并提供与Elasticsearch相似的功能。
+
+4. **Algolia：** Algolia是一个云端的搜索服务，专注于提供快速、可靠的搜索体验。它支持全文搜索、模糊搜索、面向实时的搜索等功能，适用于构建搜索引擎和实时应用程序。
+
+5. **Splunk：** Splunk是一种用于索引、搜索和可视化日志数据的平台。它广泛用于日志分析、监控和安全信息与事件管理（SIEM）等领域。
+
+6. **Graylog：** Graylog是一个开源的日志管理平台，用于集中存储、搜索和分析日志数据。它支持实时搜索、仪表板创建、警报等功能。
+
+这些工具在某些方面可能有一些不同之处，因此在选择使用哪一个时，需要根据具体需求、性能、易用性等方面进行评估。每个工具都有其优势和适用场景，具体选择取决于项目的具体要求。
+
+### 由于争议，Elasticsearch的开源分支之一是Amazon OpenSearch。具体指什么争议？
+
+争议主要涉及到Elasticsearch的开源许可证变更。在Elasticsearch的早期版本中，使用的是Apache 2.0开源许可证，这是一种比较宽松的许可证，允许商业用途和修改源代码。
+
+然而，随着Elasticsearch 7.11版本的发布，Elastic公司将其默认许可证从Apache 2.0变更为Server Side Public License (SSPL)。
+
+SSPL是由Elastic公司创建的许可证，虽然被认为是开源许可证，但引起了一些争议。SSPL要求在使用基于SSPL的软件作为服务时，必须开放所有相关的源代码，包括自定义的修改。这使得SSPL不再符合开放源代码倡导组织（如Open Source Initiative）认可的开源定义。
+
+Amazon Web Services (AWS) 对此做出了反应，认为SSPL不符合传统的开源定义，因为它对云服务的使用设置了一些限制。由于Elasticsearch的开发者社区和商业用户的不满，AWS决定推出了一个基于Elasticsearch 7.x的开源分支，称为Amazon OpenSearch。Amazon OpenSearch采用Apache 2.0开源许可证，以保持对开放源代码的承诺。
+
+这一争议导致了Elasticsearch社区的分裂，用户和组织可以根据他们的偏好和需求选择使用Elasticsearch（基于SSPL）还是Amazon OpenSearch（基于Apache 2.0）。这也引发了对开源许可证、社区治理和商业开源模型的更广泛讨论。
+
+## 给出 ES 的学习资料，包含网址 
+
+以下是一些学习Elasticsearch的优秀资料和官方文档，它们涵盖了从入门到深入的各个方面：
+
+1. **官方文档：**
+   - [Elasticsearch 官方文档](https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html) - Elasticsearch官方文档是学习的最佳资源，详尽而全面，包含了所有的核心概念、API和配置信息。
+
+2. **在线教程和学习路径：**
+   - [Elasticsearch - Getting Started](https://www.elastic.co/guide/en/elasticsearch/guide/current/getting-started.html) - Elasticsearch官方提供的入门指南，带你了解基本概念和操作。
+   - [Elasticsearch - Learn](https://www.elastic.co/learn/) - Elastic官方提供的在线学习资源，包括视频、文档和实际练习。
+
+3. **书籍：**
+   - 《Elasticsearch: The Definitive Guide》 - 由Elasticsearch的创始人Shay Banon参与撰写的官方指南，是深入学习Elasticsearch的经典书籍。
+   - 《Elasticsearch in Action》 - 内容丰富，适合初学者和有经验的开发人员，涵盖了实际应用和性能优化。
+
+4. **博客和文章：**
+   - [Elastic Blog](https://www.elastic.co/blog/) - Elastic公司的官方博客，包含了关于Elasticsearch的最新新闻、教程和技术文章。
+   - [Elasticsearch Cheatsheet](https://elasticsearch-cheatsheet.jolicode.com/) - 一份精简的Elasticsearch速查表，适用于快速查找常用操作。
+
+5. **在线课程和视频：**
+   - [Elasticsearch 7 and the Elastic Stack - In Depth & Hands On!](https://www.udemy.com/course/elasticsearch-7-and-elastic-stack/) - 在Udemy上提供的深入而实践的Elasticsearch课程。
+
+6. **GitHub资源：**
+   - [Elasticsearch GitHub Repository](https://github.com/elastic/elasticsearch) - Elasticsearch的官方GitHub存储库，包含源代码、问题追踪和贡献指南。
+
+7. **社区论坛：**
+   - [Discuss - Elastic Community Forum](https://discuss.elastic.co/c/elasticsearch/) - Elastic社区的讨论论坛，你可以在这里提问问题、分享经验，获取帮助。
+
+记得随着时间的推移，查看官方文档以确保你获取到最新的信息，因为Elasticsearch是一个在不断发展的开源项目。
+
+# 如果让你深入学习 ES，你会问哪 10 个问题？为什么？
+
+如果我要深入学习Elasticsearch，我可能会提出以下10个问题，以获取更全面的理解：
+
+## 1. **索引和分片的工作原理是什么？**
+
+   - 理解Elasticsearch中索引和分片的概念对于正确设计和管理数据至关重要。这包括数据如何在分片之间分布，以及分片和副本对性能和可用性的影响。
+
+Elasticsearch的索引和分片是其分布式搜索引擎的核心概念，理解它们的工作原理对于有效地存储和检索数据至关重要。
+
+### 索引（Index）的工作原理：
+
+1. **定义：** 索引是一组具有相似结构的文档的集合。每个文档都包含一个或多个字段，这些字段存储了实际的数据。
+
+2. **倒排索引：** Elasticsearch使用倒排索引来实现快速的全文搜索。倒排索引是一个映射关键词到包含该关键词的文档的结构。
+
+3. **分析和标记：** 在索引阶段，文档的文本字段会经过分析器的处理，将文本划分成独立的标记（tokens）。这包括分词、过滤停用词、小写化等步骤。
+
+4. **标记到倒排索引的映射：** 对于每个标记，Elasticsearch创建一个映射，将标记与包含该标记的文档关联起来。这个映射被称为倒排列表（Inverted List）。
+
+5. **存储结构：** 每个分片中的倒排索引存储在磁盘上。为了提高性能，Elasticsearch将倒排索引分成更小的片段（segments），这使得索引更加灵活，能够动态添加、删除和更新文档。
+
+### 分片（Shard）的工作原理：
+
+1. **分片的定义：** 分片是索引的水平划分，每个分片都是一个独立的Lucene索引。索引可以由一个或多个分片组成，分片可以存储在集群中的不同节点上。
+
+2. **数据分布：** 当创建索引时，Elasticsearch会将索引中的文档均匀地分布到不同的分片上。这使得数据在集群中水平分布，提高了系统的性能和可伸缩性。
+
+3. **主分片和副本：** 每个分片可以有一个主分片和零个或多个副本。主分片处理写操作，而副本分片用于提供读取操作的冗余和负载均衡。主分片和其副本分布在不同的节点上，确保数据的可靠性和容错性。
+
+4. **分片的选择：** 当执行搜索请求时，Elasticsearch使用分片路由来确定哪个节点上的哪个分片应该处理请求。这个路由是基于请求的内容和分片的分布信息。
+
+5. **数据恢复：** 如果一个节点失效或者新节点加入，Elasticsearch会自动调整主分片和副本分片的分布，以确保系统的可用性和健壮性。
+
+总体而言，索引和分片是Elasticsearch实现高性能、高可用性和可伸缩性的关键机制。通过合理设计索引和分片，可以优化搜索性能、提高系统的吞吐量，并确保数据的安全和可靠性。
 
 
-- Download
 
-[Download](https://www.elastic.co/downloads/elasticsearch) and unzip
+## 2. **查询和过滤器的区别是什么？**
+   - 在Elasticsearch中，查询（Query）用于计算文档的相关性得分，而过滤器（Filter）用于筛选文档，不涉及相关性。深入了解它们的区别对于构建复杂的搜索和分析查询非常重要。
 
-```
-$   tar -zxf elasticsearch-2.4.1.tar.gz
-```
+在Elasticsearch中，查询（Query）和过滤器（Filter）是两个不同的概念，尽管它们的目标都是从索引中检索文档，但在执行时有一些关键的区别。
 
-move it into **tools** package
+### 查询（Query）：
 
-```
-$   mv elasticsearch-2.4.1 ~/it/tools/elasticsearch
-```
+1. **目的：** 查询用于计算文档与查询条件的相关性，并根据相关性得分进行排序。查询的目标是找到与搜索条件最匹配的文档。
 
+2. **评分：** 查询会为每个匹配的文档分配一个相关性得分，根据文档与查询条件的匹配程度排序结果。得分越高的文档排名越靠前。
 
-- Run
+3. **性能开销：** 查询的计算成本较高，因为它需要考虑文档的相关性。这使得查询适合用于需要考虑文档匹配度的场景，如全文搜索。
 
-Run ```bin/elasticsearch``` on Unix, or use ```bin/elasticsearch &``` run background processes.
+4. **应用场景：** 适用于需要考虑匹配度的场景，如用户搜索、全文搜索、模糊搜索等。
 
-```
-houbinbindeMacBook-Pro:Downloads houbinbin$ cd ~/it/tools/elasticsearch/
-houbinbindeMacBook-Pro:elasticsearch houbinbin$ ls
-LICENSE.txt	NOTICE.txt	README.textile	bin		config		lib		modules
-houbinbindeMacBook-Pro:elasticsearch houbinbin$ cd bin
-houbinbindeMacBook-Pro:bin houbinbin$ ls
-elasticsearch			elasticsearch-service-x64.exe	elasticsearch.bat		elasticsearch.in.sh		plugin.bat
-elasticsearch-service-mgr.exe	elasticsearch-service-x86.exe	elasticsearch.in.bat		plugin				service.bat
-houbinbindeMacBook-Pro:bin houbinbin$ ./elasticsearch
-[2016-10-16 09:19:27,876][INFO ][node                     ] [Raman] version[2.4.1], pid[4391], build[c67dc32/2016-09-27T18:57:55Z]
-[2016-10-16 09:19:27,877][INFO ][node                     ] [Raman] initializing ...
-[2016-10-16 09:19:28,321][INFO ][plugins                  ] [Raman] modules [reindex, lang-expression, lang-groovy], plugins [], sites []
-[2016-10-16 09:19:28,343][INFO ][env                      ] [Raman] using [1] data paths, mounts [[/ (/dev/disk1)]], net usable_space [122.7gb], net total_space [232.6gb], spins? [unknown], types [hfs]
-[2016-10-16 09:19:28,343][INFO ][env                      ] [Raman] heap size [989.8mb], compressed ordinary object pointers [true]
-[2016-10-16 09:19:28,343][WARN ][env                      ] [Raman] max file descriptors [10240] for elasticsearch process likely too low, consider increasing to at least [65536]
-[2016-10-16 09:19:29,437][INFO ][node                     ] [Raman] initialized
-[2016-10-16 09:19:29,437][INFO ][node                     ] [Raman] starting ...
-[2016-10-16 09:19:29,498][INFO ][transport                ] [Raman] publish_address {127.0.0.1:9300}, bound_addresses {[fe80::1]:9300}, {[::1]:9300}, {127.0.0.1:9300}
-[2016-10-16 09:19:29,503][INFO ][discovery                ] [Raman] elasticsearch/K1AbiuXxQKifwJIqtFoW0A
-[2016-10-16 09:19:32,534][INFO ][cluster.service          ] [Raman] new_master {Raman}{K1AbiuXxQKifwJIqtFoW0A}{127.0.0.1}{127.0.0.1:9300}, reason: zen-disco-join(elected_as_master, [0] joins received)
-[2016-10-16 09:19:32,548][INFO ][http                     ] [Raman] publish_address {127.0.0.1:9200}, bound_addresses {[fe80::1]:9200}, {[::1]:9200}, {127.0.0.1:9200}
-[2016-10-16 09:19:32,548][INFO ][node                     ] [Raman] started
-[2016-10-16 09:19:32,566][INFO ][gateway                  ] [Raman] recovered [0] indices into cluster_state
-```
-
-- Visit
-
-Input ```localhost:9200``` in browser to visit it, or use ```curl localhost:9200``` to get info
-
-```
-houbinbindeMacBook-Pro:~ houbinbin$ curl localhost:9200
+```json
 {
-  "name" : "Raman",
-  "cluster_name" : "elasticsearch",
-  "cluster_uuid" : "WFMtdS4GT4m8w7sdHE5i7Q",
-  "version" : {
-    "number" : "2.4.1",
-    "build_hash" : "c67dc32e24162035d18d6fe1e952c4cbcbe79d16",
-    "build_timestamp" : "2016-09-27T18:57:55Z",
-    "build_snapshot" : false,
-    "lucene_version" : "5.5.2"
-  },
-  "tagline" : "You Know, for Search"
+  "query": {
+    "match": {
+      "field": "value"
+    }
+  }
 }
 ```
 
+### 过滤器（Filter）：
 
-# Lucene Search
+1. **目的：** 过滤器用于筛选文档，仅返回满足特定条件的文档。过滤器不涉及文档的相关性得分，只关心是否匹配。
 
-> [search zh_CN](https://segmentfault.com/a/1190000002972420)
+2. **评分：** 过滤器不会计算相关性得分，它们只关注匹配与否。因此，所有匹配的文档被视为具有相同的重要性。
 
-- FULLTEXT
+3. **性能开销：** 过滤器的计算成本较低，因为它们不考虑相关性。这使得过滤器适用于需要快速筛选文档的场景。
 
-Input a word in search input, like ```hello```, use ```"hello world"``` to search a phrase.
+4. **应用场景：** 适用于需要精确匹配和不需要相关性得分的场景，如精确的范围查询、精确匹配等。
 
-
-- Field
-
-Finite field search:    ```field:value```
-
-Accurate search:    ```field:"value"```
-
-```http.code:404``` doc that *http status code is 404*
-
-```_exists_:http```：result contains *http* field
-
-```_missing_:http```：result not contains *http* field
-
-- Wildcard
-
-```?``` one char
-
-```*``` zero or more char
-
-The two wildcard should't the first char.
-
-
-- Fuzzy Search
-
-```word~``` matches word
-
-```cromm~0.3``` matches *from* & *chrome*
-
-- Similar Search
-
-```"select where"~3``` means *select* and *where* divide by 3 or less words.
-
-- Range
-
-```length:[100 TO 200]```
-```date:{"now-6h" TO "now"}```
-
-```[ ]``` includes endpoint，```{ }``` not includes.
-
-- Logic
-
-```+``` must has this
-
-```-``` must not has this
-
-```+apache -jakarta test``` means must has *apache*, not has *jakarta*
-
-- Special
-
+```json
+{
+  "filter": {
+    "term": {
+      "field": "value"
+    }
+  }
+}
 ```
-+ - && || ! () {} [] ^" ~ * ? : \
-```
+
+### 总结：
+
+- 查询适用于需要考虑文档匹配度和相关性得分的场景，通常用于全文搜索等。
+- 过滤器适用于需要精确匹配和不需要相关性得分的场景，通常用于筛选文档，如范围查询等。
+- 在Elasticsearch中，过滤器的性能通常比查询更高，因此在不需要考虑相关性得分的情况下，推荐使用过滤器来提高性能。
+
+
+
+## 3. **映射和分析是如何影响搜索的？**
+   - 映射定义了索引中的文档结构，而分析则定义了如何处理文本数据。了解映射和分析的配置对于搜索结果的正确性和性能至关重要。
+
+映射（Mapping）和分析（Analysis）在Elasticsearch中是两个关键的概念，它们对搜索的影响非常重要。
+
+### 映射（Mapping）的影响：
+
+1. **定义文档结构：** 映射定义了索引中文档的结构，指定了每个字段的类型、属性和是否被索引。映射告诉Elasticsearch如何解释文档中的数据。
+
+2. **字段类型：** 映射中定义的字段类型直接影响搜索的准确性。例如，如果一个字段被错误地映射为字符串而实际上它包含数字，那么数值的范围查询可能不会按预期工作。
+
+3. **字段属性：** 映射还定义了字段的属性，如是否存储原始值、是否启用词频统计等。这些属性影响着搜索的行为。
+
+4. **动态映射：** Elasticsearch还支持动态映射，允许根据新增的字段自动调整映射。这在处理动态数据模型时非常有用。
+
+### 分析（Analysis）的影响：
+
+1. **文本处理：** 分析器定义了文本字段在索引阶段如何被处理，包括分词、过滤器和标记化。分析器的选择直接影响搜索时的文本匹配。
+
+2. **分词：** 分析器决定了将文本拆分成什么单元（tokens）。例如，对于英文文本，是否将单词按空格分开，是否考虑大小写等。
+
+3. **过滤器：** 过滤器定义了对分词后的单元进行哪些修改。例如，是否移除停用词、进行词干提取、转换为小写等。
+
+4. **标记化：** 分析器生成的标记（tokens）是构建倒排索引的基础，影响着搜索时的匹配和相关性计算。
+
+5. **使用合适的分析器：** 选择合适的分析器对于确保搜索的准确性和性能至关重要。例如，针对中文文本可能需要不同的分析器来正确处理中文分词。
+
+### 总结：
+
+- 映射定义了文档结构，字段类型和属性，直接影响搜索的字段解释和准确性。
+- 分析器定义了文本字段的处理方式，包括分词、过滤器和标记化，直接影响文本匹配和搜索的结果。
+- 正确的映射和分析对于构建有效的Elasticsearch索引，确保搜索的准确性和性能至关重要。因此，在设计索引时需要仔细考虑映射和分析的设置。
+
+## 4. **Elasticsearch中的聚合是如何工作的？**
+   - 聚合是Elasticsearch中用于分析数据的强大工具，包括诸如平均、最小值、最大值、直方图等。深入了解聚合的使用方式和性能优化对于构建丰富的数据分析非常有帮助。
+
+在Elasticsearch中，聚合（Aggregation）是一种强大的功能，用于对文档集合执行各种数据分析操作。聚合可以用于生成关于数据的汇总信息，例如总和、平均值、最小值、最大值，还可以执行复杂的分析操作，如直方图、日期直方图、嵌套聚合等。
+
+以下是Elasticsearch中聚合的工作原理：
+
+1. **聚合请求：** 聚合是通过在搜索请求中使用`aggs`或`aggregations`子句来指定的。这告诉Elasticsearch在搜索结果上执行聚合操作。
+
+   ```json
+   {
+     "query": { /* 查询条件 */ },
+     "aggs": {
+       "agg_name": { /* 聚合定义 */ }
+     }
+   }
+   ```
+
+2. **聚合桶（Bucketing）：** 聚合通常涉及将文档分组成不同的桶。桶是根据指定的条件将文档分成的子集。例如，按照某个字段的值进行分组。
+
+   ```json
+   "aggs": {
+     "group_by_field": {
+       "terms": {
+         "field": "field_name"
+       }
+     }
+   }
+   ```
+
+3. **指标聚合：** 聚合还可以执行一些数学运算，如求和、平均值、最小值、最大值等。这被称为指标聚合。
+
+   ```json
+   "aggs": {
+     "avg_field_value": {
+       "avg": {
+         "field": "numeric_field"
+       }
+     }
+   }
+   ```
+
+4. **嵌套聚合：** 聚合可以进行嵌套，即在一个聚合桶内执行另一个聚合。这使得可以构建复杂的聚合结构。
+
+   ```json
+   "aggs": {
+     "group_by_field": {
+       "terms": {
+         "field": "field_name"
+       },
+       "aggs": {
+         "avg_field_value": {
+           "avg": {
+             "field": "numeric_field"
+           }
+         }
+       }
+     }
+   }
+   ```
+
+5. **时间聚合：** Elasticsearch还支持时间聚合，例如按照日期进行分组，生成日期直方图。
+
+   ```json
+   "aggs": {
+     "date_histogram_agg": {
+       "date_histogram": {
+         "field": "date_field",
+         "interval": "day"
+       }
+     }
+   }
+   ```
+
+6. **结果返回：** 聚合的结果将包含在搜索响应中，可以通过响应中的相应聚合名称来访问。结果是经过计算和分组的汇总数据。
+
+   ```json
+   "aggregations": {
+     "avg_field_value": {
+       "value": 42.0
+     },
+     "group_by_field": {
+       "buckets": [
+         {
+           "key": "value1",
+           "doc_count": 10,
+           // ... other aggregated metrics
+         },
+         // ... other buckets
+       ]
+     }
+   }
+   ```
+
+通过使用聚合，Elasticsearch允许用户在搜索结果上执行复杂的数据分析，从而得到对数据更深入的了解。
+
+这对于构建仪表板、生成报告和进行数据探索非常有用。
+
+## 5. **如何优化查询性能？**
+   - 了解如何通过合理的索引设计、查询优化和缓存机制来提高搜索性能。这包括了解合适的数据结构、查询的DSL语法和性能调整参数。
+
+优化Elasticsearch查询性能涉及多个方面，包括索引设计、查询的DSL语句、缓存机制等。
+
+以下是一些常见的查询性能优化技巧：
+
+1. **合理设计索引：**
+   - **字段映射：** 使用合适的字段类型，确保字段映射正确。例如，使用`keyword`类型存储不需要分词的字段。
+   - **分片和副本：** 根据集群规模和查询需求调整分片和副本的数量。较小的分片通常适用于更均匀的分布和更好的性能。
+
+2. **使用合适的查询DSL：**
+   - **Match查询：** 使用`match`查询进行全文搜索，它会分析查询字符串并进行模糊匹配。
+   - **Term查询：** 对于精确匹配，使用`term`查询。注意，`term`查询不会进行分析。
+   - **Range查询：** 对于范围查询，使用`range`查询。这对于数值、日期等范围的过滤非常有效。
+
+3. **过滤器和缓存：**
+   - **使用过滤器：** 尽可能使用过滤器而不是查询，特别是在不需要计算相关性得分的情况下。过滤器对于性能的提升非常明显。
+   - **缓存：** 启用查询和过滤器的缓存，以避免相同查询的重复计算。缓存可通过`_cache`参数进行配置。
+
+4. **提高搜索速度：**
+   - **使用索引别名：** 利用索引别名来对多个索引执行搜索，以提高搜索的速度和灵活性。
+   - **使用Shard Size：** 在搜索请求中设置`size`参数，以控制每个分片返回的文档数量。
+
+5. **分析和映射优化：**
+   - **合理使用分析器：** 选择合适的分析器，确保在不同的字段上使用正确的分析器，以匹配查询和文本处理需求。
+   - **禁用不必要的字段：** 在索引中禁用不需要进行搜索的字段，减小索引的大小。
+
+6. **监控和调整：**
+   - **监控集群：** 使用Elasticsearch提供的监控工具，监控集群的状态、性能和资源使用情况。
+   - **调整配置：** 根据监控数据调整Elasticsearch配置，例如增加节点、调整JVM参数等。
+
+7. **避免使用全匹配查询：**
+   - **避免使用`match_all`：** 在大型索引中，`match_all`查询可能会导致性能问题。确保只在必要的情况下使用。
+
+8. **使用Bulk API：**
+   - **批量操作：** 对于大量数据的索引和更新，使用Bulk API执行批量操作，以减少网络开销和提高性能。
+
+9. **查询缓存：**
+   - **启用查询缓存：** 在需要经常执行相同查询的场景中，启用查询缓存可以提高性能。不过，这需要根据具体情况权衡资源的使用。
+
+10. **升级到最新版本：**
+    - **使用最新版本：** 保持Elasticsearch集群升级到最新版本，以获得性能和稳定性方面的改进。
+
+这些优化技巧需要根据具体的应用场景和数据模型进行调整，通过监控和实验逐步改进索引和查询的性能。
+
+## 6. **Elasticsearch中的分布式集群管理是怎样的？**
+   - 了解集群协调、主分片选举、副本分片分配、节点加入和离开等方面的集群管理原理。这有助于理解集群的稳定性和可用性。
+
+Elasticsearch的分布式集群管理是其设计的关键组成部分，确保集群的高可用性、弹性和性能。以下是Elasticsearch中分布式集群管理的关键原理和机制：
+
+1. **节点（Node）：**
+   - Elasticsearch集群由多个节点组成，每个节点是一个独立的Elasticsearch实例。每个节点可以运行在不同的物理机器或虚拟机上。
+   - 每个节点都有唯一的节点名称和唯一的标识符，可以通过节点名称或标识符进行集群内的通信。
+
+2. **集群协调和管理：**
+   - 集群中的节点通过集群协调和管理功能协同工作，确保集群的健康和状态。这包括节点的加入和离开、分片的分配、负载均衡等任务。
+   - 集群状态的变化会通过内部通信在所有节点之间进行同步。
+
+3. **主分片和副本分片：**
+   - 每个索引的分片可以有一个主分片和零个或多个副本分片。主分片负责处理写操作，而副本分片用于提供读取操作的冗余和负载均衡。
+   - 分片的主节点负责协调写操作，而读操作可以由主分片或其副本分片处理。
+
+4. **选举和主节点：**
+   - 主分片的主节点是负责协调写操作的节点。如果主节点失效，Elasticsearch会从副本分片中选择新的主节点，确保集群的可用性。
+   - 选举主节点是通过Zookeeper、Zen发现机制等方式实现的。
+
+5. **Zen发现机制：**
+   - Elasticsearch使用Zen发现机制自动发现新节点，并维护节点的动态变化。Zen发现机制通过多播或单播来探测新节点的加入，以及节点的状态变化。
+   - 这使得集群可以动态地适应节点的加入和离开。
+
+6. **分片分配和负载均衡：**
+   - Elasticsearch负责将索引的分片分配到集群中的各个节点上，以实现数据的水平分布。
+   - 负载均衡机制确保每个节点的负载相对均匀，防止出现热点问题。
+
+7. **节点动态调整：**
+   - 集群允许节点的动态加入和离开。新节点加入集群后，它会从已有节点获取索引的分片，而离开的节点的分片会被重新分配。
+   - 动态调整确保集群能够适应节点的变化，并在节点失效时尽量保持集群的稳定性。
+
+8. **Failover和恢复：**
+   - 当节点或分片失效时，Elasticsearch自动进行Failover，确保集群的可用性。失效的分片的副本会被提升为主分片，以继续提供服务。
+   - 恢复机制确保失效的节点重新加入集群后，数据能够正确地进行同步和恢复。
+
+分布式集群管理使Elasticsearch具备高可用性、弹性和可伸缩性的特性，能够处理大规模数据和高并发请求。通过这些机制，Elasticsearch能够有效地应对节点的动态变化、故障恢复和负载均衡等复杂的分布式环境。
+
+## 7. **Elasticsearch的安全机制是什么？**
+   - 了解Elasticsearch中的安全机制，包括身份验证、访问控制、TLS/SSL加密等。确保对敏感数据的保护是非常重要的。
+
+Elasticsearch的安全机制包括身份验证（Authentication）、访问控制（Authorization）、加密传输（Encryption in Transit）、字段级别的安全性（Field and Document Level Security）、审计日志（Audit Logging）等关键特性。以下是对这些安全机制的更详细的说明：
+
+1. **身份验证（Authentication）：**
+   - Elasticsearch支持多种身份验证机制，包括用户名/密码、LDAP、Active Directory、PKI（公钥基础设施）等。用户必须提供有效的身份凭证才能访问集群。
+
+2. **访问控制（Authorization）：**
+   - 通过角色和权限进行访问控制。角色是一组权限的集合，而用户则被分配到一个或多个角色上。权限可以涵盖索引级别、操作级别等，确保用户只能执行其具有权限的操作。
+
+3. **加密传输（Encryption in Transit）：**
+   - 通过使用TLS/SSL协议对集群内节点之间的通信进行加密，保障数据在传输过程中的保密性和完整性。这包括HTTP REST API、节点之间的内部通信和客户端与节点之间的通信。
+
+4. **字段级别的安全性（Field and Document Level Security）：**
+   - Elasticsearch 7.x版本引入了字段级别的安全性，允许定义安全策略，以限制用户对索引中特定字段或文档的访问权限。这提供了更细粒度的数据控制。
+
+5. **IP过滤：**
+   - 通过配置白名单和黑名单，限制可以与Elasticsearch节点进行通信的IP地址范围。这有助于提高集群的网络安全性。
+
+6. **Kibana Spaces和Dashboard权限：**
+   - Kibana Spaces提供了一种将Kibana对象（如仪表板、可视化）组织和隔离的方式。每个Space都有自己的权限，可以限制用户对特定Space的访问。
+
+7. **审计日志（Audit Logging）：**
+   - Elasticsearch支持审计日志，用于记录集群的操作和事件。审计日志提供了对用户活动的可追溯性，有助于监控和调查潜在的安全问题。
+
+8. **实时监控和警报：**
+   - Elasticsearch内置了监控工具和警报功能，可以实时监控集群的健康状况、性能指标和安全事件。警报可配置为在异常情况下触发通知。
+
+9. **机密管理工具：**
+   - Elasticsearch提供了机密管理工具，用于安全地存储敏感信息，如密码、证书等。这有助于确保敏感信息不被直接存储在配置文件中。
+
+10. **单一认证和授权（SSO）：**
+    - 支持单一认证和授权机制，允许通过集成的身份提供者（如LDAP、Active Directory）进行用户身份验证和授权，简化用户管理。
+
+这些安全机制使Elasticsearch能够满足企业级应用的安全需求，确保数据和集群的保密性、完整性和可用性。
+
+在部署Elasticsearch集群时，合理配置和使用这些安全功能是非常重要的。
+
+## 8. **Elasticsearch的备份和恢复策略是怎样的？**
+   - 理解如何执行索引的备份和恢复是维护数据可用性和安全性的关键。这包括快照和还原操作的执行方式。
+
+Elasticsearch的备份和恢复策略涉及索引快照、文件系统备份、和分布式系统的考虑。以下是备份和恢复策略的关键方面：
+
+### 索引快照：
+
+1. **使用快照仓库：**
+   - 在Elasticsearch中，首先需要配置一个快照仓库，以定义快照存储的位置。可以使用本地文件系统、远程文件系统、AWS S3等作为快照仓库。
+
+2. **创建索引快照：**
+   - 通过Elasticsearch的API，可以创建索引快照。快照是对索引的一致性、全量备份。在快照过程中，Elasticsearch会在指定的快照仓库中创建一个快照，并包含索引的元数据、设置、分片数据等信息。
+
+   ```bash
+   PUT /_snapshot/my_backup/snapshot_1
+   {
+     "indices": "index1,index2",
+     "include_global_state": false
+   }
+   ```
+
+3. **自动快照：**
+   - Elasticsearch还支持自动快照，可以设置定时任务，定期创建索引的快照，以确保数据的定期备份。
+
+### 文件系统备份：
+
+1. **冷热分阶段备份：**
+   - 在备份时，可以考虑将冷热分阶段的数据分别备份。冷数据通常较为稳定，而热数据可能在备份期间发生变化。
+
+2. **关闭写入：**
+   - 在进行文件系统备份时，可以考虑在备份期间暂时关闭写入操作，以确保备份数据的一致性。
+
+### 分布式系统的考虑：
+
+1. **备份和恢复策略的一致性：**
+   - 在分布式环境中，确保备份和恢复策略在整个集群中保持一致。不同节点上的备份和恢复操作应该基于相同的规则和策略。
+
+2. **跨节点备份：**
+   - 考虑跨节点的备份，以确保即使一个节点失效，备份依然可用。在创建索引快照时，可以选择备份所有节点上的数据。
+
+### 恢复策略：
+
+1. **索引恢复：**
+   - 恢复时可以选择全量恢复或者部分恢复。全量恢复会还原整个索引，而部分恢复可以选择特定的分片进行恢复。
+
+   ```bash
+   POST /_snapshot/my_backup/snapshot_1/_restore
+   {
+     "indices": "index1,index2",
+     "include_global_state": false
+   }
+   ```
+
+2. **注意并发写入：**
+   - 在进行恢复操作时，需要注意可能的并发写入。可以选择在恢复期间禁用写入，或者在备份时记录事务日志，以便在恢复后重新应用。
+
+3. **监控和验证：**
+   - 在备份和恢复操作完成后，进行监控和验证是很重要的。确保索引的状态正常，数据一致性得到保障。
+
+### 总体建议：
+
+- **定期测试和演练：** 不仅要定期执行备份和恢复，还要进行演练，以确保在真实的灾难发生时能够迅速有效地进行恢复操作。
+- **文档化备份策略：** 建议对备份和恢复策略进行详细的文档记录，包括定期备份计划、存储位置、快照仓库设置等信息。
+
+这些策略和建议可以根据具体的部署需求进行调整，确保在面临硬件故障、数据损坏或其他灾难时，能够迅速、可靠地进行数据的备份和恢复。
+
+## 9. **Elasticsearch与Logstash和Kibana的集成是如何实现的？**
+   - 了解Elastic Stack的整体架构，包括Logstash用于数据收集和处理，以及Kibana用于数据可视化。这对于构建端到端的日志分析和监控系统非常重要。
+
+Elasticsearch、Logstash和Kibana（通常被称为ELK Stack）是一组协同工作的开源工具，用于实时搜索、日志收集和数据可视化。它们的集成通常是通过数据流动的方式来实现的。
+
+### 1. **Elasticsearch:**
+   - Elasticsearch是一个分布式搜索引擎，用于存储、搜索和分析大量数据。它提供了RESTful API，支持复杂的查询和聚合操作。
+
+### 2. **Logstash:**
+   - Logstash是用于收集、处理和转发日志数据的工具。它支持从各种来源（如文件、日志、数据库、消息队列等）收集数据，并通过过滤器进行处理后，将数据发送到目标存储（如Elasticsearch）或其他系统。
+
+### 3. **Kibana:**
+   - Kibana是一个用于数据可视化和分析的工具。它与Elasticsearch紧密集成，允许用户通过图形化界面创建仪表板、图表和可视化来探索和理解数据。
+
+### 集成步骤：
+
+1. **Logstash与Elasticsearch集成：**
+   - Logstash通过Elasticsearch输出插件将处理过的日志数据发送到Elasticsearch。在Logstash配置文件中，你需要指定Elasticsearch的地址和端口，以及要发送数据的索引名称。
+
+   ```conf
+   output {
+     elasticsearch {
+       hosts => ["localhost:9200"]
+       index => "mylogs-%{+YYYY.MM.dd}"
+     }
+   }
+   ```
+
+2. **Logstash与Kibana集成：**
+   - Kibana通过Elasticsearch的RESTful API与Elasticsearch通信，从而获取数据进行可视化。在Kibana中，你需要配置连接到Elasticsearch的地址，以及定义索引模式，以便正确解析和显示数据。
+
+   ![Kibana Configuration](https://www.elastic.co/guide/en/kibana/current/images/kibana-dashboard-syslog-logs.png)
+
+3. **Elasticsearch作为数据存储：**
+   - Elasticsearch充当Logstash和Kibana之间的数据存储和检索引擎。它接收Logstash发送的经过处理的数据，并提供给Kibana用于展示和分析。
+
+4. **Logstash Pipeline：**
+   - 在整个流程中，Logstash的管道（Pipeline）起到关键的作用。管道定义了从数据输入到输出的整个处理过程，包括输入插件、过滤器和输出插件。
+
+   ```conf
+   input {
+     file {
+       path => "/path/to/your/logfile.log"
+       start_position => "beginning"
+     }
+   }
+   
+   filter {
+     grok {
+       match => { "message" => "%{COMBINEDAPACHELOG}" }
+     }
+   }
+   
+   output {
+     elasticsearch {
+       hosts => ["localhost:9200"]
+       index => "mylogs-%{+YYYY.MM.dd}"
+     }
+   }
+   ```
+
+5. **数据流动：**
+   - 数据流动的顺序通常是从数据源（如日志文件）到Logstash，然后通过Logstash的过滤和处理到达Elasticsearch。最后，Kibana从Elasticsearch获取数据进行可视化和分析。
+
+整个ELK Stack的集成过程是相对灵活的，可以根据特定的需求和数据源进行定制。这种集成使用户能够将日志和其他结构化数据集中存储、处理和可视化，以便更好地理解和分析系统的运行状况。
+
+## 10. **Elasticsearch的监控和性能调优工具有哪些？**
+    - 了解如何使用Elasticsearch内置的监控工具、日志和第三方工具来监视集群性能。这对于实时追踪和解决问题至关重要。
+
+Elasticsearch提供了一系列的监控工具和性能调优选项，同时也有一些第三方工具和插件可用于更全面的监控和调优。以下是一些常用的Elasticsearch监控和性能调优工具：
+
+### Elasticsearch内置工具：
+
+1. **Elasticsearch监控API：**
+   - Elasticsearch提供了一系列的监控API，通过HTTP请求可以获取有关集群、节点、索引和搜索性能的详细信息。例如，`_cat`系列的API用于获取集群状态、节点信息、索引等。
+
+2. **Elasticsearch Head插件：**
+   - Elasticsearch Head是一个基于Web的插件，提供了直观的图形界面，用于查看集群状态、节点信息、索引和搜索等。它可以帮助用户更直观地了解集群的健康状况。
+
+3. **Kibana Monitoring插件：**
+   - Kibana自带的Monitoring插件用于监控Elasticsearch集群的性能和状态。它提供仪表板，显示有关集群、节点和索引的重要指标，如搜索请求速率、存储大小、负载等。
+
+### 第三方工具和插件：
+
+1. **Prometheus和Grafana：**
+   - Prometheus是一个开源的监控和警报工具，而Grafana是一个开源的数据可视化工具。通过使用Prometheus的Elasticsearch Exporter，可以将Elasticsearch的监控数据导入到Prometheus中，然后使用Grafana创建自定义仪表板。
+
+2. **Elasticsearch HQ插件：**
+   - Elasticsearch HQ是一个开源的Elasticsearch监控工具，提供直观的Web界面，用于查看集群、节点和索引的性能指标。它还包含一些诊断工具，如查看慢查询、缓存使用情况等。
+
+3. **Elasticsearch-Prometheus-Exporter：**
+   - 该Exporter允许将Elasticsearch的监控数据导出为Prometheus格式，从而与Prometheus和Grafana等工具进行集成。
+
+4. **Elasticsearch Marvel（已弃用）：**
+   - Elasticsearch Marvel曾是一个强大的监控工具，但在Elasticsearch 5.x版本后已被弃用。它的功能被集成到X-Pack插件中，提供更丰富的监控和安全特性。
+
+5. **Elasticsearch X-Pack Monitoring：**
+   - X-Pack是Elasticsearch官方提供的商业插件套件，其中包含了Monitoring模块，用于提供高级的监控和管理功能。它包括集成到Kibana中的监控仪表板、警报、历史数据存储等功能。
+
+6. **Percolator插件：**
+   - Percolator插件可以用于监控查询性能。它允许你注册搜索查询，然后在文档被索引时运行这些查询，以评估性能和匹配度。
+
+在选择工具和插件时，需要考虑集群规模、性能需求以及对监控信息的定制程度。整合这些工具可以帮助管理员更好地了解Elasticsearch集群的运行状况，及时发现和解决潜在的性能问题。
+
+这些问题涵盖了Elasticsearch的核心概念、性能优化、安全性和整体集成，有助于建立对Elasticsearch全面的理解。
+
+通过深入学习这些方面，可以更好地利用Elasticsearch的强大功能来满足实际需求。
+
+# TODO
+
+ES 安装实战笔记
+
+apache calcite 对应的实战笔记
 
 * any list
 {:toc}
