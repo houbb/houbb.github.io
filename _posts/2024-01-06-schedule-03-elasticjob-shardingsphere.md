@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  shardingsphere-elasticjob 分布式调度作业框架
+title: schedule-03-shardingsphere-elasticjob 分布式调度作业框架
 date:  2018-07-19 14:50:41 +0800
-categories: [Quartz]
-tags: [quartz, job, distributed, sh]
+categories: [Schedule]
+tags: [schedule, apache, distribued, work-flow, sh]
 published: true
 ---
 
@@ -84,12 +84,41 @@ ElasticJob 于 2020 年 5 月 28 日成为 Apache ShardingSphere 子项目。
 
 环境要求
 
+# Elastic Job
+
+[Elastic-Job](https://github.com/elasticjob/elastic-job-lite) is a distributed scheduled job framework, based on Quartz and Zookeeper.
+
+## 特性
+
+- 分布式协调安排工作
+
+- 有弹性的伸缩
+
+- 故障转移
+
+- 失败的工作再点燃
+
+- 分片一致，作业的相同分片项只有一个正在运行的实例
+
+- 当分布环境不稳定时，自我诊断和恢复。
+
+- 并行调度支持
+
+- 工作生命周期操作
+
+- 奢华的工作类型
+
+- 支持Spring集成和命名空间
+
+- Web控制台
+
+# 快速开始
+
+> [elastic job学习](http://tech.lede.com/2017/06/23/rd/server/elasticJob/)
+
 # 参考资料
 
 https://github.com/apache/shardingsphere-elasticjob
-
-
-
 
 * any list
 {:toc}
