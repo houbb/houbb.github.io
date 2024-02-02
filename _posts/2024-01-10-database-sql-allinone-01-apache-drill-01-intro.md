@@ -10,7 +10,9 @@ published: true
 
 # Drill 简介
 
-Drill 是一个用于 Big Data 探索的 Apache 开源 SQL 查询引擎。Drill 从头开始设计，旨在支持在现代 Big Data 应用中产生的半结构化且快速演化的数据上进行高性能分析，同时提供 ANSI SQL、行业标准的查询语言的熟悉性和生态系统。
+Drill 是一个用于 Big Data 探索的 Apache 开源 SQL 查询引擎。
+
+Drill 从头开始设计，旨在支持在现代 Big Data 应用中产生的半结构化且快速演化的数据上进行高性能分析，同时提供 ANSI SQL、行业标准的查询语言的熟悉性和生态系统。
 
 Drill 提供与现有的 Apache Hive 和 Apache HBase 部署的即插即用集成。
 
