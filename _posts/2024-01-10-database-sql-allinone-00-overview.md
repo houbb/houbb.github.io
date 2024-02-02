@@ -19,6 +19,7 @@ published: true
 
 2. **Apache Drill:**
    - **主页：** [Apache Drill](https://drill.apache.org/)
+   - **主页：** [Apache Drill](https://drill.apache.org/)
    - **简介：** Apache Drill 是一个分布式 SQL 查询引擎，支持查询多种数据源，包括关系型数据库、NoSQL 数据库和文件系统。它支持标准 SQL，并具有对 JSON、Parquet 等数据格式的原生支持。
 
 3. **PrestoDB:**
@@ -28,10 +29,6 @@ published: true
 4. **Dremio:**
    - **主页：** [Dremio](https://www.dremio.com/)
    - **简介：** Dremio 是一个自助式数据管理平台，提供 SQL 查询引擎和连接多种数据源的能力。它支持 JDBC 连接，可以查询关系型数据库、NoSQL 数据库、云存储等。Dremio 还具有自动推断模式和加速查询的功能。
-
-5. **TiDB:**
-   - **主页：** [TiDB](https://pingcap.com/)
-   - **简介：** TiDB 是一个分布式 SQL 数据库，兼容 MySQL 协议。它支持 JDBC 连接，可以查询关系型数据库，并且具有水平扩展的能力。TiDB 还支持在 Spark 中进行 SQL 查询。
 
 这些工具都具有对多种数据源的支持，并提供标准 SQL 查询的功能。选择适合你需求的工具需要考虑具体场景、性能需求和数据源的复杂性。
 

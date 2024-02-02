@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Database Sharding-03-最佳实践
+title:  Database Sharding-03-分库分表最佳实践
 date:  2018-09-04 16:26:49 +0800
 categories: [Database]
-tags: [database, sql, sharding, best-practice, sh]
+tags: [database, sql, database-sharding, best-practice, sh]
 published: true
 ---
 

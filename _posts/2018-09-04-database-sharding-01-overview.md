@@ -1,12 +1,19 @@
 ---
 layout: post
-title:  Database Sharding
+title:  Database Sharding-01-分表分库入门介绍
 date:  2018-09-04 16:24:49 +0800
 categories: [Database]
-tags: [database, sql, read-write, sh]
+tags: [database, sql, database-sharding, sh]
 published: true
-excerpt: 分表分库
 ---
+
+# 拓展阅读
+
+[mycat](https://houbb.github.io/2018/09/03/mycat)
+
+[c3p0 数据池入门使用教程-00](https://houbb.github.io/2020/07/17/jdbc-pool-c3p0-00-hello-world)
+
+[shardingsphere-分布式数据库生态](https://houbb.github.io/2021/09/05/shardingsphere)
 
 # 分表分库
 
