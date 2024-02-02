@@ -3,7 +3,7 @@ layout: post
 title: database sharding-04-数据库分库分表 chat 聊一下 
 date: 2024-02-02 21:01:55 +0800
 categories: [Database]
-tags: [database, sql, sharding, sh]
+tags: [database, sql, database-sharding, sh]
 published: true
 ---
 

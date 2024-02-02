@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Database Sharding-02-分库分表 in action
+title:  Database Sharding-02-分库分表实战 in action
 date:  2018-09-04 16:26:49 +0800
 categories: [Database]
-tags: [database, sql, sharding, in-action, sh]
+tags: [database, sql, database-sharding, in-action, sh]
 published: true
-excerpt: 分表分库实战
 ---
 
 # 单 key 业务
