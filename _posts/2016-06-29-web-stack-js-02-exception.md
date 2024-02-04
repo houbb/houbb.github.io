@@ -1,13 +1,12 @@
 ---
 layout: post
 title: JS Exception
-date:  2016-7-6 11:45:40 +0800
-categories: [Exception]
-tags: [js]
-published: false
+date:  2016-6-29 12:56:00 +0800
+categories: [Web]
+tags: [less, css, web-stack, web]
+published: true
 ---
-* any list
-{:toc}
+
 
 # JS Exception
 
@@ -29,4 +28,5 @@ BadJS is a solve and trace method of web js error.
 ![strut](https://raw.githubusercontent.com/houbb/resource/master/img/2016-07-06-bad-js.png)
 
 
-
+* any list
+{:toc}

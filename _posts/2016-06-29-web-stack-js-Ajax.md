@@ -1,13 +1,12 @@
 ---
 layout: post
 title: Ajax
-date:  2016-7-11 17:08:28 +0800
-categories: [js]
-tags: [ajax]
-published: false
+date:  2016-6-29 12:56:00 +0800
+categories: [Web]
+tags: [less, css, web-stack, web]
+published: true
 ---
-* any list
-{:toc}
+
 
 # Ajax
 
@@ -146,3 +145,5 @@ readyState 属性存有 XMLHttpRequest 的状态信息。
 当 readyState 等于 4 且状态为 200 时，表示响应已就绪.
 
 
+* any list
+{:toc}

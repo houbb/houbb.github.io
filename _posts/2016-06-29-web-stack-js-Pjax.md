@@ -1,13 +1,12 @@
 ---
 layout: post
 title: Pjax
-date:  2016-7-11 17:08:28 +0800
-categories: [js]
-tags: [single page]
-published: false
+date:  2016-6-29 12:56:00 +0800
+categories: [Web]
+tags: [less, css, web-stack, web]
+published: true
 ---
-* any list
-{:toc}
+
 
 # Pjax
 
@@ -45,5 +44,5 @@ Pjax is a jQuery plugin that uses ajax and pushState to deliver a fast browsing 
 
 
 
-
-
+* any list
+{:toc}
