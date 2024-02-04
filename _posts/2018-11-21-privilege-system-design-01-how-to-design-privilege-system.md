@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  如何从零开始设计权限管理系统
+title:  privilege system design-01-如何从零开始设计权限管理系统
 date:  2020-9-17 21:38:08 +0800
 categories: [Design]
-tags: [design, safe, web, sf]
+tags: [design, privilege, safe, web, sf]
 published: true
 ---
 

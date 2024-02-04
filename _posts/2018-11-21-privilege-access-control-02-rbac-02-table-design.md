@@ -1,9 +1,9 @@
 ---
 layout: post
-title: RBAC-02-数据库表设计
+title: privilege-02 RBAC-02-数据库表设计
 date: 2018-11-21 8:01:55 +0800
 categories: [Design]
-tags: [design, sh]
+tags: [design, privilege, sh]
 published: true
 ---
 

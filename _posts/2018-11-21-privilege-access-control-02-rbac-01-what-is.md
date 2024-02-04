@@ -1,9 +1,9 @@
 ---
 layout: post
-title: RBAC-以角色为基础的权限管理系统设计
+title: privilege-02 RBAC-以角色为基础的权限管理系统设计
 date: 2018-11-21 8:01:55 +0800
 categories: [Design]
-tags: [design, sh]
+tags: [design, privilege, sh]
 published: true
 ---
 
