@@ -1,6 +1,6 @@
 ---
 layout: post
-title: mysql 外键索引 
+title: mysql 外键索引入门介绍
 date: 2024-02-05 21:01:55 +0800
 categories: [Database]
 tags: [database, sql, mysql, index, sh]
