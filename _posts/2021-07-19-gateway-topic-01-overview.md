@@ -1,9 +1,9 @@
 ---
 layout: post
 title: 分布式网关 gateway topic-01-网关概览
-date: 2018-11-21 8:01:55 +0800
-categories: [Gateway]
-tags: [gateway, distributed, sh]
+date: 2017-19-21 8:01:55 +0800
+categories: [Distributed]
+tags: [gateway, distributed, gateway-topic, sh]
 published: true
 ---
 
@@ -207,7 +207,9 @@ API 网关在现代应用程序和服务架构中扮演着重要的角色，提�
 
 对于类似神谕（Apollo）这样的网关，可能你指的是Apollo API Gateway。
 
-然而，目前我没有明确的信息表明有一个叫做"Apollo API Gateway"的特定开源项目。因此，我将回答类似的网关或者API网关的问题。
+然而，目前我没有明确的信息表明有一个叫做"Apollo API Gateway"的特定开源项目。
+
+因此，我将回答类似的网关或者API网关的问题。
 
 如果你在寻找类似的开源API网关，以下是一些常见的选择：
 

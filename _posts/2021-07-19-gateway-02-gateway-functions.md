@@ -1,9 +1,9 @@
 ---
 layout: post
 title: API 网关有哪些作用？设计一个网关应该有哪些功能？
-date: 2018-11-21 8:01:55 +0800
+date: 2017-19-21 8:01:55 +0800
 categories: [Distributed]
-tags: [gateway, sh]
+tags: [gateway, distributed, spring-cloud, gateway-topic, sh]
 published: true
 ---
 

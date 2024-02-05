@@ -1,9 +1,9 @@
 ---
 layout: post
 title: spring cloud gateway-01-入门介绍
-date: 2018-11-21 8:01:55 +0800
-categories: [Spring]
-tags: [spring, spring-cloud, gateway, sh]
+date: 2017-19-21 8:01:55 +0800
+categories: [Distributed]
+tags: [gateway, distributed, gateway-topic, sh]
 published: true
 ---
 
