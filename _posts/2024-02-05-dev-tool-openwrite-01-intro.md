@@ -36,9 +36,9 @@ https://openwrite.cn/guide/postpublish/chrome-plugin.html
 
 # 拓展阅读
 
-[gituhb.com/houbb](https://github.com/houbb)
+[开源网址：gituhb.com/houbb](https://github.com/houbb)
 
-[https://houbb.github.io/](https://houbb.github.io/)
+[个人博客：https://houbb.github.io/](https://houbb.github.io/)
 
 # 参考资料
 
