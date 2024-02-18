@@ -7,6 +7,10 @@ tags: [database, sql, apache, calcite, sh]
 published: true
 ---
 
+# 拓展阅读
+
+> [Apache Calcite 学习文档](https://github.com/quxiucheng/apache-calcite-tutorial)
+
 # Apache Calcite 
 
 Apache Calcite 是一个动态数据管理框架。

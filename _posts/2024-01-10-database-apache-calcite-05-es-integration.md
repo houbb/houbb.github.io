@@ -13,6 +13,82 @@ published: true
 
 有没有什么方法，可以使用标准的 SQL 查询 ES 呢。
 
+> ES 安装 [elasticsearch-03-install-on-windows](https://houbb.github.io/2018/11/15/elasticsearch-03-install-on-windows)
+
+# sql ON ES 设想
+
+## 为什么？
+
+Elasticsearch是搜索的王者，其强大的DSL不让SQL，但缺少SQL的关键特性，如Join。
+
+ES的策略是紧紧拥抱Hadoop/Hive，Spark，有个ES-hadoop方案。Hadoop本身就很笨重，这和轻快的ES是背道而驰的。
+
+ES的主要方向目前还在搜索上，SQL也不是它的主要关注点。所以，可预见的一段时间内，SQL on ES只能通过开发或集成第三方软件来完成，如通过Presto或Drill的插件来实现。我们已经测试了Presto Elasticsearch Connector。我们认为，基于插件的方案难以充分发挥ES的性能优势。
+
+因此，我们提出了基于Calcite Elasticsearch实现的SQL  ON ES方案设想。
+
+## 方案思路
+
+### 1、Apache Calcite
+
+Apache Calcite是面向Hadoop新的查询引擎，它提供了标准的SQL语言、多种查询优化和连接各种数据源的能力，除此之外，Calcite还提供了OLAP和流处理的查询引擎。
+
+正是有了这些诸多特性，Calcite项目在Hadoop中越来越引入注目，并被众多项目集成。
+
+Calcite之前的名称叫做optiq，optiq起初在Hive项目中，为Hive提供基于成本模型的优化，即CBO（Cost Based Optimizatio）。
+
+2014年5月optiq独立出来，成为Apache社区的孵化项目，2014年9月正式更名为Calcite。
+
+Calcite项目的创建者是Julian Hyde，他在数据平台上有非常多的工作经历，曾经是Oracle、 Broadbase公司SQL引擎的主要开发者、SQLStream公司的创始人和主架构师、Pentaho BI套件中OLAP部分的架构师和主要开发者。现在他在Hortonworks公司负责Calcite项目，其工作经历对Calcite项目有很大的帮助。
+
+除了Hortonworks，该项目的代码提交者还有MapR、Salesforce等公司，并且还在不断壮大。
+
+Calcite的目标是“one size fits all（一种方案适应所有需求场景），希望能为不同计算平台和数据源提供统一的查询引擎，以类似传统数据库的访问方式（SQL和高级查询优化）来访问Hadoop上的数据。
+
+Apache Calcite具有以下几个技术特性：
+
+- 支持标准SQL语言；
+
+- 独立于编程语言和数据源，可以支持不同的前端和后端；
+
+- 支持关系代数、可定制的逻辑规划规则和基于成本模型优化的查询引擎；
+
+- 持物化视图（materialized view）的管理（创建、丢弃、持久化和自动识别）；
+
+- 基于物化视图的Lattice和Tile机制，以应用于OLAP分析；
+
+- 支持对流数据的查询。
+
+### 里程碑事件      
+
+Apache Calcite  1.8.0 / 2016-06-13 Permalink
+
+这个版本加入了Elasticsearch 和 Druid 适配器，支持ES 2.3.3版本。这进一步增加了SQL on ES方案的可行性。
+
+### 适配器
+
+1、calcite-elasticsearch
+
+https://github.com/LeeBeomYong/calcite-elasticsearch
+
+2、elasticsearch-sql
+
+https://github.com/NLPchina/elasticsearch-sql
+
+3、SQL on Elasticsearch
+
+参考Calcite-elasticsearch、elasticsearch-sql，利用Elasticsearch插件机制，实现SQL on Elasticsearch方案。
+
+这样，在ES上实现了SQL，有以下几点优势：
+
+简化了系统架构；
+
+减少了数据在ES和Presto之间的传输时间；
+
+充分利用了ES的高性能、Calcite强大的SQL和内存列数据能力；
+
+提供了带有Join能力的ES JDBC Driver
+
 
 # 初始化 books 数据
 
@@ -544,8 +620,190 @@ String sql = "SELECT * FROM es.booksmapping WHERE _MAP['title'] like 'Python%' "
 
 发现不支持！
 
+# 统一查询项目整合Calcite（他人）
 
-# 疑问
+参考资料：[统一查询项目整合Calcite](https://code0xff.org/post/2021/12/%E7%BB%9F%E4%B8%80%E6%9F%A5%E8%AF%A2%E6%95%B4%E5%90%88calcite/)
+
+如何自定义 model/schema: https://github.com/quxiucheng/apache-calcite-tutorial
+
+## 问题描述
+
+通过 Calcite 查询 ES，只能做 SELECT 查询，加一个 WHERE条件都会报错。
+
+注册到 Calcite 的model.json如下：
+
+```json
+inline:{
+  "version": "1.0",
+  "defaultSchema": "TEST_CSV",
+  "schemas": [
+    {
+      "type": "custom",
+      "name": "esTest",
+      "factory": "io.myproject.schema.elasticsearch.ElasticsearchSchemaFactory",
+      "operand": {
+        "coordinates": "{'localhost': 9025}",
+        "userConfig": "{'bulk.flush.max.actions': 10, 'bulk.flush.max.size.mb': 1,'esUser':'username','esPass':'password'}",
+        "index": "student"
+      }
+    }
+  ]
+}
+```
+
+服务端是本地启动的 ES，查询的SQL如下：
+
+```sql
+SELECT * FROM esTest.student
+```
+
+如果改成下面这样就报错了：
+
+```sql
+SELECT * FROM esTest.student  WHERE city in ('FRAMINGHAM', 'BROCKTON', 'CONCORD')
+SELECT * FROM esTest.student AS t WHERE t.city = 'FRAMINGHAM' 
+```
+
+报错原因是在校验的时候，找不到city这个字段。
+
+## 解析问题
+
+首先看下 ES包下的整体结构，类图如下：
+
+![struct](https://woquhaha.gitee.io/pic_tech_1/post/2021/12/%E7%BB%9F%E4%B8%80%E6%9F%A5%E8%AF%A2%E9%A1%B9%E7%9B%AE%E6%95%B4%E5%90%88Calcite/8.jpg)
+
+Calcite 在校验的时，会根据注册的RelDataType做校验，RelDataType是在查询元数据信息时生成的。
+
+比如，查询MySql时，会返回当前库下所有的表信息，然后拿到这个表的所有字段信息，并生成RelDataType对象，注册到Calcite中。
+
+具体是在ElasticsearchTable#getRowType中实现的，正确的 RelDataType 大致是这样的：
+
+```
+RecordType(VARCHAR stu_id, VARCHAR province, VARCHAR city, BIGINT digest, VARCHAR type) NOT NULL
+```
+
+未修改前，错误的RelDataType是这样的：
+
+```
+RecordType((VARCHAR NOT NULL, ANY) MAP NOT NULL _MAP) NOT NULL
+```
+
+代码中，这段生成的逻辑是固定的，根本不管表中的类型是啥，字段名叫啥，每次都返回这么一个固定的RelDataType。
+
+后面SqlValidatorImpl在做校验的时候，会判断 SELECT 中的每个字段，以及 WHERE 中的字段信息，这会触发到DelegatingScope#fullyQualify这个函数。
+
+这个函数很长，出错的原因是，拿一个具体的字段比如city去RelDataType中查询，这当然找不到了，于是报错。
+
+### 解决办法：
+
+在创建ElasticsearchSchema时，会生成一个HTTP请求，去 ES 那边拿到索引下的所有字段和类型，也就是说字段名、类型这些都是可以拿到的，他们就保存在ElasticsearchTransport中。
+
+在ElasticsearchTable#getRowType中，根据已经拿到的具体字段名、字段类型再创建对应的 RelDataType就可以了。
+
+具体修改内容参考：ElasticsearchTable#getRowType
+
+## 生成JSON问题
+
+经过上面一通修改后，校验就可以通过了。但后面还是会报错，比如这个 SQL:
+
+```sql
+SELECT * FROM esTest.student AS t WHERE t.city = 'FRAMINGHAM'
+```
+
+在生成物理表达式时，会将 一个 SQL 节点，转换为对应的 JSON，具体是在PredicateAnalyzer中完成的。
+
+而执行到
+
+```java
+public Expression visitCall(RexCall call) {
+```
+
+这句时，上述的 SQL 的节点类型是：INTERNAL，由不认这个类型，所以报错了。
+
+这个简单，直接在 switch 中把这个类型加上即可。
+
+在执行，会发现虽然执行是成功了，但是没结果。
+
+这是因为在ElasticsearchFilter中，生成的 JSON 内容不对。
+
+具体是在ElasticsearchFilter#implement中出问题的，而这个函数 是通过访问者模式，一层一层的被调用下来的。
+
+在ElasticsearchFilter#translateMatch中，返回的 JSON如下：
+
+```json
+{
+	"query": {
+		"constant_score": {
+			"filter": {
+				"term": {
+					"$0": "FRAMINGHAM"
+				}
+			}
+		}
+	}
+}
+```
+
+term中有一个$0，这个生成的不对，如果改成city，这个 FILTER 条件就对了，最后就能查询出结果了。
+
+## ES 查询语句：
+
+查询索引
+
+```
+POST /[索引名]/_search?scroll=1m HTTP/1.1
+```
+
+如下：
+
+```json
+{
+	"query": {
+		"constant_score": {
+			"filter": {
+				"term": {
+					"city": "FRAMINGHAM"
+				}
+			}
+		}
+	},
+	"size": 5196
+}
+```
+
+一个 MySql -> ES 的在线转换工具： http://www.ischoolbar.com/EsParser/
+
+## 目前 ES 的问题
+
+ES 不支持 JOIN、不支持子查询，CASE-WHEN等，只能做单表(索引)查询
+支持的函数有限，包括：
+
+
+max
+min
+avg
+sum
+count
+
+经过测试和修改，已支持的功能：
+1、四个比较 >=、>、<=、<
+2、SELECT *、SELECT 某些字段
+3、ORDER BY、ORDER BY DESC
+4、GROUP BY
+5、LIKE
+6、BETWEEN
+7、IN
+8、NOT AND OR
+
+目前发现的问题：
+1、HAVING
+这个功能还没实现
+2、range
+BETWEEN、IN 都会被优化为 Sarg类型，这是一个范围集合，类似List、List这样。
+整数类型 和 字符串类型 所处理的方式不同
+具体修改参见： PredicateAnalyzer$SimpleQueryExpression#range
+
+# 疑问 chat
 
 这里的 _MAP 看起来真的比较别扭，为什么不能直接实现呢？
 
@@ -653,15 +911,44 @@ Mapping 在 Elasticsearch 中起到了模式定义的作用，它定义了索引
 
 Mapping 的设计使得 Elasticsearch 能够有效地索引和搜索大量的文档，并提供灵活性以适应各种数据模型。在使用 Elasticsearch 时，合理的 Mapping 设计对于性能和查询的效果非常重要。
 
-#
-
-
 
 # 参考资料
 
 https://www.lixin.help/2021/04/11/Calcite-SQL-ES.html
 
 https://blog.csdn.net/china_world/article/details/51141072
+
+https://help.aliyun.com/zh/es/user-guide/query-syntax?spm=a2c4g.11186623.0.nextDoc.61b072a3ErIUK2
+
+[玩转 Elasticsearch 的 SQL 功能](https://elasticsearch.cn/article/687)
+
+[elasticsearch-sql 增加 jdbc支持](https://cloud.tencent.com/developer/article/1195425)
+
+[Is there any plan for JDBC drivers?](https://github.com/NLPchina/elasticsearch-sql/issues/28)
+
+[Elasticsearch adapter](https://calcite.apache.org/docs/elasticsearch_adapter.html)
+
+[Apache Calcite整合异构数据源查询 以csv、ES、内存表为例](https://blog.csdn.net/imsugar/article/details/107635564)
+
+[通过编写SQL,即可实现对ES文档进行检索](https://www.lixin.help/2021/04/11/Calcite-SQL-ES.html)
+
+[基于Calcite Elasticsearch实现的SQL ON ES方案设想](https://blog.csdn.net/china_world/article/details/51141072)
+
+[Apache Calcite 论文学习笔记](https://juejin.cn/post/6844903891482476552)
+
+[深入浅出Calcite与SQL CBO（Cost-Based Optimizer）优化 ](https://www.cnblogs.com/listenfwind/p/13192259.html)
+
+[Apache Calcite论文翻译](https://zhuanlan.zhihu.com/p/673941313)
+
+https://patentimages.storage.googleapis.com/4d/ab/6e/f1a74862fef0ca/CN106934062A.pdf
+
+[aliyun-sql](https://help.aliyun.com/zh/es/user-guide/query-syntax?spm=a2c4g.11186623.0.nextDoc.61b072a3ErIUK2)
+
+[Apache Calcite精简入门与学习指导](https://blog.51cto.com/xpleaf/2639844)
+
+https://www.amazon.com/-/es/%E5%88%98%E9%92%A7%E6%96%87-ebook/dp/B09WHWX1V9
+
+https://issues.apache.org/jira/browse/CALCITE-4180
 
 * any list
 {:toc}

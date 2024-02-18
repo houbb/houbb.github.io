@@ -125,6 +125,13 @@ http.host: 0.0.0.0
 bin/elasticsearch
 ```
 
+or
+
+```
+/home/dh/es/elasticsearch-7.15.0/bin/elasticsearch
+```
+
+
 打开浏览器，访问 http://localhost:9200/，如果一切正常，应该能看到Elasticsearch的信息。
 
 返回日志：
