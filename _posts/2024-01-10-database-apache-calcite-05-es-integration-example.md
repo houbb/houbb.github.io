@@ -583,6 +583,12 @@ convertToSQLType 如下，主要是时间类别还是要注意下。因为存在
 
 我们只需要把原来手动写死的 view SQL，改成动态的 sql。其他不变。
 
+生成的 view SQL 如下：
+
+```sql
+SELECT cast(_MAP['author'] AS VARCHAR) AS "author",cast(_MAP['price'] AS FLOAT) AS "price",cast(_MAP['publish_time'] AS VARCHAR) AS "publish_time",cast(_MAP['description'] AS VARCHAR) AS "description",cast(_MAP['id'] AS VARCHAR) AS "id",cast(_MAP['title'] AS VARCHAR) AS "title" FROM "elastic"."booksmapping"
+```
+
 效果如下：
 
 ```
