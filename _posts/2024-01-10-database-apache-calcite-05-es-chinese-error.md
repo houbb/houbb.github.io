@@ -9,6 +9,10 @@ published: true
 
 # 报错1-中文报错
 
+## 准备工作
+
+参见 [Apache Calcite 动态数据管理框架-05-java 访问 ES 整合 apache calcite，使用标准 SQL 访问 ES](https://houbb.github.io/2018/11/15/database-apache-calcite-05-es-integration)
+
 ## 测试代码
 
 ```java
