@@ -1,13 +1,78 @@
 ---
 layout: post
-title: Apache Calcite 源码分析-01-CsvSchema 源码浅析
+title: Apache Calcite 源码分析-02-module 模块介绍
 date: 2024-01-10 21:01:55 +0800
 categories: [Database]
 tags: [database, sql, apache, calcite, sh]
 published: true
 ---
 
-# 
+# 源码模块
+
+下面是Apache Calcite源码中各个模块的简要介绍：
+
+1. babel：提供将SQL转换为不同数据库方言的功能，使得Calcite可以支持多种数据库的查询。
+
+2. bom：这个模块定义了一个“Bill of Materials”，用于管理Calcite项目中使用的依赖库的版本。
+
+3. buildSrc：包含构建工具和脚本，用于构建Calcite项目。
+
+4. cassandra：提供与Apache Cassandra数据库的集成支持。
+
+5. core：这是Apache Calcite的核心模块，包含了SQL解析、优化和执行的主要功能。
+
+6. druid：提供与Apache Druid数据库的集成支持。
+
+7. elasticsearch：提供与Elasticsearch的集成支持。
+
+8. example：包含一些使用Calcite的示例代码。
+
+9. file：提供对文件系统的查询支持。
+
+10. geode：提供与Apache Geode数据库的集成支持。
+
+11. gradle：包含Gradle构建脚本，用于构建整个Calcite项目。
+
+12. innodb：提供对InnoDB存储引擎的支持。
+
+13. kafka：提供与Apache Kafka的集成支持。
+
+14. linq4j：提供了用于编写类似LINQ的查询的库。
+
+15. mongodb：提供与MongoDB的集成支持。
+
+16. pig：提供与Apache Pig的集成支持。
+
+17. piglet：提供了一个Pig Latin查询语言的解析器。
+
+18. plus：包含一些额外的功能和扩展，用于增强Calcite的功能。
+
+19. redis：提供与Redis数据库的集成支持。
+
+20. release：包含发布相关的脚本和文档。
+
+21. server：提供了一个Calcite服务器，可以通过网络接口执行查询。
+
+22. site：包含了Calcite项目的网站文档。
+
+23. spark：提供与Apache Spark的集成支持。
+
+24. splunk：提供与Splunk的集成支持。
+
+25. src：包含Calcite项目的源代码。
+
+26. testkit：包含用于测试的工具和实用程序。
+
+27. ubenchmark：包含性能基准测试的代码和工具。
+
+## 简化一下项目？
+
+只保留需要的信息，把其他的东西全部删除掉。
+
+
+
+
+
 
 # 源码应该怎么阅读？
 
