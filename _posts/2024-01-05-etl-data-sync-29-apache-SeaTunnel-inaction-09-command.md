@@ -151,6 +151,29 @@ Job ID              Job Name         Job Status  Submit Time              Finish
 801997588281688065  SeaTunnel        CANCELED    2024-01-23 10:12:05.805  2024-01-25 12:26:31.387
 ```
 
+# Q: 如何暂停恢复一个任务？
+
+## 场景
+
+比如 batch 或者一个基于 cdc 的跑批任务，我们执行一半希望暂停一下。如何重新恢复呢?
+
+
+```java
+  @Parameter(
+            names = {"-r", "--restore"},
+            description = "restore with savepoint by jobId")
+    private String restoreJobId;
+
+    @Parameter(
+            names = {"-s", "--savepoint"},
+            description = "savepoint job by jobId")
+    private String savePointJobId;
+```
+
+个人理解应该就是这两个参数，但是没有看到具体的信息。
+
+
+
 # 参考资料
 
 > [[Bug] [Connector-V2 JDBC] source读取数据为空时，java.lang.NullPointerException](https://github.com/apache/seatunnel/issues/6013)
