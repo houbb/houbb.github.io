@@ -173,6 +173,7 @@ Job ID              Job Name         Job Status  Submit Time              Finish
 个人理解应该就是这两个参数，但是没有看到具体的信息。
 
 
+https://blog.csdn.net/weixin_54625990/article/details/130776613
 
 # 参考资料
 
