@@ -19,7 +19,6 @@ mysql cdc json 格式，发送到 neo4j 持久化。
 
 但是执行一段时间以后，会报错，服务直接挂掉。
 
-
 https://github.com/apache/seatunnel/issues/5694
 
 https://github.com/apache/seatunnel/pull/5695
@@ -287,11 +286,23 @@ java.lang.InterruptedException: null
 ```
 
 
+## 最大值的类别
+
+看代码类别虽然是 long，但是实际上会做 int 的最大值校验。
+
+所以最大值最多只能是 int.maxValue。
+
 # 所以这个值应该怎么设置呢？
 
 直接设置的非常大？
 
 TODO 还是感觉没有特别理解这个参数的含义。
+
+# NEXT
+
+学习一下 checkpoint 的源码？
+
+这部分的作用到底是什么？
 
 # 参考资料
 

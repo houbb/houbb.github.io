@@ -1,6 +1,6 @@
 ---
 layout: post
-title: openai chatgpt paper-01-openai dall-e-3 从文本描述生成图像原理通俗版本
+title: openai chatgpt paper-01-openai DALL-E 3 从文本描述生成图像原理通俗解释
 date: 2024-02-20 21:01:55 +0800
 categories: [AI]
 tags: [ai, paper, sh]
@@ -14,6 +14,8 @@ published: true
 本讨论将重点聚焦于两个备受瞩目的模型：DALL-E和其他主流AI绘图方法。
 
 我们将探讨它们的优势、局限性以及未来的发展方向。通过比较分析，我们期望能够更全面地了解这些技术，为未来的研究和应用提供启示。
+
+![view](https://images.openai.com/blob/54facbbb-c94c-4884-8c94-5b984b19749c/dalle-image-map.png?trim=0,0,0,0&width=2000)
 
 ## Q: 介绍一下 dall-e
 

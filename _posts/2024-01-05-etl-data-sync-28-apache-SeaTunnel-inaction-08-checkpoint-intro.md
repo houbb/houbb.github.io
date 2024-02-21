@@ -113,7 +113,7 @@ SeaTunnel的Source和Sink连接器都是基于SeaTunnel Connector API开发的�
 
 这个标识代表该Sink连接器是否实现了精确处理一次的语义，如果该标识被选中，说明这个Sink连接器能保证发给它的数据它只会往目标端写入一次，不会漏掉导致目标端数据丢失 ，也不会重复往目标端写入。这一功能常见的实现方式是两阶段提交，支持事务的连接器一般会先开启事务进行数据的写入。
 
-当checkpoint发生时，将事务ID返回给CheckManager进行持久化，当作业中的所有Task都响应了CheckManager的checkpoint请求后，第一阶段完成。
+当checkpoint发生时，将事务ID返回给CheckManager进行持久化，当作业中的所有Task都响应了 CheckManager 的checkpoint请求后，第一阶段完成。
 
 然后Apache SeaTunnel Zeta引擎会调用AggregateCommit的方法让Sink对其事务进行提交，这个过程被称为第二阶段，第二阶段完成后该次checkpoint完成。
 
