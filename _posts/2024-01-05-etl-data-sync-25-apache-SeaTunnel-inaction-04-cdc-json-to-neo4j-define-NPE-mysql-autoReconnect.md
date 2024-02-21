@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ETL-25-apache SeaTunnel 实战 mysql CDC json 到 neo4j 自定义插件 NPE java.util.concurrent.ExecutionException java.lang.NullPointerException
+title: ETL-25-apache SeaTunnel 实战 mysql CDC 超时报错 mysql autoReconnect=true 自动重连的问题
 date: 2024-01-05 21:01:55 +0800
 categories: [ETL]
 tags: [etl, sh]
@@ -344,7 +344,48 @@ show global variables like '%wait_timeout%';
 
 看了一下测试环境这个属性只有 1800，也就是 30min。
 
+
+### mysql 版本
+
+```sql
+SELECT VERSION();
+```
+
+发现本地是 5.7.34
+
+### 5.7
+
+```
+看看官网 mysql5.7上关于 autoReconnect的设置：
+
+27.8.20 C API Automatic Reconnection Control
+
+The MySQL client library can perform an automatic reconnection to the server if it finds that the connection is down when you attempt to send a statement to the server to be executed. If auto-reconnect is enabled, the library tries once to reconnect to the server and send the statement again.
+
+Auto-reconnect is disabled by default.
+
+If it is important for your application to know that the connection has been dropped (so that it can exit or take action to adjust for the loss of state information), be sure that auto-reconnect is disabled. To ensure this, call mysql_options() with the MYSQL_OPT_RECONNECT option:
+```
+
+翻译：
+
+```
+27.8.20 C API自动重新连接控制
+
+当你尝试发送一个语句给服务器执行时，如果MySQL客户端库发现连接断开，它可以自动重新连接到服务器。如果启用了自动重新连接，则库会尝试一次重新连接到服务器并重新发送该语句。
+
+自动重新连接默认情况下是禁用的。
+
+如果你的应用程序需要知道连接已经断开（以便它可以退出或采取行动来调整丢失的状态信息），请确保禁用自动重新连接。为了确保这一点，使用MYSQL_OPT_RECONNECT选项调用mysql_options()。
+```
+
 ### 解决方式
+
+5.0 以上：autoReconnect=true
+
+这个要注意一下数据库版本。
+
+8.0 https://dev.mysql.com/doc/refman/8.0/en/c-api-auto-reconnect.html
 
 ```
 jdbc:mysql://127.0.0.1:3306/stock_tweet?autoReconnect=true 
@@ -366,12 +407,32 @@ jdbc:mysql://127.0.0.1:3306/stock_tweet?autoReconnect=true
 
 - 原有连接失效，新的连接恢复后，MySQL将会使用新的记录行来存储连接中的性能数据；
 
+### 更多的属性调整
+
+[连接数据库超时设置autoReconnect=true，默认重试次数调整](https://blog.csdn.net/jx520/article/details/122575162)
+
+参数	说明
+
+autoReconnect	驱动程序是否应该尝试重新建立连接? 如果启用了，驱动程序将会对陈旧或死亡连接上发出的查询抛出异常，这些查询属于当前事务，但是在新事务中对连接发出的下一个查询之前会尝试重新连接。 不推荐这个功能的使用,因为它有副作用与会话状态和数据一致性当应用程序不妥善处理异常,仅设计用于当你无法配置您的应用程序来处理异常造成死亡和陈旧的正确连接。 另外，作为最后一个选项，研究将MySQL服务器变量“wait_timeout”设置为一个较高的值，而不是默认的8小时。
+maxReconnects	如果autoReconnect为true，则尝试重新连接的最大次数，默认为’3’。
+initialTimeout	如果启用了autoReconnect，重新连接尝试之间的初始等待时间(以秒为单位，默认为’2’)。
+
 ## 测试
+
+我们设置一下 2 个属性：
+
+```
+autoReconnect=true&initialTimeout=60
+```
+
+怀疑是超时时间可能不够，导致的问题，
+
+如下：
 
 ```conf
 source{
     MySQL-CDC {
-        base-url = "jdbc:mysql://127.0.0.1:3306/test?autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true"
+        base-url = "jdbc:mysql://127.0.0.1:3306/test?autoReconnect=true&initialTimeout=60&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true"
         driver = "com.mysql.jdbc.Driver"
         username = "admin"
         password = "123456"
@@ -402,7 +463,11 @@ source{
 
 这部分的作用到底是什么？
 
+
+
 # 参考资料
+
+[mysql connect 5.6_mysql5，mysql5.6，mysql5.7，mysql8设置autoReconnect=true解决连接数据库超时问m.](https://blog.csdn.net/weixin_32661017/article/details/113906360)
 
 https://github.com/apache/seatunnel/issues/5777
 
