@@ -407,6 +407,56 @@ jdbc:mysql://127.0.0.1:3306/stock_tweet?autoReconnect=true
 
 - 原有连接失效，新的连接恢复后，MySQL将会使用新的记录行来存储连接中的性能数据；
 
+### 官方属性说明
+
+> [官方 mysql 文档](https://dev.mysql.com/doc/connector-j/en/connector-j-connp-props-high-availability-and-clustering.html)
+
+- 自动重新连接 autoReconnect
+
+驱动程序是否应尝试重新建立陈旧和/或失效的连接？如果启用，则驱动程序将对在当前事务中属于陈旧或失效连接的查询引发异常，但会在下一个在新事务中发出的连接上的查询之前尝试重新连接。
+
+不推荐使用此功能，因为当应用程序未正确处理SQLExceptions时，它会产生与会话状态和数据一致性相关的副作用，并且只设计用于在无法配置应用程序以正确处理由失效和陈旧连接引起的SQLExceptions时使用。
+
+或者，作为最后一种选择，可以调查将MySQL服务器变量'wait_timeout'设置为较高值，而不是默认的8小时。
+
+默认值：false
+自版本：1.1
+
+- autoReconnectForPools
+
+是否使用适合连接池的重新连接策略？
+
+默认值：false
+自版本：3.1.3
+
+- failOverReadOnly
+
+在“autoReconnect”模式下故障转移时，连接是否应设置为“只读”？
+
+默认值：true
+自版本：3.0.12
+
+- maxReconnects
+
+如果“autoReconnect”为“true”，尝试重新连接的最大次数。
+
+默认值：3
+自版本：1.1
+
+- reconnectAtTxEnd
+
+如果将“autoReconnect”设置为“true”，是否应在每个事务结束时尝试重新连接？
+
+默认值：false
+自版本：3.0.10
+
+- initialTimeout
+
+如果启用了“autoReconnect”，重新连接尝试之间的初始等待时间（以秒为单位，默认为“2”）。
+
+默认值：2
+自版本：1.1
+
 ### 更多的属性调整
 
 [连接数据库超时设置autoReconnect=true，默认重试次数调整](https://blog.csdn.net/jx520/article/details/122575162)
@@ -460,6 +510,10 @@ source{
 ```
 
 给这里的 cdc url 加上 autoReconnect=true 属性。
+
+然后发现不行，这里引发出了另一个问题。
+
+我们的另一个 cdc 就不存在这个样的问题。
 
 # NEXT
 
