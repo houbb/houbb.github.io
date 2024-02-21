@@ -1,7 +1,7 @@
 ---
 layout: post
 title: spring cloud gateway-02-配置路由谓词工厂和网关过滤工厂
-date: 2017-19-21 8:01:55 +0800
+date:  2021-07-19 09:20:31 +0800
 categories: [Distributed]
 tags: [gateway, distributed, gateway-topic, sh]
 published: true

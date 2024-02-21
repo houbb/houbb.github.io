@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 如何基于 Netty 实现简单的 gateway 网关？
-date: 2017-19-21 8:01:55 +0800
+date:  2021-07-19 09:20:31 +0800
 categories: [Distributed]
 tags: [gateway, distributed, spring-cloud, gateway-topic, sh]
 published: true

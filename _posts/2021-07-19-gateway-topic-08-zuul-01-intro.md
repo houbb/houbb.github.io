@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Zuul-Zuul 是一种网关服务，可提供动态路由、监控、弹性、安全性等。
-date: 2017-19-21 8:01:55 +0800
+date:  2021-07-19 09:20:31 +0800
 categories: [Distributed]
 tags: [gateway, distributed, gateway-topic, sh]
 published: true
