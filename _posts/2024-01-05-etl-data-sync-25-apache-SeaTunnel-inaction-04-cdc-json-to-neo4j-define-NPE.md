@@ -298,6 +298,104 @@ java.lang.InterruptedException: null
 
 TODO 还是感觉没有特别理解这个参数的含义。
 
+
+后来发现设置了最大值，依然报错，所以应该不是 checkpoint 的问题。
+
+## 其他的问题
+
+后来在 seatunnel 的 logs 下面，看到了 
+
+```
+Caused by io.debezizium.DebeziziumException：Error reading MySQL variables: The last packet 
+```
+
+大概意思就是读取信息超时了。
+
+建议给 JDBC url 添加上对应的属性 `autoReconnect=true` 来解决这个问题。
+
+
+### mysql 自动断开
+
+28800单位是秒转化成小时就是8小时，看出MySQL的默认设置，当一个连接的空闲时间超过8小时后，MySQL就会断开该连接。
+
+所以发现问题出在如果超过这个wait_timeout时间(默认是8小时)对数据库没有任何操作，那么MySQL会自动关闭数据库连接以节省资源。
+
+数据库连接自动断开的问题确实是在第二天发生了，也就是在一个晚上没有对数据库进行操作(显然超过了8小时)的情况下发生的这个问题。
+
+```sql
+show global variables like '%wait_timeout%';
+```
+
+对应的值：
+
+```
++--------------------------+----------+
+| Variable_name            | Value    |
++--------------------------+----------+
+| innodb_lock_wait_timeout | 50       |
+| lock_wait_timeout        | 31536000 |
+| mysqlx_wait_timeout      | 28800    |
+| wait_timeout             | 28800    |
++--------------------------+----------+
+4 rows in set (0.01 sec)
+```
+
+这个测试环境可能设置的更加短，也不太好修改，应该是为了解决无用链接占用问题。
+
+看了一下测试环境这个属性只有 1800，也就是 30min。
+
+### 解决方式
+
+```
+jdbc:mysql://127.0.0.1:3306/stock_tweet?autoReconnect=true 
+```
+
+这个参数表示在mysql超时断开连接后会自动重新连接，配置的话，只需要在连接mysql的语句写上autoReconnect=true：
+
+同时可以看到官网不推荐使用这个参数，因为它有一些副作用，具体介绍下：
+
+- 原有连接上的事务将会被回滚，事务的提交模式将会丢失；
+
+- 原有连接持有的表的锁将会全部释放；
+
+- 原有连接关联的会话Session将会丢失，重新恢复的连接关联的将会是一个新的会话Session；
+
+- 原有连接定义的用户变量将会丢失；
+
+- 原有连接定义的预编译SQL将会丢失；
+
+- 原有连接失效，新的连接恢复后，MySQL将会使用新的记录行来存储连接中的性能数据；
+
+## 测试
+
+```conf
+source{
+    MySQL-CDC {
+        base-url = "jdbc:mysql://127.0.0.1:3306/test?autoReconnect=true&useSSL=false&serverTimezone=Asia/Shanghai&autoReconnect=true"
+        driver = "com.mysql.jdbc.Driver"
+        username = "admin"
+        password = "123456"
+        table-names = ["test.role", "test.role_extra"]
+
+        startup.mode = "initial"
+        format = compatible_debezium_json
+        debezium = {
+           # include schema into kafka message
+           key.converter.schemas.enable = false
+           value.converter.schemas.enable = false
+           # include dd1
+           include.schema.changes = false
+           # topic.prefix
+           database.server.name = "merge"
+        }
+        result_table_name="allInOne-CDC-JSON-result"
+    }
+
+}
+```
+
+给这里的 cdc url 加上 autoReconnect=true 属性。
+
 # NEXT
 
 学习一下 checkpoint 的源码？
@@ -313,6 +411,8 @@ https://github.com/apache/seatunnel/issues/6013
 https://github.com/apache/seatunnel/issues/5555
 
 https://github.com/apache/seatunnel/issues/5694
+
+https://www.51cto.com/article/707891.html
 
 * any list
 {:toc}
