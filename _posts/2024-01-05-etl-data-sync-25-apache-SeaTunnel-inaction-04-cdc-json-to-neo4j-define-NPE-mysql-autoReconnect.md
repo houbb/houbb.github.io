@@ -385,7 +385,7 @@ If it is important for your application to know that the connection has been dro
 
 这个要注意一下数据库版本。
 
-8.0 https://dev.mysql.com/doc/refman/8.0/en/c-api-auto-reconnect.html
+> 8.3 https://dev.mysql.com/doc/c-api/8.3/en/c-api-auto-reconnect.html
 
 ```
 jdbc:mysql://127.0.0.1:3306/stock_tweet?autoReconnect=true 
@@ -416,6 +416,10 @@ jdbc:mysql://127.0.0.1:3306/stock_tweet?autoReconnect=true
 autoReconnect	驱动程序是否应该尝试重新建立连接? 如果启用了，驱动程序将会对陈旧或死亡连接上发出的查询抛出异常，这些查询属于当前事务，但是在新事务中对连接发出的下一个查询之前会尝试重新连接。 不推荐这个功能的使用,因为它有副作用与会话状态和数据一致性当应用程序不妥善处理异常,仅设计用于当你无法配置您的应用程序来处理异常造成死亡和陈旧的正确连接。 另外，作为最后一个选项，研究将MySQL服务器变量“wait_timeout”设置为一个较高的值，而不是默认的8小时。
 maxReconnects	如果autoReconnect为true，则尝试重新连接的最大次数，默认为’3’。
 initialTimeout	如果启用了autoReconnect，重新连接尝试之间的初始等待时间(以秒为单位，默认为’2’)。
+
+### 连接池文档
+
+[MySQL Connector/J Documentation](https://dev.mysql.com/doc/connector-j/5.1/en/connector-j-reference-configuration-properties.html)
 
 ## 测试
 
