@@ -13,9 +13,7 @@ published: true
 
 [5 分钟入门 shiro 安全框架实战笔记](https://www.toutiao.com/i6910927630845919756/)
 
-[shiro 安全框架入门，看这一篇就够了](https://www.toutiao.com/i6910932912108175879/)
-
-[shiro 整合 spring 实战及源码详解](https://www.toutiao.com/i6913919734140436995/)
+[shiro 整合 spring 实战及源码详解](https://houbb.github.io/2016/08/11/shiro-20-intergrations-spring)
 
 这一节我们来看下如何将 shiro 与 springboot 进行整合。
 
