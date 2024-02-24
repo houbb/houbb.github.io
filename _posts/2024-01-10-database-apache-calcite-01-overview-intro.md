@@ -9,6 +9,8 @@ published: true
 
 # chat
 
+原文地址： [Apache Calcite 动态数据管理框架介绍](https://houbb.github.io/2024/01/10/database-apache-calcite-doc-overview-01-intro)
+
 ## 背景
 
 随着数据规模的不断增长和数据源的多样化，开发人员需要面对各种挑战，如何高效地管理、查询和分析海量数据成为了一个迫切的问题。
