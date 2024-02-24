@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Apache Calcite 动态数据管理框架-20-实战笔记之入门例子
+title: Apache Calcite 动态数据管理框架整合 csv 实战笔记
 date: 2024-01-10 21:01:55 +0800
 categories: [Database]
 tags: [database, sql, apache, calcite, sh]
