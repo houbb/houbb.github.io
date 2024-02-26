@@ -7,8 +7,6 @@ tags: [java, tool, sf]
 published: true
 ---
 
-* any list
-{:toc}
 
 
 # POI
@@ -130,3 +128,5 @@ public static String getSheetContent(Sheet sheet, String charset) throws Unsuppo
 }
 ```
 
+* any list
+{:toc}
