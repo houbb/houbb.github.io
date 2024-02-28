@@ -7,6 +7,12 @@ tags: [mybatis, database]
 published: true
 ---
 
+# 问题 
+
+mybatis 使用中，发现 selectKey 赋值没有生效。
+
+为什么呢？
+
 # Statement配置如下：
 
 ```xml
