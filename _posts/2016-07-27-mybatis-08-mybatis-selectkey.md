@@ -1,17 +1,11 @@
 ---
 layout: post
-title: Mybatis-08-mybatis selectKey 赋值未生效
+title: Mybatis-08-mybatis selectKey 赋值未生效，为什么？
 date:  2016-07-27 10:40:05 16:09:17 +0800
 categories: [SQL]
 tags: [mybatis, database]
 published: true
 ---
-
-# 问题 
-
-mybatis 使用中，发现 selectKey 赋值没有生效。
-
-为什么呢？
 
 # Statement配置如下：
 
