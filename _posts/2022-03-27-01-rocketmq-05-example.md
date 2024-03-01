@@ -3,7 +3,7 @@ layout: post
 title: RocketMQ-05-example 例子
 date: 2022-03-18 21:01:55 +0800 
 categories: [MQ]
-tags: [mq, sh]
+tags: [mq, rocketmq, jms]
 published: true
 ---
 

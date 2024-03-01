@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Rocketmq-ONS spring 整合
-date:  2016-10-25 20:57:26 +0800
+date: 2022-03-18 21:01:55 +0800
 categories: [Apache]
-tags: [mq, ali-cloud, sh]
+tags: [mq, rocketmq, jms]
 published: true
 ---
 

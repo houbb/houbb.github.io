@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Rocketmq-03-java hello world 入门案例 
-date:  2016-10-25 20:57:26 +0800
+date: 2022-03-18 21:01:55 +0800
 categories: [Apache]
-tags: [mq, sh]
+tags: [mq, rocketmq, jms]
 published: true
 ---
 

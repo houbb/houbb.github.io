@@ -3,7 +3,7 @@ layout: post
 title: RocketMQ-09-dledger 快速搭建
 date: 2022-03-18 21:01:55 +0800 
 categories: [MQ]
-tags: [mq, sh]
+tags: [mq, rocketmq, jms]
 published: true
 ---
 

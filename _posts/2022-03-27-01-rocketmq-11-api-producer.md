@@ -3,7 +3,7 @@ layout: post
 title: RocketMQ-11-api 生产者接口文档
 date: 2022-03-18 21:01:55 +0800 
 categories: [MQ]
-tags: [mq, sh]
+tags: [mq, rocketmq, jms]
 published: true
 ---
 
