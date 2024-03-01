@@ -1,84 +1,30 @@
 ---
 layout: post
-title: LTS-分布式任务调度框架
-date: 2016-10-22 13:30:45 +0800
-categories: [Quartz]
-tags: [quartz, job]
+title: schedule-09-分布式任务调度框架 LTS light-task-scheduler 安装笔记
+date: 2024-01-10 21:01:55 +0800
+categories: [Schedule]
+tags: [schedule, apache, distribued, work-flow, sh]
 published: true
 ---
 
-# LTS
 
-[LTS(light-task-scheduler)](https://github.com/ltsopensource/light-task-scheduler) 主要用于解决分布式任务调度问题，支持实时任务，定时任务和Cron任务
+# 准备工作
 
-
-> [lts.pdf](https://github.com/houbb/download/tree/master/download/pdf/lts/lts.pdf)
-
-
-> 主要功能
-
-1. 支持分布式，解决多点故障，支持动态扩容，容错重试等
-2. Spring扩展支持，SpringBoot支持，Spring Quartz Cron任务的无缝接入支持
-3. 节点监控支持，任务执行监控支持，JVM监控支持
-4. 后台运维操作支持, 可以动态提交，更改，停止 任务
-
-> 框架鸟瞰
-
-LTS节点:
-
-- JobClient：主要负责提交任务, 并接收任务执行反馈结果。
-- JobTracker：负责接收并分配任务，任务调度。
-- TaskTracker：负责执行任务，执行完反馈给JobTracker。
-- LTS-Admin：（管理后台）主要负责节点管理，任务队列管理，监控管理等。
-
-LTS支持任务类型：
-
-- 实时任务：提交了之后立即就要执行的任务。
-- 定时任务：在指定时间点执行的任务，譬如 今天3点执行（单次）。
-- Cron任务：CronExpression，和quartz类似（但是不是使用quartz实现的）譬如 0 0/1 * * * ?
-
-结构图
-
-![lts](https://raw.githubusercontent.com/houbb/resource/master/img/zookeeper/lts/2016-09-27-lts-struct.png)
-
-> 节点组
-
-- 英文名称 NodeGroup,一个节点组等同于一个小的集群，同一个节点组中的各个节点是对等的，等效的，对外提供相同的服务。
-
-- 每个节点组中都有一个master节点，这个master节点是由LTS动态选出来的，当一个master节点挂掉之后，LTS会立马选出另外一个master节点，
-框架提供API监听接口给用户。
-
-> FailStore
-
-- 这个主要是用于失败了存储的，主要用于节点容错，当远程数据交互失败之后，存储在本地，等待远程通信恢复的时候，再将数据提交。
-- FailStore主要用户JobClient的任务提交，TaskTracker的任务反馈，TaskTracker的业务日志传输的场景下。
-- FailStore目前提供几种实现：leveldb,rocksdb,berkeleydb,mapdb,ltsdb，用于可以自由选择使用哪种,用户也可以采用SPI扩展使用自己的实现。
-
-# Hello World
-
-<uml>
-    Title: Demo in Mac
-    Env->Download:
-    Download->Package war:
-</uml>
-
-- Env Prepare
-
-1、 JDK
+## 1、 JDK
 
 Jdk1.6 or later
 
 ```
-houbinbindeMacBook-Pro:bin houbinbin$ java -version
+$ java -version
 java version "1.8.0_91"
 Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
 Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
 ```
 
-2、 Maven
+## 2、 Maven
 
 ```
-houbinbindeMacBook-Pro:bin houbinbin$ mvn --v
+$ mvn --v
 Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-11T00:41:47+08:00)
 Maven home: /usr/local/maven/maven3.3.9
 Java version: 1.8.0_91, vendor: Oracle Corporation
@@ -87,36 +33,40 @@ Default locale: zh_CN, platform encoding: UTF-8
 OS name: "mac os x", version: "10.11.3", arch: "x86_64", family: "mac"
 ```
 
-3、 Zookeeper
+## 3、 Zookeeper
 
 ```
-houbinbindeMacBook-Pro:bin houbinbin$ pwd
+$ pwd
 /Users/houbinbin/it/tools/zookeeper/server1/zookeeper-3.4.9/bin
-houbinbindeMacBook-Pro:bin houbinbin$ ./zkServer.sh start
+$ ./zkServer.sh start
 ZooKeeper JMX enabled by default
 Using config: /Users/houbinbin/it/tools/zookeeper/server1/zookeeper-3.4.9/bin/../conf/zoo.cfg
 Starting zookeeper ... STARTED
-houbinbindeMacBook-Pro:bin houbinbin$ jps
+$ jps
 14064 QuorumPeerMain
 14067 Jps
 13884
 ```
 
-4、 MySQL
+## 4、 MySQL
 
 Create database named ```lts```.
 
 ```
-houbinbindeMacBook-Pro:bin houbinbin$ mysql -V
+$ mysql -V
 /usr/local/mysql/bin/mysql  Ver 14.14 Distrib 5.6.30, for osx10.11 (x86_64) using  EditLine wrapper
 ```
+
+# 安装
+
+## 下载
 
 - [Download](https://github.com/ltsopensource/light-task-scheduler)
 
 git clone
 
 ```
-houbinbindeMacBook-Pro:bin houbinbin$ git clone https://github.com/ltsopensource/light-task-scheduler
+$ git clone https://github.com/ltsopensource/light-task-scheduler
 Cloning into 'light-task-scheduler'...
 remote: Counting objects: 25026, done.
 remote: Compressing objects: 100% (58/58), done.
@@ -126,24 +76,23 @@ Resolving deltas: 100% (10757/10757), done.
 Checking connectivity... done.
 ```
 
-- Package war
+## 打包
 
-Files in ```light-task-scheduler```
+文件在 ```light-task-scheduler```
 
 ```
-houbinbindeMacBook-Pro:conf houbinbin$ cd ~/it/tools/light-task-scheduler/
-houbinbindeMacBook-Pro:light-task-scheduler houbinbin$ ls
+$ cd ~/it/tools/light-task-scheduler/
+$ ls
 LICENSE			build.sh		lts-admin		lts-jobtracker		lts-startup		开发计划.md
 README.md		docs			lts-core		lts-monitor		lts-tasktracker		开发者规范.md
 build.cmd		lts			lts-jobclient		lts-spring		pom.xml
 ```
 
+只打包 **lts-admin**。
 
-Only package the **lts-admin**
+你需要执行 ```clean install lts-core``` 和 ```clean install lts-monitor```，然后再打包 **lts-admin**。
 
-You need ```clean install lts-core``` and ```clean install lts-monitor```, then package **lts-admin**.
-Log may like this:
-
+日志可能如下所示：
 
 ```
 [INFO] Copying webapp resources [/Users/houbinbin/IT/tools/light-task-scheduler/lts-admin/src/main/webapp]
@@ -161,58 +110,57 @@ Log may like this:
 Process finished with exit code 0
 ```
 
-<label class="label label-warning">Attention<label>
+注意: 
 
-1. Ensure has create database ```lts```
+1. 确保已经创建了数据库 ```lts```
 
-2. Mysql access should be ```root/root```,
-or you need change the ```lts-admin.cfg``` and ```lts-monitor.cfg``` database access int **lts-admin** like this:
+2. MySQL 访问应该是 ```root/root```，
 
-```
+或者你需要将 ```lts-admin.cfg``` 和 ```lts-monitor.cfg``` 中的数据库访问改成 **lts-admin** 的样式，如下所示：
+
+
+```cfg
 # ------ 这个是Admin存储数据的地方,也可以和JobQueue的地址一样 ------
 configs.jdbc.url=jdbc:mysql://127.0.0.1:3306/lts
 configs.jdbc.username=root
 configs.jdbc.password=123456
 ```
 
+## tomcat 启动
+
 - Tomcat run
 
-copy the ```lts-admin-${version}.war``` into tomcat
+拷贝 ```lts-admin-${version}.war``` 到 tomcat
 
 ```
-houbinbindeMacBook-Pro:light-task-scheduler houbinbin$ mv /Users/houbinbin/IT/tools/light-task-scheduler/lts-admin/target/lts-admin-1.7.0-SNAPSHOT.war ~/it/tools/tomcat/tomcat8/webapps/ROOT.war
-houbinbindeMacBook-Pro:light-task-scheduler houbinbin$ cd ~/it/tools/tomcat/tomcat8/webapps
-houbinbindeMacBook-Pro:webapps houbinbin$ ls
+$ mv /Users/houbinbin/IT/tools/light-task-scheduler/lts-admin/target/lts-admin-1.7.0-SNAPSHOT.war ~/it/tools/tomcat/tomcat8/webapps/ROOT.war
+$ cd ~/it/tools/tomcat/tomcat8/webapps
+
+$ ls
 ROOT		ROOT.war
 ```
 
-or use maven plugin in the ```lts-admin``` module
+或者在 ```lts-admin``` module 使用 tomcat 插件。
 
 ```
 $   mvn tomcat7:run
 ```
 
-- Visit
+## 访问
 
-Enter ```localhost:8081``` in browser, the default access is ```admin/admin```
+在浏览器中输入 ```localhost:8081```，默认访问的用户名和密码是 ```admin/admin```。
 
-![lts-index](https://raw.githubusercontent.com/houbb/resource/master/img/tools/lts/2016-10-22-lts-index.png)
+# Quick Start
 
+## 准备
 
+通过 idea 打开入门例子， [Import example](https://github.com/ltsopensource/lts-examples)
 
-## Quick Start
+1） Start Zookeeper
 
-> Prepare
+2） Start MySQL
 
-- [Import example](https://github.com/ltsopensource/lts-examples)
-
-Import this demo to your idea.
-
-- Start Zookeeper
-
-- Start MySQL
-
-Create database named ```lts``` first
+3）创建 lts 数据库。
 
 ```
 mysql> use lts;
@@ -221,17 +169,17 @@ mysql> show tables;
 Empty set (0.00 sec)
 ```
 
-> Run
+## 运行
 
-- Start JobTracker
+### Start JobTracker
 
-If you mysql login is not ```root/root```, you need change the mysql conf in ```lts.properties```, then run:
+如果你的 MySQL 登录不是 ```root/root```，你需要在 ```lts.properties``` 中更改 MySQL 配置，然后运行：
 
 ```
 lts-examples/lts-example-jobtracker/lts-example-jobtracker-java/src/main/java/com/github/ltsopensource/example/java/Main.java
 ```
 
-log
+日志
 
 ```
 2016-10-22 14:25:55,352 [main] (AbstractLogger.java:31) INFO  com.github.ltsopensource.core.registry.RegistryStatMonitor  -  [LTS] Registry available, lts version: 1.6.9, current host: 192.168.1.3
@@ -240,7 +188,7 @@ log
 2016-10-22 14:25:55,392 [main] (AbstractLogger.java:31) INFO  com.github.ltsopensource.core.cluster.JobNode  -  [LTS] ========== Start success, nodeType=JOB_TRACKER, identity=JT_192.168.1.3_14530_14-25-53.906_1, lts version: 1.6.9, current host: 192.168.1.3
 ```
 
-- Start TaskTracker
+### Start TaskTracker
 
 run
 
@@ -248,7 +196,7 @@ run
 lts-examples/lts-example-tasktracker/lts-example-tasktracker-java/src/main/java/com/github/ltsopensource/example/java/Main.java
 ```
 
-log
+日志
 
 ```
 2016-10-22 14:28:49,943 [ZkClient-EventThread-29-127.0.0.1:2181] (AbstractLogger.java:31) INFO  com.github.ltsopensource.core.cluster.MasterElector  -  [LTS] Current node become the master node:{"address":"192.168.1.3:0","available":true,"clusterName":"test_cluster","createTime":1477117728807,"group":"test_trade_TaskTracker","hostName":"houbinbindeMacBook-Pro.local","httpCmdPort":8720,"identity":"TT_192.168.1.3_14571_14-28-48.784_1","ip":"192.168.1.3","nodeType":"TASK_TRACKER","port":0,"threads":64}, lts version: 1.6.9, current host: 192.168.1.3
@@ -256,7 +204,7 @@ log
 2016-10-22 14:28:49,944 [ZkClient-EventThread-29-127.0.0.1:2181] (AbstractLogger.java:31) INFO  com.github.ltsopensource.core.support.RetryScheduler  -  [LTS] Start JobPushProcessor master RetryScheduler success, identity=[TT_192.168.1.3_14571_14-28-48.784_1], lts version: 1.6.9, current host: 192.168.1.3
 ```
 
-- Start ClientTracker
+### Start ClientTracker
 
 run
 
@@ -270,12 +218,11 @@ log
 2016-10-22 14:30:56,216 [main] (AbstractLogger.java:31) INFO  com.github.ltsopensource.core.cluster.JobNode  -  [LTS] ========== Start success, nodeType=JOB_CLIENT, identity=JC_192.168.1.3_14599_14-30-55.128_1, lts version: 1.6.9, current host: 192.168.1.3
 ```
 
-In the **LTS-Admin** manager page, you can get the info about them.
-
+在 **LTS-Admin** 的管理页面上，您可以获取有关它们的信息。
 
 # Try in Ubuntu
 
-> Download
+## 下载
 
 ```
 $   git clone https://github.com/ztajy/light-task-scheduler.git
@@ -284,7 +231,9 @@ root@iZuf60ahcky4k4nfv470juZ:~/code/light-task-scheduler# ls
 build.cmd  build.sh  docs  lts  lts-admin  lts-core  lts-example  lts-jobclient  lts-jobtracker  lts-logger  lts-queue  lts-spring  lts-startup  lts-tasktracker  pom.xml  README.md
 ```
 
-> JobTracker和LTS-Admin部署
+## 部署
+
+JobTracker和LTS-Admin部署
 
 1、运行根目录下的sh build.sh或build.cmd脚本，会在dist目录下生成lts-{version}-bin文件夹 
 
@@ -349,8 +298,6 @@ jobtracker 中是 JobTracker的配置文件和需要使用到的jar包，lts-adm
 
 4、LTS-Admin启动.修改lts-admin/conf下的配置，然后运行bin下的sh lts-admin.sh或lts-admin.cmd脚本即可。
 logs文件夹下会生成lts-admin.out日志，启动成功在日志中会打印出访问地址，用户可以通过这个访问地址访问了。
-
-
 
 * any list
 {:toc}

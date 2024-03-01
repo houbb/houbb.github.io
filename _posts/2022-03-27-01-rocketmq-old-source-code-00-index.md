@@ -3,7 +3,7 @@ layout: post
 title: Rocketmq 源码-00-为什么学习源码 
 date: 2022-03-18 21:01:55 +0800
 categories: [Apache]
-tags: [mq]
+tags: [mq, rocketmq, jms]
 published: true
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: schedule-04-xxl-job 入门介绍
-date:  2018-07-19 14:50:41 +0800
+date: 2024-01-10 21:01:55 +0800
 categories: [Schedule]
 tags: [schedule, apache, distribued, work-flow, sh]
 published: true
