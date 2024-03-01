@@ -1,33 +1,36 @@
 ---
 layout: post
-title: Maven Plugin
-date: 2016-08-20 12:35:04 +0800
+title: maven 包管理平台-07-plugins 常见插件介绍
+date: 2016-08-06 13:10:53 +0800
 categories: [apache]
 tags: [maven]
 published: true
 ---
-* any list
-{:toc}
 
 
-Maven is - at its heart - a plugin execution framework; all work is done by plugins. Looking for a specific goal to execute?
-This page lists the core plugins and others. There are the build and the reporting plugins:
+# maven 插件
 
-- **Build** plugins will be executed during the build and they should be configured in the ```<build/>``` element from the POM.
-- **Reporting** plugins will be executed during the site generation and they should be configured in the ```<reporting/>``` element from the POM.
-Because the result of a Reporting plugin is part of the generated site, Reporting plugins should be both internationalized and localized.
-You can read more about the localization of our plugins and how you can help.
+Maven 在其核心是一个插件执行框架；所有工作都由插件完成。
 
-> [maven plugin](http://maven.apache.org/plugins/index.html)
+寻找要执行的特定目标吗？此页面列出了核心插件和其他插件。
 
+有构建和报告插件：
 
-# Core plugins
+- **构建（Build）** 插件将在构建过程中执行，它们应该在 POM 中的 ```<build/>``` 元素中进行配置。
 
-Plugins corresponding to default core phases (ie. clean, compile). They may have multiple goals as well.
+- **报告（Reporting）** 插件将在站点生成期间执行，它们应该在 POM 中的 ```<reporting/>``` 元素中进行配置。因为报告插件的结果是生成站点的一部分，所以报告插件应该同时进行国际化和本地化。您可以阅读更多关于插件本地化的信息以及您可以如何帮助的内容。
+
+> [Maven 插件](http://maven.apache.org/plugins/index.html)
+
+# 核心插件
+
+这些插件对应于默认的核心阶段（即 clean，compile 等）。
+
+它们也可能有多个目标。
 
 ## [compiler]()
 
-Compiles Java sources.
+编译 Java 源代码。
 
 ```xml
 <plugin>
@@ -45,7 +48,7 @@ Compiles Java sources.
 
 ## [surefire]()
 
-Run the JUnit unit tests in an isolated classloader.
+在隔离的类加载器中运行 JUnit 单元测试。
 
 ```xml
 <plugin>
@@ -59,13 +62,13 @@ Run the JUnit unit tests in an isolated classloader.
 </plugin>
 ```
 
-# Reporting plugins
+# 报告插件
 
-Plugins which generate reports, are configured as reports in the POM and run under the site generation lifecycle.
+生成报告的插件，在 POM 中配置为报告，并在站点生成生命周期下运行。
 
 ## [javadoc]()
 
-Generate Javadoc for the project.
+为项目生成 Javadoc 文档。
 
 ```xml
 <plugin>
@@ -103,13 +106,13 @@ Generate Javadoc for the project.
 </plugin>
 ```
 
-# Misc
+# 其他
 
-A number of other projects provide their own Maven plugins.
+许多其他项目提供了它们自己的 Maven 插件。
 
 ## [tomcat7]()
 
-Run an Apache Tomcat container for rapid webapp development.
+运行 Apache Tomcat 容器以进行快速 Web 应用程序开发。
 
 ```xml
 <properties>
@@ -421,13 +424,5 @@ If your can't read the following text, specify correct one like this:
 $   mvn package
 ```
 
-
-
-
-
-
-
-
-
-
-
+* any list
+{:toc}
