@@ -14,7 +14,6 @@ published: true
 
 基于项目对象模型（POM）的概念，Maven 可以从一个中心信息管理项目的构建、报告和文档。
 
-
 > [Maven权威指南zh_CN.pdf]({{site.url}}/static/download/pdf/maven/Maven权威指南zh_CN.pdf)
 
 # windows 安装
