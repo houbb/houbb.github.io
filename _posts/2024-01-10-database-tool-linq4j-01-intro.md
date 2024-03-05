@@ -13,6 +13,105 @@ published: true
 
 > [querydsl](https://houbb.github.io/2016/05/21/orm-07-querydsl)
 
+# 已经实现的能力
+
+已实现的
+
+对 Enumerable 的方法：
+
+select, selectMany, where, groupJoin, join;
+count, longCount;
+cast, ofType;
+toMap, toLookup, skip, skipWhile, take, takeWhile.
+
+对 Queryable 的方法：
+
+where, whereN
+skip, skipWhile, skipWhileN, take, takeWhile, takeWhileN.
+（除了涉及 EqualityComparer 的方法。）
+
+# 待办事项清单
+
+如果你愿意贡献，以下是我们已经规划好的一些任务。如果你打算开始一个任务，请告诉我们。
+
+**第一到五批：Enumerable 的查询方法实现和测试**
+
+实现并测试允许在 Enumerable 上进行查询的方法。这些方法在 ExtendedEnumerable 中有具体说明，DefaultEnumerable 调用 Extensions 中的实现。我们会分批次进行。每次实现一个方法时，添加一个类似于 Linq4jTest.testWhere 的测试。尝试重构出一些辅助（名为 inner）类，而不是每个方法都创建 2 或 3 个匿名类。
+
+第一批次：实现 Enumerable 的 groupBy。
+
+第二批次：实现 Enumerable 的 any, all, aggregate, sum, min, max, average。
+
+第四批次：实现 Enumerable 的 union, intersect, except, distinct 方法。
+
+第五批次：实现 Enumerable 的 first, last, defaultIfEmpty, elementAtOrDefault, firstOrDefault, lastOrDefault。可能需要添加一个类参数，以便我们可以生成正确的默认值。
+
+第六批次：实现 Enumerable 的 orderBy, reverse。
+
+第七批次：实现需要 EqualityComparer 的方法。
+
+最后一批：实现 Enumerable 的所有剩余方法。
+
+**解析器支持**
+
+修改 Java 解析器（例如 OpenJDK）或编写一个预处理器。生成包含表达式树的 Java 代码。
+
+**将 Enumerable 和 Queryable 移植到 Scala**
+
+更改类（特别是集合和函数类型），以便用户代码看起来像是简洁的、原生的 Scala。尽可能与 linq4j 共享后端，但不要牺牲 Scala 前端的外观和感觉。如果有帮助，可以使用适配器（并牺牲一些性能）。
+
+**编写简单的 LINQ-to-SQL 提供程序**
+
+这将生成 SQL 并从 JDBC 获取数据。这是一个原型，演示了我们可以将各个部分连接起来。计划将其丢弃。
+
+**在原型 LINQ-to-SQL 提供程序中**
+
+编写一个简单的规则来识别选择列表和 where 子句，并将它们推送到 SQL。
+
+**对 LINQ-to-SQL 提供程序进行 Scala 前端测试**
+
+**使用规划器框架的更好提供程序**
+
+**在 linq4j 之上的 JDBC 驱动**
+
+（不一定是在 Queryable/Expression 对象模型之上，更可能是在这个模型转换成的查询模型之上。）
+
+使用规划器框架为非 SQL 数据源（例如 MongoDB、Hadoop、文本文件）构建后端。
+
+**详细规划**
+
+1. **JDBC 驱动实现**
+
+   - 在 linq4j 的基础上实现一个 JDBC 驱动，允许使用 linq4j 查询模型直接对 JDBC 数据源执行查询。
+   - 该驱动将 linq4j 的查询表达式转换为 JDBC 能够理解的 SQL 语句，并执行这些语句以获取结果。
+   - 考虑到性能因素，驱动可能需要实现一些优化策略，如缓存、批处理、预编译语句等。
+
+2. **规划器框架应用**
+
+   - 使用规划器框架来构建针对非 SQL 数据源的后端。规划器框架将负责将 linq4j 查询模型转换为特定数据源能够理解的查询语言或查询模型。
+   - 对于 MongoDB，规划器将把 linq4j 查询转换为 MongoDB 查询语言（如聚合管道）。
+   - 对于 Hadoop，规划器可能会将查询转换为 MapReduce 作业或 Hive SQL。
+   - 对于文本文件，规划器可能会生成读取和解析文件的代码，以执行类似 SQL 的查询。
+
+3. **后端实现**
+
+   - 每个后端实现将负责处理与特定数据源的通信，包括连接管理、查询执行和结果集处理。
+   - 后端应尽可能遵循 linq4j 的查询模型，以保持查询的一致性和可移植性。
+   - 后端还需要处理数据源特有的功能和限制，例如 MongoDB 的地理空间查询或 Hadoop 的分布式计算能力。
+
+4. **测试和验证**
+
+   - 对每个后端实现进行彻底的测试，确保它们能够正确处理各种查询和场景。
+   - 与现有 JDBC 驱动和非 SQL 数据源驱动程序进行比较，验证 linq4j 后端的性能和功能。
+   - 收集用户反馈，并根据需要进行调整和优化。
+
+5. **文档和支持**
+
+   - 为每个后端实现编写详细的文档，说明如何使用、配置和调试。
+   - 提供技术支持和社区支持，帮助用户解决在使用过程中遇到的问题。
+
+通过实现这些任务，我们可以将 linq4j 的功能扩展到更多类型的数据源，从而增加其吸引力和实用性。这也有助于统一不同数据源上的查询体验，降低学习和维护成本。
+
 # chat
 
 ## Q: 详细介绍一下 linq4j
