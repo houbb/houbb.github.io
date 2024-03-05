@@ -57,6 +57,31 @@ jvisualvm
 
 即可。
 
+## 修改配置文件大小
+
+有时候配置 jvm 太小，可能导致 dump 文件打不开。
+
+jvisual（Java VisualVM）导入dump文件内存不足解决办法：
+
+当通过jvusual调整-Xmx参数：
+
+c:/program files/java/jdk1.6/lib/visualvm/etc/visualvm.conf
+
+修改内容：
+
+```
+-J-Xmx24m -J-Xmx256m
+```
+
+改为：
+
+```
+-J-Xmx4096m -J-Xmx4096m
+```
+
+验证办法：
+
+重新打开jvisual，点击“本地”--VisualVM，查看JVM参数是否更新。
 
 # 监控进程
 
