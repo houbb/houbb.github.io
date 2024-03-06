@@ -1,0 +1,280 @@
+---
+layout: post
+title: 时序数据库-08-vm VictoriaMetrics install on docker 安装 vm
+date:  2019-4-1 19:24:57 +0800
+categories: [Database]
+tags: [database, dis-database, distributed, time-series, monitor, docker, sf]
+published: true
+---
+
+# VictoriaMetrics
+
+VictoriaMetrics 是一款快速、经济高效且可扩展的监控解决方案和时间序列数据库。
+
+VictoriaMetrics提供了二进制发布、Docker镜像、Snap包以及源代码的形式供用户使用。
+
+VictoriaMetrics的集群版本可以在此处找到。
+
+# WSL docker 安装
+
+## docker 版本
+
+```sh
+$ docker -v
+Docker version 24.0.5, build 24.0.5-0ubuntu1~22.04.1
+```
+
+## install
+
+创建文件夹：
+
+```sh
+mkdir -p /home/dh/victoria-metrics-data:/victoria-metrics-data
+```
+
+下载运行：
+
+```sh
+$ docker run -d -p 8428:8428 -v /home/dh/victoria-metrics-data:/victoria-metrics-data --name victoria-metrics victoriametrics/victoria-metrics:v1.95.1
+```
+
+对应的效果：
+
+```
+$ docker ps
+
+CONTAINER ID   IMAGE                                      COMMAND                  CREATED          STATUS          PORTS                                       NAMES
+3b265f2c6f96   victoriametrics/victoria-metrics:v1.95.1   "/victoria-metrics-p…"   50 seconds ago   Up 49 seconds   0.0.0.0:8428->8428/tcp, :::8428->8428/tcp   victoria-metrics
+```
+
+# 如何访问呢？
+
+## 没有表的概念
+
+这里对于vm的初学者（mysql的非初学者）需要做出解释，像关系型数据库，有服务之后还需要创建连接，还需要建库，建表，然后不管用原生sql还是什么其它封装了sql的框架组件进行查询；
+
+但是vm拉起服务后就结束了，它是非关系型数据库没有表的概念，用个不完全贴切的比喻，就像一锅“大杂烩”；
+
+那么数据怎么插？怎么查？
+
+## vm 的基本概念
+
+想要回答这个问题，就必须要明白几个概念（只是quickstart,还有很多概念和语法请自行参阅官方文档）：
+
+指标：这是vm中数据的标识，查vm就是查vm中的指标值
+
+标签：指标可以有多个标签，主要用来按照某种逻辑筛选同类型指标
+
+那么，指标名+标签 => 唯一确定了一个时间序列，也就是一个时间序列上的指标值,下面这个例子的指标名就是CPU_OCCUPIED，代表cpu占用率，{machine="2",process_id="1"}就是标签，代表了机器id和进程id，也就是说这个指标记录了id为2的机器上进程id为1的进程在一段时间序列中每分钟的cpu占用率
+
+```
+# CPU_OCCUPIED{machine="2",process_id="1"}
+timestamp        value
+12:01             66
+12:02             65   
+12:03             78
+```
+
+所以数据是存在由指标和标签确定的一个时间序列中的，只有你向vm中插入指标值，这个指标才会存在！
+
+查询则需要用vm提供的ui客户端中（）写metricql/promql查询和插入数据：
+
+一旦容器启动，可以通过访问 
+
+http://localhost:8428/vmui/?#/?g0.range_input=30m&g0.end_input=2023-11-14T09%3A44%3A40&g0.tab=0&g0.relative_time=last_30_minutes
+
+来访问VictoriaMetrics的Web界面。
+ 
+可以使用该界面来管理和监控你的指标数据。
+
+
+
+# curl 测试
+
+## 插入
+
+```sh
+curl 'http://127.0.0.1:8428/api/v1/import' \
+-H "Content-Type:application/json" \
+-X POST \
+-d '{"Id":"12330245","visitTimes":1,"docType":"散文","docId":"36e5854f5f0e4f80b7ccc6c52c063243"}'
+```
+
+## json 格式
+
+官方的例子：
+
+```json
+{
+  // metric contans metric name plus labels for a particular time series
+  "metric":{
+    "__name__": "metric_name",  // <- this is metric name
+
+    // Other labels for the time series
+
+    "label1": "value1",
+    "label2": "value2",
+    ...
+    "labelN": "valueN"
+  },
+
+  // values contains raw sample values for the given time series
+  "values": [1, 2.345, -678],
+
+  // timestamps contains raw sample UNIX timestamps in milliseconds for the given time series
+  // every timestamp is associated with the value at the corresponding position
+  "timestamps": [1549891472010,1549891487724,1549891503438]
+}
+```
+
+我们给一个简单的 json
+
+```json
+{
+  "metric":{
+    "__name__": "test_cpu_usage", 
+    "hostname": "localhost"
+  },
+  "values": [30, 40, 50],
+  "timestamps": [1549891472010,1549891487724,1549891503438]
+}
+```
+
+压缩：
+
+```json
+{"metric":{"__name__":"test_cpu_usage","hostname":"localhost"},"values":[30,40,50],"timestamps":[1549891472010,1549891487724,1549891503438]}
+```
+
+请求：
+
+```sh
+curl 'http://127.0.0.1:8428/api/v1/import' \
+-H "Content-Type:application/json" \
+-X POST \
+-d '{"metric":{"__name__":"test_cpu_usage","hostname":"localhost"},"values":[30,40,50],"timestamps":[1709701935891,1709701935991,1709701935899]}'
+```
+
+## 实时查询
+
+即使查询在给定时间戳执行查询表达式：
+
+```
+GET | POST /api/v1/query?query=...&time=...&step=...
+```
+
+参数：
+
+query- MetricSQL表达式。
+time- 可选，以秒精度计算at 的时间戳query。如果省略，time则设置为now()（当前时间戳）。可以用多种允许的格式指定time参数。
+step- 可选，执行时搜索过去的原始样本的最大间隔query。
+
+测试例子
+
+```sh
+curl 'http://127.0.0.1:8428/api/v1/query?query=test_cpu_usage'
+```
+
+但是发现查询的数据为空：
+
+```json
+{"status":"success","data":{"resultType":"vector","result":[]},"stats":{"seriesFetched": "0","executionTimeMsec":0}}
+```
+
+我们指定时间试一下：
+
+```sh
+curl 'http://127.0.0.1:8428/api/v1/query?query=test_cpu_usage&time=1549891472010'
+```
+
+发现还是没有...
+
+# python 操作 vm
+
+## python 脚本
+
+```py
+import time
+import json
+import requests
+import urllib3
+ 
+def insert_into_vm2(business, data_source, ad_task, ts, rows, product_type=1):
+    # VictoriaMetrics 的地址和端口
+    url = 'http://127.0.0.1:8428/api/v1/import'
+    # json数据
+    data = json.dumps({
+        "metric": {
+            "__name__": "analysis_data_volume_rows",    # {__name__="ask" or __name__="bid"} 查询ask或bid的数据
+            "business": str(business),
+            "data_source": str(data_source),
+            "ad_task": str(ad_task),
+            "product_type": str(product_type)
+        },
+        "values": [rows],
+        "timestamps": [ts]    # 需要int
+    })
+ 
+    # 配置并发请求
+    headers = {"Content-Type": "application/json"}
+    http_pool = urllib3.PoolManager()
+    response = http_pool.request('POST', url, body=data, headers=headers)
+    print(response.status, f"data is {response.data}")
+ 
+```
+
+## vm 的 push 模式
+
+既然是指标监控，那么就需要application以推送的模式发送到服务器，至于发送的时间和数据格式由应用程序决定，这也就是push模式以
+
+![push mode](https://img-blog.csdnimg.cn/direct/6a657c0298cd4b7db340fbcb26c06c64.png)
+
+> [vm json 格式](https://docs.victoriametrics.com/single-server-victoriametrics/#json-line-format)
+
+> [vm 如何导入 json 格式数据](https://docs.victoriametrics.com/single-server-victoriametrics/#how-to-import-data-in-json-line-format)
+
+VictoriaMetrics 在 `/api/v1/import` 接受 JSON 行格式的数据，并在 /`api/v1/export` 导出此格式的数据。
+
+格式遵循JSON 流概念，例如每行包含 JSON 对象，其指标数据采用以下格式（）：
+
+```
+{
+  # metric contans metric name plus labels for a particular time series
+  "metric":{
+    "__name__": "metric_name",  # this is metric name
+ 
+    # Other labels for the time series
+ 
+    "label1": "value1",
+    "label2": "value2",
+    ...
+    "labelN": "valueN"
+  },
+ 
+  # values contains raw sample values for the given time series
+  "values": [1, 2.345, -678],
+ 
+  # timestamps contains raw sample UNIX timestamps in milliseconds for the given time series
+  # every timestamp is associated with the value at the corresponding position
+  "timestamps": [1549891472010,1549891487724,1549891503438]
+}
+```
+
+所以我们插入数据的url和准备的数据才会是那样写的，__name__就是指标名，label就是标签名，value就是指标值，timestamp就是时间戳，只需要把字典json.dumps变成json串就可以了
+
+
+所以我们也可以使用 postman / curl 发送一个请求。
+
+
+# 参考资料
+
+https://github.com/VictoriaMetrics/VictoriaMetrics
+
+https://hertzbeat.com/zh-cn/docs/start/victoria-metrics-init/
+
+https://blog.csdn.net/qq_47501059/article/details/135111923
+
+https://blog.csdn.net/weixin_45771607/article/details/135452800
+
+* any list
+{:toc}
