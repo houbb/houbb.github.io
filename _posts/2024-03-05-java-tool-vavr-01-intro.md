@@ -1,6 +1,6 @@
 ---
 layout: post
-title: vʌvr（以前称为 Javaslang ）是一个非商业、非盈利的对象-函数式库
+title: vʌvr（以前称为 Javaslang ）是一个非商业、非盈利的对象-函数式库 vavr
 date: 2024-03-05 21:01:55 +0800
 categories: [Java]
 tags: [java, jvm, sh]
