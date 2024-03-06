@@ -132,7 +132,7 @@ curl 'http://127.0.0.1:8428/api/v1/import' \
 ```json
 {
   "metric":{
-    "__name__": "test_cpu_usage", 
+    "__name__": "CPU_OCCUPIED", 
     "hostname": "localhost"
   },
   "values": [30, 40, 50],
@@ -143,7 +143,7 @@ curl 'http://127.0.0.1:8428/api/v1/import' \
 压缩：
 
 ```json
-{"metric":{"__name__":"test_cpu_usage","hostname":"localhost"},"values":[30,40,50],"timestamps":[1549891472010,1549891487724,1549891503438]}
+{"metric":{"__name__":"CPU_OCCUPIED","hostname":"localhost"},"values":[30,40,50],"timestamps":[1709701935891,1709701935991,1709701935899]}
 ```
 
 请求：
@@ -152,7 +152,7 @@ curl 'http://127.0.0.1:8428/api/v1/import' \
 curl 'http://127.0.0.1:8428/api/v1/import' \
 -H "Content-Type:application/json" \
 -X POST \
--d '{"metric":{"__name__":"test_cpu_usage","hostname":"localhost"},"values":[30,40,50],"timestamps":[1709701935891,1709701935991,1709701935899]}'
+-d '{"metric":{"__name__":"CPU_OCCUPIED","hostname":"localhost"},"values":[30,40,50],"timestamps":[1709701935891,1709701935991,1709701935899]}'
 ```
 
 ## 实时查询
@@ -172,7 +172,7 @@ step- 可选，执行时搜索过去的原始样本的最大间隔query。
 测试例子
 
 ```sh
-curl 'http://127.0.0.1:8428/api/v1/query?query=test_cpu_usage'
+curl 'http://127.0.0.1:8428/api/v1/query?query=CPU_OCCUPIED'
 ```
 
 但是发现查询的数据为空：
@@ -184,7 +184,7 @@ curl 'http://127.0.0.1:8428/api/v1/query?query=test_cpu_usage'
 我们指定时间试一下：
 
 ```sh
-curl 'http://127.0.0.1:8428/api/v1/query?query=test_cpu_usage&time=1549891472010'
+curl 'http://127.0.0.1:8428/api/v1/query?query=CPU_OCCUPIED&time=1549891472010'
 ```
 
 发现还是没有...
