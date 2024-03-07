@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Subversion 开源的版本控制系统
+title: Subversion 开源的版本控制系统入门介绍 VCS
 date:  2016-09-02 16:09:36 +0800
 categories: [VCS]
 tags: [svn, vcs]
