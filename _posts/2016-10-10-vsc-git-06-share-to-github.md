@@ -7,7 +7,6 @@ tags: [git]
 published: true
 ---
 
-
 # 将项目分享到 GitHub
 
 - 初始化 Git
@@ -41,8 +40,6 @@ git remote add origin https://github.com/houbb/mybatisNet.git
 ```
 git push -u origin master
 ```
-
-
 
 # 常见错误
 

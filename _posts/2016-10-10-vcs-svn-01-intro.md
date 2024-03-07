@@ -1,11 +1,25 @@
 ---
 layout: post
-title: Subversion 开源的版本控制系统入门介绍 VCS
-date:  2016-09-02 16:09:36 +0800
+title: Subversion svn 开源的版本控制系统入门介绍 VCS
+date:  2016-10-10 16:09:36 +0800
 categories: [VCS]
 tags: [svn, vcs]
 published: true
 ---
+
+# 拓展阅读
+
+[Subversion 开源的版本控制系统入门介绍 VCS](https://houbb.github.io/2016/09/02/vcs-svn-01-intro)
+
+[Git 开源的版本控制系统-01-入门使用介绍](https://houbb.github.io/2016/10/10/vsc-git-01-intro)
+
+[Git 开源的版本控制系统-02-base usage 基本用法](https://houbb.github.io/2016/10/10/vsc-git-02-base-usage)
+
+[Git 开源的版本控制系统-03-时间数据回溯](https://houbb.github.io/2016/10/10/vsc-git-03-time-data-back)
+
+[Git 开源的版本控制系统-04-branch manage 分支管理](https://houbb.github.io/2016/10/10/vsc-git-04-branch-manage)
+
+[Git 开源的版本控制系统-05-tags 标签管理](https://houbb.github.io/2016/10/10/vsc-git-05-tags)
 
 # Subversion
 
