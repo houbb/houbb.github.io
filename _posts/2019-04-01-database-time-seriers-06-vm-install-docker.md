@@ -155,6 +155,7 @@ curl 'http://127.0.0.1:8428/api/v1/import' \
 -d '{"metric":{"__name__":"CPU_OCCUPIED","hostname":"localhost"},"values":[30,40,50],"timestamps":[1709701935891,1709701935991,1709701935899]}'
 ```
 
+
 ## 实时查询
 
 即使查询在给定时间戳执行查询表达式：
