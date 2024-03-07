@@ -1,11 +1,177 @@
 ---
 layout: post
-title: Swagger 整合 springboot 2.6.8 + swagger3
+title: Swagger 整合 springboot 2.6.8 + swagger3   springboot 2.x + swagger2
 date:  2016-12-22 21:00:34 +0800
 categories: [Tool]
 tags: [swagger]
 published: true
 ---
+
+# springboot 2.x + swagger2
+
+## maven 
+
+```xml
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger2</artifactId>
+    <version>2.9.2</version>
+</dependency>
+<dependency>
+    <groupId>io.springfox</groupId>
+    <artifactId>springfox-swagger-ui</artifactId>
+    <version>2.9.2</version>
+</dependency>
+```
+
+## 编写配置类
+
+```java
+@Configuration
+@EnableSwagger2 // 开启Swagger2自动配置
+public class Swagger2Config {
+    
+    @Bean
+    public Docket UserApiConfig(){
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("UserApi") // 分组
+                .apiInfo(UserApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("cn.ken.login.controller"))
+                .paths(PathSelectors.ant("/user/**"))
+                .build();
+    }
+
+    @Bean
+    public Docket BlogApiConfig(){
+        return new Docket(DocumentationType.SWAGGER_2)
+                .groupName("BlogApi") // 分组
+                .apiInfo(BlogApiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("cn.ken.login.controller"))
+                .paths(PathSelectors.ant("/blog/**"))
+                .build();
+    }
+
+    // 配置用户文档信息
+    private ApiInfo UserApiInfo(){
+        return new ApiInfoBuilder()
+                .title("我的API文档") // 标题
+                .description("本文档描述了用户相关的接口定义") // 描述
+                .version("1.0") // 版本
+                .contact(new Contact("联系人名字", "联系人访问链接", "联系人邮箱")) // 联系人信息
+                .build();
+    }
+    
+    // 配置博客文档信息
+    private ApiInfo BlogApiInfo(){
+        return new ApiInfoBuilder()
+                .title("我的API文档") // 标题
+                .description("本文档描述了博客相关的接口定义") // 描述
+                .version("1.0") // 版本
+                .contact(new Contact("联系人名字", "联系人访问链接", "联系人邮箱")) // 联系人信息
+                .build();
+    }
+
+}
+```
+
+## 访问
+
+使用注解对接口进行描述（也可以省略）
+
+访问 http://localhost:8080/swagger-ui.html
+
+## 启动报错
+
+### 1. NPE
+
+```
+Caused by: java.lang.NullPointerException: null
+	at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:112) ~[springfox-spi-2.9.2.jar:null]
+	at springfox.documentation.spi.service.contexts.Orderings$8.compare(Orderings.java:109) ~[springfox-spi-2.9.2.jar:null]
+	at com.google.common.collect.ComparatorOrdering.compare(ComparatorOrdering.java:37) ~[guava-20.0.jar:na]
+	at java.util.TimSort.countRunAndMakeAscending(TimSort.java:351) ~[na:1.8.0_05]
+	at java.util.TimSort.sort(TimSort.java:216) ~[na:1.8.0_05]
+	at java.util.Arrays.sort(Arrays.java:1435) ~[na:1.8.0_05]
+	at com.google.common.collect.Ordering.sortedCopy(Ordering.java:855) ~[guava-20.0.jar:na]
+	at springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider.requestHandlers(WebMvcRequestHandlerProvider.java:57) ~[springfox-spring-web-2.9.2.jar:null]
+	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:138) ~[springfox-spring-web-2.9.2.jar:null]
+	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper$2.apply(DocumentationPluginsBootstrapper.java:135) ~[springfox-spring-web-2.9.2.jar:null]
+	at com.google.common.collect.Iterators$7.transform(Iterators.java:750) ~[guava-20.0.jar:na]
+	at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:47) ~[guava-20.0.jar:na]
+	at com.google.common.collect.TransformedIterator.next(TransformedIterator.java:47) ~[guava-20.0.jar:na]
+	at com.google.common.collect.MultitransformedIterator.hasNext(MultitransformedIterator.java:52) ~[guava-20.0.jar:na]
+	at com.google.common.collect.MultitransformedIterator.hasNext(MultitransformedIterator.java:50) ~[guava-20.0.jar:na]
+	at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:249) ~[guava-20.0.jar:na]
+	at com.google.common.collect.ImmutableList.copyOf(ImmutableList.java:209) ~[guava-20.0.jar:na]
+	at com.google.common.collect.FluentIterable.toList(FluentIterable.java:614) ~[guava-20.0.jar:na]
+	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.defaultContextBuilder(DocumentationPluginsBootstrapper.java:111) ~[springfox-spring-web-2.9.2.jar:null]
+	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.buildContext(DocumentationPluginsBootstrapper.java:96) ~[springfox-spring-web-2.9.2.jar:null]
+	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.start(DocumentationPluginsBootstrapper.java:167) ~[springfox-spring-web-2.9.2.jar:null]
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:178) ~[spring-context-5.3.16.jar:5.3.16]
+	... 15 common frames omitted
+```
+
+原因：
+
+Spring Boot 2.6及 更高版本使用的是PathPatternMatcher，而Springfox使用的路径匹配是基于AntPathMatcher的，所以更改配置如下：
+
+```yaml
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ANT_PATH_MATCHER
+```
+
+
+## 2. 访问页面 404
+
+`@EnableWebMvc` 注解的问题，加了这个注解以后会导致静态资源路径无法访问。
+
+继承了WebMvcConfigurationSupport，配置文件在中配置的相关内容会失效，需要重新指定静态资源
+
+@EnableWebMvc注解（相当于继承WebMvcConfigurationSupport）和extends WebMvcConfigurationSupport导致404的原因都是因为同时有多个配置类实现了WebMvcConfigurer或继承了WebMvcConfigurationSupport的话，只会有一个生效，即以上两种情况导致了默认的WebMvcAutoConfiguration自动配置失效，故找不到静态资源。
+
+解决办法是，保持一个配置类，将配置都在一个类中设置。
+
+解决方法：
+
+在一个统一的WebConfig中实现WebMvcConfigurer，并重写其中的public void addResourceHandlers(ResourceHandlerRegistry registry)方法，重新指定swagger静态资源，如下：
+
+```java
+@Override
+public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	registry.addResourceHandler("/**").addResourceLocations("classpath:/static/");
+	registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
+	registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
+}
+```
+
+## 3、页面被拦截器拦截
+
+放行该页面，如下：
+
+```java
+@Configuration
+public class InterceptorConfig implements WebMvcConfigurer {
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new JWTInterceptor())
+                .excludePathPatterns("user/login")
+                .excludePathPatterns("user/register")
+                .excludePathPatterns("/swagger-resources/**")
+                .excludePathPatterns("/swagger-ui.html/**")
+                .excludePathPatterns("/webjars/**");
+    }
+}
+```
+
+
+
+
+
 
 
 # 快速开始
@@ -299,6 +465,8 @@ spring:
 [Springboot集成Swagger](https://blog.csdn.net/formyselfzzz/article/details/124968544)
 
 https://blog.csdn.net/yao22yao/article/details/125207679
+
+https://blog.csdn.net/qq_25046827/article/details/124086625
 
 * any list
 {:toc}
