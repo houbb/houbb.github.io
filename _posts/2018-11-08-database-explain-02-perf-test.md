@@ -1,9 +1,9 @@
 ---
 layout: post
-title: MySQL 性能测试验证记录
+title: MySQL explain 性能测试验证记录
 date:  2018-11-8 18:08:03 +0800
-categories: [SQL]
-tags: [sql, mysql, sh]
+categories: [Database]
+tags: [sql, mysql, database, explain, sh]
 published: true
 ---
 

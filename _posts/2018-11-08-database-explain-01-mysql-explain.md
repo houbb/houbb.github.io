@@ -1,11 +1,10 @@
 ---
 layout: post
-title: MySQL Explain
+title: MySQL Explain MySQL 执行计划详解
 date:  2018-11-8 18:08:03 +0800
-categories: [SQL]
-tags: [sql, mysql, sh]
+categories: [Database]
+tags: [sql, mysql, database, explain, sh]
 published: true
-excerpt: MySQL 执行计划详解
 ---
 
 # MySQL Explain
