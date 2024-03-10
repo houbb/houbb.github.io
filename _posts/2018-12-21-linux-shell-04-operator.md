@@ -1,427 +1,49 @@
 ---
 layout: post
-title: Shell
-date:  2016-10-12 21:56:24 +0800
+title: linux Shell 命令行-04-operator Shell 操作符
+date: 2018-12-21 11:28:06 +0800
 categories: [Linux]
-tags: [shell]
+tags: [linux, shell, sh]
 published: true
 ---
 
-* any list
-{:toc}
+# 操作符
 
+原始的 bash 不支持数学运算，我们可以使用 ```expr``` 来代替。
 
+注意：
 
-# Shell
+1. 在```expr```中使用 **`**，而不是 **'**
+2. 数字之间的运算符应该用空格分隔。
 
-> Shell Types
-
-- Bourne Shell（/usr/bin/sh or /bin/sh）
-- Bourne Again Shell（/bin/bash）
-- C Shell（/usr/bin/csh）
-- K Shell（/usr/bin/ksh）
-- Shell for Root（/sbin/sh）
-
-Usually, we not distinct ```Bourne Shell``` and ```Bourne Again Shell```
-
-> [Shell zh_CN](http://www.runoob.com/linux/linux-shell.html)
-
-> [Shell zh_CN](http://c.biancheng.net/cpp/shell/)
-
-
-<uml>
-    create->edit: vi
-    edit->run: ./
-    run->why:?
-</uml>
-
-Create ```hello.sh```
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ pwd
-/Users/houbinbin/code/shell
-houbinbindeMacBook-Pro:shell houbinbin$ vi hello.sh
-```
-
-Edit the content of ```hello.sh```
-
-```
-#!/bin/bash
-echo "hello world!"
-```
-
-- run the ```hello.sh```
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ /bin/sh hello.sh
-hello world!
-```
-
-- another way to run
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ ./hello.sh
--bash: ./hello.sh: Permission denied
-houbinbindeMacBook-Pro:shell houbinbin$ chmod +x ./hello.sh
-houbinbindeMacBook-Pro:shell houbinbin$ ./hello.sh
-hello world!
-```
-
-> mean of ```hello.sh```
-
-```#!``` tells OS which Interpreter to use, ```echo``` to print info in window.
-
-> read from input
-
-- ```hello_name.sh```
-
-```
-#!/bin/bash
-
-# Author:houbinbin
-
-echo "Please enter your name?"
-read NAME
-echo "Hello, $NAME!"
-```
-
-- run
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ vi hello_name.sh
-houbinbindeMacBook-Pro:shell houbinbin$ /bin/sh hello_name.sh
-Please enter your name?
-houbinbin
-Hello, houbinbin!
-houbinbindeMacBook-Pro:shell houbinbin$
-```
-
-# Shell Var
-
-<uml>
-    Title: Shell Var
-    Define->ReDefine:
-    ReDefine->Use:
-    Use->Remove:
-</uml>
-
-> Define
-
-- **No Blank** between var name and ```=```
-
-- Start with [a-zA-Z], name can with ```_```
-
-- **No punctuation mark** and no key word
-
-```
-my_name="houbinbin"
-```
-
-> Redefine
-
-A defined var can be re-defined
-
-```
-my_name="houbinbin"
-my_name="ryo"
-```
-
-> Use
-
-- use_var.sh
-
-```
-my_name="houbinbin"
-echo $my_name
-```
-
-- run
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ vi use_var.sh
-houbinbindeMacBook-Pro:shell houbinbin$ /bin/sh use_var.sh
-houbinbin
-```
-
-> ReadOnly
-
-A ```readonly``` var can't be change.
-
-- readonly_var.sh
-
-```
-# !/bin/bash
-
-my_name="houbinbin"
-readonly my_name
-
-my_name="new name"
-```
-
-- run
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ vi readonly_var.sh
-houbinbindeMacBook-Pro:shell houbinbin$ /bin/sh readonly_var.sh
-readonly_var.sh: line 4: my_name: readonly variable
-```
-
-> Remove
-
-Use ```unset``` to remove define var.
-
-- unset_var.sh
-
-```
-#!/bin/bash
-
-my_name="ryo"
-unset my_name
-echo ${my_name}
-```
-
-- run
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ vi unset_var.sh
-houbinbindeMacBook-Pro:shell houbinbin$ /bin/sh unset_var.sh
-
-houbinbindeMacBook-Pro:shell houbinbin$
-```
-
-# Special Var
-
-| Command       |   Desc        |
-| :------------ |:----------    |
-|$0	|当前脚本的文件名|
-|$n	|传递给脚本或函数的参数。n 是一个数字，表示第几个参数。例如，第一个参数是$1，第二个参数是$2。|
-|$#	|传递给脚本或函数的参数个数。|
-|$*	|传递给脚本或函数的所有参数。|
-|$@	|传递给脚本或函数的所有参数。被双引号(" ")包含时，与 $* 稍有不同，下面将会讲到。|
-|$?	|上个命令的退出状态，或函数的返回值。|
-|$$	|当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID。|
-
-
-- special_var.sh
-
-```
-#!/bin/bash
-echo "File Name: $0"
-echo "First Parameter : $1"
-echo "First Parameter : $2"
-echo "Quoted Values: $@"
-echo "Quoted Values: $*"
-echo "Total Number of Parameters : $#"
-```
-
-- run
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ vi special_var.sh
-houbinbindeMacBook-Pro:shell houbinbin$ /bin/sh special_var.sh hello world my
-File Name: special_var.sh
-First Parameter : hello
-First Parameter : world
-Quoted Values: hello world my
-Quoted Values: hello world my
-Total Number of Parameters : 3
-```
-
-
-> ```$*```  and ```$@```
-
-```$*``` 和 ```$@``` 都表示传递给函数或脚本的所有参数，不被```""```包含时，都以"$1" "$2" … "$n" 的形式输出所有参数。
-
-但是当它们被```""```包含时，```$*``` 会将所有的参数作为一个整体，以"$1 $2 … $n"的形式输出所有参数；```$@``` 会将各个参数分开，以"$1" "$2" … "$n" 的形式输出所有参数。
-
-- diff_demo.sh
-
-```
-#!/bin/bash
-
-# Author:houbinbin
-
-echo "display of \$* "
-
-for i in "$*";
-do
-    echo $i
-done
-
-echo "display of \$@ "
-for i in "$@";
-do
-    echo $i
-done
-```
-
-- run
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ vi diff_demo.sh
-houbinbindeMacBook-Pro:shell houbinbin$ /bin/sh diff_demo.sh 1 2 3 4
-display of $*
-1 2 3 4
-display of $@
-1
-2
-3
-4
-houbinbindeMacBook-Pro:shell houbinbin$
-```
-
-# Shell Array
-
-<uml>
-    Title: Shell Array
-    Define->Read:
-    Read->Read All:
-</uml>
-
-> Define
-
-Shell only support **single-dimensional** arrays. 
-
-```
-array=(value1 value2 ... valuen)
-```
-
-- array.sh
-
-```
-#!/bin/sh
-
-# array demo
-array=(a b "c" d)
-
-# another way to define array
-
-array_two[0]=a
-array_two[1]=b
-array_two[2]="c"
-array_two[3]=d
-```
-
-> Read
-
-You can read from array like this:
-
-```
-${array_name[index]}
-```
-
-- read_array.sh
-
-```
-#!/bin/sh
-
-# read from array
-
-array=(a b c "d")
-echo "First elem is ${array[0]}"
-echo "Second elem is ${array[1]}"
-echo "Third elem is ${array[2]}"
-echo "Last elem is ${array[-1]}"
-```
-
-- run
-
-```
-root@iZuf60ahcky4k4nfv470juZ:~/code/shell# chmod +x read_array.sh 
-root@iZuf60ahcky4k4nfv470juZ:~/code/shell# ./read_array.sh 
-First elem is a
-Second elem is b
-Third elem is c
-Last elem is d
-```
-
-> Read all elem
-
-We can use ```*``` or ```@``` to get all elem in array.
-
-- read_all_array.sh
-
-```
-#!/bin/sh
-# Read all elem in array
-
-array=(a b c d)
-echo "All elem in array: ${array[*]}"
-echo "All elem in array: ${array[@]}"
-```
-
-- run
-
-```
-root@iZuf60ahcky4k4nfv470juZ:~/code/shell# chmod +x read_all_array.sh 
-root@iZuf60ahcky4k4nfv470juZ:~/code/shell# ./read_all_array.sh 
-All elem in array: a b c d
-All elem in array: a b c d
-```
-
-> Array Length
-
-We can use  ```${#array[*]}``` or ```${#array[@]}```, to get the array size.
-
-- array_length.sh
-
-```
-!#/bin/sh
-# array length
-
-array=(a b c d E)
-echo "the size of array is: ${#array[*]}"
-echo "the size of array is: ${#array[@]}"
-```
-
-- run
-
-```
-root@iZuf60ahcky4k4nfv470juZ:~/code/shell# chmod +x array_length.sh 
-root@iZuf60ahcky4k4nfv470juZ:~/code/shell# ./array_length.sh 
-the size of array is: 5
-the size of array is: 5
-```
-
-# Operator
-
-
-
-The original bash not support math oper, we can use ```expr``` instead.
-
-Attention:
-
-1.expr is in **`**, not **'**
-
-2.expr between numbers should split with blank.
+# 数字运算
 
 - num_oper.sh
 
-```
+```shell
 #!/bin/bash
 
-# num oper
+# 数值操作
 
 value1=10
 value2=20
 sum=`expr $value1 + $value2`
-echo "sum of $value1 and $value2 is: $sum"
+echo "数值 $value1 和 $value2 的和是: $sum"
 ```
 
-- run
+- 运行
 
-```
+```shell
 houbinbindeMacBook-Pro:shell houbinbin$ chmod +x num_oper.sh
 houbinbindeMacBook-Pro:shell houbinbin$ ./ num_oper.sh
-sum of 10 and 20 is: 30
+数值 10 和 20 的和是: 30
 ```
 
-> Math operator
+# 数学运算符
 
-Suppose: `$a` is 10, `$b` is 20
+假设： `$a` 是 10，`$b` 是 20
 
-
-| Command       |   Desc        | Demo      |
+| 命令       |   描述        | 示例      |
 | :------------ |:----------    | :-----    |
 |+	|加法         |	`expr $a + $b` 结果为 30|
 |-	|减法         |	`expr $a - $b` 结果为 -10|
@@ -432,36 +54,36 @@ Suppose: `$a` is 10, `$b` is 20
 |==	|用于比较两个数字，相同则返回 true|	[ $a == $b ] 返回 false|
 |!=	|用于比较两个数字，不相同则返回 true|	[ $a != $b ] 返回 true|
 
-> Relation operator
+# 关系运算符
 
-Only support number or number string.
+仅支持数字或数字字符串。
 
-Suppose: `$a` is 10, `$b` is 20
+假设： `$a` 是 10，`$b` 是 20
 
-| Command       |   Desc        | Demo      |
+| 命令       |   描述        | 示例      |
 | :------------ |:----------    | :-----    |
-|-eq| equals        |	[ $a -eq $b ]  false
-|-ne| not equals    |	[ $a -ne $b ]  true
-|-gt| great than    |	[ $a -gt $b ]  false
-|-lt| less  than    |	[ $a -lt $b ]  true
-|-ge| great equals	|   [ $a -ge $b ]  false
-|-le| less equals	|   [ $a -le $b ]  true
+|-eq| 相等        |	[ $a -eq $b ]  false
+|-ne| 不相等    |	[ $a -ne $b ]  true
+|-gt| 大于    |	[ $a -gt $b ]  false
+|-lt| 小于    |	[ $a -lt $b ]  true
+|-ge| 大于等于	|   [ $a -ge $b ]  false
+|-le| 小于等于	|   [ $a -le $b ]  true
 
-> Bool operator
+# 布尔运算符
 
-| Command       |   Desc        | Demo          |
+| 命令       |   描述        | 示例          |
 | :------------ |:----------    | :---------    |
-|   !   | not       | [ ! false ]  true         |
-|   -o  | or        | [ true -o false ] true    |
-|   -a  | and       | [ true and false ] false  |
-|   `&&`  | and       | [ true and false ] false  |
-|   `||`  | or       | [ true and false ] false  |
+|   !   | 非       | [ ! false ]  true         |
+|   -o  | 或        | [ true -o false ] true    |
+|   -a  | 与       | [ true and false ] false  |
+|   `&&`  | 与       | [ true and false ] false  |
+|   `||`  | 或       | [ true and false ] false  |
 
-> String operator
+# 字符串运算符
 
-Suppose: `$a` is "10", `$b` is "20"
+假设： `$a` 是 "10"，`$b` 是 "20"
 
-| Command       |   Desc        | Demo          |
+| 命令       |   描述        | 示例          |
 | :------------ |:----------    | :---------    |
 |=	|检测两个字符串是否相等，相等返回 true|	[ $a = $b ] 返回 false。
 |!=	|检测两个字符串是否相等，不相等返回 true|	[ $a != $b ] 返回 true。
@@ -469,9 +91,9 @@ Suppose: `$a` is "10", `$b` is "20"
 |-n	|检测字符串长度是否为0，不为0返回 true|	[ -n $a ] 返回 true。
 |str|	检测字符串是否为空，不为空返回 true|	[ $a ] 返回 true。
 
-> File Test operator
+# 文件测试运算符
 
-| Command       |   Desc        |
+| 命令       |   描述        |
 | :------------ |:----------    |
 -b file|	检测文件是否是块设备文件，如果是，则返回 true|
 -c file|	检测文件是否是字符设备文件，如果是，则返回 true|
@@ -489,10 +111,10 @@ Suppose: `$a` is "10", `$b` is "20"
 
 - file_test_oper.sh
 
-```
+```shell
 #!/bash/sh
 
-# file test operator
+# 文件测试运算符
 
 file="/Users/houbinbin/code/shell/file_test_oper.sh"
 
@@ -540,9 +162,9 @@ else
 fi
 ```
 
-- run
+- 运行
 
-```
+```shell
 houbinbindeMacBook-Pro:shell houbinbin$ /bin/sh file_test_oper.sh
 文件可读
 文件可写
@@ -1078,5 +700,9 @@ houbinbindeMacBook-Pro:shell houbinbin$ wc -l ls_file
       23 ls_file
 ```
 
+# 参考资料
 
+https://www.runoob.com/linux/linux-shell.html
 
+* any list
+{:toc}
