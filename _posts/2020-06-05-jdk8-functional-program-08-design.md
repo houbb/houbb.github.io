@@ -728,7 +728,8 @@ describe("A suite is just a function", function() {
 例 8-28 描述 Stack 的案例
 
 ```java
-public class StackSpec {{
+public class StackSpec {
+    {
     describe("a stack", it -> {
         it.should("be empty when created", expect -> {
         expect.that(new Stack()).isEmpty();
@@ -747,7 +748,8 @@ public class StackSpec {{
             expect.that(stack.pop()).isEqualTo(2);
         });
     });
-}}
+}
+}
 ```
 
 
@@ -858,9 +860,13 @@ StackSpec 类并没有直接实现任何方法，我直接将代码写在里边�
 结尾使用了双括号：
 
 ```java
-public class StackSpec {{
+public class StackSpec {
+    
+{
 ...
-}}
+}
+
+}
 ```
 
 这其实是一个匿名构造函数，可以执行任意的 Java 代码块，所以这等价于一个完整的构造函数，只是少了一些样板代码。
