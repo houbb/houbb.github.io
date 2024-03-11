@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 函数式编程-03-java 中的函数式接口和 lambda 简介
+title: 函数式编程-02-java 中的函数式接口和 lambda 简介
 date:  2020-6-5 17:42:59 +0800
 categories: [Pattern]
 tags: [pattern, functional-programming, sh]
@@ -116,6 +116,7 @@ public <T> T ifElse(List<Boolean> conditions , List<T> ifTrue , T ifFalse ) {
 函数式编程是一种思维的转变，可以让我们的编程变得更加优雅。
 
 当然编辑器面对这种新生的方式，有时候表现不是很良好，所以需要完整的测试，从而保证代码的正确性。
+
 
 # 参考资料
 

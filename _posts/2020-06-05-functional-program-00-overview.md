@@ -7,6 +7,12 @@ tags: [pattern, functional-programming, sh]
 published: true
 ---
 
+# 回顾
+
+后来又看了一下这本身，感觉过于学术+偏向于数据结构。
+
+所以感觉不如 《java8 函数式编程》适合学习。
+
 # 序言
 
 学习 java 函数式编程的目的主要有 2 个：
