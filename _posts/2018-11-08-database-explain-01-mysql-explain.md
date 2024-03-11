@@ -32,16 +32,151 @@ insert into `user` (`name`) values ('one');
 - 执行
 
 ```sql
-explain select * from (select * from user where id=1) a;
+explain + #{查询 SQL};
 ```
 
 ## 包含的字段信息
 
+全表 例子1：
+
+```sql
+explain select * from user where name='123';
+
+mysql> explain select * from user where name='123';
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+|  1 | SIMPLE      | user  | NULL       | ALL  | NULL          | NULL | NULL    | NULL |    1 |   100.00 | Using where |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+1 row in set, 1 warning (0.00 sec)
 ```
-+----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
-| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra |
-+----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------+
+
+主键 例子2：
+
 ```
+mysql> explain select * from (select * from user where id=1) a;
++----+-------------+-------+------------+-------+---------------+---------+---------+-------+------+----------+-------+
+| id | select_type | table | partitions | type  | possible_keys | key     | key_len | ref   | rows | filtered | Extra |
++----+-------------+-------+------------+-------+---------------+---------+---------+-------+------+----------+-------+
+|  1 | SIMPLE      | user  | NULL       | const | PRIMARY       | PRIMARY | 4       | const |    1 |   100.00 | NULL  |
++----+-------------+-------+------------+-------+---------------+---------+---------+-------+------+----------+-------+
+1 row in set, 1 warning (0.00 sec)
+```
+
+type 对应索引类别，ALL 代表全表扫描。
+
+rows 代表大概需要过滤的行数。
+
+
+# 多条 explain 结果实战测试
+
+## 建表语句
+
+```sql
+-- Orders 表的建表语句
+CREATE TABLE orders (
+    order_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    total_price DECIMAL(10, 2),
+    order_date DATE,
+    INDEX(customer_id)
+);
+
+-- Customers 表的建表语句
+CREATE TABLE customers (
+    customer_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_name VARCHAR(100),
+    customer_level ENUM('Normal', 'VIP'),
+    customer_email VARCHAR(100),
+    INDEX(customer_level)
+);
+```
+
+这里的 orders 表包含订单信息，每个订单有一个唯一的 order_id，关联到对应的客户通过 customer_id。
+
+customers 表包含客户信息，每个客户有一个唯一的 customer_id，并且包含客户名称、客户级别和客户邮箱等信息。
+
+## 执行计划
+
+```sql
+EXPLAIN 
+SELECT o.order_id, o.total_price, c.customer_name
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id
+WHERE o.total_price > 100
+AND c.customer_level = 'VIP';
+```
+
+结果:
+
+```
++----+-------------+-------+------------+--------+------------------------+---------+---------+--------------------+------+----------+-------------+
+| id | select_type | table | partitions | type   | possible_keys          | key     | key_len | ref                | rows | filtered | Extra       |
++----+-------------+-------+------------+--------+------------------------+---------+---------+--------------------+------+----------+-------------+
+|  1 | SIMPLE      | o     | NULL       | ALL    | customer_id            | NULL    | NULL    | NULL               |    1 |   100.00 | Using where |
+|  1 | SIMPLE      | c     | NULL       | eq_ref | PRIMARY,customer_level | PRIMARY | 4       | test.o.customer_id |    1 |   100.00 | Using where |
++----+-------------+-------+------------+--------+------------------------+---------+---------+--------------------+------+----------+-------------+
+2 rows in set, 1 warning (0.00 sec)
+```
+
+这个查询的执行计划包括两个阶段：
+
+第一个阶段是对 customers 表的全表扫描，因为查询中使用了 customer_level 字段进行条件过滤，并且没有合适的索引可用。
+
+第二个阶段是对 orders 表的索引扫描，使用了 customer_id 字段作为索引，然后根据条件 total_price > 100 进行筛选。
+
+这两个阶段都使用了 Using where，表示在检索阶段使用了 WHERE 条件过滤。
+
+# chat
+
+## Q: 详细介绍一下 mysql 的 explain
+
+MySQL 的 EXPLAIN 是一个查询分析工具，用于分析查询语句的执行计划。通过执行 EXPLAIN 命令，可以获取 MySQL 查询优化器对于给定查询的执行计划。执行计划包括了查询的各个阶段以及相应的优化信息，这些信息有助于开发人员理解查询的执行过程，并且可以帮助优化查询性能。
+
+下面是一个典型的 EXPLAIN 输出的例子：
+
+```
+mysql> EXPLAIN SELECT * FROM users WHERE age > 25;
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+| id | select_type | table | partitions | type | possible_keys | key  | key_len | ref  | rows | filtered | Extra       |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+| 1  | SIMPLE      | users | NULL       | ALL  | NULL          | NULL | NULL    | NULL | 5    | 100.00   | Using where |
++----+-------------+-------+------------+------+---------------+------+---------+------+------+----------+-------------+
+```
+
+这里是一些关键字段的含义：
+
+- **id**: 查询中表执行的顺序编号，1 表示该查询中的第一张表，2 表示第二张表，以此类推。
+- **select_type**: 查询类型，常见的有 SIMPLE、PRIMARY、SUBQUERY 等。
+- **table**: 正在访问的表名。
+- **partitions**: 表分区信息。
+- **type**: 访问表的方式，常见的有 const、eq_ref、ref、range、index、all 等。
+- **possible_keys**: 可能使用的索引。
+- **key**: 实际使用的索引。
+- **key_len**: 使用的索引的长度。
+- **ref**: 显示索引的哪一列被使用，通常是与索引列相等的列。
+- **rows**: 估计需要检索的行数。
+- **filtered**: 表示此查询的行过滤率，即返回结果集的行数与访问到的行数的比值。
+- **Extra**: 额外的信息，如是否使用了索引、使用了哪种算法等。
+
+通过分析 EXPLAIN 的输出，可以确定查询中是否使用了索引，以及索引的效率等。
+
+这对于调优查询性能非常重要。
+
+例如，如果某个查询中没有使用索引，可能需要添加索引来提高查询速度；如果使用了不合适的索引，可能需要优化索引设计或者重新写查询语句。
+
+## Q: explain 一定是一条结果吗？
+
+MySQL 的 EXPLAIN 命令的结果可以是一条记录，也可以是多条记录，这取决于查询的复杂性和涉及的表数量。
+
+1. **单条记录**：对于简单的查询，只涉及单个表，EXPLAIN 的结果通常是一条记录。这种情况下，查询中只有一个表参与，并且查询的执行计划也只有一个阶段，因此只会有一条记录。
+
+2. **多条记录**：对于复杂的查询，涉及多个表、联合查询、子查询或者使用了多个连接类型的查询，EXPLAIN 的结果可能是多条记录。每个记录代表查询中的一个阶段或子查询，因此可能会有多条记录来展示整个查询的执行计划。
+
+无论结果是一条记录还是多条记录，都可以通过分析 EXPLAIN 的输出来理解查询的执行计划，以便进行性能优化。
+
+
+
 
 # id
 
