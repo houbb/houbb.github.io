@@ -3,12 +3,11 @@ layout: post
 title:  c3p0 数据池入门使用教程-00
 date:  2020-7-17 16:52:15 +0800
 categories: [Database]
-tags: [database, sql, sh]
+tags: [database, sql, dbcp, sh]
 published: true
 ---
 
 # c3p0 是什么？
-
 
 c3p0是一个易于使用的库，通过使用jdbc3规范和jdbc2的可选扩展定义的功能来扩展传统JDBC驱动程序，从而使其“企业就绪”。
 

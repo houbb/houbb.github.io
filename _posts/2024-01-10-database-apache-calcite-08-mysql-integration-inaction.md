@@ -7,6 +7,16 @@ tags: [apache, search, index, es, sh]
 published: true
 ---
 
+# 架构的差异
+
+原生数据源：
+
+![常规数据源](https://img-blog.csdnimg.cn/direct/9957d27c6ca94e5a9a9c6672ce93cbb3.png#pic_center)
+
+引入 apache calcite 之后：
+
+![引入 calcite 之后](https://img-blog.csdnimg.cn/direct/26109dffd92f45d7b611741bd30a4f40.png#pic_center)
+
 # 说明
 
 实战记录一下 mysql 如何整合 apache calcite。
@@ -243,45 +253,6 @@ public class CalciteMySQLExampleNoPrefix {
 
 # mysql join 场景测试-v2
 
-
-
-## mysql 数据准备
-
-### 建表语句
-
-```sql
-use test;
-
-CREATE TABLE "users_fake" (
-  "id" int(11) NOT NULL,
-  "username" varchar(255) NOT NULL,
-  "email" varchar(255) NOT NULL,
-  PRIMARY KEY ("id")
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-```
-
-### 插入数据
-
-```sql
-insert into users_fake (id, username, email) values (1, 'u-1', '1@email.com');
-insert into users_fake (id, username, email) values (2, 'u-2', '2@email.com');
-insert into users_fake (id, username, email) values (3, 'u-3', '3@email.com');
-```
-
-数据确认：
-
-```
-mysql> select * from users_fake;
-+----+----------+-------------+
-| id | username | email       |
-+----+----------+-------------+
-|  1 | u-1      | 1@email.com |
-|  2 | u-2      | 2@email.com |
-|  3 | u-3      | 3@email.com |
-+----+----------+-------------+
-3 rows in set (0.00 sec)
-```
-
 ## java 代码
 
 我们实际测试一下 Left join 的场景，核心 SQL：
@@ -369,6 +340,84 @@ public class CalciteMySQLExampleNoPrefixLeftJoin {
 2,u-2,2@email.com
 ```
 
+# 引入 druid 数据库池化
+
+## 场景
+
+上面没有引入数据库池化能力。
+
+## java 实现方式
+
+这里我们使用 alibaba druid，其实实现也比较简单。
+
+MysqlDataSource=>DruidDataSource
+
+```java
+package com.github.houbb.calcite.learn.mysql;
+
+import com.alibaba.druid.pool.DruidDataSource;
+import org.apache.calcite.adapter.jdbc.JdbcSchema;
+import org.apache.calcite.jdbc.CalciteConnection;
+import org.apache.calcite.schema.Schema;
+import org.apache.calcite.schema.SchemaPlus;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.Properties;
+
+/**
+ * druid + calcite + mysql
+ */
+public class DruidCalciteMySQLNoPrefixExample {
+
+    public static void main(String[] args) throws Exception {
+        Properties info = new Properties();
+        info.setProperty("lex", "JAVA");
+        info.setProperty("remarks","true");
+        info.setProperty("parserFactory","org.apache.calcite.sql.parser.impl.SqlParserImpl#FACTORY");
+
+        // create calcite connection and schema
+        Connection connection = DriverManager.getConnection("jdbc:calcite:", info);
+        CalciteConnection calciteConnection = connection.unwrap(CalciteConnection.class);
+        System.out.println(calciteConnection.getProperties());
+
+        // code for mysql datasource
+        DruidDataSource dataSource = new DruidDataSource();
+        dataSource.setUrl("jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC");
+        dataSource.setUsername("admin");
+        dataSource.setPassword("123456");
+        SchemaPlus rootSchema = calciteConnection.getRootSchema();
+        Schema schema = JdbcSchema.create(rootSchema, "test", dataSource, null, "test");
+        rootSchema.add("test", schema);
+        calciteConnection.setSchema("test");
+
+        // run sql query
+        Statement statement = calciteConnection.createStatement();
+        ResultSet resultSet = statement.executeQuery("select * from users");
+        while (resultSet.next()) {
+            System.out.println(resultSet.getObject(1) + ","
+                    + resultSet.getObject(2)
+                    + "," + resultSet.getObject(3));
+        }
+
+        statement.close();
+        connection.close();
+    }
+}
+```
+
+效果：
+
+```
+{lex=JAVA, parserFactory=org.apache.calcite.sql.parser.impl.SqlParserImpl#FACTORY, remarks=true}
+三月 12, 2024 10:36:22 上午 com.alibaba.druid.pool.DruidDataSource info
+信息: {dataSource-1} inited
+1,u-1,1@email.com
+2,u-2,2@email.com
+3,u-3,3@email.com
+```
 
 # 参考资料
 
