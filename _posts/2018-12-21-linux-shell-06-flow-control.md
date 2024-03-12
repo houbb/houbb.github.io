@@ -8,6 +8,27 @@ published: true
 ---
 
 
+# 拓展阅读
+
+[linux Shell 命令行-00-intro 入门介绍](https://houbb.github.io/2018/12/21/linux-shell-01-intro)
+
+[linux Shell 命令行-02-var 变量](https://houbb.github.io/2018/12/21/linux-shell-02-var)
+
+[linux Shell 命令行-03-array 数组](https://houbb.github.io/2018/12/21/linux-shell-03-array)
+
+[linux Shell 命令行-04-operator 操作符](https://houbb.github.io/2018/12/21/linux-shell-04-operator)
+
+[linux Shell 命令行-05-test 验证是否符合条件](https://houbb.github.io/2018/12/21/linux-shell-05-test)
+
+[linux Shell 命令行-06-flow control 流程控制](https://houbb.github.io/2018/12/21/linux-shell-06-flow-control)
+
+[linux Shell 命令行-07-func 函数](https://houbb.github.io/2018/12/21/linux-shell-07-func)
+
+[linux Shell 命令行-08-file include 文件包含](https://houbb.github.io/2018/12/21/linux-shell-08-file-include)
+
+[linux Shell 命令行-09-redirect 重定向](https://houbb.github.io/2018/12/21/linux-shell-09-redirect)
+
+
 # 流程控制
 
 # If Else
@@ -247,208 +268,6 @@ num is: 1
 num is: 2
 num is: 3
 num is: 5
-```
-
-# Func
-
-```
-[ function ] funname [()]
-
-{
-
-    action;
-
-    [return int;]
-
-}
-```
-
-demo
-
-```
-#!/bin/sh
-
-# function demo
-
-firstFunc() {
-    echo "This is my first shell function."
-}
-
-echo "function start"
-firstFunc
-echo "function end"
-```
-
-run
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ vi function.sh
-houbinbindeMacBook-Pro:shell houbinbin$ chmod +x function.sh
-houbinbindeMacBook-Pro:shell houbinbin$ ./function.sh
-function start
-This is my first shell function.
-function end
-```
-
-
-- function with return value
-
-```
-#!/bin/sh
-
-
-# func with return val
-
-funcWithReturnVal() {
-    echo "enter first num: "
-    read firstNum
-    echo "enter second num: "
-    read secondNum
-    return $(($firstNum+$secondNum))
-}
-
-echo "function with return value start:"
-funcWithReturnVal
-returnVal=$?
-echo "result: $returnVal"
-```
-
-run
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ ./funcWithReturnVal.sh
-function with return value start:
-enter first num:
-1
-enter second num:
-2
-result: 3
-```
-
-- function with parameters
-
-```
-#!/bin/sh
-
-# function with param
-
-hasParam() {
-    echo "all param is $*"
-
-    if [ $# -gt 0 ]
-    then
-    echo "has param"
-    return 1
-    else
-    echo "has no param"
-    return 0
-    fi
-}
-
-hasParam 1 2 3
-```
-
-run
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ vi funcWithParam.sh
-houbinbindeMacBook-Pro:shell houbinbin$ chmod +x funcWithParam.sh
-houbinbindeMacBook-Pro:shell houbinbin$ ./funcWithParam.sh
-all param is 1 2 3
-has param
-```
-
-```$n``` to get the param value, when n >= 10, use ```${n}```!
-
-# File Include
-
-- data.sh
-
-```
-#!/bin/sh
-
-name="houbinbin"
-```
-
-- include.sh
-
-use ```. ./data.sh``` or ```source ./data.sh``` to include the file
-
-```
-#!/bin/sh
-
-source ./data.sh
-
-echo "the name is: $name"
-```
-
-run
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ chmod +x include.sh
-houbinbindeMacBook-Pro:shell houbinbin$ ./include.sh
-the name is: houbinbin
-```
-
-# Redirect
-
-| Command       |   Desc        |
-| :------------ |:----------    |
-| command > file  | out->file    |
-| command < file  | in->file     |
-| command >> file | out append->file |
-| n > file        | file descriptor `n` ->file |
-| n >> file        | file descriptor `n` append->file |
-| n >& m           | out file m&n merge |
-| n <& m           | in file m&n merge  |
-| << tag           | content between tag for input |
-
-> File descriptor
-
-```
-0   //stdIn
-1   //stdOut
-2   //stdErr
-```
-
-- Out Redirect
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ ls > ls_file
-houbinbindeMacBook-Pro:shell houbinbin$ cat ls_file
-break.sh
-case.sh
-continue.sh
-data.sh
-diff_demo.sh
-file_test_oper.sh
-for.sh
-funcWithParam.sh
-funcWithReturnVal.sh
-function.sh
-hello.sh
-hello_name.sh
-if_else.sh
-include.sh
-ls_file
-num_oper.sh
-readonly_var.sh
-special_var.sh
-test_file.sh
-test_num.sh
-unset_var.sh
-use_var.sh
-while.sh
-```
-
-
-- In Redirect
-
-We want to calc the line of file ```ls_file```
-
-```
-houbinbindeMacBook-Pro:shell houbinbin$ wc -l ls_file
-      23 ls_file
 ```
 
 # 参考资料
