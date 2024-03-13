@@ -15,6 +15,8 @@ published: true
 
 第三节 [从零开始手写 mybatis（三）jdbc pool 从零实现数据库连接池](https://mp.weixin.qq.com/s/pO1XU_PD2pHyq-bBWMAP2w)
 
+第四节 [从零开始手写 mybatis（四）- mybatis 事务管理机制详解](https://mp.weixin.qq.com/s/6Wa5AbOrg4MhRbZL674t8Q)
+
 本节我们一起来学习一下 mybatis 中的事务管理。
 
 ## mybatis 中的事务管理
