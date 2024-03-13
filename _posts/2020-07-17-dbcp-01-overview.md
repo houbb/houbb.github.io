@@ -7,6 +7,16 @@ tags: [database, sql, pool, dbcp, sh]
 published: true
 ---
 
+# 拓展阅读
+
+第一节 [从零开始手写 mybatis（一）MVP 版本](https://mp.weixin.qq.com/s/8eF7oFxgLsilqLYGOVtkGg)。
+
+第二节 [从零开始手写 mybatis（二）mybatis interceptor 插件机制详解](https://mp.weixin.qq.com/s/83GzYTQCrWiEowN0gjll0Q)
+
+第三节 [从零开始手写 mybatis（三）jdbc pool 从零实现数据库连接池](https://mp.weixin.qq.com/s/pO1XU_PD2pHyq-bBWMAP2w)
+
+第四节 [从零开始手写 mybatis（四）- mybatis 事务管理机制详解](https://mp.weixin.qq.com/s/6Wa5AbOrg4MhRbZL674t8Q)
+
 # 连接池的作用
 
 ## 资源重用
@@ -264,6 +274,8 @@ public class PoolManager {
 这些开源组件各有特点，选择合适的连接池取决于项目的需求、性能要求和技术栈。
 
 ## 给出上述组件详细的对比表格
+
+HikariCP 2.6.0、commons-dbcp2 2.1.1、Tomcat 8.0.24、Vibur 16.1、c3p0 0.9.5.2
 
 以下是对上述数据库连接池组件的详细对比：
 

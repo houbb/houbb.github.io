@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  apache commons-dbcp Apache Commons DBCP 软件实现数据库连接池
+title:  apache commons-dbcp Apache Commons DBCP 软件实现数据库连接池  commons-dbcp2
 date:  2020-7-17 16:52:15 +0800
 categories: [Database]
 tags: [database, sql, sh]
