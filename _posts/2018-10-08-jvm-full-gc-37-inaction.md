@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JVM FULL GC 生产问题笔记多 线程通用实现
+title: JVM FULL GC 生产问题笔记多线程通用实现
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, bytecode, sh]
