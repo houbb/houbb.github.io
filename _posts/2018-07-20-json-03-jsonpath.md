@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Json Path-另一种解析 json 的方式
+title:  Json Path-另一种解析 json 的方式 jsonpath
 date:  2018-07-20 09:24:03 +0800
 categories: [Java]
 tags: [java, json, sf]
@@ -177,6 +177,19 @@ Beautiful stories are always too far away.
 Grass along the Qingqing River, seeing the Vega.
 ```
 
+## 性能优化
+
+如果我们需要提取 json 中的多个数值，可以首先初始化一下 context，然后再做处理。
+
+```java
+final String json = "{}";
+
+// 避免多次解析
+final ReadContext jsonContext = JsonPath.parse(json);
+
+// 根据路径获取指定的值
+Object value = jsonContext.read(jsonPath);
+```
 
 
 # 参考资料
