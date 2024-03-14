@@ -7,6 +7,16 @@ tags: [jvm, gc, bytecode, sh]
 published: true
 ---
 
+# 拓展阅读
+
+[JVM FULL GC 生产问题 I-多线程通用实现](https://houbb.github.io/2018/10/08/jvm-full-gc-37-inaction)
+
+[JVM FULL GC 生产问题 II-如何定位内存泄露？ 线程通用实现](https://houbb.github.io/2018/10/08/jvm-full-gc-38-inaction2)
+
+[JVM FULL GC 生产问题 III-多线程执行队列的封装实现，进一步抽象](https://houbb.github.io/2018/10/08/jvm-full-gc-38-inaction3)
+
+[java 多线程实现通用方法 threadpool implement in java](https://houbb.github.io/2018/10/08/jvm-full-gc-39-inaction4)
+
 # 情景回顾
 
 我们在上一篇 [JVM FULL GC 生产问题笔记](https://houbb.github.io/2018/10/08/jvm-full-gc-37-inaction) 中提出了如何更好的实现一个多线程消费的实现方式。
