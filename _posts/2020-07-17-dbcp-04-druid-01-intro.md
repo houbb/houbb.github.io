@@ -128,6 +128,7 @@ import java.sql.Statement;
 
 /**
  * druid 整合 mysql 使用
+ * @author 老马啸西风
  */
 public class DruidMySQLExample {
 
