@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  alibaba druid-01-intro 入门介绍
+title:  alibaba druid-01-intro 数据库连接池入门介绍
 date:  2020-7-17 16:52:15 +0800
 categories: [Database]
 tags: [database, sql, dbcp, sh]
