@@ -7,6 +7,25 @@ tags: [database, sql, sh]
 published: true
 ---
 
+# 拓展阅读
+
+[从零开始手写 mybatis （三）jdbc pool 如何从零手写实现数据库连接池 dbcp？](https://houbb.github.io/2020/06/21/hand-write-mybatis-03-jdbc-pool)
+
+[万字长文深入浅出数据库连接池 HikariCP/Commons DBCP/Tomcat/c3p0/druid 对比](https://houbb.github.io/2020/07/17/dbcp-00-all-in-one)
+
+[Database Connection Pool 数据库连接池概览](https://houbb.github.io/2020/07/17/dbcp-01-overview)
+
+[c3p0 数据池入门使用教程](https://houbb.github.io/2020/07/17/dbcp-03-c3p0-00-hello-world)
+
+[alibaba druid 入门介绍](https://houbb.github.io/2020/07/17/dbcp-04-druid-01-intro)
+
+[数据库连接池 HikariCP 性能为什么这么快？](https://houbb.github.io/2020/07/17/dbcp-05-HikariCP-02-why-so-fast)
+
+[Apache Tomcat DBCP（Database Connection Pool） 数据库连接池-01-入门介绍](https://houbb.github.io/2020/07/17/dbcp-06-tomcat-pool-01-intro)
+
+[vibur-dbcp 并发、快速且功能完备的 JDBC 连接池，提供先进的性能监控功能-01-入门介绍](https://houbb.github.io/2020/07/17/dbcp-07-vibur-pool-01-intro)
+
+
 # DBCP组件
 
 许多Apache项目支持与关系型数据库进行交互。为每个用户创建一个新连接可能很耗时（通常需要多秒钟的时钟时间），以执行可能需要毫秒级时间的数据库事务。对于一个公开托管在互联网上的应用程序，在同时在线用户数量可能非常大的情况下，为每个用户打开一个连接可能是不可行的。因此，开发人员通常希望在所有当前应用程序用户之间共享一组“池化”的打开连接。在任何给定时间实际执行请求的用户数量通常只是活跃用户总数的非常小的百分比，在请求处理期间是唯一需要数据库连接的时间。应用程序本身登录到DBMS，并在内部处理任何用户账户问题。
