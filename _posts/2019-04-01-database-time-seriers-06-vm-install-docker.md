@@ -47,6 +47,53 @@ CONTAINER ID   IMAGE                                      COMMAND               
 3b265f2c6f96   victoriametrics/victoria-metrics:v1.95.1   "/victoria-metrics-p…"   50 seconds ago   Up 49 seconds   0.0.0.0:8428->8428/tcp, :::8428->8428/tcp   victoria-metrics
 ```
 
+# WSL 重新启动失败问题
+
+通过 docker ps 没看到，但是重新启动失败。
+
+发现是 `docker ps -a` 才能看到全部的全部的，包括已经停止的服务。
+
+## 查看所有服务
+
+```
+$ docker ps -a
+CONTAINER ID   IMAGE                                      COMMAND                  CREATED       STATUS                      PORTS
+
+                          NAMES
+a9b88e77fe5e   deepdiver/docker-oracle-xe-11g             "/bin/sh -c 'sed -i …"   3 days ago    Exited (255) 16 hours ago   0.0.0.0:49160->22/tcp, :::49160->22/tcp, 0.0.0.0:49161->1521/tcp, :::49161->1521/tcp, 0.0.0.0:49162->8080/tcp, :::49162->8080/tcp
+                          oracle
+3b265f2c6f96   victoriametrics/victoria-metrics:v1.95.1   "/victoria-metrics-p…"   9 days ago    Exited (255) 3 days ago     0.0.0.0:8428->8428/tcp, :::8428->8428/tcp
+                          victoria-metrics
+b349fcd8e1b1   tdengine/tdengine                          "/tini -- /usr/bin/e…"   6 weeks ago   Created
+
+                          xenodochial_hugle
+6649ff543d1d   tdengine/tdengine                          "/tini -- /usr/bin/e…"   6 weeks ago   Exited (255) 3 weeks ago    0.0.0.0:6030->6030/tcp, :::6030->6030/tcp, 0.0.0.0:6041->6041/tcp, :::6041->6041/tcp, 0.0.0.0:6043-6049->6043-6049/tcp, :::6043-6049->6043-6049/tcp, 0.0.0.0:6043-6049->6043-6049/udp, :::6043-6049->6043-6049/udp   admiring_pare
+```
+
+## 关闭不需要的服务
+
+不太需要，服务可以停止。6649ff543d1d 换成对应的 id
+
+```sh
+docker stop 6649ff543d1d
+```
+
+## 启动 vm
+
+启动命令：
+
+```sh
+docker start 3b265f2c6f96
+```
+
+确认：
+
+```
+$ docker ps
+CONTAINER ID   IMAGE                                      COMMAND                  CREATED      STATUS         PORTS                                       NAMES
+3b265f2c6f96   victoriametrics/victoria-metrics:v1.95.1   "/victoria-metrics-p…"   9 days ago   Up 2 seconds   0.0.0.0:8428->8428/tcp, :::8428->8428/tcp   victoria-metrics
+```
+
 # 如何访问呢？
 
 ## 没有表的概念
@@ -88,6 +135,84 @@ http://localhost:8428/vmui/?#/?g0.range_input=30m&g0.end_input=2023-11-14T09%3A4
 可以使用该界面来管理和监控你的指标数据。
 
 
+
+# curl 测试简单例子
+
+## 插入
+
+## JSON 数据格式
+
+```json
+{
+  // metric contans metric name plus labels for a particular time series
+  "metric":{
+    "__name__": "metric_name",  // <- this is metric name
+
+    // Other labels for the time series
+
+    "label1": "value1",
+    "label2": "value2",
+    ...
+    "labelN": "valueN"
+  },
+
+  // values contains raw sample values for the given time series
+  "values": [1, 2.345, -678],
+
+  // timestamps contains raw sample UNIX timestamps in milliseconds for the given time series
+  // every timestamp is associated with the value at the corresponding position
+  "timestamps": [1549891472010,1549891487724,1549891503438]
+}
+```
+
+## curl 插入
+
+默认看起来可以插入多个时间和值。
+
+```sh
+curl 'http://127.0.0.1:8428/api/v1/import' \
+-H "Content-Type:application/json" \
+-X POST \
+-d '{"metric":{"__name__":"testVm","hostname":"localhost"},"values":[30,40,50],"timestamps":[1709701935891,1709701935991,1709701935899]}'
+```
+
+`__name__` 对应的值指标名称。
+
+后面的 hostname=localhost 对应其他的文本 label 和值。
+
+插入单个呢？
+
+```sh
+curl 'http://127.0.0.1:8428/api/v1/import' \
+-H "Content-Type:application/json" \
+-X POST \
+-d '{"metric":{"__name__":"testVm","hostname":"127.0.0.1"},"values":[66],"timestamps":[1709701939999]}'
+```
+
+
+## curl 查询
+
+我们可以指定 metric 的名字进行查询。
+
+
+```sh
+curl http://localhost:8428/api/v1/export -d 'match={__name__="testVm"}'
+```
+
+如下：
+
+```
+{"metric":{"__name__":"testVm","hostname":"127.0.0.1"},"values":[66],"timestamps":[1709701939999]}
+{"metric":{"__name__":"testVm","hostname":"localhost"},"values":[30,50,40],"timestamps":[1709701935891,1709701935899,1709701935991]}
+```
+
+看的出来，一次性的多个值和时间戳，会被认为还是一条记录。
+
+## curl 删除？
+
+似乎没有这个需求？
+
+------------------------------------------------------------------------------------------------------------------------
 
 # curl 测试
 
@@ -276,6 +401,8 @@ https://hertzbeat.com/zh-cn/docs/start/victoria-metrics-init/
 https://blog.csdn.net/qq_47501059/article/details/135111923
 
 https://blog.csdn.net/weixin_45771607/article/details/135452800
+
+[时序数据库](https://blog.csdn.net/ggaofengg/article/details/129344212)
 
 * any list
 {:toc}
