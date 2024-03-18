@@ -1,19 +1,11 @@
 ---
 layout: post
-title: Bugs
-date:  2016-10-28 17:21:59 +0800
-categories: [Tools]
-tags: [bugs]
-published: false
+title: Ubuntu 下 mysql 表名称区分大小写的导致查询不到
+date:  2023-08-07 +0800
+categories: [Database]
+tags: [database, mysql, sh]
+published: true
 ---
-
-# Spring xsd 报错
-
-一般,spring会先去本地寻找xsd文件, 本地不存在,则去网上下载。
-
-> 最佳实践
-
-引入 xsd 时不要带版本号即可。
 
 # com.mysql.jdbc.PacketTooBigException
 
@@ -22,10 +14,15 @@ Cause: com.mysql.jdbc.PacketTooBigException: Packet for query is too large (4513
 You can change this value on the server by setting the max_allowed_packet' variable.
 ```
 
-
 # Ubuntu 数据库查询不存在
 
-Mybatis查询表名大小写是不固定的。一般的系统是不区分表名称的大小写的。但是Ubuntu下MySQL是区分大小写的。需额外设置:
+## 原因
+
+Mybatis查询表名大小写是不固定的。
+
+一般的系统是不区分表名称的大小写的。但是Ubuntu下MySQL是区分大小写的。需额外设置:
+
+## 查询
 
 Default is:
 
@@ -39,20 +36,21 @@ mysql> show variables like "%case%";
 +------------------------+-------+
 ```
 
+## 解决方式
 
-Edit ```my.cnf```
+编辑 ```my.cnf```：
 
 ```
 vi /etc/mysql/my.cnf
 ```
 
-add 在[mysqld]下加入一行
+在 [mysqld] 下添加以下行：
 
 ```
 lower_case_table_names=1
 ```
 
-restart mysql
+重启 MySQL：
 
 ```
 /etc/init.d/mysql restart

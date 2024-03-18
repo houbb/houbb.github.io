@@ -1,9 +1,9 @@
 ---
 layout: post
-title: JIRA
-date: 2018-11-21 21:16:11 +0800
+title: 项目管理平台-01-jira 入门介绍 缺陷跟踪管理系统，为针对缺陷管理、任务追踪和项目管理的商业性应用软件
+date:  2016-10-14 10:15:54 +0800
 categories: [Devops]
-tags: [devops, sh]
+tags: [devops, project-manage]
 published: true
 excerpt: JIRA 
 ---
@@ -31,7 +31,6 @@ JIRA这个名字并不是一个缩写，而是截取自“Gojira”，日文的�
 ## 路线图，内置于Jira Software
 
 概述全局，与利益相关者沟通计划，并确保您的路线图连接到您团队的工作 - 只需点击几下。
-
 
 # 不单单是 bug 跟踪工具 
 

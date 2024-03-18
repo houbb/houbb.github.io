@@ -1,9 +1,9 @@
 ---
 layout: post
-title: BugClose
-date:  2016-12-22 12:38:09 +0800
-categories: [Tool]
-tags: [bug close]
+title: 项目管理平台-01-BugClose 入门介绍 
+date:  2016-10-14 10:15:54 +0800
+categories: [Devops]
+tags: [devops, project-manage]
 published: false
 ---
 
@@ -14,8 +14,6 @@ published: false
 > [jira](https://www.atlassian.com/software/jira)
 
 可在中国开源网站上借鉴类似的软件。
-
-
 
 可针对此流程，自己设计一个练手。
 
@@ -98,7 +96,3 @@ published: false
 
 * any list
 {:toc}
-
-
-
-

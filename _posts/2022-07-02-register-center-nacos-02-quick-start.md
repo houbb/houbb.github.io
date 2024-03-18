@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  分布式注册中心 nacos-01-quick start 入门例子
+title:  分布式注册中心 nacos-02-quick start 入门例子
 date:  2022-07-02 09:22:02 +0800
 categories: [Distributed]
 tags: [distributed, register-center, sofa, sh]

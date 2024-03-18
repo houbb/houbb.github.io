@@ -1,31 +1,23 @@
 ---
 layout: post
-title: Phabricator
-date:  2016-09-21 22:28:40 +0800
-categories: [Tools]
-tags: [phabricator]
+title: 项目管理平台-01-Phabricator 入门介绍 一套集成的强大工具，帮助公司构建更高质量的软件
+date:  2016-10-14 10:15:54 +0800
+categories: [Devops]
+tags: [devops, project-manage]
 published: true
 ---
 
-* any list
-{:toc}
-
-
 # Phabricator
 
-Phabricator is an integrated set of powerful tools to help companies build higher quality software.
+Phabricator 是一套集成的强大工具，帮助公司构建更高质量的软件。
 
 > [Phabricator](https://www.phacility.com/)
 
+# 在 Mac 上安装
 
-# Install in Mac
+> [指南](https://secure.phabricator.com/book/phabricator/article/installation_guide/)
 
-> [Guide](https://secure.phabricator.com/book/phabricator/article/installation_guide/)
-
-
-一、Installing Required Components
-
-
+## 一、安装所需组件
 
 - git
 
@@ -70,7 +62,7 @@ $ git clone https://github.com/phacility/arcanist.git
 $ git clone https://github.com/phacility/phabricator.git
 ```
 
-then
+然后
 
 这个为实践路径。
 
@@ -83,51 +75,50 @@ remote: Counting objects: 14006, done.
 remote: Compressing objects: 100% (104/104), done.
 ```
 
+## 二、配置 Apache
 
-二、  Configuring Apache
+> [Mac 中的 Apache](http://www.cnblogs.com/surge/p/4168220.html)
 
-> [apache in mac](http://www.cnblogs.com/surge/p/4168220.html)
-
-- start & restart
+- 启动 & 重启
 
 ```
-$   sudo apachectl -k start
+$ sudo apachectl -k start
 
-$   sudo apachectl -k restart
+$ sudo apachectl -k restart
 ```
 
-- browser
+- 浏览器
 
 ```
 localhost
 ```
 
-- find ```httpd.conf```
+- 找到 ```httpd.conf```
 
-Use command line with vim to edit or press:
+使用命令行和 vim 编辑或按:
 
 ```
 command + shift + G
 ```
 
-enter
+输入
 
 ```
 /etc/
 ```
 
-to find the apache dir.
+来找到 apache 目录。
 
 
-> [install in mac](http://blog.csdn.net/ryoho2015/article/details/50724020)
+> [在 Mac 上安装](http://blog.csdn.net/ryoho2015/article/details/50724020)
 
-error:
+错误:
 
 Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server configuration
 
-- edit the /etc/apache2/httpd.conf
+- 编辑 /etc/apache2/httpd.conf
 
-remove the ```#``` before following:
+去掉以下命令前的 ```#```:
 
 ```
 LoadModule rewrite_module libexec/apache2/mod_rewrite.so
@@ -136,32 +127,31 @@ Include /private/etc/apache2/extra/httpd-vhosts.conf
 ```
 
 
-- edit the /etc/apache2/extra/httpd-vhosts.conf
+- 编辑 /etc/apache2/extra/httpd-vhosts.conf
 
-like this:
+如下所示:
 
-```
-# Virtual Hosts
+```conf
+# 虚拟主机
 #
-# Required modules: mod_log_config
+# 必需的模块: mod_log_config
 
-# If you want to maintain multiple domains/hostnames on your
-# machine you can setup VirtualHost containers for them. Most configurations
-# use only name-based virtual hosts so the server doesn't need to worry about
-# IP addresses. This is indicated by the asterisks in the directives below.
+# 如果您想在您的机器上维护多个域名/主机名，
+# 您可以为它们设置虚拟主机容器。大多数配置
+# 仅使用基于名称的虚拟主机，所以服务器不需要担心
+# IP 地址。这由下面指令中的星号表示。
 #
-# Please see the documentation at
+# 在尝试设置虚拟主机之前，请查看
 # <URL:http://httpd.apache.org/docs/2.4/vhosts/>
-# for further details before you try to setup virtual hosts.
+# 获取更多详细信息。
 #
-# You may use the command line option '-S' to verify your virtual host
-# configuration.
+# 您可以使用命令行选项 '-S' 来验证您的虚拟主机
+# 配置。
 
 #
-# VirtualHost example:
-# Almost any Apache directive may go into a VirtualHost container.
-# The first VirtualHost section is used for all requests that do not
-# match a ServerName or ServerAlias in any <VirtualHost> block.
+# 虚拟主机示例:
+# 几乎所有的 Apache 指令都可以放在一个虚拟主机容器中。
+# 第一个虚拟主机部分用于所有未匹配任何 ServerName 或 ServerAlias 的请求。
 #
 
 Listen 1234
@@ -171,13 +161,11 @@ Listen 1234
 </Directory>
 
 <VirtualHost *:1234>
-  # Change this to the domain which points to your host.
+  # 将此更改为指向您的主机的域名。
   ServerName www.anybuy.com
 
-  # Change this to the path where you put 'phabricator' when you checked it
-  # out from GitHub when following the Installation Guide.
-  #
-  # Make sure you include "/webroot" at the end!
+  # 将此更改为从 GitHub 检出 'phabricator' 时所放置的路径
+  # 注意确保最后包括 "/webroot"！
   DocumentRoot /Users/houbinbin/IT/anybuy/phabricator/phabricator/webroot
 
   RewriteEngine on
@@ -194,32 +182,19 @@ Listen 1234
 2. ServerName ```www.anybuy.com``` 后者为项目域名,本地可使用```127.0.0.1```
 3. ```/Users/houbinbin/IT/anybuy/phabricator/phabricator/webroot``` 2处路径请替换成自己的实际路径。
 
-- restart the Apache and you can see
+- 重启 Apache，然后您将看到首页
 
-![phabricator index](https://raw.githubusercontent.com/houbb/resource/master/img/phabricator/2016-09-22-phabricator-index.png)
+## 配置 mysql
 
+这段代码是用来配置 Phabricator 连接到 MySQL 数据库的信息。其中包括主机名、端口号、用户名和密码。
 
-- config mysql
-
-```
-/Users/houbinbin/IT/anybuy/phabricator/phabricator/bin/config set mysql.host localhost
-
-/Users/houbinbin/IT/anybuy/phabricator/phabricator/bin/config set mysql.port 3306　
-
-/Users/houbinbin/IT/anybuy/phabricator/phabricator/bin/config set mysql.user root　
-
-/Users/houbinbin/IT/anybuy/phabricator/phabricator/bin/config set mysql.pass ***(Your pwd)　
-```
-
-then, it's ask you to:
-
-Run the storage upgrade script to setup Phabricator's database schema.
+接着，它要求你运行存储升级脚本以设置 Phabricator 的数据库模式。
 
 ```
 /Users/houbinbin/IT/anybuy/phabricator/phabricator/bin/storage upgrade
 ```
 
-the log may like this:
+运行这个命令后，可能会看到类似以下的日志输出：
 
 ```
 Before running storage upgrades, you should take down the Phabricator web
@@ -285,42 +260,38 @@ Done.
 Completed applying all schema adjustments.
 ```
 
-- visit the phabricator
+### 访问 Phabricator
 
-```
-http://127.0.0.1:1234/
-```
-
-![phabricator](https://raw.githubusercontent.com/houbb/resource/master/img/phabricator/2016-09-22-phabricator-visit.png)
+浏览器打开页面 [http://127.0.0.1:1234/](http://127.0.0.1:1234/)
 
 
-# Install in Ubuntu
+# 在 Ubuntu 上安装
 
-If you are installing on Ubuntu, there are install scripts available which should handle most of the things discussed in this document for you:
+如果你正在 Ubuntu 上安装，可以使用提供的安装脚本来处理本文中讨论的大部分事项：
 
 > [install_ubuntu.sh](https://secure.phabricator.com/diffusion/P/browse/master/scripts/install/install_ubuntu.sh)
 
-> [install zh_CN](https://my.oschina.net/yoyoko/blog/126325)
+> [安装指南 中文](https://my.oschina.net/yoyoko/blog/126325)
 
-> [install zh_CN](http://www.linuxdiyf.com/linux/16060.html)
+> [安装指南 中文](http://www.linuxdiyf.com/linux/16060.html)
 
-一、 install_ubuntu.sh
+## 一、 install_ubuntu.sh
 
-- Visit the [install_ubuntu.sh](https://secure.phabricator.com/diffusion/P/browse/master/scripts/install/install_ubuntu.sh)
+- 访问 [install_ubuntu.sh](https://secure.phabricator.com/diffusion/P/browse/master/scripts/install/install_ubuntu.sh)
 
-- Create file ```install_ubuntu.sh```
-
-```
-$   vi install_ubuntu.sh
-```
-
-- Copy the shell content of [install_ubuntu.sh](https://secure.phabricator.com/diffusion/P/browse/master/scripts/install/install_ubuntu.sh) into ```install_ubuntu.sh```;
-
-- Run
+- 创建文件 ```install_ubuntu.sh```
 
 ```
-$   sudo chmod 755 install_ubuntu.sh
-$   sudo ./install_ubuntu.sh
+$ vi install_ubuntu.sh
+```
+
+- 将 [install_ubuntu.sh](https://secure.phabricator.com/diffusion/P/browse/master/scripts/install/install_ubuntu.sh) 的脚本内容复制到 ```install_ubuntu.sh``` 中；
+
+- 运行
+
+```
+$ sudo chmod 755 install_ubuntu.sh
+$ sudo ./install_ubuntu.sh
 
 PHABRICATOR UBUNTU INSTALL SCRIPT
 This script will install Phabricator and all of its core dependencies.
@@ -331,10 +302,9 @@ Press RETURN to continue, or ^C to cancel.
 ```
 
 
-二、 Config Apache
+## 二、 Config Apache
 
-
-- some commands
+- 一些命令
 
 ```
 $   /etc/init.d/apache2 start
@@ -342,25 +312,25 @@ $   /etc/init.d/apache2 restart
 $   /etc/init.d/apache2 stop
 ```
 
-> [config apache](http://www.oschina.net/question/191440_125562)
+> [配置 apache](http://www.oschina.net/question/191440_125562)
 
-> [ubuntu apache ch_ZN](http://www.cnblogs.com/ylan2009/archive/2012/02/25/2368028.html)
+> [Ubuntu Apache 中文](http://www.cnblogs.com/ylan2009/archive/2012/02/25/2368028.html)
 
 
-- add in ```/etc/apache2/httpd.conf```
+- 在 ```/etc/apache2/httpd.conf``` 中添加以下内容：
 
 ```
 LoadModule rewrite_module libexec/apache2/mod_rewrite.so
 LoadModule php5_module libexec/apache2/libphp5.so
 ```
 
-- edit ```/etc/apache2/apache2.conf```
+- 编辑 ```/etc/apache2/apache2.conf```：
 
 ```
 $   vi /etc/apache2/apache2.conf
 ```
 
-add this :
+添加以下内容：
 
 ```
 ServerName 139.196.28.125
@@ -368,25 +338,21 @@ ServerName 139.196.28.125
 <Directory "/root/code/phabricator/webroot">
     Require all granted
 </Directory>
-
-
 ```
 
-
-
-- edit ```000-default.conf```
+- 编辑 ```000-default.conf```：
 
 ```
 $   vim /etc/apache2/sites-enabled/000-default.conf
 ```
 
-change the path of *DocumentRoot* to:
+将 *DocumentRoot* 的路径更改为：
 
 ```
 /root/code/phabricator/webroot
 ```
 
-add these:
+添加以下内容：
 
 ```
 RewriteEngine on
@@ -395,13 +361,13 @@ RewriteRule ^/favicon.ico   -                       [L,QSA]
 RewriteRule ^(.*)$          /index.php?__path__=$1  [B,L,QSA]
 ```
 
-- restart apache
+- 重启 Apache：
 
 ```
 $    /etc/init.d/apache2 restart
 ```
 
-三、 403
+## 三、 403 Forbidden
 
 ```
 Forbidden
@@ -411,9 +377,9 @@ You don't have permission to access / on this server.
 Apache/2.4.7 (Ubuntu) Server at 139.196.28.125 Port 1234
 ```
 
-I think If you had add this, it's still 403. May be you should change the permission of your project package.
+我认为，即使您添加了这个，还是会出现403错误。也许您应该更改项目包的权限。
 
-For easy, I move the ```phabricator``` relative package to ```var/www/```, Finally, it's worked~~~T_T
+为了方便起见，我将```phabricator```相关的包移动到了```var/www/```，最终，它成功了~~~T_T
 
 ```
 <Directory "/root/code/phabricator/webroot">
@@ -422,9 +388,9 @@ For easy, I move the ```phabricator``` relative package to ```var/www/```, Final
 ```
 
 
-四、 Config mysql
+## 四、 Config mysql
 
-- set config
+- 设置配置
 
 ```
 /root/code/phabricator/bin/config set mysql.host localhost
@@ -433,7 +399,7 @@ For easy, I move the ```phabricator``` relative package to ```var/www/```, Final
 /root/code/phabricator/bin/config set mysql.pass ****
 ```
 
-- update config
+- 更新配置
 
 ```
 /root/code/phabricator/bin/storage upgrade
@@ -441,29 +407,27 @@ For easy, I move the ```phabricator``` relative package to ```var/www/```, Final
 
 # Arcanist
 
-
-The primary use of arc is to send changes for review in [Differential](https://secure.phabricator.com/book/phabricator/article/differential/)
+arc 的主要用途是将变更发送到 [Differential](https://secure.phabricator.com/book/phabricator/article/differential/) 进行审阅。
 
 > [arc](https://secure.phabricator.com/book/phabricator/article/arcanist_diff/)
 
-> [code review zh_CN](http://www.jianshu.com/p/b1a75a14638c)
+> [代码审阅 中文](http://www.jianshu.com/p/b1a75a14638c)
 
+## 一、在 Windows 上安装
 
-一、 Install in Windows
-
-- install git
+- 安装 git
 
 > [git](https://git-scm.com/)
 
-- install php
+- 安装 php
 
-1. Download [php](http://www.php.net/) zip
+1. 下载 [php](http://www.php.net/) 压缩包
 
-2. Unzip in package, like: ```C:\php```
+2. 解压到包中，例如：```C:\php```
 
-3. Copy ```C:\php\php.ini-production```, and renamed to ```php.ini```
+3. 复制 ```C:\php\php.ini-production```，并重命名为 ```php.ini```
 
-4. Edit php.ini, remove the ```;``` of following lines
+4. 编辑 php.ini，移除以下行前的 ```;```：
 
 ```
 ; extension_dir = "ext"
@@ -471,18 +435,18 @@ The primary use of arc is to send changes for review in [Differential](https://s
 ;extension=php_curl.dll
 ```
 
-- install components
+- 安装组件
 
-> install
+> 安装
 
 ```
 $   some_install_path/ $ git clone https://github.com/phacility/libphutil.git
 $   some_install_path/ $ git clone https://github.com/phacility/arcanist.git
 ```
 
-> config
+> 配置
 
-edit ```~/.bash_profile``` file
+编辑 ```~/.bash_profile``` 文件
 
 ```
 M3_HOME=/usr/local/maven/maven3.3.9
@@ -494,82 +458,81 @@ PATH=$ARC_HOME/bin:$M3_HOME/bin:$PATH
 
 
 ```
-Path：export PATH="/Users/houbinbin/it/code/arcanist/bin"
-Edit：（mac建议用vi）：arc set-config editor "/usr/bin/vi"
-Addr：arc set-config default http://www.XXX.com/
-Cred：yourproject/ $ arc install-certificate
+路径：export PATH="/Users/houbinbin/it/code/arcanist/bin"
+编辑：（mac建议用vi）：arc set-config editor "/usr/bin/vi"
+地址：arc set-config default http://www.XXX.com/
+凭证：yourproject/ $ arc install-certificate
 ```
 
-refresh config file:
+刷新配置文件：
 
 ```source .bash_profile```
 
-- test
+- 测试
 
 ```
 $   arc help
 ```
 
 
-二、 Relative commands
+## 二、相关命令
 
 ```
-arc diff：发送代码差异（review request）到Differental功能
-arc list：限时未提交的代码信息
-arc branch [branch name]：创建并checkout分支
-arc land [branch name]：代码审核通过后，合并主分支
-arc tasks：展示当前任务
+arc diff：将代码差异（审阅请求）发送到 Differential 功能
+arc list：显示尚未提交的代码信息
+arc branch [分支名称]：创建并切换分支
+arc land [分支名称]：在代码审核通过后，合并主分支
+arc tasks：显示当前任务
 ```
-
-
 
 # Issues
 
-0、No Authentication Providers Configured
+## 0、未配置身份验证提供程序
 
-这个如果不设置，在其他电脑登陆，将失去验证方式。
+如果不设置身份验证提供程序，在其他计算机上登录时，将无法进行身份验证。
 
 ```
 http://XXX.XXX.XX.XXX/auth/
 ```
 
-地址替换成自己对应的IP，点击【Add Provider】
+将地址替换为您的对应 IP 地址，然后点击【添加提供程序】。
 
-可选择最常规的一个:
+您可以选择最常见的一个：
 
 ```
-Provider
-	Username/Password
-Allow users to login or register using a username and password.
+提供程序
+	用户名/密码
+允许用户使用用户名和密码登录或注册。
 ```
-后面默认，保存点击【Add Provider】
 
-```http://XXX.XXX.XX.XXX/config/edit/auth.require-approval/``` 选择 **Require Administrators to Approve Accounts** 则用户注册需要管理员审核。
+然后保持其他设置默认，点击【添加提供程序】。
 
-1、Base URI Not Configured
+接着，访问 ```http://XXX.XXX.XX.XXX/config/edit/auth.require-approval/```，选择 **要求管理员批准帐户**，这样用户注册时就需要管理员审批。
+
+## 1、未配置基本 URI
 
 ```
 $    /var/www/phabricator/bin/config set phabricator.base-uri 'http://139.196.28.125:1234/'
 ```
 
-2、Phabricator Daemons Are Not Running
+## 2、Phabricator 守护进程未运行
 
 ```
 $   /var/www/phabricator/bin/phd start
 
-Freeing active task leases...
-Freed 0 task lease(s).
-Launching daemons:
-(Logs will appear in "/var/tmp/phd/log/daemons.log".)
+释放活动任务租约...
+释放了 0 个任务租约。
+启动守护进程：
+(日志将出现在 "/var/tmp/phd/log/daemons.log" 中。)
 
-    PhabricatorRepositoryPullLocalDaemon (Static)
-    PhabricatorTriggerDaemon (Static)
-    PhabricatorTaskmasterDaemon (Autoscaling: group=task, pool=4, reserve=0)
+    PhabricatorRepositoryPullLocalDaemon (静态)
+    PhabricatorTriggerDaemon (静态)
+    PhabricatorTaskmasterDaemon (自动扩展：组=任务，池=4，保留=0)
 
-Done.
+完成。
 ```
 
-3、Server Timezone Not Configured
+## 3、服务器时区未配置
 
 ```
 $   vim /etc/php5/apache2/php.ini
@@ -577,12 +540,12 @@ $   vim /etc/php5/apache2/php.ini
 date.timezone = Asia/Shanghai
 ```
 
-You need to restart apache2 to make if effect.
+需要重新启动 apache2 以使其生效。
 
-4、Disable PHP always_populate_raw_post_data
+## 4、禁用 PHP 的 always_populate_raw_post_data
 
-The "always_populate_raw_post_data" key is set to some value other than "-1" in your PHP configuration.
-This can cause PHP to raise deprecation warnings during process startup. Set this option to "-1" to prevent these warnings from appearing.
+在您的 PHP 配置中，“always_populate_raw_post_data” 键被设置为除了“-1”以外的某个值。
+这可能会导致 PHP 在进程启动期间引发弃用警告。将此选项设置为“-1”可以防止这些警告出现。
 
 ```
 $   vi /etc/php5/apache2/php.ini
@@ -592,55 +555,52 @@ always_populate_raw_post_data = -1
 $   /etc/init.d/apache2 restart
 ```
 
-5、PHP post_max_size Not Configured
+## 5、PHP post_max_size 未配置
 
-Adjust ```post_max_size``` in your PHP configuration to at least *32MB*. When set to smaller value, large file uploads may not work properly.
+调整您的 PHP 配置中的 ```post_max_size``` 至少为 *32MB*。当设置为较小的值时，大文件上传可能无法正常工作。
 
-In this file: ```/etc/php5/apache2/php.ini```
+在文件中：```/etc/php5/apache2/php.ini```
 
 ```
 post_max_size = 32M
 ```
 
-restart apache to make it work.
+重新启动 apache 使其生效。
 
-6、Set Mail
+## 6、设置邮件
 
-- install send mail
+- 安装 sendmail
 
 ```
 $   apt-get install sendmail
 ```
 
-- mail
+- 邮件
 
 ```
 URL:    http://139.196.28.125:1234/config/group/metamta/
 
-
-metamta.default-address = 13062666053@qq.com
-
-metamta.domain = anybuy.com     //as you like
-
+metamta.default-address = 123456789@qq.com
+metamta.domain = anybuy.com     // 根据您的喜好
 metamta.mail-adapter = PhabricatorMailImplementationPHPMailerLiteAdapter
-
 ```
 
+```xml
  <property name="host" value="smtp.qq.com"/>
-        <!--576 is tls try 465 for ssl-->
-        <property name="port" value="465"/>
-        <property name="defaultEncoding" value="UTF-8"/>
-        <property name="javaMailProperties" >
-            <props>
-                <!--<prop key="mail.transport.protocol">smtp</prop>-->
-                <prop key="mail.smtp.auth">true</prop>
-                <prop key="mail.smtp.timeout">25000</prop>
-                <!-- true for Gamil -->
-                <prop key="mail.smtp.starttls.enable">true</prop>
-                <prop key="mail.debug">true</prop>
-            </props>
-        </property>
-
+<!--576 is tls try 465 for ssl-->
+<property name="port" value="465"/>
+<property name="defaultEncoding" value="UTF-8"/>
+<property name="javaMailProperties" >
+    <props>
+        <!--<prop key="mail.transport.protocol">smtp</prop>-->
+        <prop key="mail.smtp.auth">true</prop>
+        <prop key="mail.smtp.timeout">25000</prop>
+        <!-- true for Gamil -->
+        <prop key="mail.smtp.starttls.enable">true</prop>
+        <prop key="mail.debug">true</prop>
+    </props>
+</property>
+```
 
 - PHPMailer
 
@@ -649,69 +609,58 @@ URL:    http://139.196.28.125:1234/config/group/phpmailer/
 
 
 $   /var/www/phabricator/bin/config set phpmailer.smtp-host smtp.qq.com
-
 $   /var/www/phabricator/bin/config set phpmailer.smtp-port 465
-
-$   /var/www/phabricator/bin/config set phpmailer.smtp-user 13062666053@qq.com
-
+$   /var/www/phabricator/bin/config set phpmailer.smtp-user 123456789@qq.com
 $   /var/www/phabricator/bin/config set phpmailer.smtp-password
-
 ```
 
-> send fail
+> 发送失败
 
-You can find the mail send info in
+您可以在以下路径找到邮件发送的信息：
 
 ```
 /var/mail/root
 ```
 
-the error may:
+可能的错误包括：
 
 ```
 550 Ip frequency limited. http://service.mail.qq.com/cgi-bin/help?subtype=1&&id=20022&&no=1000725
 554 5.0.0 Service unavailable
 ```
 
-> [tips](http://wenku.baidu.com/view/b2fd127b312b3169a451a44a.html)
+> [提示](http://wenku.baidu.com/view/b2fd127b312b3169a451a44a.html)
 
+如果邮件配置的是 SSL 协议，端口是 465，则需要开启相应端口。我开始配置的 SSL 没有成功，换回 25 端口，邮件就能发送了。如果发送没有成功，通过页面上的 ```Daemons``` 的控制台日志来查找原因。
 
-如果邮件配置的是SSL协议，端口是465，则需要开启相应端口。我开始配置的SSL没有成功，换回25端口，邮件就能发送了。
-如果发送没有成功，通过页面上的```Daemons```的console日志来查找原因。
+> [发送](http://blog.csdn.net/xylander23/article/details/50999646)
 
+## 7、编辑选项：```phabricator.timezone```
 
+> [亚洲可用时区](http://php.net/manual/zh/timezones.asia.php)
 
-> [send](http://blog.csdn.net/xylander23/article/details/50999646)
-
-
-7、Edit Option: ```phabricator.timezone```
-
-> [Asia available](http://php.net/manual/zh/timezones.asia.php)
-
-Set the value into ```Asia/Shanghai```
+将值设置为 ```Asia/Shanghai```
 
 ```
 http://127.0.0.1:1234/config/edit/phabricator.timezone/?issue=config.timezone
 ```
 
-8、Base URI Not Configured
+## 8、未配置基本 URI
 
 ```
 houbinbindeMacBook-Pro:phabricator houbinbin$ bin/config set phabricator.base-uri 'http://127.0.0.1:1234/'
-Set 'phabricator.base-uri' in local configuration.
+在本地配置中设置了 'phabricator.base-uri'。
 houbinbindeMacBook-Pro:phabricator houbinbin$ pwd
 /Users/houbinbin/IT/anybuy/phabricator/phabricator
 ```
 
-9、Disable PHP ```always_populate_raw_post_data```
+## 9、禁用 PHP 的 ```always_populate_raw_post_data```
 
+## 10、Small MySQL "max_allowed_packet"
 
+(1) 在 Mac 上
 
-10、Small MySQL "max_allowed_packet"
-
-(1) In Mac
-
-Default, MAC has no ```my.cnf```, copy and move it:
+默认情况下，Mac 没有 ```my.cnf``` 文件，复制并移动它：
 
 ```
 houbinbindeMacBook-Pro:support-files houbinbin$ pwd
@@ -725,70 +674,68 @@ houbinbindeMacBook-Pro:etc houbinbin$ pwd
 houbinbindeMacBook-Pro:etc houbinbin$ vi my.cnf
 ```
 
-to change the ```max_allowed_packet``` value:
+更改 ```max_allowed_packet``` 的值：
 
 ```
 max_allowed_packet=41943040
 ```
 
-and then, restart your mysql
+然后，重新启动您的 MySQL
 
 ```
 sudo /usr/local/mysql/support-files/mysql.server restart
 ```
 
-(2) In Ubuntu 14.04
+(2) 在 Ubuntu 14.04 上
 
-The recommended minimum value for this setting is "33554432".
+建议的最小值为 "33554432"。
 
 ```
 vi /etc/mysql/my.cnf 
 ```
 
-edit the content
+编辑内容：
 
 ```
 max_allowed_packet = 32M
 ```
 
-restart mysql
+重启 MySQL。
 
-
-11、Missing Repository Local Path
+## 11、丢失仓库本地路径
 
 ```
 $   sudo mkdir -p '/var/repo/'
 ```
 
-12、Install Pygments to Improve Syntax Highlighting
+## 12、安装 Pygments 以提高语法高亮
 
-Click 【Edit "pygments.enabled"】, then select **Use Pygments**, finally click 【Save Config Entry】
+点击 【编辑 "pygments.enabled"】，然后选择 **使用 Pygments**，最后点击 【保存配置项】
 
-13、MySQL STRICT_ALL_TABLES Mode Not Set
+## 13、MySQL STRICT_ALL_TABLES 模式未设置
 
 ```
 vi /etc/mysql/my.cnf
 ```
 
-add this under the ```[mysqld]``` 
+在 ```[mysqld]``` 下添加：
 
 ```
-# add sql mode
+# 添加 SQL 模式
 sql_mode=STRICT_ALL_TABLES
 ```
 
-then restart mysql make it effect.
+然后重新启动 MySQL 使其生效。
 
 ```
 /etc/init.d/mysql restart
 ```
 
-14、No Sendmail Binary Found
+## 14、未找到 Sendmail 二进制文件
 
-Click 【Edit "metamta.mail-adapter"】 
+点击 【编辑 "metamta.mail-adapter"】 
 
-Select: "PhabricatorMailImplementationPHPMailerAdapter"
-
+选择: "PhabricatorMailImplementationPHPMailerAdapter"
 
 ## Ubuntu install warn
 
@@ -822,28 +769,28 @@ $   sudo apt-get install apache2
 sudo apt install php7.0-cli
 ```
 
-# Mail Config
+# 邮件配置
 
-> [jianshu](http://www.jianshu.com/p/a0592a2f2afb)
+> [简书](http://www.jianshu.com/p/a0592a2f2afb)
 
-> [install](http://wenku.baidu.com/view/b2fd127b312b3169a451a44a.html)
+> [安装](http://wenku.baidu.com/view/b2fd127b312b3169a451a44a.html)
 
-> [blog zh_CN](http://blog.sina.com.cn/s/blog_6311af050102wteg.html)
-
-
-> [config zh_CN](www.cnblogs.com/zhangqingsh/archive/2013/04/15/3021300.html)
+> [博客中文](http://blog.sina.com.cn/s/blog_6311af050102wteg.html)
 
 
-管理员账号浏览器后端添加```/config/```进入配置界面。
+> [配置中文](www.cnblogs.com/zhangqingsh/archive/2013/04/15/3021300.html)
 
 
-> Mail
+通过管理员账号在后台浏览器访问 ```/config/``` 进入配置页面。
 
-```/config/group/metamta/``` to config mail
+
+> 邮件
+
+访问 ```/config/group/metamta/``` 进行邮件配置
 
 - metamta.default-address
 
-设置一个默认邮箱即可。  如: ```13062666053@sina.cn```,应保持与**phpmailer**中设置一致。
+设置一个默认邮箱即可。  例如: ```123456789@sina.cn```, 应保持与**phpmailer**中设置一致。
 
 - metamta.domain
 
@@ -852,19 +799,19 @@ sudo apt install php7.0-cli
 
 - metamta.mail-adapter
 
-使用SMTP邮箱,请设置邮件适配器```PhabricatorMailImplementationPHPMailerAdapter```
+使用SMTP邮箱,请设置邮件适配器为 ```PhabricatorMailImplementationPHPMailerAdapter```
 
 
 
-> phpmailer
+> PHPMailer
 
-in the URL of: ```/config/group/phpmailer/```, you can use command to config:
+在 ```/config/group/phpmailer/``` 的 URL 中，您可以使用以下命令进行配置:
 
 ```
 bin/config set phpmailer.smtp-host smtp.sina.cn
 bin/config set phpmailer.smtp-port  25
 bin/config set phpmailer.smtp-protocol  TLS
-bin/config set phpmailer.smtp-user 13062666053@sina.cn
+bin/config set phpmailer.smtp-user 123456789@sina.cn
 bin/config set phpmailer.smtp-password  XXXX
 ```
 
@@ -898,21 +845,28 @@ bin/phd restart
 
 > [repository](https://secure.phabricator.com/book/phabricator/article/diffusion_hosting/)
 
-如果代码仓库想使用git管理项目。需要配置SSH。
+如果代码仓库想使用git管理项目。
+
+需要配置SSH。
+
+## 基本账户信息
 
 Phabricator需要三个用户账号（三种用户身份）：两个用于基本运行，一个用于配置SSH访问。
+
 三个账号分别是：
+
 www-user：Phabricator Web服务器运行身份。
 daemon-user：daemons （守护进程）运行身份。这个账号是唯一直接与代码仓库交互的账号，其它账号需要切换到这个账号身份（sudo）才能操作代码仓库。
 vcs-user：我们需要以这个账号SSH连接Phabricator。
 
 
 如果你的服务器系统中现在没有这三个账号，需要创建：
+
 www-user：大部分情况下，这个账号已经存在了，我们不需要理这个账号。
 daemon-user ：一般情况下，我们直接使用 root 账号，因为会需要很多权限（当然这可能不安全）。
 vcs-user：可以使用系统中现有的一个用户账号，直接创建一个就叫 vcsuser。当用户克隆仓库的时候，需要使用类似 vcsuser@pha.example.com 的URI。
 
-- 验证账户是否存在:
+## 验证账户是否存在:
 
 ```
 cat /etc/passwd | grep www-user
@@ -924,6 +878,8 @@ cat /etc/passwd | grep vcs-user
 
 很不幸。几个账户都不存在。
 
+## 创建用户
+
 - [创建用户](http://blog.csdn.net/lincyang/article/details/20922749)
 
 ```
@@ -931,18 +887,18 @@ useradd www-user -m -s /bin/bash
 useradd vcs-user -m -s /bin/bash
 ```
 
-set password for create user:
+设置创建用户的密码：
 
 ```
 sudo passwd www-user
 sudo passwd vcs-user
 ```
 
-一、Configuring Phabricator
+一、配置 Phabricator
 
-以下所有操作,都换成**root**模式。
+接下来的所有操作都需要切换到 **root** 模式。
 
-First, set ```phd.user``` to the ```daemon-user```(root):
+首先，将 ```phd.user``` 设置为 ```daemon-user```(root):
 
 ```
 $pwd
@@ -950,42 +906,39 @@ $pwd
 
 $ sudo bin/config set phd.user root
 
-Set 'phd.user' in local configuration.
+在本地配置中设置了 'phd.user'。
 ```
 
-Restart the daemons to make sure this configuration works properly.
+重新启动守护程序以确保此配置正常工作。
 
 ```
 $   bin/phd restart
 
-There are no running Phabricator daemons.
-Freeing active task leases...
-Freed 0 task lease(s).
-Launching daemons:
-(Logs will appear in "/var/tmp/phd/log/daemons.log".)
+当前没有正在运行的 Phabricator 守护程序。
+释放活动任务租约中...
+已释放 0 个任务租约。
+启动守护程序：
+（日志将出现在 "/var/tmp/phd/log/daemons.log" 中。）
 
-    PhabricatorRepositoryPullLocalDaemon (Static)
-    PhabricatorTriggerDaemon (Static)
-    PhabricatorTaskmasterDaemon (Autoscaling: group=task, pool=4, reserve=0)
+    PhabricatorRepositoryPullLocalDaemon (静态)
+    PhabricatorTriggerDaemon (静态)
+    PhabricatorTaskmasterDaemon (自动缩放：组=任务，池=4，保留=0)
 
-Done.
+完成。
 ```
 
-
-If you're using a ```vcs-user``` for SSH, you should also configure that:
+如果您在使用 SSH 时使用了 ```vcs-user```，您还应该配置该用户：
 
 ```
 $ sudo bin/config set diffusion.ssh-user vcs-user
-Set 'diffusion.ssh-user' in local configuration
+在本地配置中设置了 'diffusion.ssh-user'。
 ```
 
-Next, you'll set up sudo permissions so these users can interact with one another.
+接下来，您需要设置 sudo 权限，以便这些用户可以相互交互。
 
-
-二、Configuring Sudo
+## 二、Configuring Sudo
 
 默认情况下。添加的用户是没有```sudo```权限的。
-
 
 www-user 和 vcs-user 需要能够使用 **sudo** 切换到 daemon-user 用户身份才能与仓库交互，所以我们需要配置更改系统的 sudo 配置。
 直接编辑 ```/etc/sudoers``` 或者在 ```/etc/sudoers.d``` 下创建一个新文件，然后把这些内容写到文件内容中
@@ -1001,40 +954,40 @@ vcs-user ALL=(root) SETENV: NOPASSWD: /bin/sh, /usr/bin/git-upload-pack, /usr/bi
 
 如果文件中有```Defaults requiretty```, 注释掉。
 
-三、其它SSH配置
+## 三、其它SSH配置
 
 - ```/etc/shadow``` 中找到**vcs-user**的哪一行。修改第二列(密码列)为空,或者**NP**。
 
 - ```/etc/passwd``` 中找到**vcs-user**的哪一行。修改```/bin/false```为```/bin/sh```。
 
-四、配置SSHD端口
+## 四、配置SSHD端口
 
 > [ssh](http://www.cnblogs.com/CGDeveloper/archive/2011/07/27/2118533.html)
 
-- ssh version
+- SSH 版本
 
 ```
 $ ssh -V
 OpenSSH_6.6.1p1 Ubuntu-2ubuntu2.8, OpenSSL 1.0.1f 6 Jan 2014
 ```
 
-Phabricator运行的服务器系统中 sshd 的版本 必须高于 **6.2**
+在运行 Phabricator 的服务器系统中，sshd 的版本必须高于 **6.2**
 
-- port
+- 端口
 
-默认为**22**
+默认端口为 **22**
 
-1) create ```phabricator-ssh-hook.sh``` in **/usr/libexec/phabricator-ssh-hook.sh**
+1) 在 **/usr/libexec** 中创建 ```phabricator-ssh-hook.sh```：
 
-我选择放在 **/etc/ssh/shell** 中
+我选择将其放置在 **/etc/ssh/shell** 中：
 
 ```
 #!/bin/sh
 
-# NOTE: Replace this with the username that you expect users to connect with.
+# 注意：将此处的用户名替换为您希望用户连接的用户名。
 VCSUSER="vcs-user"
 
-# NOTE: Replace this with the path to your Phabricator directory.
+# 注意：将此处的路径替换为您的 Phabricator 目录。
 ROOT="/var/www/phabricator"
 
 if [ "$1" != "$VCSUSER" ];
@@ -1044,7 +997,8 @@ fi
 
 exec "$ROOT/bin/ssh-auth" $@
 ```
-创建完脚本后，需要把脚本和它的父文件夹所有者改为 **root**，并且赋予脚本 **755** 权限
+
+创建完脚本后，需要将脚本及其父文件夹的所有者更改为 **root**，并赋予脚本 **755** 权限：
 
 ```
 sudo chown root /etc/ssh/shell
@@ -1052,9 +1006,9 @@ sudo chown root /etc/ssh/shell/phabricator-ssh-hook.sh
 sudo chmod 755 /etc/ssh/shell/phabricator-ssh-hook.sh
 ```
 
-2) Create ```sshd_config```
+2) 创建 ```sshd_config```
 
-在 **/etc/ssh** 中创建文件名类似 ```sshd_config.phabricator``` 的文件
+在 **/etc/ssh** 中创建一个文件名类似 ```sshd_config.phabricator``` 的文件：
 
 ```
 $ pwd
@@ -1062,9 +1016,9 @@ $ pwd
 $ sudo vi sshd_config.phabricator
 ```
 
-文件内容如下, 此处配置端口号为 ```2222```
+文件内容如下，此处配置端口号为 ```2222```:
 
-If you plan to connect to a port other than 22, you should set this port as diffusion.ssh-port in your Phabricator config:
+如果您计划连接到除 22 以外的端口，则应将此端口设置为 Phabricator 配置中的 ```diffusion.ssh-port```：
 
 ```
 $ bin/config set diffusion.ssh-port 2222
@@ -1145,7 +1099,6 @@ useradd vcs-user -m -s /bin/bash
 
 > [Git + Jenkins + Pha](http://www.mutouxiaogui.cn/blog/?p=386)
 
-
 - 创建用户
 
 ```
@@ -1164,8 +1117,6 @@ http://139.196.28.125/p/jenkins/
 
 复制其中的 token。
 
-
-
 - 添加**token**到Jenkins
 
 1) 安装 phabricator 插件 ```Phabricator Differential Plugin```
@@ -1181,5 +1132,5 @@ http://139.196.28.125:8080/configure
 ![phabricator-jenkins](https://raw.githubusercontent.com/houbb/resource/master/img/phabricator/2017-01-15-phabricator-jenkins.png)
 
 
-
-
+* any list
+{:toc}

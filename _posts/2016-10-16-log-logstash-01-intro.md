@@ -1,28 +1,27 @@
 ---
 layout: post
-title: Logstash
+title: 灵活的、开源的数据收集、丰富和传输管道 Logstash-01-入门介绍 
 date:  2016-10-16 10:04:46 +0800
 categories: [Log]
-tags: [logstash, log]
+tags: [etl, log]
 published: true
 ---
 
-* any list
-{:toc}
+
 
 # Logstash
 
-Collect, Enrich & Transport Data.
+收集、丰富和传输数据。
 
-Logstash is a flexible, open source, data collection, enrichment, and transport pipeline designed to efficiently process a growing list of log,
-event, and unstructured data sources for distribution into a variety of outputs, including Elasticsearch.
+Logstash 是一个灵活的、开源的数据收集、丰富和传输管道，旨在高效处理日志、事件和非结构化数据源的不断增长，以便将其分发到各种输出，包括 Elasticsearch。
 
-> [logstash](https://www.elastic.co/products/logstash)
+> [Logstash](https://www.elastic.co/products/logstash)
 
+# Install in Mac
 
-<label class="label label-warning">Requirement</label>
+## 安装需要
 
--  **Java 7 or higher** is required for Logstash 2.x
+- Logstash 2.x 需要 **Java 7 或更高版本**
 
 ```
 houbinbindeMacBook-Pro:bin houbinbin$ java -version
@@ -31,23 +30,15 @@ Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
 Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
 ```
 
-# Install in Mac
+## 下载
 
-<uml>
-    Title: Install logstash
-    Download->Config: logstash.conf
-    Config->Run: bin/logstash -f conf/logstash.conf
-</uml>
-
-- Download
-
-[Download](https://www.elastic.co/downloads/logstash) and unzip
+[下载](https://www.elastic.co/downloads/logstash) 并解压缩
 
 ```
 houbinbindeMacBook-Pro:Downloads houbinbin$ tar -zxf logstash-all-plugins-2.4.0.tar.gz
 ```
 
-move it into **tools** package
+将其移动到 **tools** 包中
 
 ```
 houbinbindeMacBook-Pro:Downloads houbinbin$ ls | grep -i logstash
@@ -56,10 +47,9 @@ logstash-all-plugins-2.4.0.tar.gz
 houbinbindeMacBook-Pro:Downloads houbinbin$ mv logstash-2.4.0 ~/it/tools/logstash
 ```
 
-- Config
+## 配置
 
-Prepare config file ```logstash.conf```
-
+准备配置文件 ```logstash.conf```
 
 ```
 houbinbindeMacBook-Pro:Downloads houbinbin$ cd ~/it/tools/logstash/
@@ -74,13 +64,13 @@ houbinbindeMacBook-Pro:config houbinbin$ ls
 logstash.conf
 ```
 
-[Edit](http://www.jianshu.com/p/4e1d34adb83b) it's content like this for test:
+[编辑](http://www.jianshu.com/p/4e1d34adb83b) 其内容如下以进行测试：
 
-```
+```conf
 input {
       stdin{}
 }
-# filter is optional
+# 过滤器是可选的
 #filter {
 #}
 output {
@@ -90,7 +80,7 @@ output {
 }
 ```
 
-- Run
+## 运行
 
 ```
 houbinbindeMacBook-Pro:logstash houbinbin$ bin/logstash -f conf/logstash.conf
@@ -98,9 +88,9 @@ Settings: Default pipeline workers: 8
 Pipeline main started
 ```
 
-Enter content ```testing``` in terminal to test:
+在终端中输入内容 ```testing``` 进行测试：
 
-```
+```conf
 testing
 {
        "message" => "testing",
@@ -110,48 +100,47 @@ testing
 }
 ```
 
-## Usage
+# 使用
 
-- Show plugin list
+## 显示插件列表
 
 ```
 $   bin/plugin list
-The use of bin/plugin is deprecated and will be removed in a feature release. Please use bin/logstash-plugin
+使用 bin/plugin 是不推荐的，并将在以后的版本中移除。请使用 bin/logstash-plugin
 
 houbinbindeMacBook-Pro:logstash houbinbin$ bin/logstash-plugin
 Usage:
     bin/logstash-plugin [OPTIONS] SUBCOMMAND [ARG] ...
 
 Parameters:
-    SUBCOMMAND                    subcommand
-    [ARG] ...                     subcommand arguments
+    SUBCOMMAND                    子命令
+    [ARG] ...                     子命令参数
 
 Subcommands:
-    install                       Install a plugin
-    uninstall                     Uninstall a plugin
-    update                        Update a plugin
-    pack                          Package currently installed plugins
-    unpack                        Unpack packaged plugins
-    list                          List all installed plugins
-    generate                      Create the foundation for a new plugin.
+    install                       安装插件
+    uninstall                     卸载插件
+    update                        更新插件
+    pack                          打包当前已安装的插件
+    unpack                        解压已打包的插件
+    list                          列出所有已安装的插件
+    generate                      为新插件创建基础。
 ```
 
-So, we can use ```bin/logstash-plugin list``` to show plugin list.
+因此，我们可以使用 ```bin/logstash-plugin list``` 来显示插件列表。
 
-<label class="label label-warning">Attention</label>
+注意：默认情况下，它有一个名为 ```logstash-input-log4j``` 的插件，它是用于 **log4j** 而不是 **log4j2**
 
-Default, it has plugin named ```logstash-input-log4j```, it's for **log4j**, not **log4j2**
+## 安装
 
-- Install [plugin for log4j2](https://github.com/jurmous/logstash-log4j2)
+- 安装 [log4j2 的插件](https://github.com/jurmous/logstash-log4j2)
 
-<label class="label label-warning">Attention</label>
+注意: 
 
-1、It's a pity that this plugin only support logstatsh version (1.5+, 2.1]
+1、遗憾的是，此插件仅支持 logstash 版本 (1.5+, 2.1]
 
-2、Before you install this plugin, you should **start logstash** first
+2、在安装此插件之前，您应该**先启动 logstash**
 
-
-> start logstash
+> 启动 logstash
 
 ```
 houbinbindeMacBook-Pro:logstash houbinbin$ bin/logstash -f conf/logstash.conf
@@ -159,7 +148,7 @@ Settings: Default pipeline workers: 8
 Pipeline main started
 ```
 
-> install
+> 安装
 
 ```
 houbinbindeMacBook-Pro:logstash houbinbin$ bin/logstash-plugin install logstash-input-log4j2
@@ -180,25 +169,25 @@ LogStash::GemfileError: duplicate gem logstash-filter-date
           (root) at /Users/houbinbin/it/tools/logstash/lib/pluginmanager/main.rb:43
 ```
 
-En, that's a question... It seems we should go another way ==!
+嗯，这是个问题... 似乎我们应该另辟蹊径 ==!
 
-# Build Log Sys
+# 构建日志系统
 
-> [ELK Blog zh_CN](https://my.oschina.net/itblog/blog/547250)
+> [ELK 博客中文](https://my.oschina.net/itblog/blog/547250)
 
-> [Log4j2+ELK zh_CN](http://blog.csdn.net/zheng0518/article/details/50453215)
+> [Log4j2+ELK 中文](http://blog.csdn.net/zheng0518/article/details/50453215)
 
-We want to build log system use [log4j2](http://logging.apache.org/log4j/2.x) with ELK(ElasticSearch+Logstash+Kibana)
+我们想要使用 [log4j2](http://logging.apache.org/log4j/2.x) 和 ELK(ElasticSearch+Logstash+Kibana) 构建日志系统。
 
-## Log4j2
+## Log4j2 配置
 
 - ```log4j2.xml```
 
-The whole project demo is [here](https://github.com/houbb/log4j2.git)
+整个项目演示在 [这里](https://github.com/houbb/log4j2.git)
 
-The info about [SocketAppender](http://logging.apache.org/log4j/2.x/manual/appenders.html#SocketAppender)
+关于 [SocketAppender](http://logging.apache.org/log4j/2.x/manual/appenders.html#SocketAppender) 的信息
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Appenders>
@@ -219,9 +208,11 @@ The info about [SocketAppender](http://logging.apache.org/log4j/2.x/manual/appen
 </Configuration>
 ```
 
+## java 代码
+
 - ```LogService.java```
 
-and the simple log as
+简单的日志：
 
 ```java
 public class LogService {
@@ -233,13 +224,11 @@ public class LogService {
 }
 ```
 
+## LogStatsh 处理
 
-## LogStatsh
+- 添加 ```micro_wiki.conf```
 
-
-- add ```micro_wiki.conf```
-
-```
+```conf
 input {
   tcp {
     host => "0.0.0.0"
@@ -260,7 +249,9 @@ output {
 }
 ```
 
-- run logstash
+## 运行
+
+- 运行 Logstash
 
 ```
 houbinbindeMacBook-Pro:logstash-2.4.0 houbinbin$ bin/logstash -f conf/micro_wiki.conf
@@ -268,7 +259,7 @@ Settings: Default pipeline workers: 8
 Pipeline main started
 ```
 
-- run java
+- 运行 Java
 
 ```
 {
@@ -282,13 +273,11 @@ Pipeline main started
 }
 ```
 
-
-
 ## ElasticSearch
 
-- Edit the ```micro_wiki.conf```
+- 编辑 ```micro_wiki.conf```
 
-In order to let the logger of **Logstash** trans into **ElasticSearch**, we edit the ```micro_wiki.conf``` of **Logstash**, like this:
+为了让 **Logstash** 的日志传输到 **ElasticSearch**，我们编辑 **Logstash** 的 ```micro_wiki.conf```，如下所示：
 
 ```
 input {
@@ -318,7 +307,7 @@ output {
 }
 ```
 
-After edit this, we should **restart logstash**, you may meet error like
+编辑完成后，我们应该**重新启动 logstash**，您可能会遇到如下错误：
 
 ```
 Could not start TCP server: Address in use {:host=>"0.0.0.0", :port=>7000, :level=>:error}
@@ -333,7 +322,7 @@ Pipeline aborted due to error {:exception=>"Errno::EADDRINUSE", :backtrace=>["or
 :level=>:error}
 ```
 
-use command ```lsof -n -P| grep 7000```
+使用命令 ```lsof -n -P| grep 7000```
 
 ```
 idea      4138 houbinbin  txt      REG                1,4   1257000  100928 /Library/Fonts/Copperplate.ttc
@@ -341,12 +330,11 @@ Google    4142 houbinbin  txt      REG                1,4   1257000  100928 /Lib
 java      6699 houbinbin    9u    IPv6 0xf1b9bfa3b241e019       0t0     TCP *:7000 (LISTEN)
 ```
 
-use command ```sudo kill -9 id``` to kill it.
+使用命令 ```sudo kill -9 id``` 来终止它。
 
-Last, start logstash ```bin/logstash -f conf/micro_wiki.conf ```
+最后，启动 logstash ```bin/logstash -f conf/micro_wiki.conf ```
 
-
-- Edit the ```elasticsearch.yml```
+- 编辑 ```elasticsearch.yml```
 
 ```
 cluster.name: MicroWiki-Cluster
@@ -355,21 +343,20 @@ network.host: 127.0.0.1
 http.port: 9200
 ```
 
-- Run elasticsearch
+- 运行 Elasticsearch
 
-Use ```bin/elasticsearch -d``` Starts Elasticsearch in the background
+使用 ```bin/elasticsearch -d``` 在后台启动 Elasticsearch
 
 
-
-- Run java and use elasticsearch to search
+- 运行 Java 并使用 Elasticsearch 进行搜索
 
 ```java
-LOGGER.info("log test with 2016-10-16 17:06:02...");
+LOGGER.info("日志测试，时间为 2016-10-16 17:06:02...");
 ```
 
-Enter ```http://localhost:9200/microwiki-2016.10.16/_search``` in browser, and get:
+在浏览器中输入 [http://localhost:9200/microwiki-2016.10.16/_search](http://localhost:9200/microwiki-2016.10.16/_search)，并获取：
 
-```
+```json
 {
     "took":21,
     "timed_out":false,
@@ -404,31 +391,31 @@ Enter ```http://localhost:9200/microwiki-2016.10.16/_search``` in browser, and g
 
 ## Kibana
 
-- Edit ```kibana.yml```
+### 编辑 ```kibana.yml```
 
-Connect kibana with elasticsearch.
+将 Kibana 连接到 Elasticsearch。
 
-```
-# Kibana is served by a back end server. This controls which port to use.
+```yml
+# Kibana由后端服务器提供服务。这控制要使用的端口。
 # server.port: 5601
 server.port: 5601
 
-# The host to bind the server to.
+# 绑定服务器的主机。
 # server.host: "0.0.0.0"
 server.host: 127.0.0.1
 
-# If you are running kibana behind a proxy, and want to mount it at a path,
-# specify that path here. The basePath can't end in a slash.
+# 如果您正在运行Kibana在代理后面，并希望将其挂载在路径上，
+# 在这里指定该路径。basePath不能以斜杠结尾。
 # server.basePath: ""
 
-# The maximum payload size in bytes on incoming server requests.
+# 来自传入服务器请求的最大有效负载大小（以字节为单位）。
 # server.maxPayloadBytes: 1048576
 
-# The Elasticsearch instance to use for all your queries.
+# 用于所有查询的Elasticsearch实例。
 elasticsearch.url: "http://localhost:9200"
 ```
 
-- Run
+### Run
 
 ```
   houbinbindeMacBook-Pro:kibana houbinbin$ bin/kibana
@@ -446,16 +433,13 @@ elasticsearch.url: "http://localhost:9200"
   log   [17:15:13.332] [info][status][plugin:elasticsearch@1.0.0] Status changed from yellow to green - Kibana index ready
 ```
 
-- Visit
+### Visit
 
-Enter ```localhost:5601```, and add **index** like this:
-
-![add index](https://raw.githubusercontent.com/houbb/resource/master/img/kibana/2016-10-16-kibana-add-index.png)
+浏览器直接访问 [localhost:5601](localhost:5601)，可以看到首页。
 
 默认为 ```logstash-*```, 可以修改为 ```microwiki-*``` 即可。
 
 可关注是否有log4j2的插件,不用如此麻烦。
-
 
 # More
 
@@ -463,10 +447,5 @@ Enter ```localhost:5601```, and add **index** like this:
 
 > [logstash api zh_CN](http://kibana.logstash.es/content/logstash/)
 
-
-
-
-
-
-
-
+* any list
+{:toc}

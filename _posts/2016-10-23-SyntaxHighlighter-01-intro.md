@@ -1,22 +1,25 @@
 ---
 layout: post
-title: SyntaxHighlighter
+title: JavaScript 代码语法高亮器 SyntaxHighlighter-01-入门介绍 
 date:  2016-10-23 12:29:20 +0800
-categories: [Tools]
-tags: [code highlight, web]
-published: false
+categories: [Js]
+tags: [js, web]
+published: true
 ---
 
 # SyntaxHighlighter
 
-[SyntaxHighlighter](http://alexgorbatchev.com/SyntaxHighlighter/) is a fully functional self-contained code syntax highlighter developed in JavaScript.
-To get an idea of what SyntaxHighlighter is capable of, have a look at the demo page.
+[SyntaxHighlighter](http://alexgorbatchev.com/SyntaxHighlighter/) 是一个完全功能齐全的自包含的 JavaScript 代码语法高亮器。
+
+要了解 SyntaxHighlighter 的功能，请查看演示页面。
 
 # Hello World
 
-- [Download](- [Download]()http://alexgorbatchev.com/SyntaxHighlighter/)
+## 下载
 
-- Import js/css
+- [下载](http://alexgorbatchev.com/SyntaxHighlighter/)
+
+## 导入 js/css
 
 ```html
 <link type="text/css" rel="stylesheet" href="styles/shCoreDefault.css"/>
@@ -24,9 +27,9 @@ To get an idea of what SyntaxHighlighter is capable of, have a look at the demo 
 <script type="text/javascript" src="scripts/shBrushJScript.js"></script>
 ```
 
-- Write code
+## 编写代码
 
-Write code like this:
+像这样编写代码：
 
 ```html
 <pre class="brush: js;">
@@ -39,24 +42,24 @@ function foo()
 </pre>
 ```
 
-- Use  SyntaxHighlighter
+## 使用  SyntaxHighlighter
 
-Add this js in your page:
+在你的页面中添加以下 js：
 
 ```js
 <script type="text/javascript">SyntaxHighlighter.all();</script>
 ```
 
-then you can see:
+然后你可以看到：
 
-<sh class="js">
+```js
 function foo()
 {
     if (counter <= 10)
         return;
     // it works!
 }
-</sh>
+```
 
 * any list
 {:toc}

@@ -1,11 +1,10 @@
 ---
 layout: post
-title: linux sudo 使用 root 权限执行
+title: linux sudo 使用 root 权限执行 linux chmod 权限赋值
 date: 2018-12-21 11:28:06 +0800
 categories: [Linux]
 tags: [linux, shell, sh]
 published: true
-excerpt: linux chmod 权限赋值
 ---
 
 # chat

@@ -7,8 +7,7 @@ tags: [yaml]
 published: true
 ---
 
-* any list
-{:toc}
+
 
 # YAML
 
@@ -356,7 +355,8 @@ in js:
   Artile: { info: 'sth just like', name: 'ryo', age: 11 } }
 ```
 
-
+* any list
+{:toc}
 
 
 

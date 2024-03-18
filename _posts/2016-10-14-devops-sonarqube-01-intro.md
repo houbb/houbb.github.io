@@ -1,46 +1,44 @@
 ---
 layout: post
-title: SonarQube
+title: 代码质量管理 SonarQube-01-入门介绍
 date:  2016-10-14 10:15:54 +0800
 categories: [Devops]
 tags: [devops, qa, ci]
 published: true
 ---
 
-* any list
-{:toc}
 
-# SonarQube
 
-注意:
+# 拓展阅读
 
-- 新版要求jdk8+
+[test coverate-05-测试覆盖率 SonarQube 是一个综合性的代码质量管理平台，其中包含了对测试覆盖率的支持](https://houbb.github.io/2016/04/26/test-coverage-05-sonarqube)
 
-- 新版要求mysql5.6+
+[Docker learn-29-docker 安装 sonarQube with mysql](https://houbb.github.io/2019/12/18/docker-learn-29-install-devops-sonar)
 
-[SonarQube](http://www.sonarqube.org/) is an open platform to manage code quality. As such, it covers the 7 axes of code quality:
 
-![sonarQube](https://raw.githubusercontent.com/houbb/resource/master/img/code-review/2016-10-14-sonar-qube-7axes.png)
+# 是什么
 
-> [sonar zh_CN](http://www.ibm.com/developerworks/cn/java/j-lo-sonar/)
+[SonarQube](http://www.sonarqube.org/) 是一个开放平台，用于管理代码质量。
 
-# Install in Windows
+> [Sonar 中文资料](http://www.ibm.com/developerworks/cn/java/j-lo-sonar/)
 
-## Requirements
+# 在 Windows 安装 SonarQube
 
-确保 jdk/mysql 安装完成。
+## 要求
+
+确保已经安装了 JDK 和 MySQL。
 
 ## 下载
 
-- [Download](http://www.sonarqube.org/downloads/) the sonar
+- [下载](http://www.sonarqube.org/downloads/) SonarQube
 
-当前测试版为 **6.7.1**
+当前版本为 **6.7.1**
 
-## 运行 
+## 运行
 
-约定：`${BASE_DIR}` 为： `D:\Learn\sonar\sonarqube-6.7.1` (本地解压路径)
+假定 `${BASE_DIR}` 为 `D:\Learn\sonar\sonarqube-6.7.1`（本地解压路径）
 
-- Run the ```StartSonar.bat``` under **${BASE_DIR}\bin\windows-x86-64**
+- 运行 `${BASE_DIR}\bin\windows-x86-64` 目录下的 ```StartSonar.bat```
 
 ```
 wrapper  | --> Wrapper Started as Console
@@ -60,20 +58,20 @@ jvm 1    |                   application.
 wrapper  | <-- Wrapper Stopped
 ```
 
-My sonarqube version is **6.7.1**, so we should know what we need:
+我的 SonarQube 版本是 **6.7.1**，所以我们需要知道我们需要什么：
 
-> [Requirements](http://docs.sonarqube.org/display/SONAR/Requirements)
+> [要求](http://docs.sonarqube.org/display/SONAR/Requirements)
 
-- JDK1.8 or higher
+- JDK1.8 或更高版本
 
-[Download](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) and config ```jdk1.8``` for sonar.
+[下载](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html) 并为 Sonar 配置 ```jdk1.8```。
 
 
 ## 配置
 
 ### JDK 配置
 
-You can correctly config the ```jdk1.8``` environment, or directly set the java path in `${BASE_DIR}\conf\wrapper.conf`
+你可以正确配置 ```jdk1.8``` 环境，或者直接在 `${BASE_DIR}\conf\wrapper.conf` 文件中设置 java 路径：
 
 ```
 # Path to JVM executable. By default it must be available in PATH.
@@ -84,17 +82,17 @@ wrapper.java.command=D:\Program Files\Java\jdk1.8.0_102\bin\java.exe
 
 ### 数据库配置
 
-- mysql-connector
+- MySQL 驱动
 
-复制 `mysql-connector-java-5.1.38.jar` 到：
+将 `mysql-connector-java-5.1.38.jar` 复制到：
 
 ```
 ${BASE_DIR}/extensions/jdbc-driver/mysql
 ```
 
-- edit ```~/conf/sonar.properties```
+- 编辑 ```~/conf/sonar.properties```
 
-在 mysql 中创建数据库 `sonar`，用于存储信息。
+在 MySQL 中创建数据库 `sonar`，用于存储信息。
 
 ```
 # Comment the following lines to deactivate the default embedded database.
@@ -114,10 +112,9 @@ sonar.jdbc.username=root
 sonar.jdbc.password=123456
 ```
 
-
 ## 重启服务
 
-and restart ```StartSonar.bat```
+重启，执行脚本 ```StartSonar.bat```
 
 ```
 wrapper  | --> Wrapper Started as Console
@@ -134,20 +131,15 @@ jvm 1    | 2016.10.14 11:51:32 INFO  app[][o.s.p.m.JavaProcessLauncher] Launch p
 jvm 1    | 2016.10.14 11:51:38 INFO  app[][o.s.p.m.Monitor] Process[ce] is up
 ```
 
-> Visit 
+## 访问
 
-Credentials are ```admin/admin```
+浏览器直接访问 [localhost:9000](localhost:9000)
 
-```
-localhost:9000
-```
+默认的账户密码为 ```admin/admin```
 
-![index](https://raw.githubusercontent.com/houbb/resource/master/img/code-review/2016-10-14-sonar-index.png)
+## 关闭
 
-> Shut down
-
-Use ```Ctrl+c``` in bat command.
-
+在命令行中使用 ```Ctrl+c```。
 
 ## 测试
 
@@ -193,9 +185,9 @@ D:\CODE\_OTHER\netty>mvn sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dso
 根据提示，访问[http://localhost:9000/dashboard/index/com.ryo:netty](http://localhost:9000/dashboard/index/com.ryo:netty) 即可看到对应的 QA 结果。
 
 
-# Install in Mac
+# 在Mac上安装
 
-- jdk version
+- JDK版本
 
 ```
 houbinbindeMacBook-Pro:shell houbinbin$ java -version
@@ -204,9 +196,9 @@ Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
 Java HotSpot(TM) 64-Bit Server VM (build 25.91-b14, mixed mode)
 ```
 
-## Sonarqube
+## SonarQube
 
-- [Download sonarqube](http://www.sonarqube.org/downloads/) and start
+- [下载SonarQube](http://www.sonarqube.org/downloads/)并启动
 
 ```
 houbinbindeMacBook-Pro:macosx-universal-64 houbinbin$ pwd
@@ -220,28 +212,29 @@ Starting SonarQube...
 Started SonarQube.
 ```
 
-## Config mysql
+## 配置MySQL
 
-- create user **sonar** in mysql
+- 在MySQL中创建用户**sonar**
 
 ```
 CREATE USER sonar IDENTIFIED BY 'sonar';
 
 GRANT ALL PRIVILEGES ON *.* TO 'sonar'@'localhost' IDENTIFIED BY 'sonar' WITH GRANT OPTION;
 ```
-- create database **sonar**
+
+- 创建数据库**sonar**
 
 ```
 CREATE DATABASE sonar CHARACTER SET utf8 COLLATE utf8_general_ci;
 ```
 
-- copy ```mysql-connector-java-5.1.38.jar``` into:
+- 将```mysql-connector-java-5.1.38.jar```复制到：
 
 ```
 /Users/houbinbin/it/tools/sonar/sonarqube-6.1/extensions/jdbc-driver/mysql
 ```
 
-- edit ```~/conf/sonar.properties```
+- 编辑```~/conf/sonar.properties```
 
 ```
 # Comment the following lines to deactivate the default embedded database.
@@ -261,7 +254,7 @@ sonar.jdbc.username=sonar
 sonar.jdbc.password=sonar
 ```
 
-- restart
+- 重新启动
 
 ```
 houbinbindeMacBook-Pro:macosx-universal-64 houbinbin$ ./sonar.sh restart
@@ -272,21 +265,19 @@ Starting SonarQube...
 Started SonarQube.
 ```
 
-> Set sonar to chinese
+> 将Sonar设置为中文
 
-1. Admin Login, search ```Chinese Pack``` in [Update Center](http://localhost:9000/updatecenter/available), install and restart
+1. 管理员登录，搜索```Chinese Pack```，并在[Update Center](http://localhost:9000/updatecenter/available)中安装并重启。
 
-2. download ```http://repository.codehaus.org/org/codehaus/sonar-plugins/l10n/sonar-l10n-zh-plugin/1.6/sonar-l10n-zh-plugin-1.6.jar```,
-into ```$SONAR_HOME/extensions/plugins``` and restart.
+2. 下载```http://repository.codehaus.org/org/codehaus/sonar-plugins/l10n/sonar-l10n-zh-plugin/1.6/sonar-l10n-zh-plugin-1.6.jar```，放入```$SONAR_HOME/extensions/plugins```目录，并重新启动。
 
+## 使用 Maven 配合 Sonar
 
-## Use sonar with maven
+> [使用 Maven 进行 Sonar 分析](http://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Maven)
 
-> [sonar with maven](http://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner+for+Maven)
+- 添加到 Maven 的 ```settings.xml``` 中
 
-- add into ```settings.xml``` of maven
-
-```
+```xml
 <settings>
     <pluginGroups>
         <pluginGroup>org.sonarsource.scanner.maven</pluginGroup>
@@ -298,7 +289,7 @@ into ```$SONAR_HOME/extensions/plugins``` and restart.
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
-                <!-- Optional URL to server. Default value is http://localhost:9000 -->
+                <!-- Sonar 服务器的可选 URL，默认值为 http://localhost:9000 -->
                 <sonar.host.url>
                   http://localhost:9000
                 </sonar.host.url>
@@ -308,9 +299,9 @@ into ```$SONAR_HOME/extensions/plugins``` and restart.
 </settings>
 ```
 
-- add into ```pom.xml``` of project
+- 添加到项目的 ```pom.xml``` 中
 
-```
+```xml
 <build>
     <pluginManagement>
         <plugins>
@@ -330,21 +321,20 @@ into ```$SONAR_HOME/extensions/plugins``` and restart.
 </build>
 ```
 
+备注：排除对 JavaScript 的校验，指定属性值。
 
-ps:  排除对 js 的校验，指定属性值。
-
-````
-<!--sonar-->
+```xml
+<!-- Sonar -->
 <sonar.exclusions>**/*.js</sonar.exclusions>
-````
+```
 
-- run
+- 运行
 
 ```
 mvn clean sonar:sonar
 ```
 
-result:
+结果：
 
 ```
 houbinbindeMacBook-Pro:git-demo houbinbin$ mvn sonar:sonar
@@ -413,7 +403,7 @@ houbinbindeMacBook-Pro:git-demo houbinbin$ mvn sonar:sonar
 [INFO] ------------------------------------------------------------------------
 ```
 
-from the log
+可以看到警告日志
 
 ```
 [WARNING] Property 'sonar.jdbc.url' is not supported any more. It will be ignored. There is no longer any DB connection to the SQ database.
@@ -421,21 +411,21 @@ from the log
 [WARNING] Property 'sonar.jdbc.password' is not supported any more. It will be ignored. There is no longer any DB connection to the SQ database.
 ```
 
-We can know it's no need set in these ```sonar.properties```
+我们可以知道在这些 ```sonar.properties``` 中不需要设置。
 
-Visit ```http://localhost:9000/dashboard/index/com.ryo:git-demo```, you can see
+访问 ```http://localhost:9000/dashboard/index/com.ryo:git-demo```, 您可以看到
 
 ![sonar analyse](https://raw.githubusercontent.com/houbb/resource/master/img/code-review/2016-10-14-sonar-analyse.png)
 
-# Narrowing the Focus
+# 缩小焦点
 
-- use ```//NOSAONAR``` to ignore one line
+- 使用 ```//NOSAONAR``` 来忽略一行
 
-- use this to ignore all **js** files.
+- 使用这个来忽略所有 **js** 文件。
 
-```
+```xml
 </properties>
-    <!--sonar-->
+    <!-- Sonar -->
     <sonar.exclusions>**/*.js</sonar.exclusions>
 </properties>
 ```
@@ -466,15 +456,10 @@ roject with sonar.java.binaries property -> [Help 1]
 mvn clean install sonar:sonar
 ```
 
-# Use
-
-- Chinese pack
-
-![chinese pack](https://raw.githubusercontent.com/houbb/resource/master/img/tools/sonar/2016-11-13-sonar-chinese-pack.png)
-
 
 # QA 工具
 
 idea 中可以安裝 [SonarLint]() 和 [Alibaba]() 來提升代碼質量。
 
-
+* any list
+{:toc}
