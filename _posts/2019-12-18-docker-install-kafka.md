@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Docker 安装 Kafka
-date:  2018-09-17 13:43:16 +0800
-categories: [JMS]
+date:  2019-12-18 11:34:23 +0800
+categories: [Docker]
 tags: [java, docker, kafka, mq, sh]
 published: true
 ---

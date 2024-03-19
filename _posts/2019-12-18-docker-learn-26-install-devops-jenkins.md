@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Docker learn-26-docker 安装 jenkins
-date:  2019-12-18 10:50:21 +0800
-categories: [Devpos]
+date:  2019-12-18 11:34:23 +0800
+categories: [Docker]
 tags: [docker, devops, in-action, sh]
 published: true
 ---

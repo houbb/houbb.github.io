@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Docker 快速入门学习
-date: 2019-1-16 09:42:23 +0800
-categories: [DevOps]
+date:  2019-12-18 11:34:23 +0800
+categories: [Docker]
 tags: [docker, devops, sh]
 published: true
 ---

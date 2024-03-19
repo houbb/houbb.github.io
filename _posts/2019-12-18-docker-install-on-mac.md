@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Docker 在 Mac 环境安装教程
-date:  2016-10-15 22:41:45 +0800
-categories: [Devops]
+date:  2019-12-18 11:34:23 +0800
+categories: [Docker]
 tags: [docker, devops, ci, sh]
 published: true
 ---

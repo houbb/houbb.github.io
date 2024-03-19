@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Docker learn-24-docker 实战之静态网站
-date:  2019-12-18 10:50:21 +0800
-categories: [Devpos]
+date:  2019-12-18 11:34:23 +0800
+categories: [Docker]
 tags: [docker, windows, devops, in-action, sh]
 published: true
 ---

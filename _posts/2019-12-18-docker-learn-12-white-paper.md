@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Docker learn-12-入门白皮书
-date:  2019-12-18 10:50:21 +0800
-categories: [Devpos]
+date:  2019-12-18 11:34:23 +0800
+categories: [Docker]
 tags: [docker, windows, devops, sh]
 published: true
 ---

@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  Docker learn-05-Docker 简介与 Docker Cloud
-date:  2019-12-18 10:50:21 +0800
-categories: [Devpos]
+date:  2019-12-18 11:34:23 +0800
+categories: [Docker]
 tags: [devops, docker, learn-note, cloud, sh]
 published: true
 ---

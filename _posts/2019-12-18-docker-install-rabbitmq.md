@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Docker install RabbitMQ 教程笔记
-date:  2018-09-17 13:43:16 +0800
-categories: [MQ]
+date:  2019-12-18 11:34:23 +0800
+categories: [Docker]
 tags: [java, docker, middle-ware, amqp, mq, sh]
 published: true
 ---

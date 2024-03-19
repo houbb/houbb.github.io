@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Docker learn-14-为什么选择 go 语言实现 docker
-date:  2019-12-18 10:50:21 +0800
-categories: [Devpos]
+date:  2019-12-18 11:34:23 +0800
+categories: [Docker]
 tags: [docker, windows, devops, go-lang, sh]
 published: true
 ---
