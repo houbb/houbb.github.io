@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 马斯克开源的 grok 大模型对标 openai chatGPT 源码硬核篇（上）
+title: 马斯克开源的 grok-1 大模型对标 openai chatGPT 源码硬核篇（上）
 date: 2024-03-20 21:01:55 +0800
 categories: [AI]
 tags: [ai, sh]
@@ -421,11 +421,6 @@ def restore(
         state = state.params  # 如果仅返回参数，则返回状态的参数部分
     return state  # 返回状态
 ``` 
-
-## runners.py
-
-
-
 
 
 # 参考资料
