@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 马斯克开源的 grok 大模型对标 openai chatGPT 源码硬核篇（中） runners.py
+title: 马斯克开源的 grok-1 大模型对标 openai chatGPT 源码硬核篇（2） runners.py
 date: 2024-03-20 21:01:55 +0800
 categories: [AI]
 tags: [ai, sh]
@@ -911,12 +911,9 @@ def sample_from_model(server, prompt, max_len, temperature):
     return server.send(inp)  # 发送请求并接收生成的文本输出
 ```
 
-以上是给定的Python代码的中文注释。第一个函数用于创建分布式Mesh对象，而第二个函数用于从模型中采样生成文本。
+以上是给定的Python代码的中文注释。
 
-
-
-
-
+第一个函数用于创建分布式Mesh对象，而第二个函数用于从模型中采样生成文本。
 
 # 参考资料
 
