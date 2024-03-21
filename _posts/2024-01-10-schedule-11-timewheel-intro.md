@@ -52,6 +52,126 @@ published: true
 
 时间轮算法是一种常见且有效的定时任务管理算法，尤其适用于处理大量定时任务的场景，如网络通信中的超时处理、操作系统中的任务调度等。
 
+## java 的简单实现
+
+以下是一个简单的Java实现时间轮算法的示例：
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+public class TimeWheel {
+
+    private final int slots; // 时间槽数量
+    private final int interval; // 时间间隔
+    private final List<List<TimerTask>> wheel; // 时间轮数组
+    private int currentSlot; // 当前时间槽
+
+    public TimeWheel(int slots, int interval) {
+        this.slots = slots;
+        this.interval = interval;
+        this.wheel = new ArrayList<>(slots);
+        this.currentSlot = 0;
+
+        // 初始化时间轮
+        for (int i = 0; i < slots; i++) {
+            wheel.add(new ArrayList<>());
+        }
+    }
+
+    // 添加定时任务
+    public void addTask(TimerTask task, int delay) {
+        int slot = (currentSlot + delay / interval) % slots;
+        wheel.get(slot).add(task);
+    }
+
+    // 启动时间轮
+    public void start() {
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                List<TimerTask> tasks = wheel.get(currentSlot);
+                for (TimerTask task : tasks) {
+                    task.run();
+                }
+                tasks.clear(); // 清空当前时间槽的任务列表
+                currentSlot = (currentSlot + 1) % slots; // 移动到下一个时间槽
+            }
+        }, 0, interval);
+    }
+
+    // 示例：定时任务
+    public static class ExampleTask extends TimerTask {
+        @Override
+        public void run() {
+            System.out.println("ExampleTask executed at " + System.currentTimeMillis());
+        }
+    }
+
+    // 测试
+    public static void main(String[] args) {
+        int slots = 10;
+        int interval = 1000; // 每个时间槽的时间间隔为1秒
+        TimeWheel timeWheel = new TimeWheel(slots, interval);
+
+        // 添加定时任务
+        for (int i = 0; i < 5; i++) {
+            timeWheel.addTask(new ExampleTask(), i * 2000); // 每个任务延迟执行2秒
+        }
+
+        // 启动时间轮
+        timeWheel.start();
+    }
+}
+```
+
+这是一个简单的时间轮实现，通过`Timer`来模拟时间轮的运转，每隔一定时间（时间间隔）执行一次时间槽内的任务，并清空任务列表。添加任务时，根据延迟计算任务应该添加到哪个时间槽中。
+
+### slot 计算
+
+`int slot = (currentSlot + delay / interval) % slots;` 详细解释一下这一步。
+
+当我们要将一个定时任务添加到时间轮中时，我们需要确定它应该添加到哪个时间槽中。
+
+这个计算过程涉及到当前时间槽的位置（`currentSlot`）、任务的延迟时间（`delay`）以及时间槽的数量（`slots`）。
+
+首先，我们计算任务延迟所经过的时间槽数量。这可以通过 `delay / interval` 来实现，其中 `interval` 是每个时间槽的时间间隔。
+
+这个计算会告诉我们，延迟时间相当于多少个时间槽的间隔。
+
+接下来，我们将当前时间槽的位置 `currentSlot` 与计算得到的延迟经过的时间槽数量相加。这样就得到了任务实际应该添加到的位置。
+
+然而，由于时间轮是一个环形结构，因此我们需要取余操作来确保计算得到的位置在时间轮的范围内。这就是 `(currentSlot + delay / interval) % slots` 这部分的作用。
+
+总结起来，这一步骤的目的是根据当前时间槽的位置、任务的延迟时间以及时间槽的数量，确定任务应该被添加到时间轮中哪个具体的时间槽内。
+
+### 任务的时间比较大，slots 就要比较大才行？
+
+不然就会出现问题。
+
+假设 slots=10, interval=1，currentSlot=0。那么 delay=1 和 delay=11 的任务不就落在同一个 slot 了？
+
+是的，如果延迟时间较大，而时间槽的数量较少，那么就有可能出现多个任务落在同一个时间槽的情况，这会导致任务调度不准确。
+
+因此，确保时间槽的数量足够大以覆盖可能的最大延迟是很重要的。如果任务的延迟时间可以很大，那么确保 `slots` 的数量足够大是必要的。
+
+一般来说，选择合适的时间槽数量取决于应用场景和任务的特性。较大的时间槽数量会增加时间轮的内存消耗和维护成本，但可以提高任务调度的准确性。
+
+因此，在设计时间轮算法时，需要根据实际情况权衡时间槽的数量和任务延迟时间的范围。
+
+那么，我们的 slot 到底要多大才够呢？
+
+其实这里也有几种方式：
+
+1）无限扩充这个 slots 的大小
+
+2）当 slots 单个维度不够，引入多个维度来处理。
+
+3）单个 slot 存储数据信息，然后放入一个 list，任务在执行的时候，遍历这个 list，符合时间的才处理。
+
 ## 给出任务在增加/删除/修改时，时间轮中的处理逻辑详细描述。给出每一步的 java 伪代码+示意图
 
 下面是任务增加、删除和修改时时间轮中的处理逻辑的详细描述，以及每一步的 Java 伪代码和示意图：
