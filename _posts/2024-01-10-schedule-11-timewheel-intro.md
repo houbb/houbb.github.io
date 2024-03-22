@@ -172,6 +172,134 @@ public class TimeWheel {
 
 3）单个 slot 存储数据信息，然后放入一个 list，任务在执行的时候，遍历这个 list，符合时间的才处理。
 
+## 多维度时间轮
+
+### 介绍
+
+对于长时间范围的时间轮，单个维度会导致空间的浪费和效率低下。为了改进这一点，可以使用多维的时间轮，即将时间轮分解为多个维度，每个维度负责管理不同时间范围内的任务。这样可以有效地减少空间的浪费，并提高算法的效率。
+
+以下是多维时间轮的基本思想和实现方式：
+
+### 1. 多维时间轮的基本思想：
+
+多维时间轮通过将时间范围划分为多个不同粒度的维度，每个维度负责管理不同时间范围内的任务。
+
+例如，可以将时间轮分解为秒级、分钟级、小时级等不同的维度，每个维度中的时间槽数量根据时间范围的大小而不同。
+
+### 2. 数据结构：
+多维时间轮可以由一个多维数组构成，每个维度都是一个单独的时间轮。每个时间轮由一个环形数组和一个指针组成，与单维时间轮类似。整体上，多维时间轮形成了一个多维的环形结构。
+
+### 3. 执行流程：
+- 初始化：为每个维度创建一个时间轮，并初始化每个时间轮的环形数组和指针。
+- 添加任务：根据任务的触发时间将任务添加到相应的维度和时间槽中。
+- 时间流逝：随着时间的流逝，每个维度的时间轮不断地旋转，当前指针指向的时间槽中的任务被执行。
+- 任务删除：当任务完成或取消时，将其从相应维度的时间槽中移除。
+
+### 4. 动态调整：
+与单维时间轮类似，可以随时添加和删除任务，动态调整时间轮。
+
+### 5. 应用：
+多维时间轮适用于长时间范围内的定时任务调度，可以有效地减少空间的浪费，并提高调度算法的效率。
+
+### 6. 算法复杂度：
+多维时间轮的时间复杂度和空间复杂度取决于时间轮的维度和每个维度的时间槽数量，通常为 O(n^d)，其中 n 是每个维度的时间槽数量，d 是维度数量。
+
+通过使用多维时间轮，可以更有效地管理长时间范围内的定时任务，减少空间浪费，提高算法的效率。
+
+### java 实现
+
+你可以使用更直观的数据结构来表示多维时间轮，例如使用嵌套的列表或者数组。以下是使用嵌套列表的示例：
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+import java.util.TimerTask;
+
+public class MultiDimensionalTimeWheel {
+    private final int[] sizes;  // 每个维度的时间槽数量
+    private final List<List<List<TimerTask>>> wheels;  // 多维时间轮列表
+    private final int[] currentSlots;  // 每个维度当前指针指向的时间槽
+
+    public MultiDimensionalTimeWheel(int[] sizes) {
+        this.sizes = sizes;
+        wheels = new ArrayList<>(sizes.length);
+        currentSlots = new int[sizes.length];
+
+        // 初始化每个维度的时间轮
+        for (int i = 0; i < sizes.length; i++) {
+            List<List<TimerTask>> dimension = new ArrayList<>(sizes[i]);
+            for (int j = 0; j < sizes[i]; j++) {
+                dimension.add(new ArrayList<>());
+            }
+            wheels.add(dimension);
+            currentSlots[i] = 0;
+        }
+    }
+
+    // 添加任务到指定维度的时间槽
+    public void addTask(TimerTask task, int[] delayInSeconds) {
+        for (int i = 0; i < sizes.length; i++) {
+            int targetSlot = (currentSlots[i] + delayInSeconds[i]) % sizes[i];
+            wheels.get(i).get(targetSlot).add(task);
+        }
+    }
+
+    // 时间流逝，执行当前时间槽中的任务，并将指针向前移动
+    public void elapseTime() {
+        for (int i = 0; i < sizes.length; i++) {
+            List<TimerTask> currentTasks = wheels.get(i).get(currentSlots[i]);
+            for (TimerTask task : currentTasks) {
+                task.run();
+            }
+            currentTasks.clear();
+            currentSlots[i] = (currentSlots[i] + 1) % sizes[i];
+        }
+    }
+
+    public static void main(String[] args) {
+        // 创建一个三维时间轮，第一维代表小时，第二维代表分钟，第三维代表秒
+        int[] sizes = {24, 60, 60};
+        MultiDimensionalTimeWheel timeWheel = new MultiDimensionalTimeWheel(sizes);
+
+        // 模拟添加一些任务到时间轮中
+        TimerTask task1 = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Task 1 executed");
+            }
+        };
+        int[] delay1 = {0, 1, 10}; // 1小时1分钟10秒后执行任务
+        timeWheel.addTask(task1, delay1);
+
+        TimerTask task2 = new TimerTask() {
+            @Override
+            public void run() {
+                System.out.println("Task 2 executed");
+            }
+        };
+        int[] delay2 = {1, 0, 0}; // 1小时后执行任务
+        timeWheel.addTask(task2, delay2);
+
+        // 模拟时间流逝，每秒执行一次
+        while (true) {
+            timeWheel.elapseTime();
+            try {
+                Thread.sleep(1000); // 模拟时间流逝
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+}
+```
+
+在这个实现中，我们使用了一个三维的列表 `List<List<List<TimerTask>>> wheels` 来表示多维时间轮。
+
+每个维度的时间轮都是一个嵌套的列表，其中第一维表示不同的时间维度，第二维表示不同的时间槽，第三维是存储在时间槽中的任务列表。
+
+----------------------------------------------------------------------------------------------------------------
+
+
 ## 给出任务在增加/删除/修改时，时间轮中的处理逻辑详细描述。给出每一步的 java 伪代码+示意图
 
 下面是任务增加、删除和修改时时间轮中的处理逻辑的详细描述，以及每一步的 Java 伪代码和示意图：
