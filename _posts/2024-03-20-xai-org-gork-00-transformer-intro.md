@@ -1,23 +1,109 @@
 ---
 layout: post
-title: 马斯克开源的 grok-1 大模型对标 openai chatGPT Transformer 模型到底是个啥？
+title: 马斯克开源的 grok-1 大模型底层 Transformer 模型到底是个啥？（翻译）
 date: 2024-03-20 21:01:55 +0800
 categories: [AI]
 tags: [ai, sh]
 published: true
 ---
 
-# GORK
-
-Grok是马斯克旗下xAI团队发布的首个AI大模型产品。
-
-2023年11月5日，马斯克旗下xAI团队发布其首个AI大模型产品——Grok。
-
-马斯克认为，相比较 OpenAI 的 ChatGPT、谷歌的 Bard 和微软的 Bing Chat，Grok 最大的不同是存在幽默感。
-
 # 前言
 
-网上的大部分内容都是浅尝辄止，本文老马和大家一起简单看一下马斯克这两天开源的 grok 到底有什么内容。
+由于老马个人一直是后端研发，虽然对 AI 神往已久，但是没有真正的踏入过这个领域。
+
+网上的资料也大都是喧嚣式的，并没有静下心来介绍这个 gork，其实看完也没啥收获。
+
+**临渊羡鱼，不如退而结网**。
+
+# Transformer：一种新颖的神经网络架构，用于语言理解
+
+时间：周四，2017年8月31日
+
+由Jakob Uszkoreit，软件工程师，自然语言理解发布
+
+神经网络，特别是循环神经网络（RNN），现在是领先的语言理解任务（如语言建模、机器翻译和问答）方法的核心。
+
+在“注意力就是一切”的论文中，我们介绍了Transformer，这是一种基于自注意力机制的新型神经网络架构，我们认为它特别适用于语言理解。
+
+在我们的论文中，我们展示了Transformer在学术英语到德语和英语到法语翻译基准上优于循环和卷积模型。
+
+除了更高的翻译质量外，Transformer 需要更少的计算量来训练，并且更适合现代机器学习硬件，训练速度提高了一个数量级。
+
+![pic](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjpqbd3hfbWZjsT8aoDZvL81Q6YYdGmI-pabqLxL2U6lt8p9WMaUJRr_hb3HoBtFVq3UiAYiWcW9nnTZFme7JeITFvni835wy-zoVlZWAqSMGtrlbQtp-_UdhlT2miOefdz7zSZ9qXjOXM/s1600/image4.png)
+
+BLEU scores (higher is better) of single models on the standard WMT newstest2014 English to German translation benchmark.
+
+![英文转换效果](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj3IklSD4GM4MiRIddV6KjZgy7ZJViMcBnXtdZJviwaDVezHJ6jTepdcipnIs2H8IshqxwzlxGAAGf4NS5XKNRRRQ199WVMuR6h9PzADihaeTvTAtiGbOujZ2nTvSbYCBm8FxDhh9YUiiY/s1600/image1.png)
+
+BLEU scores (higher is better) of single models on the standard WMT newstest2014 English to French translation benchmark.
+
+
+# 在语言理解中的准确性和效率
+
+神经网络通常通过生成固定或可变长度的向量空间表示来处理语言。
+
+在从单个单词或甚至单词部分开始，它们从周围的单词中聚合信息，以确定给定语言位的含义。例如，在句子“I arrived at the bank after crossing the…”中决定单词“bank”的最可能含义和适当表示，需要知道句子是否以“... road.”或“... river.”结尾。
+
+近年来，循环神经网络（RNNs）已成为翻译的典型网络架构，以从左到右或从右到左的方式顺序处理语言。逐字阅读，这迫使RNNs执行多个步骤来做出依赖于相距较远的单词的决策。在处理上述例子时，RNN只能逐步阅读“bank”和“river”之间的每个单词，然后确定“bank”很可能是指河岸。先前的研究表明，粗略地说，决策需要的步骤越多，循环网络学习如何做出这些决策就越困难。
+
+RNNs的顺序性也使其更难充分利用现代快速计算设备，如TPUs和GPUs，这些设备擅长并行而不是顺序处理。
+
+卷积神经网络（CNNs）比RNNs的顺序性要少得多，但在像ByteNet或ConvS2S这样的CNN架构中，将来自输入不同部分的信息组合所需的步骤数量仍然随着距离的增加而增加。
+
+
+# Transformer
+
+相比之下，Transformer仅执行少量的恒定步骤（经验选择）。
+
+在每一步中，它应用自注意力机制，直接建模句子中所有单词之间的关系，而不考虑它们各自的位置。在之前的例子中，“I arrived at the bank after crossing the river”，为了确定单词“bank”指的是河岸而不是金融机构，Transformer可以学习立即关注单词“river”，并在一步中做出这个决定。实际上，在我们的英法翻译模型中，我们观察到了这种行为。
+
+更具体地说，为了计算给定单词的下一个表示——例如“bank”，Transformer将其与句子中的每个其他单词进行比较。这些比较的结果是句子中每个其他单词的注意力分数。这些注意力分数决定了每个其他单词在“bank”的下一个表示中应该贡献多少。
+
+在这个例子中，消歧“river”在计算“bank”的新表示时可能会获得较高的注意力分数。然后，这些注意力分数被用作所有单词表示的加权平均值的权重，然后将其输入到一个全连接网络中，以生成“bank”的新表示，反映出句子是在谈论河岸。
+
+下面的动画演示了我们如何将Transformer应用于机器翻译。机器翻译的神经网络通常包含一个编码器，读取输入句子并生成其表示。然后，一个解码器逐词生成输出句子，同时参考编码器生成的表示。Transformer首先为每个单词生成初始表示或嵌入。这些由未填充的圆表示。
+
+然后，使用自注意力，它从所有其他单词中汇总信息，生成每个单词的新表示，该表示受整个上下文的影响，由填充的球表示。然后，这一步在并行进行多次，为所有单词逐步生成新的表示。
+
+
+![步骤](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj-omVGz1hSKFP4R7Imih4Eax1IzAEoLsnTw7zHT2enq7iHM8pNoFrkhiAXKFYJUkaBXw54KhSNAsZISj2o442fD9fCpbThW-k0aVjItuvxSdtmcGC56D3gk0w84enbdxVSmL6oJOnNmjU/s1600/transform20fps.gif)
+
+解码器的操作方式类似，但是逐字逐句从左到右生成。它不仅关注先前生成的其他单词，还关注编码器生成的最终表示。
+
+# 信息流 Flow of Information
+
+除了计算性能和更高的准确性之外，Transformer的另一个引人入胜的方面是，当处理或翻译给定单词时，我们可以可视化网络关注句子的其他部分，从而了解信息如何在网络中传递。
+
+为了说明这一点，我们选择了一个涉及机器翻译系统经常面临的挑战性现象的例子：指代消解。考虑以下句子及其法语翻译：
+
+![信息流](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhXvhPdQ4VURg-ewnYZM9UhZJQ8dnrDXo7uPaKr-nXMv0n-F_LqhLF5qwYTTkkVpmSZZNXnWKQoQRLjI3GUsdR2UOwMdCGJTo9EF7nX_VUZFqySJPgTFbGjY2tH3rjAleLsrg-zs7mvVrw/s400/Screen+Shot+2017-08-31+at+2.35.34+PM.png)
+
+大多数人都明显地认为，在第一对句子中，“it” 指的是动物，而在第二对句子中指的是街道。
+
+当将这些句子翻译成法语或德语时，“it”的翻译取决于它所指的名词的性别 - 在法语中，“animal”和“street”有不同的性别。与当前的谷歌翻译模型不同，Transformer将这两个句子都正确地翻译成了法语。将可视化表示编码器在计算单词“it”的最终表示时关注的单词，有助于了解网络是如何做出决定的。
+
+在其步骤中，Transformer清楚地确定了“it”可能指的两个名词及其关注的数量反映了其在不同上下文中的选择。
+
+![信息流](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiAyLptuLD0GmuDqwhfzS4_-R34L35TdOlrdUDx7cbKqJh2ksMnB-DoRY185B4SYZQhtxDjIg_hKhl4EPM9IrK3gg-QviRmtc46nz__ImjT41VQfWsYwIxr1e6VxZYz5b3W19lr1Drp8_A/s1600/image2.png)
+
+在英语到法语翻译训练的Transformer中，“it”这个词的编码器自注意力分布从第5到第6层（八个注意力头中的一个）。
+
+通过这个洞察力，Transformer在经典的语言分析任务——句法成分解析中也表现得非常出色，这是自然语言处理界几十年来一直专攻的任务。
+
+事实上，几乎没有进行多少调整，我们用于英语到德语翻译的同一网络在句法成分解析方面的表现超过了以往所有除一种之外的方法。
+
+# 下一步
+
+我们对Transformer的未来潜力感到非常兴奋，已经开始将其应用于其他问题，不仅涉及自然语言，还涉及非常不同的输入和输出，如图像和视频。我们正在进行的实验得到了Tensor2Tensor库的极大加速，我们最近将其开源。事实上，下载该库后，您只需调用几个命令即可训练自己的Transformer网络进行翻译和解析。我们希望您能尝试一下，并期待看到社区能用Transformer做出什么。
+
+# 致谢
+
+本研究由Ashish Vaswani、Noam Shazeer、Niki Parmar、Jakob Uszkoreit、Llion Jones、Aidan N. Gomez、Łukasz Kaiser和Illia Polosukhin进行。特别感谢David Chenell创建了上述动画。
+
+
+# 拓展阅读
+
+> [理解语言的 Transformer 模型](https://www.tensorflow.org/tutorials/text/transformer?hl=zh-cn)
 
 # chat
 
