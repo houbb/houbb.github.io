@@ -3,7 +3,7 @@ layout: post
 title:  DL4j-08-Deep Auto Encoder
 date:  2017-11-30 21:07:44 +0800
 categories: [Deep Learning]
-tags: [AI, DL, neural network]
+tags: [AI, DL, dl4j, neural network]
 header-img: "static/app/res/img/kon-bg.jpeg"
 published: true
 ---

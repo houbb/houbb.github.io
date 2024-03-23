@@ -3,7 +3,7 @@ layout: post
 title:  DL4j-09-De-Noise Encoder
 date:  2017-12-01 21:30:47 +0800
 categories: [Deep Learning]
-tags: [AI, DL, neural network]
+tags: [AI, DL, dl4j, neural network]
 header-img: "static/app/res/img/kon-bg.jpeg"
 published: true
 ---
