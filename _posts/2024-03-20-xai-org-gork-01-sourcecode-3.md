@@ -1,23 +1,23 @@
 ---
 layout: post
-title: 马斯克开源的 grok-1 大模型对标 openai chatGPT 源码硬核篇（3） model.py 上
+title: 马斯克开源的 grok-1 大模型对标 openai chatGPT 源码硬核篇（3）
 date: 2024-03-20 21:01:55 +0800
 categories: [AI]
 tags: [ai, sh]
 published: true
 ---
 
-# GORK
+# 拓展阅读
 
-Grok是马斯克旗下xAI团队发布的首个AI大模型产品。
+[马斯克开源的 grok-1 底层 Transformer 模型论文 《Attention is All You Need》](https://mp.weixin.qq.com/s/bZP2R97GUD1NxV22Tn7eOQ)
 
-2023年11月5日，马斯克旗下xAI团队发布其首个AI大模型产品——Grok。
-
-马斯克认为，相比较 OpenAI 的 ChatGPT、谷歌的 Bard 和微软的 Bing Chat，Grok 最大的不同是存在幽默感。
+[马斯克开源的 grok-1 大模型底层 Transformer 模型到底是个啥？](https://mp.weixin.qq.com/s/jvpovKSitioC7IQ8IWTumg)
 
 # 前言
 
 网上的大部分内容都是浅尝辄止，本文老马和大家一起简单看一下马斯克这两天开源的 grok 到底有什么内容。
+
+内容过于硬核，建议收藏转发​慢慢消化~
 
 # 代码
 
@@ -96,6 +96,7 @@ tree_util.register_pytree_node(
 
 
 ```python
+# 翻译：老马啸西风
 class TrainingState(NamedTuple):
     """训练状态的容器。"""
 
@@ -270,6 +271,7 @@ TOP_K = 8  # 常量，用于表示top-k的值
 
 
 ```python
+# 翻译：老马啸西风
 class KVMemory(NamedTuple):
     """表示键值内存的数据类。"""
 
