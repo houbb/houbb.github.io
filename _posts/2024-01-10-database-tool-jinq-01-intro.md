@@ -3,7 +3,7 @@ layout: post
 title: 数据库查询工具 jinq 入门介绍-java中编写数据库查询的简单自然的方式
 date: 2024-01-10 21:01:55 +0800
 categories: [Database]
-tags: [database, sql, apache, calcite, olap, sh]
+tags: [database, sql, orm, jdbc, sql-budiler, sh]
 published: true
 ---
 

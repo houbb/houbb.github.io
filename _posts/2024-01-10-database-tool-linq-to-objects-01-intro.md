@@ -3,7 +3,7 @@ layout: post
 title: 数据库查询工具 linq4j
 date: 2024-01-10 21:01:55 +0800
 categories: [Database]
-tags: [database, sql, apache, calcite, olap, sh]
+tags: [database, sql, orm, jdbc, sql-budiler, sh]
 published: true
 ---
 

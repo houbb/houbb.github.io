@@ -3,7 +3,7 @@ layout: post
 title: spring jdbctemplate 入门使用
 date: 2024-01-10 21:01:55 +0800
 categories: [Database]
-tags: [database, sql, spring, jdbc, sh]
+tags: [database, sql, orm, jdbc, sql-budiler, spring, sh]
 published: true
 ---
 
