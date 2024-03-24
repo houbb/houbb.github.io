@@ -1,6 +1,6 @@
 ---
 layout: post
-title: grovvy-01-overview 入门介绍 
+title: grovvy-01-overview 概览 
 date:  2023-05-09 +0800
 categories: [Lang]
 tags: [grovvy, lang, sh]
