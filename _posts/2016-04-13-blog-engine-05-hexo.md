@@ -4,7 +4,6 @@ title: blog-engine-05-博客引擎 Hexo 入门介绍+安装笔记
 date:   2016-04-13 23:20:27 +0800
 categories: [UI]
 tags: [hexo, blog, blog-engine]
-header-img: "static/app/res/img/kon-bg.jpeg"
 published: true
 ---
 

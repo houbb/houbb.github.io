@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Python-02-Python Windos 环境
+title:  Python-02-Python Windows 环境 windows install python 3.x
 date:  2018-02-14 15:09:30 +0800
 categories: [Lang]
 tags: [python, lang, sh]
