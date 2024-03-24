@@ -47,8 +47,69 @@ Jekyll 的设计理念是将文本内容与样式分离，以便更好地管理�
 Jekyll 提供了详细的文档，可以在官方网站（https://jekyllrb.com/）上找到。
 
 
+## 快速入门
 
+Jekyll是一个静态网站生成器。
 
+它接受您喜欢的标记语言编写的文本，并使用布局来创建静态网站。
+
+您可以调整网站的外观和感觉、URL、页面上显示的数据等等。
+
+## 先决条件
+
+- Ruby 版本 2.5.0 或更高，包括所有开发标头（使用 `ruby -v` 检查您的 Ruby 版本）
+
+- RubyGems（使用 `gem -v` 检查您的 Gems 版本）
+
+- GCC 和 Make（使用 `gcc -v`、`g++ -v` 和 `make -v` 检查版本）
+
+### 指令
+
+1. 安装所有先决条件。
+
+2. 安装 jekyll 和 bundler gems。
+
+    ```bash
+    gem install jekyll bundler
+    ```
+
+3. 在 ./myblog 创建一个新的 Jekyll 站点。
+
+    ```bash
+    jekyll new myblog
+    ```
+
+4. 切换到您的新目录。
+
+    ```bash
+    cd myblog
+    ```
+
+5. 构建站点并在本地服务器上提供访问。
+
+    ```bash
+    bundle exec jekyll serve
+    ```
+
+6. 浏览至 http://localhost:4000
+
+如果您使用的是 Ruby 版本 3.0.0 或更高版本，则第 5 步可能会失败。
+
+您可以通过将 webrick 添加到您的依赖项来解决此问题：
+```bash
+bundle add webrick
+```
+
+通过将 --livereload 选项传递给 serve，以便在对源文件进行更改时自动刷新页面：
+
+```bash
+bundle exec jekyll serve --livereload
+```
+如果在此过程中遇到任何错误，请检查是否已安装了所有先决条件。
+
+如果仍然有问题，请参见[Troubleshooting](https://jekyllrb.com/docs/troubleshooting/#configuration-problems)。
+
+根据您的操作系统不同，安装方式有所不同。请查看我们的指南以获取特定于操作系统的说明。
 
 
 * any list
