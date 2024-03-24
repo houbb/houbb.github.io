@@ -1,6 +1,6 @@
 ---
 layout: post
-title: linux telnet
+title: linux telnet 用来判断网络是否通
 date: 2018-12-20 17:21:25 +0800
 categories: [Linux]
 tags: [linux, net, shell, sh]
