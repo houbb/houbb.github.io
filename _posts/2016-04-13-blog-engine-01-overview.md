@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  blog-engine 博客引擎 有哪些？
+title:  blog-engine 常见的博客引擎有哪些？jekyll/hugo/Hexo/Pelican/Gatsby/VuePress/Nuxt.js/Middleman 对比
 date:   2016-04-13 23:20:27 +0800
 categories: [Github]
 tags: [jekyll, seo, github]
@@ -15,15 +15,33 @@ published: true
 
 [blog-engine-02-博客引擎jekyll-jekyll 博客引擎介绍](https://houbb.github.io/2016/04/13/blog-engine-03-jekyll-02-intro)
 
-[blog-engine-02-博客引擎jekyll-jekyll SEO](https://houbb.github.io/2016/04/13/blog-engine-03-jekyll-03-seo)
+[blog-engine-02-博客引擎jekyll-jekyll 如何在 windows 环境安装，官方文档](https://houbb.github.io/2016/04/13/blog-engine-03-jekyll-03-install-on-windows-doc)
+
+[blog-engine-02-博客引擎jekyll-jekyll SEO](https://houbb.github.io/2016/04/13/blog-engine-03-jekyll-04-seo)
 
 [blog-engine-04-博客引擎 hugo intro 入门介绍+安装笔记](https://houbb.github.io/2016/04/13/blog-engine-04-hugo-intro)
 
 [blog-engine-05-博客引擎 Hexo 入门介绍+安装笔记](https://houbb.github.io/2017/03/29/blog-engine-05-hexo)
 
-# chat
+[blog-engine-06-pelican 静态网站生成 官方文档](https://houbb.github.io/2016/04/13/blog-engine-06-pelican-01-intro)
 
-## 博客引擎有哪些？类似于 jekyll hugo hexo 
+[blog-engine-06-pelican 静态网站生成 windows 安装实战](https://houbb.github.io/2016/04/13/blog-engine-06-pelican-02-quick-start)
+
+[blog-engine-07-gatsby 建极速网站和应用程序 基于React的最佳框架，具备性能、可扩展性和安全性](https://houbb.github.io/2016/04/13/blog-engine-07-gatsby-01-intro)
+
+[blog-engine-08-vuepress 以 Markdown 为中心的静态网站生成器](https://houbb.github.io/2016/04/13/blog-engine-08-vuepress-01-intro)
+
+[blog-engine-09-nuxt 构建快速、SEO友好和可扩展的Web应用程序变得轻松](https://houbb.github.io/2016/04/13/blog-engine-09-nuxt-01-intro)
+
+[blog-engine-10-middleman 静态站点生成器，利用了现代 Web 开发中的所有快捷方式和工具](https://houbb.github.io/2016/04/13/blog-engine-10-middleman-01-intro)
+
+# 前言
+
+由于个人一直喜欢使用 markdown 来写 [个人博客](https://houbb.github.io/)，最近就整理了一下有哪些博客引擎。
+
+感兴趣的小伙伴也可以选择自己合适的。
+
+## 常见的博客引擎有哪些？
 
 除了 Jekyll、Hugo 和 Hexo，还有许多其他流行的博客引擎可供选择。
 
@@ -47,31 +65,7 @@ published: true
 
 这些博客引擎各有特点，你可以根据自己的需求和偏好选择最适合的。
 
-# 还有哪些类似的博客引擎？
-
-有许多类似的博客引擎可供选择，每个都有其独特的特点和适用场景。
-
-以下是一些类似于 Jekyll 的博客引擎：
-
-1. **Hugo：** Hugo 是一款用 Go 语言编写的静态网站生成器，与 Jekyll 类似，但更快速。它具有简单易用的语法和强大的主题系统。
-
-2. **Hexo：** Hexo 是一个基于 Node.js 的快速、简单的博客框架。它支持使用 Markdown 编写文章，并提供丰富的主题和插件系统。
-
-3. **Pelican：** Pelican 是一个用 Python 编写的静态网站生成器，类似于 Jekyll。它支持使用 reStructuredText 和 Markdown，并具有可扩展的插件系统。
-
-4. **Gatsby：** Gatsby 是一个 React 驱动的静态网站生成器，适用于构建高性能的博客和网站。它使用 GraphQL 查询语言来获取数据，支持各种数据源。
-
-5. **VuePress：** VuePress 是由 Vue.js 驱动的静态网站生成器，适用于编写文档和博客。它简单易用，同时支持使用 Markdown 编写内容。
-
-6. **Nuxt.js：** Nuxt.js 是基于 Vue.js 的通用应用框架，可以用于构建静态生成的博客。它提供了灵活的配置和插件系统。
-
-7. **Middleman：** Middleman 是一个基于 Ruby 的静态站点生成器，类似于 Jekyll。它支持多种模板语言和插件，适用于构建各种类型的静态网站。
-
-这只是其中一小部分博客引擎的代表，每个工具都有其独特的优势和适用场景。
-
-选择一个适合自己需求和技术栈的工具是很重要的，可以根据具体的项目要求和个人偏好进行选择。
-
-# 博客引擎的对比表格
+## 博客引擎的对比表格
 
 以下是一份对一些常见博客引擎的比较表格。
 
@@ -89,11 +83,53 @@ published: true
 | **适用场景**    | 个人博客、文档                             | 个人博客、文档                             | 个人博客                                  | 个人博客、文档                             | 博客、文档、应用官网                      | 文档、博客                               | 文档、博客                               | 小型网站、博客                            |
 
 
+# 小结
 
+以下是对各个博客引擎的简单总结：
+
+1. **Jekyll**：
+   - 静态网站生成器，使用 Ruby 编写。
+   - 简单易用，支持 Markdown 和 Liquid 模板语言。
+   - 社区活跃，有丰富的主题和插件可用。
+
+2. **Hugo**：
+   - 快速且高效的静态网站生成器，使用 Go 编写。
+   - 构建速度快，适合大型网站和博客。
+   - 支持 Markdown 和自定义模板，具有灵活的主题系统。
+
+3. **Hexo**：
+   - 快速的静态网站生成器，使用 Node.js 编写。
+   - 支持 Markdown，使用 EJS 模板语言。
+   - 插件丰富，可扩展性强。
+
+4. **WordPress**：
+   - 最流行的博客平台之一，使用 PHP 和 MySQL。
+   - 功能强大，支持插件和主题定制。
+   - 需要服务器支持，适合有一定技术基础的用户。
+
+5. **Ghost**：
+   - 简洁的博客平台，使用 Node.js 和 Ember.js。
+   - 提供良好的写作体验和编辑工具。
+   - 面向写作者和博客专业人士。
+
+6. **Pelican**：
+   - Python 编写的静态网站生成器。
+   - 使用简单，支持 Markdown 和 reStructuredText。
+   - 社区活跃，有各种插件可用。
+
+7. **Gatsby**：
+   - 基于 React 的静态网站生成器，使用 GraphQL 查询数据。
+   - 具有出色的性能和灵活性，支持 Markdown 和 React 组件。
+   - 适合构建高度交互的博客和网站。
+
+8. **VuePress**：
+   - 基于 Vue.js 的静态网站生成器，使用 Markdown 和 Vue 组件。
+   - 简单易用，支持自定义主题和插件。
+   - 适合开发者和技术博客。
+
+下面我们来简单的看一下这些博客引擎。
 
 # 参考资料
-
-
 
 * any list
 {:toc}
