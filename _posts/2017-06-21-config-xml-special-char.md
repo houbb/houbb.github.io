@@ -1,15 +1,15 @@
 ---
 layout: post
 title: XML 中如何指定特殊符号？比如 xml 如何包含双引号、单引号
-date:  2023-06-05 +0800
-categories: [Basic]
-tags: [basic, xml, sh]
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
+tags: [config, xml, sh]
 published: true
 ---
 
 # 场景
 
-在ＸＭＬ中,有一些符号作为XML 的标记符号，一些特定情况下，属性值必须带有这些特殊符号。
+在 xml 中,有一些符号作为XML 的标记符号，一些特定情况下，属性值必须带有这些特殊符号。
  
 ## 例子
 

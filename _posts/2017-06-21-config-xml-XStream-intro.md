@@ -1,51 +1,43 @@
 ---
 layout: post
 title:  XStream java 实现 xml 与对象 pojo 之间的转换
-date:  2017-6-13 15:30:42 +0800
-categories: [XML]
-tags: [xStream]
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
+tags: [xml, config]
 published: true
 ---
 
 # XStream
 
-[XStream](http://x-stream.github.io/) is a simple library to serialize objects to XML and back again.
+[XStream](http://x-stream.github.io/) 是一个简单的库，用于将对象序列化为 XML，并可以反序列化回来。
 
+> 特点
 
-> Features
+- 使用简单。提供了一个高级门面，简化了常见用例的操作。
 
-- Ease of use. A high level facade is supplied that simplifies common use cases.
+- 无需映射。大多数对象可以在不需要指定映射的情况下进行序列化。
 
-- No mappings required. Most objects can be serialized without need for specifying mappings.
+- 性能优越。速度和低内存占用是设计的关键部分，使其适用于大型对象图或具有高消息吞吐量的系统。
 
-- Performance. Speed and low memory footprint are a crucial part of the design, making it suitable for large object graphs or systems with high message throughput.
+- 清晰的 XML。不会重复保存可以通过反射获得的信息。这样可以生成更易于人类阅读和比 Java 原生序列化更紧凑的 XML。
 
-- Clean XML. No information is duplicated that can be obtained via reflection. This results in XML that is easier to read for humans and more compact than native Java serialization.
+- 不需要修改对象。可以序列化内部字段，包括私有和 final 字段。支持非公共和内部类。类不需要具有默认构造函数。
 
-- Requires no modifications to objects. Serializes internal fields, including private and final. Supports non-public and inner classes. Classes are not required to have default constructor.
+- 完整的对象图支持。对象模型中遇到的重复引用将会被保留。支持循环引用。
 
-- Full object graph support. Duplicate references encountered in the object-model will be maintained. Supports circular references.
+- 与其他 XML API 整合。通过实现接口，XStream 可以直接序列化/反序列化任何树结构（不仅限于 XML）。
 
-- Integrates with other XML APIs. By implementing an interface, XStream can serialize directly to/from any tree structure (not just XML).
+- 可自定义的转换策略。可以注册策略以自定义特定类型在 XML 中的表示方式。
 
-- Customizable conversion strategies. Strategies can be registered allowing customization of how particular types are represented as XML.
+- 安全框架。对于未解组合的输入，可以进行细粒度控制以防止安全问题。
 
-- Security framework. Fine-control about the unmarshalled types to prevent security issues with manipulated input.
+- 错误消息。当由于格式不正确的 XML 导致异常时，会提供详细的诊断信息，以帮助定位和修复问题。
 
-- Error messages. When an exception occurs due to malformed XML, detailed diagnostics are provided to help isolate and fix the problem.
+- 可选的输出格式。模块化设计允许其他输出格式。XStream 当前支持 JSON 支持和形变。
 
-- Alternative output format. The modular design allows other output formats. XStream ships currently with JSON support and morphing.
-
-- Typical Uses
-
+- 典型用途
 
 # Hello World
-
-<uml>
-    Title: XStream Demo
-    Object->Xml: Trans object into xml;
-    Xml->Obejct: Trans xml into xml;
-</uml>
 
 (这个官方的例子稍微有些不够简洁，但是也很容易理解。效果显著)
 
@@ -1191,13 +1183,3 @@ public void JettisonTest() {
 
 * any list
 {:toc}
-
-
-
-
-
-
-
-
-
-

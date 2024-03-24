@@ -3,7 +3,7 @@ layout: post
 title:  Json 之 MessagePack
 date:  2018-07-20 09:24:03 +0800
 categories: [Java]
-tags: [java, json, sf]
+tags: [java, json, config, sf]
 published: true
 ---
 

@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  XSD-03-data type
-date:  2017-6-27 17:51:13 +0800
-categories: [XML]
-tags: [xsd]
+title:  XSD-03-data type xml 数据类型
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
+tags: [xml, config]
 published: true
 ---
 

@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  XPath
-date:  2017-06-12 19:49:06 +0800
-categories: [XML]
-tags: [xpath]
+title:  XPath XML 文档中查找信息的语言
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
+tags: [xml, config]
 published: true
 ---
 

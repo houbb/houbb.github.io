@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  XSD-01-base
-date:  2017-06-21 23:15:47 +0800
-categories: [XML]
-tags: [xsd]
+title:  XSD-01-描述 XML 文档的结构
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
+tags: [xml, config]
 published: true
 ---
 

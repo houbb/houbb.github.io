@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  XSLT
-date:  2017-06-12 22:40:44 +0800
-categories: [XML]
-tags: [xslt]
+title:  XSLT 转换 XML 文档的语言
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
+tags: [xml, config]
 published: true
 ---
 

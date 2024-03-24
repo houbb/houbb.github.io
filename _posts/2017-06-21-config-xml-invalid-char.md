@@ -1,11 +1,10 @@
 ---
 layout: post
-title: XML 非法字符
-date:  2018-09-11 10:44:26 +0800
-categories: [XML]
-tags: [xml, error, todo, sf]
+title: XML 非法字符,PCDATA invalid Char value 8,非法字符 0X0
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
+tags: [xml, error, sf]
 published: true
-excerpt: XML 非法字符,PCDATA invalid Char value 8,非法字符 0X0
 ---
 
 # 错误场景

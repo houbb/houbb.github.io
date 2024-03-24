@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  XML 格式校验-01-DTD 简介
-date:  2017-6-27 17:51:13 +0800
-categories: [XML]
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
 tags: [xsd, xml, dtd, sf]
 published: true
 ---

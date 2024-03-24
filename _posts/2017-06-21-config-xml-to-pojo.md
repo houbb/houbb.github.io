@@ -1,8 +1,8 @@
 ---
 layout: post
 title:  java 实现 xml 与对象 pojo 之间的转换的几种方式 dom4j/xstream/jackson
-date:  2017-6-13 15:30:42 +0800
-categories: [XML]
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
 tags: [xml, sh]
 published: true
 ---

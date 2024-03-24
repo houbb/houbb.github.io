@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  XML
-date:  2017-6-21 15:24:17 +0800
-categories: [XML]
-tags: [xml]
+title:  XML 入门介绍
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
+tags: [xml, config]
 published: true
 ---
 

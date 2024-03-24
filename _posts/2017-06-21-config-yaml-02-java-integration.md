@@ -1,9 +1,9 @@
 ---
 layout: post
 title: YAML-02-yml 配置文件 java 整合使用  yamlbeans + snakeyaml + jackson-dataformat-yaml
-date:  2016-10-26 13:59:45 +0800
+date:  2017-06-21 13:59:45 +0800
 categories: [Config]
-tags: [yaml]
+tags: [yaml, config]
 published: true
 ---
 

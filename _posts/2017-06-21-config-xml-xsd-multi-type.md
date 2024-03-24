@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  XSD-02-multi type
-date:  2017-06-26 22:34:10 +0800
-categories: [XML]
-tags: [xsd]
+title:  XSD-02-multi type 复合元素
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
+tags: [xml, config]
 published: true
 ---
 

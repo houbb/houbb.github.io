@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  Xml for CShape
-date:  2017-05-19 21:45:44 +0800
-categories: [C#]
-tags: [xml, dotnet]
+date:  2017-06-21 13:59:45 +0800
+categories: [Config]
+tags: [xml, config]
 published: true
 ---
 
@@ -101,10 +101,5 @@ UniqueKey 3
 LastUpdatedTime 4
 ```
 
-
-
-
-
-
-
-
+* any list
+{:toc}

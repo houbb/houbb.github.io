@@ -1,12 +1,20 @@
 ---
 layout: post
 title: toml-01-toml 配置文件介绍
-date:  2016-10-26 13:59:45 +0800
+date:  2017-06-21 13:59:45 +0800
 categories: [Config]
-tags: [yaml]
+tags: [toml, config]
 published: true
 ---
 
+
+# 拓展阅读
+
+[toml-01-toml 配置文件介绍](https://houbb.github.io/2016/10/26/config-toml-01-overview)
+
+[YAML-01-yml 配置文件介绍](https://houbb.github.io/2016/10/26/config-yam-01-intro)
+
+[YAML-02-yml 配置文件 java 整合使用 yamlbeans + snakeyaml + jackson-dataformat-yaml](https://houbb.github.io/2016/10/26/config-yaml-02-java-integration)
 
 # Toml 是什么？
 
@@ -197,8 +205,6 @@ ZIP: 10001
 # 小结
 
 toml 是一个对人类特别友好的语言，但是个人感觉可能还是没有 yaml 这么广泛。
-
-
 
 * any list
 {:toc}
