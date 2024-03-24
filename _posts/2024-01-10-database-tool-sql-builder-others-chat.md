@@ -51,25 +51,82 @@ java 代码在拼接 sql 时非常的不优雅。
 
 通过 java 代码，避免拼接过程的代码编写
 
-```java
 select("*")
 .from("user")
 .where("id=1")
-```
+
 
 等价于：
 
-```sql
 select * from where id=1;
-```
 
 
 如何设计对应的 api，让其保持灵活简单优雅？给出你的设计思路，并且提供使用例子。
 
 ```
 
-TODO...
+## Q: 
 
+为了设计一个简洁且灵活的 SQL 构建器 API，可以采用方法链（fluent API）的方式来实现。
+
+这种设计风格使得代码易读且结构清晰，可以链式调用方法来构建 SQL 查询语句。以下是一个简单的设计思路和示例：
+
+1. **QueryBuilder 类**：该类用于构建 SQL 查询语句，它包含了构建 SQL 查询所需的各种方法。
+
+2. **方法链设计**：每个方法返回 QueryBuilder 实例本身，以便可以连续调用多个方法来构建 SQL 查询。
+
+3. **灵活参数支持**：方法设计应该支持灵活的参数传递，比如可以传递多个列名、表名、条件等。
+
+下面是一个示例实现：
+
+```java
+public class QueryBuilder {
+    private StringBuilder query;
+
+    public QueryBuilder() {
+        this.query = new StringBuilder();
+    }
+
+    public QueryBuilder select(String columns) {
+        query.append("SELECT ").append(columns).append(" ");
+        return this;
+    }
+
+    public QueryBuilder from(String table) {
+        query.append("FROM ").append(table).append(" ");
+        return this;
+    }
+
+    public QueryBuilder where(String condition) {
+        query.append("WHERE ").append(condition).append(" ");
+        return this;
+    }
+
+    public String build() {
+        return query.toString().trim() + ";";
+    }
+}
+```
+
+使用示例：
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        QueryBuilder builder = new QueryBuilder();
+
+        String sqlQuery = builder
+                .select("*")
+                .from("user")
+                .where("id = 1")
+                .build();
+
+        System.out.println(sqlQuery);
+    }
+}
+```
+
+这个设计保持了代码的简洁性和优雅性，并提供了足够的灵活性来构建各种类型的 SQL 查询语句。可以根据需要扩展 QueryBuilder 类，添加更多的方法来支持其他 SQL 语句的构建，比如 INSERT、UPDATE、DELETE 等。
 
 
 # 参考资料
