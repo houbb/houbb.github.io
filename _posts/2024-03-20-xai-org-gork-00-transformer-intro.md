@@ -122,6 +122,10 @@ RNNs的顺序性也使其更难充分利用现代快速计算设备，如TPUs和
 
 > [理解语言的 Transformer 模型](https://www.tensorflow.org/tutorials/text/transformer?hl=zh-cn)
 
+
+
+----------------------------------------------------------
+
 # chat
 
 ## AI 中 Transformer 模型具体是什么？
