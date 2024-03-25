@@ -3,7 +3,7 @@ layout: post
 title: Redis Learn-27-分布式锁进化史
 date: 2018-12-12 11:35:23 +0800
 categories: [Redis]
-tags: [redis, cache, lock, distributed, sh]
+tags: [redis, cache, lock, distributed, distributed-lock, history, sh]
 published: true
 ---
 
