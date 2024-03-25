@@ -1,11 +1,42 @@
 ---
-layout: post
-title:  Linux link 
-date:  2018-06-18 16:20:44 +0800
+layout: post 
+title:  Linux 的硬链接与软链接简单介绍
+date: 2018-12-20 17:21:25 +0800
 categories: [Linux]
 tags: [linux, sh]
 published: true
 ---
+
+# linux 命令基础汇总
+
+| 命令&基础             | 描述                                   | 地址                                              |
+|------------------|----------------------------------------|---------------------------------------------------|
+| linux curl       | 命令行直接发送 http 请求               | [Linux curl 类似 postman 直接发送 get/post 请求](https://houbb.github.io/2018/12/20/linux-curl) |
+| linux ln         | 创建链接（link）的命令               | [创建链接（link）的命令](https://houbb.github.io/2018/12/20/linux-ln) |
+| linux link       | linux 软链接介绍               | [linux 软链接介绍](https://houbb.github.io/2018/12/20/linux-link-intro) |
+| linux top        | 实时查看系统性能                       | [linux top-linux 内存](https://houbb.github.io/2018/12/21/linux-top)                 |
+| linux tar gz     | 解压命令                               | [linux tar gz 解压命令](https://houbb.github.io/2018/12/21/linux-tar-gz)              |
+| linux tail       | 显示文件末尾内容                       | [linux tail, linux head](https://houbb.github.io/2018/12/21/linux-tail)               |
+| linux rm         | 删除文件或目录                         | [linux rm, mkdir](https://houbb.github.io/2018/12/21/linux-rm)                         |
+| linux pwd        | 显示当前目录                           | [linux pwd](https://houbb.github.io/2018/12/21/linux-pwd)                               |
+| linux ps         | 显示当前进程信息                       | [linux ps](https://houbb.github.io/2018/12/21/linux-ps)                                 |
+| linux port       | 显示端口占用情况                       | [linux port 端口占用](https://houbb.github.io/2018/12/21/linux-port)                   |
+| linux ping       | 测试网络连通性                         | [linux ping](https://houbb.github.io/2018/12/21/linux-ping)                             |
+| linux mv         | 移动文件或目录                         | [linux mv](https://houbb.github.io/2018/12/21/linux-mv)                                 |
+| linux ls         | 列出文件和目录                         | [linux ls](https://houbb.github.io/2018/12/21/linux-ls)                                 |
+| linux less, more | 分页显示文件内容                       | [linux less, linux more](https://houbb.github.io/2018/12/21/linux-less)                 |
+| linux grep       | 在文件中搜索指定字符串                 | [linux grep](https://houbb.github.io/2018/12/21/linux-grep)                               |
+| linux file       | 确定文件类型                           | [linux file 命令](https://houbb.github.io/2018/12/21/linux-file)                         |
+| linux diff       | 比较文件的不同                         | [linux diff](https://houbb.github.io/2018/12/21/linux-diff)                               |
+| linux chmod      | 修改文件权限                           | [linux chmod](https://houbb.github.io/2018/12/21/linux-chmod)                             |
+| linux cd         | 切换当前目录                           | [linux cd](https://houbb.github.io/2018/12/21/linux-cd)                                   |
+| linux cat        | 显示文件内容                           | [linux cat](https://houbb.github.io/2018/12/21/linux-cat)                                 |
+| linux telnet     | 远程登录                               | [linux telnet](https://houbb.github.io/2018/12/20/linux-telnet)                           |
+| linux free       | 显示内存使用情况                       | [linux free-内存统计信息](https://houbb.github.io/2018/12/21/linux-free)                 |
+| linux df         | 显示磁盘空间使用情况                   | [linux df-磁盘统计信息](https://houbb.github.io/2018/12/21/linux-df)                     |
+| linux netstat   | 显示网络连接、路由表、接口统计等信息 | [linux netstat-显示系统网络连接、路由表、接口统计、masquerade 连接等信息](https://houbb.github.io/2018/12/20/linux-netstat) |
+| linux load average   | 如何查看 linux 的负载 | [Linux Load AVG linux 平均负载是什么解释说明](https://houbb.github.io/2018/12/20/linux-load-avg) |
+
 
 # 理解 Linux 的硬链接与软链接
 
@@ -67,7 +98,6 @@ close(fd);
 ```
 
 ## 硬链接与软链接
-
 
 我们知道文件都有文件名与数据，这在 Linux 上被分成两个部分：
 用户数据 (user data) 与元数据 (metadata)。
@@ -140,7 +170,6 @@ ln oldfile newfile
 - 删除一个硬链接文件并不影响其他有相同 inode 号的文件。
 
 
-
 硬链接不能对目录创建是受限于文件系统的设计（见 清单 4.对目录创建硬链接将失败）。
 现 Linux 文件系统中的目录均隐藏了两个个特殊的目录：
 当前目录`.`与父目录`..`。
@@ -167,7 +196,6 @@ ln oldfile newfile
 当然软链接的用户数据也可以是另一个软链接的路径，其解析过程是递归的。
 
 但需注意：软链接创建时原文件的路径指向使用绝对路径较好。使用相对路径创建的软链接被移动后该软链接文件将成为一个死链接（如下所示的软链接 a 使用了相对路径，因此不宜被移动），因为链接数据块中记录的亦是相对路径指向。
-
 
 # 作用
 

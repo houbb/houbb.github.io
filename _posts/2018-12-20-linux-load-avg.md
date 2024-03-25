@@ -1,17 +1,13 @@
 ---
 layout: post
-title: Linux 命令专题汇总 overview 
-date:  2018-12-21 +0800
+title:  Linux Load AVG linux 平均负载是什么? 简单解释说明 
+date: 2018-12-20 17:21:25 +0800
 categories: [Linux]
-tags: [linux, topics, overview, sh]
+tags: [linux, sh]
 published: true
 ---
 
-# 介绍
-
-Linux 命令相关的专题内容。
-
-# linux 命令及基础汇总
+# linux 命令基础汇总
 
 | 命令&基础             | 描述                                   | 地址                                              |
 |------------------|----------------------------------------|---------------------------------------------------|
@@ -41,75 +37,72 @@ Linux 命令相关的专题内容。
 | linux netstat   | 显示网络连接、路由表、接口统计等信息 | [linux netstat-显示系统网络连接、路由表、接口统计、masquerade 连接等信息](https://houbb.github.io/2018/12/20/linux-netstat) |
 | linux load average   | 如何查看 linux 的负载 | [Linux Load AVG linux 平均负载是什么解释说明](https://houbb.github.io/2018/12/20/linux-load-avg) |
 
+# inux 查看当前系统平均负载的情况
 
-# chat
+linux shell 中可以有很多种方法查看load average
 
-## Q1: apt install sysstat，会安装哪些命令？
+```
+[root@localhost]# uptime | w | top | tload | cat /proc/loadavg           //这些都可以查看系统负载情况
 
-当你运行`apt install sysstat`时，它将安装`sysstat`软件包，其中包含了一系列用于系统性能监控和报告的工具。
+02:03:50 up 126 days, 12:57, 2 users, load average: 0.08, 0.03, 0.05
+```
 
-以下是通过安装`sysstat`而获得的一些常见命令：
+显示内容说明：
 
-1. **sar**：System Activity Reporter，用于报告系统的活动情况，包括CPU使用率、内存使用率、磁盘活动等。
+```
+02:03:50        //系统当前时间
 
-2. **iostat**：用于报告关于系统输入/输出设备（磁盘、终端、网络接口等）的统计信息。
+up 126 days, 12:57        //系统已经运行的时间，时间越大，越说明系统稳定
 
-3. **mpstat**：Multiple Processor Statistics，用于显示多处理器系统的CPU使用率统计。
+2 users        //当前已连接系统的用户总数
 
-4. **pidstat**：用于报告有关Linux进程及其任务的统计信息，包括CPU、内存、I/O等。
+load average         //系统最近1,5,15分钟的负载情况
+```
 
-5. **sadc**：System Activity Data Collector，用于收集系统活动数据，sar命令实际上是它的前端。
+# 那什么是系统平均负载呢？
 
-这些工具是`sysstat`软件包的一部分，安装后你就可以使用这些命令来监控系统性能，进行故障排查和性能优化。
+系统平均负载是指在特定时间间隔内运行队列中的平均进程数，换句话说就是系统在过去1分钟、5分钟、15分钟内运行进程队列中的平均进程数量。
 
-## Q2-根据 top/sar/iostat/mpstat/pidstat 有些重复的地方，这几个命令的区别和联系是什么？
+```
+[root@localhost]# ps -aux            //可查看正在使用中的进程“R”
+```
 
-这些命令是 Linux 系统中用于监控系统性能和资源利用的工具，但它们各自有不同的重点和使用方式。
+## 类比交通
 
-以下是这些命令的主要区别和联系：
+为了更好的理解系统负载，我们用交通流量做对比
 
-1. **top**：
+### 1，cpu 单核
 
-   - **区别**：`top` 提供了实时的交互式系统监视，显示系统中运行的进程列表，并按 CPU 使用率和内存使用率进行排序。它还提供了对进程的操作，如终止进程。
-   - **联系**：与其他工具相比，`top` 更注重交互性，适用于需要实时监视并在运行时进行交互的场景。
+![cpu 单核](https://upload-images.jianshu.io/upload_images/18272409-ea7fb42436749a81.png?imageMogr2/auto-orient/strip|imageView2/2/w/418/format/webp)
 
-2. **sar**：
+0.00-1.00 之间的数字表示正常，车辆可以有序的通过。
 
-   - **区别**：`sar`（System Activity Reporter）提供了系统性能历史数据的收集和报告功能。它可以定期记录系统的 CPU 使用率、内存使用率、磁盘 I/O 等信息，以便后续分析。
-   - **联系**：`sar` 适用于长时间的性能监控，可以生成报告并支持系统管理员对历史数据的分析。
+1.00 表示道路还算正常，但继续下去，道路状况可能会恶化，造成拥堵。
 
-3. **iostat**：
+1.00-*.** 之间的数字表示路况不好，如果到达2.00表示道路有多一倍的车辆要通过，这个时候就必须检查了，严重可能会造成服务器崩溃。
 
-   - **区别**：`iostat` 提供了有关系统的磁盘 I/O 活动的实时统计信息，包括每个磁盘的读取、写入速率等。
-   - **联系**：`iostat` 适用于监控磁盘性能，帮助发现磁盘瓶颈和优化磁盘使用。
+### 2. cpu 多核
 
-4. **mpstat**：
+多核cpu，满负荷cpu状态的数字是"1.00 * CPU核心数"，即双核为2.00，四核为4.00
 
-   - **区别**：`mpstat` 用于显示多处理器系统的 CPU 使用率统计信息，包括每个 CPU 的使用情况。
-   - **联系**：`mpstat` 提供了对 CPU 使用率的详细分析，适用于多核系统。
 
-5. **pidstat**：
+# 3. 怎样正确的知道系统负载情况？
 
-   - **区别**：`pidstat` 提供了有关进程级别的 CPU、内存、磁盘 I/O 等统计信息。它允许用户指定监控的进程，并提供对特定进程的详细分析。
-   - **联系**：`pidstat` 适用于深入了解特定进程的性能，并在需要时对其进行监控。
+我们拿单核cpu来说，如果load average的三个值长期大1.00时，说明CPU很繁忙，负载很高，可能会影响系统性能，但是偶尔大于1.00时，倒不用担心，一般不会影响系统性能。
 
-这些工具在不同的场景中都有用处，可以根据具体的需求选择合适的工具。
+相反，如果load average的输出值小于CPU的个数，则表示CPU还有空闲。
 
-例如，
+如果确定很繁忙的话，就要考虑是否更换服务器或增加CPU的个数了。
 
-如果需要实时监视整个系统的运行状态，可以使用 `top`；
+# 4. 怎么知道系统的cpu核心数
 
-如果需要长时间的历史数据，可以使用 `sar`；
+```
+[root@localhost]# grep "model name" /proc/cpuinfo | wc -l
+```
 
-如果关注磁盘 I/O，可以使用 `iostat`；
+# 参考文章
 
-对于多核系统的 CPU 监控，可以使用 `mpstat`；
-
-而对于进程级别的监控，可以使用 `pidstat`。
-
-这些工具也可以结合使用，以提供更全面的系统性能分析。
-
-# 参考资料
+[linux系统平均负载是什么？](https://www.jianshu.com/p/70b9b5c216c2)
 
 * any list
 {:toc}
