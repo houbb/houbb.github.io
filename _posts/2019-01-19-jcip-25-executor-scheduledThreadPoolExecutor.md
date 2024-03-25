@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  JCIP-25-Executor ScheduledThreadPoolExecutor
+title:  JCIP-25-Executor ScheduledThreadPoolExecutor 实现定时调度
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
 tags: [thread, concurrency, thread, async, sh]
 published: true
-excerpt: JCIP-25-Executor ScheduledThreadPoolExecutor
 ---
 
 # Timer 类的不足

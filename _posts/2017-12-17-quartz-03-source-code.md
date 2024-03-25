@@ -2,8 +2,8 @@
 layout: post
 title:  Quartz 03-源码分析
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, java-tool, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, sh]
 published: true
 ---
 
@@ -36,14 +36,14 @@ JobDetailImpl类实现了JobDetail接口，用来描述一个job，定义了job�
 
 了解job拥有哪些属性，就能知道quartz能提供什么样的能力，下面笔者用表格列出job若干核心属性。
 
-属性名	说明
-class	必须是job实现类（比如JobImpl），用来绑定一个具体job
-name	job名称。如果未指定，会自动分配一个唯一名称。所有job都必须拥有一个唯一name，如果两个job的name重复，则只有最前面的job能被调度
-group	job所属的组名
-durability	是否持久化。如果job设置为非持久，当没有活跃的trigger与之关联的时候，job会自动从scheduler中删除。也就是说，非持久job的生命期是由trigger的存在与否决定的
-shouldRecover	是否可恢复。如果job设置为可恢复，一旦job执行时scheduler发生hard shutdown（比如进程崩溃或关机），当scheduler重启后，该job会被重新执行
-obDataMap	除了上面常规属性外，用户可以把任意kv数据存入jobDataMap，实现job属性的无限制扩展，执行job时可以使用这些属性数据。此属性的类型是JobDataMap，实现了Serializable接口，可做跨平台的序列化传输
-
+| 属性名        | 说明                                                                                   |
+|--------------|----------------------------------------------------------------------------------------|
+| class        | 必须是job实现类（比如JobImpl），用来绑定一个具体job。                                  |
+| name         | job名称。如果未指定，会自动分配一个唯一名称。所有job都必须拥有一个唯一name，如果两个job的name重复，则只有最前面的job能被调度。 |
+| group        | job所属的组名。                                                                         |
+| durability   | 是否持久化。如果job设置为非持久，当没有活跃的trigger与之关联的时候，job会自动从scheduler中删除。也就是说，非持久job的生命期是由trigger的存在与否决定的。 |
+| shouldRecover| 是否可恢复。如果job设置为可恢复，一旦job执行时scheduler发生hard shutdown（比如进程崩溃或关机），当scheduler重启后，该job会被重新执行。|
+| jobDataMap   | 除了上面常规属性外，用户可以把任意kv数据存入jobDataMap，实现job属性的无限制扩展，执行job时可以使用这些属性数据。此属性的类型是JobDataMap，实现了Serializable接口，可做跨平台的序列化传输。 |
 
 ## JobBuilder 类
 
@@ -73,21 +73,22 @@ Trigger诸类保存了trigger所有属性，同job属性一样，了解trigger�
 
 ## 属性
 
-属性名	属性类型	说明
-name	所有trigger通用	trigger名称
-group	所有trigger通用	trigger所属的组名
-description	所有trigger通用	trigger描述
-calendarName	所有trigger通用	日历名称，指定使用哪个Calendar类，经常用来从trigger的调度计划中排除某些时间段
-misfireInstruction	所有trigger通用	错过job（未在指定时间执行的job）的处理策略，默认为MISFIRE_INSTRUCTION_SMART_POLICY。详见这篇blog^Quartz misfire
-priority	所有trigger通用	优先级，默认为5。当多个trigger同时触发job时，线程池可能不够用，此时根据优先级来决定谁先触发
-jobDataMap	所有trigger通用	同job的jobDataMap。假如job和trigger的jobDataMap有同名key，通过getMergedJobDataMap()获取的jobDataMap，将以trigger的为准
-startTime	所有trigger通用	触发开始时间，默认为当前时间。决定什么时间开始触发job
-endTime	所有trigger通用	触发结束时间。决定什么时间停止触发job
-nextFireTime	SimpleTrigger私有	下一次触发job的时间
-previousFireTime	SimpleTrigger私有	上一次触发job的时间
-repeatCount	SimpleTrigger私有	需触发的总次数
-timesTriggered	SimpleTrigger私有	已经触发过的次数
-repeatInterval	SimpleTrigger私有	触发间隔时间
+| 属性名              | 属性类型            | 说明                                                                                     |
+|--------------------|---------------------|------------------------------------------------------------------------------------------|
+| name               | 所有trigger通用       | trigger名称。                                                                             |
+| group              | 所有trigger通用       | trigger所属的组名。                                                                       |
+| description        | 所有trigger通用       | trigger描述。                                                                             |
+| calendarName       | 所有trigger通用       | 日历名称，指定使用哪个Calendar类，经常用来从trigger的调度计划中排除某些时间段。                     |
+| misfireInstruction| 所有trigger通用       | 错过job（未在指定时间执行的job）的处理策略，默认为MISFIRE_INSTRUCTION_SMART_POLICY。详见这篇blog^Quartz misfire。 |
+| priority           | 所有trigger通用       | 优先级，默认为5。当多个trigger同时触发job时，线程池可能不够用，此时根据优先级来决定谁先触发。                     |
+| jobDataMap        | 所有trigger通用       | 同job的jobDataMap。假如job和trigger的jobDataMap有同名key，通过getMergedJobDataMap()获取的jobDataMap，将以trigger的为准。|
+| startTime         | 所有trigger通用       | 触发开始时间，默认为当前时间。决定什么时间开始触发job。                                             |
+| endTime           | 所有trigger通用       | 触发结束时间。决定什么时间停止触发job。                                                          |
+| nextFireTime     | SimpleTrigger私有    | 下一次触发job的时间。                                                                       |
+| previousFireTime | SimpleTrigger私有    | 上一次触发job的时间。                                                                       |
+| repeatCount      | SimpleTrigger私有    | 需要触发的总次数。                                                                          |
+| timesTriggered   | SimpleTrigger私有    | 已经触发过的次数。                                                                          |
+| repeatInterval   | SimpleTrigger私有    | 触发间隔时间。                                                                             |
 
 ## TriggerBuilder 类
 

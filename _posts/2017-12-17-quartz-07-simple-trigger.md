@@ -2,8 +2,8 @@
 layout: post
 title:  Quartz 07-SimpleTrigger
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, java-tool, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, sh]
 published: true
 ---
 

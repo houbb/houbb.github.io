@@ -2,8 +2,8 @@
 layout: post
 title:  Quartz 11-Job Stores
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, java-tool, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, sh]
 published: true
 ---
 
@@ -20,8 +20,12 @@ JobStore 负责跟踪您给调度器的所有“工作数据”:作业、触发�
 
 **RAMJobStore** 是最简单的使用的 JobStore，它也是性能最好的(在CPU时间方面)。
 
-RAMJobStore以一种显而易见的方式获得它的名称: 它将所有数据保存在RAM中。这就是为什么它是闪电般的快速，以及为什么它如此简单的配置。
+RAMJobStore以一种显而易见的方式获得它的名称: 它将所有数据保存在RAM中。
+
+这就是为什么它是闪电般的快速，以及为什么它如此简单的配置。
+
 缺点是当您的**应用程序结束(或崩溃)时所有的调度信息丢失**——这意味着 RAMJobStore 不能对作业和触发器的“非波动”设置表示支持。
+
 对于某些应用程序，这是可以接受的，甚至是期望的行为，但对于其他应用程序，这可能是灾难性的。
 
 要使用 RAMJobStore(并假设您使用的是 `StdSchedulerFactory`)，只需指定类名称 org.quartz.simpl。RAMJobStore作为JobStore类属性，用于配置 quartz:

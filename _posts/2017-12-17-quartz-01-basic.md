@@ -2,15 +2,14 @@
 layout: post
 title:  Quartz 01-quartz 入门使用介绍
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, java-tool, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, sh]
 published: true
 ---
 
 # Quartz
 
-[Quartz](http://www.quartz-scheduler.org/) is a richly featured, open source job scheduling library that can be integrated within virtually 
-any Java application - from the smallest stand-alone application to the largest e-commerce system.
+[Quartz](http://www.quartz-scheduler.org/) 是一个功能丰富的开源作业调度库，可以集成到几乎任何 Java 应用程序中——从最小的独立应用程序到最大的电子商务系统。
 
 # 入门案例
 
@@ -95,7 +94,6 @@ Hello Quartz!
 # 拓展阅读
 
 [Quartz 入门系列教程-00-序章](https://blog.csdn.net/ryo1060732496/article/details/79794802)
-
 
 * any list
 {:toc}

@@ -2,8 +2,8 @@
 layout: post
 title:  Quartz 04-Jobs 和 Trigger
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, java-tool, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, sh]
 published: true
 ---
 
@@ -11,25 +11,29 @@ published: true
 
 主要接口定义如下：
 
-The key interfaces of the Quartz API are:
+Quartz API 的关键接口包括：
 
-- Scheduler - the main API for interacting with the scheduler.
+- Scheduler（调度器）- 与调度器进行交互的主要 API。
 
-- Job - an interface to be implemented by components that you wish to have executed by the scheduler.
+- Job（作业）- 由您希望由调度器执行的组件实现的接口。
 
-- JobDetail - used to define instances of Jobs.
+- JobDetail（作业详情）- 用于定义作业的实例。
 
-- Trigger - a component that defines the schedule upon which a given Job will be executed.
+- Trigger（触发器）- 定义给定作业将被执行的调度时间表的组件。
 
-- JobBuilder - used to define/build JobDetail instances, which define instances of Jobs.
+- JobBuilder（作业构建器）- 用于定义/构建 JobDetail 实例，这些实例定义了作业的实例。
 
-- TriggerBuilder - used to define/build Trigger instances.
+- TriggerBuilder（触发器构建器）- 用于定义/构建触发器实例。
 
-Scheduler 的生命周期受它的创建限制，通过一个 SchedulerFactory 和对其 `shutdown()` 方法的调用。一旦创建了调度程序接口，就可以使用添加、删除和列出作业和触发器，并执行其他与调度相关的操作(例如暂停触发器)。但是，调度器实际上不会在任何触发器(执行作业)上起作用，直到它从 `start()` 方法开始。
+Scheduler 的生命周期受它的创建限制，通过一个 SchedulerFactory 和对其 `shutdown()` 方法的调用。
+
+一旦创建了调度程序接口，就可以使用添加、删除和列出作业和触发器，并执行其他与调度相关的操作(例如暂停触发器)。
+
+但是，调度器实际上不会在任何触发器(执行作业)上起作用，直到它从 `start()` 方法开始。
 
 ## 静态导入
 
-Quartz 为我们提供了 Builder，便于我们定义  Domain Specific Language (or DSL, also sometimes referred to as a “fluent interface”). 
+Quartz 为我们提供了 Builder，便于我们定义 领域特定语言（DSL，有时也称为“流畅接口”）。
 
 为了更方便的书写代码，可以使用如下的静态导入代码。
 
@@ -68,7 +72,6 @@ public void execute(JobExecutionContext context)
 
 如果您需要“一次性”执行(仅在给定时刻执行一项任务)，或者您需要在给定的时间内解雇一份工作，并且重复执行N次，在执行期间延迟执行，那么 **SimpleTrigger** 非常方便。如果你希望基于日历的日程安排(比如“每个周五，中午”或“每月10日10时15分”触发，**CronTrigger** 是很有用的。
 
-
 - Why Jobs AND Triggers? 
 
 许多工作调度器没有关于工作和触发器的不同概念。
@@ -81,7 +84,9 @@ public void execute(JobExecutionContext context)
 # Identities
 
 Job 和 触发器(Triggers) 被赋予标识键(Identities)，当它们在 Quartz 调度器中注册时。
+
 Job 和触发器的关键(JobKey和TriggerKey)允许它们被放置到“组”(Group)中，这些“组”对组织工作和触发“报告工作”和“维护工作”等类别非常有用。
+
 作业或触发器的键的名称部分必须在组内是**惟一**的，或者换句话说，作业或触发器的完整密钥(或标识符)是名称和组的复合。
 
 # 目录导航

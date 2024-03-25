@@ -2,8 +2,8 @@
 layout: post
 title:  Quartz 20-misfire 详解
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, quartz, job, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, sh]
 published: true
 ---
 

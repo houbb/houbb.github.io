@@ -2,8 +2,8 @@
 layout: post
 title:  Quartz 08-CronTrigger
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, java-tool, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, sh]
 published: true
 ---
 
@@ -12,6 +12,7 @@ published: true
 CronTrigger 通常比 SimpleTrigger 更有用，如果您需要根据日历类的概念而不是精确指定的简单触发器间隔来重新定义作业调度。
 
 有了CronTrigger，你可以指定诸如“每个周五中午”，或“每个工作日和上午9:30”，甚至“每星期一、星期三和周五上午9:00到10:00之间的每5分钟”。
+
 即使是这样，像SimpleTrigger一样，CronTrigger有一个startTime，它指定调度何时生效，以及一个(可选的)endTime，指定何时停止调度。
 
 # Cron 表达式

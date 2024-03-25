@@ -2,8 +2,8 @@
 layout: post
 title:  Quartz 17-quartz+springboot+vue 整合
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, java-tool, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, spring, spring-boot, sh]
 published: true
 ---
 

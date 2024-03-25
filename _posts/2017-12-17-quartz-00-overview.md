@@ -2,8 +2,8 @@
 layout: post
 title:  Quartz 00-quartz 概览
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, java-tool, overview, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, overview, sh]
 published: true
 ---
 
@@ -52,6 +52,14 @@ Quartz 又是其中十分优秀的框架。
 [Quartz 16-spring 整合使用](https://houbb.github.io/2017/12/19/quartz-16-spring)
 
 [Quartz 17-springboot+vue+mybatis+mysql](https://houbb.github.io/2017/12/19/quartz-17-spring-boot)
+
+[Quartz 18-分布式任务调度框架 xxl-job elastic-job saturn 对比](https://houbb.github.io/2017/12/19/quartz-18-distributed-job)
+
+[Quartz 19-quartz 分布式任务调度详解](https://houbb.github.io/2017/12/19/quartz-19-distributed-quartz)
+
+[Quartz 19-quartz 实现原理](https://houbb.github.io/2017/12/19/quartz-19-quartz-why)
+
+[Quartz 20-misfire 详解](https://houbb.github.io/2017/12/19/quartz-20-misfire)
 
 ## 精进
 

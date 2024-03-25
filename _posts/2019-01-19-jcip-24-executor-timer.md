@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  JCIP-24-Timer 
+title:  JCIP-24-Timer 实现定时调度 
 date:  2019-1-18 11:21:15 +0800
 categories: [Concurrency]
-tags: [thread, concurrency, thread, async, sh]
+tags: [thread, concurrency, thread, async, schedule, job, sh]
 published: true
 excerpt: JCIP-24-Timer 
 ---

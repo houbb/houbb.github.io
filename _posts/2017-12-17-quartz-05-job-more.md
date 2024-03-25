@@ -2,16 +2,20 @@
 layout: post
 title:  Quartz 05-Jobs 深入学习
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, java-tool, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, sh]
 published: true
 ---
 
 # More About Jobs and Job Details
 
-虽然您实现的作业类具有知道如何完成特定类型作业的实际工作的代码，但 Quartz 需要了解您可能希望该作业的实例拥有的各种属性。这是通过JobDetail 类完成的，该类在前一节中简要介绍过。
+虽然您实现的作业类具有知道如何完成特定类型作业的实际工作的代码，但 Quartz 需要了解您可能希望该作业的实例拥有的各种属性。
 
-JobDetail 实例是使用 JobBuilder 类构建的。您通常希望使用所有方法的静态导入，以便在代码中有 dsl-feel。
+这是通过JobDetail 类完成的，该类在前一节中简要介绍过。
+
+JobDetail 实例是使用 JobBuilder 类构建的。
+
+您通常希望使用所有方法的静态导入，以便在代码中有 dsl-feel。
 
 ```java
 import static org.quartz.JobBuilder.*;
@@ -49,18 +53,21 @@ scheduler.scheduleJob(job, trigger);
 请注意，我们给调度程序提供了一个 JobDetail 实例，并且它知道在构建 JobDetail 时只需提供作业的类就可以执行的工作类型。
 
 调度程序执行任务时，每个(以及每个)时间都在调用它的 `execute(..)` 方法之前创建一个类的新实例。
+
 当执行完成时，对作业类实例的引用被删除，然后实例被垃圾收集。
+
 这种行为的一个分支是，作业必须有一个**无参数的构造函数**(当使用默认的JobFactory实现时)。
+
 另一个分支是，在作业类上定义状态数据字段是没有意义的，因为它们的值不会在作业执行之间保留。
 
 - 我如何为一个作业实例提供属性/配置? & 我如何在执行过程中记录工作状态?
 
 这些问题的答案是一样的:关键是 JobDataMap，它是 JobDetail 对象的一部分。
 
-
 # JobDataMap
 
 JobDataMap 可以用来保存任何数量(**可序列化**)的数据对象，您希望在它执行时将它们提供给作业实例。
+
 JobDataMap 是 Java Map 接口的一个实现，它提供了一些用于存储和检索原始类型数据的便利方法。
 
 ## 设置和获取
@@ -226,7 +233,9 @@ public class DumbJob implements Job {
 # JobExecutionException
 
 最后，我们需要通知您一些关于 `Job.execute(..)` 方法的细节。允许从execute方法抛出的惟一异常(包括runtimeexception)是JobExecutionException。
+
 因此，通常应该用“try-catch”块将execute方法的整个内容包装起来。
+
 您还应该花些时间查看JobExecutionException的文档，因为您的作业可以使用它来为调度程序提供各种指示，以了解如何处理异常。
 
 # 导航目录

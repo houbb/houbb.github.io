@@ -2,8 +2,8 @@
 layout: post
 title:  Quartz 18-分布式任务调度框架 xxl-job elastic-job saturn 对比
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, quartz, job, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, distributed, sh]
 published: true
 ---
 

@@ -1,24 +1,23 @@
 ---
 layout: post
-title:  Spring Shell
+title:  Spring Shell 基于 Spring 的编程模型插入自定义命令
 date:  2017-12-17 19:46:41 +0800
 categories: [Spring]
-tags: [spring]
+tags: [spring, shell]
 published: true
 ---
 
 
 # Spring Shell
 
-The [Spring Shell](https://projects.spring.io/spring-shell/) project provides an interactive shell that allows 
-you to plugin your own custom commands using a Spring based programming model.
+Spring Shell项目提供了一个交互式的Shell，允许您使用基于Spring的编程模型插入自定义命令。
 
 
 ## 介绍
 
 Spring Shell项目的用户可以根据Spring Shell jar和添加自己的命令轻松构建一个完整的Shell(aka命令行)应用程序(作为Spring bean的方法)。
-创建一个命令行应用程序可以是有用的，例如与您的项目的REST API交互，或者与本地文件内容一起工作。
 
+创建一个命令行应用程序可以是有用的，例如与您的项目的REST API交互，或者与本地文件内容一起工作。
 
 # Quick Start
 
@@ -30,25 +29,25 @@ Spring Shell项目的用户可以根据Spring Shell jar和添加自己的命令�
 
 常见的内置命令罗列如下：
 
-- ConsoleCommands - clr and clear - to clear the console.
+- ConsoleCommands - clr 和 clear - 用于清空控制台。
 
-- DateCommands - date - show the current date and time.
+- DateCommands - date - 显示当前日期和时间。
 
-- ExitCommands - exit and quit - to exit the shell.
+- ExitCommands - exit 和 quit - 用于退出Shell。
 
-- HelpCommands - help - list all commands and their usage
+- HelpCommands - help - 列出所有命令及其用法。
 
-- InlineCommentCommands - // and ; shows the valid characters to use for inline comments
+- InlineCommentCommands - // 和 ; 显示用于行内注释的有效字符。
 
-- OsCommands - the keyword for this command is the exclamation point, !. After the exclamation point you can pass in a unix/windows command string to be executed.
+- OsCommands - 此命令的关键字是感叹号, !。在感叹号后面，您可以传递一个Unix/Windows命令字符串以执行。
 
-- SystemPropertyCommands - system properties- shows the shell's system properties
+- SystemPropertyCommands - system properties - 显示Shell的系统属性。
 
-- VersionCommands - version- shows the shell's version
+- VersionCommands - version - 显示Shell的版本。
 
-There are two commands in provided by the AbstractShell class related to useage of block comments
+AbstractShell类提供了两个与块注释使用相关的命令:
 
-- `/*` and `*/` - The begin and end characters for block comments
+- `/*` 和 `*/` - 块注释的开始和结束字符。
 
 ## 简单演示
 
@@ -176,10 +175,6 @@ help
 * system properties - Shows the shell's properties
 * version - Displays shell version
 ```
-
-
-
-
 
 # 自定义命令
 

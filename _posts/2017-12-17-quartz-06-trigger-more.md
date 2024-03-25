@@ -2,14 +2,16 @@
 layout: post
 title:  Quartz 06-Triggers 深入学习
 date:  2017-12-19 14:43:25 +0800
-categories: [Java]
-tags: [java, java-tool, sh]
+categories: [Schedule]
+tags: [java, quartz, job, schedule, sh]
 published: true
 ---
 
 # Triggers
 
-和 jobs 一样，触发器也很容易使用，但确实包含了各种可定制的选项，在充分使用Quartz之前，您需要了解并了解这些选项。另外，正如前面提到的，您可以选择不同类型的触发器来满足不同的调度需求。
+和 jobs 一样，触发器也很容易使用，但确实包含了各种可定制的选项，在充分使用Quartz之前，您需要了解并了解这些选项。
+
+另外，正如前面提到的，您可以选择不同类型的触发器来满足不同的调度需求。
 
 后面将会深入讨论: Simple Triggers & Cron Triggers.
 

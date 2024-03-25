@@ -48,7 +48,7 @@ excerpt: linux netstat
 
 `netstat` 的输出提供了关于系统网络连接的详细信息，包括协议类型、本地和远程地址、状态、进程名等。
 
-以下是输出的一部分示例：
+以下是输出的一部分示例： 
 
 ```plaintext
 Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
