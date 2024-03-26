@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 数据库查询工具 sql builder-chat mysql keyword 关键词汇总
+title: 数据库基础知识 mysql keyword 关键词汇总
 date: 2024-01-10 21:01:55 +0800
 categories: [Database]
-tags: [database, sql, orm, jdbc, sql-budiler, sh]
+tags: [database, sql, sql-basic, sh]
 published: true
 ---
 

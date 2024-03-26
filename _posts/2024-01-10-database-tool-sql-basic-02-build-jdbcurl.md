@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 数据库 mysql/oracle 如何根据 host port dbName 构建完整的 url?
+title: 数据库基础知识 mysql/oracle 如何根据 host port dbName 构建完整的 url?
 date: 2024-01-10 21:01:55 +0800
 categories: [Database]
-tags: [database, sql, apache, calcite, olap, sh]
+tags: [database, sql, sql-basic, sh]
 published: true
 ---
 
@@ -64,7 +64,9 @@ jdbc:oracle:thin:@//[host]:[port]/[serviceName]
 - `[port]`是Oracle数据库服务器的端口号，默认情况下是1521。
 - `[serviceName]`是Oracle数据库的服务名或SID。
 
-因此，要根据serviceName、host和port构建Oracle数据库的JDBC URL，只需将它们替换到URL的相应位置即可。例如，如果serviceName是"orcl"，host是"localhost"，port是"1521"，则JDBC URL将是：
+因此，要根据serviceName、host和port构建Oracle数据库的JDBC URL，只需将它们替换到URL的相应位置即可。
+
+例如，如果serviceName是"orcl"，host是"localhost"，port是"1521"，则JDBC URL将是：
 
 ```
 jdbc:oracle:thin:@//localhost:1521/orcl
