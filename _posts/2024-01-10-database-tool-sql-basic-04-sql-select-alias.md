@@ -283,6 +283,7 @@ public class JSqlParserMain {
 别名不存在
 ```
 
+PS：测试发现这里支持 ? 的占位符 SQL.
 
 ## 问题
 
