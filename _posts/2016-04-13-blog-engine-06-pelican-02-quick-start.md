@@ -1,6 +1,6 @@
 ---
 layout: post
-title: blog-engine-06-pelican 静态网站生成 快速开始
+title: blog-engine-06-pelican 静态网站生成 windows11 安装实战笔记
 date:   2016-04-13 23:20:27 +0800
 categories: [UI]
 tags: [hexo, blog, blog-engine]
