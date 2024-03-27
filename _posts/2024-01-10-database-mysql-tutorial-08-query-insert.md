@@ -357,7 +357,6 @@ Query OK, 0 rows affected (0.00 sec)
 可以发现此时就是0，所以理解一些细节也比较重要。
 
 可以用来区分是否有数据变化，是插入，还是更新，
-
 # 参考资料
 
 https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html
