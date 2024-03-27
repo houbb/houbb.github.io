@@ -21,8 +21,7 @@ published: true
 
 [马斯克开源的 grok-1 大模型硬核源码第 4 弹](https://mp.weixin.qq.com/s/fNLbaROZXFEfbREuBV1Kpg)
 
-[
-devika AI 软件工程师，Devin 的开源替代方案](https://mp.weixin.qq.com/s/Tvs_Z90MK4sZeoBe8n5U_A)
+[devika AI 软件工程师，Devin 的开源替代方案](https://mp.weixin.qq.com/s/Tvs_Z90MK4sZeoBe8n5U_A)
 
 # Devika
 
