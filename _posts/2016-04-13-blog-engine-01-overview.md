@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  7 大博客引擎 jekyll/hugo/Hexo/Pelican/Gatsby/VuePress/Nuxt.js/Middleman 介绍
+title:  8 大博客引擎 jekyll/hugo/Hexo/Pelican/Gatsby/VuePress/Nuxt.js/Middleman 对比
 date:   2016-04-13 23:20:27 +0800
 categories: [Github]
 tags: [jekyll, seo, github]
