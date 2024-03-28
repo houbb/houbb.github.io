@@ -8,6 +8,11 @@ published: true
 ---
 
 
+
+# 中文教程
+
+https://mgubaidullin.github.io/deeplearning4j-docs/cn/tutorials
+
 # 简介
 
 Eclipse Deeplearning4j 是一套在 JVM 上运行深度学习的工具套件。

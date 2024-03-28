@@ -56,6 +56,8 @@ published: true
 | 33 | [junitperf](https://github.com/houbb/junitperf) | 性能测试框架，测试报告生成 | TEST |
 | 34 | [houbb.github.io](https://github.com/houbb/houbb.github.io) | 个人博客 | 学习 |
 
+没价值的项目可以闭源，别浪费大家的时间。
+
 # 数据结构算法
 
 ## 说明
@@ -102,6 +104,13 @@ CSDN
 微信公众号 
 
 等等。
+
+# 考虑收费有价值的项目
+
+leetcode 系列？
+
+面试宝典？
+
 
 
 
