@@ -7,6 +7,23 @@ tags: [junit, test, sh]
 published: true
 ---
 
+# 拓展阅读
+
+[jmockit-01-jmockit 入门使用案例](https://houbb.github.io/2023/05/09/test-jmockit-00-intro)
+
+[jmockit-02-概览](https://houbb.github.io/2023/05/09/test-jmockit-01-overview)
+
+[jmockit-03-Mocking 模拟](https://houbb.github.io/2023/05/09/test-jmockit-03-mocking)
+
+[jmockit-04-Faking 伪造](https://houbb.github.io/2023/05/09/test-jmockit-04-faking)
+
+[jmockit-05-代码覆盖率](https://houbb.github.io/2023/05/09/test-jmockit-05-code-converate)
+
+[mockito-01-入门介绍](https://houbb.github.io/2023/05/09/test-mockito-01-overivew)
+
+[mockito-02-springaop 整合遇到的问题，失效](https://houbb.github.io/2023/05/09/test-mockito-02-springaop)
+
+
 # intro
 
 企业应用程序针对特定的业务领域，通常具有用于多个并发用户的 GUI 和用于许多实体类型的应用程序数据库； 

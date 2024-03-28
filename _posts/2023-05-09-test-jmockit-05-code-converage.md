@@ -1,6 +1,6 @@
 ---
 layout: post
-title: test 之 jmockit-05-Measuring code coverage
+title: test 之 jmockit-05-Measuring code coverage 测试代码覆盖率
 date:  2023-05-09 +0800
 categories: [Test]
 tags: [junit, test, sh]

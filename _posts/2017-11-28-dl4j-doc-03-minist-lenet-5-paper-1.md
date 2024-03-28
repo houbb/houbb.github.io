@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  dl4j doc-03-minist 手写识别 Lenet-5 paper 论文学习 《Gradient-Based Learning Applied to Document Recognition》-2
+title:  dl4j doc-03-minist 手写识别 Lenet-5 paper 论文学习 《Gradient-Based Learning Applied to Document Recognition》II
 date:  2017-04-16 12:03:32 +0800
 categories: [Deep Learning]
 tags: [AI, DL, dl4j, neural network]
