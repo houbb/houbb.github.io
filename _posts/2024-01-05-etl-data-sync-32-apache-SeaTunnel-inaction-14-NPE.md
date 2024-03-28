@@ -319,10 +319,23 @@ A1
 
 
 
+## 启动脚本
+
+或者源头为 cdc，能否把每一次的大小修改小一点
+
+https://seatunnel.apache.org/docs/2.3.3/connector-v2/source/MySQL-CDC
+
+snapshot.fetch.size=1024 整数类型
+
+优化的思路：也可以考虑一下，为什么性能这么差？3/s。
+
+
 
 ## 配置文件
 
 - seatunnel.yaml
+
+可以把这里的检查间隔修改大一些，一个小时？
 
 ```yaml
 seatunnel:
