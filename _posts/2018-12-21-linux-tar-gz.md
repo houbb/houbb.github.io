@@ -47,5 +47,11 @@ tar -zcvf output.tar.gz folder/
 
 综合起来，这个命令的作用是将指定文件夹中的所有内容打包成一个名为output.tar.gz的压缩文件。
 
+## 例子
+
+```sh
+sudo tar -zcvf apache-seatunnel-2.3.4-withjars.tar.gz apache-seatunnel-2.3.4 
+```
+
 * any list
 {:toc}
