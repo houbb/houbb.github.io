@@ -1,25 +1,23 @@
 ---
 layout: post
-title:  SymmetricDS
+title:  SymmetricDS-01-入门介绍 用于数据库和文件同步，支持多主复制、过滤同步和转换
 date:  2017-4-28 09:04:21 +0800
-categories: [Tool]
-tags: [kettle]
-header-img: "static/app/res/img/nightsky-bg.jpeg"
+categories: [ETL]
+tags: [etl]
 published: true
 ---
 
 # SymmetricDS
 
-[SymmetricDS](http://www.symmetricds.org/doc/3.8/html/user-guide.html) is open source software for database and file synchronization, 
-with support for multi-master replication, filtered synchronization, and transformation.
- 
+[SymmetricDS](http://www.symmetricds.org/doc/3.8/html/user-guide.html) 是一个开源软件，用于数据库和文件同步，支持多主复制、过滤同步和转换。
+
 > [csdn 系列教程](http://blog.csdn.net/column/details/symmetricds.html)
- 
-一、Require
 
-使用 Java 编写，所以需要 JDK。
+一、要求
 
-- Java SE Runtime Environment 7 or above
+由于是使用 Java 编写的，所以需要 JDK。
+
+- Java SE Runtime Environment 7 或更高版本
 
 ```
 >java -version
@@ -28,76 +26,73 @@ Java(TM) SE Runtime Environment (build 1.7.0_79-b15)
 Java HotSpot(TM) Client VM (build 24.79-b02, mixed mode, sharing)
 ```
 
-- Memory - 64 (MB) available
+- 内存 - 至少 64 (MB)
 
-- Disk - 256 (MB) available
+- 磁盘 - 至少 256 (MB)
 
-二、Overview
+二、概述
 
 ![overview](https://raw.githubusercontent.com/houbb/resource/master/img/database/symmdb/2017-05-03-symm-overview.png)
 
-三、Architecture
+三、架构
 
 数据同步步骤如下：
 
-1. Capture into a runtime table at the source database
+1. 在源数据库中捕获到运行时表中
 
-2. Route for delivery to target nodes and group into batches
+2. 将数据路由发送到目标节点并分组成批次
 
-3. Extract and transform into the rows, columns, and values needed for the outgoing batch
+3. 提取和转换为传出批次所需的行、列和值
 
-4. Send the outgoing batch to target nodes
+4. 将传出批次发送到目标节点
 
-5. Receive the incoming batch at the target node
+5. 在目标节点接收传入批次
 
-6. Transform into the rows, columns, and values needed for the incoming batch
+6. 将传入批次转换为所需的行、列和值
 
-7. Load data and return an acknowledgment to the source node
+7. 加载数据并向源节点返回确认
 
 ![overview](https://raw.githubusercontent.com/houbb/resource/master/img/database/symmdb/2017-05-03-symm-architeture.png)
 
-四、Features
+四、特性
 
 特性如下：
 
-- Data Synchronization 
+- 数据同步
 
-Change data capture for relational databases and file synchronization for file systems can be periodic or near real-time, with an initial load feature to fully populate a node.
+关系数据库的变更数据捕获和文件系统的文件同步可以是周期性的或准实时的，并提供初始加载功能以完全填充节点。
 
-- Central Management 
+- 中央管理
 
-Configure, monitor, and troubleshoot synchronization from a central location where conflicts and errors can be investigated and resolved.
+从中央位置配置、监视和排除同步，可以调查和解决冲突和错误。
 
-- Automatic Recovery 
+- 自动恢复
 
-Data delivery is durable and low maintenance, withstanding periods of downtime and automatically recovering from a network outage.
+数据传递是持久和低维护的，可以经受停机时间并从网络中断中自动恢复。
 
-- Secure and Efficient 
+- 安全高效
 
-Communication uses a data protocol designed for low bandwidth networks and streamed over HTTPS for encrypted transfer.
+通信使用专为低带宽网络设计的数据协议，并通过 HTTPS 进行加密传输。
 
-- Transformation 
+- 转换
 
-Manipulate data at multiple points to filter, subset, translate, merge, and enrich the data.
+在多个点对数据进行操作，以进行过滤、子集、翻译、合并和丰富数据。
 
-- Conflict Management 
+- 冲突管理
 
-Enforce consistency of two-way synchronization by configuring rules for automatic and manual resolution.
+通过配置自动和手动解决规则来强制执行双向同步的一致性。
 
-- Extendable 
+- 可扩展
 
-Scripts and Java code can be configured to handle events, transform data, and create customized behavior.
+可以配置脚本和 Java 代码来处理事件、转换数据和创建自定义行为。
 
-- Deployment Options 
+- 部署选项
 
-The software can be installed as a self-contained server that stands alone, deployed to a web application server, or embedded within an application.
+该软件可以安装为一个独立的服务器，可以独立运行，也可以部署到 Web 应用服务器中，或者嵌入到应用程序中。
 
+# 快速开始
 
-
-# Quick Start
-
-SymmetricDS at its core is a web application. A SymmetricDS instance runs within the context of a web application container like Jetty or Tomcat, 
-and uses web based protocols like **HTTP** to communicate with other instances.
+SymmetricDS 的核心是一个 Web 应用程序。SymmetricDS 实例运行在 Web 应用程序容器的上下文中，如 Jetty 或 Tomcat，并使用基于 Web 的协议如 **HTTP** 与其他实例进行通信。
 
 此处选择最简单的安装案例。[Standalone Installation](http://www.symmetricds.org/doc/3.8/html/user-guide.html#_standalone_installation)
 
