@@ -2,8 +2,8 @@
 layout: post
 title: JavaScript 代码语法高亮器 SyntaxHighlighter-01-入门介绍 
 date:  2016-10-23 12:29:20 +0800
-categories: [Js]
-tags: [js, web]
+categories: [UI]
+tags: [ui, html, web, js]
 published: true
 ---
 

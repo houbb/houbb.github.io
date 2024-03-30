@@ -1,9 +1,9 @@
 ---
 layout: post
-title: SVG
+title: SVG XML 格式定义图形
 date:  2016-10-27 13:27:06 +0800
-categories: [Web]
-tags: [svg, web, graph, xml]
+categories: [UI]
+tags: [ui, html, xml, web, js]
 published: true
 ---
 
@@ -305,9 +305,3 @@ xmlns:xlink="http://www.w3.org/1999/xlink">
 
 * any list
 {:toc}
-
-
-
-
-
-

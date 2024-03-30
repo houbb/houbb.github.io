@@ -2,8 +2,8 @@
 layout: post
 title: HighCharts 交互式图表-01-入门介绍
 date:  2016-10-27 12:35:01 +0800
-categories: [Js]
-tags: [js, chart]
+categories: [UI]
+tags: [ui, html, chart, web, js]
 published: true
 ---
 
