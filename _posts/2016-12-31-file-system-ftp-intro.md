@@ -1,6 +1,6 @@
 ---
 layout: post
-title: FTP
+title: 文件系统 FTP Ubuntu 安装入门介绍
 date:  2016-12-31 10:48:42 +0800
 categories: [File]
 tags: [ftp, file]
