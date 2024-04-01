@@ -14,7 +14,7 @@ published: false
 > [querydsl](https://houbb.github.io/2016/05/21/orm-07-querydsl)
 
 
-# 介绍一下 mysql 的表的 truncate 清空表
+# mysql 的表的 truncate 清空表
 
 ## 说明
 
@@ -101,7 +101,7 @@ TRUNCATE TABLE employees;
 答案是 truncate 非常快，特别是一些大表的删除。一般建议在测试环境大表清空时操作，记得做好必要的备份。
 
 
-# 介绍一下 repair table
+# repair table
 
 ## 说明
 
