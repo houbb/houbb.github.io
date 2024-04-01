@@ -23,6 +23,26 @@ mysql 安装教程参见以前的文章：
 
 [database mysql install on windows10 WSL](https://houbb.github.io/2024/01/05/etl-data-sync-mysql-install-wsl-intro)
 
+# 拓展阅读
+
+系统学习教程：
+
+[第1讲开篇](https://mp.weixin.qq.com/s/2WwP2QXnsu07vbdp_vRisA)
+
+[第2讲变量](https://mp.weixin.qq.com/s/EbxD4gGMsRnrsgXQQJcWJg)
+
+[第3讲java整合](https://mp.weixin.qq.com/s/seewLBCF7g9gDMyivK1jcA)
+
+[第4讲数据库管理](https://mp.weixin.qq.com/s/TgmOyipn8qRJ2KOdMdyJ_A)
+
+[第5讲用户管理](https://mp.weixin.qq.com/s/xQbtjKZnvsrkC89R9MBtZQ)
+
+[第6讲表新建](https://mp.weixin.qq.com/s/j7GlNkq9y6u4QdlF_GAi0A)
+
+[第7讲表修改](https://mp.weixin.qq.com/s/Tlz6QhrxoWdQhsjdrmg2Zg)
+
+[第8讲表其他常见操作](https://mp.weixin.qq.com/s/dAPxSXdIy1Cdtg2dKDMl1Q)
+
 # mysql 是什么？
 
 MySQL是最流行且免费的开源关系型数据库管理系统（RDBMS）。
