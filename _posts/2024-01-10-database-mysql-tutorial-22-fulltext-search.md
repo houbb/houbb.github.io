@@ -4,7 +4,7 @@ title: mysql Tutorial-22-fulltext search 全文检索
 date: 2024-01-10 21:01:55 +0800
 categories: [Database]
 tags: [database, mysql, mysql-tutorial, sh]
-published: true
+published: false
 ---
 
 # 拓展阅读

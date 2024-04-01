@@ -289,11 +289,6 @@ public static void main(String[] args) {
 
 在我们平时的开发中，我们视情况而定，并不是说必须使用 interrupt ，在一般情况下都是可以使用 volatile 的，但是这需要我们精确的掌握其中的场景。
 
-
-
-
-
-
 # 参考资料
 
 [如何优雅的关闭线程池](https://blog.csdn.net/u011397981/article/details/131325310)

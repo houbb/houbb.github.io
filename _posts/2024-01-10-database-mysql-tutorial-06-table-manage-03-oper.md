@@ -4,7 +4,7 @@ title: mysql Tutorial-06-table 表的常见操作 truncate 清空表 / repair �
 date: 2024-01-10 21:01:55 +0800
 categories: [Database]
 tags: [database, mysql, mysql-tutorial, sh]
-published: true
+published: false
 ---
 
 # 拓展阅读
