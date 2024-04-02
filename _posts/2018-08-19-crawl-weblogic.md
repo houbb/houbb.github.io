@@ -9,16 +9,16 @@ published: true
 
 # WebMagic
 
-[webmagic](https://github.com/code4craft/webmagic) is a scalable crawler framework. 
+[WebMagic](https://github.com/code4craft/webmagic) 是一个可扩展的网络爬虫框架。
 
-It covers the whole lifecycle of crawler: downloading, url management, content extraction and persistent. 
+它涵盖了爬虫的整个生命周期：下载、URL 管理、内容提取和持久化。
 
-It can simplify the development of a specific crawler.
+它可以简化特定爬虫的开发过程。
+
 
 这个框架覆盖了爬虫完整的生命周期，我们可以在其基础上进行处理。
 
 或者参考这种思路，实现自己需要的爬虫工具。
-
 
 # 快速开始
 

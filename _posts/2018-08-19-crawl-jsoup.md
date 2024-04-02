@@ -9,7 +9,7 @@ published: true
 
 # Jsoup 
 
-[Jsoup](https://github.com/jhy/jsoup): Java HTML Parser, with best of DOM, CSS, and jquery 
+[Jsoup](https://github.com/jhy/jsoup)：Java HTML 解析器，集成了 DOM、CSS 和 jQuery 的优点。
 
 # 使用入门案例
 

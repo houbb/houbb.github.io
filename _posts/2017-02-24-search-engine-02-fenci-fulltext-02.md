@@ -7,6 +7,21 @@ tags: [search-engine, index,  es, lucene, sh]
 published: true
 ---
 
+# 拓展阅读
+
+[搜索引擎-01-概览](https://houbb.github.io/2017/02/24/search-engine-01-overview-01)
+
+[搜索引擎-02-分词与全文索引](https://houbb.github.io/2017/02/24/search-engine-02-fenci-fulltext-02)
+
+[搜索引擎-03-搜索引擎原理](https://houbb.github.io/2017/02/24/search-engine-03-theory-03)
+
+[Crawl htmlunit 模拟浏览器动态 js 爬虫入门使用简介](https://houbb.github.io/2018/08/19/crawl-htmlunit)
+
+[Crawl jsoup 爬虫使用 jsoup 无法抓取动态 js 生成的内容](https://houbb.github.io/2018/08/19/crawl-jsoup)
+
+[Crawl WebMagic 爬虫入门使用简介 webmagic](https://houbb.github.io/2018/08/19/crawl-weblogic)
+
+
 # 搜索引擎
 
 查询，想必你不会陌生。
@@ -164,7 +179,7 @@ public class AppConstant {
 
 例子:
 
-比如查询用户**侯宾宾**，为了更好的用户体验。用户输入**houbinbin**、**hbb**都应该返回对应的结果。
+比如查询用户**老马啸西风**，为了更好的用户体验。用户输入**laomaxiaoxifeng**、**lmxxf**都应该返回对应的结果。
 
 - jar
 
