@@ -1,10 +1,9 @@
 ---
 layout: post
 title: MySQL View 
-date:  2017-03-30 20:44:19 +0800
+date:  2017-02-27 21:44:46 +0800
 categories: [SQL]
 tags: [mysql, view, sql]
-header-img: "static/app/res/img/kon-bg.jpeg"
 published: true
 ---
 

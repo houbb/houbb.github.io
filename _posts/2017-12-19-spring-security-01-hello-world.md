@@ -3,7 +3,7 @@ layout: post
 title:  Spring Security-01-Hello World
 date:  2017-12-19 22:29:09 +0800
 categories: [Spring]
-tags: [spring, web-safe]
+tags: [spring, spring-security, web-safe]
 published: true
 ---
 
