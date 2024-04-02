@@ -7,9 +7,6 @@ tags: [design, tool]
 published: true
 ---
 
-
-
-
 # OmniGraffle
 
 [OmniGraffle](https://www.omnigroup.com/omnigraffle/) 是一个用于创建精确、美观图形的工具：网站线框图、电气系统、家谱图以及软件类图等都能在OmniGraffle 7中生动呈现。

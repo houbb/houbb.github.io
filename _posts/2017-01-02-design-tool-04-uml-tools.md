@@ -1,9 +1,9 @@
 ---
 layout: post
 title: UML 等常见图绘制工具
-date:  2019-4-5 11:56:39 +0800
-categories: [Tool]
-tags: [tool, uml, sh]
+date:  2017-01-02 00:19:56 +0800
+categories: [Design]
+tags: [design, uml, tool]
 published: true
 ---
 
@@ -25,14 +25,3 @@ published: true
 
 * any list
 {:toc}
-
-
-
-
-
-
-
-
-
-
-

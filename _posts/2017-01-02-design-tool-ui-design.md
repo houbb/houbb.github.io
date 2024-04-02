@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  原型设计工具介绍
-date:  2022-09-03 21:22:02 +0800
-categories: [JS]
-tags: [js, id, uuid, sh]
+title:  常见原型设计工具介绍
+date:  2017-01-02 00:19:56 +0800
+categories: [Design]
+tags: [design, ui, tool]
 published: true
 ---
 

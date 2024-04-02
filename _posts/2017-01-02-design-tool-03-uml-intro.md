@@ -3,7 +3,7 @@ layout: post
 title: UML-架构图入门介绍 starUML 
 date:  2017-01-02 00:19:56 +0800
 categories: [Design]
-tags: [design, tool]
+tags: [design, uml, tool]
 published: true
 ---
 

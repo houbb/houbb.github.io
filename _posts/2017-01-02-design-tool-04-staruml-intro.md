@@ -3,7 +3,7 @@ layout: post
 title: UML 绘制工具 starUML 入门介绍
 date:  2017-01-02 00:19:56 +0800
 categories: [Design]
-tags: [design, tool]
+tags: [design, uml, tool]
 published: true
 ---
 

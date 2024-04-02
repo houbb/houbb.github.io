@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  PlantUML
-date:  2018-3-16 14:07:05 +0800
-categories: [Tool]
-tags: [uml， tool]
+title:  PlantUML 是绘制 uml 的一个开源项目
+date:  2017-01-02 00:19:56 +0800
+categories: [Design]
+tags: [design, uml, tool]
 published: true
 ---
 
