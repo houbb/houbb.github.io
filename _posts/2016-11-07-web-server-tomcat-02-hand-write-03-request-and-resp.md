@@ -135,6 +135,8 @@ Accept-Language: zh-CN,zh;q=0.9
 
 我们根据 url 解析本地的 html 等静态资源信息。
 
+resources 下面的文件，mvn clean install 之后，默认在 `~\target\classes` 路径下
+
 ## 核心代码
 
 ```java
