@@ -7,8 +7,7 @@ tags: [project]
 published: true
 ---
 
-* any list
-{:toc}
+
 
 
 # Why
@@ -323,3 +322,5 @@ public class LabelPlugin extends PluginAdapter {
 </generatorConfiguration>
 ```
 
+* any list
+{:toc}
