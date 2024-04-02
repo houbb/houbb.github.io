@@ -90,7 +90,7 @@ sudo tar -zxf apache-seatunnel-2.3.4-bin.tar.gz
 mv apache-seatunnel-2.3.4-bin apache-seatunnel-2.3.4
 ```
 
-# 配置环境变量（也许可选，建议配置）
+# 配置环境变量
 
 说明：SEATUNNEL_HOME 在我们用 shell 脚本安装 connector jar 会用到，当然也建议配置一下。
 
@@ -129,6 +129,9 @@ source /etc/profile
 $ echo $SEATUNNEL_HOME
 /wls/wls81/bigdata/seatunnel-2.3.4/backend/apache-seatunnel-2.3.4
 ```
+
+
+说明：这里必须要正确配置，应为插件的加载需要依赖这个配置。
 
 # 安装 backend 后端
 
