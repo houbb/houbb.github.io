@@ -7,6 +7,15 @@ tags: [oauth, spring-intergration, spring-cloud, sh]
 published: true
 ---
 
+# 拓展阅读
+
+[OAuth 2.0-01-Overview](https://houbb.github.io/2017/02/25/oauth2-01-overview-01)
+
+[OAuth2-02-java 整合](https://houbb.github.io/2017/02/25/oauth2-02-java-integration)
+
+[OAuth2-03-springboot 整合](https://houbb.github.io/2017/02/25/oauth2-03-springboot-integration)
+
+
 # java 例子
 
 下面是一个简单的Java程序，演示了如何使用Java实现OAuth 2.0的基本功能：
