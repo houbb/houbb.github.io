@@ -139,14 +139,15 @@ published: true
 
 # 拓展阅读
 
-time-series database 
+时序数据库
 
-[https://github.com/armink/FlashDB](About
-An ultra-lightweight database that supports key-value and time series data | 一款支持 KV 数据和时序数据的超轻量级数据库)
+关于 [https://github.com/armink/FlashDB](FlashDB)  一个支持键值和时序数据的超轻量级数据库
 
-[TiDB](https://github.com/pingcap/tidb) TiDB is an open-source, cloud-native, distributed, MySQL-Compatible database for elastic scale and real-time analytics. Try AI-powered Chat2Query free at :
+[TiDB](https://github.com/pingcap/tidb)
+TiDB 是一个开源的、云原生的、分布式的、与 MySQL 兼容的数据库，用于弹性伸缩和实时分析。免费尝试 AI 助力的 Chat2Query：
 
-[TDengine](https://github.com/taosdata/TDengine) TDengine is an open source, high-performance, cloud native time-series database optimized for Internet of Things (IoT), Connected Cars, Industrial IoT and DevOps.
+[TDengine](https://github.com/taosdata/TDengine)
+TDengine 是一个开源的、高性能的、云原生的时序数据库，专为物联网 (IoT)、联网汽车、工业物联网和 DevOps 优化。
 
 # 时序数据库有哪些？为什么要使用
 
