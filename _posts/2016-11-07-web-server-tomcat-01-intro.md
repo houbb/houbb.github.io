@@ -11,6 +11,41 @@ published: false
 
 Apache [Tomcat®](http://tomcat.apache.org/) 软件是 Java Servlet、JavaServer Pages、Java Expression Language 和 Java WebSocket 技术的开源实现。
 
+# windows 下详细的部署步骤
+
+在Windows下部署WAR包到Tomcat服务器可以通过以下步骤完成：
+
+**步骤 1：下载和安装Tomcat**
+
+1. 访问[Tomcat官方网站](https://tomcat.apache.org/)，下载最新的Tomcat二进制分发版本（例如，Tomcat 9）。
+2. 解压下载的Tomcat压缩文件到你选择的目录，比如 `C:\`。
+
+**步骤 2：准备WAR文件**
+
+确保你有一个可用的WAR文件，可以是通过构建你的Java Web应用程序得到的，或者是从其他地方获取的。假设你的WAR文件是 `myapp.war`。
+
+**步骤 3：部署WAR文件到Tomcat**
+
+1. 打开Windows资源管理器，找到Tomcat安装目录，进入 `webapps` 文件夹，比如 `C:\apache-tomcat-9.0.0\webapps`。
+2. 将你的WAR文件（`myapp.war`）复制或移动到 `webapps` 文件夹中。
+
+**步骤 4：启动Tomcat服务器**
+
+1. 打开命令提示符（Command Prompt）。
+2. 导航到Tomcat安装目录的 `bin` 文件夹，比如 `C:\apache-tomcat-9.0.0\bin`。
+3. 运行 `startup.bat` 文件来启动Tomcat服务器。
+
+**步骤 5：访问部署的Web应用程序**
+
+一旦Tomcat服务器启动，你可以通过浏览器访问你的Web应用程序。默认情况下，Tomcat监听端口是8080。在浏览器中输入 `http://localhost:8080/myapp`（假设`myapp`是你的Web应用程序的上下文路径）即可访问你的Web应用程序。
+
+**注意：**
+- 如果端口8080已经被占用，你可以在 `conf` 目录中的 `server.xml` 文件中修改端口配置。
+- 如果你需要停止Tomcat服务器，只需在 `bin` 目录中运行 `shutdown.bat` 文件。
+
+通过这些步骤，你应该能够在Windows上成功部署WAR文件到Tomcat服务器。
+
+
 # Catalina
 
 ```catalina``` 位于 **bin** 包下，是 Tomcat 的主要 shell。
