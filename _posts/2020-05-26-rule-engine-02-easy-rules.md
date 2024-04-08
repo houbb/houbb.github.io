@@ -3,15 +3,15 @@ layout: post
 title: 规则引擎-02-easy rules
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
-tags: [design, engine, sf]
+tags: [design, rule-engine, sf]
 published: true
 ---
 
 # easy rules
 
-[easy rules](https://github.com/j-easy/easy-rules) is a Java rules engine inspired by an article called "Should I use a Rules Engine?" of Martin Fowler in which Martin says:
+[easy rules](https://github.com/j-easy/easy-rules) 是一个受 Martin Fowler 文章《我应该使用规则引擎吗？》启发的 Java 规则引擎。在这篇文章中，Martin 表示：
 
-> You can build a simple rules engine yourself. All you need is to create a bunch of objects with conditions and actions, store them in a collection, and run through them to evaluate the conditions and execute the actions.
+> 你可以自己构建一个简单的规则引擎。你所需要做的就是创建一堆带有条件和动作的对象，将它们存储在一个集合中，并运行它们来评估条件并执行动作。
 
 这正是Easy Rules所做的，它提供Rule抽象以创建具有条件和动作的规则，并提供RuleEngine API，该API通过一组规则运行以评估条件并执行动作。
 

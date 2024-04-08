@@ -2,8 +2,8 @@
 layout: post
 title:  QLExpress-08-Gleanings
 date:  2018-06-10 12:32:39 +0800
-categories: [QLExpress]
-tags: [qlexpress]
+categories: [Engine]
+tags: [qlexpress, engine, rule-engine]
 published: true
 ---
 

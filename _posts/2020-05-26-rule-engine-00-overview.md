@@ -3,7 +3,7 @@ layout: post
 title: 规则引擎-00-入门
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
-tags: [rule, engine, sf]
+tags: [rule, rule-engine, sf]
 published: true
 ---
 
@@ -19,6 +19,50 @@ published: true
 在需求里面我们往往把约束，完整性，校验，分支流等都可以算到业务规则里面。在规则引擎里面谈的业务规则重点是谈当满足什么样的条件的时候，需要执行什么样的操作。因此一个完整的业务规则包括了条件和触发操作两部分内容。而引擎是事物内部的重要的运行机制，规则引擎即重点是解决规则如何描述，如何执行，如何监控等一系列问题。
 
 规则引擎由推理引擎发展而来，是一种嵌入在应用程序中的组件，实现了将业务决策从应用程序代码中分离出来，并使用预定义的语义模块编写业务决策。接受数据输入，解释业务规则，并根据业务规则做出业务决策。
+
+# 规则引擎汇总
+
+## 开源的
+
+JBoss Drools
+Mandarax
+OpenRules
+JEOPS
+InfoSapient
+Roolie
+Apache Camel
+
+| 规则引擎        | 访问地址                                             | 现状        | 是否开源 |
+|------------------|----------------------------------------------------|-------------|----------|
+| Drools           | [https://github.com/kiegroup/drools/](https://github.com/kiegroup/drools/) | 活跃        | 是       |
+| OpenL Tablets    | [https://github.com/openl-tablets/openl-tablets](https://github.com/openl-tablets/openl-tablets) | 活跃        | 是       |
+| RuleBook         | [https://github.com/deliveredtechnologies/rulebook](https://github.com/deliveredtechnologies/rulebook) | 2年未更新   | 是       |
+| Easy Rules       | [https://github.com/j-easy/easy-rules](https://github.com/j-easy/easy-rules) | 2年未更新   | 是       |
+| Gengine          | [https://github.com/rencalo770/gengine](https://github.com/rencalo770/gengine) | 国内, 2年未更新 | 是       |
+| URULE            | [https://github.com/youseries/urule](https://github.com/youseries/urule) | 国内, 2年未更新 | 是       |
+| ICE              | [https://github.com/zjn-zjn/ice](https://github.com/zjn-zjn/ice) | 国内, 活跃    | 是       |
+| WebSphere ILog   | -                                                  | 否           | -        |
+
+## github topic
+
+https://github.com/topics/rules-engine
+
+## 商业的
+
+ODM(ILOG)
+Oracle Business Rules
+旗正规则引擎
+Jess（可研究，商用收费）
+TopRules
+明策智能决策
+Blaze
+益博睿决策引擎
+
+## 重要的东西
+
+rete 算法
+
+jsr94
 
 ## 开源引擎
 
@@ -204,7 +248,50 @@ IBM ILOG。
 
 ------------------------------
 
+
+## 商用的
+
 ILog、Jess、JBoss Rules
+Ilog JRules 是最有名的商用BRMS；
+Drools 是最活跃的开源规则引擎；
+Jess 是Clips的java实现，就如JRuby之于Ruby，是AI系的代表；
+
+Visual Rules（旗正规则引擎）国内商业规则引擎品牌。
+
+这几个暂时不考虑。
+
+# Rete 引擎
+
+四者都主要使用foreward-chaining的Rete引擎，按优先级匹配条件语句，实施规则语句。
+
+规则实施后会激发事实的变化，引擎又会重新进行条件匹配，直到不能再匹配为止，Rete的算法保证了服从的最高。
+
+## Rete 算法的特点：
+
+a. Rete 算法是一种启发式算法，不同规则之间往往含有相同的模式，因此在 beta-network 中可以共享 BetaMemory 和 betanode。如果某个 betanode 被 N 条规则共享，则算法在此节点上效率会提高 N 倍。
+
+b. Rete 算法由于采用 AlphaMemory 和 BetaMemory 来存储事实，当事实集合变化不大时，保存在 alpha 和 beta 节点中的状态不需要太多变化，避免了大量的重复计算，提高了匹配效率。
+
+c. 从 Rete 网络可以看出，Rete 匹配速度与规则数目无关，这是因为事实只有满足本节点才会继续向下沿网络传递。
+
+## Rete 算法的不足：
+
+a. 事实的删除与事实的添加顺序相同, 除了要执行与事实添加相同的计算外, 还需要执行查找, 开销很高 。
+
+b. RETE 算法使用了β存储区存储已计算的中间结果, 以牺牲空间换取时间, 从而加快系统的速度。然而β存储区根据规则的条件与事实的数目而成指数级增长, 所以当规则与事实很多时, 会耗尽系统资源。
+
+## 针对 Rete 算法的特点和不足，在应用或者开发基于 Rete 算法的规则引擎时，改进方向：
+
+a. 容易变化的规则尽量置后匹配，可以减少规则的变化带来规则库的变化。
+
+b. 约束性较为通用或较强的模式尽量置前匹配，可以避免不必要的匹配。
+
+c. 针对 Rete 算法内存开销大和事实增加删除影响效率的问题，技术上应该在 alpha 内存和 beata 内存中，只存储指向内存的指针，并对指针建里索引（可用 hash 表或者非平衡二叉树）。
+
+d. Rete 算法 JoinNode 可以扩展为 AndJoinNode 和 OrJoinNode，两种节点可以再进行组合 。
+
+ 
+
 
 # 参考资料
 
@@ -215,6 +302,8 @@ ILog、Jess、JBoss Rules
 [小明的烦恼](https://www.cnblogs.com/ityouknow/archive/2017/08/07/7297524.html)
 
 [Drools（JBoss Rules） 总结](https://www.cnblogs.com/wangzn/p/6024146.html)
+
+[几款常用规则引擎的简单对比及演示](https://developer.aliyun.com/article/228125)
 
 * any list
 {:toc}

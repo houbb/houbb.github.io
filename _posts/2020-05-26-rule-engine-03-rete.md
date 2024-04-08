@@ -3,7 +3,7 @@ layout: post
 title: 规则引擎-03-RETE 算法
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
-tags: [design, engine, sf]
+tags: [design, rule-engine, sf]
 published: true
 ---
 

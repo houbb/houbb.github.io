@@ -2,8 +2,8 @@
 layout: post
 title:  QLExpress-04-Bind Class or Method
 date:  2018-06-10 11:52:52 +0800
-categories: [QLExpress]
-tags: [qlexpress]
+categories: [Engine]
+tags: [qlexpress, engine, rule-engine]
 published: true
 ---
 

@@ -1,18 +1,15 @@
 ---
 layout: post
-title:  Aviator
+title:  java 表达式引擎概览-02-Aviator 入门介绍
 date:  2018-06-08 13:30:00 +0800
-categories: [Express]
-tags: [express]
+categories: [Engine]
+tags: [engine, expression-engine]
 published: true
 ---
 
 # Aviator
 
-[Aviator](http://fnil.net/aviator/) a lightweight, high performance expression evaluator for java. 
-
-Aviator compiles expression to byte code and evaluate it on the fly.
-
+Aviator 是一个轻量级、高性能的 Java 表达式求值器。它可以将表达式编译为字节码，并即时执行求值。
 
 # 快速入门
 

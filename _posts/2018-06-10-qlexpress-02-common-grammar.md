@@ -2,8 +2,8 @@
 layout: post
 title:  QLExpress-02-Common Java Grammar
 date:  2018-06-10 11:03:08 +0800
-categories: [QLExpress]
-tags: [qlexpress]
+categories: [Engine]
+tags: [qlexpress, engine, rule-engine]
 published: true
 ---
 

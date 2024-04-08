@@ -2,16 +2,55 @@
 layout: post
 title:  QLExpress-01-Quick Start
 date:  2018-06-10 10:29:21 +0800
-categories: [QLExpress]
-tags: [qlexpress]
+categories: [Engine]
+tags: [qlexpress, engine, rule-engine]
 published: true
 ---
 
 
 # QLExpress
 
-[QLExpress](https://github.com/alibaba/QLExpress) is a powerful, lightweight, 
-dynamic language for the Java platform aimed at improving developers’ productivity in different business scenes.
+QLExpress 是一个基于 Java 的表达式解析器和规则引擎，它旨在提供一种简单、高效的方式来处理和计算表达式，同时支持规则的定义和执行。QLExpress 适用于需要动态表达式计算和复杂决策逻辑的场景，如金融分析、业务规则管理、数据验证等。
+
+### 核心特性
+
+1. **表达式解析**：QLExpress 能够解析包含变量、常量、函数调用和操作符的复杂表达式，并计算其结果。
+
+2. **规则定义**：用户可以定义包含条件和动作的业务规则，QLExpress 根据这些规则执行相应的逻辑。
+
+3. **高性能**：QLExpress 优化了表达式的编译和执行过程，以提高计算效率。
+
+4. **易于集成**：作为一个 Java 库，QLExpress 可以轻松集成到任何 Java 应用程序中。
+
+5. **灵活性**：QLExpress 支持自定义函数和操作符，使得用户可以根据业务需求扩展其功能。
+
+6. **错误处理**：QLExpress 提供了详细的错误信息和堆栈跟踪，方便开发者调试和定位问题。
+
+### 使用场景
+
+- **金融分析**：在金融领域，QLExpress 可以用来计算投资组合的风险和收益，或者评估贷款申请者的信用等级。
+
+- **业务规则管理**：企业可以使用 QLExpress 来定义和管理业务规则，如定价策略、促销活动条件等。
+
+- **数据验证**：QLExpress 可以用于验证用户输入数据是否符合特定的业务规则，如年龄限制、密码强度等。
+
+- **报表生成**：在生成报表时，QLExpress 可以用来动态计算各种指标，如销售额、成本分析等。
+
+### 优势
+
+- **易用性**：QLExpress 提供了直观的 API，使得定义表达式和规则变得简单快捷。
+
+- **灵活性**：支持自定义扩展，可以适应各种复杂的业务逻辑。
+
+- **性能**：优化的算法确保了在处理大量数据时仍能保持良好的性能。
+
+### 缺点
+
+- **文档和社区支持**：相较于一些更流行的表达式引擎和规则引擎，QLExpress 的文档和社区支持可能相对较少。
+
+- **功能限制**：虽然 QLExpress 提供了基本的表达式解析和规则执行功能，但可能不如一些成熟的规则引擎那样功能全面。
+
+总的来说，QLExpress 是一个轻量级且功能强大的工具，适合需要在 Java 应用程序中进行表达式计算和业务规则管理的场景。开发者可以利用其灵活性和高性能来构建复杂的业务逻辑，同时保持代码的清晰和可维护性。
 
 ## 应用场景
 

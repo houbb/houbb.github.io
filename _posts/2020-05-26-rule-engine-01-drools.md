@@ -3,13 +3,13 @@ layout: post
 title: 规则引擎-01-drools 框架入门
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
-tags: [design, engine, sf]
+tags: [design, rule-engine, sf]
 published: true
 ---
 
 # Drools
 
-[Drools](http://www.drools.org) is a rule engine, DMN engine and complex event processing (CEP) engine for Java. 
+[Drools](http://www.drools.org) 是一个针对 Java 的规则引擎、DMN 引擎和复杂事件处理（CEP）引擎。
 
 适用于Java™和JVM平台的开源规则引擎，DMN引擎和复杂事件处理（CEP）引擎。
 
