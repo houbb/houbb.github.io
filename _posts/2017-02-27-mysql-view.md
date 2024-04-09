@@ -1,11 +1,30 @@
 ---
 layout: post
-title: MySQL View 
+title: MySQL View 视图 
 date:  2017-02-27 21:44:46 +0800
 categories: [SQL]
 tags: [mysql, view, sql]
 published: true
 ---
+
+
+# 拓展阅读
+
+[MySQL View](https://houbb.github.io/2017/02/27/mysql-view)
+
+[MySQL truncate table 与 delete 清空表的区别和坑](https://houbb.github.io/2017/02/27/mysql-truncate)
+
+[MySQL Ruler mysql 日常开发规范](https://houbb.github.io/2017/02/27/mysql-ruler)
+
+[MySQL datetime timestamp 以及如何自动更新，如何实现范围查询](https://houbb.github.io/2017/02/27/mysql-datetime-timestamp)
+
+[MySQL 06 mysql 如何实现类似 oracle 的 merge into](https://houbb.github.io/2017/02/27/mysql-06-merge-into)
+
+[MySQL 05 MySQL入门教程（MySQL tutorial book）](https://houbb.github.io/2017/02/27/mysql-05-learn-book)
+
+[MySQL 04- EMOJI 表情与 UTF8MB4 的故事](https://houbb.github.io/2017/02/27/mysql-04-emoj-and-utf8mb4)
+
+[MySQL Expression 1 of ORDER BY clause is not in SELECT list,references column](https://houbb.github.io/2017/02/27/mysql-03-error)
 
 # Mysql View
 
@@ -170,24 +189,5 @@ mysql> drop view v_user_info;
 Query OK, 0 rows affected (0.00 sec)
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+* any list
+{:toc}
