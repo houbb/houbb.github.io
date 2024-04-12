@@ -273,3 +273,27 @@ CREATE (methodB:Method {name: 'methodB', app: appB})
   
 // 创建调用关系  
 CREATE (methodA)-[:CALLS]->(methodB)
+
+
+# 启动报错
+
+安装路径:
+
+```
+C:\Users\dh\AppData\Local\Programs\Neo4j Desktop
+```
+
+or：
+
+```
+D:\Users\dh\AppData\Local\Programs\Neo4j Desktop
+```
+
+数据路径：
+
+```
+C:\Users\dh\C:\Users\dh\.Neo4jDesktop
+```
+
+重新安装一定要把数据清理干净。
+
