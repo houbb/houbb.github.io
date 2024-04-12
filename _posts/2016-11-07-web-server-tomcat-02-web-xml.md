@@ -415,6 +415,7 @@ public interface WriteListener extends EventListener {
 
 总之，当用户请求的 URL 是 Web 应用程序的根目录时，Servlet 容器会根据 `welcome-file-list` 中定义的欢迎文件列表来匹配并返回合适的欢迎文件。
 
+<<<<<<< HEAD
 # 详细介绍一下 Listener
 
 在Java Web应用程序中，Listener（监听器）是一种特殊的Java类，用于监听Web应用程序中发生的事件并对其进行响应。
@@ -422,6 +423,19 @@ public interface WriteListener extends EventListener {
 通过监听器，开发人员可以在特定事件发生时执行自定义的逻辑，从而实现更灵活和可定制化的Web应用程序。以下是对Listener的详细介绍：
 
 1. **类型：**Listener在Java EE中有多种类型，用于监听不同类型的事件。常见的Listener类型包括：
+=======
+## Listener 
+
+在Java Web应用程序中，Listener（监听器）是一种特殊的Java类，用于监听Web应用程序中发生的事件并对其进行响应。
+
+通过监听器，开发人员可以在特定事件发生时执行自定义的逻辑，从而实现更灵活和可定制化的Web应用程序。
+
+以下是对Listener的详细介绍：
+
+1. **类型：**Listener在Java EE中有多种类型，用于监听不同类型的事件。
+
+常见的Listener类型包括：
+>>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
    - ServletContextListener：监听ServletContext的创建和销毁事件。
    - ServletContextAttributeListener：监听ServletContext属性的增加、删除和修改事件。
    - HttpSessionListener：监听HttpSession的创建和销毁事件。
@@ -430,6 +444,7 @@ public interface WriteListener extends EventListener {
    - ServletRequestAttributeListener：监听ServletRequest属性的增加、删除和修改事件。
    - ...等等，还有其他自定义的Listener类型。
 
+<<<<<<< HEAD
 2. **作用：**Listener用于处理各种事件，可以在应用程序启动、销毁、会话创建、会话销毁等阶段执行相关逻辑。
 
 它们可以用于进行初始化、资源加载、日志记录、权限验证、会话管理等各种操作。
@@ -438,20 +453,38 @@ public interface WriteListener extends EventListener {
 
 示例如下：
 
+=======
+2. **作用：**
+
+Listener用于处理各种事件，可以在应用程序启动、销毁、会话创建、会话销毁等阶段执行相关逻辑。
+
+它们可以用于进行初始化、资源加载、日志记录、权限验证、会话管理等各种操作。
+
+3. **注册：**要使用Listener，需要在web.xml文件中进行配置。示例如下：
+>>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
     ```xml
     <listener>
         <listener-class>com.example.MyServletContextListener</listener-class>
     </listener>
     ```
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
    这样就注册了一个ServletContextListener，当ServletContext被创建或销毁时，`com.example.MyServletContextListener` 中的相应方法将被调用。
 
 4. **生命周期方法：**Listener类通常需要实现特定的生命周期方法，以便在事件发生时执行相应的逻辑。
 
+<<<<<<< HEAD
 例如，对于ServletContextListener，通常会实现`contextInitialized()`方法用于在ServletContext被初始化时执行逻辑，以及`contextDestroyed()`方法用于在ServletContext被销毁时执行逻辑。
 
 5. **应用场景：**Listener广泛应用于Web应用程序的各个方面，例如：
 
+=======
+例如，对于 ServletContextListener，通常会实现`contextInitialized()`方法用于在 ServletContext 被初始化时执行逻辑，以及`contextDestroyed()`方法用于在ServletContext被销毁时执行逻辑。
+
+5. **应用场景：**Listener广泛应用于Web应用程序的各个方面，例如：
+>>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
    - 在应用程序启动时进行初始化操作，如加载配置信息、初始化数据库连接等。
    - 在会话创建和销毁时进行相关操作，如记录用户登录信息、清理会话数据等。
    - 在请求到达时进行权限验证、日志记录等操作。
@@ -459,7 +492,11 @@ public interface WriteListener extends EventListener {
 
 总之，Listener提供了一种灵活的机制，使开发人员能够监听和响应Java Web应用程序中发生的各种事件，从而实现更加可定制化和高效的应用程序。
 
+<<<<<<< HEAD
 # ServletContextListener 监听到ServletContext，会有哪些属性内容？
+=======
+## ServletContextListener 监听到ServletContext，会有哪些属性内容？
+>>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
 
 当 `ServletContextListener` 监听到 `ServletContext` 的创建事件时，可以通过 `ServletContext` 对象获取到一些有用的属性内容，这些内容通常包括：
 
@@ -483,9 +520,12 @@ public interface WriteListener extends EventListener {
 
 
 
+<<<<<<< HEAD
 
 
 
 
+=======
+>>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
 * any list
 {:toc}

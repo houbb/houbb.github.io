@@ -11,7 +11,11 @@ published: true
 
 ## 设置
 
-本机图像工具更容易与单个 JAR 一起使用，因此该过程将使用 Maven shade 插件 JAR 打包。其思想是生成一个包含来自 Tomcat、Web 应用程序和所有附加依赖项的所有必要类的单个 JAR。尽管 Tomcat 已经接收了兼容性修复以支持本机图像，但其他库可能不兼容，可能需要替换代码（GraalVM 文档有更多详细信息）。
+本机图像工具更容易与单个 JAR 一起使用，因此该过程将使用 Maven shade 插件 JAR 打包。
+
+其思想是生成一个包含来自 Tomcat、Web 应用程序和所有附加依赖项的所有必要类的单个 JAR。
+
+尽管 Tomcat 已经接收了兼容性修复以支持本机图像，但其他库可能不兼容，可能需要替换代码（GraalVM 文档有更多详细信息）。
 
 - 下载并安装 GraalVM 或 Mandrel。
 - 从 https://github.com/apache/tomcat/tree/main/modules/stuffed 下载 Tomcat Stuffed 模块。为了方便起见，可以设置一个环境变量：
