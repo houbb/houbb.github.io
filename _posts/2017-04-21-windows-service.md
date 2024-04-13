@@ -249,15 +249,5 @@ C:\Windows\system32>pause
 
 [C#创建Windows Service(Windows 服务)基础教程](http://www.cnblogs.com/sorex/archive/2012/05/16/2502001.html)
 
-
-
-
-
-
-
-
-
-
-
 * any list
 {:toc}

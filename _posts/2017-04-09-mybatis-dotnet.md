@@ -1,10 +1,9 @@
 ---
 layout: post
 title:  Mybatis.NET
-date:  2017-04-08 16:03:49 +0800
-categories: [ORM]
-tags: [mybatis, dotnet]
-header-img: "static/app/res/img/kon-bg.jpeg"
+date:  2017-04-09 21:44:46 +0800
+categories: [C#]
+tags: [cshape, cshape, lang, .net, dotnet]
 published: true
 ---
 
