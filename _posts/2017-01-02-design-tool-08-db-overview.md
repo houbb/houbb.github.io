@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 数据库设计工具概览 常见 11 种 的数据库设计工具对比
-date:  2017-03-21 19:45:00 +0800
+title: 数据库设计工具概览 常见 11 种 的数据库设计工具对比 PowerDesigner
+date:  2017-01-02 00:19:56 +0800
 categories: [Design]
 tags: [design, design, tool, database, sql]
 published: true
@@ -9,30 +9,32 @@ published: true
 
 # 拓展阅读
 
-[常见免费开源绘图工具](https://houbb.github.io/2017/01/01/design-tool-01-overview)
+[数据库设计工具-08-概览](https://houbb.github.io/2017/01/01/design-tool-db-01-db-overview)
 
-[OmniGraffle 创建精确、美观图形的工具](https://houbb.github.io/2017/01/01/design-tool-02-omniGraffle-intro)
+[数据库设计工具-08-powerdesigner](https://houbb.github.io/2017/01/01/design-tool-db-09-powerdesigner-01-intro)
 
-[UML-架构图入门介绍 starUML](https://houbb.github.io/2017/01/01/design-tool-03-uml-intro)
+[数据库设计工具-09-mysql workbench](https://houbb.github.io/2017/01/01/design-tool-db-09-mysql-workbench-01-intro)
 
-[UML 绘制工具 starUML 入门介绍](https://houbb.github.io/2017/01/01/design-tool-04-staruml-intro)
+[数据库设计工具-10-design](https://houbb.github.io/2017/01/01/design-tool-db-10-design-01-intro)
 
-[PlantUML 是绘制 uml 的一个开源项目](https://houbb.github.io/2017/01/01/design-tool-04-uml-plantuml)
+[数据库设计工具-11-dbeaver](https://houbb.github.io/2017/01/01/design-tool-db-11-dbeaver-01-intro)
 
-[UML 等常见图绘制工具](https://houbb.github.io/2017/01/01/design-tool-04-uml-tools)
+[数据库设计工具-12-pgmodeler](https://houbb.github.io/2017/01/01/design-tool-db-12-pgmodeler-01-intro)
 
-[绘图工具 draw.io / diagrams.net 免费在线图表编辑器](https://houbb.github.io/2017/01/01/design-tool-05-draw-io-intro)
+[数据库设计工具-13-pgmodeler](https://houbb.github.io/2017/01/01/design-tool-db-13-erdplus-01-intro)
 
-[绘图工具 excalidraw 介绍](https://houbb.github.io/2017/01/01/design-tool-06-excalidraw-intro)
+[数据库设计工具-14-Navicat Data Modeler](https://houbb.github.io/2017/01/01/design-tool-db-14-nav-data-modeler-01-intro)
 
-[绘图工具 GoJS 介绍 绘图 js](https://houbb.github.io/2017/01/01/design-tool-07-go-js-intro)
+[数据库设计工具-15-dbdiagram](https://houbb.github.io/2017/01/01/design-tool-db-15-dbdiagram-01-intro)
 
-[常见原型设计工具介绍](https://houbb.github.io/2017/01/01/design-tool-ui-00-design)
+[数据库设计工具-16-sqldbm](https://houbb.github.io/2017/01/01/design-tool-db-16-sqldbm-01-intro)
 
-[原型设计工具介绍-01-moqups 介绍](https://houbb.github.io/2017/01/01/design-tool-ui-design-01-moqups)
+[数据库设计工具-17-pdman](https://houbb.github.io/2017/01/01/design-tool-db-17-pdman-01-intro)
+
+[数据库设计工具-18-er-studio](https://houbb.github.io/2017/01/01/design-tool-db-18-er-studio-01-intro)
+
 
 # 常见 11 种 的数据库设计工具
-
 
 Navicat Data Modeler, PowerDesigner, dbdiagram.io, SqlDBM, PDMan, pgModeler, ER/Studio, MySQL Workbench, DBDesigner 4, DBeaver, ERDPlus
 

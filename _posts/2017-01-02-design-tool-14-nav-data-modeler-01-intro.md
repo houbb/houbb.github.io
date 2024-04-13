@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 数据库设计工具 Navicat Data Modeler 入门介绍
-date:  2017-03-21 19:45:00 +0800
+date:  2017-01-02 00:19:56 +0800
 categories: [Design]
 tags: [design, design, tool, database, sql]
 published: true
