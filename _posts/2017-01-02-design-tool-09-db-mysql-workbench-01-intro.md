@@ -9,27 +9,29 @@ published: true
 
 # 拓展阅读
 
-[常见免费开源绘图工具](https://houbb.github.io/2017/01/01/design-tool-01-overview)
+[数据库设计工具-08-概览](https://houbb.github.io/2017/01/01/design-tool-08-db-overview)
 
-[OmniGraffle 创建精确、美观图形的工具](https://houbb.github.io/2017/01/01/design-tool-02-omniGraffle-intro)
+[数据库设计工具-08-powerdesigner](https://houbb.github.io/2017/01/01/design-tool-08-db-powerdesigner-01-intro)
 
-[UML-架构图入门介绍 starUML](https://houbb.github.io/2017/01/01/design-tool-03-uml-intro)
+[数据库设计工具-09-mysql workbench](https://houbb.github.io/2017/01/01/design-tool-09-db-mysql-workbench-01-intro)
 
-[UML 绘制工具 starUML 入门介绍](https://houbb.github.io/2017/01/01/design-tool-04-staruml-intro)
+[数据库设计工具-10-dbdesign](https://houbb.github.io/2017/01/01/design-tool-10-db-dbdesign-4-01-intro)
 
-[PlantUML 是绘制 uml 的一个开源项目](https://houbb.github.io/2017/01/01/design-tool-04-uml-plantuml)
+[数据库设计工具-11-dbeaver](https://houbb.github.io/2017/01/01/design-tool-11-db-dbeaver-01-intro)
 
-[UML 等常见图绘制工具](https://houbb.github.io/2017/01/01/design-tool-04-uml-tools)
+[数据库设计工具-12-pgmodeler](https://houbb.github.io/2017/01/01/design-tool-12-db-pqmodeler-01-intro)
 
-[绘图工具 draw.io / diagrams.net 免费在线图表编辑器](https://houbb.github.io/2017/01/01/design-tool-05-draw-io-intro)
+[数据库设计工具-13-erdplus](https://houbb.github.io/2017/01/01/design-tool-13-db-erdplus-01-intro)
 
-[绘图工具 excalidraw 介绍](https://houbb.github.io/2017/01/01/design-tool-06-excalidraw-intro)
+[数据库设计工具-14-Navicat Data Modeler](https://houbb.github.io/2017/01/01/design-tool-14-db-nav-data-modeler-01-intro)
 
-[绘图工具 GoJS 介绍 绘图 js](https://houbb.github.io/2017/01/01/design-tool-07-go-js-intro)
+[数据库设计工具-15-dbdiagram](https://houbb.github.io/2017/01/01/design-tool-15-db-dbdiagram-io-01-intro)
 
-[常见原型设计工具介绍](https://houbb.github.io/2017/01/01/design-tool-ui-00-design)
+[数据库设计工具-16-sqldbm](https://houbb.github.io/2017/01/01/design-tool-16-db-sqldbm-01-intro)
 
-[原型设计工具介绍-01-moqups 介绍](https://houbb.github.io/2017/01/01/design-tool-ui-design-01-moqups)
+[数据库设计工具-17-pdman](https://houbb.github.io/2017/01/01/design-tool-17-db-pdman-01-intro)
+
+[数据库设计工具-18-er-studio](https://houbb.github.io/2017/01/01/design-tool-18-er-studio-01-intro)
 
 # MySQL Workbench
 

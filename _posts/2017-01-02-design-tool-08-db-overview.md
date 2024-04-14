@@ -9,29 +9,29 @@ published: true
 
 # 拓展阅读
 
-[数据库设计工具-08-概览](https://houbb.github.io/2017/01/01/design-tool-db-01-db-overview)
+[数据库设计工具-08-概览](https://houbb.github.io/2017/01/01/design-tool-08-db-overview)
 
-[数据库设计工具-08-powerdesigner](https://houbb.github.io/2017/01/01/design-tool-db-09-powerdesigner-01-intro)
+[数据库设计工具-08-powerdesigner](https://houbb.github.io/2017/01/01/design-tool-08-db-powerdesigner-01-intro)
 
-[数据库设计工具-09-mysql workbench](https://houbb.github.io/2017/01/01/design-tool-db-09-mysql-workbench-01-intro)
+[数据库设计工具-09-mysql workbench](https://houbb.github.io/2017/01/01/design-tool-09-db-mysql-workbench-01-intro)
 
-[数据库设计工具-10-design](https://houbb.github.io/2017/01/01/design-tool-db-10-design-01-intro)
+[数据库设计工具-10-dbdesign](https://houbb.github.io/2017/01/01/design-tool-10-db-dbdesign-4-01-intro)
 
-[数据库设计工具-11-dbeaver](https://houbb.github.io/2017/01/01/design-tool-db-11-dbeaver-01-intro)
+[数据库设计工具-11-dbeaver](https://houbb.github.io/2017/01/01/design-tool-11-db-dbeaver-01-intro)
 
-[数据库设计工具-12-pgmodeler](https://houbb.github.io/2017/01/01/design-tool-db-12-pgmodeler-01-intro)
+[数据库设计工具-12-pgmodeler](https://houbb.github.io/2017/01/01/design-tool-12-db-pqmodeler-01-intro)
 
-[数据库设计工具-13-pgmodeler](https://houbb.github.io/2017/01/01/design-tool-db-13-erdplus-01-intro)
+[数据库设计工具-13-erdplus](https://houbb.github.io/2017/01/01/design-tool-13-db-erdplus-01-intro)
 
-[数据库设计工具-14-Navicat Data Modeler](https://houbb.github.io/2017/01/01/design-tool-db-14-nav-data-modeler-01-intro)
+[数据库设计工具-14-Navicat Data Modeler](https://houbb.github.io/2017/01/01/design-tool-14-db-nav-data-modeler-01-intro)
 
-[数据库设计工具-15-dbdiagram](https://houbb.github.io/2017/01/01/design-tool-db-15-dbdiagram-01-intro)
+[数据库设计工具-15-dbdiagram](https://houbb.github.io/2017/01/01/design-tool-15-db-dbdiagram-io-01-intro)
 
-[数据库设计工具-16-sqldbm](https://houbb.github.io/2017/01/01/design-tool-db-16-sqldbm-01-intro)
+[数据库设计工具-16-sqldbm](https://houbb.github.io/2017/01/01/design-tool-16-db-sqldbm-01-intro)
 
-[数据库设计工具-17-pdman](https://houbb.github.io/2017/01/01/design-tool-db-17-pdman-01-intro)
+[数据库设计工具-17-pdman](https://houbb.github.io/2017/01/01/design-tool-17-db-pdman-01-intro)
 
-[数据库设计工具-18-er-studio](https://houbb.github.io/2017/01/01/design-tool-db-18-er-studio-01-intro)
+[数据库设计工具-18-er-studio](https://houbb.github.io/2017/01/01/design-tool-18-er-studio-01-intro)
 
 
 # 常见 11 种 的数据库设计工具
