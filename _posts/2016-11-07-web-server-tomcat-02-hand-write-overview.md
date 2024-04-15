@@ -52,6 +52,83 @@ published: false
 
 这只是一个简单版本的 Tomcat，实现的功能有限。要实现完整的 Tomcat 功能，还需要考虑更多的细节，如多线程支持、连接池、Session 管理、安全性等。但是通过以上步骤，你可以建立一个基本的理解，并开始构建一个简单的 Servlet 容器和 Web 服务器。
 
+# 开源地址
+
+## 项目简介
+
+```
+ /\_/\  
+( o.o ) 
+ > ^ <
+```
+
+mini-cat 是简易版本的 tomcat 实现。别称【嗅虎】(心有猛虎，轻嗅蔷薇。)
+
+开源地址：[https://github.com/houbb/minicat](https://github.com/houbb/minicat)
+
+## 特性
+
+- 简单的启动实现/netty 支持
+
+- servlet 支持
+
+- 静态网页支持
+
+- filter/listener 支持
+
+- wars 支持
+
+## 快速开始
+
+### maven 依赖
+
+```xml
+<dependency>
+    <groupId>com.github.houbb</groupId>
+    <artifactId>minicat</artifactId>
+    <version>0.7.0</version>
+</dependency>
+```
+
+### 启动测试
+
+运行测试类 `MiniCatBootstrapMain#main`
+
+```java
+MiniCatBootstrap bootstrap = new MiniCatBootstrap();
+bootstrap.start();
+```
+
+启动日志：
+
+```
+[INFO] [2024-04-03 11:09:15.178] [main] [c.g.h.m.s.s.WebXmlServletManager.register] - [MiniCat] register servlet, url=/my, servlet=com.github.houbb.minicat.support.servlet.MyMiniCatHttpServlet
+[INFO] [2024-04-03 11:09:15.180] [Thread-0] [c.g.h.m.b.MiniCatBootstrap.startSync] - [MiniCat] start listen on port 8080
+[INFO] [2024-04-03 11:09:15.180] [Thread-0] [c.g.h.m.b.MiniCatBootstrap.startSync] - [MiniCat] visit url http://127.0.0.1:8080
+```
+
+页面访问：[http://127.0.0.1:8080](http://127.0.0.1:8080)
+
+响应：
+
+```
+http://127.0.0.1:8080
+```
+
+### 测试
+
+servlet: http://127.0.0.1:8080/my
+
+html: http://127.0.0.1:8080/index.html
+
+## 开源地址
+
+开源地址：[https://github.com/houbb/minicat](https://github.com/houbb/minicat)
+
+开源不易，欢迎 fork+star~~~ 鼓励一下作者
+
+# chat
+
 ## Q: tomcat 有哪些核心能力？
 
 Tomcat 是一个功能强大的开源 Servlet 容器和 Web 服务器，具有多种核心能力，包括但不限于以下几点：
@@ -83,6 +160,8 @@ Tomcat 是一个功能强大的开源 Servlet 容器和 Web 服务器，具有�
    Tomcat 提供了管理和监控功能，允许管理员通过 Web 界面或命令行工具管理和监控 Tomcat 服务器。它提供了各种管理工具，包括管理控制台、管理 API、日志记录和性能监控等。
 
 这些都是 Tomcat 的一些核心能力，使其成为一个流行的 Web 应用程序服务器和 Servlet 容器。
+
+
 
 #  开源的手写项目
 
