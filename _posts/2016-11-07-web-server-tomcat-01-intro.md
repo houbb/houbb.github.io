@@ -1,6 +1,6 @@
 ---
 layout: post
-title: web server apache Tomcat 入门介绍
+title: web server apache Tomcat 入门介绍+windows 部署
 date:  2016-11-7 17:13:40 +0800
 categories: [Web]
 tags: [tomcat, server, web]
@@ -10,6 +10,22 @@ published: false
 # Tomcat
 
 Apache [Tomcat®](http://tomcat.apache.org/) 软件是 Java Servlet、JavaServer Pages、Java Expression Language 和 Java WebSocket 技术的开源实现。
+
+## 简洁
+
+Apache Tomcat是一个开源的、免费的Servlet容器，由Apache软件基金会的Jakarta项目开发。它实现了对Servlet和JSP规范的支持，并且可以作为一个Web服务器来使用，尽管它在处理静态资源方面的能力不如专业的Web服务器如Apache或Nginx。Tomcat广泛应用于中小型Web项目中，并且因其轻量级和易用性而受到Java开发者的青睐。
+
+### 架构与组件
+
+Tomcat的架构设计包括几个关键组件，如Catalina（Servlet容器）、Connecor（连接器）、Coyote（请求处理器）等，它们共同协作处理客户端请求并返回响应。
+
+### 应用场景
+
+Tomcat通常用于开发和测试环境，也适用于生产环境中的大规模、高并发的互联网产品部署。它可以与Apache HTTP Server或Nginx等Web服务器集成，以实现负载均衡和集群化部署，提高系统的可用性和可伸缩性。
+
+### 配置与管理
+
+Tomcat提供了丰富的配置选项，允许用户根据需要调整JVM设置、服务器参数、Web应用配置等。此外，Tomcat还支持通过JMX、Ant等方式进行Web应用的部署管理。
 
 # windows 下详细的部署步骤
 

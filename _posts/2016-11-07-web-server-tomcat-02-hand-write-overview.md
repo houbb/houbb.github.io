@@ -1,6 +1,6 @@
 ---
 layout: post
-title: web server apache Tomcat 手写入门介绍
+title: 从零手写实现 apache Tomcat-01-入门介绍
 date:  2016-11-7 17:13:40 +0800
 categories: [Web]
 tags: [tomcat, server, web]
@@ -8,11 +8,9 @@ published: false
 ---
 
 
-# chat
+# 自己如何实现？
 
-## Q: 自己如何实现？
-
-要实现一个简单版本的Tomcat，你可以按照以下步骤进行：
+要实现一个简单版本的Tomcat，整体思路如下
 
 1. **了解 Tomcat 的基本原理**：
    - Tomcat 是一个开源的 Java Servlet 容器和 Web 服务器，它能够运行 Java Servlet 和 JavaServer Pages。
@@ -50,9 +48,11 @@ published: false
    - 创建一些简单的 Servlet 和静态资源，并在浏览器中测试你的服务器。
    - 确保服务器能够正确地处理各种类型的请求，并能够返回正确的响应。
 
-这只是一个简单版本的 Tomcat，实现的功能有限。要实现完整的 Tomcat 功能，还需要考虑更多的细节，如多线程支持、连接池、Session 管理、安全性等。但是通过以上步骤，你可以建立一个基本的理解，并开始构建一个简单的 Servlet 容器和 Web 服务器。
+要实现完整的 Tomcat 功能，还需要考虑更多的细节，如多线程支持、连接池、Session 管理、安全性等。
 
-# 开源地址
+我们可以循序渐进，先实现一些核心的能力。
+
+# 从零手写例子
 
 ## 项目简介
 
@@ -126,6 +126,7 @@ html: http://127.0.0.1:8080/index.html
 开源地址：[https://github.com/houbb/minicat](https://github.com/houbb/minicat)
 
 开源不易，欢迎 fork+star~~~ 鼓励一下作者
+
 
 # chat
 
