@@ -99,6 +99,20 @@ RETURN u;
 
 总体而言这种写法比较优雅，下面的方法也行，感兴趣可以继续阅读。
 
+### 调整的写法
+
+也可以调整如下：
+
+```sql
+WITH 2 AS status
+WHERE status IN [1, 2, 3]
+MERGE (u:User {id: 72}) SET u.status = status, u.username = 'u-72', u.create_time=timestamp()
+RETURN u;
+```
+
+只把需要处理的状态提上去，其他的正常写。
+
+
 ## 方式2
 
 ### 满足条件的状态
