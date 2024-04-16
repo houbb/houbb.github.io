@@ -50,7 +50,7 @@ Realm 是一个包含用户名和密码的“数据库”，用于标识 Web 应
        ...此实现的其他属性.../>
 ```
 
-<Realm> 元素可以嵌套在以下任何一个 Container 元素内。
+`<Realm>` 元素可以嵌套在以下任何一个 Container 元素内。
 
 Realm 元素的位置直接影响该 Realm 的“范围”（即哪些 Web 应用程序将共享相同的身份验证信息）：
 
@@ -67,7 +67,9 @@ Realm 元素的位置直接影响该 Realm 的“范围”（即哪些 Web 应�
 
 对于标准的 Realm 实现中的每一个用户密码（默认情况下），密码是以明文形式存储的。在许多环境中，这是不希望的，因为身份验证数据的偶然观察者可以收集足够的信息成功登录，并冒充其他用户。为了避免这个问题，标准实现支持摘要用户密码的概念。这允许密码的存储版本被编码（以一种不易逆转的形式），但 Realm 实现仍然可以用于认证。
 
-当标准的 Realm 通过检索存储的密码并将其与用户提供的值进行比较来进行身份验证时，您可以通过在您的 <Realm> 元素内部放置一个 CredentialHandler 元素来选择摘要密码。支持其中一种算法 SSHA、SHA 或 MD5 的简单选择是使用 MessageDigestCredentialHandler。此元素必须配置为 java.security.MessageDigest 类支持的摘要算法之一（SSHA、SHA 或 MD5）。当您选择此选项时，存储在 Realm 中的密码内容必须是由指定算法摘要的明文版本。
+当标准的 Realm 通过检索存储的密码并将其与用户提供的值进行比较来进行身份验证时，您可以通过在您的 `<Realm>` 元素内部放置一个 CredentialHandler 元素来选择摘要密码。支持其中一种算法 SSHA、SHA 或 MD5 的简单选择是使用 MessageDigestCredentialHandler。
+
+此元素必须配置为 java.security.MessageDigest 类支持的摘要算法之一（SSHA、SHA 或 MD5）。当您选择此选项时，存储在 Realm 中的密码内容必须是由指定算法摘要的明文版本。
 
 当 Realm 的 authenticate() 方法被调用时，由用户指定的（明文）密码本身也会被相同的算法摘要，并将结果与 Realm 返回的值进行比较。相等的匹配意味着原始密码的明文版本与用户提供的密码相同，因此应授权该用户。
 
@@ -80,7 +82,9 @@ Realm 元素的位置直接影响该 Realm 的“范围”（即哪些 Web 应�
   ```
   并将此明文密码的摘要版本返回到标准输出。
 
-如果在使用摘要密码与 DIGEST 身份验证时，生成摘要所使用的明文不同，并且摘要必须使用不带盐的 MD5 算法的一个迭代。在上述示例中，{cleartext-password} 必须替换为 {username}:{realm}:{cleartext-password}。例如，在开发环境中，这可能采用 testUser:Authentication required:testPassword 的形式。{realm} 的值来自 web 应用程序的 <login-config> 中的 <realm-name> 元素。如果未在 web.xml 中指定，则使用默认值 Authentication required。
+如果在使用摘要密码与 DIGEST 身份验证时，生成摘要所使用的明文不同，并且摘要必须使用不带盐的 MD5 算法的一个迭代。在上述示例中，{cleartext-password} 必须替换为 {username}:{realm}:{cleartext-password}。例如，在开发环境中，这可能采用 testUser:Authentication required:testPassword 的形式。{realm} 的值来自 web 应用程序的 `<login-config>` 中的 `<realm-name>` 元素。
+
+如果未在 web.xml 中指定，则使用默认值 Authentication required。
 
 支持使用平台默认编码以外的编码的用户名和/或密码，使用以下命令：
 
