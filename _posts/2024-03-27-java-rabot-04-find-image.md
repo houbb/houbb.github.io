@@ -118,44 +118,110 @@ published: false
 
 ### 例子
 
-以下是一个使用OpenCV进行图像处理的简单Java例子。这个例子加载一张图片，然后将其保存为灰度图像。
+在OpenCV中，模糊找图通常指的是在一幅较大的图像中寻找与给定图像相似的区域，但允许一定程度的差异。
+
+这种操作可以通过多种方法实现，包括模板匹配、特征匹配等。
+
+下面是一个使用OpenCV进行模糊找图的示例，采用模板匹配方法：
 
 ```java
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.core.CvType;
+import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 
-public class OpenCVExample {
-    static {
-        // 加载OpenCV的动态库
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
-    }
-
+public class OpenCVBlurredTemplateMatching {
     public static void main(String[] args) {
-        // 加载一张图片
-        Mat image = Imgcodecs.imread("path_to_image.jpg"); // 替换为您的图片路径
-        if (image.empty()) {
-            System.out.println("图片加载失败");
-            return;
-        }
+        // 加载源图像和模板图像
+        Mat source = Imgcodecs.imread("path_to_source_image.jpg"); // 替换为源图像路径
+        Mat template = Imgcodecs.imread("path_to_template_image.jpg"); // 替换为模板图像路径
 
         // 转换为灰度图像
-        Mat grayImage = new Mat();
-        Imgproc.cvtColor(image, grayImage, Imgproc.COLOR_BGR2GRAY);
+        Mat sourceGray = new Mat();
+        Mat templateGray = new Mat();
+        Imgproc.cvtColor(source, sourceGray, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.cvtColor(template, templateGray, Imgproc.COLOR_BGR2GRAY);
 
-        // 保存灰度图像
-        Imgcodecs.imwrite("gray_image.jpg", grayImage); // 保存路径
-        System.out.println("灰度图像保存成功");
+        // 初始化结果矩阵，大小与源图像相同
+        Mat result = new Mat();
+        Core.matchingTemplate(sourceGray, templateGray, result);
+
+        // 找到匹配区域的最大值和位置
+        Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+        MatOfPoint matches = new MatOfPoint();
+        matches.fromList(mmr.maxLoc);
+
+        // 绘制矩形框，标记匹配区域
+        Imgproc.rectangle(source, mmr.maxLoc, new Point(mmr.maxLoc.x + template.cols(), mmr.maxLoc.y + template.rows()), new Scalar(0, 255, 0), 2);
+
+        // 显示结果
+        Imgcodecs.imwrite("matched_image.jpg", source);
+        System.out.println("模糊找图完成");
     }
 }
 ```
 
+在这个例子中，我们首先加载源图像和模板图像，并将它们转换为灰度图像。
 
+然后，我们使用`Core.matchingTemplate`函数进行模板匹配。
 
-请注意，您需要将`"path_to_image.jpg"`替换为您要处理的图片的实际路径，并且确保`OpenCVExample`类中的`System.loadLibrary(Core.NATIVE_LIBRARY_NAME);`调用与您的OpenCV库的实际安装位置相匹配。
+这个函数在源图像中滑动模板图像，并在每个位置计算模板图像与源图像的相似度。匹配结果存储在`result`矩阵中。
 
-在运行此代码之前，请确保您的开发环境已经正确配置了Java环境和Maven工具，并且已经按照上述步骤安装了OpenCV的Maven依赖。
+使用`Core.minMaxLoc`函数找到`result`矩阵中的最大值位置，这表示最匹配的区域。
+
+然后，我们使用`Imgproc.rectangle`在源图像上绘制一个矩形框来标记找到的匹配区域。
+
+最后，我们将标记了匹配区域的源图像保存到文件中。
+
+请注意，为了使代码正常工作，您需要将`"path_to_source_image.jpg"`和`"path_to_template_image.jpg"`替换为您实际的图像文件路径。此外，确保您的开发环境已经配置了OpenCV的Java库。
+
+## opencv 免安装
+
+根据您提供的链接中的信息，如果您想在Java项目中使用OpenCV而不进行完整的安装，可以通过以下步骤直接提取并导入OpenCV的本地jar包：
+
+1. **提取OpenCV的Java jar包和dll文件**：
+   从OpenCV官方安装包中提取Java相关的jar文件和dll文件。例如，`opencv-454.jar`和`opencv-454.dll`。
+
+2. **在项目中创建lib文件夹**：
+   在您的Spring项目中的`resources`目录下创建一个名为`lib`的文件夹，并将提取的jar文件和dll文件复制到这个文件夹中。
+
+3. **在Maven中添加依赖**：
+   在项目的`pom.xml`文件中添加一个依赖来导入jar包。使用`<systemPath>`来指向jar文件在项目中的位置。例如：
+
+   ```xml
+   <dependency>
+       <groupId>org</groupId>
+       <artifactId>opencv-454</artifactId>
+       <version>4.5.4</version>
+       <scope>system</scope>
+       <systemPath>${project.basedir}/src/main/resources/lib/opencv-454.jar</systemPath>
+   </dependency>
+   ```
+
+   请注意，您需要将`<version>`标签中的版本号替换为您使用的OpenCV版本，同时确保`<systemPath>`指向正确的文件路径。
+
+4. **加载动态链接库**：
+   在正式使用OpenCV之前，您需要在代码中加载dll库。可以通过添加一个静态代码块或一个工具方法来实现，例如：
+
+   ```java
+   public class OpenCVUtils {
+       static {
+           // 解决awt报错问题
+           System.setProperty("java.awt.headless", "false");
+           // 加载动态库
+           URL url = ClassLoader.getSystemResource("lib/opencv_java454.dll");
+           System.load(url.getPath());
+       }
+   }
+   ```
+
+   确保将`lib/opencv_java454.dll`替换为实际的dll文件路径。
+
+通过这种方式，您可以将OpenCV作为依赖项直接导入到Java项目中，而无需在系统级别安装OpenCV。
+
+这种方法适用于不想或不能在全局环境中安装OpenCV库的开发者。
+
+不过，请注意，这种方法可能需要根据您的具体环境和需求进行调整。
+
 
 # 参考资料
 
