@@ -294,6 +294,87 @@ $ curl 'http://localhost:8428/api/v1/export' -d 'match={__name__="testVm"}'
 
 ------------------------------------------------------------------------------------------------------------------------
 
+# 批量 curl 操作
+
+```sh
+curl 'http://127.0.0.1:8428/api/v1/import' \
+-H "Content-Type:application/json" \
+-X POST \
+-d '{"metric":{"__name__":"testVm2","hostname":"127.0.0.1"},"values":[77],"timestamps":[1713493018327]}'
+```
+
+查询：
+
+```
+curl 'http://localhost:8428/api/v1/export' -d 'match={__name__="testVm2"}'
+```
+
+# 批量呢
+
+插入 2 个不同的值，会怎么样？
+
+```sh
+curl 'http://127.0.0.1:8428/api/v1/import' \
+-H "Content-Type:application/json" \
+-X POST \
+-d '{"metric":{"__name__":"testVmTimes","hostname":"127.0.0.1"},"values":[77],"timestamps":[1713493018327]}'
+```
+
++
+
+```sh
+curl 'http://127.0.0.1:8428/api/v1/import' \
+-H "Content-Type:application/json" \
+-X POST \
+-d '{"metric":{"__name__":"testVmTimes","hostname":"127.0.0.1"},"values":[78],"timestamps":[1713493018326]}'
+```
+
+发现会被自动合并：
+
+```
+$ curl 'http://localhost:8428/api/v1/export' -d 'match={__name__="testVmTimes"}'
+{"metric":{"__name__":"testVmTimes","hostname":"127.0.0.1"},"values":[78,77],"timestamps":[1713493018326,1713493018327]}
+```
+
+## 解释
+
+在VictoriaMetrics中，如果两个数据点具有相同的指标名（metric name）和相同的标签集（label set），它们会被认为属于同一个时间序列（time series）。在您提供的例子中，两个不同的`curl`命令尝试向同一个时间序列（`testVmTimes`）插入数据，并且都使用了相同的指标名和标签集（`hostname="127.0.0.1"`）。
+
+当您尝试向同一个时间序列插入两个不同的值时，VictoriaMetrics会根据其内部的合并策略来处理这些数据点。默认情况下，VictoriaMetrics可能会执行以下操作之一：
+
+1. **保留最新的数据点**：在您的例子中，时间戳为`1713493018326`的数据点比时间戳为`1713493018327`的数据点更早，因此，根据默认行为，VictoriaMetrics保留了时间戳更早的数据点（78）。
+
+2. **合并数据点**：如果VictoriaMetrics配置了特定的合并策略，它可能会将两个数据点合并为一个，或者根据其他规则（如求平均值、求和等）来处理这些数据点。
+
+在您的例子中，看起来VictoriaMetrics选择了保留时间戳更早的数据点。这可能是因为在默认情况下，VictoriaMetrics倾向于保留时间戳更早的数据点，或者您的VictoriaMetrics实例配置了某种特定的合并策略。
+
+如果您希望避免数据点被合并，您需要确保每个数据点都有唯一的时间戳，或者使用不同的指标名或标签集来区分不同的时间序列。
+
+请注意，VictoriaMetrics的行为可能会根据您的具体配置和版本有所不同。如果您需要更精确的控制数据点的合并行为，您可能需要查阅VictoriaMetrics的官方文档或配置指南，以了解如何调整这些设置。
+
+
+## 不同的 label
+
+```
+curl 'http://127.0.0.1:8428/api/v1/import' \
+-H "Content-Type:application/json" \
+-X POST \
+-d '{"metric":{"__name__":"testVmTimes","hostname":"127.0.0.2"},"values":[72],"timestamps":[1713493018322]}'
+```
+
+结果：
+
+```
+$ curl 'http://localhost:8428/api/v1/export' -d 'match={__name__="testVmTimes"}'
+{"metric":{"__name__":"testVmTimes","hostname":"127.0.0.1"},"values":[79,78,77],"timestamps":[1713493018127,1713493018326,1713493018327]}
+{"metric":{"__name__":"testVmTimes","hostname":"127.0.0.2"},"values":[72],"timestamps":[1713493018322]}
+```
+
+
+
+
+
+
 # curl 测试
 
 ## 插入
