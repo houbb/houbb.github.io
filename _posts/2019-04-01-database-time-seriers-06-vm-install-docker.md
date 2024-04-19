@@ -336,6 +336,8 @@ $ curl 'http://localhost:8428/api/v1/export' -d 'match={__name__="testVmTimes"}'
 {"metric":{"__name__":"testVmTimes","hostname":"127.0.0.1"},"values":[78,77],"timestamps":[1713493018326,1713493018327]}
 ```
 
+
+
 ## 解释
 
 在VictoriaMetrics中，如果两个数据点具有相同的指标名（metric name）和相同的标签集（label set），它们会被认为属于同一个时间序列（time series）。在您提供的例子中，两个不同的`curl`命令尝试向同一个时间序列（`testVmTimes`）插入数据，并且都使用了相同的指标名和标签集（`hostname="127.0.0.1"`）。
@@ -371,9 +373,117 @@ $ curl 'http://localhost:8428/api/v1/export' -d 'match={__name__="testVmTimes"}'
 ```
 
 
+# count 测试
+
+插入：
+
+```sh
+curl 'http://127.0.0.1:8428/api/v1/import' \
+-H "Content-Type:application/json" \
+-X POST \
+-d '{"metric":{"__name__":"testVmCount","hostname":"127.0.0.1"},"values":[72],"timestamps":[1713493018322]}'
+```
+
+```sh
+curl 'http://127.0.0.1:8428/api/v1/import' \
+-H "Content-Type:application/json" \
+-X POST \
+-d '{"metric":{"__name__":"testVmCount","hostname":"127.0.0.2"},"values":[73],"timestamps":[1713493015322]}'
+```
+
+查询：
+
+```sh
+$ curl 'http://localhost:8428/api/v1/export' -d 'match={__name__="testVmCount"}'
+{"metric":{"__name__":"testVmCount","hostname":"127.0.0.1"},"values":[72],"timestamps":[1713493018322]}
+{"metric":{"__name__":"testVmCount","hostname":"127.0.0.2"},"values":[73],"timestamps":[1713493015322]}
+```
+
+## 尝试查询
+
+```sh
+curl 'http://localhost:8428/api/v1/query_range' \
+     -d 'query=count({__name__="testVmCount"})' \
+     -d 'start=1713493015322' \
+     -d 'end=1713493018322' \
+     -d 'step=1s'
+```
+
+结果：
+
+```
+ curl 'http://localhost:8428/api/v1/query_range' \
+     -d 'query=count({__name__="testVmCount"})' \
+     -d 'start=1713493015322' \
+     -d 'end=1713493018322' \
+     -d 'step=1s'
+
+{"status":"success","data":{"resultType":"matrix","result":[{"metric":{},"values":[[1713493015.322,"1"],[1713493016.322,"1"],[1713493017.322,"1"],[1713493018.322,"2"]]}]},"stats":{"seriesFetched": "2","executionTimeMsec":0}}
+```
+
+### 相同标签
+
+```
+curl 'http://127.0.0.1:8428/api/v1/import' \
+-H "Content-Type:application/json" \
+-X POST \
+-d '{"metric":{"__name__":"testVmCount","hostname":"127.0.0.2"},"values":[75],"timestamps":[1713493019322]}'
+```
+
+数据：
+
+```
+$ curl 'http://localhost:8428/api/v1/export' -d 'match={__name__="testVmCount"}'
+{"metric":{"__name__":"testVmCount","hostname":"127.0.0.1"},"values":[72],"timestamps":[1713493018322]}
+{"metric":{"__name__":"testVmCount","hostname":"127.0.0.2"},"values":[73,75],"timestamps":[1713493015322,1713493019322]}
+```
+
+count
+
+```
+curl 'http://localhost:8428/api/v1/query_range' \
+     -d 'query=count({__name__="testVmCount"})' \
+     -d 'start=1713493015322' \
+     -d 'end=1713493019322' \
+     -d 'step=1s'
+```
 
 
+```
+{"status":"success","data":{"resultType":"matrix","result":[{"metric":{},"values":[[1713493015.322,"1"],[1713493016.322,"1"],[1713493017.322,"1"],[1713493018.322,"2"],[1713493019.322,"2"]]}]},"stats":{"seriesFetched": "2","executionTimeMsec":1}}
+```
 
+### 解释
+
+kimi:
+
+```
+根据您提供的查询结果，这里是对输出的解释：
+
+1. **status**: `"success"` 表示查询已成功执行。
+
+2. **data**:
+   - **resultType**: `"matrix"` 表示返回的数据是矩阵格式，这是VictoriaMetrics用于表示时间序列数据的标准格式。
+   - **result**: 这是一个包含单个元素的数组，每个元素代表一个时间序列。在您的查询中，只有一个时间序列匹配您的查询条件 `count({__name__="testVmCount"})`。
+
+     该时间序列的数据如下：
+     - **metric**: `{}` 表示没有额外的标签（labels）与这个时间序列关联，或者返回的结果中标签被省略了。
+     - **values**: 是一个二维数组，其中每个内部数组包含两个元素：时间戳和对应的值。在您的结果中：
+       - `[1713493015.322,"1"]` 表示在时间戳 `1713493015.322` 秒时，`count` 的值是 `1`。
+       - `[1713493016.322,"1"]` 表示在时间戳 `1713493016.322` 秒时，`count` 的值是 `1`。
+       - `[1713493017.322,"1"]` 表示在时间戳 `1713493017.322` 秒时，`count` 的值是 `1`。
+       - `[1713493018.322,"2"]` 表示在时间戳 `1713493018.322` 秒时，`count` 的值增加到了 `2`。
+
+3. **stats**:
+   - **seriesFetched**: `"2"` 表示查询过程中获取了2个时间序列。这可能意味着在您的数据中，有两个不同的时间序列具有不同的标签集合，但都与指标名 `testVmCount` 匹配。
+   - **executionTimeMsec**: `"0"` 表示查询执行的时间是0毫秒，这表明查询非常快地完成了。
+
+从结果来看，您的查询在指定的时间范围内统计了名为 `testVmCount` 的时间序列的数量。在前三个时间点上，每个时间点都有一个时间序列，而在最后一个时间点上，有两个时间序列。
+
+请注意，返回的 `count` 值是作为字符串 `"1"` 和 `"2"` 提供的，而不是数字。在某些情况下，您可能需要在客户端将这些字符串转换为数字以进行进一步的处理或分析。
+
+此外，由于查询结果中的 `metric` 字段是空的，如果您需要关于时间序列的完整标签信息，您可能需要调整查询或检查VictoriaMetrics的文档，了解如何使返回结果包含完整的标签集。
+```
 
 # curl 测试
 
