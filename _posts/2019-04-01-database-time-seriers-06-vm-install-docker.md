@@ -15,7 +15,85 @@ VictoriaMetrics提供了二进制发布、Docker镜像、Snap包以及源代码�
 
 VictoriaMetrics的集群版本可以在此处找到。
 
-# WSL docker 安装
+# WSL 的 docker 管理
+
+在Linux系统中，使用Docker通常涉及几个基本步骤，包括安装Docker、启动Docker服务、获取（pull）Docker镜像以及运行（run）容器。以下是使用`sudo snap install docker`命令安装Docker后，运行Docker容器的基本步骤：
+
+1. **安装Docker**：您已经通过`snap`安装了Docker。
+
+   ```bash
+   sudo snap install docker
+   ```
+
+2. **启动Docker服务**：安装完成后，您需要启动Docker服务。
+
+   ```bash
+   sudo systemctl start snap.docker.dockerd.service
+   ```
+
+   或者使用简写：
+
+   ```bash
+   sudo systemctl start docker
+   ```
+
+3. **设置Docker开机启动**：如果您希望Docker在开机时自动启动，可以使用以下命令：
+
+   ```bash
+   sudo systemctl enable snap.docker.dockerd.service
+   ```
+
+4. **获取Docker镜像**：您可以从Docker Hub或其他Docker镜像仓库拉取（pull）所需的镜像。例如，要拉取Ubuntu的官方镜像：
+
+   ```bash
+   sudo docker pull ubuntu
+   ```
+
+5. **运行Docker容器**：使用拉取的镜像运行一个新的容器。例如，运行一个Ubuntu容器并启动一个交互式shell：
+
+   ```bash
+   sudo docker run -it ubuntu /bin/bash
+   ```
+
+   这里，`-it`参数让Docker提供一个交互式终端，`ubuntu`是指定的镜像名，`/bin/bash`是您希望在容器内部运行的命令。
+
+6. **管理Docker容器**：您可以使用Docker命令行工具来管理容器，例如列出正在运行的容器：
+
+   ```bash
+   sudo docker ps
+   ```
+
+   或者查看所有的容器（包括未运行的）：
+
+   ```bash
+   sudo docker ps -a
+   ```
+
+7. **退出容器**：在容器内部，您可以通过输入`exit`命令或按`Ctrl+D`来退出当前的shell会话。
+
+8. **停止容器**：当您退出容器的交互式会话时，容器通常会停止运行。要手动停止一个正在运行的容器，可以使用：
+
+   ```bash
+   sudo docker stop container_name_or_id
+   ```
+
+9. **删除容器**：如果需要删除一个容器，可以使用：
+
+   ```bash
+   sudo docker rm container_name_or_id
+   ```
+
+请注意，如果您使用的是较新版本的Docker，可能需要将用户添加到docker组，以便无需使用`sudo`来运行Docker命令：
+
+```bash
+sudo usermod -aG docker ${USER}
+```
+
+然后，您需要注销并重新登录，或重新启动系统，以使组变更生效。
+
+以上步骤应该可以帮助您在安装Docker后运行容器。
+
+如果遇到任何问题，请参考Docker的官方文档或社区论坛获取帮助。
 
 ## docker 版本
 
@@ -173,7 +251,7 @@ http://localhost:8428/vmui/?#/?g0.range_input=30m&g0.end_input=2023-11-14T09%3A4
 curl 'http://127.0.0.1:8428/api/v1/import' \
 -H "Content-Type:application/json" \
 -X POST \
--d '{"metric":{"__name__":"testVm","hostname":"localhost"},"values":[30,40,50],"timestamps":[1709701935891,1709701935991,1709701935899]}'
+-d '{"metric":{"__name__":"testVm","hostname":"localhost"},"values":[30,40,50],"timestamps":[1713493018327,1713493018328,1713493018329]}'
 ```
 
 `__name__` 对应的值指标名称。
@@ -186,9 +264,10 @@ curl 'http://127.0.0.1:8428/api/v1/import' \
 curl 'http://127.0.0.1:8428/api/v1/import' \
 -H "Content-Type:application/json" \
 -X POST \
--d '{"metric":{"__name__":"testVm","hostname":"127.0.0.1"},"values":[66],"timestamps":[1709701939999]}'
+-d '{"metric":{"__name__":"testVm","hostname":"127.0.0.1"},"values":[77],"timestamps":[1713493018327]}'
 ```
 
+1713493018327 这个最好是当前时间。
 
 ## curl 查询
 
@@ -196,14 +275,15 @@ curl 'http://127.0.0.1:8428/api/v1/import' \
 
 
 ```sh
-curl http://localhost:8428/api/v1/export -d 'match={__name__="testVm"}'
+curl 'http://localhost:8428/api/v1/export' -d 'match={__name__="testVm"}'
 ```
 
 如下：
 
 ```
-{"metric":{"__name__":"testVm","hostname":"127.0.0.1"},"values":[66],"timestamps":[1709701939999]}
-{"metric":{"__name__":"testVm","hostname":"localhost"},"values":[30,50,40],"timestamps":[1709701935891,1709701935899,1709701935991]}
+$ curl 'http://localhost:8428/api/v1/export' -d 'match={__name__="testVm"}'
+{"metric":{"__name__":"testVm","hostname":"127.0.0.1"},"values":[77,66],"timestamps":[1713493018327,1713493018327]}
+{"metric":{"__name__":"testVm","hostname":"localhost"},"values":[30,40,50],"timestamps":[1713493018327,1713493018328,1713493018329]}
 ```
 
 看的出来，一次性的多个值和时间戳，会被认为还是一条记录。

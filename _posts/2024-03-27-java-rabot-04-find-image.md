@@ -179,7 +179,13 @@ public class OpenCVBlurredTemplateMatching {
 根据您提供的链接中的信息，如果您想在Java项目中使用OpenCV而不进行完整的安装，可以通过以下步骤直接提取并导入OpenCV的本地jar包：
 
 1. **提取OpenCV的Java jar包和dll文件**：
-   从OpenCV官方安装包中提取Java相关的jar文件和dll文件。例如，`opencv-454.jar`和`opencv-454.dll`。
+   从OpenCV官方安装包中提取Java相关的jar文件和dll文件。
+   
+   例如，`opencv-454.jar`和`opencv-454.dll`。
+
+https://github.com/opencv/opencv/releases
+
+C:\Users\dh\Downloads\
 
 2. **在项目中创建lib文件夹**：
    在您的Spring项目中的`resources`目录下创建一个名为`lib`的文件夹，并将提取的jar文件和dll文件复制到这个文件夹中。
