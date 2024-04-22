@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Caffeine
+title: Caffeine 入门学习
 date:  2018-09-10 07:44:19 +0800
 categories: [Cache]
 tags: [cache, middleware, in-memory cache, sh]
 published: true
-excerpt: Caffeine 入门学习
 ---
 
 # Caffeine

@@ -7,7 +7,6 @@ tags: [database, dis-database, distributed, time-series, sf]
 published: true
 ---
 
-
 # VictoriaMetrics概述
 
 VictoriaMetrics是一个快速、高效和可扩展的时序数据库，可作为prometheus的长期存储(long-term storage)。
