@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>一键发布</title>
+
+    <link rel="stylesheet" href="../base.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/wechatsync/article-syncjs@latest/dist/styles.css" />
+    <style>
+
+        .textarea {
+            height: 500px;
+            width: 700px;
+            /* border: 1px solid black; */
+        }
+
+        input {
+            width: 550px;
+        }
+    </style>
+
+</head>
+
+<body class="container">
+
+标题：
+
+<input id="title" placeholder="请输入标题"></input>
+
+<br>
+
+简介：
+
+<input id="desc" placeholder="请输入简介"></input>
+
+<br>
+
+缩略图：
+
+<input class="input" id="thumb" placeholder="图片地址"></input>
+
+<br>
+
+内容：
+
+<br>
+
+<textarea class="textarea" id="content" placeholder="内容"></textarea>
+
+<br>
+<br>
+
+<button class="btn" onclick="clickPub()">发布</button>
+
+<script src="../base.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/wechatsync/article-syncjs@latest/dist/main.js"></script>
+
+<script>
+
+    //后续可以添加去除注释。细节优化。
+    function clickPub() {
+        var title = $('title').value;
+        var desc = $('desc').value;
+        var content = $('content').value;
+        var thumb = $('thumb').value;
+
+        window.syncPost && window.syncPost({
+            title: title,
+            desc: desc,
+            content: content,
+            thumb: thumb
+        });
+    }
+
+</script>
+
+</body>
+</html>
