@@ -131,6 +131,7 @@ command + v
 
 目前总共有支持9个渠道
 
+![](https://gitee.com/houbinbin/imgbed/raw/master/img/diary-968592_1280.jpg)
 
 # 参考资料
 
