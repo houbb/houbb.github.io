@@ -4,7 +4,7 @@ title: 一键发布入门概览
 date: 2024-03-27 21:01:55 +0800
 categories: [Tool]
 tags: [tool, sh]
-published: false
+published: true
 ---
 
 # 登录

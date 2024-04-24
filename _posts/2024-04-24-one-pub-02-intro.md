@@ -1,13 +1,14 @@
 ---
 layout: post
-title: 一键发布多凭条-实现思路
+title: 一键分发多平台方法
 date: 2024-03-27 21:01:55 +0800
 categories: [Tool]
 tags: [tool, sh]
-published: false
+published: true
 ---
 
 # 一键发布多平台方案
+
 ## 序
 
 一直都有做笔记的习惯，以前都是将记录在印象笔记，但只能给自己看，不利于技术的分享，希望在平台上记录下自己的点点滴滴，方便自己，也是方便他人。
