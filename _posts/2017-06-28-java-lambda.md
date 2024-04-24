@@ -4,7 +4,7 @@ title: Java Lambda
 date:  2017-6-28 16:35:38 +0800
 categories: [Java]
 tags: [lambda]
-published: false
+published: true
 ---
 
 # Lambda 

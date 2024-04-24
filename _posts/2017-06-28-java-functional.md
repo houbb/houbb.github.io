@@ -4,7 +4,7 @@ title: Java Functional
 date:  2017-6-29 09:43:55 +0800
 categories: [Java]
 tags: [functional]
-published: false
+published: true
 ---
 
 # Functional Programming in Java
