@@ -1,16 +1,21 @@
 ---
 layout: post
-title: Java Functional
+title: Java Functional java 函数式编程
 date:  2017-6-29 09:43:55 +0800
 categories: [Java]
 tags: [functional]
 published: true
 ---
 
-# Functional Programming in Java
+# 拓展阅读
 
-Lambda expressions are lightweight, highly concise anonymous methods backed by functional interfaces in Java 8. 
-You can use them to leap forward into a whole new world of programming in Java.
+[Java Functional java 函数式编程](https://houbb.github.io/2017/06/29/java-functional)
+
+[Java Lambda](https://houbb.github.io/2017/06/28/java-lambda)
+
+# Lambda 表达式
+
+Lambda表达式是在Java 8中由功能接口支持的轻量级、高度简洁的匿名方法。你可以使用它们跳入Java编程的全新世界。
 
 优点：
 
@@ -24,13 +29,6 @@ You can use them to leap forward into a whole new world of programming in Java.
  
 - 使用高阶函数进行设计
 
-> [Functional Programming in Java](https://pragprog.com/book/vsjava8/functional-programming-in-java)
-
-> [blog zh_CN](http://www.iteye.com/blogs/subjects/Java8-FP)
-
-> [deep mind](http://it.deepinmind.com/)
-
- 
 # Usage of collection
 
 对于列表
@@ -444,7 +442,13 @@ public void groupByFirstLetterTest() {
 }
 ```
 
+# 参考资料
 
+> [Functional Programming in Java](https://pragprog.com/book/vsjava8/functional-programming-in-java)
+
+> [blog zh_CN](http://www.iteye.com/blogs/subjects/Java8-FP)
+
+> [deep mind](http://it.deepinmind.com/)
 
 * any list
 {:toc}

@@ -1,28 +1,31 @@
 ---
 layout: post
-title: JDK8
+title: jdk 变更日志-03-JDK8 例子
 date:  2017-06-28 23:15:43 +0800
 categories: [Java]
-tags: [jdk8]
-published: false
+tags: [jdk, java]
+published: true
 ---
 
+# 拓展阅读
 
+[Java Functional java 函数式编程](https://houbb.github.io/2017/06/29/java-functional)
 
-# New Features
+[Java Lambda](https://houbb.github.io/2017/06/28/java-lambda)
 
+当然可以，以下是你提供的Java 8新特性文档的中文翻译：
 
-## Lambda
+# Java 8新特性
 
-Lambda 表达式内容比较重要，放在单独的一篇进行讲解。
+## Lambda表达式
 
-[Lambda](http://docs.oracle.com/javase/tutorial/java/javaOO/lambdaexpressions.html)
+Lambda表达式是Java 8中引入的轻量级、高度简洁的匿名方法。你可以使用它们跳入Java编程的全新世界。
 
+### Lambda表达式简介
 
+Lambda表达式是匿名函数。
 
-> Lambda expression is anonymous function.
-
-- old way
+#### 传统方式
 
 ```java
 public void old() {
@@ -35,13 +38,13 @@ public void old() {
 }
 ```
 
-- use lambda
+#### 使用Lambda
 
 ```java
 new Thread(() -> System.out.println("Lambda Hello World!")).start();
 ```
 
-> lambda expression grammar
+#### Lambda表达式语法
 
 ```
 (Type1 param1, Type2 param2, ..., TypeN paramN) -> {
@@ -52,13 +55,13 @@ new Thread(() -> System.out.println("Lambda Hello World!")).start();
 }
 ```
 
-1、No parameters.
+1、无参数。
 
 ```
 () -> { //..... };
 ```
 
-2、One parameter, can leave out the parameter type, javac can deduce it from the context.
+2、一个参数，可以省略参数类型，编译器可以从上下文中推断。
 
 ```
 param1 -> {
@@ -69,13 +72,13 @@ param1 -> {
 }
 ```
 
-3、Only one statement, can leave out the <b>{}</b>.
+3、只有一个语句，可以省略`{}`。
 
 ```
 param1 -> statment
 ```
 
-4、Leave out the parameters' type.
+4、省略参数类型。
 
 ```
 (param1,param2, ..., paramN) -> {
@@ -86,9 +89,9 @@ param1 -> statment
 }
 ```
 
-> demo
+### 示例
 
-- Person.java
+#### Person接口
 
 ```java
 public interface Person {
@@ -96,7 +99,7 @@ public interface Person {
 }
 ```
 
-- call it use lambda
+#### 使用Lambda调用
 
 ```java
 public static void main(String[] args) {
@@ -105,17 +108,15 @@ public static void main(String[] args) {
 }
 ```
 
-- result
+#### 结果
 
 ```
 Hello World
 ```
 
+## 接口默认方法
 
-
-## interface default method
-
-- Person.java
+### Person接口
 
 ```java
 public interface Person {
@@ -127,7 +128,7 @@ public interface Person {
 }
 ```
 
-- Student.java
+### Student类
 
 ```java
 public class Student implements Person {
@@ -135,11 +136,10 @@ public class Student implements Person {
     public void say() {
         System.out.println("say...");
     }
-
 }
 ```
 
-- test
+### 测试
 
 ```java
 public static void main(String[] args) {
@@ -149,7 +149,7 @@ public static void main(String[] args) {
 }
 ```
 
-- result
+### 结果
 
 ```
 say...
@@ -158,14 +158,9 @@ eat...
 Process finished with exit code 0
 ```
 
-[defaultmethods](http://docs.oracle.com/javase/tutorial/java/IandI/defaultmethods.html)
+## 方法引用
 
-
-## method reference
-
-1、static method:    ClassName::methodName
-
-- test
+1、静态方法：`ClassName::methodName`
 
 ```java
 public static void main(String[] args) {
@@ -174,19 +169,7 @@ public static void main(String[] args) {
 }
 ```
 
-- result
-
-```
-aa
-bb
-cc
-
-Process finished with exit code 0
-```
-
-2、instance method:  instanceRefence::methodName
-
-- HelloWorld.java
+2、实例方法：`instanceRefence::methodName`
 
 ```java
 public class HelloWorld {
@@ -200,31 +183,10 @@ public class HelloWorld {
         //instance method reference
         new Thread(this::print).start();
     }
-
 }
 ```
 
-- test
-
-```java
-public static void main(String[] args) {
-    HelloWorld helloWorld = new HelloWorld();
-    helloWorld.printInfo();
-}
-```
-
-- result
-
-```
-printInfo
-instanceRefence::methodName
-
-Process finished with exit code 0
-```
-
-3、constructor method:   Class::new
-
-- User.java
+3、构造方法：`Class::new`
 
 ```java
 public class User {
@@ -240,9 +202,7 @@ public class User {
 }
 ```
 
-- HelloWorld.java
-
-```javav
+```java
 public class HelloWorld {
     @FunctionalInterface
     interface UserFactory<T extends User> {
@@ -260,35 +220,7 @@ public class HelloWorld {
 }
 ```
 
-- test
-
-```java
-public static void main(String[] args) {
-    HelloWorld helloWorld = new HelloWorld();
-    helloWorld.test();
-}
-```
-
-- result
-
-```
-user0
-user1
-user2
-user3
-user4
-
-Process finished with exit code 0
-```
-
-[methodreferences](http://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html)
-
-## Repeating Annotations
-
-> [Repeating Annotations](http://docs.oracle.com/javase/tutorial/java/annotations/repeating.html)
-
-
-- RepeatingAnnotationsTest.java
+## 重复注解
 
 ```java
 public class RepeatingAnnotationsTest {
@@ -319,14 +251,14 @@ public class RepeatingAnnotationsTest {
 }
 ```
 
-result
+### 结果
 
 ```
 filter1
 filter2
 ```
 
-## Better Type Inference
+## 更好的类型推断
 
 ```java
 public class TypeInference<T> {
@@ -349,11 +281,9 @@ public class TypeInference<T> {
 }
 ```
 
-## More useful annotation
+## 更多有用的注解
 
 Java 8拓宽了注解的应用场景。现在，注解几乎可以使用在任何元素上：局部变量、接口类型、超类和接口实现类，甚至可以用在函数的异常定义上。
-
-- MoreUsefulAnnotationTest.java
 
 ```java
 public class MoreUsefulAnnotationTest {
@@ -377,16 +307,13 @@ public class MoreUsefulAnnotationTest {
 }
 ```
 
-# Lib
+# 库
 
 ## Optional
 
-Google Guava 引入了 Optionals 类来解决 NullPointerException，从而避免源码被各种 null 检查污染，以便开发者写出更加整洁的代码。Java 8也将Optional加入了官方库。
+[Optional](http://docs.oracle.com/javase/8/docs/api/)是一个容器，可以存放T类型的值或者null。它提供了一些有用的接口来避免显式的null检查。
 
-[Optional](http://docs.oracle.com/javase/8/docs/api/)仅仅是一个容器：存放T类型的值或者null。它提供了一些有用的接口来避免显式的null检查。
-
-
-- nullTest()
+### null测试
 
 ```java
 @Test
@@ -398,7 +325,7 @@ public void nullTest() {
 }
 ```
 
-result
+### 结果
 
 ```
 Full Name is set? false
@@ -406,11 +333,13 @@ Full Name: [none]
 Hey Stranger!
 ```
 
-- notNullTest()
+### 非null测试
 
 ```java
 @Test
-public void notNullTest() {
+public void notNullTest()
+
+ {
     Optional< String > fullName = Optional.ofNullable( "ryo" );
     System.out.println( "Full Name is set? " + fullName.isPresent() );
     System.out.println( "Full Name: " + fullName.orElseGet( () -> "[none]" ) );
@@ -418,7 +347,7 @@ public void notNullTest() {
 }
 ```
 
-result
+### 结果
 
 ```
 Full Name is set? true
@@ -428,10 +357,7 @@ Hey ryo!
 
 ## Streams
 
-新增的[Stream API（java.util.stream）](http://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#StreamOps)将生成环境的函数式编程引入了Java库中。
-这是目前为止最大的一次对Java库的完善，以便开发者能够写出更加有效、更加简洁和紧凑的代码。
-
-- StreamsTest.java
+Java 8新增的[Stream API（java.util.stream）](http://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#StreamOps)引入了函数式编程的概念到Java库中。
 
 ```java
 public class StreamsTest {
@@ -465,19 +391,17 @@ public class StreamsTest {
 }
 ```
 
-
-- test
+### 测试
 
 ```java
 @Test
-    public void totalTest() {
+public void totalTest() {
     final Collection<Task> tasks = Arrays.asList(
             new Task(Status.OPEN, 5),
             new Task(Status.OPEN, 13),
             new Task(Status.CLOSED, 8)
     );
 
-    // Calculate total points of all active tasks using sum()
     final long totalPointsOfOpenTasks = tasks
             .stream()
             .filter(task -> task.getStatus() == Status.OPEN)
@@ -498,12 +422,11 @@ public void parallelTest() {
     final double totalPoints = tasks
             .stream()
             .parallel()
-            .map(task -> task.getPoints()) // or map( Task::getPoints )
+            .map(task -> task.getPoints())
             .reduce(0, Integer::sum);
 
     System.out.println("Total points (all tasks): " + totalPoints);   //Total points (all tasks): 26.0
 }
-
 
 @Test
 public void groupByTest() {
@@ -513,7 +436,6 @@ public void groupByTest() {
             new Task(Status.CLOSED, 8)
     );
 
-    // Group tasks by their status
     final Map< Status, List< Task >> map = tasks
             .stream()
             .collect( Collectors.groupingBy( Task::getStatus ) );
@@ -528,42 +450,33 @@ public void percentTest() {
             new Task(Status.CLOSED, 8)
     );
 
-    // Calculate total points of all tasks
     final double totalPoints = tasks
             .stream()
             .parallel()
-            .map( task -> task.getPoints() ) // or map( Task::getPoints )
+            .map( task -> task.getPoints() )
             .reduce( 0, Integer::sum );
 
-    // Calculate the weight of each tasks (as percent of total points)
     final Collection< String > result = tasks
-            .stream()                                        // Stream< String >
-            .mapToInt( Task::getPoints )                     // IntStream
-            .asLongStream()                                  // LongStream
-            .mapToDouble( points -> points / totalPoints )   // DoubleStream
-            .boxed()                                         // Stream< Double >
-            .mapToLong( weigth -> ( long )( weigth * 100 ) ) // LongStream
-            .mapToObj( percentage -> percentage + "%" )      // Stream< String>
-            .collect( Collectors.toList() );                 // List< String >
+            .stream()
+            .mapToInt( Task::getPoints )
+            .asLongStream()
+            .mapToDouble( points -> points / totalPoints )
+            .boxed()
+            .mapToLong( weigth -> ( long )( weigth * 100 ) )
+            .mapToObj( percentage -> percentage + "%" )
+            .collect( Collectors.toList() );
 
     System.out.println(result); //[19%, 50%, 30%]
 }
 ```
 
-## Date/Time API(JSR 310)
+## 日期/时间API(JSR 310)
 
 Java 8引入了新的[Date-Time API(JSR 310)](https://jcp.org/en/jsr/detail?id=310)来改进时间、日期的处理。
 
-[Joda-Time](http://www.joda.org/joda-time/)，可以替代Java的时间管理API。
-
 ## Nashorn JavaScript
 
-
 Java 8提供了新的[Nashorn JavaScript](https://www.javacodegeeks.com/2014/02/java-8-compiling-lambda-expressions-in-the-new-nashorn-js-engine.html)引擎，使得我们可以在JVM上开发和运行js应用。
-Nashorn JavaScript引擎是 `javax.script.ScriptEngine` 的另一个实现版本，这类Script引擎遵循相同的规则，允许Java和javascript交互使用，例子代码如下：
-
-
-- NashornJSTest.java
 
 ```java
 public class NashornJSTest {
@@ -580,7 +493,7 @@ public class NashornJSTest {
 }
 ```
 
-result:
+### 结果
 
 ```
 jdk.nashorn.api.scripting.NashornScriptEngine
@@ -589,9 +502,7 @@ Result:2.0
 
 ## Base64
 
-对[Base64编码的支持](https://www.javacodegeeks.com/2014/04/base64-in-java-8-its-not-too-late-to-join-in-the-fun.html)已经被加入到Java 8官方库中.
-
-- base64Test()
+Java 8加入了对[Base64编码的支持](https://www.javacodegeeks.com/2014/04/base64-in-java-8-its-not-too-late-to-join-in-the-fun.html)。
 
 ```java
 @Test
@@ -610,7 +521,7 @@ public void base64Test() {
 }
 ```
 
-result
+### 结果
 
 ```
 QmFzZTY0IGZpbmFsbHkgaW4gSmF2YSA4IQ==
@@ -619,12 +530,7 @@ Base64 finally in Java 8!
 
 ## ParallelArrays
 
-- parallelArraysTest()
-
 ```java
-/**
- * 使用parallelSetAll()方法生成20000个随机数，然后使用parallelSort()方法进行排序。这个程序会输出乱序数组和排序数组的前10个元素。
- */
 @Test
 public void parallelArraysTest() {
     long[] arrayOfLong = new long[20000];
@@ -642,13 +548,12 @@ public void parallelArraysTest() {
 }
 ```
 
-result:
+### 结果
 
 ```
 395659 19377 864569 289077 710936 742196 922967 850922 701156 551843 
 7 17 49 111 116 173 194 260 344 396 
 ```
-
 
 * any list
 {:toc}

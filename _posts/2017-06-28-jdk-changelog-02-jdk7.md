@@ -8,6 +8,10 @@ published: true
 ---
 
 
+# 官方笔记
+
+[jdk7 更新日志](https://www.oracle.com/java/technologies/javase/jdk7-relnotes.html)
+
 
 # 开发关心
 
