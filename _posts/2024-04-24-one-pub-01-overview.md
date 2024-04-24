@@ -86,7 +86,11 @@ https://github.com/wechatsync/Wechatsync
 
 # 拓展阅读
 
-]()
+[随手写个文章多平台发布脚本](https://juejin.cn/post/7032129362056970254)
+
+[某星球的简单爬取](https://juejin.cn/post/7026000436062584863)
+
+[某站点课程的简单爬取](https://juejin.cn/post/7023659203692593182)
 
 # chat
 
