@@ -35,7 +35,7 @@ JDK 13 引入了一系列新特性和改进，以下是一些主要的新特性�
 
 这些新特性和改进旨在提高 Java 开发人员的生产力，同时提升 Java 平台的性能和稳定性。
 
-# 详细介绍 jdk13 Switch 表达式（JEP 354）
+# jdk13 Switch 表达式（JEP 354）
 
 JDK 13 中的 Switch 表达式（JEP 354）是对 Java 12 中引入的 Switch 表达式的增强，它允许 switch 不仅可以用作语句，还可以作为表达式使用，并且引入了新的语法特性来简化代码编写。
 
@@ -77,7 +77,7 @@ JEP 354 的引入，为 Java 开发者提供了一种新的处理条件逻辑的
 
 尽管它目前仍然是预览特性，但已经可以在 JDK 13 中尝试使用，以期待在未来的 JDK 版本中成为正式功能。
 
-# 详细介绍 jdk13 文本块（JEP 355）
+# jdk13 文本块（JEP 355）
 
 JDK 13 中的文本块（Text Blocks，JEP 355）是一项预览特性，旨在简化在 Java 程序中编写多行字符串的过程。传统上，Java 中的字符串必须用双引号括起来，这使得直接在字符串中使用多行文本变得困难。为了实现多行字符串，开发者不得不依赖于换行符转义（如 `\n`）或行连接符，这不仅增加了编辑工作量，而且使得代码段难以阅读和维护。
 
@@ -128,7 +128,7 @@ String greeting = """
 
 尽管目前是预览特性，但开发者可以在 JDK 13 中尝试使用它，以便更好地适应未来可能的正式变更。
 
-# 详细介绍 jdk13 Dynamic CDS Archives（JEP 350）
+# jdk13 Dynamic CDS Archives（JEP 350）
 
 JEP 350 引入了动态类数据共享档案（Dynamic Class-Data Sharing Archives）的支持，这是 JDK 13 中的一个优化特性，旨在减少 JVM 启动时间和内存占用。
 
@@ -174,7 +174,7 @@ JEP 350 引入了动态类数据共享档案（Dynamic Class-Data Sharing Archiv
 
 总体而言，动态 CDS 档案是一个强大的工具，可以显著提高 Java 应用程序的性能和效率，特别是在需要快速启动和低内存占用的场景中。
 
-# 详细介绍 jdk13 ZGC 增强（JEP 352）
+# jdk13 ZGC 增强（JEP 352）
 
 JEP 352 引入了对 Z Garbage Collector（ZGC）的增强，ZGC 是 JDK 中的一种低延迟垃圾回收器。在 JDK 11 中，ZGC 被引入作为一个实验性功能，而在 JDK 13 中，它进行了一系列的增强，提高了其稳定性和性能。
 
@@ -212,7 +212,7 @@ ZGC 是 JDK 提供的一个重要的垃圾回收器，特别适用于需要低�
 
 在 JDK 13 中的增强进一步巩固了 ZGC 在生产环境中的地位，使其成为处理大型内存应用程序的首选垃圾回收解决方案之一。
 
-# 详细介绍 jdk13 重新实现旧版 Socket API（JEP 356）
+# jdk13 重新实现旧版 Socket API（JEP 356）
 
 JDK 13 引入了对旧版 Socket API 的重新实现，这一改进由 JEP 356 负责。
 
@@ -253,7 +253,7 @@ Socket socket = new Socket();
 
 这些变化有助于提升 Java 网络编程的整体体验。
 
-# 详细介绍 jdk13 Shenandoah GC 改进
+# jdk13 Shenandoah GC 改进
 
 JDK 13 中对 Shenandoah 垃圾收集器（GC）进行了一些改进，这些改进旨在提高性能和减少垃圾回收（GC）引起的应用停顿时间。
 
@@ -328,7 +328,7 @@ JDK 13 中对 Shenandoah GC 的改进进一步巩固了它在 Java 垃圾回收�
 
 这些改进不仅提高了 GC 的性能和稳定性，还提供了更好的监控和管理工具，使得 Shenandoah GC 成为处理现代 Java 应用程序的强大选择。
 
-# 详细介绍 jdk13 其他 API 更新
+# jdk13 其他 API 更新
 
 JDK 13 引入了若干其他 API 更新，这些更新包括但不限于对现有 API 的改进、新方法的添加以及一些 API 的废弃。
 

@@ -49,7 +49,7 @@ JDK 14 引入了多项新特性和改进，以下是一些主要的更新：
 
 开发者应当关注这些变化，以确保他们的应用程序能够利用 JDK 14 引入的新特性和改进。
 
-# 详细介绍 jdk14 instanceof 的模式匹配（JEP 305）
+# jdk14 instanceof 的模式匹配（JEP 305）
 
 在 JDK 14 中，通过 JEP 305，Java 引入了一个新的特性，即 `instanceof` 的模式匹配。
 
@@ -96,7 +96,7 @@ if (obj instanceof String str) {
 
 总的来说，JDK 14 中引入的 `instanceof` 模式匹配是一个有力的新特性，为 Java 代码的类型检查和类型转换提供了一种更简洁、更安全和更可读的方法。
 
-# 详细介绍 jdk14 打包工具（JEP 343）
+# jdk14 打包工具（JEP 343）
 
 JEP 343 引入了一个新的打包工具，目标是提供一种新的方式来创建自定义运行时图像，包括非标准模块、资源和解释器特定配置，这些都可以直接编译到一个运行时图像中。
 
@@ -142,7 +142,7 @@ jpackage --input target/myapp.jar \
 
 总体而言，`jpackage` 工具为 Java 开发者提供了一种方便的方式来打包和分发他们的应用程序，同时也提供了一些高级功能，如自定义安装程序和图像，使得打包过程更加灵活和可定制。
 
-# 详细介绍 jdk14 JFR 事件流（JEP 349）
+# jdk14 JFR 事件流（JEP 349）
 
 JEP 349 引入了 JFR（Java Flight Recorder）的事件流特性。Java Flight Recorder 是 JDK 提供的一个功能强大的诊断工具，用于监控和分析生产环境中的 Java 应用程序性能。事件流是对 JFR 功能的一个重要扩展，允许开发者以编程方式处理和分析 JFR 生成的事件数据。
 
@@ -221,7 +221,7 @@ JEP 349 的 JFR 事件流为 Java 开发者提供了一个强大的工具，用�
 
 这一特性增强了 Java 诊断和性能监控的能力，使得开发者可以更灵活地分析和优化他们的应用程序。
 
-# 详细介绍 jdk14 非易失性映射字节缓冲区（JEP 352）
+# jdk14 非易失性映射字节缓冲区（JEP 352）
 
 JEP 352 引入了 JDK 14 中的非易失性映射字节缓冲区（Non-Volatile Mapped Byte Buffers），这是 Java NIO（New I/O）库的一个新特性，旨在支持对持久性内存（如 Intel Optane DC Persistent Memory）的更有效利用。
 
@@ -283,7 +283,7 @@ public class NonVolatileMappedByteBufferExample {
 
 总的来说，JEP 352 的非易失性映射字节缓冲区为 Java NIO 提供了一个重要的新特性，允许 Java 应用程序更有效地利用持久性内存和其他非易失性存储介质，以实现更高的性能和可靠性。
 
-# 详细介绍 jdk14 文本块（JEP 368）
+# jdk14 文本块（JEP 368）
 
 JEP 368 引入了 JDK 14 中的文本块（Text Blocks）特性，这是一个旨在提高多行字符串的可读性和可维护性的语言改进。通过文本块，Java 开发者可以更容易地编写和阅读多行字符串，而无需使用传统的字符串连接操作符（`+`）或多行字符串字面量（`\n`）。
 
@@ -345,7 +345,7 @@ String htmlBlock = """
 
 总的来说，JEP 368 的文本块特性为 Java 提供了一种更简洁、更易读的方式来处理多行字符串，这对于需要嵌入大量文本（如 HTML、SQL 或 JSON）的应用程序特别有用。这一改进不仅提高了代码的可读性和可维护性，而且还减少了编写和维护多行字符串时的复杂性。
 
-# 详细介绍 jdk14 弃用 Solaris 和 SPARC 端口（JEP 362）
+# jdk14 弃用 Solaris 和 SPARC 端口（JEP 362）
 
 JEP 362 引入了 JDK 14 中对 Solaris 和 SPARC 端口的弃用。这一决策是基于现实世界中的硬件和操作系统的变化，使得这些平台在 Java 开发者社区中的使用逐渐减少。
 
@@ -383,7 +383,7 @@ JEP 362 的目的是清晰地表达 Oracle 的未来计划，并鼓励开发者�
 
 因此，对于仍在使用 Solaris 和 SPARC 的开发者来说，考虑迁移到其他平台是一个值得考虑的长期策略。
 
-# 详细介绍 jdk14 删除 CMS 垃圾回收器（JEP 363）
+# jdk14 删除 CMS 垃圾回收器（JEP 363）
 
 JEP 363 引入了 JDK 14 中对 CMS（Concurrent Mark Sweep）垃圾回收器的删除。这一决策是基于 CMS 垃圾回收器在现代 Java 虚拟机中的边缘地位以及它与更现代和高效的垃圾回收器（如 G1 和 ZGC）的相对比较。
 
@@ -421,7 +421,7 @@ JEP 363 的目的是清晰地表达 Oracle 的未来计划，并鼓励开发者�
 
 因此，对于仍在使用 CMS 的开发者来说，考虑迁移到现代垃圾回收器是一个明智的选择，以确保应用程序的性能和稳定性。
 
-# 详细介绍 jdk14 ZGC 的 macOS 和 Windows 支持（JEP 364 和 JEP 365）
+# jdk14 ZGC 的 macOS 和 Windows 支持（JEP 364 和 JEP 365）
 
 JDK 14 引入了对 ZGC（Z Garbage Collector）在 macOS 和 Windows 平台的支持，这两项工作分别由 JEP 364 和 JEP 365 负责。以下是对这两项 JEP 的详细介绍：
 
@@ -471,7 +471,7 @@ java -XX:+UseZGC -jar myapp.jar
 
 注意：虽然 ZGC 在 macOS 和 Windows 上都可用，但在某些情况下，可能仍需要进行特定的配置或调整以达到最佳性能和稳定性。
 
-# 详细介绍 jdk14 废弃 ParallelScavenge + SerialOld 的 GC 组合（JEP 366）
+# jdk14 废弃 ParallelScavenge + SerialOld 的 GC 组合（JEP 366）
 
 JEP 366 引入了 JDK 14 中废弃 ParallelScavenge + SerialOld（PS + SO）垃圾回收组合的决策。这一决策是基于这种组合在现代 Java 应用程序中的使用情况和性能表现相对较差。
 
@@ -507,7 +507,7 @@ JEP 366 的目的是为了提醒开发者关于 PS + SO 垃圾回收组合的废
 
 尽管 PS + SO 在某些特定场景中可能仍有其用途，但考虑到其在整体性能和稳定性方面的局限性，迁移到更先进的垃圾回收器组合是一个明智的选择，以确保应用程序的最佳性能和稳定性。
 
-# 详细介绍 jdk14 删除 Pack200 工具和 API（JEP 367）
+# jdk14 删除 Pack200 工具和 API（JEP 367）
 
 JEP 367 引入了 JDK 14 中删除 Pack200 工具和 API 的决策。Pack200 是一个用于 Java JAR 文件压缩和优化的工具，它可以显著减小 JAR 文件的大小，从而加速应用程序的下载和部署。
 
@@ -545,7 +545,7 @@ JEP 367 的目的是为了清晰地表达 Oracle 对 Pack200 工具和 API 的�
 
 因此，对于仍在使用 Pack200 的开发者来说，考虑迁移到更先进的压缩和优化解决方案是一个明智的选择，以确保应用程序的最佳性能和效率。
 
-# 详细介绍 jdk14 外部内存访问 API（JEP 370）
+# jdk14 外部内存访问 API（JEP 370）
 
 JEP 370 引入了 JDK 14 中的外部内存访问 API。这一特性旨在提供一种方式，让 Java 程序能够直接与外部内存进行交互，而无需通过 Java 堆内存。这可以提高性能，特别是在处理大量数据时，同时也为开发者提供了更灵活的内存管理选项。
 
@@ -598,7 +598,7 @@ JEP 370 的外部内存访问 API 为 Java 开发者提供了一种直接和高�
 
 尽管使用外部内存需要开发者具备额外的内存管理知识和技能，但对于需要最大化性能和资源利用率的应用场景，这是一个非常有价值的补充。
 
-# 详细介绍 jdk14 改进的 NullPointerExceptions（JEP 358）
+# jdk14 改进的 NullPointerExceptions（JEP 358）
 
 JEP 358 引入了 JDK 14 中对 NullPointerException（NPE）错误消息的改进。这一改进旨在提供更明确、更有用的错误消息，以帮助开发者更容易地诊断和修复空指针异常。
 
@@ -658,7 +658,7 @@ JEP 358 的改进为开发者提供了更加明确和有用的 NullPointerExcept
 
 这一改进不仅提高了 Java 开发的效率，而且还增强了代码质量和可维护性。
 
-# 详细介绍 jdk14 记录类型（JEP 359）
+# jdk14 记录类型（JEP 359）
 
 JEP 359 引入了 JDK 14 中的记录类型（Records）。
 
@@ -723,7 +723,7 @@ JEP 359 的记录类型为 Java 引入了一个简洁而强大的新特性，使
 
 对于那些需要频繁创建和使用数据对象的应用程序，记录类型无疑是一个非常有价值的补充，可以显著提高代码的清晰度和可维护性。
 
-# 详细介绍 jdk14 Switch 表达式（JEP 361）
+# jdk14 Switch 表达式（JEP 361）
 
 JDK 14 引入了 JEP 361：Switch 表达式（Standard），这是对之前在 JDK 12 和 JDK 13 中作为预览特性引入的 Switch 表达式的最终确定版。
 
