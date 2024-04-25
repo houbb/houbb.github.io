@@ -1,6 +1,6 @@
 ---
 layout: post
-title: jdk 变更日志-06-jdk11
+title: jdk 变更日志-11-jdk11
 date:  2017-06-28 23:15:43 +0800
 categories: [Java]
 tags: [jdk, java]
