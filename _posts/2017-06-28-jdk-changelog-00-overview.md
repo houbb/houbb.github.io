@@ -1,6 +1,6 @@
 ---
 layout: post
-title: jdk 变更日志-01-概览
+title: java 变更日志-01-概览
 date:  2017-06-28 23:15:43 +0800
 categories: [Java]
 tags: [jdk, java]
@@ -47,9 +47,6 @@ OpenJDK的网站也提供了每个版本的详细变更内容和发布说明。
 4. **Java博客和新闻网站**：
    - InfoQ Java：[https://www.infoq.com/java/](https://www.infoq.com/java/)
    - DZone Java Zone：[https://dzone.com/java-jdk-development-tutorials-tools-news](https://dzone.com/java-jdk-development-tutorials-tools-news)
-
-你可以直接访问这些网址来查找特定JDK版本的变更内容和发布说明。希望这些资源能够帮助你找到你需要的信息！如果你有其他问题或需要进一步的帮助，请告诉我。
-
 
 * any list
 {:toc}

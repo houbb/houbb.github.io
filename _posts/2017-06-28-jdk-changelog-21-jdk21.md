@@ -1,6 +1,6 @@
 ---
 layout: post
-title: jdk 变更日志-21-jdk21
+title: java 变更日志-21-jdk21
 date:  2017-06-28 23:15:43 +0800
 categories: [Java]
 tags: [jdk, java]
