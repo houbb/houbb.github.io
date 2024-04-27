@@ -1,6 +1,6 @@
 ---
 layout: post
-title: sort-08-bucket sort 桶排序
+title: sort-09-bucket sort 桶排序
 date:  2016-07-14 17:22:22 +0800
 categories: [Algorithm]
 tags: [sort]
