@@ -49,9 +49,6 @@ Java 基础。如果没有接触过 Java，建议首先学习 Java。
 
 ![设计模式的关系](https://img-blog.csdn.net/20180506150933772?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3J5bzEwNjA3MzI0OTY=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-# 优秀资源推荐
-
-> [Github java-design-patterns](https://github.com/iluwatar/java-design-patterns)
 
 # 代码开源地址
 
@@ -146,6 +143,11 @@ Java 基础。如果没有接触过 Java，建议首先学习 Java。
 [42-Design Pattern 38-迪米特法则（Law of Demeter，LoD）](https://houbb.github.io/2017/03/14/design-pattern-38-lod)
 
 [43-Design Pattern 39-合成复用原则（Composite Reuse Principle，CRP）](https://houbb.github.io/2017/03/14/design-pattern-39-crp)
+
+
+# 参考资料
+
+> [Github java-design-patterns](https://github.com/iluwatar/java-design-patterns)
 
 * any list
 {:toc}
