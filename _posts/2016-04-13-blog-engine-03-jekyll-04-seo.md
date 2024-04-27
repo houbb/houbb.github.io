@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  blog-engine-03-博客引擎jekyll SEO
+title:  blog-engine-03-博客引擎 jekyll SEO
 date:   2016-04-13 23:20:27 +0800
 categories: [Github]
 tags: [jekyll, seo, github]
