@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 从零手写是实现 tomcat-08-tomcat 如何内嵌？
+title: 从零手写实现 tomcat-08-tomcat 如何与 springboot 集成？
 date:  2016-11-7 17:13:40 +0800
 categories: [Web]
 tags: [tomcat, server, web]
@@ -19,13 +19,134 @@ published: true
 
 # 前言
 
-我们在 springboot 中可以像 main 一样直接启动，如何实现的？
+开始之前，我们来一起思考下面 3 个问题：
 
-那么Spring是怎么和Tomcat容器进行集成？
+1. 我们在 springboot 中可以像 main 一样直接启动，如何实现的？
 
-Spring和Tomcat容器的生命周期是如何同步？
+2. 那么Spring是怎么和Tomcat容器进行集成？
 
-本文会详细介绍Spring和Tomcat容器的集成。
+3. Spring和Tomcat容器的生命周期是如何同步？
+
+# 1. springboot 中可以像 main 一样直接启动，如何实现的？
+
+在Spring Boot中，应用程序可以像一个普通的Java程序一样，通过一个`main`方法直接启动，这背后其实是一个挺巧妙的设计。
+
+咱们来接地气地聊聊这是怎么实现的。
+
+首先，你得知道，任何Java程序运行起来，都是因为有一个`main`方法。这是Java虚拟机（JVM）启动程序时的入口点。
+
+在传统的Java Web项目中，服务器（比如Tomcat）会负责启动和运行，而Spring Boot却可以让你用一个简单的`main`方法就跑起来。
+
+实现这一点的关键在于Spring Boot的自动配置和内嵌的Servlet容器（比如Tomcat）。
+
+1. **Spring Boot的自动配置**：Spring Boot提供了大量的自动配置类，这些类会根据你添加的依赖和配置来自动设置你的Spring应用。比如，如果你添加了Spring Web的依赖，Spring Boot就会自动配置一个Web应用。
+
+2. **内嵌Servlet容器**：Spring Boot允许你不用部署到外部的Servlet容器，而是直接内嵌一个Servlet容器到你的应用中。这意味着你的应用可以包含一个小型的服务器，比如Tomcat或Jetty，它们会在应用启动时自动启动。
+
+3. **SpringApplication类**：Spring Boot提供了一个`SpringApplication`类，它用来启动Spring应用。当你创建一个Spring Boot应用时，你的`main`方法通常会这样写：
+
+```java
+public static void main(String[] args) {
+    SpringApplication.run(YourApplicationClass.class, args);
+}
+```
+
+这里的`YourApplicationClass`是你的Spring Boot应用的配置类，它通常会用`@SpringBootApplication`注解标注，这个注解是Spring Boot应用的标识，它包含了几个其他的注解，包括：
+
+- `@SpringBootConfiguration`：标识当前类是一个Spring Boot的配置类。
+- `@EnableAutoConfiguration`：告诉Spring Boot开启自动配置。
+- `@ComponentScan`：告诉Spring Boot在哪里查找其他的Bean。
+
+4. **@SpringBootApplication注解**：这个注解是启动Spring Boot应用的关键。它让Spring Boot知道这个类是用来启动整个应用的。
+
+当你运行这个`main`方法时，Spring Boot会利用`SpringApplication`类来启动你的应用，同时它会根据`@SpringBootApplication`注解中的配置来自动设置你的应用，包括启动内嵌的Servlet容器。
+
+所以，总结来说，Spring Boot之所以能像一个普通的Java程序一样直接启动，是因为它巧妙地利用了自动配置、内嵌容器和特定的注解来简化了整个启动过程。
+
+这样，你就不需要复杂的部署步骤，只需要一个简单的`main`方法，就能运行一个完整的Web应用。
+
+# 2. Spring 是怎么和 Tomcat 容器进行集成？
+
+首先，得明白Spring和Tomcat是两个不同的技术，但它们可以一起工作，就像豆浆和油条，各自独立但又很搭配。
+
+**Tomcat** 是一个Servlet容器，它的主要工作是处理HTTP请求，比如当你在浏览器里输入网址，Tomcat就会响应这个请求，给你返回网页。
+
+**Spring** 是一个庞大的Java企业级应用框架，它提供了很多功能，比如依赖注入（DI）、事务管理、安全性等等。
+
+在Web开发中，Spring也提供了对Web应用的支持，比如Spring MVC。
+
+那么，Spring是怎么和Tomcat集成的呢？主要有两种方式：
+
+1. **独立模式**：在这种模式下，Spring和Tomcat是分开的，各干各的活。Tomcat只负责接收HTTP请求，然后它把这些请求转交给Spring来处理。Spring会根据你的配置来决定怎么响应这些请求，比如调用哪个控制器（Controller）来处理请求，然后返回响应。
+
+   这个过程就像是Tomcat是门卫，它负责接待来访的客人（HTTP请求），然后告诉Spring：“有人找你。”Spring再根据具体情况来接待这些客人。
+
+2. **嵌入式模式**：在这种模式下，Spring把Tomcat嵌入到自己的应用中。这意味着你的Spring应用里会包含一个小型的Tomcat服务器。当你运行Spring应用时，这个内嵌的Tomcat服务器也会启动，然后直接处理HTTP请求，而不需要一个单独的Tomcat服务器。
+
+   这种方式就像是Spring自己开了个小店，它不仅负责内部管理，还直接面对客户，处理所有的事务。
+
+无论是哪种模式，Spring和Tomcat的集成都依赖于一些关键的技术：
+
+- **Servlet规范**：Java Servlet规范是一个标准，它定义了Java Web应用的运行方式。Spring和Tomcat都遵循这个规范，所以它们可以一起工作。
+
+- **Spring MVC**：这是Spring提供的一个Web框架，它遵循MVC（模型-视图-控制器）设计模式。在Spring MVC中，Tomcat的作用主要是接收HTTP请求，然后由Spring MVC的控制器来处理这些请求。
+
+- **Spring Boot**：这是Spring的一个子项目，它让Spring应用的配置和部署变得更加简单。在Spring Boot中，你可以很容易地集成Tomcat，因为Spring Boot已经为你做好了大部分配置。
+
+总的来说，Spring和Tomcat的集成就是通过遵循Java Servlet规范，利用Spring MVC和Spring Boot等技术，让Spring应用能够运行在Tomcat上，处理HTTP请求，从而提供Web服务。
+
+# 3. Spring 和 Tomcat 容器的生命周期是如何同步？ 
+
+首先，生命周期就是指一个东西从开始到结束的整个过程。
+
+对于软件来说，就是从启动到关闭的这段时间。
+
+PS: 就是我们常说的钩子函数。
+
+**Tomcat的生命周期**：Tomcat作为一个服务器，它的生命周期很简单。当你启动Tomcat，它就开始监听网络请求，然后你就可以通过浏览器等客户端访问你的网站了。当你关闭Tomcat，它就会停止监听，不再处理任何请求。
+
+**Spring的生命周期**：Spring的生命周期稍微复杂一些，因为它涉及到很多组件，也就是Spring管理的Bean。Spring的生命周期包括Bean的创建、初始化、使用和销毁。
+
+那么，Spring和Tomcat是如何同步它们的生命周期的呢？这主要通过以下几个步骤：
+
+1. **启动阶段**：当你启动Tomcat时，它会加载Spring的配置文件，然后创建Spring的上下文（ApplicationContext）。这个上下文就是Spring管理所有Bean的地方。在这个过程中，Spring会创建所有的Bean，然后调用它们的初始化方法。
+
+2. **运行阶段**：在Tomcat运行期间，它会不断地接收HTTP请求，并将这些请求转发给Spring处理。Spring会根据配置，找到合适的Bean来处理这些请求。在这个阶段，Bean会被使用，但它们不会被销毁。
+
+3. **关闭阶段**：当你关闭Tomcat时，它会告诉Spring的上下文是时候关闭了。收到这个信号后，Spring会执行一系列的关闭操作，包括调用Bean的销毁方法，然后关闭上下文。这样，所有的Bean都会被正确地销毁，资源会被释放。
+
+在这个过程中，Tomcat和Spring通过一系列的事件和监听器来同步它们的生命周期。Tomcat会发出启动和关闭的事件，而Spring会监听这些事件，并在适当的时候执行自己的生命周期操作。
+
+举个例子，Spring提供了几个生命周期相关的接口，比如`InitializingBean`和`DisposableBean`。通过实现这些接口，你可以自定义Bean的初始化和销毁逻辑。当Tomcat启动或关闭时，Spring会调用这些方法，从而实现生命周期的同步。
+
+此外，Spring还提供了一些生命周期相关的事件，比如`ContextRefreshedEvent`和`ContextClosedEvent`。这些事件会在Spring上下文刷新和关闭时发出，你可以在Spring应用中监听这些事件，然后执行一些特定的操作。
+
+总的来说，Spring和Tomcat通过监听对方的生命周期事件，并执行相应的操作，实现了它们的生命周期同步。
+
+这样，无论Tomcat何时启动或关闭，Spring都能保证自己的Bean被正确地创建和销毁，从而保证了应用的稳定性和资源的有效利用。
+
+# 4. 对我们实现 tomcat 的启发？
+
+Spring Boot应用启动时，会创建Spring上下文（ApplicationContext），加载所有的Bean，并初始化它们。
+
+Tomcat启动时，会加载Web应用，初始化Servlet和Listener。
+
+实现自己的Tomcat时，要设计一个清晰的启动流程，确保所有的资源都能被正确加载和初始化。
+
+# 从零手写例子
+
+```
+ /\_/\  
+( o.o ) 
+ > ^ <
+```
+
+mini-cat 是简易版本的 tomcat 实现。别称【嗅虎】(心有猛虎，轻嗅蔷薇。)
+
+开源地址：[https://github.com/houbb/minicat](https://github.com/houbb/minicat)
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 # SpringBoot与Tomcat
@@ -402,7 +523,15 @@ Spring容器在启动的时候会向JVM注册销毁回调方法，JVM在收到ki
 
 # 开源地址
 
-https://github.com/houbb/minicat
+```
+ /\_/\  
+( o.o ) 
+ > ^ <
+```
+
+mini-cat 是简易版本的 tomcat 实现。别称【嗅虎】(心有猛虎，轻嗅蔷薇。)
+
+开源地址：[https://github.com/houbb/minicat](https://github.com/houbb/minicat)
 
 # 参考资料
 

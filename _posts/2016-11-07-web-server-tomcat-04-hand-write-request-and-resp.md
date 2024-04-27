@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 从零手写是实现 tomcat-03-请求和响应的抽象
+title: 从零手写实现 tomcat-04-请求和响应的抽象
 date:  2016-11-7 17:13:40 +0800
 categories: [Web]
 tags: [tomcat, server, web]
@@ -184,7 +184,15 @@ mini cat index html!
 
 # 开源地址
 
-https://github.com/houbb/minicat
+```
+ /\_/\  
+( o.o ) 
+ > ^ <
+```
+
+mini-cat 是简易版本的 tomcat 实现。别称【嗅虎】(心有猛虎，轻嗅蔷薇。)
+
+开源地址：[https://github.com/houbb/minicat](https://github.com/houbb/minicat)
 
 # 参考资料
 

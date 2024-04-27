@@ -1,11 +1,104 @@
 ---
 layout: post
-title: web server apache Tomcat-02-web.xml 详细介绍
+title: 从零手写实现 apache Tomcat-02-web.xml 入门详细介绍
 date:  2016-11-7 17:13:40 +0800
 categories: [Web]
 tags: [tomcat, server, web]
 published: true
 ---
+
+
+# web.xml
+
+web 应用，最核心的文件大概就是 web.xml 了。
+
+在Java Web应用中，`web.xml`是一个非常重要的配置文件，它告诉服务器你的应用是怎么工作的，就像一个说明书一样。
+
+## 例子
+
+一般如下：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<web-app>
+
+    <!-- servlet 配置 -->
+    <servlet>
+        <servlet-name>my</servlet-name>
+        <servlet-class>com.github.houbb.minicat.support.servlet.MyMiniCatHttpServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>my</servlet-name>
+        <url-pattern>/my</url-pattern>
+    </servlet-mapping>
+
+    <!-- Filter 配置 -->
+    <filter>
+        <filter-name>LoggingFilter</filter-name>
+        <filter-class>com.github.houbb.minicat.support.filter.MyMiniCatLoggingHttpFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>LoggingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Listener 配置 -->
+    <listener>
+        <listener-class>com.github.houbb.minicat.support.listener.foo.MyServletContextAttrListener</listener-class>
+    </listener>
+</web-app>
+```
+
+## 详细介绍
+
+这个文件里头写的都是些XML标签，每个标签都有它自己的作用，咱们一个一个来看：
+
+1. `<web-app>`：这是整个`web.xml`文件的根标签，所有的配置都在这个标签里面。
+
+2. `<servlet>`：这个标签用来定义一个Servlet。Servlet是Java Web应用中用来处理HTTP请求的程序。在这段代码里，我们定义了一个名为`my`的Servlet，它的完整类名是`com.github.houbb.minicat.support.servlet.MyMiniCatHttpServlet`。
+
+3. `<servlet-name>`：这是Servlet的名称，用来在其他地方引用这个Servlet。
+
+4. `<servlet-class>`：这是Servlet的完整类名，服务器会用这个类名来创建Servlet的实例。
+
+5. `<servlet-mapping>`：这个标签用来定义Servlet和URL之间的映射关系。当有请求到达服务器，服务器会根据这个映射关系，决定由哪个Servlet来处理请求。
+
+6. `<servlet-name>`（在`<servlet-mapping>`里）：它引用上面定义的Servlet的名称。
+
+7. `<url-pattern>`：这是URL的模式，服务器会用这个模式来匹配请求的URL。在这个例子里，所有以`/my`结尾的请求都会由名为`my`的Servlet来处理。
+
+8. `<filter>`：这个标签用来定义一个Filter，Filter是Java Web应用中的一个组件，用来拦截请求和响应，做一些处理，比如日志记录、安全控制等。
+
+9. `<filter-name>`：这是Filter的名称，用来在其他地方引用这个Filter。
+
+10. `<filter-class>`：这是Filter的完整类名，服务器会用这个类名来创建Filter的实例。
+
+11. `<filter-mapping>`：这个标签用来定义Filter的过滤规则，决定哪些请求会被这个Filter处理。
+
+12. `<url-pattern>`（在`<filter-mapping>`里）：这是URL的模式，在这个例子里，`/*`表示所有的请求都会被`LoggingFilter`这个Filter处理。
+
+13. `<listener>`：这个标签用来定义一个Listener，Listener是Java Web应用中的一个组件，用来监听应用中的某些事件，比如应用启动、关闭等。
+
+14. `<listener-class>`：这是Listener的完整类名，服务器会用这个类名来创建Listener的实例。
+
+通过这个`web.xml`文件，服务器就知道你的应用有哪些Servlet、Filter和Listener，以及它们都是怎么工作的。
+
+这样，当有请求到达服务器时，服务器就能够正确地处理这些请求，把它们交给合适的Servlet来处理，让Filter在处理前后做一些额外的工作，以及在应用的生命周期中触发Listener的事件。
+
+简单来说，`web.xml`就是一个告诉服务器你的Web应用是怎么运作的配置说明书。
+
+# 从零手写例子
+
+```
+ /\_/\  
+( o.o ) 
+ > ^ <
+```
+
+mini-cat 是简易版本的 tomcat 实现。别称【嗅虎】(心有猛虎，轻嗅蔷薇。)
+
+开源地址：[https://github.com/houbb/minicat](https://github.com/houbb/minicat)
+
 
 # servlet 标准的 listener
 
@@ -415,15 +508,6 @@ public interface WriteListener extends EventListener {
 
 总之，当用户请求的 URL 是 Web 应用程序的根目录时，Servlet 容器会根据 `welcome-file-list` 中定义的欢迎文件列表来匹配并返回合适的欢迎文件。
 
-<<<<<<< HEAD
-# 详细介绍一下 Listener
-
-在Java Web应用程序中，Listener（监听器）是一种特殊的Java类，用于监听Web应用程序中发生的事件并对其进行响应。
-
-通过监听器，开发人员可以在特定事件发生时执行自定义的逻辑，从而实现更灵活和可定制化的Web应用程序。以下是对Listener的详细介绍：
-
-1. **类型：**Listener在Java EE中有多种类型，用于监听不同类型的事件。常见的Listener类型包括：
-=======
 ## Listener 
 
 在Java Web应用程序中，Listener（监听器）是一种特殊的Java类，用于监听Web应用程序中发生的事件并对其进行响应。
@@ -435,7 +519,6 @@ public interface WriteListener extends EventListener {
 1. **类型：**Listener在Java EE中有多种类型，用于监听不同类型的事件。
 
 常见的Listener类型包括：
->>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
    - ServletContextListener：监听ServletContext的创建和销毁事件。
    - ServletContextAttributeListener：监听ServletContext属性的增加、删除和修改事件。
    - HttpSessionListener：监听HttpSession的创建和销毁事件。
@@ -444,16 +527,6 @@ public interface WriteListener extends EventListener {
    - ServletRequestAttributeListener：监听ServletRequest属性的增加、删除和修改事件。
    - ...等等，还有其他自定义的Listener类型。
 
-<<<<<<< HEAD
-2. **作用：**Listener用于处理各种事件，可以在应用程序启动、销毁、会话创建、会话销毁等阶段执行相关逻辑。
-
-它们可以用于进行初始化、资源加载、日志记录、权限验证、会话管理等各种操作。
-
-3. **注册：**要使用Listener，需要在web.xml文件中进行配置。
-
-示例如下：
-
-=======
 2. **作用：**
 
 Listener用于处理各种事件，可以在应用程序启动、销毁、会话创建、会话销毁等阶段执行相关逻辑。
@@ -461,30 +534,18 @@ Listener用于处理各种事件，可以在应用程序启动、销毁、会话
 它们可以用于进行初始化、资源加载、日志记录、权限验证、会话管理等各种操作。
 
 3. **注册：**要使用Listener，需要在web.xml文件中进行配置。示例如下：
->>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
     ```xml
     <listener>
         <listener-class>com.example.MyServletContextListener</listener-class>
     </listener>
     ```
-<<<<<<< HEAD
-
-=======
->>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
    这样就注册了一个ServletContextListener，当ServletContext被创建或销毁时，`com.example.MyServletContextListener` 中的相应方法将被调用。
 
 4. **生命周期方法：**Listener类通常需要实现特定的生命周期方法，以便在事件发生时执行相应的逻辑。
 
-<<<<<<< HEAD
-例如，对于ServletContextListener，通常会实现`contextInitialized()`方法用于在ServletContext被初始化时执行逻辑，以及`contextDestroyed()`方法用于在ServletContext被销毁时执行逻辑。
-
-5. **应用场景：**Listener广泛应用于Web应用程序的各个方面，例如：
-
-=======
 例如，对于 ServletContextListener，通常会实现`contextInitialized()`方法用于在 ServletContext 被初始化时执行逻辑，以及`contextDestroyed()`方法用于在ServletContext被销毁时执行逻辑。
 
 5. **应用场景：**Listener广泛应用于Web应用程序的各个方面，例如：
->>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
    - 在应用程序启动时进行初始化操作，如加载配置信息、初始化数据库连接等。
    - 在会话创建和销毁时进行相关操作，如记录用户登录信息、清理会话数据等。
    - 在请求到达时进行权限验证、日志记录等操作。
@@ -492,11 +553,7 @@ Listener用于处理各种事件，可以在应用程序启动、销毁、会话
 
 总之，Listener提供了一种灵活的机制，使开发人员能够监听和响应Java Web应用程序中发生的各种事件，从而实现更加可定制化和高效的应用程序。
 
-<<<<<<< HEAD
-# ServletContextListener 监听到ServletContext，会有哪些属性内容？
-=======
 ## ServletContextListener 监听到ServletContext，会有哪些属性内容？
->>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
 
 当 `ServletContextListener` 监听到 `ServletContext` 的创建事件时，可以通过 `ServletContext` 对象获取到一些有用的属性内容，这些内容通常包括：
 
@@ -520,12 +577,5 @@ Listener用于处理各种事件，可以在应用程序启动、销毁、会话
 
 
 
-<<<<<<< HEAD
-
-
-
-
-=======
->>>>>>> 2f53031edafccc1f3a5a2090a20c193f55cae96c
 * any list
 {:toc}

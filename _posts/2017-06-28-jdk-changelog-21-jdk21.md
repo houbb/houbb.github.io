@@ -1,6 +1,6 @@
 ---
 layout: post
-title: java 变更日志-21-jdk21
+title: jdk 变更日志-21-jdk21
 date:  2017-06-28 23:15:43 +0800
 categories: [Java]
 tags: [jdk, java]
@@ -50,7 +50,7 @@ JDK 21 引入了一系列新特性和改进，其中包括：
 这些新特性和改进展示了 Java 对现代编程需求的关注，预计在未来的版本中，Java 将进一步强化其并发编程能力，并为开发者提供更多高效、安全和可靠的工具。
 
 
-# 详细介绍 JDK 21 序列集合（Sequenced Collections）
+# 详细介绍 jdk20 JDK 21 序列集合（Sequenced Collections）
 
 JDK 21 引入了序列集合（Sequenced Collections），这是 Java 集合框架的一个重要补充。序列集合是一种特殊的集合，其中的元素具有一个明确的顺序，这个顺序是集合的一个结构属性。这个新特性由 JEP 431 提出，并作为正式特性被纳入 JDK 21。
 
@@ -80,7 +80,7 @@ JDK 21 引入了序列集合（Sequenced Collections），这是 Java 集合框�
 
 序列集合的引入是 Java 集合框架在表达有序集合方面的一个重要进步。它为 Java 开发者提供了一种新的工具来处理需要保持元素顺序的场景，同时简化了代码的编写和维护。随着 JDK 的发展，序列集合有望成为 Java 标准库中不可或缺的一部分，从而帮助 Java 程序员更高效地创建和维护有序集合。
 
-# 详细介绍 JDK 21 分代 ZGC（Generational ZGC）
+# 详细介绍 jdk20 JDK 21 分代 ZGC（Generational ZGC）
 
 JDK 21 引入了分代 ZGC（Generational Z Garbage Collector），这是对现有的 Z Garbage Collector（ZGC）的一个扩展。分代 ZGC 旨在通过区分年轻代和老年代对象来进一步提升垃圾收集的性能和效率。
 
@@ -112,7 +112,7 @@ JDK 21 引入了分代 ZGC（Generational Z Garbage Collector），这是对现�
 
 它为 Java 开发者提供了一种新的工具来优化内存管理，特别是在处理大规模数据和高并发应用程序时。
 
-# 详细介绍 JDK 21 记录模式（Record Patterns）
+# 详细介绍 jdk20 JDK 21 记录模式（Record Patterns）
 
 在 JDK 21 中，记录模式（Record Patterns）作为一个正式特性被引入，它是对 Java 编程语言的扩展，允许开发者使用模式匹配来解构记录（record）类型的值。这个特性在 Java 14 中作为预览特性首次提出，并在随后的版本中不断演化和改进。
 
@@ -157,7 +157,7 @@ JDK 21 引入了分代 ZGC（Generational Z Garbage Collector），这是对现�
 
 记录模式是 Java 语言在处理数据结构方面的一项重要补充，它使得处理记录类型更加直观和方便。
 
-# 详细介绍 JDK 21 `switch` 表达式的模式匹配
+# 详细介绍 jdk20 JDK 21 `switch` 表达式的模式匹配
 
 JDK 21 中的 `switch` 表达式模式匹配是一个强大的特性，它扩展了 `switch` 语句的能力，允许在 `switch` 表达式和语句中使用模式匹配。这个特性在 Java 14 首次作为预览特性引入，并在 JDK 17、JDK 18、JDK 19 和 JDK 20 中不断演进，最终在 JDK 21 中成为正式特性。
 
@@ -193,7 +193,7 @@ JDK 21 中的 `switch` 表达式模式匹配是一个强大的特性，它扩展
 
 `switch` 表达式模式匹配是 Java 语言在控制流结构方面的一个重要补充，它为开发者提供了一种新的工具来处理条件逻辑，同时简化了代码的编写和维护。
 
-# 详细介绍 JDK 21 虚拟线程（Virtual Threads）
+# 详细介绍 jdk20 JDK 21 虚拟线程（Virtual Threads）
 
 JDK 21 引入了虚拟线程（Virtual Threads），这是 Project Loom 的一部分，旨在简化并发编程并提高资源利用率。
 
@@ -231,7 +231,7 @@ JDK 21 引入了虚拟线程（Virtual Threads），这是 Project Loom 的一�
 
 虚拟线程是 Java 并发模型的一个重大补充，它为开发者提供了一种新的工具来处理高并发场景，同时简化了并发编程的复杂性。
 
-# 详细介绍 JDK 21 弃用 Windows 32 位 x86 移植
+# 详细介绍 jdk20 JDK 21 弃用 Windows 32 位 x86 移植
 
 在 JDK 21 中，OpenJDK 社区决定弃用对 Windows 32 位 x86 端口的支持，并计划在未来的版本中将其完全移除。这一决策反映在 JEP 449 中，其主要动机是为了使社区能够更快地开发新特性和增强功能，推动平台向前发展。
 
@@ -251,7 +251,7 @@ JDK 21 引入了虚拟线程（Virtual Threads），这是 Project Loom 的一�
 
 7. **安全性和完整性**：禁止动态加载代理也是 JDK 21 的一个变化，这是为了提高 JVM 的安全性和完整性。动态加载代理在 JDK 21 中仍然被允许，但会发出警告，以帮助用户为将来的版本做好准备。
 
-# 详细介绍 JDK 21 准备禁止动态加载代理
+# 详细介绍 jdk20 JDK 21 准备禁止动态加载代理
 
 在 JDK 21 中，引入了一个重要的变更，即 JEP 451: 准备禁止动态加载代理（Prepare to Disallow the Dynamic Loading of Agents）。
 
@@ -276,7 +276,7 @@ JDK 21 引入了虚拟线程（Virtual Threads），这是 Project Loom 的一�
 8. **注意事项**：在使用动态加载代理禁用准备之前，需要仔细评估现有代码是否依赖于动态加载代理的功能。需要更新相关的类加载器和安全管理器来支持禁止动态加载代理的功能。使用时，需要确保应用程序的安全策略能够正确地控制动态加载代理的使用权限。
 
 
-# 详细介绍 JDK 21 密钥封装机制 API
+# 详细介绍 jdk20 JDK 21 密钥封装机制 API
 
 JDK 21 引入了密钥封装机制（Key Encapsulation Mechanism，简称 KEM）API，作为 JEP 452 的一部分，这是一个重要的安全特性，旨在提高数据传输过程中的安全性。
 
@@ -315,9 +315,9 @@ JDK 21 引入了密钥封装机制（Key Encapsulation Mechanism，简称 KEM）
 
 它为开发者提供了一种新的工具来保护数据传输过程中的密钥安全，同时简化了密钥管理的复杂性。
 
-# 详细介绍 JDK 21 字符串模板（String Templates）
+# 详细介绍 jdk20 JDK 21 字符串模板（String Templates）
 
-# 详细介绍 JDK 21 字符串模板（String Templates）
+# 详细介绍 jdk20 JDK 21 字符串模板（String Templates）
 
 JDK 21 引入了字符串模板（String Templates）作为预览特性，这是 Java 语言的一个新特性，旨在提供一种更简洁和高效的方式来构建字符串。字符串模板允许开发者使用类似于格式化字符串字面量的方式来创建字符串，同时保持了字符串的不可变性。
 
@@ -347,9 +347,9 @@ JDK 21 引入了字符串模板（String Templates）作为预览特性，这是
 
 字符串模板是 Java 语言在字符串处理方面的一个重要补充，它为开发者提供了一种新的工具来简化字符串的构建和格式化。
 
-# 详细介绍 JDK 21 外部函数和内存 API（第三次预览）
+# 详细介绍 jdk20 JDK 21 外部函数和内存 API（第三次预览）
 
-# 详细介绍 JDK 21 外部函数和内存 API（第三次预览）
+# 详细介绍 jdk20 JDK 21 外部函数和内存 API（第三次预览）
 
 JDK 21 包含了外部函数和内存 API（通常称为 Project Panama 的一部分）的第三次预览。这个 API 允许 Java 程序安全且高效地与 Java 运行时环境之外的代码和数据进行互操作，它在 JDK 21 中继续作为预览特性进行开发。
 
@@ -384,7 +384,7 @@ JDK 21 包含了外部函数和内存 API（通常称为 Project Panama 的一�
 
 外部函数和内存 API 是 Java 在处理与本地代码互操作方面的一个重要进展，它为开发者提供了一种现代、类型安全且性能优异的方法来访问外部函数和内存。
 
-# 详细介绍 JDK 21 未命名模式和变量（预览）
+# 详细介绍 jdk20 JDK 21 未命名模式和变量（预览）
 
 在 JDK 21 中，未命名模式和变量作为预览特性被引入，旨在简化 Java 语言中的模式匹配和变量声明。
 
@@ -448,7 +448,7 @@ JDK 21 引入了未命名类和实例 `main` 方法作为预览特性，这是 J
 
 未命名类和实例 `main` 方法的引入，体现了 Java 语言对简化开发流程的持续关注，尤其是在编写小型应用程序或脚本时。
 
-# 详细介绍 JDK 21 作用域值（预览）
+# 详细介绍 jdk20 JDK 21 作用域值（预览）
 
 JDK 21 引入了作用域值（Scoped Values）作为预览特性，这是 Java 并发编程领域的一个重要补充。
 
@@ -485,7 +485,7 @@ JDK 21 引入了作用域值（Scoped Values）作为预览特性，这是 Java 
 
 作用域值是 Java 并发模型的一个重大补充，它为开发者提供了一种新的工具来处理高并发场景，同时简化了并发编程的复杂性。
 
-# 详细介绍 JDK 21 结构化并发（Structured Concurrency）（预览）
+# 详细介绍 jdk20 JDK 21 结构化并发（Structured Concurrency）（预览）
 
 在 JDK 21 中，结构化并发作为预览特性被引入，旨在简化和改进多线程程序的编写和管理。
 
@@ -533,11 +533,11 @@ JDK 21 引入了作用域值（Scoped Values）作为预览特性，这是 Java 
 
 随着 JDK 的发展，结构化并发有望成为 Java 标准库中的标准特性，从而成为 Java 程序员处理并发问题的首选方法。
 
-# 详细介绍 JDK 21 向量 API（第六次孵化）
+# 详细介绍 jdk20 JDK 21 向量 API（第六次孵化）
 
 向量 API 是 JDK 21 中的一个孵化特性，它允许开发者表达可以在运行时编译为特定 CPU 架构上最佳向量指令的向量计算。
 
-# 详细介绍 JDK 21 向量 API（第六次孵化）
+# 详细介绍 jdk20 JDK 21 向量 API（第六次孵化）
 
 JDK 21 继续孵化向量 API，这是 Java 语言的一个特性，旨在提供一种表达方式，让开发者能够利用现代 CPU 架构的 SIMD（单指令多数据）指令集进行高效的向量计算。
 

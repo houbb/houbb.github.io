@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 从零手写是实现 tomcat-07-war 如何解析处理三方的 war 包？
+title: 从零手写实现 tomcat-07-war 如何解析处理三方的 war 包？
 date:  2016-11-7 17:13:40 +0800
 categories: [Web]
 tags: [tomcat, server, web]
@@ -313,8 +313,21 @@ public class WebAppClassLoader extends URLClassLoader {
 }
 ```
 
+# 开源地址
+
+```
+ /\_/\  
+( o.o ) 
+ > ^ <
+```
+
+mini-cat 是简易版本的 tomcat 实现。别称【嗅虎】(心有猛虎，轻嗅蔷薇。)
+
+开源地址：[https://github.com/houbb/minicat](https://github.com/houbb/minicat)
 
 
+
+--------------------------------------------------------------------------------------------------------------------------------------------
 
 
 
@@ -1010,7 +1023,15 @@ public class WarParser {
 
 # 开源地址
 
-https://github.com/houbb/minicat
+```
+ /\_/\  
+( o.o ) 
+ > ^ <
+```
+
+mini-cat 是简易版本的 tomcat 实现。别称【嗅虎】(心有猛虎，轻嗅蔷薇。)
+
+开源地址：[https://github.com/houbb/minicat](https://github.com/houbb/minicat)
 
 # 参考资料
 

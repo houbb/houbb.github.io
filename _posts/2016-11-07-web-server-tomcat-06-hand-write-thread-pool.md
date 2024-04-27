@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 从零手写是实现 tomcat-06-servlet bio/thread/nio/netty 
+title: 从零手写实现 tomcat-06-servlet bio/thread/nio/netty 池化处理 
 date:  2016-11-7 17:13:40 +0800
 categories: [Web]
 tags: [tomcat, server, web]
@@ -22,7 +22,6 @@ published: true
 现在的实现看起来一切都好，但是有一个问题，会导致阻塞。
 
 为了一步步演示，我们把代码简化一下。
-
 
 # v1-bio
 
@@ -634,7 +633,15 @@ public class MiniCatNettyServerHandler extends ChannelInboundHandlerAdapter {
 
 # 开源地址
 
-https://github.com/houbb/minicat
+```
+ /\_/\  
+( o.o ) 
+ > ^ <
+```
+
+mini-cat 是简易版本的 tomcat 实现。别称【嗅虎】(心有猛虎，轻嗅蔷薇。)
+
+开源地址：[https://github.com/houbb/minicat](https://github.com/houbb/minicat)
 
 # 参考资料
 
