@@ -8,49 +8,33 @@ published: true
 ---
 
 
+# 创作缘由
+
+平时使用 tomcat 等 web 服务器不可谓不多，但是一直一知半解。
+
+于是想着自己实现一个简单版本，学习一下 tomcat 的精髓。
+
 # 怎么实现一个 tomcat 呢？
 
-想要自己搞个简化版的Tomcat，可以这么一步步来：
+Tomcat就像是一个用Java语言搭起来的大舞台，专门用来演出那些用Java编写的网页剧。想要玩得转Tomcat，你最好对Java语言有所了解。
 
-1. **搞懂Tomcat是啥**：
-   - Tomcat就是用Java写的一个开源服务器，能跑Java写的网页程序。
-   - 它用的是Java语言，所以得有点Java基础。
+搭建Tomcat的过程，就像是搭积木。首先，你得用Java写一个启动类，这个类就是整个服务器的大脑。然后，用Java的`ServerSocket`这个工具来监听网络上的敲门声，也就是连接请求。一旦有人来敲门，服务器就得看看人家想要啥，然后根据需求给出回应。
 
-2. **搭建个基础的HTTP服务器**：
-   - 用Java写个类，作为服务器的启动点。
-   - 用Java的`ServerSocket`来监听网上的连接请求。
-   - 一旦有人连上，就读他们的请求，分析他们想要啥。
-   - 根据他们要的，给回相应的回答。
+接下来，我们要让服务器学会处理网页请求。这就需要一个叫做Servlet的小家伙，它是一个接口，你需要写一个类来实现这个接口。这个类得有几个特定的动作，比如准备（`init()`）、服务（`service()`）和收工（`destroy()`）。在服务动作里，Servlet得判断人家是用什么方式来请求的，比如是GET还是POST，然后做出相应的反应。
 
-3. **实现Servlet的功能**：
-   - 写个类来处理网页请求，这个类得实现Servlet接口。
-   - 实现接口得写几个特定的方法，比如初始化(`init()`)、服务(`service()`)和销毁(`destroy()`)。
-   - 在`service()`方法里，看是哪种请求（比如GET或POST），然后调用对应的处理方法。
+服务器还得能处理那些不需要服务器现场制作的静态文件，比如图片、网页模板或者CSS样式表。这些文件就像是现成的道具，直接从硬盘里拿出来给人家就行。
 
-4. **搞定静态文件**：
-   - 对于图片、网页、样式表这些静态文件，直接从硬盘上读出来，然后发给请求的人就行。
-   - 收到请求后，看看人家是要静态文件还是动态网页。
+当然，对于那些需要服务器现场制作的动态网页，比如JSP，服务器就得根据请求的信息，现场编个网页，然后发回去。
 
-5. **处理动态网页**：
-   - 对于需要服务器实时生成的网页，比如JSP，就得在服务器上现做。
-   - 有人请求这种网页，就根据请求的信息，现场编个网页，然后发回去。
+此外，服务器还得能处理基本的网页请求，比如GET和POST，并且能读懂人家的请求信息，知道人家想访问哪个页面，还带了什么额外的信息。
 
-6. **处理基本的请求**：
-   - 能处理基本的网页请求，比如GET和POST。
-   - 能读懂请求的信息，知道人家要访问哪个网页，还带了什么参数。
+控制服务器的开关也很重要。你得写个方法来控制服务器的启动和停止。启动时，要准备好要用的东西，比如确定用哪个端口号，设置好线程池。关闭时，要确保资源都收拾干净，网络连接也都断开。
 
-7. **启动和关闭服务器**：
-   - 写个方法来控制服务器的开和关。
-   - 开服务器的时候，得准备好要用的东西，比如端口号、线程池。
-   - 关服务器的时候，得把资源清理干净，把网络连接关了。
+最后，你可以通过编写几个简单的Servlet和一些静态文件，然后在浏览器里测试你的服务器。确保服务器能够正确处理各种请求，并且返回正确的结果。
 
-8. **测试你的服务器**：
-   - 写几个简单的Servlet和静态文件，然后在浏览器里试试你的服务器。
-   - 确保服务器能正确处理各种请求，返回正确的结果。
+虽然这只是Tomcat的入门阶段，但要打造一个完整的Tomcat，还有很多东西要考虑，比如怎么让多个请求同时处理（多线程）、怎么高效管理数据库连接（连接池）、怎么记住每个访客的身份（会话管理）、怎么保护服务器不受坏蛋的攻击（安全问题）等等。
 
-要做出完整的Tomcat，还有很多东西要考虑，比如多线程、连接池、会话管理、安全问题等等。
-
-咱们可以一步步来，先搞定核心功能。
+咱们可以一步步来，先搞定这些基本的，再慢慢增加新的功能。
 
 # 从零手写例子
 
@@ -127,9 +111,42 @@ html: http://127.0.0.1:8080/index.html
 
 开源不易，欢迎 fork+star~~~ 鼓励一下作者
 
-# tomcat11 系列文章
+# 系列文章
 
-目前的最新版本：
+点击 {阅读原文}，获得更好的阅读体验
+
+## 手写实现系列
+
+[从零手写实现 apache Tomcat-01-入门介绍](https://houbb.github.io/2016/11/07/web-server-tomcat-02-hand-write-overview)
+
+[从零手写实现 apache Tomcat-02-web.xml 入门详细介绍](https://houbb.github.io/2016/11/07/web-server-tomcat-02-hand-write-web-xml)
+
+[从零手写实现 tomcat-03-基本的 socket 实现](https://houbb.github.io/2016/11/07/web-server-tomcat-03-hand-write-simple-socket)
+
+[从零手写实现 tomcat-04-请求和响应的抽象](https://houbb.github.io/2016/11/07/web-server-tomcat-04-hand-write-request-and-resp)
+
+[从零手写实现 tomcat-05-servlet 处理支持](https://houbb.github.io/2016/11/07/web-server-tomcat-05-hand-write-servlet-web-xml)
+
+[从零手写实现 tomcat-06-servlet bio/thread/nio/netty 池化处理](https://houbb.github.io/2016/11/07/web-server-tomcat-06-hand-write-thread-pool)
+
+[从零手写实现 tomcat-07-war 如何解析处理三方的 war 包？](https://houbb.github.io/2016/11/07/web-server-tomcat-07-hand-write-war)
+
+[从零手写实现 tomcat-08-tomcat 如何与 springboot 集成？](https://houbb.github.io/2016/11/07/web-server-tomcat-08-hand-write-embed)
+
+[从零手写实现 tomcat-09-servlet 处理类](https://houbb.github.io/2016/11/07/web-server-tomcat-09-hand-write-servlet)
+
+[从零手写实现 tomcat-10-static resource 静态资源文件](https://houbb.github.io/2016/11/07/web-server-tomcat-10-hand-write-static-resource)
+
+[从零手写实现 tomcat-11-filter 过滤器](https://houbb.github.io/2016/11/07/web-server-tomcat-11-hand-write-filter)
+
+[从零手写实现 tomcat-12-listener 监听器](https://houbb.github.io/2016/11/07/web-server-tomcat-12-hand-write-listener)
+
+
+## tomcat11 系列文章
+
+如果你对 tomcat 不是很熟，可以阅读下面的系列。
+
+目前的最新版本, tomcat11: 
 
 [web server apache tomcat11-01-官方文档入门介绍](https://houbb.github.io/2016/11/07/web-server-tomcat11-doc-01-intro)
 
@@ -233,43 +250,18 @@ Tomcat 是一个功能强大的开源 Servlet 容器和 Web 服务器，具有�
 
 这些都是 Tomcat 的一些核心能力，使其成为一个流行的 Web 应用程序服务器和 Servlet 容器。
 
-
-
 #  开源的手写项目
 
-## https://github.com/shenshaoming/tomcat
-
-手写tomcat
-netty的jar包位于resources下，就引入来说相对麻烦，各位不好意思了。
-version1.0:实现了监听端口,但时不时会服务器就会崩溃.
-version2.0:通过增加访问队列修复了崩溃的bug.
-version3.0:能够通过服务器访问本地(服务器)的文件,默认是D盘下的文件,D盘就相当于WEB_ROOT路径
-version3.1:实现多线程bio监听端口
-version4.0:能够通过服务器访问Servlet程序
-version4.1:通过扫描包和注解的形式,实现了类似SpringMvc的机制
-version4.2:当Servlet注解中的value重复时抛出异常
-version5.0:由开启线程改为线程池.
-version5.1:改为由ThreadPoolExecutor创建线程池
-version5.2:从BIO监听模型改为NIO模型
-version5.3:从NIO模型改为基于Netty的NIO模型
-version5.4:加入过滤器,收到请求时,要先去访问所有的过滤器
-
-## https://github.com/OliverLiy/MyTomcatDemo
-
-## https://github.com/CoderXiaohui/mini-tomcat
-
+```
+https://github.com/shenshaoming/tomcat
+https://github.com/OliverLiy/MyTomcatDemo
+https://github.com/CoderXiaohui/mini-tomcat
 https://www.cnblogs.com/isdxh/p/14199711.html
-
-## https://github.com/Rainyn/myTomcat
-
-手写Tomcat，参考
-
+https://github.com/Rainyn/myTomcat
 https://www.jianshu.com/p/dce1ee01fb90
-
-## https://github.com/thestyleofme/minicat-parent
-
-## https://github.com/nmyphp/mytomcat
-
+https://github.com/thestyleofme/minicat-parent
+https://github.com/nmyphp/mytomcat
+```
 
 * any list
 {:toc}
