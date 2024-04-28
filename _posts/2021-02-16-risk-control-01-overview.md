@@ -7,6 +7,35 @@ tags: [biz, risk, sh]
 published: true
 ---
 
+
+# 拓展阅读
+
+[风控知识总结](https://github.com/yangliang1415/awesome-risk-control)
+
+[星云（TH-Nebula)业务风控系统介绍](https://github.com/threathunterX/nebula)
+
+[“六道”实时业务风控系统](https://github.com/ysrc/Liudao)
+
+[风险控制笔记，适用于互联网企业](https://github.com/WalterInSH/risk-management-note)
+
+[互联网资安风控实战](https://github.com/xdite/internet-security)
+
+[轻量级JAVA实时业务风控系统框架](https://github.com/search?q=%E9%A3%8E%E6%8E%A7&type=repositories)
+
+[风控、大数据、算法](https://github.com/fgyeason/algorithm-and-risk-management)
+
+[金融风控系统（springboot+drools）、flink流计算、mongodb](https://github.com/wikke/ppdai_risk_evaluation)
+
+[陌陌风控系统静态规则引擎，零基础简易便捷的配置多种复杂规则，实时高效管控用户异常行为。](https://github.com/momosecurity/aswan)
+
+[风控、实时计算、技术框架、架构方案、Groovy规则引擎、规则决策](https://github.com/aalansehaiyang/risk-talk)
+
+[实时风控系统，基于spark-streaming、drools、kafka、redis](https://github.com/janecd/RiskRule)
+
+[拍拍贷网贷数据挖掘，风控建模](https://github.com/quicklysnail/PPD-data-mining)
+
+[风控系统](https://github.com/madfroghe/riskManage)
+
 # 异常发现
 
 使用频繁项集(Frequent Pattern)发现异常
