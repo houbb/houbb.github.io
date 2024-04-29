@@ -1,12 +1,33 @@
 ---
 layout: post
-title: linux soft kill 
+title: linux soft kill linux kill
 date: 2018-12-05 20:04:07 +0800
 categories: [Linux]
 tags: [linux, sh]
 published: true
 excerpt: linux soft kill 软杀
 ---
+
+# kill 时发现僵尸进程
+
+kill 不掉。
+
+```sh
+ps -ef | grep defunct
+```
+
+这样可以找到对应的僵尸进程。
+
+然后 kill 对应的父亲 id 即可。
+
+```
+ps -ef | grep java
+
+~$ ps -ef | grep java
+dh           545     435  0 19:15 pts/0    00:00:00 grep --color=auto java
+```
+
+id 后面那个就是父亲 id。
 
 # 为什么需要软杀
 
