@@ -76,6 +76,9 @@ insert into raw_data (event_id, event_source, raw_data) values('e3', 's1', 'raw_
 insert into raw_data (event_id, event_source, raw_data) values('e3', 's2', 'raw_data3_differ');
 insert into raw_data (event_id, event_source, raw_data) values('e4', 's1', 'raw_data4');
 insert into raw_data (event_id, event_source, raw_data) values('e4', 's2', 'raw_data4_differ');
+
+
+insert into raw_data (event_id, event_source, raw_data) values('e4', 's1', 'raw_data4');
 ```
 
 数据确认：
