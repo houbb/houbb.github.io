@@ -225,5 +225,31 @@ mysql> select * from compare_differ;
 +----+----------+----------------+----------------+------------+------------------+---------------------+
 ```
 
+### insert into ... select 返回值是什么？插入的数量吗？
+
+在 SQL 中，使用 `INSERT INTO ... SELECT ...` 语句执行插入操作后，返回值通常是受影响的行数，即实际被插入到表中的行数。大多数数据库管理系统在执行完插入操作后，都会返回这个数字，它可以用来确认操作的成功与否以及影响的范围。
+
+如果你想要获取这个返回值，通常需要查看数据库管理系统提供的文档，了解如何从你的应用程序或者命令行工具中获取这个值。在某些数据库系统中，执行完 `INSERT INTO ... SELECT ...` 后，这个返回值可能会直接显示在命令行界面或者应用程序的输出中。
+
+例如，在 MySQL 的命令行客户端中，执行完 `INSERT INTO ... SELECT ...` 后，通常会直接显示如下信息：
+
+```
+Query OK, n row(s) affected (x sec)
+```
+
+这里 `n` 就是被插入的行数，`x` 是执行这个操作所用的时间（秒）。
+
+在某些编程语言的数据库接口中，比如 Python 的 `pymysql` 或者 `psycopg2` 等，你可能需要调用特定的方法来获取这个值。
+
+例如，在 `pymysql` 中，你可以使用 `cursor.rowcount` 属性来获取这个值：
+
+```python
+cursor.execute("INSERT INTO compare_differ ... SELECT ...")
+inserted_rows = cursor.rowcount
+print(f"Inserted {inserted_rows} rows.")
+```
+
+请注意，不同的数据库和编程语言的接口可能会有不同的方法来获取这个值，所以具体实现方式请参考你所使用的数据库和编程语言的官方文档。
+
 * any list
 {:toc}
