@@ -11,26 +11,26 @@ published: true
 
 | May 2024 | May 2023 | Change | Programming Language | Ratings | Change |
 |----------|----------|--------|----------------------|---------|--------|
-| 1        | 1        |        | Python page          | Python  | 16.33% | +2.88% |
-| 2        | 2        |        | C page               | C       | 9.98%  | -3.37% |
-| 3        | 4        | change | C++ page             | C++     | 9.53%  | -2.43% |
-| 4        | 3        | change | Java page            | Java    | 8.69%  | -3.53% |
-| 5        | 5        |        | C# page              | C#      | 6.49%  | -0.94% |
-| 6        | 7        | change | JavaScript page      | JavaScript | 3.01% | +0.57% |
-| 7        | 6        | change | Visual Basic page    | Visual Basic | 2.01% | -1.83% |
-| 8        | 12       | change | Go page              | Go      | 1.60%  | +0.61% |
-| 9        | 9        |        | SQL page             | SQL     | 1.44%  | -0.03% |
-| 10       | 19       | change | Fortran page         | Fortran | 1.24%  | +0.46% |
-| 11       | 11       |        | Delphi/Object Pascal page | Delphi/Object Pascal | 1.24% | +0.23% |
-| 12       | 10       | change | Assembly language page | Assembly language | 1.07% | -0.13% |
-| 13       | 18       | change | Ruby page            | Ruby    | 1.06%  | +0.26% |
-| 14       | 15       | change | MATLAB page          | MATLAB  | 1.06%  | +0.18% |
-| 15       | 14       | change | Swift page           | Swift   | 1.01%  | +0.09% |
-| 16       | 8        | change | PHP page             | PHP     | 0.97%  | -0.62% |
-| 17       | 13       | change | Scratch page         | Scratch | 0.93%  | -0.02% |
-| 18       | 17       | change | Rust page            | Rust    | 0.93%  | +0.11% |
-| 19       | 33       | change | Kotlin page          | Kotlin  | 0.89%  | +0.52% |
-| 20       | 26       | change | COBOL page           | COBOL   | 0.85%  | +0.29% |
+| 1        | 1        |        | Python            | Python  | 16.33% | +2.88% |
+| 2        | 2        |        | C                 | C       | 9.98%  | -3.37% |
+| 3        | 4        | change | C++               | C++     | 9.53%  | -2.43% |
+| 4        | 3        | change | Java              | Java    | 8.69%  | -3.53% |
+| 5        | 5        |        | C#                | C#      | 6.49%  | -0.94% |
+| 6        | 7        | change | JavaScript        | JavaScript | 3.01% | +0.57% |
+| 7        | 6        | change | Visual Basic      | Visual Basic | 2.01% | -1.83% |
+| 8        | 12       | change | Go                | Go      | 1.60%  | +0.61% |
+| 9        | 9        |        | SQL               | SQL     | 1.44%  | -0.03% |
+| 10       | 19       | change | Fortran           | Fortran | 1.24%  | +0.46% |
+| 11       | 11       |        | Delphi/Object Pascal   | Delphi/Object Pascal | 1.24% | +0.23% |
+| 12       | 10       | change | Assembly language   | Assembly language | 1.07% | -0.13% |
+| 13       | 18       | change | Ruby              | Ruby    | 1.06%  | +0.26% |
+| 14       | 15       | change | MATLAB            | MATLAB  | 1.06%  | +0.18% |
+| 15       | 14       | change | Swift             | Swift   | 1.01%  | +0.09% |
+| 16       | 8        | change | PHP               | PHP     | 0.97%  | -0.62% |
+| 17       | 13       | change | Scratch           | Scratch | 0.93%  | -0.02% |
+| 18       | 17       | change | Rust              | Rust    | 0.93%  | +0.11% |
+| 19       | 33       | change | Kotlin            | Kotlin  | 0.89%  | +0.52% |
+| 20       | 26       | change | COBOL             | COBOL   | 0.85%  | +0.29% |
 | ...      | ...      | ...    | ...                  | ...     | ...    | ...    |
 
 这是一个示例表格，显示了排名前20的编程语言及其排名和变化情况。
