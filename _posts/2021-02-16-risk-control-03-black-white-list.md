@@ -258,6 +258,14 @@ published: true
 
 这些信息的公开旨在提高社会诚信意识，加强对失信行为的惩戒。
 
+# 优秀项目
+
+https://github.com/stamparm/ipsum
+
+https://github.com/stamparm/maltrail
+
+https://github.com/LeadroyaL/fastjson-blacklist
+
 # 参考资料
 
 [多线程使用redis进行累加结果不对，不能保证原子性解决方案](https://blog.csdn.net/cucgyfjklx/article/details/124338511)
