@@ -3,7 +3,7 @@ layout: post
 title: Git 服务器上的 Git 之配置服务器-4.4
 date: 2019-1-17 09:34:35 +0800
 categories: [Git]
-tags: [git, devops, sh]
+tags: [git, devops, git-learn, git-topic, sh]
 published: true
 excerpt: Git 服务器上的 Git 之配置服务器-4.4
 ---

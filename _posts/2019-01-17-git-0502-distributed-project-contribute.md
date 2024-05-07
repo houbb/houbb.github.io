@@ -3,7 +3,7 @@ layout: post
 title: 分布式 Git - 向一个项目贡献-5.2
 date: 2019-1-17 09:34:35 +0800
 categories: [Git]
-tags: [git, devops, sh]
+tags: [git, devops, git-learn, git-topic, sh]
 published: true
 excerpt: 分布式 Git - 向一个项目贡献-5.2
 ---

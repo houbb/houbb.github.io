@@ -3,7 +3,7 @@ layout: post
 title: Git rollback 回滚到指定版本的内容 + git revert 撤销操作  + git cherry-pick 当前分支上选择性地应用另一个分支上的一个或多个提交
 date: 2019-1-17 09:34:35 +0800
 categories: [Git]
-tags: [git, devops, sh]
+tags: [git, devops, git-learn, git-topic, sh]
 published: true
 ---
 
