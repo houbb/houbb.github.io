@@ -3,7 +3,7 @@ layout: post
 title:  NodeJs-08-database access js 如何直接访问数据库实战
 date:  2018-05-02 20:35:38 +0800
 categories: [NodeJs]
-tags: [js, nodejs]
+tags: [js, nodejs, nodejs-learn, js-learn]
 published: true
 ---
 

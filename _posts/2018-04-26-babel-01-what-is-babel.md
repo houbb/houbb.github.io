@@ -3,7 +3,7 @@ layout: post
 title:  Babel-01-什么是 babel？
 date:  2018-07-06 11:15:29 +0800
 categories: [Web]
-tags: [web, js]
+tags: [web, babel, js]
 published: true
 ---
 

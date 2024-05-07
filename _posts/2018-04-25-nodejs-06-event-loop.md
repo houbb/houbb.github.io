@@ -3,7 +3,7 @@ layout: post
 title:  NodeJs-06 Event Loop
 date:  2018-04-27 18:07:14 +0800
 categories: [NodeJs]
-tags: [js, nodejs]
+tags: [js, nodejs, nodejs-learn, js-learn]
 published: true
 ---
 
