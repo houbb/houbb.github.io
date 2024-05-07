@@ -3,7 +3,7 @@ layout: post
 title: Typescript-08-loop 循环
 date:  2021-3-09 16:52:15 +0800
 categories: [Web]
-tags: [web, js, typescript, ts, sh]
+tags: [web, js, typescript, ts, ts-learn, js-learn, typescript-learn, sh]
 published: true
 ---
 
