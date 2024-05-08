@@ -3,14 +3,13 @@ layout: post
 title:  Eslint JS 语法报告
 date:  2018-07-06 14:04:56 +0800
 categories: [Web]
-tags: [web, js, rule]
+tags: [web, js, qa, style-check, lint]
 published: true
 ---
 
 # Eslint
 
 [Eslint](https://eslint.org/) is the pluggable linting utility for JavaScript and JSX.
-
 
 # 开始使用ESLint
 

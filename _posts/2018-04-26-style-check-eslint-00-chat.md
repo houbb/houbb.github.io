@@ -3,7 +3,7 @@ layout: post
 title:  Eslint JS 语法报告-00-chat 聊一聊 eslint
 date:  2018-07-06 14:04:56 +0800
 categories: [Web]
-tags: [web, js, rule]
+tags: [web, js, qa, style-check, lint]
 published: true
 ---
 
@@ -110,6 +110,34 @@ ESLint 作为现代 JavaScript 开发中广泛使用的工具，其必要性主�
 16. **代码审查**：ESLint 可以作为代码审查过程的一部分，帮助自动化发现问题，减少人工代码审查的工作量。
 
 总之，ESLint 是一个强大的工具，它通过静态代码检查帮助开发者编写更干净、更安全且易于维护的代码。
+
+## js 中还有那些 类似于 eslint 的工具吗?
+
+在JavaScript开发中，除了ESLint之外，还有许多其他的工具可以帮助开发者检查代码质量、风格以及潜在的错误。以下是一些类似的工具：
+
+1. **JSHint**：JSHint是一个早期的JavaScript代码质量检查工具，它允许开发者自定义规则来检查代码中的问题和风格违规。
+
+2. **JSCS**（JavaScript Code Style checker）：JSCS是一个代码风格检查器，它提供了大量的规则来强制执行特定的编码风格。
+
+3. **TSLint**：TSLint是专门用于TypeScript的代码质量工具，它与ESLint类似，但专门用于TypeScript代码的检查。
+
+4. **Prettier**：Prettier是一个代码格式化工具，它可以自动格式化代码，确保整个项目中代码风格的一致性。
+
+5. **Stylelint**：Stylelint用于检查CSS和SCSS代码的风格，帮助维护CSS代码的一致性和可维护性。
+
+6. **HTMLHint**：HTMLHint是HTML代码的静态分析工具，用于检查HTML代码中的语法错误和最佳实践。
+
+7. **SonarQube**：SonarQube是一个代码质量管理平台，它支持多种编程语言，提供代码度量、静态分析和质量报告。
+
+8. **CSSLint**：CSSLint是用于检查CSS代码质量的工具，它可以检测代码中的问题，并提供改进建议。
+
+9. **CodeClimate**：CodeClimate是一个在线代码质量平台，提供代码度量、代码复杂性分析和质量报告。
+
+10. **Standard**：Standard是一个使用ESLint作为底层工具的代码风格检查器，它强制执行一套固定的代码风格规则。
+
+这些工具各有特点，开发者可以根据项目的具体需求和团队的编码习惯选择合适的工具来集成到开发流程中。
+
+
 
 * any list
 {:toc}
