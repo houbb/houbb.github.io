@@ -7,77 +7,6 @@ tags: [web, vue, admin, sh]
 published: true
 ---
 
-# chat
-
-## 详细介绍一下 Naive Ui Admin
-
-Naive Ui Admin 是一个现代化的中后台前端解决方案，它基于 Vue 3.0、Vite、Naive UI 和 TypeScript 构建。
-
-这个框架利用了前端领域的最新技术，旨在帮助开发者快速搭建企业级的中后台项目。以下是关于 Naive Ui Admin 的详细介绍：
-
-### 技术栈
-- **Vue 3.0**：一个构建用户界面的渐进式框架，易于学习和集成。
-- **Vite**：一个现代化的前端构建工具，提供了快速的冷启动和即时模块热替换。
-- **Naive UI**：一个易于使用的 Vue 3 UI 库，提供了一套丰富的组件。
-- **TypeScript**：一种静态类型定义的语言，增强了JavaScript的代码质量。
-
-### 特点
-- **二次封装组件**：项目中对一些组件进行了二次封装，以适应特定的业务需求。
-- **动态菜单**：支持动态生成菜单，根据用户的权限显示相应的菜单项。
-- **权限校验**：实现了细粒度的权限控制，确保用户只能访问授权的资源。
-- **粒子化权限控制**：提供了更为细致的权限管理方式。
-
-### 项目结构
-项目的目录结构清晰，便于维护和扩展，主要包含以下部分：
-- `build`：打包脚本相关。
-- `mock`：模拟数据文件夹。
-- `public`：存放公共静态资源。
-- `src`：源代码目录，包括 API 接口、组件、路由配置等。
-- `types`：类型定义文件。
-- `vite.config.ts` 和 `windi.config.ts`：配置文件。
-
-### 环境要求
-- **本地开发**：推荐使用最新版的 Chrome 浏览器，不支持 Chrome 80 以下版本。
-- **生产环境**：支持现代浏览器，不包括 Internet Explorer。
-
-### 社区和贡献
-Naive Ui Admin 是一个开放源代码项目，欢迎社区的参与和贡献。项目组会根据贡献者的活跃度邀请他们加入团队。
-
-### 学习资源
-为了更好地理解和使用 Naive Ui Admin，建议开发者提前学习以下知识：
-- Vue 3 文档
-- Vue-RFCS
-- Vue2 迁移到 Vue 3
-- TypeScript
-- Vue-router
-- Naive UI
-- ES6
-- Vite
-- WindiCSS
-
-### 浏览器支持
-项目支持主流的现代浏览器的最新两个版本，但不包括 Internet Explorer。
-
-### 获取代码
-代码可以通过 Git 从 GitHub 或 Gitee 获取。项目还提供了详细的安装和启动指南。
-
-### 构建与部署
-项目提供了构建和部署的文档，帮助开发者了解如何将应用打包并准备上线。
-
-### 权限管理
-Naive Ui Admin 提供了前端角色权限实现和后台动态路由实现的文档，帮助开发者实现细粒度的权限控制。
-
-### 文档和教程
-Naive Ui Admin 提供了详尽的文档和教程，帮助开发者快速上手和解决开发中的问题。
-
-### 加入社区
-Naive Ui Admin 鼓励社区的参与，无论是提供建议还是提交代码，都是对项目的贡献。
-
-这个项目不仅提供了一套强大的工具和组件，还建立了一个活跃的社区，以促进知识的共享和技术的进步。
-
-
-
------------------------------------------------------------------------------------------------
 
 
 # Naive Ui Admin
@@ -265,6 +194,80 @@ pnpm build
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt=" Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
 | :-: | :-: | :-: | :-: | :-: |
 | not support | last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+
+
+# chat
+
+## 详细介绍一下 Naive Ui Admin
+
+Naive Ui Admin 是一个现代化的中后台前端解决方案，它基于 Vue 3.0、Vite、Naive UI 和 TypeScript 构建。
+
+这个框架利用了前端领域的最新技术，旨在帮助开发者快速搭建企业级的中后台项目。以下是关于 Naive Ui Admin 的详细介绍：
+
+### 技术栈
+- **Vue 3.0**：一个构建用户界面的渐进式框架，易于学习和集成。
+- **Vite**：一个现代化的前端构建工具，提供了快速的冷启动和即时模块热替换。
+- **Naive UI**：一个易于使用的 Vue 3 UI 库，提供了一套丰富的组件。
+- **TypeScript**：一种静态类型定义的语言，增强了JavaScript的代码质量。
+
+### 特点
+- **二次封装组件**：项目中对一些组件进行了二次封装，以适应特定的业务需求。
+- **动态菜单**：支持动态生成菜单，根据用户的权限显示相应的菜单项。
+- **权限校验**：实现了细粒度的权限控制，确保用户只能访问授权的资源。
+- **粒子化权限控制**：提供了更为细致的权限管理方式。
+
+### 项目结构
+项目的目录结构清晰，便于维护和扩展，主要包含以下部分：
+- `build`：打包脚本相关。
+- `mock`：模拟数据文件夹。
+- `public`：存放公共静态资源。
+- `src`：源代码目录，包括 API 接口、组件、路由配置等。
+- `types`：类型定义文件。
+- `vite.config.ts` 和 `windi.config.ts`：配置文件。
+
+### 环境要求
+- **本地开发**：推荐使用最新版的 Chrome 浏览器，不支持 Chrome 80 以下版本。
+- **生产环境**：支持现代浏览器，不包括 Internet Explorer。
+
+### 社区和贡献
+Naive Ui Admin 是一个开放源代码项目，欢迎社区的参与和贡献。项目组会根据贡献者的活跃度邀请他们加入团队。
+
+### 学习资源
+为了更好地理解和使用 Naive Ui Admin，建议开发者提前学习以下知识：
+- Vue 3 文档
+- Vue-RFCS
+- Vue2 迁移到 Vue 3
+- TypeScript
+- Vue-router
+- Naive UI
+- ES6
+- Vite
+- WindiCSS
+
+### 浏览器支持
+项目支持主流的现代浏览器的最新两个版本，但不包括 Internet Explorer。
+
+### 获取代码
+代码可以通过 Git 从 GitHub 或 Gitee 获取。项目还提供了详细的安装和启动指南。
+
+### 构建与部署
+项目提供了构建和部署的文档，帮助开发者了解如何将应用打包并准备上线。
+
+### 权限管理
+Naive Ui Admin 提供了前端角色权限实现和后台动态路由实现的文档，帮助开发者实现细粒度的权限控制。
+
+### 文档和教程
+Naive Ui Admin 提供了详尽的文档和教程，帮助开发者快速上手和解决开发中的问题。
+
+### 加入社区
+Naive Ui Admin 鼓励社区的参与，无论是提供建议还是提交代码，都是对项目的贡献。
+
+这个项目不仅提供了一套强大的工具和组件，还建立了一个活跃的社区，以促进知识的共享和技术的进步。
+
+
+
+-----------------------------------------------------------------------------------------------
+
 
 # 参考资料
 

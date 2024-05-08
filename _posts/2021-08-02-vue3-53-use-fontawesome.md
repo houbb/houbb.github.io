@@ -3,7 +3,7 @@ layout: post
 title: VUE3-53-vue 使用 fontawesome
 date: 2021-08-02 21:01:55 +0800
 categories: [VUE]
-tags: [vue, css, sh]
+tags: [vue, hello-world, vue-learn, sh]
 published: true
 ---
 

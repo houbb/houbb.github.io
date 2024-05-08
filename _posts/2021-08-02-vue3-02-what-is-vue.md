@@ -3,7 +3,7 @@ layout: post
 title: VUE3-02-vue 是什么？vue 入门例子：声明式渲染
 date: 2021-08-02 21:01:55 +0800
 categories: [VUE]
-tags: [vue, hello-world, sh]
+tags: [vue, hello-world, vue-learn, sh]
 published: true
 ---
 
