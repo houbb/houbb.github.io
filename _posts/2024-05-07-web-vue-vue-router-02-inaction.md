@@ -7,6 +7,71 @@ tags: [web, vue, vue-router, sh]
 published: true
 ---
 
+
+# html 的例子
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue Router 入门示例</title>
+  <!-- 引入 Vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <!-- 引入 Vue Router -->
+  <script src="https://cdn.jsdelivr.net/npm/vue-router@3"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Vue Router 会将 router-view 替换为当前路由匹配到的组件 -->
+	<div id="app">
+	  <h1>Hello App!</h1>
+	  <p>
+		<!-- 使用 router-link 组件进行导航 -->
+		<!-- 通过传递 `to` 来指定链接 -->
+		<!-- `<router-link>` 将呈现一个带有正确 `href` 属性的 `<a>` 标签 -->
+		<router-link to="/">Go to Home</router-link>
+		<router-link to="/about">Go to About</router-link>
+	  </p>
+	  <!-- 路由出口 -->
+	  <!-- 路由匹配到的组件将渲染在这里 -->
+	  <router-view></router-view>
+	</div>
+  </div>
+
+  <script>
+    // 创建两个组件
+    const Home = { template: '<div>这是主页</div>' }
+    const About = { template: '<div>这是关于页面</div>' }
+
+    // 创建路由器实例并配置路由
+    const router = new VueRouter({
+      routes: [
+        { path: '/', component: Home },
+        { path: '/about', component: About }
+      ]
+    })
+
+    // 创建 Vue 实例，并将路由器添加到根实例中
+    new Vue({
+      el: '#app',
+      router
+    })
+  </script>
+</body>
+</html>
+```
+
+这样浏览器可以直接访问。
+
+`/` 时，默认返回主页。
+
+`/about` 时，默认返回关于页面
+
+--------------------------------------------------------------------------------------------------------
+
+
 # 入门例子
 
 https://github.com/vuejs/router/tree/main/packages/playground
@@ -273,6 +338,22 @@ Downloading registry.npmmirror.com/typescript/5.3.3: 5.76 MB/5.76 MB, done
 ../../node_modules/.pnpm/yorkie@2.0.0/node_modules/yorkie: Running install script, done in 146ms
 ../../node_modules/.pnpm/vue-demi@0.14.7_vue@3.4.23/node_modules/vue-demi: Running postinstall script, done in 197ms
 ../../node_modules/.pnpm/geckodriver@3.2.0/node_modules/geckodriver: Running postinstall script...
+```
+
+发现时间比较长，终止重新来：
+
+```
+D:\js\vue-router\router\packages\playground>pnpm install
+Scope: all 4 workspace projects
+../..                                    | +920 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+../..                                    | Progress: resolved 920, reused 920, downloaded 0, added 5, done
+Done in 1.5s
+```
+
+启动：
+
+```sh
+pnpm run dev
 ```
 
 
