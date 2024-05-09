@@ -150,9 +150,122 @@ pnpm run dev
 pnpm build
 ```
 
-## 📜 更新日志
+### 本地测试日志
 
-[CHANGELOG](./CHANGELOG.md)
+```
+D:\code\naive-ui-demo>git clone https://github.com/jekip/naive-ui-admin.git
+Cloning into 'naive-ui-admin'...
+remote: Enumerating objects: 3354, done.
+remote: Counting objects: 100% (963/963), done.
+remote: Compressing objects: 100% (295/295), done.
+remote: Total 3354 (delta 737), reused 715 (delta 663), pack-reused 2391 eceiving objects: 100% (3354/3354), 396.00 KiB Receiving objects: 100% (3354/3354), 1.73 MiB | 1.94 MiB/s, done.
+
+Resolving deltas: 100% (1824/1824), done.
+
+D:\code\naive-ui-demo>cd naive-ui-admin
+
+D:\code\naive-ui-demo\naive-ui-admin>pnpm install
+Lockfile is up to date, resolution step is skipped
+Packages: +956
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Downloading typescript@4.9.5: 11.62 MB/11.62 MB, done
+Downloading echarts@5.5.0: 10.37 MB/10.37 MB, done
+Progress: resolved 956, reused 411, downloaded 545, added 956, done
+node_modules/.pnpm/core-js@3.36.1/node_modules/core-js: Running postinstall script, done in 169ms
+node_modules/.pnpm/esbuild@0.15.18/node_modules/esbuild: Running postinstall script, done in 349ms
+node_modules/.pnpm/esbuild@0.14.54/node_modules/esbuild: Running postinstall script, done in 384ms
+node_modules/.pnpm/esbuild@0.18.20/node_modules/esbuild: Running postinstall script, done in 349ms
+node_modules/.pnpm/vue-demi@0.13.11_vue@3.4.21/node_modules/vue-demi: Running postinstall script, done in 218ms
+node_modules/.pnpm/vue-demi@0.14.7_vue@3.4.21/node_modules/vue-demi: Running postinstall script, done in 158ms
+
+dependencies:
++ @vicons/antd 0.12.0
++ @vicons/ionicons5 0.12.0
++ @vueup/vue-quill 1.2.0
++ @vueuse/core 9.13.0
++ axios 1.6.8
++ blueimp-md5 2.19.0
++ date-fns 2.30.0
++ echarts 5.5.0
++ element-resize-detector 1.2.4
++ lodash-es 4.17.21
++ mitt 3.0.1
++ mockjs 1.1.0
++ naive-ui 2.38.1
++ pinia 2.1.7
++ qs 6.12.0
++ vfonts 0.0.3
++ vue 3.4.21
++ vue-router 4.3.0
++ vue-types 4.2.1
+
+devDependencies:
++ @commitlint/cli 17.8.1
++ @commitlint/config-conventional 17.8.1
++ @types/lodash 4.17.0
++ @types/node 18.19.31
++ @typescript-eslint/eslint-plugin 5.62.0
++ @typescript-eslint/parser 5.62.0
++ @vitejs/plugin-vue 3.2.0
++ @vitejs/plugin-vue-jsx 2.1.1
++ @vue/compiler-sfc 3.4.21
++ @vue/eslint-config-typescript 11.0.3
++ autoprefixer 10.4.19
++ commitizen 4.3.0
++ core-js 3.36.1
++ cross-env 7.0.3
++ dotenv 16.4.5
++ eslint 8.57.0
++ eslint-config-prettier 8.10.0
++ eslint-define-config 1.12.0
++ eslint-plugin-jest 27.9.0
++ eslint-plugin-prettier 4.2.1
++ eslint-plugin-vue 9.24.1
++ esno 0.16.3
++ gh-pages 4.0.0
++ husky 8.0.3
++ jest 29.7.0
++ less 4.2.0
++ less-loader 11.1.4
++ lint-staged 13.3.0
++ postcss 8.4.38
++ prettier 2.8.8
++ pretty-quick 3.3.1
++ rimraf 3.0.2
++ stylelint 14.16.1
++ stylelint-config-prettier 9.0.5
++ stylelint-config-standard 29.0.0
++ stylelint-order 5.0.0
++ stylelint-scss 4.7.0
++ tailwindcss 3.4.3
++ typescript 4.9.5
++ unplugin-vue-components 0.22.12
++ vite 3.2.10
++ vite-plugin-compression 0.5.1
++ vite-plugin-html 3.2.2
++ vite-plugin-mock 2.9.8
++ vite-plugin-style-import 2.0.0
++ vue-demi 0.13.11
++ vue-draggable-next 2.2.1
++ vue-eslint-parser 9.4.2
++ vuedraggable 4.1.0
+
+Done in 26.7s
+
+D:\code\naive-ui-demo\naive-ui-admin>pnpm run dev
+
+> naive-ui-admin@1.9.1 dev D:\code\naive-ui-demo\naive-ui-admin
+> vite
+
+                                                                                                              18:21:10
+  VITE v3.2.10  ready in 1218 ms
+
+  ➜  Local:   http://localhost:8001/                                                                          18:21:10
+  ➜  Network: http://172.20.10.2:8001/                                                                        18:21:10
+  ➜  Network: http://172.24.16.1:8001/
+```
+
+浏览器访问 [localhost:8001](localhost:8001)，非常的完美。
 
 
 ## 🤝 如何贡献
