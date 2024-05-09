@@ -126,5 +126,49 @@ ADD UNIQUE (column1, column2, ...);
 
 因此，你可能需要在低峰时段进行此操作，并确保在执行之前对数据库进行了备份。
 
+## 其他索引调整方式
+
+在 MySQL 中，可以通过 `ALTER TABLE` 语句添加索引，并且可以指定索引的名称。以下是几种常见索引添加时指定名称的语法：
+
+1. **添加普通索引** 并指定索引名称：
+   ```sql
+   ALTER TABLE table_name ADD INDEX index_name (column_list);
+   ```
+
+2. **添加唯一索引** 并指定索引名称：
+   ```sql
+   ALTER TABLE table_name ADD UNIQUE index_name (column_list);
+   ```
+
+3. **添加主键索引** 并指定索引名称（这将自动设置列为 NOT NULL）：
+   ```sql
+   ALTER TABLE table_name ADD PRIMARY KEY index_name (column_list);
+   ```
+
+4. **添加全文索引** 并指定索引名称：
+   ```sql
+   ALTER TABLE table_name ADD FULLTEXT index_name (column_list);
+   ```
+
+5. **添加空间索引**（需要 MySQL 的空间数据类型支持）并指定索引名称：
+   ```sql
+   ALTER TABLE table_name ADD SPATIAL index_name (column_list);
+   ```
+
+这里的 `table_name` 是你要修改的表名，`index_name` 是你想要给索引指定的名称，而 `column_list` 是你想要索引的一个或多个列名。
+
+请注意，如果你尝试添加的索引名称已经存在，MySQL 将会报错。另外，索引的名称在数据库中应该是唯一的。
+
+以下是添加一个指定名称的普通索引的完整示例：
+
+```sql
+ALTER TABLE users ADD INDEX idx_username (username);
+```
+
+这条语句将在 `users` 表上为 `username` 列创建一个普通索引，索引的名称为 `idx_username`。
+
+在执行 `ALTER TABLE` 语句时，MySQL 会锁定该表直到语句完成，这可能会对生产环境中的数据库性能产生影响。因此，建议在低峰时段进行此类操作。
+
+
 * any list
 {:toc}
