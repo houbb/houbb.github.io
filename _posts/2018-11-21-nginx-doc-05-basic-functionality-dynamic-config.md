@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Nginx doc-05-Dynamic Configuration of Upstreams with the NGINX Plus API 使用 NGINX Plus API 动态配置上游服务器
+title:  Nginx R31 doc-05-Dynamic Configuration of Upstreams with the NGINX Plus API 使用 NGINX Plus API 动态配置上游服务器
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, windows, sh]

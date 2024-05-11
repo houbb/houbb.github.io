@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Nginx doc-08-Configuring NGINX and NGINX Plus as a Web Server 配置 NGINX 和 NGINX Plus 作为 Web 服务器
+title:  Nginx R31 doc-08-Configuring NGINX and NGINX Plus as a Web Server 配置 NGINX 和 NGINX Plus 作为 Web 服务器
 date: 2018-11-22 8:01:55 +0800 
 categories: [Web]
 tags: [nginx, windows, sh]

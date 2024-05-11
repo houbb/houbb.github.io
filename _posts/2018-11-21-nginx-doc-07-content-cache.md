@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Nginx doc-07-内容缓存
+title:  Nginx R31 doc-07-内容缓存
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, windows, sh]

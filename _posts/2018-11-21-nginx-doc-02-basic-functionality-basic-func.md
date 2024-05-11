@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Nginx doc-02-nginx 基本功能
+title:  Nginx R31 doc-02-nginx 基本功能
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, windows, sh]

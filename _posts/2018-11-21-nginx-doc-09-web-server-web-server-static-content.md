@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Nginx doc-09-Serving Static Content 静态内容
+title:  Nginx R31 doc-09-Serving Static Content 静态内容
 date: 2018-11-22 8:01:55 +0800 
 categories: [Web]
 tags: [nginx, windows, sh]

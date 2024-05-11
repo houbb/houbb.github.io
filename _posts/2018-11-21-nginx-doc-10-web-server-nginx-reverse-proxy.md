@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Nginx doc-10-NGINX Reverse Proxy 反向代理
+title:  Nginx R31 doc-10-NGINX Reverse Proxy 反向代理
 date: 2018-11-22 8:01:55 +0800 
 categories: [Web]
 tags: [nginx, windows, sh]

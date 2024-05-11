@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Nginx doc-03-HTTP Load Balancing HTTP 负载均衡
+title:  Nginx R31 doc-03-HTTP Load Balancing HTTP 负载均衡
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, windows, sh]

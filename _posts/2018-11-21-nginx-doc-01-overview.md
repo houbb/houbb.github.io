@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Nginx doc 官方文档-01-nginx 如何安装
+title:  Nginx R31 doc 官方文档-01-nginx 如何安装
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, windows, sh]
