@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Nginx doc-01-nginx 官方文档
+title:  Nginx doc 官方文档-01-nginx 如何安装
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, windows, sh]
@@ -189,11 +189,7 @@ sudo nginx -v
 
 # 参考资料
 
-[nginx 一把梭！（超详细讲解+实操）](https://juejin.cn/post/7306041273822527514)
-
-> [一个简单的Nginx入门案例](一个简单的Nginx入门案例)
-
-https://juejin.cn/post/7293176193322729510
+https://docs.nginx.com/nginx/admin-guide/installing-nginx/installing-nginx-open-source/
 
 * any list
 {:toc}
