@@ -45,7 +45,9 @@ published: true
 
 ## 优秀的 java 开源网关有哪些？
 
-Java 开源网关是微服务架构中的关键组件，它们通常负责处理API路由、负载均衡、认证授权、监控和安全等功能。以下是一些优秀的 Java 开源网关：
+Java 开源网关是微服务架构中的关键组件，它们通常负责处理API路由、负载均衡、认证授权、监控和安全等功能。
+
+以下是一些优秀的 Java 开源网关：
 
 1. **Spring Cloud Gateway**
    - 基于Spring 5.0, Spring Boot 2.0和WebFlux开发，性能高于Zuul，为微服务架构提供统一的API路由管理方式。
