@@ -135,6 +135,10 @@ published: true
 
 这个表格可以帮助你更好地理解每个负载均衡组件的特点和区别，以便你选择最适合你需求的组件。
 
+# 自己实现
+
+> [https://github.com/houbb/load-balance](https://github.com/houbb/load-balance)
+
 # 参考资料
 
 - 官方
