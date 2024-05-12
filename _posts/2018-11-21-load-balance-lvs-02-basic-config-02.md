@@ -3,7 +3,7 @@ layout: post
 title:  LVS-02-Basic Config
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
-tags: [web-server, quisk-start, load-balance, sh]
+tags: [web-server, quisk-start, load-balance, network, sh]
 published: true
 ---
 

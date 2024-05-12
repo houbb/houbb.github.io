@@ -3,7 +3,7 @@ layout: post
 title:  F5-负载均衡
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
-tags: [web-server, overview, load-balance, sh]
+tags: [web-server, overview, load-balance, network, sh]
 published: true
 ---
 

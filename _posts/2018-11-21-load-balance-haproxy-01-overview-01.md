@@ -3,14 +3,18 @@ layout: post
 title:  HAProxy-01-Overview
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
-tags: [web-server, overview, ha, load-balance, sh]
+tags: [web-server, overview, ha, load-balance, network, sh]
 published: true
 ---
 
 
 # HAProxy
 
-[HAProxy](https://www.haproxy.org/)  is a free, very fast and reliable solution offering high availability, load balancing, and proxying for TCP and HTTP-based applications. It is particularly suited for very high traffic web sites and powers quite a number of the world's most visited ones. Over the years it has become the de-facto standard opensource load balancer, is now shipped with most mainstream Linux distributions, and is often deployed by default in cloud platforms. Since it does not advertise itself, we only know it's used when the admins report it。
+[HAProxy](https://www.haproxy.org/) 是一个免费、非常快速和可靠的解决方案，提供高可用性、负载均衡和代理功能，适用于基于TCP和HTTP的应用程序。
+
+它特别适用于高流量的网站，并为全球访问量最高的许多网站提供支持。
+
+多年来，它已成为事实上的开源负载均衡器标准，并且现在已经随着大多数主流Linux发行版一起发布，在云平台中通常默认部署。由于它不会主动宣传自己，我们只有在管理员报告时才知道它被使用。
 
 ## 性能
 
@@ -66,6 +70,25 @@ MRU内存分配器使用固定大小的内存池进行即时内存分配，有�
 Reliability - keeping high-traffic sites online since 2002
 
 Security - Not even one intrusion in 13 years
+
+
+
+# chat
+
+## 详细介绍下负载均衡 HaProxy
+
+## 详细介绍下负载均衡 HaProxy
+
+## 负载均衡组件这么多，为什么要选择 HaProxy?
+
+## 详细介绍下负载均衡 HaProxy 有哪些特别的点，和 nginx 对比有哪些优缺点？
+
+## 给出系统学习 负载均衡 HaProxy 的资料，包含网址
+
+## 如果让你深入学习负载均衡 HaProxy，你会问哪 10 个问题？为什么？
+
+
+
 
 # 参考资料
 
