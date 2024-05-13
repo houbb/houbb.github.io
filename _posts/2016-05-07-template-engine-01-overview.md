@@ -171,16 +171,20 @@ published: true
 2. **逻辑控制：**
    - 条件语句：允许根据条件选择性地包含或排除一段模板。例如：
      ```html
-     {{#if condition}}
-         <!-- Some content -->
-     {{/if}}
+     {% raw %}
+      {{#if condition}}
+            <!-- Some content -->
+      {{/if}}
+     {% endraw %}
      ```
 
    - 循环语句：允许对数据集进行迭代，生成重复的模板块。例如：
      ```html
+     {% raw %}
      {{#foreach item in items}}
          <!-- {{item}} -->
      {{/foreach}}
+     {% endraw %}
      ```
 
 3. **模板继承和片段：**
