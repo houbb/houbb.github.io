@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Nginx-01-Nginx 是什么
+title: Nginx-01-Nginx 是什么? 能做什么？
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [web-server, nginx, overview, sh]
 published: true
 ---
 
-# 拓展阅读
+# nginx 系列
 
 [Nginx-01-聊一聊 nginx](https://houbb.github.io/2018/11/22/nginx-00-chat)
 
@@ -51,6 +51,29 @@ published: true
 
 [Nginx R31 doc-12-NGINX SSL Termination 安全加密](https://houbb.github.io/2018/11/22/nginx-doc-12-security-controls-ssl)
 
+[Nginx R31 doc-13-Limiting Access to Proxied HTTP Resources 访问限流](https://houbb.github.io/2018/11/22/nginx-doc-13-security-controls-ratelimit)
+
+[Nginx R31 doc-14-Dynamic Denylisting of IP Addresses 动态拒绝IP地址](https://houbb.github.io/2018/11/22/nginx-doc-14-security-controls-dynamic-denylist)
+
+[Nginx R31 doc-15-Live Activity Monitoring 实时活动监控](https://houbb.github.io/2018/11/22/nginx-doc-15-monitor-live-activity-monitor)
+
+[Nginx R31 doc-16-logging 配置日志](https://houbb.github.io/2018/11/22/nginx-doc-16-monitor-logging)
+
+[Nginx R31 doc-17-debugging 调试](https://houbb.github.io/2018/11/22/nginx-doc-17-monitor-debugging)
+
+[Nginx R31 doc-18-High Availability Support for NGINX Plus in On-Premises Deployments](https://houbb.github.io/2018/11/22/nginx-doc-18-ha-ha-keepalived)
+
+[Nginx 实战-01-nginx ubuntu 安装笔记](https://houbb.github.io/2018/11/22/nginx-inaction-01-ubuntu-install)
+
+[Nginx 实战-01-nginx windows 安装笔记](https://houbb.github.io/2018/11/22/nginx-inaction-01-windows-install)
+
+[Nginx 实战-02-nginx proxy_pass 服务代理访问 使用笔记 ubuntu nodejs](https://houbb.github.io/2018/11/22/nginx-inaction-02-usage-proxy-pass)
+
+[Nginx 实战-03-nginx 负载均衡](https://houbb.github.io/2018/11/22/nginx-inaction-03-usage-load-balance)
+
+[Nginx 实战-04-nginx 不同的地址访问不同的服务](https://houbb.github.io/2018/11/22/nginx-inaction-04-useage-different-proxy-pass)
+
+[Nginx 实战-05-nginx 反向代理实现域名到指定的 ip](https://houbb.github.io/2018/11/22/nginx-inaction-05-reverse-proxy)
 
 # Nginx
 
