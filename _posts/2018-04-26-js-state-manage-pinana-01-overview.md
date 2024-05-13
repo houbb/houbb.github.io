@@ -162,7 +162,6 @@ import { defineStore } from 'pinia'
 
 export const useTodos = defineStore('todos', {
   state: () => ({
-    /** @type {{ text: string, id: number, isFinished: boolean }[]} */
     todos: [],
     /** @type {'all' | 'finished' | 'unfinished'} */
     filter: 'all',
@@ -177,9 +176,6 @@ export const useTodos = defineStore('todos', {
     unfinishedTodos(state) {
       return state.todos.filter((todo) => !todo.isFinished)
     },
-    /**
-     * @returns {{ text: string, id: number, isFinished: boolean }[]}
-     */
     filteredTodos(state) {
       if (this.filter === 'finished') {
         // 调用其他带有自动补全的 getters ✨
