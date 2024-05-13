@@ -7,6 +7,51 @@ tags: [web-server, nginx, overview, sh]
 published: true
 ---
 
+# 拓展阅读
+
+[Nginx-01-聊一聊 nginx](https://houbb.github.io/2018/11/22/nginx-00-chat)
+
+[Nginx-01-Nginx 是什么](https://houbb.github.io/2018/11/22/nginx-01-overview-01)
+
+[Nginx-02-为什么使用 Nginx](https://houbb.github.io/2018/11/22/nginx-01-why-02)
+
+[Nginx-02-Nginx Ubuntu 安装 + windows10 + WSL ubuntu 安装 nginx 实战笔记](https://houbb.github.io/2018/11/22/nginx-02-install-ubuntu-02)
+
+[Nginx-02-基本使用](https://houbb.github.io/2018/11/22/nginx-02-usage-02)
+
+[Nginx-03-Nginx 项目架构](https://houbb.github.io/2018/11/22/nginx-03-struct-03)
+
+[Nginx-04-Docker Nginx](https://houbb.github.io/2018/11/22/nginx-04-docker-04)
+
+[Nginx-05-nginx 反向代理是什么？windows 下如何配置使用 nginx](https://houbb.github.io/2018/11/22/nginx-05-reverse-proxy)
+
+[Nginx-06-nginx 汇总入门介绍](https://houbb.github.io/2018/11/22/nginx-06-all-in-one)
+
+[Nginx R31 doc 官方文档-01-nginx 如何安装](https://houbb.github.io/2018/11/22/nginx-doc-01-overview)
+
+[Nginx R31 doc-02-nginx 基本功能](https://houbb.github.io/2018/11/22/nginx-doc-02-basic-functionality-basic-func)
+
+[Nginx R31 doc-03-HTTP Load Balancing HTTP 负载均衡](https://houbb.github.io/2018/11/22/nginx-doc-03-basic-functionality-load-balance-http)
+
+[Nginx R31 doc-04-HTTP Health Checks](https://houbb.github.io/2018/11/22/nginx-doc-04-basic-functionality-http-health-checks)
+
+[Nginx R31 doc-05-Dynamic Configuration of Upstreams with the NGINX Plus API 使用 NGINX Plus API 动态配置上游服务器](https://houbb.github.io/2018/11/22/nginx-doc-05-basic-functionality-dynamic-config)
+
+[Nginx R31 doc-06-Accepting the PROXY Protocol](https://houbb.github.io/2018/11/22/nginx-doc-06-basic-functionality-accept-proxy-protocol)
+
+[Nginx R31 doc-07-内容缓存](https://houbb.github.io/2018/11/22/nginx-doc-07-content-cache)
+
+[Nginx R31 doc-08-Configuring NGINX and NGINX Plus as a Web Server 配置 NGINX 和 NGINX Plus 作为 Web 服务器](https://houbb.github.io/2018/11/22/nginx-doc-08-web-server-web-server)
+
+[Nginx R31 doc-09-Serving Static Content 静态内容](https://houbb.github.io/2018/11/22/nginx-doc-09-web-server-web-server-static-content)
+
+[Nginx R31 doc-10-NGINX Reverse Proxy 反向代理](https://houbb.github.io/2018/11/22/nginx-doc-10-web-server-nginx-reverse-proxy)
+
+[Nginx R31 doc-11-Compression and Decompression 压缩与解压缩](https://houbb.github.io/2018/11/22/nginx-doc-11-compress-and-decompress)
+
+[Nginx R31 doc-12-NGINX SSL Termination 安全加密](https://houbb.github.io/2018/11/22/nginx-doc-12-security-controls-ssl)
+
+
 # Nginx
 
 [nginx [engine x]](https://nginx.org/en/) is an HTTP and reverse proxy server, 
