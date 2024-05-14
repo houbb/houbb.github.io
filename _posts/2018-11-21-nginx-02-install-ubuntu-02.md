@@ -74,6 +74,8 @@ Commercial support is available at
 </html>
 ```
 
+------------------------------------------------------------------------------------------------
+
 # Nginx in Ubuntu
 
 > [blog zh_CN](http://blog.csdn.net/qq_25689397/article/details/51480006)
