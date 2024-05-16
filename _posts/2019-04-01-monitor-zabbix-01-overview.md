@@ -3,7 +3,7 @@ layout: post
 title: Zabbix 监控系统介绍
 date: 2018-11-25 09:14:43 +0800
 categories: [Devops]
-tags: [devops, monitor, sh]
+tags: [devops, monitor, apm, zabbix, sh]
 published: true
 ---
 
@@ -15,7 +15,9 @@ Zabbix 是一种企业级的分布式开源监控解决方案。
 
 Zabbix 是一款能够监控众多网络参数和服务器的健康度和完整性的软件。Zabbix 使用灵活的通知机制，允许用户为几乎任何事件配置基于邮件的警报。这样可以快速相应服务器问题。Zabbix 基于存储的数据提供出色的报告和数据可视化。这些功能使得 Zabbix 成为容量规划的理想选择。
 
-Zabbix 支持轮询和被动捕获。所有的 Zabbix 报告、统计信息和配置参数都可以通过基于 Web 的前端页面进行访问。基于 Web 的前端页面确保您的网络状态和服务器健康状况可以从任何地方进行评估。在经过适当的配置后，Zabbix 可以在监控 IT 基础设施方面发挥重要作用。无论是对于拥有少量服务器的小型组织，还是拥有大量服务器的大型公司而言，同样适用。
+Zabbix 支持轮询和被动捕获。
+
+所有的 Zabbix 报告、统计信息和配置参数都可以通过基于 Web 的前端页面进行访问。基于 Web 的前端页面确保您的网络状态和服务器健康状况可以从任何地方进行评估。在经过适当的配置后，Zabbix 可以在监控 IT 基础设施方面发挥重要作用。无论是对于拥有少量服务器的小型组织，还是拥有大量服务器的大型公司而言，同样适用。
 
 Zabbix 是免费的。Zabbix 是根据 GPL 通用公共许可证的第二版编写和分发的。这意味着它的源代码是免费分发的，并且可供公共使用。
 
@@ -136,7 +138,6 @@ Zabbix API 为 Zabbix 提供可编程接口，用于批量操作、第三方软�
 # 参考资料
 
 https://www.zabbix.com/documentation/4.0/zh/manual/introduction/about
-
 
 * any list
 {:toc}

@@ -14,6 +14,7 @@ published: true
 
 grafana
 
+zabbix
 
 # 流程
 
