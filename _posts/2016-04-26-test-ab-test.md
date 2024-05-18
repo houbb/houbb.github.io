@@ -3,7 +3,7 @@ layout: post
 title: A/B Test 入门介绍
 date: 2018-11-21 8:01:55 +0800
 categories: [Test]
-tags: [test, spread, sh]
+tags: [junit, test]
 published: true
 ---
 
