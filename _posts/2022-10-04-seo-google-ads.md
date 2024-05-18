@@ -32,7 +32,7 @@ published: true
 复制此代码并将其粘贴到您网站的 HTML 中，放在 `<head>` 和 `</head>` 标记之间。
 
 ```js
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082537058031213" crossorigin="anonymous"></script>
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082537058031213" crossorigin="anonymous"></script> -->
 ```
 
 将这段代码放在网站中即可。
