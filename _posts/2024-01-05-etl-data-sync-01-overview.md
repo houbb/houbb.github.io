@@ -28,9 +28,26 @@ target: ES/neo4j/mysql/TDEngine
 
 # 常见的 
 
-
-
 产品概述
+
+# apache seatunenl 给人的思考
+
+首先是宣发+生态
+
+cdc=> 非常有用的设计
+
+任务的并行拆分处理
+
+统一的 seatunnel row 对象抽象。
+
+map=>transfer=>reduce
+
+怎么实现不停机的任务变化？资源隔离？
+
+插件化：标准定义好之后，可以支持多种模式
+
+流批一体化
+
 
 
 

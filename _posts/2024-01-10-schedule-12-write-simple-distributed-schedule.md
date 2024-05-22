@@ -304,6 +304,12 @@ protected MultiIndexDto calcSlotIndex(final long time) {
 
 后续有机会，老马和大家一起讨论下如何实现一个基于推模式的分布式调度系统。
 
+# 其他
+
+调度的设计：参考时间轮等
+
+简单的就是定时执行，复杂的可以参考时间轮等多种优秀的设计。
+
 # 实现
 
 已有实现，放在了 github，暂时不开源。
