@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  如何手写实现 nginx-01-nginx 的核心能力
+title:  从零手写实现 nginx-02-nginx 的核心能力
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
@@ -8,7 +8,9 @@ published: true
 ---
 
 
-#  前言
+# 前言
+
+大家好，我是老马。很高兴遇到你。
 
 我们希望实现最简单的 http 服务信息，可以处理静态文件。
 
@@ -154,6 +156,8 @@ hello nginx4j!
 ```
 
 # 开源地址
+
+为了便于大家学习，已经将 nginx 开源
 
 > [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
 
