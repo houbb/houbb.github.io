@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-04-基于 netty http 出入参优化处理
+title:  从零手写实现 nginx-05-MIME类型（Multipurpose Internet Mail Extensions，多用途互联网邮件扩展类型）
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
@@ -32,177 +32,178 @@ published: true
 
 # 前言
 
-我们上一篇文章中，使用 netty 优化我们的 io 模型。
+我们上一篇文章中，我们默认支持的文件类型比较少，都是直接返回纯文本。
 
-对于请求和响应是基于自己的代码封装实现的。
+浏览器默认支持的文件类型肯定不止这么点。
 
-但是 http 协议本身比较复杂，自己实现起来要耗费大量的时间。
+我们先来一起学习下 MIME类型（Multipurpose Internet Mail Extensions，多用途互联网邮件扩展类型）
 
-那么，有没有现成的实现呢？
+## 是什么？
 
-答案是 netty 已经帮我们封装好了。
+MIME类型（Multipurpose Internet Mail Extensions，多用途互联网邮件扩展类型）是一种标准，用于定义消息（如电子邮件）和文件的类型，以及指定资源的格式。
+
+在HTTP协议中，MIME类型用于描述发送的响应内容或请求的资源内容的格式。
+
+### MIME类型的组成：
+
+一个MIME类型通常由两部分组成，用斜杠（/）分隔：
+
+1. **类型（Type）**：表示资源类型的一般分类，如`text`、`image`、`application`等。
+2. **子类型（Subtype）**：表示该类型下的具体格式，如`html`、`jpeg`、`xml`等。
+
+### 常见的MIME类型：
+
+以下是一些常见的MIME类型及其描述：
+
+- `text/plain`：普通的文本文件，如TXT文件。
+- `text/html`：HTML文档。
+- `text/css`：层叠样式表，用于定义网页的样式和布局。
+- `text/javascript`：JavaScript脚本文件。
+- `application/json`：JSON格式数据，常用于Web API。
+- `application/xml`：XML格式数据。
+- `application/octet-stream`：二进制流数据，常用于文件下载。
+- `image/jpeg`：JPEG格式的图片。
+- `image/png`：PNG格式的图片。
+- `image/gif`：GIF格式的图片。
+- `audio/mpeg`：MP3音频文件。
+- `video/mp4`：MP4视频文件。
+
+### MIME类型的作用：
+
+1. **内容识别**：MIME类型帮助客户端（如浏览器）识别接收到的内容类型，从而决定如何正确处理或显示这些内容。
+
+2. **文件上传**：在表单提交时，MIME类型用于指示上传文件的格式。
+
+3. **响应头设置**：服务器在HTTP响应中使用`Content-Type`头来指定响应内容的MIME类型。
+
+4. **请求头设置**：客户端在HTTP请求中使用`Accept`头来指定它能够处理的MIME类型。
+
+5. **多部分类型**：在发送多部分请求或响应时（如文件上传），使用`multipart/*`类型的MIME类型。
+
+### MIME类型与文件扩展名：
+
+虽然MIME类型与文件扩展名（如`.html`、`.jpg`等）通常有直接的对应关系，但它们是两个不同的概念。
+
+文件扩展名是操作系统用来识别文件类型的，而MIME类型是网络协议用来识别内容类型的。
+
+服务器配置可以映射文件扩展名到MIME类型，以确定发送给客户端的正确类型。
+
+## 常见文件的例子
+
+- `text/plain`：普通的文本文件，如TXT文件。
+- `text/html`：HTML文档。
+- `text/css`：层叠样式表，用于定义网页的样式和布局。
+- `text/javascript`：JavaScript脚本文件。
+- `application/json`：JSON格式数据，常用于Web API。
+- `application/xml`：XML格式数据。
+
+- `application/octet-stream`：二进制流数据，常用于文件下载。
+- `image/jpeg`：JPEG格式的图片。
+- `image/png`：PNG格式的图片。
+- `image/gif`：GIF格式的图片。
+- `audio/mpeg`：MP3音频文件。
+- `video/mp4`：MP4视频文件。
+
+### 文本类的
+
+以下是各种MIME类型对应的文件内容示例：
+
+1. **`text/plain`**：普通的文本文件，如TXT文件。
+
+   ```plaintext
+   This is a plain text file.
+   It contains raw text data that can be viewed
+   in any text editor.
+   ```
+
+2. **`text/html`**：HTML文档。
+   ```html
+   <!DOCTYPE html>
+   <html lang="en">
+   <head>
+       <meta charset="UTF-8">
+       <title>Example HTML Document</title>
+   </head>
+   <body>
+       <h1>Hello, World!</h1>
+       <p>This is an example of an HTML document.</p>
+   </body>
+   </html>
+   ```
+
+3. **`text/css`**：层叠样式表，用于定义网页的样式和布局。
+   ```css
+   body {
+       font-family: Arial, sans-serif;
+       margin: 0;
+       padding: 0;
+   }
+
+   h1 {
+       color: #333333;
+   }
+
+   .container {
+       width: 80%;
+       margin: auto;
+   }
+   ```
+
+4. **`text/javascript`**：JavaScript脚本文件。
+   ```javascript
+   // This is a JavaScript file
+   function sayHello() {
+       alert('Hello, World!');
+   }
+
+   document.addEventListener('DOMContentLoaded', (event) => {
+       console.log('DOM fully loaded and parsed');
+   });
+   ```
+
+5. **`application/json`**：JSON格式数据，常用于Web API。
+   ```json
+   {
+       "name": "John Doe",
+       "age": 30,
+       "isEmployed": true,
+       "address": {
+           "street": "123 Main St",
+           "city": "Anytown",
+           "zip": "12345"
+       },
+       "phoneNumbers": [
+           {"type": "home", "number": "555-0100"},
+           {"type": "mobile", "number": "555-0101"}
+       ]
+   }
+   ```
+
+6. **`application/xml`**：XML格式数据。
+   ```xml
+   <?xml version="1.0" encoding="UTF-8"?>
+   <person>
+       <name>John Doe</name>
+       <age>30</age>
+       <isEmployed>true</isEmployed>
+       <address>
+           <street>123 Main St</street>
+           <city>Anytown</city>
+           <zip>12345</zip>
+       </address>
+       <phoneNumbers>
+           <phone type="home">555-0100</phone>
+           <phone type="mobile">555-0101</phone>
+       </phoneNumbers>
+   </person>
+   ```
+
+每个示例都展示了相应MIME类型文件的基本结构和内容。这些示例可以根据需要进行扩展和修改，以适应不同的应用场景和数据表示需求。
+
 
 # 核心代码
 
-## 启动类
-
-我们对启动类调整如下：
-
-```java
-/**
- * netty 实现
- *
- * @author 老马啸西风
- * @since 0.2.0
- */
-public class NginxServerNetty implements INginxServer {
-
-    //basic ...
-
-    @Override
-    public void start() {
-        // 服务器监听的端口号
-        String host = InnerNetUtil.getHost();
-        int port = nginxConfig.getHttpServerListen();
-
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        //worker 线程池的数量默认为 CPU 核心数的两倍
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
-
-        try {
-            ServerBootstrap serverBootstrap = new ServerBootstrap();
-            serverBootstrap.group(bossGroup, workerGroup)
-                    .channel(NioServerSocketChannel.class)
-                    .childHandler(new ChannelInitializer<SocketChannel>() {
-                        @Override
-                        protected void initChannel(SocketChannel ch) throws Exception {
-                            ChannelPipeline p = ch.pipeline();
-
-                            p.addLast(new HttpRequestDecoder()); // 请求消息解码器
-                            p.addLast(new HttpObjectAggregator(65536)); // 目的是将多个消息转换为单一的request或者response对象
-                            p.addLast(new HttpResponseEncoder()); // 响应解码器
-                            p.addLast(new ChunkedWriteHandler()); // 目的是支持异步大文件传输
-                            // 业务逻辑
-                            p.addLast(new NginxNettyServerHandler(nginxConfig));
-                        }
-                    })
-                    .option(ChannelOption.SO_BACKLOG, 128)
-                    .childOption(ChannelOption.SO_KEEPALIVE, true);
-
-            // Bind and start to accept incoming connections.
-            ChannelFuture future = serverBootstrap.bind(port).sync();
-
-            log.info("[Nginx4j] listen on http://{}:{}", host, port);
-
-            // Wait until the server socket is closed.
-            future.channel().closeFuture().sync();
-        } catch (InterruptedException e) {
-            // 省略...
-        }
-    }
-
-}
-```
-
-## NginxNettyServerHandler 业务逻辑
-
-这个类可以变得非常简单
-
-```java
-/**
- * netty 处理类
- * @author 老马啸西风
- * @since 0.2.0
- */
-public class NginxNettyServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-
-    //...
-
-    @Override
-    protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-        logger.info("[Nginx] channelRead writeAndFlush start request={}", request);
-
-        // 分发
-        final NginxRequestDispatch requestDispatch = nginxConfig.getNginxRequestDispatch();
-        FullHttpResponse response = requestDispatch.dispatch(request, nginxConfig);
-
-        // 结果响应
-        ChannelFuture lastContentFuture = ctx.writeAndFlush(response);
-        //如果不支持keep-Alive，服务器端主动关闭请求
-        if (!HttpUtil.isKeepAlive(request)) {
-            lastContentFuture.addListener(ChannelFutureListener.CLOSE);
-        }
-        logger.info("[Nginx] channelRead writeAndFlush DONE response={}", response);
-    }
-
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        ctx.flush();
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        logger.error("[Nginx] exceptionCaught", cause);
-        ctx.close();
-    }
-
-}
-```
-
-## 分发处理
-
-分发处理的逻辑，主要是构建响应内容。
-
-我们先实现最基本的能力：
-
-```java
-    /**
-     * 内容的分发处理
-     *
-     * @param requestInfoBo 请求
-     * @param nginxConfig   配置
-     * @return 结果
-     * @author 老马啸西风
-     */
-    public FullHttpResponse dispatch(final FullHttpRequest requestInfoBo, final NginxConfig nginxConfig) {
-        // 消息解析不正确
-        /*如果无法解码400*/
-        if (!requestInfoBo.decoderResult().isSuccess()) {
-            log.warn("[Nginx] base request for http={}", requestInfoBo);
-            return buildCommentResp(null, HttpResponseStatus.BAD_REQUEST, requestInfoBo, nginxConfig);
-        }
-
-        final String basicPath = nginxConfig.getHttpServerRoot();
-        final String path = requestInfoBo.uri();
-
-        boolean isRootPath = isRootPath(requestInfoBo, nginxConfig);
-        // 根路径
-        if(isRootPath) {
-            log.info("[Nginx] current req meet root path");
-            String indexContent = nginxConfig.getNginxIndexContent().getContent(nginxConfig);
-            return buildCommentResp(indexContent, HttpResponseStatus.OK, requestInfoBo, nginxConfig);
-        }
-
-        // other
-        String fullPath = FileUtil.buildFullPath(basicPath, path);
-        if(FileUtil.exists(fullPath)) {
-            String fileContent = FileUtil.getFileContent(fullPath);
-            return buildCommentResp(fileContent, HttpResponseStatus.OK, requestInfoBo, nginxConfig);
-        }  else {
-            return buildCommentResp(null, HttpResponseStatus.NOT_FOUND, requestInfoBo, nginxConfig);
-        }
-    }
-```
-
-核心逻辑：
-
-1）如果请求体解析失败，直接返回。
-
-2）根路径，则返回 index 内容
-
-3）否则解析处理文件内容，不存在则返回 404
-
-resp 构建的方法暂时简单实现如下，后续我们会持续改进
+我们在代码处理时，添加上核心的文件类型响应。
 
 ```java
     /**
@@ -211,28 +212,26 @@ resp 构建的方法暂时简单实现如下，后续我们会持续改进
      *                 "\r\n" +
      *                 "%s";
      *
-     * @param rawText 原始内容
+     * @param bytes 原始内容
      * @param status 结果枚举
      * @param request 请求内容
      * @param nginxConfig 配置
      * @return 结果
-     * @author 老马啸西风
      */
-    protected FullHttpResponse buildCommentResp(String rawText,
+    protected FullHttpResponse buildCommentResp(byte[] bytes,
                                             final HttpResponseStatus status,
                                             final FullHttpRequest request,
                                             final NginxConfig nginxConfig) {
-        String defaultContent = status.toString();
-        if(StringUtil.isNotEmpty(rawText)) {
-            defaultContent = rawText;
+        byte[] defaultContent = new byte[]{};
+        if(ArrayPrimitiveUtil.isNotEmpty(bytes)) {
+            defaultContent = bytes;
         }
 
         // 构造响应
         FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-                status, Unpooled.copiedBuffer(defaultContent, CharsetUtil.UTF_8));
+                status, Unpooled.copiedBuffer(defaultContent));
         // 头信息
-        // TODO: 根据文件变化
-        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain; charset=UTF-8");
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain;");
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, response.content().readableBytes());
         //如果request中有KEEP ALIVE信息
         if (HttpUtil.isKeepAlive(request)) {
@@ -241,13 +240,20 @@ resp 构建的方法暂时简单实现如下，后续我们会持续改进
 
         return response;
     }
+
+    protected void setContentType(FullHttpResponse response,
+                                  String contentType) {
+        response.headers().set(HttpHeaderNames.CONTENT_TYPE, contentType);
+    }
 ```
+
+这样在浏览中访问对应的图片等，就可以实现文件的预览。
 
 # 小结
 
-本节我们使用 netty 简化出入参的处理。
+本节我们实现了常见的文件类别的处理，可以实现常见文件的预览。
 
-但是响应的构建还不够完善，我们下一节来一起优化一下响应的处理。
+下一节，我们一起来看一下如何实现文件夹的处理。
 
 我是老马，期待与你的下次重逢。
 
