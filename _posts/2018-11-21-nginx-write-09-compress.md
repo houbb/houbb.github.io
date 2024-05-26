@@ -38,6 +38,8 @@ published: true
 
 [从零手写实现 nginx-08-范围查询](https://houbb.github.io/2018/11/22/nginx-write-08-range)
 
+[从零手写实现 nginx-09-文件压缩](https://houbb.github.io/2018/11/22/nginx-write-09-comparess)
+
 # 什么是 http 压缩
 
 HTTP压缩是一种网络优化技术，用于减少在客户端和服务器之间传输的数据量。
