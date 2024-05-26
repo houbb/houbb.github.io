@@ -8,6 +8,18 @@ published: true
 ---
 
 
+# 前言
+
+大家好，我是老马。很高兴遇到你。
+
+我们为 java 开发者实现了 java 版本的 nginx
+
+> [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
+
+如果你想知道 servlet 如何处理的，可以参考我的另一个项目：
+
+> 手写从零实现简易版 tomcat [minicat](https://github.com/houbb/minicat) 
+
 # 压缩与解压缩
 
 压缩服务器响应，或者对不支持压缩的客户端进行解压缩，以提高交付速度并减少服务器的开销。
@@ -107,6 +119,49 @@ location / {
 请注意，gzip_static 指令不启用实时压缩。它仅使用由任何压缩工具预先压缩的文件。要在运行时压缩内容（而不仅仅是静态内容），请使用 gzip 指令。
 
 此指令是在一个单独的模块中定义的，默认情况下可能不包含在 NGINX Open Source 构建中。
+
+# nginx 系列
+
+[从零手写实现 nginx-01-为什么不能有 java 版本的 nginx?](https://houbb.github.io/2018/11/22/nginx-write-01-how-to)
+
+[从零手写实现 nginx-02-nginx 的核心能力](https://houbb.github.io/2018/11/22/nginx-write-02-basic-http)
+
+[从零手写实现 nginx-03-nginx 基于 Netty 实现](https://houbb.github.io/2018/11/22/nginx-write-03-basic-http-netty)
+
+[从零手写实现 nginx-04-基于 netty http 出入参优化处理](https://houbb.github.io/2018/11/22/nginx-write-04-netty-http-optimize)
+
+[从零手写实现 nginx-05-MIME类型（Multipurpose Internet Mail Extensions，多用途互联网邮件扩展类型）](https://houbb.github.io/2018/11/22/nginx-write-05-mime-type)
+
+[Nginx 实战-01-nginx ubuntu 安装笔记](https://houbb.github.io/2018/11/22/nginx-inaction-01-ubuntu-install)
+
+[Nginx 实战-01-nginx windows 安装笔记](https://houbb.github.io/2018/11/22/nginx-inaction-01-windows-install)
+
+[Nginx 实战-02-nginx proxy_pass 服务代理访问 使用笔记 ubuntu nodejs](https://houbb.github.io/2018/11/22/nginx-inaction-02-usage-proxy-pass)
+
+[Nginx 实战-03-nginx 负载均衡](https://houbb.github.io/2018/11/22/nginx-inaction-03-usage-load-balance)
+
+[Nginx 实战-04-nginx 不同的地址访问不同的服务](https://houbb.github.io/2018/11/22/nginx-inaction-04-useage-different-proxy-pass)
+
+[Nginx 实战-05-nginx 反向代理实现域名到指定的 ip](https://houbb.github.io/2018/11/22/nginx-inaction-05-reverse-proxy)
+
+[Nginx-01-聊一聊 nginx](https://houbb.github.io/2018/11/22/nginx-00-chat)
+
+[Nginx-01-Nginx 是什么](https://houbb.github.io/2018/11/22/nginx-01-overview-01)
+
+[Nginx-02-为什么使用 Nginx](https://houbb.github.io/2018/11/22/nginx-01-why-02)
+
+[Nginx-02-Nginx Ubuntu 安装 + windows10 + WSL ubuntu 安装 nginx 实战笔记](https://houbb.github.io/2018/11/22/nginx-02-install-ubuntu-02)
+
+[Nginx-02-基本使用](https://houbb.github.io/2018/11/22/nginx-02-usage-02)
+
+[Nginx-03-Nginx 项目架构](https://houbb.github.io/2018/11/22/nginx-03-struct-03)
+
+[Nginx-04-Docker Nginx](https://houbb.github.io/2018/11/22/nginx-04-docker-04)
+
+[Nginx-05-nginx 反向代理是什么？windows 下如何配置使用 nginx](https://houbb.github.io/2018/11/22/nginx-05-reverse-proxy)
+
+[Nginx-06-nginx 汇总入门介绍](https://houbb.github.io/2018/11/22/nginx-06-all-in-one)
+
 
 # 参考资料
 
