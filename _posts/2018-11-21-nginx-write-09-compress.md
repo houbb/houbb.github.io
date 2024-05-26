@@ -215,16 +215,89 @@ public class NginxRequestDispatchFileCompress extends AbstractNginxRequestDispat
 
 ## 测试
 
-TODO...
+### 测试代码
 
+```java
+public static void main(String[] args) {
+    NginxGzipConfig gzipConfig = new NginxGzipConfig();
+    gzipConfig.setGzip("on");
+    gzipConfig.setGzipMinLength(256);
+    Nginx4jBs.newInstance()
+            .nginxGzipConfig(gzipConfig)
+            .init()
+            .start();
+}
+```
 
+### 页面访问
 
+http://192.168.1.12:8080/c.txt
+
+可以直接返回 c.txt 的内容。
+
+而且后端命中了压缩处理。
+
+```
+[INFO] [2024-05-26 21:01:26.319] [nioEventLoopGroup-3-1] [c.g.h.n.s.r.d.h.AbstractNginxRequestDispatchFullResp.buildFullHttpResponse] - [Nginx] match compress file, path=D:\data\nginx4j\c.txt
+[INFO] [2024-05-26 21:01:26.324] [nioEventLoopGroup-3-1] [c.g.h.n.u.InnerMimeUtil.getContentTypeWithCharset] - file=D:\data\nginx4j\c.txt, contentType=text/plain; charset=UTF-8
+[INFO] [2024-05-26 21:01:26.327] [nioEventLoopGroup-3-1] [c.g.h.n.s.r.d.h.AbstractNginxRequestDispatchFullResp.doDispatch] - [Nginx] channelRead writeAndFlush DONE response=DefaultFullHttpResponse(decodeResult: success, version: HTTP/1.1, content: UnpooledHeapByteBuf(freed))
+HTTP/1.1 200 OK
+content-encoding: gzip
+content-type: text/plain; charset=UTF-8
+vary: accept-encoding
+content-length: 696
+[INFO] [2024-05-26 21:01:26.328] [nioEventLoopGroup-3-1] [c.g.h.n.s.h.NginxNettyServerHandler.channelRead0] - [Nginx] channelRead writeAndFlush DONE id=40a5effffe257be0-00006394-00000001-0af1170bb1114311-b3ae0da9
+```
+
+### http 信息
+
+请求基本信息
+
+```
+Request URL:
+http://192.168.1.12:8080/c.txt
+Request Method:
+GET
+Status Code:
+200 OK
+Remote Address:
+192.168.1.12:8080
+Referrer Policy:
+strict-origin-when-cross-origin
+```
+
+请求头
+
+```
+GET /c.txt HTTP/1.1
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+Accept-Encoding: gzip, deflate
+Accept-Language: zh-CN,zh;q=0.9
+Connection: keep-alive
+Host: 192.168.1.12:8080
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36
+```
+
+响应头
+
+```
+HTTP/1.1 200 OK
+content-encoding: gzip
+content-type: text/plain; charset=UTF-8
+vary: accept-encoding
+content-length: 696
+```
+
+可见，虽然返回的是 gzip 内容，但是浏览器会自动解压处理。
 
 # 小结
 
-本节我们实现了文件的范围查询，这个在断点续传，视频播放时还是非常方便的。
+本节我们实现了文件的压缩处理，这个对于文件的传输性能提升比较大。
 
-下一节，我们考虑实现以下文件的压缩处理，提升传输的效率。
+当然，压缩+解压本身也是对性能有损耗的。要结合具体的压缩比等考虑。
+
+下一节，我们考虑实现一下 cors 的支持。
 
 我是老马，期待与你的下次重逢。
 
