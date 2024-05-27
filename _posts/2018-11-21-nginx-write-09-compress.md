@@ -12,7 +12,9 @@ published: true
 
 大家好，我是老马。很高兴遇到你。
 
-我们希望实现最简单的 http 服务信息，可以处理静态文件。
+我们为 java 开发者实现了 java 版本的 nginx
+
+> [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
 
 如果你想知道 servlet 如何处理的，可以参考我的另一个项目：
 
@@ -20,7 +22,7 @@ published: true
 
 ## 手写 nginx 系列
 
-如果你对 netty 不是很熟悉，可以读一下
+如果你对 nginx 原理感兴趣，可以阅读：
 
 [从零手写实现 nginx-01-为什么不能有 java 版本的 nginx?](https://houbb.github.io/2018/11/22/nginx-write-01-how-to)
 
