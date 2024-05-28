@@ -20,7 +20,7 @@ published: true
 
 ## 手写 nginx 系列
 
-如果你对 netty 不是很熟悉，可以读一下
+如果你对 nginx 原理感兴趣，可以阅读：
 
 [从零手写实现 nginx-01-为什么不能有 java 版本的 nginx?](https://houbb.github.io/2018/11/22/nginx-write-01-how-to)
 
@@ -32,7 +32,18 @@ published: true
 
 [从零手写实现 nginx-05-MIME类型（Multipurpose Internet Mail Extensions，多用途互联网邮件扩展类型）](https://houbb.github.io/2018/11/22/nginx-write-05-mime-type)
 
-[从零手写实现 nginx-06-文件夹展示](https://houbb.github.io/2018/11/22/nginx-write-06-dir-list)
+[从零手写实现 nginx-06-文件夹自动索引](https://houbb.github.io/2018/11/22/nginx-write-06-dir-list)
+
+[从零手写实现 nginx-07-大文件下载](https://houbb.github.io/2018/11/22/nginx-write-07-big-file)
+
+[从零手写实现 nginx-08-范围查询](https://houbb.github.io/2018/11/22/nginx-write-08-range)
+
+[从零手写实现 nginx-09-文件压缩](https://houbb.github.io/2018/11/22/nginx-write-09-comparess)
+
+[从零手写实现 nginx-10-sendfile 零拷贝](https://houbb.github.io/2018/11/22/nginx-write-10-sendfile)
+
+[从零手写实现 nginx-11-file+range 合并](https://houbb.github.io/2018/11/22/nginx-write-11-rile-and-range-merge)
+
 
 # 目标
 

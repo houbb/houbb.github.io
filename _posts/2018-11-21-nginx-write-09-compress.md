@@ -42,6 +42,11 @@ published: true
 
 [从零手写实现 nginx-09-文件压缩](https://houbb.github.io/2018/11/22/nginx-write-09-comparess)
 
+[从零手写实现 nginx-10-sendfile 零拷贝](https://houbb.github.io/2018/11/22/nginx-write-10-sendfile)
+
+[从零手写实现 nginx-11-file+range 合并](https://houbb.github.io/2018/11/22/nginx-write-11-rile-and-range-merge)
+
+
 # 什么是 http 压缩
 
 HTTP压缩是一种网络优化技术，用于减少在客户端和服务器之间传输的数据量。

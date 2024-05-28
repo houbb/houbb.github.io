@@ -21,7 +21,7 @@ published: true
 
 ## 手写 nginx 系列
 
-如果你对 netty 不是很熟悉，可以读一下
+如果你对 nginx 原理感兴趣，可以读一下
 
 [从零手写实现 nginx-01-为什么不能有 java 版本的 nginx?](https://houbb.github.io/2018/11/22/nginx-write-01-how-to)
 
@@ -40,6 +40,9 @@ published: true
 [从零手写实现 nginx-08-范围查询](https://houbb.github.io/2018/11/22/nginx-write-08-range)
 
 [从零手写实现 nginx-09-文件压缩](https://houbb.github.io/2018/11/22/nginx-write-09-comparess)
+
+[从零手写实现 nginx-10-sendfile 零拷贝](https://houbb.github.io/2018/11/22/nginx-write-10-sendfile)
+
 
 # 动态拒绝IP地址
 

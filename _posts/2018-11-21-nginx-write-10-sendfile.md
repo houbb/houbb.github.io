@@ -44,6 +44,8 @@ published: true
 
 [从零手写实现 nginx-10-sendfile 零拷贝](https://houbb.github.io/2018/11/22/nginx-write-10-sendfile)
 
+[从零手写实现 nginx-11-file+range 合并](https://houbb.github.io/2018/11/22/nginx-write-11-rile-and-range-merge)
+
 # 什么是零拷贝？
 
 零拷贝（Zero Copy）是一种技术，用于在数据传输过程中减少或消除数据在用户空间和内核空间之间的拷贝次数，从而提高传输效率。

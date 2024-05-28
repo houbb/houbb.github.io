@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-11-cache 缓存
+title:  从零手写实现 nginx-15-cache 缓存
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
