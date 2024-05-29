@@ -44,6 +44,11 @@ published: true
 
 [从零手写实现 nginx-10-sendfile 零拷贝](https://houbb.github.io/2018/11/22/nginx-write-10-sendfile)
 
+[从零手写实现 nginx-11-file+range 合并](https://houbb.github.io/2018/11/22/nginx-write-11-file-and-range-merge)
+
+[从零手写实现 nginx-12-keep-alive 连接复用](https://houbb.github.io/2018/11/22/nginx-write-12-keepalive)
+
+
 # 3次握手+4次挥手
 
 ## 3次握手
@@ -216,7 +221,6 @@ HTTP Keep-Alive 是一种技术，它允许在单个TCP连接上发送多个HTTP
 
 8. **浏览器和服务器支持**：大多数现代浏览器和服务器都支持Keep-Alive。服务器端的配置（如Apache、Nginx等）通常允许管理员根据需要调整Keep-Alive的相关设置。
 
-
 ## http keep-alive 的优缺点
 
 HTTP Keep-Alive（持久连接）是一种网络协议特性，它允许多个HTTP请求和响应复用同一个TCP连接，从而提高网络传输效率。
@@ -261,11 +265,103 @@ HTTP Keep-Alive（持久连接）是一种网络协议特性，它允许多个HT
 
 重点考虑下面几个问题：
 
-1）netty 如何实现 http 请求处理的 keep-alive
+## 1）netty 如何实现 http 请求处理的 keep-alive
 
-2) netty 如何正确关闭 keep-alive 对应的链接？
+```java
+boolean keepAlive = HttpUtil.isKeepAlive(request);
+if (keepAlive) {
+    // 如果是 keep-alive
+    response.headers().set(HttpHeaderNames.CONNECTION, HttpHeaderValues.KEEP_ALIVE);
+    ctx.writeAndFlush(response);
+} 
+```
 
-3）netty 如果正确处理一些可能没有正确关闭的链接？比如设置超时等
+## 2) netty 如何正确关闭 keep-alive 对应的链接？
+
+```java
+boolean keepAlive = HttpUtil.isKeepAlive(request);
+if (keepAlive) {
+    // 否则，立刻关闭
+    ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+} 
+```
+
+## 3）netty 如果正确处理一些可能没有正确关闭的链接？比如设置超时等
+
+和常见的处理方法一样，我们可以设置对应的超时时间。
+
+```java
+ServerBootstrap bootstrap = new ServerBootstrap();
+bootstrap.group(bossGroup, workerGroup)
+        .channel(NioServerSocketChannel.class)
+        .childHandler(new ChannelInitializer<SocketChannel>() {
+            @Override
+            protected void initChannel(SocketChannel ch) {
+                ChannelPipeline pipeline = ch.pipeline();
+                pipeline.addLast(new HttpServerCodec());
+                pipeline.addLast(new HttpObjectAggregator(65536));
+                // 设置读写超时
+                pipeline.addLast(new ReadTimeoutHandler(30, TimeUnit.SECONDS));
+                pipeline.addLast(new WriteTimeoutHandler(30, TimeUnit.SECONDS));
+                // 设置空闲检测
+                pipeline.addLast(new IdleStateHandler(60, 30, 0, TimeUnit.SECONDS));
+                pipeline.addLast(new HttpServerHandler());
+            }
+        });
+```
+
+在Netty中，`ReadTimeoutHandler`、`WriteTimeoutHandler`和`IdleStateHandler`是用于处理超时和空闲检测的处理器（Handler），它们可以帮助开发者管理连接的生命周期，确保资源的有效利用并防止资源泄漏。
+
+下面是这三个类的详细介绍：
+
+1. **ReadTimeoutHandler**
+
+   `ReadTimeoutHandler`用于设置读超时。
+   
+   当连接上的读取操作在指定的时间内没有数据到达时，会触发一个超时事件。
+   
+   这通常用于检测和处理半开连接（即一方已经关闭连接，而另一方仍然认为连接是打开的）。
+
+   - 触发事件：
+     - 当指定的时间内没有读取到任何数据时，会触发一个`ReadTimeoutException`。
+
+2. **WriteTimeoutHandler**
+
+   `WriteTimeoutHandler`用于设置写超时。
+   
+   当连接上的写操作在指定的时间内没有完成时，会触发一个超时事件。这通常用于确保数据能够在合理的时间内被发送出去。
+
+   - 触发事件：
+     - 当指定的时间内写操作没有完成时，会触发一个`WriteTimeoutException`。
+
+3. **IdleStateHandler**
+
+   `IdleStateHandler`用于检测连接的空闲状态。
+   
+   它可以设置读空闲、写空闲和所有空闲（既没有读也没有写）的超时时间。当连接在指定的时间内没有任何读或写活动时，可以触发相应的事件。
+
+- 参数：
+
+readerIdleTime：读空闲超时时间，单位为秒。如果设置为0，则表示不检测读空闲。
+
+writerIdleTime：写空闲超时时间，单位为秒。如果设置为0，则表示不检测写空闲。
+
+allIdleTime：所有空闲（既没有读也没有写）的超时时间，单位为秒。如果设置为0，则表示不检测所有空闲。
+
+unit：时间单位，例如TimeUnit.SECONDS。
+
+   - 触发事件：
+
+     - 当连接在指定的时间内没有读活动时，会触发`IdleStateEvent.READER_IDLE`事件。
+
+     - 当连接在指定的时间内没有写活动时，会触发`IdleStateEvent.WRITER_IDLE`事件。
+
+     - 当连接在指定的时间内既没有读也没有写活动时，会触发`IdleStateEvent.ALL_IDLE`事件。
+
+在Netty的`ChannelPipeline`中添加这些处理器，可以使得你的网络应用更加健壮和可靠。
+
+通过设置合适的超时和空闲检测，可以有效地管理连接的生命周期，防止资源浪费，并提高应用的稳定性和性能。
+
 
 
 
@@ -640,6 +736,21 @@ class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 通过这种方式，可以确保在 Netty 中正确处理和关闭空闲连接，从而避免资源泄露和无效连接占用系统资源。
 
 
+# 小结
+
+keep-alive 利用链接复用的特性，大大缩短请求链接的创建时间，提升请求性能。
+
+不过需要注意使用的场景。
+
+下一节，我们考虑实现拓展一些压缩算法, 引入 zlib。
+
+我是老马，期待与你的下次重逢。
+
+# 开源地址
+
+为了便于大家学习，已经将 nginx 开源
+
+> [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
 
 # 参考资料
 
