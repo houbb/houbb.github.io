@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-14-access control 访问控制 防止倒链
+title:  从零手写实现 nginx-18-access control 访问控制 防止倒链
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
