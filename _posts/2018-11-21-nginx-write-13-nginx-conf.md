@@ -287,7 +287,11 @@ return dumper.dump(System.out);
 
 # 如何定义这个配置文件对应的对象？
 
-为了封装 `nginx.conf` 为 Java 对象，可以定义一个类结构来表示 Nginx 配置的层次结构。需要包含以下主要部分：全局配置、`http` 块、`server` 块、`location` 块、`upstream` 块等。以下是一个可能的 Java 类结构示例：
+为了封装 `nginx.conf` 为 Java 对象，可以定义一个类结构来表示 Nginx 配置的层次结构。
+
+需要包含以下主要部分：全局配置、`http` 块、`server` 块、`location` 块、`upstream` 块等。
+
+以下是一个可能的 Java 类结构示例：
 
 ### NginxConf.java
 ```java
@@ -477,7 +481,9 @@ public class UpstreamBlock {
 - **UpstreamBlock**: 表示 `upstream` 块，包含服务器指令的列表和其他指令。
 
 ### 如何使用
-为了使用这些类来表示 `nginx.conf` 文件，可以编写解析器来读取 Nginx 配置文件并将其转换为相应的 Java 对象结构。你可以使用诸如 ANTLR 这样的解析器生成工具来帮助处理配置文件的语法解析。
+为了使用这些类来表示 `nginx.conf` 文件，可以编写解析器来读取 Nginx 配置文件并将其转换为相应的 Java 对象结构。
+
+你可以使用诸如 ANTLR 这样的解析器生成工具来帮助处理配置文件的语法解析。
 
 ### 示例代码
 假设我们有以下 Nginx 配置文件：
@@ -537,7 +543,9 @@ nginxConf.setUpstreamBlocks(List.of(upstream));
 ```
 
 ### 结论
-这种结构化的方式可以帮助你清晰地管理和操作 Nginx 的配置文件，使其更易于扩展和维护。你可以根据需要进一步扩展这些类和属性以涵盖更多 Nginx 的特性和配置指令。
+这种结构化的方式可以帮助你清晰地管理和操作 Nginx 的配置文件，使其更易于扩展和维护。
+
+你可以根据需要进一步扩展这些类和属性以涵盖更多 Nginx 的特性和配置指令。
 
 
 
