@@ -106,11 +106,23 @@ mysql> select * from user_info;
 +----+----------+---------------------+---------------------+
 | id | username | create_time         | update_time         |
 +----+----------+---------------------+---------------------+
-|  1 | u1       | 2024-01-27 14:51:39 | 2024-01-27 14:51:39 |
-|  2 | u2       | 2024-01-27 14:51:39 | 2024-01-27 14:51:39 |
-|  3 | u3       | 2024-01-27 14:51:40 | 2024-01-27 14:51:40 |
-|  4 | u4       | 2024-01-27 14:51:40 | 2024-01-27 14:51:40 |
+|  1 | u1       | 2024-05-31 17:02:10 | 2024-05-31 17:02:10 |
+|  2 | u2       | 2024-05-31 17:02:10 | 2024-05-31 17:02:10 |
+|  3 | u3       | 2024-05-31 17:02:10 | 2024-05-31 17:02:10 |
+|  4 | u4       | 2024-05-31 17:02:10 | 2024-05-31 17:02:10 |
 +----+----------+---------------------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from role_info;
++----+----------+---------------------+---------------------+
+| id | rolename | create_time         | update_time         |
++----+----------+---------------------+---------------------+
+|  1 | r1       | 2024-05-31 17:02:10 | 2024-05-31 17:02:10 |
+|  2 | r2       | 2024-05-31 17:02:10 | 2024-05-31 17:02:10 |
+|  3 | r3       | 2024-05-31 17:02:10 | 2024-05-31 17:02:10 |
+|  4 | r4       | 2024-05-31 17:02:10 | 2024-05-31 17:02:10 |
++----+----------+---------------------+---------------------+
+4 rows in set (0.00 sec)
 ```
 
 ### 目标
@@ -124,6 +136,7 @@ create table user_info
 (
     id int unsigned auto_increment comment '主键' primary key,
     username varchar(128) not null comment '用户名',
+    source varchar(16) comment '数据来源',
     create_time timestamp default CURRENT_TIMESTAMP not null comment '创建时间',
     update_time timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间'
 ) comment '用户表' ENGINE=Innodb default charset=utf8mb4 auto_increment=1;
@@ -133,6 +146,7 @@ create table role_info
 (
     id int unsigned auto_increment comment '主键' primary key,
     rolename varchar(128) not null comment '角色名',
+    source varchar(16) comment '数据来源',
     create_time timestamp default CURRENT_TIMESTAMP not null comment '创建时间',
     update_time timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间'
 ) comment '角色表' ENGINE=Innodb default charset=utf8mb4 auto_increment=1;
@@ -192,6 +206,10 @@ create table role_info
 
 - local_msyql_cdc_to_mysql_multi-tables.conf
 
+其实配置就是隔离开，多对多即可。
+
+测试了很多次，还是发现把直接拆分开比较简单。
+
 ```conf
 # Defining the runtime environment
 env {
@@ -209,11 +227,24 @@ source {
         driver = "com.mysql.cj.jdbc.Driver"
         username = "admin"
         password = "123456"
-        table-names = ["migrate_source.user_info", "migrate_source.role_info"]
+        table-names = ["migrate_source.role_info"]
         startup.mode = "initial"
         # 添加 result_table_name
-        result_table_name = ["cdc_user_info", "cdc_role_info"]  
+        result_table_name = "cdc_role_info"
     }
+    MySQL-CDC {
+            category = {
+                factory = MySQL
+            }
+            base-url = "jdbc:mysql://localhost:3306/migrate_source?useSSL=false&serverTimezone=Asia/Shanghai"
+            driver = "com.mysql.cj.jdbc.Driver"
+            username = "admin"
+            password = "123456"
+            table-names = ["migrate_source.user_info"]
+            startup.mode = "initial"
+            # 添加 result_table_name
+            result_table_name = "cdc_user_info"
+        }
 }
 
 transform {
@@ -241,12 +272,13 @@ sink {
         generate_sink_sql = true
     }
     jdbc {
-        source_table_name = ["transformed_user_info"]  # 配置为列表格式
+        source_table_name = ["transformed_role_info"]  # 配置为列表格式
         url = "jdbc:mysql://localhost:3306/migrate_target?useSSL=false&serverTimezone=Asia/Shanghai"
         driver = "com.mysql.cj.jdbc.Driver"
         user = "admin"
         password = "123456"
         database = "migrate_target"
+        tablename = "role_info"
         generate_sink_sql = true
     }
 }
@@ -255,19 +287,30 @@ sink {
 ## 初始化效果
 
 ```sql
+use migrate_target;
+
 mysql> select * from user_info;
 +-------+----------+--------+---------------------+---------------------+
 | id    | username | source | create_time         | update_time         |
 +-------+----------+--------+---------------------+---------------------+
-| 10000 | u1       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10001 | u2       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10002 | u3       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10003 | u4       | test   | 2024-05-31 10:17:06 | 2024-05-31 10:17:06 |
+| 10000 | u1       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10001 | u2       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10002 | u3       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10003 | u4       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
 +-------+----------+--------+---------------------+---------------------+
 4 rows in set (0.00 sec)
-```
 
-非常的方便！
+mysql> select * from role_info;
++-------+----------+--------+---------------------+---------------------+
+| id    | rolename | source | create_time         | update_time         |
++-------+----------+--------+---------------------+---------------------+
+| 10000 | r1       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10001 | r2       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10002 | r3       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10003 | r4       | test   | 2024-05-31 17:46:33 | 2024-05-31 17:46:33 |
++-------+----------+--------+---------------------+---------------------+
+4 rows in set (0.01 sec)
+```
 
 ## 增量效果
 
@@ -277,29 +320,38 @@ mysql> select * from user_info;
 
 source:
 
-```
-mysql> use migrate_source;
-Database changed
-mysql>
-mysql>
-mysql> insert into user_info(username) values ('u5');
-Query OK, 1 row affected (0.00 sec)
+```mysql
+use migrate_source;
+insert into user_info(username) values ('u5');
+insert into role_info(rolename) values ('r5');
 ```
 
 target:
 
-```
-use migrate_target;
-mysql> select * from user_info;
+```mysql
+mysql> use migrate_target;
+Database changed
 mysql> select * from user_info;
 +-------+----------+--------+---------------------+---------------------+
 | id    | username | source | create_time         | update_time         |
 +-------+----------+--------+---------------------+---------------------+
-| 10000 | u1       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10001 | u2       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10002 | u3       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10003 | u4       | test   | 2024-05-31 10:17:06 | 2024-05-31 10:17:06 |
-| 10004 | u5       | test   | 2024-05-31 15:08:53 | 2024-05-31 15:08:53 |
+| 10000 | u1       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10001 | u2       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10002 | u3       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10003 | u4       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10004 | u5       | test   | 2024-05-31 17:56:46 | 2024-05-31 17:56:46 |
++-------+----------+--------+---------------------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from user_info;
++-------+----------+--------+---------------------+---------------------+
+| id    | username | source | create_time         | update_time         |
++-------+----------+--------+---------------------+---------------------+
+| 10000 | u1       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10001 | u2       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10002 | u3       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10003 | u4       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10004 | u5       | test   | 2024-05-31 17:56:46 | 2024-05-31 17:56:46 |
 +-------+----------+--------+---------------------+---------------------+
 5 rows in set (0.00 sec)
 ```
@@ -309,21 +361,37 @@ mysql> select * from user_info;
 source:
 
 ```sql
+use migrate_source;
 update user_info  set username='u5-edit' where id=5;
+update role_info  set rolename='r5-edit' where id=5;
 ```
 
 target:
 
 ```
+mysql> use migrate_target;
+Database changed
 mysql> select * from user_info;
 +-------+----------+--------+---------------------+---------------------+
 | id    | username | source | create_time         | update_time         |
 +-------+----------+--------+---------------------+---------------------+
-| 10000 | u1       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10001 | u2       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10002 | u3       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10003 | u4       | test   | 2024-05-31 10:17:06 | 2024-05-31 10:17:06 |
-| 10004 | u5-edit  | test   | 2024-05-31 15:08:53 | 2024-05-31 15:12:02 |
+| 10000 | u1       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10001 | u2       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10002 | u3       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10003 | u4       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10004 | u5-edit  | test   | 2024-05-31 17:56:46 | 2024-05-31 17:57:53 |
++-------+----------+--------+---------------------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from role_info;
++-------+----------+--------+---------------------+---------------------+
+| id    | rolename | source | create_time         | update_time         |
++-------+----------+--------+---------------------+---------------------+
+| 10000 | r1       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10001 | r2       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10002 | r3       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10003 | r4       | test   | 2024-05-31 17:46:33 | 2024-05-31 17:46:33 |
+| 10004 | r5-edit  | test   | 2024-05-31 17:56:47 | 2024-05-31 17:57:54 |
 +-------+----------+--------+---------------------+---------------------+
 5 rows in set (0.00 sec)
 ```
@@ -333,99 +401,44 @@ mysql> select * from user_info;
 source:
 
 ```sql
+use migrate_source;
 delete from user_info where id=5;
+delete from role_info where id=5;
 ```
 
 target:
 
 ```sql
+mysql> use migrate_target;
+Database changed
 mysql> select * from user_info;
 +-------+----------+--------+---------------------+---------------------+
 | id    | username | source | create_time         | update_time         |
 +-------+----------+--------+---------------------+---------------------+
-| 10000 | u1       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10001 | u2       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10002 | u3       | test   | 2024-05-31 10:17:05 | 2024-05-31 10:17:05 |
-| 10003 | u4       | test   | 2024-05-31 10:17:06 | 2024-05-31 10:17:06 |
+| 10000 | u1       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10001 | u2       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10002 | u3       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10003 | u4       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
++-------+----------+--------+---------------------+---------------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from role_info;
++-------+----------+--------+---------------------+---------------------+
+| id    | rolename | source | create_time         | update_time         |
++-------+----------+--------+---------------------+---------------------+
+| 10000 | r1       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10001 | r2       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10002 | r3       | test   | 2024-05-31 17:46:32 | 2024-05-31 17:46:32 |
+| 10003 | r4       | test   | 2024-05-31 17:46:33 | 2024-05-31 17:46:33 |
 +-------+----------+--------+---------------------+---------------------+
 4 rows in set (0.00 sec)
 ```
 
-# 多张表的话呢？
-
-## 说明
-
-我们前面只有 1 张表。
-
-### 源头库
-
-```sql
-create database migrate_source;
-use migrate_source;
-
-drop table if exists user_info;
-create table user_info
-(
-    id int unsigned auto_increment comment '主键' primary key,
-    username varchar(128) not null comment '用户名',
-    create_time timestamp default CURRENT_TIMESTAMP not null comment '创建时间',
-    update_time timestamp default CURRENT_TIMESTAMP not null on update CURRENT_TIMESTAMP comment '更新时间'
-) comment '用户表' ENGINE=Innodb default charset=utf8mb4 auto_increment=1;
-```
-
-插入语句
-
-```sql
-truncate table user_info;
-
-insert into user_info (username) values ('u1');
-insert into user_info (username) values ('u2');
-insert into user_info (username) values ('u3');
-insert into user_info (username) values ('u4');
-```
-
-确认：
-
-```
-mysql> select * from user_info;
-+----+----------+---------------------+---------------------+
-| id | username | create_time         | update_time         |
-+----+----------+---------------------+---------------------+
-|  1 | u1       | 2024-01-27 14:51:39 | 2024-01-27 14:51:39 |
-|  2 | u2       | 2024-01-27 14:51:39 | 2024-01-27 14:51:39 |
-|  3 | u3       | 2024-01-27 14:51:40 | 2024-01-27 14:51:40 |
-|  4 | u4       | 2024-01-27 14:51:40 | 2024-01-27 14:51:40 |
-+----+----------+---------------------+---------------------+
-```
-
-### 目标
-
-```sql
-create database migrate_target;
-use migrate_target;
-
-drop table if exists user_info;
- CREATE TABLE "user_info" (
-  "id" int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
-  "username" varchar(128) NOT NULL COMMENT '用户名',
-  "source" varchar(64) NOT NULL DEFAULT '' COMMENT '数据来源',
-  "create_time" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-  "update_time" timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY ("id")
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
-```
-
-
-
-
-
-# TODO
-
-下一步可以学习一下对应的源码实现，自己实现一个类似的 neo4j 插件。
-
 # 小结
 
-还是要注意看一下文档，学习一下别人的设计。
+整体而言，直接一个文件中写多个就可以实现这个 cdc 同步，seatunnel 设计的确实比较灵活。
+
+也可以拆分为多个单个文件也可以，但是那样消耗的资源会多一些，可以自己选择。
 
 不要闭门造车。
 
