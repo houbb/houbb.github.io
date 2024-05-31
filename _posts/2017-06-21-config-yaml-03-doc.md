@@ -1,6 +1,6 @@
 ---
 layout: post
-title: YAML-01-yml 配置文件介绍
+title: YAML-01-yml 配置文件介绍官方文档翻译
 date:  2017-06-21 13:59:45 +0800
 categories: [Config]
 tags: [yaml, config]
