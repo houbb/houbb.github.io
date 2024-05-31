@@ -43,7 +43,7 @@ published: true
 
 [YAML-02-yml 配置文件 java 整合使用 yamlbeans + snakeyaml + jackson-dataformat-yaml](https://houbb.github.io/2016/10/26/config-yaml-02-java-integration)
 
-# 详细介绍一下 yaml 配置
+# yaml 配置是什么？
 
 YAML（YAML Ain't Markup Language）是一种用于配置文件的数据序列化格式，它被设计为易于人类阅读和编写，同时也易于机器解析。
 
@@ -124,9 +124,11 @@ YAML被多种编程语言的库支持，包括但不限于：
 
 总的来说，YAML是一种非常流行的配置文件格式，它以易读性和易用性著称，特别适合需要人类参与编辑的配置文件。它的结构化特性也使其成为复杂配置数据的理想选择。
 
-# yaml 配置为什么这么设计？有什么优缺点
+# yaml 的优缺点
 
-YAML（YAML Ain't Markup Language）的设计初衷是创造一种更人性化、易于阅读和编写的数据序列化格式。以下是YAML设计的动机以及它的一些优缺点：
+YAML（YAML Ain't Markup Language）的设计初衷是创造一种更人性化、易于阅读和编写的数据序列化格式。
+
+以下是YAML设计的动机以及它的一些优缺点：
 
 ### 设计动机：
 
@@ -170,13 +172,7 @@ YAML（YAML Ain't Markup Language）的设计初衷是创造一种更人性化�
 
 6. **错误信息**：相比于JSON等格式，YAML的错误信息可能不够明确，使得调试配置文件更加困难。
 
-总的来说，YAML的设计是为了提供一个更易于人类阅读和编写的配置文件格式，它在易读性、结构化和跨语言方面具有明显优势。
-
-然而，它也有一些缺点，如解析复杂性、缩进敏感性和潜在的安全问题。
-
-尽管如此，YAML仍然是许多配置管理和数据交换场景的首选格式。
-
-# yaml 常用的配置使用例子
+# 如何使用？
 
 YAML（YAML Ain't Markup Language）由于其简洁和易于阅读的特性，被广泛用于各种配置文件中。以下是一些常见的YAML配置使用例子：
 
@@ -364,15 +360,12 @@ profiles:
     resolution: 480x800
 ```
 
-这些例子展示了YAML配置文件在不同场景下的应用，包括应用程序配置、容器编排、CI/CD流程、版本控制、项目文档、环境变量、多语言支持以及配置管理工具的配置等。
-
-YAML的灵活性和结构化特性使其成为这些用途的理想选择。
-
 # java 如何解析处理 yaml 文件？
 
-在Java中解析和处理YAML文件，有几种常用的库可以选择。以下是几种流行的Java库及其使用方法的简要介绍：
+以下是几种流行的Java库及其使用方法的简要介绍：
 
 ### SnakeYAML
+
 SnakeYAML是一个流行的Java库，用于解析和生成YAML文件。它提供了灵活的API，允许你轻松地读取和写入YAML数据。
 
 **添加依赖**（以Maven为例）:
@@ -476,6 +469,8 @@ try (YamlWriter writer = new YamlWriter(new FileWriter("output.yaml"))) {
     e.printStackTrace();
 }
 ```
+
+
 
 * any list
 {:toc}

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: config 配置方式概览-8 种配置文件介绍对比 xml/json/proeprties/ini/yaml/TOML/hcl/hocon
+title: config 配置方式概览-8 种配置文件对比 xml/json/proeprties/ini/yaml/TOML/hcl/hocon
 date:  2017-06-21 13:59:45 +0800
 categories: [Config]
 tags: [config, overview]
@@ -18,15 +18,7 @@ published: true
 
 [config HOCON（Human-Optimized Config Object Notation）配置文件介绍](https://houbb.github.io/2017/06/21/config-hocon-01-intro)
 
-[config ini 配置文件介绍](https://houbb.github.io/2017/06/21/config-ini-01-intro)
-
-[config properties 配置文件介绍](https://houbb.github.io/2017/06/21/config-properties-01-intro)
-
 [toml-01-toml 配置文件介绍](https://houbb.github.io/2017/06/21/config-toml-01-overview)
-
-[XStream java 实现 xml 与对象 pojo 之间的转换](https://houbb.github.io/2017/06/21/config-xml-XStream-intro)
-
-[java 实现 xml 与对象 pojo 之间的转换的几种方式 dom4j/xstream/jackson](https://houbb.github.io/2017/06/21/config-xml-to-pojo)
 
 [YAML-01-yml 配置文件介绍](https://houbb.github.io/2017/06/21/config-yaml-01-intro)
 
@@ -34,38 +26,16 @@ published: true
 
 [YAML-03-yml 配置文件介绍官方文档翻译](https://houbb.github.io/2017/06/21/config-yaml-03-doc)
 
+[config ini 配置文件介绍](https://houbb.github.io/2017/06/21/config-ini-01-intro)
+
+[config properties 配置文件介绍](https://houbb.github.io/2017/06/21/config-properties-01-intro)
+
+[java 实现 xml 与对象 pojo 之间的转换的几种方式 dom4j/xstream/jackson](https://houbb.github.io/2017/06/21/config-xml-to-pojo)
+
+[XStream java 实现 xml 与对象 pojo 之间的转换](https://houbb.github.io/2017/06/21/config-xml-XStream-intro)
+
 [json 专题系列](https://houbb.github.io/2018/07/20/json-00-overview)
 
-
-# 组件
-
-XML
-
-json
-
-yaml
-
-properties
-
-ini
-
-csv
-
-TOML
-
-HCL
-
-CFG
-
-INI
-
-## 其他
-
-csv
-
-excel 
-
-converter
 
 # 8 种配置方式 xml/json/proeprties/ini/yaml/TOML/hcl/hocon
 
@@ -84,7 +54,7 @@ converter
 
 这个对比表格可以帮助你了解每种配置方式的特点和适用场景，从而选择适合你项目需求的配置文件格式。
 
-# 组件
+# 常见配置
 
 ## XML 简单介绍
 
@@ -795,9 +765,28 @@ app {
 
 HOCON 是一种灵活且功能丰富的配置文件格式，适用于多种配置需求，特别是对于复杂的应用程序和分布式系统。其易读易写的特性使其在实际开发中得到广泛应用。
 
+# 小结
+
+配置的方式多样，可以汇总为一个系列。
+
+然后每一种配置方式，java 整合的组件实现。
+
+后面我们重点讲一下几个以人为本的配置方式：yaml toml hcl hocon
+
+---------------------------------------------------------------------------------------------------------------------------------------------
 
 
---------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 
 # chat
