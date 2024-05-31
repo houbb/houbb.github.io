@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-13-nginx.conf nginx 配置文件的解析处理
+title:  从零手写实现 nginx-13-nginx.conf nginx 配置文件入门介绍
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]

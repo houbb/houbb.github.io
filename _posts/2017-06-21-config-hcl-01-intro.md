@@ -1,6 +1,6 @@
 ---
 layout: post
-title: config hcl 配置文件介绍
+title: config HCL（HashiCorp Configuration Language） 配置文件介绍
 date:  2017-06-21 13:59:45 +0800
 categories: [Config]
 tags: [config, overview]

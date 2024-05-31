@@ -1,6 +1,6 @@
 ---
 layout: post
-title: config cfg 配置文件介绍
+title: config cfg 配置文件介绍 HOCON 格式的配置文件
 date:  2017-06-21 13:59:45 +0800
 categories: [Config]
 tags: [config, overview]
@@ -43,6 +43,74 @@ INI
 converter
 
 # chat
+
+## Q: apache seatunnel 使用的是什么格式的配置文件？
+
+Apache SeaTunnel 的配置文件使用 HOCON（Human-Optimized Config Object Notation）格式。
+
+HOCON 是一种用户友好的配置格式，支持 JSON 的所有特性，并且更加简洁和可读。HOCON 格式的解析是通过 `Typesafe Config` 库实现的。
+
+具体来说，SeaTunnel 使用 `Typesafe Config` 库来解析和处理 HOCON 配置文件。
+
+`Typesafe Config` 是一个广泛使用的库，提供了强大的配置解析功能，支持包括 HOCON、JSON、和 Java Properties 等格式。
+
+以下是关于 `Typesafe Config` 库的一些信息：
+
+- **库名称**: `com.typesafe:config`
+- **主要特性**:
+  - 支持 HOCON、JSON、Java Properties 等多种格式
+  - 支持嵌套配置和引用其他配置
+  - 提供类型安全的配置访问方式
+
+### 示例代码
+以下是使用 `Typesafe Config` 库解析 HOCON 配置文件的一个简单示例：
+
+```java
+import com.typesafe.config.Config;
+import com.typesafe.config.ConfigFactory;
+
+public class ConfigExample {
+    public static void main(String[] args) {
+        // 加载默认的 application.conf 文件
+        Config config = ConfigFactory.load();
+
+        // 读取配置项
+        String baseUrl = config.getString("source.MySQL-CDC.base-url");
+        String username = config.getString("source.MySQL-CDC.username");
+
+        System.out.println("Base URL: " + baseUrl);
+        System.out.println("Username: " + username);
+    }
+}
+```
+
+在 SeaTunnel 中，这个库用于解析配置文件并将其转化为内部的配置对象，供后续的任务执行过程使用。
+
+### 在 SeaTunnel 中的使用
+
+SeaTunnel 通过以下方式使用 `Typesafe Config` 库：
+
+1. **加载配置文件**:
+   SeaTunnel 会加载指定路径的 HOCON 配置文件，通常是 `application.conf` 或用户自定义的配置文件。
+
+2. **解析配置**:
+   使用 `ConfigFactory` 类解析配置文件，并生成 `Config` 对象。
+
+3. **访问配置项**:
+   通过 `Config` 对象的各种方法（如 `getString`, `getInt`, `getList` 等）访问具体的配置项。
+
+### 依赖项
+在使用 SeaTunnel 时，如果需要在自定义代码中解析配置文件，可以在项目的 `pom.xml` 文件中添加 `Typesafe Config` 的 Maven 依赖：
+
+```xml
+<dependency>
+    <groupId>com.typesafe</groupId>
+    <artifactId>config</artifactId>
+    <version>1.4.1</version>
+</dependency>
+```
+
+通过这种方式，您可以使用 `Typesafe Config` 库来解析和处理 SeaTunnel 的 HOCON 配置文件。
 
 ## Q: 详细介绍一下 cfg 配置文件方式
 
