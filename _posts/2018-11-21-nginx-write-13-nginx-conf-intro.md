@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-13-nginx.conf nginx 配置文件入门介绍
+title:  从零手写实现 nginx-13-nginx.conf nginx 配置文件的解析方法
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
@@ -41,89 +41,83 @@ published: true
 
 [从零手写实现 nginx-09-文件压缩](https://houbb.github.io/2018/11/22/nginx-write-09-comparess)
 
+[从零手写实现 nginx-10-sendfile 零拷贝](https://houbb.github.io/2018/11/22/nginx-write-10-sendfile)
+
+[从零手写实现 nginx-11-file+range 合并](https://houbb.github.io/2018/11/22/nginx-write-11-file-and-range-merge)
+
+[从零手写实现 nginx-12-keep-alive 连接复用](https://houbb.github.io/2018/11/22/nginx-write-12-keepalive)
+
 # 一个 nginx.conf 的例子
 
 ```conf
-# 全局配置
-user www-data;
-worker_processes auto;
-pid /run/nginx.pid;
+# nginx.conf
+
+# 用户和组
+user nginx;
+
+# 主进程PID文件
+pid /var/run/nginx.pid;
 
 # 事件模块配置
 events {
-    worker_connections 1024;
+    worker_connections 1024;  # 每个工作进程的最大连接数
 }
 
+# HTTP模块配置
 http {
-    # 基本设置
-    include mime.types;
+    include mime.types;  # 文件扩展名与MIME类型的映射表
     default_type application/octet-stream;
+
+    # 日志文件配置
+    log_format main '$http_x_forwarded_for - $remote_user [$time_local] "$request" '
+                  '$status $body_bytes_sent "$http_referer" '
+                  '"$http_user_agent"';
+    access_log /var/log/nginx/access.log main;
+
+    # 文件传输设置
     sendfile on;
+    tcp_nopush on;
+    tcp_nodelay on;
+
+    # Keepalive超时设置
     keepalive_timeout 65;
-    client_max_body_size 100m;
 
-    # 日志配置
-    access_log /var/log/nginx/access.log;
-    error_log /var/log/nginx/error.log;
+    # 静态文件缓存设置
+    gzip on;
+    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
 
-    # 虚拟主机配置
+    # 包含默认服务器配置
+    include /etc/nginx/conf.d/*.conf;
+
+    # 定义服务器块
     server {
+        # 监听端口
         listen 80;
+
+        # 服务器名称
         server_name example.com www.example.com;
 
-        # 根目录及索引文件
-        root /var/www/html;
+        # 根目录设置
+        root /usr/share/nginx/html;
+
+        # 默认页面索引
         index index.html index.htm;
 
-        # 访问限制
-        location /restricted/ {
-            deny all;
-            return 403;
+        # 静态文件处理
+        location / {
+            try_files $uri $uri/ =404;
         }
 
-        # 静态文件缓存
-        location ~* \.(jpg|jpeg|png|gif|ico|css|js)$ {
-            expires 1y;
-            add_header Cache-Control "public";
-        }
-
-        # 反向代理
+        # 反向代理配置
         location /proxy/ {
+            # 将请求转发到后端服务器
             proxy_pass http://backend_server;
             proxy_set_header Host $host;
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
         }
-
-        # SSL/TLS 配置
-        listen 443 ssl;
-        ssl_certificate /etc/nginx/ssl/server.crt;
-        ssl_certificate_key /etc/nginx/ssl/server.key;
-        ssl_protocols TLSv1.2 TLSv1.3;
-        ssl_prefer_server_ciphers on;
-        ssl_ciphers 'ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA256';
-        ssl_session_timeout 1d;
-        ssl_session_cache shared:SSL:50m;
-        ssl_session_tickets off;
-        ssl_stapling on;
-        ssl_stapling_verify on;
-        resolver 8.8.8.8 8.8.4.4 valid=300s;
-        resolver_timeout 5s;
     }
-
-    # 负载均衡
-    upstream backend_server {
-        server backend1.example.com;
-        server backend2.example.com;
-        server backend3.example.com;
-    }
-
-    # 动态模块加载
-    include /etc/nginx/modules-enabled/*.conf;
-
-    # 其他配置
-    include /etc/nginx/conf.d/*.conf;
 }
 ```
 
@@ -188,7 +182,36 @@ public class NginxConfigParser {
 }
 ```
 
-## 优点
+## 实际效果
+
+上面的内容，如果用这个方法解析，实际上并不太准确。
+
+```
+Nginx configuration settings:
+.events = {
+location.} = null
+server.listen = 80
+.error_log = /var/log/nginx/error.log
+server.server = {
+location.try_files = $uri $uri/ =404
+.include = /etc/nginx/mime.types
+.keepalive_timeout = 65
+.user = nginx
+.tcp_nopush = on
+.pid = /var/run/nginx.pid
+server.server_name = example.com
+.} = null
+.http = {
+.default_type = application/octet-stream
+.worker_connections = 1024
+location.location = / {
+server.root = /usr/share/nginx/html
+server.index = index.html index.htm
+.access_log = /var/log/nginx/access.log
+.sendfile = on
+```
+
+## 优缺点
 
 自己实现，可控性相对比较强。
 
@@ -206,18 +229,8 @@ public class NginxConfigParser {
 
 然后AST可以被修改并转换回纯文本文件。
 
-#### 特性
+## maven 依赖
 
-- 使用ANTLR4解析功能将配置文件转换为AST树
-- JavaCC也提供了相同的功能（已弃用）
-- 重新构建配置文件并将其转储回*.conf文件
-- 支持嵌套块
-- 支持if语句
-- 支持location/rewrite/if语句中的未引用正则表达式
-- 支持注释
-
-#### 安装
-将以下依赖项添加到你的POM文件中：
 ```xml
 <dependency>
     <groupId>com.github.odiszapc</groupId>
@@ -226,52 +239,62 @@ public class NginxConfigParser {
 </dependency>
 ```
 
-#### 示例
-##### 解析器
+## 解析例子
 
-如何执行以下Nginx配置的基本解析：
 ```java
-NgxConfig conf = NgxConfig.read("/etc/nginx/nginx.conf");
-NgxParam workers = conf.findParam("worker_processes");       // 示例1
-workers.getValue(); // "1"
-NgxParam listen = conf.findParam("http", "server", "listen"); // 示例2
-listen.getValue(); // "8889"
-List<NgxEntry> rtmpServers = conf.findAll(NgxConfig.BLOCK, "rtmp", "server"); // 示例3
-for (NgxEntry entry : rtmpServers) {
-    ((NgxBlock)entry).getName(); // "server"
-    ((NgxBlock)entry).findParam("application", "live"); // 第一次迭代返回"on"，第二次迭代返回"off"
-}
-```
+package com.github.houbb.nginx4j.config;
 
-/etc/nginx/nginx.conf:
-```
-worker_processes  1;            # <- 示例1
+import com.github.odiszapc.nginxparser.NgxBlock;
+import com.github.odiszapc.nginxparser.NgxConfig;
+import com.github.odiszapc.nginxparser.NgxEntry;
+import com.github.odiszapc.nginxparser.NgxParam;
 
-http {
-    server {
-        listen       8889;      # <- 示例2
-        server_name  localhost;
-    }
-}
+import java.io.IOException;
+import java.util.List;
 
-rtmp {
-    server {                    # <- 示例3（第一次）
-        listen 1935;
-        application myapp {
-            live on;
+public class NginxConfigParserTest {
+
+    public static void main(String[] args) throws IOException {
+        NgxConfig conf = NgxConfig.read("D:\\github\\nginx4j\\src\\test\\resources\\nginx-demo.conf");
+
+        // 基本信息
+        NgxParam pidParam = conf.findParam("pid");
+        System.out.println(pidParam.getValue());;
+
+        NgxParam worker_connectionsParam = conf.findParam("events", "worker_connections");
+        System.out.println(worker_connectionsParam.getValue());
+
+        // 模块下多级
+        NgxParam listen = conf.findParam("http", "server", "listen"); // 示例2
+        System.out.println(listen.getValue()); // "8889"
+
+        // 首先获取 block
+        List<NgxEntry> servers = conf.findAll(NgxConfig.BLOCK, "http", "server"); // 示例3
+        for (NgxEntry entry : servers) {
+            NgxBlock ngxBlock = (NgxBlock) entry;
+            String name = ngxBlock.getName();
+
+            // value
+            String value = ngxBlock.findParam("listen").getValue(); // 第一次迭代返回"on"，第二次迭代返回"off"
+            System.out.println(name + "---" + value);
         }
     }
 
-    server {                    # <- 示例3（第二次）
-        listen 1936;
-        application myapp2 {
-            live off;
-        }
-    }
 }
 ```
 
-##### 转储器
+测试日志
+
+```
+/var/run/nginx.pid
+1024
+80
+server---80
+server---443 ssl
+```
+
+
+## 转储器
 
 ```java
 NgxConfig conf = NgxConfig.read("/etc/nginx/nginx.conf");
@@ -280,10 +303,37 @@ NgxDumper dumper = new NgxDumper(conf);
 return dumper.dump(System.out);
 ```
 
+# 自定义的解析类
+
+## 思路
+
+我们首先进行一层封装，方便后续的接口替换。
+
+目前底层使用 nginxparser 来统一实现。
+
+## 效果
+
+```java
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # nginx.conf 转换解析工具
 
 定义标准的抽象接口。
-
 
 # 如何定义这个配置文件对应的对象？
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-13-CORS (Cross-Origin Resource Sharing)
+title:  从零手写实现 nginx-15-CORS (Cross-Origin Resource Sharing)
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
