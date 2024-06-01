@@ -7,6 +7,7 @@ tags: [java, github, sensitive, sf]
 published: true
 ---
 
+
 # 业务背景
 
 我希望通过 DFA 算法验证一个字符串中是否包含 url/邮箱/数字 等信息，这些直接使用 regex 判断起来比较简单。
