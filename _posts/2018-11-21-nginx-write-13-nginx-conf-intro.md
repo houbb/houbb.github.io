@@ -52,10 +52,10 @@ published: true
 ```conf
 # nginx.conf
 
-# 用户和组
+# 定义运行Nginx的用户和组
 user nginx;
 
-# 主进程PID文件
+# 主进程的PID文件存放位置
 pid /var/run/nginx.pid;
 
 # 事件模块配置
@@ -65,59 +65,49 @@ events {
 
 # HTTP模块配置
 http {
-    include mime.types;  # 文件扩展名与MIME类型的映射表
-    default_type application/octet-stream;
+    include /etc/nginx/mime.types;  # MIME类型配置文件
+    default_type application/octet-stream;  # 默认的MIME类型
 
-    # 日志文件配置
-    log_format main '$http_x_forwarded_for - $remote_user [$time_local] "$request" '
-                  '$status $body_bytes_sent "$http_referer" '
-                  '"$http_user_agent"';
-    access_log /var/log/nginx/access.log main;
+    # 访问日志配置
+    access_log /var/log/nginx/access.log;  # 访问日志文件路径
+    # 错误日志配置
+    error_log /var/log/nginx/error.log;  # 错误日志文件路径
 
     # 文件传输设置
-    sendfile on;
-    tcp_nopush on;
-    tcp_nodelay on;
+    sendfile on;  # 开启高效文件传输
+    tcp_nopush on;  # 防止网络拥塞
 
     # Keepalive超时设置
     keepalive_timeout 65;
 
-    # 静态文件缓存设置
-    gzip on;
-    gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
-
-    # 包含默认服务器配置
-    include /etc/nginx/conf.d/*.conf;
-
     # 定义服务器块
     server {
-        # 监听端口
-        listen 80;
+        listen 80;  # 监听80端口
+        server_name example.com;  # 服务器域名
 
-        # 服务器名称
-        server_name example.com www.example.com;
+        # 静态文件的根目录
+        root /usr/share/nginx/html;  # 静态文件存放的根目录
+        index index.html index.htm;  # 默认首页
 
-        # 根目录设置
-        root /usr/share/nginx/html;
-
-        # 默认页面索引
-        index index.html index.htm;
-
-        # 静态文件处理
+        # 定义location块，处理对根目录的请求
         location / {
-            try_files $uri $uri/ =404;
-        }
-
-        # 反向代理配置
-        location /proxy/ {
-            # 将请求转发到后端服务器
-            proxy_pass http://backend_server;
-            proxy_set_header Host $host;
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-            proxy_set_header X-Forwarded-Proto $scheme;
+            try_files $uri $uri/ =404;  # 尝试提供请求的文件，如果不存在则404
         }
     }
+
+    server {
+        listen 443 ssl;
+        server_name  secure-example.com;
+
+        ssl_certificate     /etc/nginx/ssl/secure-example.com.crt;
+        ssl_certificate_key /etc/nginx/ssl/secure-example.com.key;
+
+        location / {
+            root   /var/www/secure-example.com;
+            index  index.html index.htm;
+        }
+    }
+
 }
 ```
 
@@ -313,22 +303,17 @@ return dumper.dump(System.out);
 
 ## 效果
 
-```java
-
+```
+/var/run/nginx.pid
+1024
+80
+server---80
+server---443 ssl
 ```
 
 
 
-
-
-
-
-
-
-
-
-
-
+------------------------------------------------------------------------------------------------------------------
 
 
 # nginx.conf 转换解析工具
