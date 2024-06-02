@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-13-nginx.conf 解析处理
+title:  从零手写实现 nginx-16-nginx.conf 解析处理转换为 POJO
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
@@ -46,6 +46,14 @@ published: true
 [从零手写实现 nginx-11-file+range 合并](https://houbb.github.io/2018/11/22/nginx-write-11-file-and-range-merge)
 
 [从零手写实现 nginx-12-keep-alive 连接复用](https://houbb.github.io/2018/11/22/nginx-write-12-keepalive)
+
+[从零手写实现 nginx-13-nginx.conf 配置文件介绍](https://houbb.github.io/2018/11/22/nginx-write-13-nginx-conf-intro)
+
+[从零手写实现 nginx-14-nginx.conf 和 hocon 格式有关系吗？](https://houbb.github.io/2018/11/22/nginx-write-14-nginx-conf-hocon)
+
+[从零手写实现 nginx-15-nginx.conf 如何通过 java 解析处理？](https://houbb.github.io/2018/11/22/nginx-write-15-nginx-conf-parser)
+
+[从零手写实现 nginx-16-nginx 支持配置多个 server](https://houbb.github.io/2018/11/22/nginx-write-16-nginx-conf-multi-server)
 
 
 # 目标
@@ -294,13 +302,6 @@ Nginx4jBs.newInstance()
 整体而言 nginx.conf 的配置非常灵活。还有很多特性需要持续优化支持。
 
 比如默认的全局配置，单独的 server 配置重载。
-
-
-# chat
-
-## nginx.conf 是 hocon 格式的吗？
-
-
 
 # 参考资料
 
