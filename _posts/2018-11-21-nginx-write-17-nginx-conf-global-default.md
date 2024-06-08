@@ -57,6 +57,8 @@ published: true
 
 [从零手写实现 nginx-17-nginx 默认配置优化](https://houbb.github.io/2018/11/22/nginx-write-17-nginx-conf-global-default)
 
+[从零手写实现 nginx-18-nginx 请求头响应头的处理](https://houbb.github.io/2018/11/22/nginx-write-18-nginx-conf-header-oper)
+
 # 目标
 
 这一节我们对 server 中的配置进一步优化，让用户使用起来更加方便。

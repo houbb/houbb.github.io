@@ -56,6 +56,9 @@ published: true
 
 [从零手写实现 nginx-16-nginx 支持配置多个 server](https://houbb.github.io/2018/11/22/nginx-write-16-nginx-conf-multi-server)
 
+[从零手写实现 nginx-17-nginx 默认配置优化](https://houbb.github.io/2018/11/22/nginx-write-17-nginx-conf-global-default)
+
+[从零手写实现 nginx-18-nginx 请求头响应头的处理](https://houbb.github.io/2018/11/22/nginx-write-18-nginx-conf-header-oper)
 
 # 3次握手+4次挥手
 
