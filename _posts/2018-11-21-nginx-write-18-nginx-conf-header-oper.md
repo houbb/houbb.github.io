@@ -134,231 +134,239 @@ server {
 这样就可以简洁地实现对请求头和响应头的增删改操作。
 
 
+# 核心代码
 
+## 配置的初始化
 
+首先我们解析配置文件
+
+```conf
+# 默认匹配
+location / {
+    proxy_set_header X-DEFINE-PARAM myDefineParam;
+    proxy_set_header X-DEFINE-HOST 127.0.0.1;
+    # 增加或修改响应头 这里就提现了一些占位符的强大之处。下一次可以考虑支持
+    add_header X-Response-Time 2024-06-08;
+    # 删除响应头
+    proxy_hide_header X-Unwanted-Header;
+}
+```
+
+核心逻辑如下：
+
+```java
+private List<NginxUserServerLocationConfig> getHttpServerLocationList(final NgxConfig conf, final NgxBlock serverBlock) {
+        List<NginxUserServerLocationConfig> resultList = new ArrayList<>();
+        // value
+        List<NgxEntry> entryList = serverBlock.findAll(NgxBlock.class, "location");
+        if(CollectionUtil.isNotEmpty(entryList)) {
+            for(NgxEntry entry : entryList) {
+                NgxBlock ngxBlock = (NgxBlock) entry;
+                // 参数
+                NginxUserServerLocationConfig locationConfig = new NginxUserServerLocationConfig();
+                locationConfig.setName(ngxBlock.getName());
+                locationConfig.setValue(ngxBlock.getValue());
+                locationConfig.setValues(ngxBlock.getValues());
+
+                NginxLocationPathTypeEnum typeEnum = NginxLocationPathTypeEnum.getTypeEnum(locationConfig);
+                locationConfig.setTypeEnum(typeEnum);
+
+                // 参数
+                List<NginxUserConfigParam> paramList = new ArrayList<>();
+                Collection<NgxEntry> ngxEntries = ngxBlock.getEntries();
+                if(CollectionUtil.isNotEmpty(ngxEntries)) {
+                    for(NgxEntry ngxEntry : ngxEntries) {
+                        // 暂时跳过一些注释之类的处理
+                        if(!(ngxEntry instanceof NgxParam)) {
+                            continue;
+                        }
+
+                        NgxParam ngxParam = (NgxParam) ngxEntry;
+                        String name = ngxParam.getName();
+                        List<String> values = ngxParam.getValues();
+                        String value = ngxParam.getValue();
+
+                        NginxUserConfigParam nginxUserConfigParam = new NginxUserConfigParam();
+                        nginxUserConfigParam.setName(name);
+                        nginxUserConfigParam.setValue(value);
+                        nginxUserConfigParam.setValues(values);
+
+                        paramList.add(nginxUserConfigParam);
+                    }
+                }
+                locationConfig.setDirectives(paramList);
+
+                resultList.add(locationConfig);
+            }
+        }
+
+        // 排序。按照匹配的优先级，从高到底排序
+        if(CollectionUtil.isNotEmpty(resultList)) {
+            Collections.sort(resultList, new Comparator<NginxUserServerLocationConfig>() {
+                @Override
+                public int compare(NginxUserServerLocationConfig o1, NginxUserServerLocationConfig o2) {
+                    return o1.getTypeEnum().getOrder() - o2.getTypeEnum().getOrder();
+                }
+            });
+        }
+
+        return resultList;
+    }
+```
+
+根据配置文件，构建对应的处理类信息。
+
+这里统一设置了优先级，就按照给出的标准:
+
+```java
+public enum NginxLocationPathTypeEnum {
+
+    EXACT("EXACT", "精确匹配 (`=`)", 1000),
+    PREFIX("PREFIX", "前缀匹配 (^~)", 2000),
+    REGEX("REGEX", "正则匹配 (~ 或 ~*)", 3000),
+    COMMON_PREFIX("COMMON_PREFIX /prefix", "普通前缀匹配", 4000),
+    DEFAULT("DEFAULT", "默认匹配 /", 5000),
+    ;
+
+}
+```
+
+## 配置的处理
+
+在处理请求的时候，我们暂时主要处理两个部分
+
+1）请求头
+
+2）响应头
+
+此处以请求头为例子，暂时如何统一处理请求头
+
+```java
+public void dispatch(final NginxRequestDispatchContext context) {
+    beforeDispatch(context);
+    // 统一的处理
+    doDispatch(context);
+    // 统一的处理
+    afterDispatch(context);
+}
+```
+
+我们在分发请求之前，匹配我们定义的各种指令策略
+
+```java
+/**
+ * 请求头的统一处理
+ * @param context 上下文
+ */
+protected void beforeDispatch(final NginxRequestDispatchContext context) {
+    // 参数管理类
+    final INginxParamManager paramManager = context.getNginxConfig().getNginxParamManager();
+    //1. 当前的配置
+    NginxUserServerLocationConfig locationConfig = context.getCurrentUserServerLocationConfig();
+    if(locationConfig == null) {
+        return;
+    }
+    List<NginxUserConfigParam> directives = locationConfig.getDirectives();
+    if(CollectionUtil.isEmpty(directives)) {
+        return;
+    }
+    // 处理
+    for(NginxUserConfigParam configParam : directives) {
+        List<INginxParamHandle> handleList = paramManager.paramHandleList(configParam, context);
+        if(CollectionUtil.isNotEmpty(handleList)) {
+            for(INginxParamHandle paramHandle : handleList) {
+                paramHandle.beforeDispatch(configParam, context);
+            }
+        }
+    }
+}
+```
+
+## INginxParamHandle 处理类
+
+这里统一定义各种指令的操作。以其中一个为例
+
+```java
+package com.github.houbb.nginx4j.config.param;
+
+import com.github.houbb.heaven.util.lang.StringUtil;
+import com.github.houbb.log.integration.core.Log;
+import com.github.houbb.log.integration.core.LogFactory;
+import com.github.houbb.nginx4j.config.NginxUserConfigParam;
+import com.github.houbb.nginx4j.support.request.dispatch.NginxRequestDispatchContext;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.HttpHeaders;
+
+import java.util.List;
+
+/**
+ * 参数处理类 请求头处理
+ *
+ * @since 0.16.0
+ * @author 老马啸西风
+ */
+public class NginxParamHandleProxySetHeader extends AbstractNginxParamHandle {
+
+    private static final Log logger = LogFactory.getLog(NginxParamHandleProxySetHeader.class);
+
+    /**
+     * # 增加或修改请求头
+     * proxy_set_header X-Real-IP $remote_addr;
+     * # 删除请求头
+     * proxy_set_header X-Unwanted-Header "";
+     *
+     * @param configParam 参数
+     * @param context     上下文
+     */
+    @Override
+    public void doBeforeDispatch(NginxUserConfigParam configParam, NginxRequestDispatchContext context) {
+        List<String> values = configParam.getValues();
+
+        // $ 占位符号后续处理
+
+        String headerName = values.get(0);
+        String headerValue = values.get(1);
+
+        FullHttpRequest fullHttpRequest = context.getRequest();
+
+        // 设置
+        HttpHeaders headers = fullHttpRequest.headers();
+        if (StringUtil.isEmpty(headerValue)) {
+            headers.remove(headerName);
+            logger.info(">>>>>>>>>>>> doBeforeDispatch headers.remove({})", headerName);
+        } else {
+            // 是否包含
+            if (headers.contains(headerName)) {
+                headers.set(headerName, headerValue);
+                logger.info(">>>>>>>>>>>> doBeforeDispatch headers.set({}, {});", headerName, headerValue);
+            } else {
+                headers.add(headerName, headerValue);
+                logger.info(">>>>>>>>>>>> doBeforeDispatch headers.set({}, {});", headerName, headerValue);
+            }
+        }
+    }
+
+    // 省略
+
+    @Override
+    public boolean doMatch(NginxUserConfigParam configParam, NginxRequestDispatchContext context) {
+        return "proxy_set_header".equalsIgnoreCase(configParam.getName());
+    }
+
+}
+```
+
+这里就可以针对配置的信息，执行请求头的处理。
 
 
 # 小结
 
-这里有一个难点，就在于如何平衡配置的灵活性+用户使用的易用性。
+到这里可以发现 nginx 确实非常的强大。
 
-# chat
+不过我们目前还没有实现各种占位符，感觉这部分也是 nginx 强大的原因之一。
 
-## nginx 如何实现请求的 header 处理？响应的 header 处理？
-
-在 Nginx 中，可以通过配置文件来实现对请求头和响应头的处理。以下是一些常用的配置示例：
-
-### 处理请求头
-要处理请求头，可以使用 `set` 指令和 `map` 指令，以及 `proxy_set_header` 指令等。以下是一些示例：
-
-#### 修改请求头
-```conf
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        # 修改请求头
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $host;
-
-        proxy_pass http://backend;
-    }
-}
-```
-
-#### 添加或删除请求头
-```conf
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        # 添加新的请求头
-        proxy_set_header X-New-Header "HeaderValue";
-
-        # 删除请求头
-        proxy_set_header X-Unwanted-Header "";
-
-        proxy_pass http://backend;
-    }
-}
-```
-
-#### 使用 `map` 指令修改请求头
-```conf
-http {
-    map $http_user_agent $custom_header_value {
-        default "default_value";
-        "~*Chrome" "chrome_value";
-        "~*Firefox" "firefox_value";
-    }
-
-    server {
-        listen 80;
-        server_name example.com;
-
-        location / {
-            # 根据 user agent 设置自定义请求头
-            proxy_set_header X-Custom-Header $custom_header_value;
-            proxy_pass http://backend;
-        }
-    }
-}
-```
-
-### 处理响应头
-要处理响应头，可以使用 `add_header` 和 `proxy_hide_header` 指令等。以下是一些示例：
-
-#### 添加响应头
-```conf
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        proxy_pass http://backend;
-
-        # 添加响应头
-        add_header X-Response-Time $request_time;
-    }
-}
-```
-
-#### 修改响应头
-```conf
-http {
-    server {
-        listen 80;
-        server_name example.com;
-
-        location / {
-            proxy_pass http://backend;
-
-            # 修改响应头
-            proxy_set_header X-New-Header "NewValue";
-        }
-    }
-}
-```
-
-#### 删除响应头
-```conf
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        proxy_pass http://backend;
-
-        # 删除某个响应头
-        proxy_hide_header X-Unwanted-Header;
-    }
-}
-```
-
-### 综合示例
-以下是一个综合示例，展示了如何同时处理请求头和响应头：
-
-```conf
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        # 修改和添加请求头
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header Host $host;
-        proxy_set_header X-New-Header "NewValue";
-
-        # 代理请求到后端服务器
-        proxy_pass http://backend;
-
-        # 添加和修改响应头
-        add_header X-Response-Time $request_time;
-        add_header Cache-Control "no-cache, no-store, must-revalidate";
-        proxy_set_header X-Custom-Response-Header "CustomValue";
-        proxy_hide_header X-Unwanted-Header;
-    }
-}
-```
-
-通过这些配置示例，你可以根据实际需求对 Nginx 中的请求头和响应头进行灵活的处理。
-
-## 为什么 nginx 对于请求头/响应头的指令不一致呢？
-
-请求头一个指令，响应头却是多个？
-
-在 Nginx 中，请求头和响应头的处理使用了不同的指令，这主要是由于历史原因和配置的设计理念。
-
-尽管一个单一的指令例如 `proxy_set_resp_header` 可能会使配置更加统一和简洁，但 Nginx 目前的设计选择了使用不同的指令来分别处理这些操作。
-
-以下是一些背景和原因：
-
-### 不同指令的背景
-
-1. **请求头的处理 (`proxy_set_header`)**:
-    - `proxy_set_header` 指令专门用于设置和修改发送到后端服务器的请求头。这是 Nginx 代理模块的一部分，用于确保代理服务器能够正确传递和修改客户端请求的信息。
-
-2. **响应头的处理 (`add_header` 和 `proxy_hide_header`)**:
-    - `add_header` 指令用于在响应中添加新的头或修改现有的响应头。这指令不局限于代理模块，而是可以在任何 HTTP 响应中使用。
-    - `proxy_hide_header` 指令专门用于隐藏或删除从后端服务器收到的响应头。这是代理模块的一部分，用于控制从后端传递到客户端的响应头。
-
-### 设计选择
-Nginx 的设计选择不同的指令来处理请求头和响应头，主要是基于以下考虑：
-
-- **灵活性和控制**：使用不同的指令可以更精确地控制每个处理阶段。例如，`proxy_set_header` 是专门为请求头设计的，而 `add_header` 可以在任何 HTTP 响应阶段使用。
-
-- **模块化设计**：Nginx 通过不同模块提供功能，每个模块有其专门的指令集。代理模块 (`proxy`) 和 HTTP 核心模块 (`http_core`) 提供了针对不同场景的指令。
-
-- **历史兼容性**：Nginx 是一个长期发展的项目，保持历史兼容性对于用户配置和升级非常重要。现有指令的使用习惯已经深入人心，改变这种设计需要非常慎重。
-
-尽管 `proxy_set_resp_header` 这样的统一指令看起来会更简洁，但现有的指令设计提供了更大的灵活性和控制力，适应了不同场景的需求。
-
-### 当前的实际操作
-以下是如何使用现有指令进行请求头和响应头处理的示例：
-
-#### 请求头
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        # 增加或修改请求头
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Custom-Header "custom_value";
-        
-        # 删除请求头
-        proxy_set_header X-Unwanted-Header "";
-
-        proxy_pass http://backend;
-    }
-}
-```
-
-#### 响应头
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        proxy_pass http://backend;
-
-        # 增加或修改响应头
-        add_header X-Response-Time $request_time;
-        add_header X-Custom-Response "custom_response_value";
-        
-        # 删除响应头
-        proxy_hide_header X-Unwanted-Header;
-    }
-}
-```
-
-希望这些解释能帮助你理解为什么 Nginx 选择了这种设计方式。
+而且各种指令的实现方式也比较多，需要后续陆续补充实现。
 
 # 参考资料
 
