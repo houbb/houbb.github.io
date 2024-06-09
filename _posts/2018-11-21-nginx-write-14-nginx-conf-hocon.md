@@ -55,9 +55,53 @@ published: true
 
 [从零手写实现 nginx-16-nginx 支持配置多个 server](https://houbb.github.io/2018/11/22/nginx-write-16-nginx-conf-multi-server)
 
-# chat
+[从零手写实现 nginx-17-nginx 默认配置优化](https://houbb.github.io/2018/11/22/nginx-write-17-nginx-conf-global-default)
 
-## nginx.conf 是 hocon 格式的吗？
+[从零手写实现 nginx-18-nginx 请求头+响应头操作](https://houbb.github.io/2018/11/22/nginx-write-18-nginx-conf-header-oper)
+
+[从零手写实现 nginx-19-nginx cors](https://houbb.github.io/2018/11/22/nginx-write-19-cors)
+
+## 配置相关
+
+配置文件部分，可以阅读下面的文章：
+
+[config 配置方式概览-8 种配置文件介绍对比 xml/json/proeprties/ini/yaml/TOML/hcl/hocon](https://houbb.github.io/2017/06/21/config-00-overivew)
+
+[config HCL（HashiCorp Configuration Language） 配置文件介绍](https://houbb.github.io/2017/06/21/config-hcl-01-intro)
+
+[config HCL（HashiCorp Configuration Language） 官方文档翻译](https://houbb.github.io/2017/06/21/config-hcl-02-doc)
+
+[config HOCON（Human-Optimized Config Object Notation）配置文件介绍](https://houbb.github.io/2017/06/21/config-hocon-01-intro)
+
+[toml-01-toml 配置文件介绍](https://houbb.github.io/2017/06/21/config-toml-01-overview)
+
+[YAML-01-yml 配置文件介绍](https://houbb.github.io/2017/06/21/config-yaml-01-intro)
+
+[YAML-02-yml 配置文件 java 整合使用 yamlbeans + snakeyaml + jackson-dataformat-yaml](https://houbb.github.io/2017/06/21/config-yaml-02-java-integration)
+
+[YAML-03-yml 配置文件介绍官方文档翻译](https://houbb.github.io/2017/06/21/config-yaml-03-doc)
+
+[config ini 配置文件介绍](https://houbb.github.io/2017/06/21/config-ini-01-intro)
+
+[config properties 配置文件介绍](https://houbb.github.io/2017/06/21/config-properties-01-intro)
+
+[java 实现 xml 与对象 pojo 之间的转换的几种方式 dom4j/xstream/jackson](https://houbb.github.io/2017/06/21/config-xml-to-pojo)
+
+[XStream java 实现 xml 与对象 pojo 之间的转换](https://houbb.github.io/2017/06/21/config-xml-XStream-intro)
+
+[json 专题系列](https://houbb.github.io/2018/07/20/json-00-overview)
+
+# 目标
+
+本小节，我们主要看下面几个问题：
+
+1) nginx.conf 是 hocon 格式吗？
+
+2）nginx.conf 格式和 hocon 之间可以转换吗？
+
+3）我们自己设计格式，应该选择哪一种?
+
+# Q1: nginx.conf 是 hocon 格式的吗？
 
 Nginx 的配置文件不是 HOCON 格式的。Nginx 使用自己的配置格式，通常称为 Nginx 配置语法（Nginx configuration syntax）。
 
@@ -126,7 +170,7 @@ application {
 
 因此，Nginx 的配置文件并不是 HOCON 格式的，它有自己专门的配置格式。
 
-## 可以把你给的 nginx 配置例子，改成 hocon 格式的吗
+# Q2: 可以把你给的 nginx 配置例子，改成 hocon 格式的吗
 
 将 Nginx 配置文件转换为 HOCON 格式涉及到将 Nginx 的指令和块转换为 HOCON 支持的键值对和嵌套结构。
 
@@ -178,6 +222,122 @@ nginx {
 
 这个示例仅用于展示如何将配置内容结构化为 HOCON 格式。
 
+# Q3: 我们自己设计文件格式，应该使用什么格式
+
+老马这里，首先对配置文件做了统一的 java 抽象：
+
+```java
+/**
+ * 用户配置
+ *
+ * @since 0.12.0
+ * @author 老马啸西风
+ */
+public class NginxUserConfig {
+
+    // 全局配置
+    private String httpPid;
+
+
+    /**
+     * 全部的 server 配置列表
+     *
+     * @since 0.12.0
+     */
+    private List<NginxUserServerConfig> serverConfigList;
+
+    /**
+     * 服务器端口
+     */
+    private Set<Integer> serverPortSet;
+
+    /**
+     * 当前的服务端口
+     */
+    private Integer currentServerPort;
+
+    /**
+     * 当前的 server 配置 map
+     */
+    private Map<String, List<NginxUserServerConfig>> currentServerConfigMap;
+
+    /**
+     * 默认的服务配置
+     * @since 0.14.0
+     */
+    private NginxUserServerConfig defaultUserServerConfig;
+
+    // 示意图...
+
+}
+```
+
+定义配置解析的接口：
+
+```java
+public interface INginxUserConfigLoader {
+
+    /**
+     * 加载
+     * @return 结果
+     *
+     * */
+    NginxUserConfig load();
+
+}
+```
+
+然后默认实现了 nginx.conf 标准格式的解析处理类：
+
+```java
+public  class NginxUserConfigLoaderConfigFile extends AbstractNginxUserConfigLoader {
+
+    private final String filePath;
+
+    public NginxUserConfigLoaderConfigFile(String filePath) {
+        this.filePath = filePath;
+    }
+
+    // 其他省略实现...
+
+    @Override
+    protected NginxUserConfig doLoad() {
+        NgxConfig conf = null;
+        try {
+            NginxUserConfigBs configBs = NginxUserConfigBs.newInstance();
+            conf = NgxConfig.read(filePath);
+
+            //1. basic
+            fillBasicInfo(configBs, conf);
+
+            //2. server 信息
+            fillServerInfo(configBs, conf);
+
+            // 返回
+            return configBs.build();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+}
+```
+
+# 小结
+
+这篇文章我们一起讨论了如何为 nginx 设计一套配置实现。
+
+开始老马以为 nginx.conf 比较接近  hocon 的文件格式，后来发现并不是。
+
+所以还是决定抽象为标准的 pojo，这样一者便于使用，再者后续用户可以根据自己的需要拓展为 yaml 等其他格式的配置。
+
+我是老马，期待与你的下次重逢。
+
+# 开源地址
+
+为了便于大家学习，已经将 nginx 开源
+
+> [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
 
 
 # 参考资料

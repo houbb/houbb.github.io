@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-13-nginx.conf nginx 配置文件的解析方法
+title:  从零手写实现 nginx-13-nginx.conf 配置例子解释 + nginx 配置文件要如何解析？
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
@@ -54,6 +54,12 @@ published: true
 [从零手写实现 nginx-15-nginx.conf 如何通过 java 解析处理？](https://houbb.github.io/2018/11/22/nginx-write-15-nginx-conf-parser)
 
 [从零手写实现 nginx-16-nginx 支持配置多个 server](https://houbb.github.io/2018/11/22/nginx-write-16-nginx-conf-multi-server)
+
+[从零手写实现 nginx-17-nginx 默认配置优化](https://houbb.github.io/2018/11/22/nginx-write-17-nginx-conf-global-default)
+
+[从零手写实现 nginx-18-nginx 请求头+响应头操作](https://houbb.github.io/2018/11/22/nginx-write-18-nginx-conf-header-oper)
+
+[从零手写实现 nginx-19-nginx cors](https://houbb.github.io/2018/11/22/nginx-write-19-cors)
 
 # 一个 nginx.conf 的例子
 
@@ -318,6 +324,20 @@ return dumper.dump(System.out);
 server---80
 server---443 ssl
 ```
+
+# 小结
+
+本文介绍了 nginx 配置文件的例子，和自己解析的思路。
+
+不过还是推荐使用三方标准库来处理，这样很多情况解决的比较充分。
+
+我是老马，期待与你的下次重逢。
+
+# 开源地址
+
+为了便于大家学习，已经将 nginx 开源
+
+> [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
 
 
 
@@ -1385,11 +1405,6 @@ public class NginxConfigParser {
 这个简单的Java程序会读取指定路径下的Nginx配置文件，并提取每个指令的名称和值。
 
 你可以根据需要扩展这个程序，以适应更复杂的配置结构和更多的配置指令。
-
-## nginx.conf 是标准的配置文件格式吗？可以有哪些类似的标准文件格式，定义类似于 nginx.conf 的配置？
-
-## java 对应的面向对应的配置类应该如何定义？
-
 
 
 
