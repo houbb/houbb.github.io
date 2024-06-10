@@ -665,7 +665,15 @@ content-length: 0, id=40a5effffe257be0-00002a80-00000004-f834a6fd4eed4fe9-527bc6
 
 > [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
 
+# 实现优化
 
+## 占位符周期调整
+
+设置 3 个生命周期：
+
+```java
+
+```
 
 
 
@@ -703,297 +711,122 @@ content-length: 0, id=40a5effffe257be0-00002a80-00000004-f834a6fd4eed4fe9-527bc6
 
 # chat
 
-## netty 的 FullHttpRequest 如何实现上述的内置占位符？
 
-在 Netty 中，通过使用 `FullHttpRequest` 类可以获取 HTTP 请求的各种信息，从而实现类似 Nginx 中的内置占位符。以下是如何通过 `FullHttpRequest` 获取你列出的内置占位符的值的具体实现方法。
+## nginx 的占位符
 
-### 1. 导入必要的类
+Nginx 中的占位符（也称为变量）是预定义的变量，用于在配置文件中动态获取和使用请求相关的信息。
 
-首先，需要导入 Netty 的相关类：
+Nginx 提供了许多内置变量，涵盖了请求头、客户端信息、服务器信息等。以下是一些常用的内置变量及其用途。
 
-```java
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.QueryStringDecoder;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.handler.codec.http.cookie.ServerCookieDecoder;
-import io.netty.handler.codec.http.cookie.Cookie;
-import io.netty.util.CharsetUtil;
+### 请求相关变量
 
-import java.net.InetSocketAddress;
-import java.util.Set;
-import java.util.Map;
-import java.util.List;
-```
+- `$request`：完整的原始请求行，例如 `GET /index.html HTTP/1.1`。
+- `$request_uri`：包含请求的 URI 和参数，但不包括主机名，例如 `/index.html?arg=1`。
+- `$uri`：包含请求的 URI，不包括参数部分，例如 `/index.html`。
+- `$args`：请求的参数部分，例如 `arg=1&arg2=2`。
+- `$is_args`：如果请求有参数，则值为 `?`，否则为空字符串。
+- `$query_string`：同 `$args`。
 
-### 2. 实现方法
+基于 netty 的 FullHttpRequest，如何获取 $request $is_args 的值？
 
-以下是实现各个内置占位符的具体方法：
+### 客户端相关变量
 
-```java
-public class HttpRequestInfoExtractor {
+- `$remote_addr`：客户端的 IP 地址。
+- `$remote_port`：客户端的端口号。
+- `$remote_user`：用于 HTTP 基本认证的用户名。
+- `$http_user_agent`：客户端的 User-Agent 头。
+- `$http_referer`：客户端的 Referer 头。
 
-    public static String getArgs(FullHttpRequest request) {
-        QueryStringDecoder decoder = new QueryStringDecoder(request.uri());
-        StringBuilder args = new StringBuilder();
-        for (Map.Entry<String, List<String>> entry : decoder.parameters().entrySet()) {
-            for (String value : entry.getValue()) {
-                if (args.length() > 0) {
-                    args.append("&");
-                }
-                args.append(entry.getKey()).append("=").append(value);
-            }
-        }
-        return args.toString();
-    }
+基于 netty 的 FullHttpRequest，如何获取 $remote_user 的值？
 
-    public static int getContentLength(FullHttpRequest request) {
-        return request.headers().getInt(HttpHeaders.Names.CONTENT_LENGTH, -1);
-    }
+### 服务器相关变量
 
-    public static String getContentType(FullHttpRequest request) {
-        return request.headers().get(HttpHeaders.Names.CONTENT_TYPE);
-    }
-
-    public static String getDocumentRoot() {
-        // This value is typically configured in the server, not dynamically available from the request
-        // Assuming a known value for demonstration
-        return "/var/www/html";
-    }
-
-    public static String getHost(FullHttpRequest request) {
-        return request.headers().get(HttpHeaders.Names.HOST);
-    }
-
-    public static String getUserAgent(FullHttpRequest request) {
-        return request.headers().get(HttpHeaders.Names.USER_AGENT);
-    }
-
-    public static String getCookies(FullHttpRequest request) {
-        String cookieHeader = request.headers().get(HttpHeaders.Names.COOKIE);
-        if (cookieHeader != null) {
-            Set<Cookie> cookies = ServerCookieDecoder.LAX.decode(cookieHeader);
-            StringBuilder cookieString = new StringBuilder();
-            for (Cookie cookie : cookies) {
-                if (cookieString.length() > 0) {
-                    cookieString.append("; ");
-                }
-                cookieString.append(cookie.name()).append("=").append(cookie.value());
-            }
-            return cookieString.toString();
-        }
-        return "";
-    }
-
-    public static int getLimitRate() {
-        // This is a hypothetical value; not directly retrievable from FullHttpRequest
-        // Assuming a known value for demonstration
-        return 1000; // Example value, in bytes per second
-    }
-
-    public static String getRequestMethod(FullHttpRequest request) {
-        return request.method().name();
-    }
-
-    public static String getRemoteAddr(ChannelHandlerContext ctx) {
-        InetSocketAddress remoteAddress = (InetSocketAddress) ctx.channel().remoteAddress();
-        return remoteAddress.getAddress().getHostAddress();
-    }
-
-    public static int getRemotePort(ChannelHandlerContext ctx) {
-        InetSocketAddress remoteAddress = (InetSocketAddress) ctx.channel().remoteAddress();
-        return remoteAddress.getPort();
-    }
-
-    public static String getRequestUri(FullHttpRequest request) {
-        return request.uri();
-    }
-
-    public static String getScheme() {
-        // This depends on whether SSL is used; typically configured at the server level
-        return "http"; // or "https" if SSL is used
-    }
-
-    public static String getServerProtocol(FullHttpRequest request) {
-        return request.protocolVersion().text();
-    }
-
-    public static String getServerAddr(ChannelHandlerContext ctx) {
-        InetSocketAddress localAddress = (InetSocketAddress) ctx.channel().localAddress();
-        return localAddress.getAddress().getHostAddress();
-    }
-
-    public static String getServerName(FullHttpRequest request) {
-        // Typically retrieved from the Host header
-        return request.headers().get(HttpHeaders.Names.HOST);
-    }
-
-    public static int getServerPort(ChannelHandlerContext ctx) {
-        InetSocketAddress localAddress = (InetSocketAddress) ctx.channel().localAddress();
-        return localAddress.getPort();
-    }
-
-    public static String getUri(FullHttpRequest request) {
-        QueryStringDecoder decoder = new QueryStringDecoder(request.uri());
-        return decoder.path();
-    }
-}
-```
-
-### 3. 方法说明
-
-- `getArgs(FullHttpRequest request)`: 获取请求中的参数字符串。
-- `getContentLength(FullHttpRequest request)`: 获取请求的 Content-Length 头字段。
-- `getContentType(FullHttpRequest request)`: 获取请求的 Content-Type 头字段。
-- `getDocumentRoot()`: 当前请求的根目录，通常是服务器配置的固定值，无法通过 `FullHttpRequest` 动态获取，这里假设为 `/var/www/html`。
-- `getHost(FullHttpRequest request)`: 获取请求的主机头字段。
-- `getUserAgent(FullHttpRequest request)`: 获取客户端的 User-Agent 头字段。
-- `getCookies(FullHttpRequest request)`: 获取客户端的 Cookie 头字段。
-- `getLimitRate()`: 限制连接速率，这是一个假设的值，实际应用中需要自行实现限速逻辑。
-- `getRequestMethod(FullHttpRequest request)`: 获取请求方法（GET、POST 等）。
-- `getRemoteAddr(ChannelHandlerContext ctx)`: 获取客户端 IP 地址。
-- `getRemotePort(ChannelHandlerContext ctx)`: 获取客户端端口。
-- `getRequestUri(FullHttpRequest request)`: 获取完整的原始请求 URI。
-- `getScheme()`: 获取请求使用的协议（http 或 https），这个值通常取决于服务器配置。
-- `getServerProtocol(FullHttpRequest request)`: 获取请求使用的协议版本。
-- `getServerAddr(ChannelHandlerContext ctx)`: 获取服务器的地址，通常通过 `ctx.channel().localAddress()` 获取。
-- `getServerName(FullHttpRequest request)`: 获取服务器名称，通常通过 `Host` 头字段获取。
-- `getServerPort(ChannelHandlerContext ctx)`: 获取服务器端口。
-- `getUri(FullHttpRequest request)`: 获取不包含请求参数的请求 URI。
-
-## java 中，如何通过 HttpRequest 获取下面的内置占位符取值，给出对应的方法实现
-
-- `$args`：请求中的参数。
-- `$content_length`：请求的 Content-Length 头字段。
-- `$content_type`：请求的 Content-Type 头字段。
-- `$document_root`：当前请求的根目录或 alias 指定的路径。
-- `$host`：请求的主机头字段，如果主机头字段不可用，则等于服务器名称。
-- `$http_user_agent`：客户端的 User-Agent 头字段。
-- `$http_cookie`：客户端的 Cookie 头字段。
-- `$limit_rate`：用于限制连接速率。
-- `$request_method`：请求方法（GET、POST 等）。
-- `$remote_addr`：客户端 IP 地址。
-- `$remote_port`：客户端端口。
-- `$request_uri`：完整的原始请求 URI，包括参数。
-- `$scheme`：请求使用的协议（http 或 https）。
-- `$server_protocol`：请求使用的协议版本。
-- `$server_addr`：服务器的地址。
+- `$server_addr`：服务器的 IP 地址。这个值是通过系统调用获取的，在高负载时可能会影响性能。如果可能，尽量使用变量 `$hostname` 代替。
 - `$server_name`：服务器名称。
-- `$server_port`：服务器端口。
-- `$uri`：不包含请求参数的请求 URI。
+- `$server_port`：服务器端口号。
+- `$hostname`：服务器的主机名。
 
-在 Java 中，通过 `HttpServletRequest` 对象可以获取 HTTP 请求的各种信息。
 
-以下是对应的方法实现，展示如何从 `HttpServletRequest` 获取你列出的内置占位符的值。
+基于 netty 的 FullHttpRequest，如何获取 $hostname 的值？ 
 
-```java
-import javax.servlet.http.HttpServletRequest;
+### 连接相关变量
 
-public class RequestInfoExtractor {
+- `$connection`：连接的序列号。
+- `$connection_requests`：这个连接上处理的请求数量。
 
-    public static String getArgs(HttpServletRequest request) {
-        return request.getQueryString();
-    }
+基于 netty 的 FullHttpRequest，如何获取 $connection $connection_requests 的值？ 
 
-    public static int getContentLength(HttpServletRequest request) {
-        return request.getContentLength();
-    }
+### 请求处理相关变量
 
-    public static String getContentType(HttpServletRequest request) {
-        return request.getContentType();
-    }
+- `$request_time`：处理请求所用的时间，精度是毫秒。
+- `$request_length`：请求的长度（包括请求行、请求头和请求体）。
 
-    public static String getDocumentRoot() {
-        // This value is typically configured in the server, not dynamically available from the request
-        // Assuming a known value for demonstration
-        return "/var/www/html";
-    }
 
-    public static String getHost(HttpServletRequest request) {
-        return request.getHeader("Host");
-    }
+基于 netty 的 FullHttpRequest/HttpResponse，如何获取 $request_time $request_length 的值？ 
 
-    public static String getUserAgent(HttpServletRequest request) {
-        return request.getHeader("User-Agent");
-    }
+### 响应相关变量
 
-    public static String getCookies(HttpServletRequest request) {
-        return request.getHeader("Cookie");
-    }
+- `$body_bytes_sent`：传送给客户端的主体字节数，不包括响应头。
+- `$status`：响应的状态码。
+- `$sent_http_*`：发送给客户端的特定 HTTP 头部字段的值，例如 `$sent_http_content_type` 代表 `Content-Type` 头部字段的值。
 
-    public static int getLimitRate() {
-        // This is a hypothetical value; not directly retrievable from HttpServletRequest
-        // Assuming a known value for demonstration
-        return 1000; // Example value, in bytes per second
-    }
+基于 netty 的 FullHttpRequest/HttpResponse，如何获取 $body_bytes_sent $status $sent_http_* 的值？ 
 
-    public static String getRequestMethod(HttpServletRequest request) {
-        return request.getMethod();
-    }
+### 其他常用变量
 
-    public static String getRemoteAddr(HttpServletRequest request) {
-        return request.getRemoteAddr();
-    }
+- `$scheme`：请求的协议（http 或 https）。
+- `$document_root`：当前请求所在的根目录。
+- `$document_uri`：同 `$uri`。
+- `$realpath_root`：当前请求的真实路径，对应文件系统上的路径。
+- `$binary_remote_addr`：客户端地址的二进制形式。
+- `$request_filename`：当前请求的文件路径，由根目录和 URI 组成。
+- `$limit_rate`：用于限制响应传输速率。
 
-    public static int getRemotePort(HttpServletRequest request) {
-        return request.getRemotePort();
-    }
+### 示例配置
 
-    public static String getRequestUri(HttpServletRequest request) {
-        return request.getRequestURI() + (request.getQueryString() != null ? "?" + request.getQueryString() : "");
-    }
+以下是一个示例 Nginx 配置文件，展示了如何使用这些变量：
 
-    public static String getScheme(HttpServletRequest request) {
-        return request.getScheme();
-    }
+```conf
+http {
+    server {
+        listen 80;
+        server_name example.com;
 
-    public static String getServerProtocol(HttpServletRequest request) {
-        return request.getProtocol();
-    }
+        location / {
+            root /var/www/html;
+            index index.html index.htm;
 
-    public static String getServerAddr(HttpServletRequest request) {
-        // This may not be directly available, typically obtained via the server's network configuration
-        return request.getLocalAddr();
-    }
+            # 日志格式包含一些常用变量
+            log_format custom '$remote_addr - $remote_user [$time_local] '
+                              '"$request" $status $body_bytes_sent '
+                              '"$http_referer" "$http_user_agent"';
 
-    public static String getServerName(HttpServletRequest request) {
-        return request.getServerName();
-    }
+            access_log /var/log/nginx/access.log custom;
 
-    public static int getServerPort(HttpServletRequest request) {
-        return request.getServerPort();
-    }
+            # 使用变量设置响应头
+            add_header X-Request-ID $request_id;
+            add_header X-Server-Name $server_name;
 
-    public static String getUri(HttpServletRequest request) {
-        return request.getRequestURI();
+            # 使用变量设置响应内容
+            if ($request_uri ~* "/test") {
+                return 200 "Test URI: $request_uri\nServer: $server_name\n";
+            }
+
+            # 代理请求并传递一些头部信息
+            location /proxy {
+                proxy_pass http://backend_server;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            }
+        }
     }
 }
 ```
 
-### 方法说明
+在这个示例中，我们使用了一些常见的内置变量来记录日志、设置响应头和代理请求。
 
-- `getArgs(HttpServletRequest request)`: 获取请求中的参数字符串。
-- `getContentLength(HttpServletRequest request)`: 获取请求的 Content-Length 头字段。
-- `getContentType(HttpServletRequest request)`: 获取请求的 Content-Type 头字段。
-- `getDocumentRoot()`: 当前请求的根目录，通常是服务器配置的固定值，无法通过 `HttpServletRequest` 动态获取，这里假设为 `/var/www/html`。
-- `getHost(HttpServletRequest request)`: 获取请求的主机头字段。
-- `getUserAgent(HttpServletRequest request)`: 获取客户端的 User-Agent 头字段。
-- `getCookies(HttpServletRequest request)`: 获取客户端的 Cookie 头字段。
-- `getLimitRate()`: 限制连接速率，这是一个假设的值，实际应用中需要自行实现限速逻辑。
-- `getRequestMethod(HttpServletRequest request)`: 获取请求方法（GET、POST 等）。
-- `getRemoteAddr(HttpServletRequest request)`: 获取客户端 IP 地址。
-- `getRemotePort(HttpServletRequest request)`: 获取客户端端口。
-- `getRequestUri(HttpServletRequest request)`: 获取完整的原始请求 URI，包括参数。
-- `getScheme(HttpServletRequest request)`: 获取请求使用的协议（http 或 https）。
-- `getServerProtocol(HttpServletRequest request)`: 获取请求使用的协议版本。
-- `getServerAddr(HttpServletRequest request)`: 获取服务器的地址，通常通过 `request.getLocalAddr()` 获取。
-- `getServerName(HttpServletRequest request)`: 获取服务器名称。
-- `getServerPort(HttpServletRequest request)`: 获取服务器端口。
-- `getUri(HttpServletRequest request)`: 获取不包含请求参数的请求 URI。
-
-### 注意事项
-1. 有些值（如 `$document_root` 和 `$limit_rate`）可能需要在实际应用中根据具体环境或配置实现。
-2. 服务器的地址（`$server_addr`）有时无法直接从请求中获取，可能需要从服务器的网络配置中获取。
+这些变量在处理请求时非常有用，可以帮助我们动态地获取和使用请求相关的信息。
 
 ## set 指令用于设置一个占位符的值， nginx 可以修改或者移除一个占位符吗？如何配置
 
