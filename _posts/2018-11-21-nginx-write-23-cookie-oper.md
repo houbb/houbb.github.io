@@ -63,19 +63,500 @@ published: true
 
 [从零手写实现 nginx-20-nginx 占位符 placeholder](https://houbb.github.io/2018/11/22/nginx-write-20-placeholder)
 
+[从零手写实现 nginx-21-nginx modules 模块信息概览](https://houbb.github.io/2018/11/22/nginx-write-21-modules-overview)
+
+[从零手写实现 nginx-22-nginx modules 分模块加载优化](https://houbb.github.io/2018/11/22/nginx-write-22-modules-load)
+
+[从零手写实现 nginx-23-nginx cookie 的操作处理](https://houbb.github.io/2018/11/22/nginx-write-23-cookie-oper)
+
 # 前言
 
 大家好，我是老马。
 
 这一节我们将配置的加载，拆分为不同的模块加载处理，便于后续拓展。
 
+# 1. proxy_set_header Cookie 指令
 
+## 介绍下 nginx proxy_set_header Cookie "admin_cookie=admin_value; $http_cookie"; 操作 cookie 的指令
+
+在 Nginx 配置文件中，`proxy_set_header` 指令用于设置在代理请求中传递的 HTTP 头部字段。
+
+通过 `proxy_set_header` 可以在将请求转发给上游服务器时添加、修改或删除请求头部字段。
+
+具体来说，`proxy_set_header Cookie "admin_cookie=admin_value; $http_cookie";` 这条指令用于修改请求头中的 `Cookie` 字段。
+
+它将一个新的 cookie（`admin_cookie=admin_value`）添加到现有的请求 cookie 中。详细解释如下：
+
+1. **`proxy_set_header` 指令**：这是 Nginx 用来设置请求头部字段的指令。
+2. **`Cookie`**：这是要设置的头部字段名称。在这种情况下，设置的是 HTTP 请求的 `Cookie` 头部。
+3. **`"admin_cookie=admin_value; $http_cookie"`**：这是要设置的头部字段值。
+   - **`admin_cookie=admin_value`**：这是要添加的新 cookie 值。`admin_cookie` 是 cookie 的名称，`admin_value` 是它的值。
+   - **`;`**：分号用来分隔多个 cookie。
+   - **`$http_cookie`**：这是一个 Nginx 的内置变量，它包含了当前请求中的所有 cookie 值。
+
+通过这条指令，Nginx 会在转发请求到上游服务器之前，将一个新的 cookie 添加到现有的 cookie 中。这样上游服务器就会收到一个包含新添加的 `admin_cookie=admin_value` 的 `Cookie` 头部。
+
+示例配置片段如下：
+
+```conf
+server {
+    listen 80;
+    server_name example.com;
+
+    location / {
+        proxy_pass http://backend_server;
+        proxy_set_header Cookie "admin_cookie=admin_value; $http_cookie";
+    }
+}
+```
+
+在这个示例中，当客户端向 `example.com` 发起请求时，Nginx 会将请求转发给 `backend_server`，并在请求头部的 `Cookie` 字段中添加一个新的 `admin_cookie=admin_value`。
+
+### 其他相关的 Nginx 指令
+
+- **`proxy_pass`**：用于定义请求转发到的上游服务器。
+- **`proxy_set_header`**：用于设置转发请求的头部字段。
+
+### 注意事项
+
+1. **安全性**：在操作 cookie 时需要注意安全性，尤其是涉及敏感信息的 cookie。
+2. **兼容性**：确保上游服务器能够正确处理添加的 cookie。
+3. **配置顺序**：`proxy_set_header` 通常放在 `location` 或 `server` 块中，并在 `proxy_pass` 指令之前。
+
+通过合理配置 `proxy_set_header` 指令，可以在 Nginx 中灵活地操作 HTTP 请求头部，满足各种代理需求。
+
+## netty 如何实现 对于 cookie 的新增/修改/删除？
+
+这个我们原来就支持了
+
+```java
+    /**
+     * # 增加或修改请求头
+     * proxy_set_header X-Real-IP $remote_addr;
+     * # 删除请求头
+     * proxy_set_header X-Unwanted-Header "";
+     *
+     * @param configParam 参数
+     * @param context     上下文
+     */
+    @Override
+    public void doBeforeDispatch(NginxCommonConfigParam configParam, NginxRequestDispatchContext context) {
+        List<String> values = configParam.getValues();
+
+        // $ 占位符号后续处理
+
+        String headerName = values.get(0);
+        String headerValue = values.get(1);
+
+        FullHttpRequest fullHttpRequest = context.getRequest();
+
+        // 设置
+        HttpHeaders headers = fullHttpRequest.headers();
+        if (StringUtil.isEmpty(headerValue)) {
+            headers.remove(headerName);
+            logger.info(">>>>>>>>>>>> doBeforeDispatch headers.remove({})", headerName);
+        } else {
+            // 是否包含
+            if (headers.contains(headerName)) {
+                headers.set(headerName, headerValue);
+                logger.info(">>>>>>>>>>>> doBeforeDispatch headers.set({}, {});", headerName, headerValue);
+            } else {
+                headers.add(headerName, headerValue);
+                logger.info(">>>>>>>>>>>> doBeforeDispatch headers.set({}, {});", headerName, headerValue);
+            }
+        }
+    }
+```
+
+# proxy_cookie_domain 指令
+
+## 解释
+
+`proxy_cookie_domain` 是 Nginx 的一个指令，用于修改代理服务器响应中的 `Set-Cookie` 头部的 `Domain` 属性。
+
+这个指令通常用于在反向代理配置中，当上游服务器设置的 `Domain` 属性与客户端访问的域名不一致时，通过重写 `Domain` 属性来解决跨域问题。
+
+### 语法
+
+```nginx
+proxy_cookie_domain [上游服务器的域名] [要重写为的域名];
+```
+
+- **上游服务器的域名**：指定要匹配并重写的 `Domain` 属性值。
+- **要重写为的域名**：指定新的 `Domain` 属性值。
+
+### 默认值
+
+```nginx
+proxy_cookie_domain off;
+```
+
+如果不设置 `proxy_cookie_domain`，则默认不对 `Set-Cookie` 头部的 `Domain` 属性进行任何修改。
+
+### 配置范围
+
+该指令可以在 `http`、`server` 或 `location` 块中配置。
+
+### 示例
+
+假设我们有一个后端服务器 `backend.example.com`，它在设置 Cookie 时将 `Domain` 属性设为 `backend.example.com`。
+
+但是，客户端访问的是 `www.example.com`。
+
+我们可以使用 `proxy_cookie_domain` 来重写 `Domain` 属性，以便客户端能够正确地接收和发送这些 Cookie。
+
+```conf
+http {
+    server {
+        listen 80;
+        server_name www.example.com;
+
+        location / {
+            proxy_pass http://backend.example.com;
+            proxy_cookie_domain backend.example.com www.example.com;
+        }
+    }
+}
+```
+
+在这个配置中，当上游服务器 `backend.example.com` 在响应中返回 `Set-Cookie` 头部时：
+
+```
+Set-Cookie: sessionid=abcd1234; Domain=backend.example.com; Path=/
+```
+
+Nginx 会将其重写为：
+
+```
+Set-Cookie: sessionid=abcd1234; Domain=www.example.com; Path=/
+```
+
+### 使用场景
+
+1. **跨域 Cookie 共享**：当后端服务器和客户端使用不同的域名时，通过 `proxy_cookie_domain` 重写 `Set-Cookie` 头部的 `Domain` 属性，使 Cookie 能够在客户端域名下有效。
+2. **域名变更**：如果网站的域名发生变化，通过该指令可以确保旧域名设置的 Cookie 仍然有效。
+3. **子域名问题**：在使用子域名时，可以通过该指令将所有子域名的 Cookie 统一到主域名下。
+
+### 注意事项
+
+1. **安全性**：确保重写的域名是可信任的，以防止 Cookie 被不当共享。
+2. **精确匹配**：`proxy_cookie_domain` 的匹配是精确匹配的，因此需要确保指定的上游服务器域名与实际的 `Set-Cookie` 头部中的 `Domain` 属性完全一致。
+
+通过合理使用 `proxy_cookie_domain` 指令，可以有效地解决跨域 Cookie 共享的问题，确保在反向代理场景下的 Cookie 设置和使用正确无误。
+
+## 如何通过 netty，实现 proxy_cookie_domain 指令特性？
+
+核心实现如下：
+
+```java
+/**
+ * 参数处理类 响应头处理
+ *
+ * @since 0.20.0
+ * @author 老马啸西风
+ */
+public class NginxParamHandleProxyCookieDomain extends AbstractNginxParamLifecycleWrite {
+
+    private static final Log logger = LogFactory.getLog(NginxParamHandleProxyCookieDomain.class);
+
+    @Override
+    public void doBeforeWrite(NginxCommonConfigParam configParam, ChannelHandlerContext ctx, Object object, NginxRequestDispatchContext context) {
+        if(!(object instanceof HttpResponse)) {
+            return;
+        }
+
+
+        List<String> values = configParam.getValues();
+        if(CollectionUtil.isEmpty(values) || values.size() < 2) {
+            return;
+        }
+
+
+        // 原始
+        String upstreamDomain = values.get(0);
+        // 目标
+        String targetDomain = values.get(1);
+
+        HttpResponse response = (HttpResponse) object;
+        HttpHeaders headers = response.headers();
+        String setCookieHeader = headers.get(HttpHeaderNames.SET_COOKIE);
+
+        if (setCookieHeader != null) {
+            Set<Cookie> cookies = ServerCookieDecoder.STRICT.decode(setCookieHeader);
+
+            Set<Cookie> modifiedCookies = cookies.stream().map(cookie -> {
+                if (upstreamDomain.equals(cookie.domain())) {
+                    Cookie newCookie = new DefaultCookie(cookie.name(), cookie.value());
+                    newCookie.setDomain(targetDomain);
+                    newCookie.setPath(cookie.path());
+                    newCookie.setMaxAge(cookie.maxAge());
+                    newCookie.setSecure(cookie.isSecure());
+                    newCookie.setHttpOnly(cookie.isHttpOnly());
+                    return newCookie;
+                }
+                return cookie;
+            }).collect(Collectors.toSet());
+
+            List<String> encodedCookies = ServerCookieEncoder.STRICT.encode(modifiedCookies);
+            headers.set(HttpHeaderNames.SET_COOKIE, encodedCookies);
+        }
+
+        logger.info(">>>>>>>>>>>> doBeforeWrite proxy_hide_header upstreamDomain={} => targetDomain={}", upstreamDomain, targetDomain);
+    }
+
+    @Override
+    public void doAfterWrite(NginxCommonConfigParam configParam, ChannelHandlerContext ctx, Object object, NginxRequestDispatchContext context) {
+
+    }
+
+    @Override
+    protected String getKey(NginxCommonConfigParam configParam, ChannelHandlerContext ctx, Object object, NginxRequestDispatchContext context) {
+        return "proxy_hide_header";
+    }
+
+}
+```
+
+# proxy_cookie_flags 指令
+
+## 支持哪些？
+
+在 Nginx 中，`proxy_cookie_flags` 指令用于设置从代理服务器返回给客户端的 `Set-Cookie` 头中特定 cookie 的属性标志。主要支持的配置选项包括：
+
+1. **HttpOnly**：将 `HttpOnly` 标志添加到 cookie，使得 JavaScript 无法通过 `document.cookie` 访问该 cookie。
+
+   ```nginx
+   proxy_cookie_flags <cookie_name> HttpOnly;
+   ```
+
+2. **Secure**：将 `Secure` 标志添加到 cookie，仅在通过 HTTPS 协议发送时才会发送该 cookie。
+
+   ```nginx
+   proxy_cookie_flags <cookie_name> Secure;
+   ```
+
+3. **SameSite**：设置 `SameSite` 标志，限制浏览器仅在同站点请求时发送该 cookie，有助于防止跨站点请求伪造（CSRF）攻击。
+
+   ```nginx
+   proxy_cookie_flags <cookie_name> SameSite=Strict;
+   ```
+
+   支持的 `SameSite` 值包括 `Strict`、`Lax` 和 `None`。
+
+4. **Max-Age**：设置 `Max-Age` 属性，指定 cookie 的过期时间（秒）。通常用于设置持久化 cookie 的过期时间。
+
+   ```nginx
+   proxy_cookie_flags <cookie_name> Max-Age=3600;
+   ```
+
+5. **Expires**：设置 `Expires` 属性，指定 cookie 的过期时间点。通常以 GMT 格式的日期字符串指定。
+
+   ```nginx
+   proxy_cookie_flags <cookie_name> Expires=Wed, 21 Oct 2026 07:28:00 GMT;
+   ```
+
+6. **Domain**：设置 `Domain` 属性，指定可接受该 cookie 的域名范围。通过 `proxy_cookie_domain` 指令更常用地配置。
+
+   ```nginx
+   proxy_cookie_flags <cookie_name> Domain=example.com;
+   ```
+
+7. **Path**：设置 `Path` 属性，指定该 cookie 的路径范围。
+
+   ```nginx
+   proxy_cookie_flags <cookie_name> Path=/;
+   ```
+
+### 示例
+
+以下是一些示例，展示如何使用 `proxy_cookie_flags` 指令设置不同的 cookie 标志：
+
+```conf
+server {
+    listen 80;
+    server_name example.com;
+
+    location / {
+        # 添加 HttpOnly 和 Secure 标志
+        proxy_cookie_flags session_cookie HttpOnly Secure;
+        
+        # 设置 SameSite 标志为 Strict
+        proxy_cookie_flags mycookie SameSite=Strict;
+        
+        # 设置 Max-Age 为 1 小时
+        proxy_cookie_flags persistent_cookie Max-Age=3600;
+        
+        # 设置 Expires 属性
+        proxy_cookie_flags old_cookie Expires=Wed, 21 Oct 2026 07:28:00 GMT;
+        
+        # 设置 Domain 属性
+        proxy_cookie_flags global_cookie Domain=example.com;
+        
+        # 设置 Path 属性
+        proxy_cookie_flags local_cookie Path=/subpath;
+        
+        proxy_pass http://backend;
+    }
+}
+```
+
+通过这些配置，您可以灵活地控制从代理服务器返回的 `Set-Cookie` 头中各个 cookie 的属性，以满足安全需求和业务逻辑。
+
+## java 核心实现
+
+```java
+    public void doBeforeWrite(NginxCommonConfigParam configParam, ChannelHandlerContext ctx, Object object, NginxRequestDispatchContext context) {
+        if(!(object instanceof HttpResponse)) {
+            return;
+        }
+
+
+        List<String> values = configParam.getValues();
+        if(CollectionUtil.isEmpty(values) || values.size() < 2) {
+            return;
+        }
+
+        HttpResponse response = (HttpResponse) object;
+        HttpHeaders headers = response.headers();
+        String cookieHeader = headers.get(HttpHeaderNames.COOKIE);
+
+        final String cookieName = values.get(0);
+
+        if (cookieHeader != null) {
+            Set<Cookie> cookies = ServerCookieDecoder.STRICT.decode(cookieHeader);
+
+            Set<Cookie> modifiedCookies = cookies.stream().map(cookie -> {
+                // 相同的名字
+                if (cookieName.equals(cookie.name())) {
+                    // HttpOnly Secure
+                    for(int i = 1; i < values.size(); i++) {
+                        String value = values.get(i);
+                        if("HttpOnly".equals(value)) {
+                            cookie.setHttpOnly(true);
+                        }
+                        if("Secure".equals(value)) {
+                            cookie.setSecure(true);
+                        }
+
+                        // 拆分
+                        if(!value.contains("=")) {
+                            return cookie;
+                        }
+
+                        String[] items = value.split("=");
+                        String itemKey = items[0];
+                        String itemVal = items[1];
+
+//                        if("SameSite".equals(itemKey) && "Strict".equals(itemVal)) {
+//                        }
+
+                        if("Max-Age".equals(itemKey)) {
+                            cookie.setMaxAge(Long.parseLong(itemVal));
+                        }
+                        if("Expires".equals(itemKey)) {
+                            Date expireDate = calcDate(itemVal);
+                            long maxAge = expireDate.getTime() - System.currentTimeMillis();
+                            cookie.setMaxAge(maxAge);
+                        }
+
+                        if("Domain".equals(itemKey)) {
+                            cookie.setDomain(itemVal);
+                        }
+
+                        if("Path".equals(itemKey)) {
+                            cookie.setPath(itemVal);
+                        }
+                    }
+                }
+                return cookie;
+            }).collect(Collectors.toSet());
+
+            List<String> encodedCookies = ServerCookieEncoder.STRICT.encode(modifiedCookies);
+            headers.set(HttpHeaderNames.COOKIE, encodedCookies);
+        }
+
+        logger.info(">>>>>>>>>>>> doBeforeWrite proxy_cookie_flags values={}", values);
+    }
+```
+
+
+# nginx proxy_cookie_path 指令
+
+## 介绍
+
+在 Nginx 中，`proxy_cookie_path` 指令用于修改传递到后端服务器的 HTTP 请求中的 Cookie 的路径。
+
+这个指令通常在反向代理服务器配置中使用，用于调整传递给后端服务器的 Cookie 的路径信息，以适应后端服务器的预期路径结构。
+
+### 语法和用法
+
+语法：
+
+```
+proxy_cookie_path regex path;
+```
+
+参数解释：
+
+- `regex`：一个正则表达式，用于匹配要修改的 Cookie 的路径。
+- `path`：要替换成的路径。
+
+### 示例
+
+假设有如下配置：
+
+```
+location /app/ {
+    proxy_pass http://backend.example.com;
+    proxy_cookie_path ~*^/app(.*) $1;
+}
+```
+
+在这个示例中：
+
+- `proxy_cookie_path` 指令配合 `proxy_pass` 使用，表示将从客户端接收的带有路径 `/app/` 的 Cookie 的路径信息去除 `/app` 部分后再传递给后端服务器。
+
+例如，如果客户端发送的 Cookie 路径是 `/app/session`, Nginx 将修改为 `/session` 后传递给后端服务器。
+
+### 注意事项
+
+- 使用 `proxy_cookie_path` 时，确保理解你的后端服务器期望接收的 Cookie 路径格式，以便正确设置正则表达式和路径。
+- 正则表达式必须能够正确匹配客户端发送的 Cookie 路径。
+- 这个指令通常用于调整不同路径的代理请求，以便与后端服务器的预期路径结构匹配。
+
+## java 核心实现
+
+```java
+public void doBeforeDispatch(NginxCommonConfigParam configParam, NginxRequestDispatchContext context) {
+    List<String> values = configParam.getValues();
+    if(CollectionUtil.isEmpty(values) || values.size() < 2) {
+        throw new Nginx4jException("proxy_cookie_path 必须包含2个参数");
+    }
+
+    FullHttpRequest request = context.getRequest();
+    // 原始
+    String regex = values.get(0);
+    String path = values.get(1);
+    HttpHeaders headers = request.headers();
+    String cookieHeader = headers.get(HttpHeaderNames.COOKIE);
+
+    if (cookieHeader != null) {
+        String modifiedCookieHeader = cookieHeader.replaceAll(regex, path);
+        headers.set(HttpHeaderNames.COOKIE, modifiedCookieHeader);
+    }
+    logger.info(">>>>>>>>>>>> doBeforeDispatch proxy_cookie_path replace regex={} => path={}", regex, path);
+}
+```
 
 # 小结
 
-模块的加载拆分为不同的模块加载后，我们暂时实现了其中的部分。
+对于 cookie 的处理，让我们的请求可以更加强大灵活。
 
-后续有时间再实现更多的配置信息。
+1. `proxy_cookie_domain`: 设置后端服务器响应的 Cookie 中的域名。
+   
+2. `proxy_cookie_flags`: 设置后端服务器响应的 Cookie 的标志位。
+   
+3. `proxy_cookie_path`: 设置后端服务器响应的 Cookie 的路径。
 
 我是老马，期待与你的下次重逢。
 
@@ -85,438 +566,46 @@ published: true
 
 > [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
 
-# 参考资料
 
 # chat
 
+## 为什么 nginx 要单独设计一个 proxy_cookie_path 指令，proxy_cookie_flags 无法实现吗？
 
-## 详细介绍一下 nginx 的 proxy_set_header 指令，并给出配置操作 cookie 的例子
+Nginx 的 `proxy_cookie_flags` 指令和 `proxy_cookie_path` 指令在功能上有明显的区别，这两者并不是用来完成同样的任务。
 
+1. **`proxy_cookie_flags` 指令**：
+   - 用于设置 Cookie 的属性，比如 `HttpOnly`、`Secure`、`SameSite` 等。
+   - 主要作用是为了增加或修改 Cookie 的安全性和行为属性，例如确保 Cookie 只能通过 HTTP 协议传输（`HttpOnly`），只能在安全连接中传输（`Secure`），或者限制 Cookie 的跨站点传输行为（`SameSite`）。
+   - 这些属性通常不涉及修改 Cookie 的路径或者名称，而是关注于保证 Cookie 的安全性和正确的使用。
 
-### `proxy_set_header` 指令
+2. **`proxy_cookie_path` 指令**：
+   - 用于修改传递到后端服务器的 HTTP 请求中的 Cookie 的路径。
+   - 主要作用是在 Nginx 作为反向代理时，调整传递给后端服务器的 Cookie 的路径信息，以适应后端服务器对路径的预期要求。
+   - 典型的应用场景包括将代理请求中的路径信息重写，确保后端服务器能够正确解析和处理这些 Cookie，尤其是在多级代理路径下或者需要与后端应用服务器路径匹配时。
 
-`proxy_set_header` 指令用于在将请求转发给上游服务器（后端服务器）之前，设置或修改请求头。
+因此，`proxy_cookie_flags` 和 `proxy_cookie_path` 这两个指令虽然都涉及到处理 Cookie，但它们的作用和用途是不同的：
+- `proxy_cookie_flags` 用于修改 Cookie 的属性，增强安全性和行为控制。
+- `proxy_cookie_path` 用于修改 Cookie 的路径信息，调整后端服务器接收到的 Cookie 的路径。
 
-它通常用于在反向代理设置中修改或添加头部字段，以确保后端服务器能够正确处理请求。
+如果将 `proxy_cookie_flags` 用来尝试修改 Cookie 的路径信息，将会违反其设计意图，并且可能导致无法预期的行为或错误。
 
-#### 语法
+因此，Nginx 在设计时专门为这两种不同的需求提供了对应的指令，以确保功能的清晰和正确性。
 
-```nginx
-proxy_set_header <header_name> <value>;
-```
+## proxy_cookie_path 是修改 request 中的 cookie，还是 Response 中的 cookie?
 
-- **header_name**: 要设置或修改的头部字段名称。
-- **value**: 头部字段的值。可以是静态值，也可以是 Nginx 变量。
+`proxy_cookie_path` 指令是用来修改传递到后端服务器的 HTTP 请求中的 Cookie 的路径，并非用来修改响应中的 Cookie。
 
-#### 上下文
+具体来说，当 Nginx 充当反向代理服务器时，它会接收到客户端发来的 HTTP 请求，包括请求中携带的 Cookie。
 
-可以在 `http`, `server`, 或 `location` 块中使用。
+`proxy_cookie_path` 指令的作用是在转发这些请求到后端服务器之前，修改请求中携带的 Cookie 的路径信息，以适应后端服务器对路径的预期要求。
 
-### 常见使用场景
+例如，假设客户端发送了一个带有路径 `/app/session` 的 Cookie。
 
-1. **传递客户端 IP**：后端服务器通常需要了解客户端的真实 IP 地址。
-2. **传递主机名**：确保后端服务器能够知道客户端请求的主机名。
-3. **传递用户代理**：有时需要传递客户端的用户代理字符串。
-4. **处理 Cookies**：可以用于在请求头中添加或修改 `Cookie` 字段。
+如果后端服务器期望接收的路径只是 `/session`，那么可以使用 `proxy_cookie_path` 指令来去除 `/app` 部分，从而使后端服务器能够正确解析和处理这个 Cookie。
 
-### 常用示例
+因此，`proxy_cookie_path` 主要作用于请求阶段，用来调整传递给后端服务器的 Cookie 的路径信息。
 
-#### 传递客户端 IP 地址
-
-后端服务器需要知道客户端的真实 IP 地址，而不是代理服务器的 IP。
-
-```nginx
-proxy_set_header X-Real-IP $remote_addr;
-proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-```
-
-- **X-Real-IP**: 设置为客户端的真实 IP 地址。
-- **X-Forwarded-For**: 包含客户端 IP 和所有经过的代理 IP。
-
-#### 传递主机名
-
-确保后端服务器知道客户端请求的主机名。
-
-```nginx
-proxy_set_header Host $host;
-```
-
-#### 传递用户代理
-
-将客户端的用户代理字符串传递给后端服务器。
-
-```conf
-proxy_set_header User-Agent $http_user_agent;
-```
-
-### 配置操作 Cookie 的示例
-
-假设您需要在将请求转发给后端服务器时添加或修改 `Cookie` 头。
-
-#### 示例 1：添加自定义 Cookie
-
-在将请求转发给后端服务器时添加一个自定义 Cookie。
-
-```conf
-http {
-    upstream backend {
-        server backend.internal;
-    }
-
-    server {
-        listen 80;
-        server_name example.com;
-
-        location / {
-            proxy_pass http://backend;
-
-            # 添加自定义 Cookie
-            proxy_set_header Cookie "custom_cookie=my_value; $http_cookie";
-        }
-    }
-}
-```
-
-在这个示例中，`proxy_set_header` 指令用于将一个名为 `custom_cookie` 的自定义 Cookie 添加到现有的 `Cookie` 头中。
-
-`$http_cookie` 变量包含了客户端发送的所有 Cookie。
-
-#### 示例 2：修改现有的 Cookie
-
-假设您需要修改现有的 `session_id` Cookie 的值。
-
-```conf
-http {
-    upstream backend {
-        server backend.internal;
-    }
-
-    server {
-        listen 80;
-        server_name example.com;
-
-        location / {
-            proxy_pass http://backend;
-
-            # 修改 session_id Cookie 的值
-            proxy_set_header Cookie "session_id=new_value; $http_cookie";
-        }
-    }
-}
-```
-
-在这个示例中，`proxy_set_header` 指令用于将 `session_id` Cookie 的值修改为 `new_value`，并保留客户端发送的其他 Cookie。
-
-#### 示例 3：条件性地添加或修改 Cookie
-
-假设您需要根据某个条件来添加或修改 Cookie，可以使用 `if` 指令。
-
-```conf
-http {
-    upstream backend {
-        server backend.internal;
-    }
-
-    server {
-        listen 80;
-        server_name example.com;
-
-        location / {
-            proxy_pass http://backend;
-
-            # 默认情况，传递现有的 Cookie
-            proxy_set_header Cookie $http_cookie;
-
-            # 如果请求参数中包含 user=admin，则添加 admin_cookie
-            if ($arg_user = "admin") {
-                proxy_set_header Cookie "admin_cookie=admin_value; $http_cookie";
-            }
-        }
-    }
-}
-```
-
-在这个示例中，如果 URL 参数中包含 `user=admin`，则会添加一个名为 `admin_cookie` 的自定义 Cookie。
-
-### 完整示例
-
-综合以上内容，以下是一个完整的 Nginx 配置示例，展示了如何使用 `proxy_set_header` 指令传递各种头部字段，并根据条件修改 Cookie。
-
-```conf
-http {
-    upstream backend {
-        server backend.internal;
-    }
-
-    server {
-        listen 80;
-        server_name example.com;
-
-        location / {
-            proxy_pass http://backend;
-
-            # 传递客户端 IP 地址
-            proxy_set_header X-Real-IP $remote_addr;
-            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-
-            # 传递主机名
-            proxy_set_header Host $host;
-
-            # 传递用户代理
-            proxy_set_header User-Agent $http_user_agent;
-
-            # 默认情况，传递现有的 Cookie
-            proxy_set_header Cookie $http_cookie;
-
-            # 如果请求参数中包含 user=admin，则添加 admin_cookie
-            if ($arg_user = "admin") {
-                proxy_set_header Cookie "admin_cookie=admin_value; $http_cookie";
-            }
-        }
-    }
-}
-```
-
-通过合理使用 `proxy_set_header` 指令，您可以确保在反向代理设置中正确传递和处理各种 HTTP 头部字段，提高后端服务器的响应能力和准确性。
-
-## 详细介绍一下 nginx 的 proxy_cookie_domain 指令，并给出配置操作 cookie 的例子
-
-### `proxy_cookie_domain` 指令
-
-`proxy_cookie_domain` 指令用于修改从上游服务器返回的 `Set-Cookie` 头中的域属性。
-
-这个指令通常用于反向代理设置，当您需要将上游服务器的域名更改为客户端能够访问的域名时非常有用。
-
-#### 语法
-
-```nginx
-proxy_cookie_domain <original_domain> <replacement_domain>;
-```
-
-- **original_domain**: 上游服务器返回的 `Set-Cookie` 头中的域名。
-- **replacement_domain**: 要替换成的域名。
-
-#### 默认值
-
-无默认值。必须显式配置。
-
-#### 上下文
-
-可以在 `http`, `server`, 或 `location` 块中使用。
-
-### 使用场景
-
-假设您有一个反向代理设置，后端服务器的域名为 `backend.internal`，但是客户端通过 `example.com` 访问您的服务器。后端服务器在 `Set-Cookie` 头中返回的域名为 `backend.internal`，而客户端需要的是 `example.com`。此时，您可以使用 `proxy_cookie_domain` 指令进行替换。
-
-### 示例配置
-
-#### 基本配置
-
-假设您的后端服务器是 `backend.internal`，且客户端通过 `example.com` 访问。
-
-1. 在 `http` 块中配置反向代理：
-
-```nginx
-http {
-    upstream backend {
-        server backend.internal;
-    }
-
-    server {
-        listen 80;
-        server_name example.com;
-
-        location / {
-            proxy_pass http://backend;
-            
-            # 修改 Set-Cookie 头中的域名
-            proxy_cookie_domain backend.internal example.com;
-        }
-    }
-}
-```
-
-2. 假设后端服务器返回的 `Set-Cookie` 头如下：
-
-```http
-Set-Cookie: session_id=abc123; Domain=backend.internal; Path=/; HttpOnly
-```
-
-3. 使用 `proxy_cookie_domain` 后，Nginx 会将其修改为：
-
-```http
-Set-Cookie: session_id=abc123; Domain=example.com; Path=/; HttpOnly
-```
-
-### 更复杂的示例
-
-假设您有一个多域名的应用程序，客户端可以通过 `example.com` 和 `example.org` 访问您的服务，而后端服务器的域名是 `backend.internal`。
-
-1. 在 `http` 块中配置反向代理，并处理不同域名的替换：
-
-```nginx
-http {
-    upstream backend {
-        server backend.internal;
-    }
-
-    server {
-        listen 80;
-        server_name example.com example.org;
-
-        location / {
-            proxy_pass http://backend;
-
-            # 修改 Set-Cookie 头中的域名
-            proxy_cookie_domain backend.internal example.com;
-            proxy_cookie_domain backend.internal example.org;
-        }
-    }
-}
-```
-
-2. 假设后端服务器返回的 `Set-Cookie` 头如下：
-
-```http
-Set-Cookie: session_id=abc123; Domain=backend.internal; Path=/; HttpOnly
-```
-
-3. 使用 `proxy_cookie_domain` 后，Nginx 会根据客户端请求的域名将其修改为：
-
-- 对于 `example.com`：
-
-```http
-Set-Cookie: session_id=abc123; Domain=example.com; Path=/; HttpOnly
-```
-
-- 对于 `example.org`：
-
-```http
-Set-Cookie: session_id=abc123; Domain=example.org; Path=/; HttpOnly
-```
-
-### 结合其他 `proxy_cookie_*` 指令
-
-`proxy_cookie_path` 指令可以配合 `proxy_cookie_domain` 使用，用于修改 `Set-Cookie` 头中的路径。
-
-#### 示例配置
-
-```nginx
-http {
-    upstream backend {
-        server backend.internal;
-    }
-
-    server {
-        listen 80;
-        server_name example.com;
-
-        location / {
-            proxy_pass http://backend;
-
-            # 修改 Set-Cookie 头中的域名
-            proxy_cookie_domain backend.internal example.com;
-
-            # 修改 Set-Cookie 头中的路径
-            proxy_cookie_path /backend /;
-        }
-    }
-}
-```
-
-假设后端服务器返回的 `Set-Cookie` 头如下：
-
-```http
-Set-Cookie: session_id=abc123; Domain=backend.internal; Path=/backend; HttpOnly
-```
-
-使用 `proxy_cookie_domain` 和 `proxy_cookie_path` 后，Nginx 会将其修改为：
-
-```http
-Set-Cookie: session_id=abc123; Domain=example.com; Path=/; HttpOnly
-```
-
-### 总结
-
-`proxy_cookie_domain` 指令在反向代理配置中非常有用，特别是当后端服务器的域名与客户端访问的域名不同时。
-
-通过适当地配置此指令，可以确保客户端接收到正确的 Cookie，维持会话的连续性和安全性。
-
-## 详细介绍一下 nginx 的 proxy_cookie_path 指令，并给出配置操作 cookie 的例子
-
-   用于修改从后端服务器接收到的 Cookie 中的路径。
-   
-   ```nginx
-   proxy_cookie_path /old-path/ /new-path/;  # 将/old-path/替换为/new-path/
-   ```
-
-
-
-## 4. **proxy_pass**: 详细介绍一下 nginx 的 proxy_pass 指令，并给出配置操作 cookie 的例子
-
-   在 `location` 块中使用 `proxy_pass` 指令来指定代理的后端服务器。虽然它本身不直接处理 Cookie，但是它允许你配置代理请求，间接影响 Cookie 的传输。
-   
-   ```nginx
-   location / {
-       proxy_pass http://backend-server;
-       # 其他配置...
-   }
-   ```
-
-## 5. 详细介绍一下 nginx 的 add_header 指令，并给出配置操作 cookie 的例子
-
-   用于向响应头中添加自定义的 Cookie。
-   
-   ```nginx
-   add_header Set-Cookie "example_cookie=value; Path=/; HttpOnly";
-   ```
- 
-## 6. 详细介绍一下 nginx 的 expires 指令，并给出配置操作 cookie 的例子
-
-   设置响应的过期时间，间接影响浏览器对 Cookie 的处理。
-   
-   ```nginx
-   expires 30d;  # 设置过期时间为30天
-   ```
-
-## 10. **proxy_cookie***: 详细介绍一下 nginx 的 proxy_cookie 指令，并给出配置操作 cookie 的例子
-
-    Nginx 还提供了其他与 Cookie 相关的指令，如 `proxy_cookie_name` 等，用于修改 Cookie 的名称。
-
-请注意，这些指令的使用和配置需要根据你的具体需求和 Nginx 版本进行调整。
-
-在配置文件中使用这些指令时，确保你已经理解了它们的作用，并且测试了配置以验证其效果。
-
-## 7. **secure**: 详细介绍一下 nginx 的 secure 指令，并给出配置操作 cookie 的例子
-   如果使用 SSL/TLS，可以设置 Cookie 为仅通过安全连接传输。
-   
-   ```nginx
-   proxy_cookie_flags example_cookie secure;
-   ```
-
-8. **HttpOnly**: 详细介绍一下 nginx 的 HttpOnly 指令，并给出配置操作 cookie 的例子
-   设置 Cookie 为 HttpOnly，防止通过客户端脚本访问。
-   
-   ```nginx
-   proxy_cookie_flags example_cookie HttpOnly;
-   ```
-
-## 9. **SameSite**:  详细介绍一下 nginx 的 SameSite 指令，并给出配置操作 cookie 的例子
-
-   设置 Cookie 的 SameSite 属性，控制 Cookie 在跨站点请求时的行为。
-   
-   ```nginx
-   add_header Set-Cookie "example_cookie=value; SameSite=Lax";
-   ```
-
-
-
-
-
-
-
-
-
+对于响应中的 Cookie，Nginx 通常不需要额外的指令来处理，因为响应中的 Cookie 通常由后端服务器生成和管理，并直接传递给客户端。
 
 * any list
 {:toc}
