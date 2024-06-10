@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-13-nginx.conf 是 HOCON 的格式吗？
+title:  从零手写实现 nginx-14-nginx.conf 是 HOCON 的格式吗？
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
