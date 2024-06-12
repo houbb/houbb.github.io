@@ -329,6 +329,57 @@ http {
 请注意，虽然在 `if` 指令中可以执行很多操作，但在实际配置中应尽量避免过于复杂的逻辑，以确保服务器的高性能和可维护性。如果有更复杂的需求，建议考虑使用 Nginx 的 `map` 指令或其他更合适的模块。
 
 
+## nginx 中 if 的双引号问题
+
+在 Nginx 配置中，使用双引号是为了确保字符串或正则表达式被正确解析，特别是在字符串或正则表达式中包含特殊字符或空格的情况下。对于正则表达式模式来说，双引号不是必须的，但在某些情况下使用双引号可以避免解析错误。
+
+### 不使用双引号的情况
+对于简单的正则表达式，不包含空格和特殊字符的情况，可以不使用双引号，例如：
+
+```nginx
+if ($example_variable ~ ^test.*) {
+    # 指令集
+}
+```
+
+### 使用双引号的情况
+1. **包含空格或特殊字符**：
+   当正则表达式或字符串中包含空格或特殊字符时，使用双引号可以确保这些字符被正确解析。例如：
+
+   ```nginx
+   if ($example_variable ~ "^test.*") {
+       # 指令集
+   }
+   ```
+
+2. **提高可读性**：
+   在某些情况下，使用双引号可以提高配置文件的可读性，使正则表达式模式更加清晰。
+
+### 实际处理
+
+无论是否使用双引号，Nginx 会将正则表达式作为模式来进行匹配。
+
+如果不使用双引号，Nginx 会直接解析模式，如果正则表达式中没有空格或特殊字符，这样做是完全可以的。
+
+### 示例说明
+
+以下是一个不使用双引号的配置：
+```nginx
+if ($example_variable ~ ^test.*) {
+    # 指令集
+}
+```
+
+这个配置与使用双引号的配置效果是相同的，只要正则表达式模式中不包含需要转义或解释的特殊字符。
+
+### 结论
+- **不使用双引号**：适用于正则表达式中不包含空格或特殊字符的简单模式。
+- **使用双引号**：适用于包含空格或特殊字符的正则表达式模式，或者需要提高配置文件的可读性。
+
+简而言之，双引号在 Nginx 配置文件中是可选的，但在某些情况下使用双引号可以确保配置文件被正确解析和处理。
+
+
+
 ## http 模块下，可以直接 if 下面配置一个模块吗？
 
 在 Nginx 配置中，`if` 指令不能直接包含其他模块或块配置。
@@ -742,7 +793,57 @@ server {
 
 IF 指令也应该是在根据最新的数据，条件判断得到的。
 
+## 核心实现
 
+```java
+/**
+ * 操作符
+ *
+ * @since 0.21.0
+ * @author 老马啸西风
+ */
+public class NginxIfOperatorManager {
+
+    private static final Map<String, NginxIfOperator> map = new HashMap<>();
+
+    static {
+        final NginxIfOperatorDefine operatorDefine = new NginxIfOperatorDefine();
+        final NginxIfOperatorEquals operatorEquals = new NginxIfOperatorEquals();
+        final NginxIfOperatorNotEquals operatorNotEquals = new NginxIfOperatorNotEquals();
+        final NginxIfOperatorRegexMatch regexMatch = new NginxIfOperatorRegexMatch();
+        final NginxIfOperatorRegexNotMatch regexNotMatch = new NginxIfOperatorRegexNotMatch();
+        final NginxIfOperatorRegexMatchIgnoreCase regexMatchIgnoreCase = new NginxIfOperatorRegexMatchIgnoreCase();
+        final NginxIfOperatorRegexMatchIgnoreCaseNot regexMatchIgnoreCaseNot = new NginxIfOperatorRegexMatchIgnoreCaseNot();
+
+        map.put(operatorDefine.operator(), operatorDefine);
+        map.put(operatorEquals.operator(), operatorEquals);
+        map.put(operatorNotEquals.operator(), operatorNotEquals);
+        map.put(regexMatch.operator(), regexMatch);
+        map.put(regexNotMatch.operator(), regexNotMatch);
+        map.put(regexMatchIgnoreCase.operator(), regexMatchIgnoreCase);
+        map.put(regexMatchIgnoreCaseNot.operator(), regexMatchIgnoreCaseNot);
+    }
+
+    public boolean match(NginxCommonConfigEntry configParam, NginxRequestDispatchContext dispatchContext) {
+        List<String> values = configParam.getValues();
+
+        String key = getOperKey(configParam, dispatchContext);
+
+        return map.get(key).eval(values.get(0), values.get(2), dispatchContext);
+    }
+
+    protected String getOperKey(NginxCommonConfigEntry configParam, NginxRequestDispatchContext dispatchContext) {
+        List<String> values = configParam.getValues();
+
+        if(values.size() == 1) {
+            return "";
+        }
+
+        return values.get(1);
+    }
+
+}
+```
 
 
 
