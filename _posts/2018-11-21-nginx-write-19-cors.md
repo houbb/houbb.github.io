@@ -61,6 +61,17 @@ published: true
 
 [从零手写实现 nginx-19-nginx cors](https://houbb.github.io/2018/11/22/nginx-write-19-cors)
 
+[从零手写实现 nginx-20-nginx 占位符 placeholder](https://houbb.github.io/2018/11/22/nginx-write-20-placeholder)
+
+[从零手写实现 nginx-21-nginx modules 模块信息概览](https://houbb.github.io/2018/11/22/nginx-write-21-modules-overview)
+
+[从零手写实现 nginx-22-nginx modules 分模块加载优化](https://houbb.github.io/2018/11/22/nginx-write-22-modules-load)
+
+[从零手写实现 nginx-23-nginx cookie 的操作处理](https://houbb.github.io/2018/11/22/nginx-write-23-cookie-oper)
+
+[从零手写实现 nginx-24-nginx IF 指令](https://houbb.github.io/2018/11/22/nginx-write-24-directives-if)
+
+
 # HTTP CORS 是什么？
 
 HTTP CORS（Cross-Origin Resource Sharing，跨源资源共享）是一种安全机制，它允许一个网页（运行在浏览器中的网页）去请求另一个不同源（域名、协议或端口不同）的资源。

@@ -69,6 +69,9 @@ published: true
 
 [从零手写实现 nginx-23-nginx cookie 的操作处理](https://houbb.github.io/2018/11/22/nginx-write-23-cookie-oper)
 
+[从零手写实现 nginx-24-nginx IF 指令](https://houbb.github.io/2018/11/22/nginx-write-24-directives-if)
+
+
 # 目标
 
 我们希望可以通过配置对 header 进行相关操作，比如添加 cors 响应。
