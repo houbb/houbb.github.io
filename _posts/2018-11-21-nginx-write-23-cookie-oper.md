@@ -69,6 +69,8 @@ published: true
 
 [从零手写实现 nginx-23-nginx cookie 的操作处理](https://houbb.github.io/2018/11/22/nginx-write-23-cookie-oper)
 
+[从零手写实现 nginx-24-nginx IF 指令](https://houbb.github.io/2018/11/22/nginx-write-24-directives-if)
+
 # 前言
 
 大家好，我是老马。

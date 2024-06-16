@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-23-directive IF 条件判断指令
+title:  从零手写实现 nginx-25-directive map 条件判断指令
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
@@ -70,7 +70,6 @@ published: true
 [从零手写实现 nginx-23-nginx cookie 的操作处理](https://houbb.github.io/2018/11/22/nginx-write-23-cookie-oper)
 
 [从零手写实现 nginx-24-nginx IF 指令](https://houbb.github.io/2018/11/22/nginx-write-24-directives-if)
-
 
 # 前言
 
