@@ -405,6 +405,8 @@ SELECT PARSE_DATETIME('%Y-%m-%d %H:%M:%S', '1998-10-18 13:45:55') AS datetime;
 
 ### java 实现
 
+注意：`info.setProperty("fun","all");` 这个比较重要，否则报错方法不存在。
+
 ```java
 String sql = "select count(*) from users where create_time between PARSE_DATETIME('%Y-%m-%d %H:%M:%S', ?) and PARSE_DATETIME('%Y-%m-%d %H:%M:%S', ?)";
 PreparedStatement statement = calciteConnection.prepareStatement(sql);
