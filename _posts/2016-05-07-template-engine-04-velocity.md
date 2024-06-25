@@ -44,111 +44,144 @@ Velocity可以用于从模板生成web页面、SQL、PostScript和其他输出�
 它既可以作为生成源代码和报告的独立实用程序使用，也可以作为其他系统的集成组件使用。
 完成后，Velocity将为涡轮机web应用程序框架提供模板服务。Velocity+涡轮机将提供一个模板服务，允许根据真正的MVC模型开发web应用程序。
 
-# 快速入门
+# 入门例子
 
-> [Velocity 代码地址](https://github.com/houbb/tech-validation/blob/master/velocity/src/main/java/com/github/houbb/tech/validation/velocity/HelloWorld.java)
-
-## jar 引入
+## maven
 
 ```xml
 <dependency>
     <groupId>org.apache.velocity</groupId>
-    <artifactId>velocity</artifactId>
-    <version>1.7</version>
+    <artifactId>velocity-engine-core</artifactId>
+    <version>2.3</version>
 </dependency>
 ```
 
-## 文件目录
+## 模板文件
 
-```
-.
-├── java
-│   └── com
-│       └── github
-│           └── houbb
-│               └── tech
-│                   └── validation
-│                       └── velocity
-│                           ├── HelloWorld.java
-└── resources
-    └── hello.vm
+- template.vm
+
+```vm
+Hello, $name! Welcome to Velocity template example.
 ```
 
-## HelloWorld.java
+## 模板代码
 
 ```java
-import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.runtime.RuntimeConstants;
-import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader;
 
-import java.io.BufferedWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.util.Properties;
 
-public class HelloWorld {
-
+public class VelocityExample {
     public static void main(String[] args) {
-        Properties pro = new Properties();
-        pro.setProperty(Velocity.OUTPUT_ENCODING, "UTF-8");
-        pro.setProperty(Velocity.INPUT_ENCODING, "UTF-8");
-        pro.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
-        pro.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+        // 初始化Velocity引擎
+        Properties props = new Properties();
+        props.setProperty("resource.loader", "file");
+        props.setProperty("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.FileResourceLoader");
+        props.setProperty("file.resource.loader.path", "src/main/resources/templates");
 
-        VelocityEngine ve = new VelocityEngine(pro);
-        ve.init();
+        VelocityEngine velocityEngine = new VelocityEngine(props);
+        velocityEngine.init();
 
-        Template t = ve.getTemplate("hello.vm");
-        VelocityContext ctx = new VelocityContext();
-        ctx.put("name", "ryo");
+        // 创建Velocity上下文并添加数据
+        VelocityContext context = new VelocityContext();
+        context.put("name", "World");
 
-        //1. 输出到命令行
-        outputToConsole(t, ctx);
+        // 加载模板
+        String templateName = "template.vm";
+        StringWriter writer = new StringWriter();
+        velocityEngine.getTemplate(templateName).merge(context, writer);
 
-        //2. 输出为文件
-        outputToFile(t, ctx);
+        // 输出结果
+        System.out.println(writer.toString());
     }
-
-    /**
-     * 输出到命令行
-     *
-     * @param template 模板
-     * @param ctx      上下文
-     */
-    private static void outputToConsole(Template template, VelocityContext ctx) {
-        StringWriter sw = new StringWriter();
-        template.merge(ctx, sw);
-
-        System.out.println(sw.toString());
-    }
-
-    /**
-     * 输出成为文件
-     *
-     * @param template 模板
-     * @param ctx      上下文
-     */
-    private static void outputToFile(Template template, VelocityContext ctx) {
-        final String targetFile = "hello.txt";
-        try (FileOutputStream outStream = new FileOutputStream(targetFile);
-             OutputStreamWriter writer = new OutputStreamWriter(outStream, "UTF-8");
-             BufferedWriter sw = new BufferedWriter(writer)) {
-
-            template.merge(ctx, sw);
-            sw.flush();
-            System.out.println("目标文件生成完成：" + targetFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }
 ```
+
+## 整体目录
+
+```
+my-project/
+├── pom.xml
+├── src/
+│   ├── main/
+│   │   ├── java/
+│   │   │   └── VelocityExample.java
+│   │   └── resources/
+│   │       └── templates/
+│   │           └── template.vm
+```
+
+## 测试结果
+
+```
+Hello, World! Welcome to Velocity template example.
+```
+
+# 文本形式
+
+## 说明
+
+有时候我们希望通过文本，而不是文件的格式来实现。
+
+## maven
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.apache.velocity</groupId>
+        <artifactId>velocity-engine-core</artifactId>
+        <version>2.3</version>
+    </dependency>
+</dependencies>
+```
+
+## 代码
+
+```java
+import org.apache.velocity.VelocityContext;
+import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.Template;
+
+import java.io.StringWriter;
+import java.util.Properties;
+
+public class VelocityExample {
+    public static void main(String[] args) {
+        // 初始化Velocity引擎
+        Properties props = new Properties();
+        VelocityEngine velocityEngine = new VelocityEngine();
+        velocityEngine.init(props);
+
+        // 创建模板内容字符串
+        String templateContent = "Hello, $name! Welcome to Velocity template example.";
+
+        // 创建Velocity上下文并添加数据
+        VelocityContext context = new VelocityContext();
+        context.put("name", "World");
+
+        // 生成模板
+        StringWriter writer = new StringWriter();
+        velocityEngine.evaluate(context, writer, "TemplateName", templateContent);
+
+        // 输出结果
+        System.out.println(writer.toString());
+    }
+}
+```
+
+在这个示例中，templateContent是一个包含模板内容的字符串。
+
+通过velocityEngine.evaluate()方法将字符串作为模板，并与上下文中的数据合并，然后输出结果。
+
+## 测试效果
+
+```
+Hello, World! Welcome to Velocity template example.
+```
+
+这种方式更为简洁，不需要单独的模板文件，非常适合简单的模板使用场景。
 
 # chat
 
