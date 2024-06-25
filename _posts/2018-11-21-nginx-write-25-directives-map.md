@@ -71,6 +71,9 @@ published: true
 
 [从零手写实现 nginx-24-nginx IF 指令](https://houbb.github.io/2018/11/22/nginx-write-24-directives-if)
 
+[从零手写实现 nginx-25-nginx map 指令](https://houbb.github.io/2018/11/22/nginx-write-25-directives-map)
+
+
 # 前言
 
 大家好，我是老马。
