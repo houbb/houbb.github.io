@@ -543,6 +543,81 @@ consumer启动时qos-server也是使用的默认的22222端口，但是这时候
 
 重新启动测试通过。
 
+
+# spring @Bean 方式
+
+当然，如果你不喜欢 xml，也可使用配置扥方式。
+
+```java
+package com.github.houbb.dubbo.learn.basic.annotation;
+
+import com.github.houbb.dubbo.learn.basic.DemoService;
+import org.apache.dubbo.config.ApplicationConfig;
+import org.apache.dubbo.config.ReferenceConfig;
+import org.apache.dubbo.config.RegistryConfig;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class DubboConfig {
+
+    @Bean
+    public ApplicationConfig applicationConfig() {
+        ApplicationConfig applicationConfig = new ApplicationConfig();
+        applicationConfig.setName("consumer-of-helloworld-app");
+        return applicationConfig;
+    }
+
+    @Bean
+    public RegistryConfig registryConfig() {
+        RegistryConfig registryConfig = new RegistryConfig();
+        registryConfig.setAddress("zookeeper://127.0.0.1:2181");
+        return registryConfig;
+    }
+
+    @Bean
+    public ReferenceConfig<DemoService> demoServiceConfig() {
+        ReferenceConfig<DemoService> referenceConfig = new ReferenceConfig<>();
+        referenceConfig.setApplication(applicationConfig());
+        referenceConfig.setRegistry(registryConfig());
+        referenceConfig.setInterface(DemoService.class);
+        referenceConfig.setCheck(true);
+        referenceConfig.setCluster("");
+        return referenceConfig;
+    }
+
+    @Bean
+    public DemoService demoService() {
+        return demoServiceConfig().get();
+    }
+
+}
+```
+
+有些配置可以合并简化。
+
+启动类：
+
+```java
+import com.github.houbb.dubbo.learn.basic.DemoService;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class ConsumerApplication {
+
+    public static void main(String[] args) {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(DubboConfig.class);
+        context.start();
+        DemoService demoService = context.getBean(DemoService.class);
+        String hello = demoService.say();
+        System.out.println(hello);
+    }
+
+}
+```
+
+这样也是可以的。
+
+
 # 注解版本
 
 ## 说明
