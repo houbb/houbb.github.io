@@ -7,6 +7,24 @@ tags: [linux, shell, sh]
 published: true
 ---
 
+# 简单介绍
+
+## 上传
+
+```
+rz -e 
+```
+
+本地选择文件。
+
+## 下载
+
+```
+sz 文件名
+```
+
+直接下载对应的文件。
+
 # chat
 
 ## linux  rz 命令详解
