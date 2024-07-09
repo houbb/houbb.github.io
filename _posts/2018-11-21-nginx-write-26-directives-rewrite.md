@@ -76,15 +76,172 @@ published: true
 
 [从零手写实现 nginx-26-nginx rewrite 指令](https://houbb.github.io/2018/11/22/nginx-write-26-directives-rewrite)
 
+# nginx 的 rewirte 指令
 
+## 是什么？
+
+Nginx 的 `rewrite` 指令用于对 URL 进行重写（Rewrite），即将用户请求的 URL 按照指定的规则修改成新的 URL，然后再进行后续处理或跳转。
+
+它通常用于实现 URL 重定向、SEO 优化、URL 简化等功能。
+
+### 基本语法
+
+`rewrite` 指令的基本语法如下：
+
+```conf
+rewrite regex replacement [flag];
+```
+
+- `regex`: 正则表达式，用于匹配请求的 URL。
+- `replacement`: 重写后的新 URL，可以包含捕获组（从 `regex` 中捕获的部分）。
+- `flag`: 可选参数，表示重写后的行为。
+
+
+### 常见的 flag
+
+- `last`: 停止当前所在的 `rewrite` 指令所在的位置，并重新搜索新的 location。相当于 Apache 的 `L` 标志。
+
+- `break`: 停止处理当前的 `rewrite` 指令，但继续处理剩下的指令，不会重新搜索 location。
+
+- `redirect`: 返回 302 临时重定向。
+
+- `permanent`: 返回 301 永久重定向。
+
+## 为什么需要？
+
+Nginx 需要 `rewrite` 指令的原因主要是为了提供灵活和强大的 URL 重写和重定向功能，这在许多场景下都是非常必要的。以下是一些常见的原因和场景：
+
+### 1. **用户友好的 URL**
+通过 `rewrite` 指令，可以将复杂的、包含参数的 URL 重写为简洁且易读的 URL，使用户更容易记忆和分享。
+
+**示例**：
+将 `/product.php?id=123` 重写为 `/product/123`。
+
+```conf
+rewrite ^/product/(\d+)$ /product.php?id=$1 last;
+```
+
+### 2. **SEO 优化**
+搜索引擎更喜欢简洁、含义明确的 URL。通过 `rewrite` 指令，可以优化 URL 结构，提高搜索引擎的排名。
+
+**示例**：
+将 `/old-page` 重定向到 `/new-page`，避免因 URL 更改导致的搜索引擎排名下降。
+
+```conf
+rewrite ^/old-page$ /new-page permanent;
+```
+
+### 3. **兼容旧链接**
+在网站改版或重构时，通过 `rewrite` 指令，可以保证旧链接仍然有效，避免出现大量的 404 错误页面。
+
+**示例**：
+将旧的 URL 结构重写为新的 URL 结构。
+
+```conf
+rewrite ^/old-path$ /new-path permanent;
+```
+
+### 4. **负载均衡和反向代理**
+在负载均衡和反向代理场景下，通过 `rewrite` 指令，可以将请求重写为后端服务器可以处理的格式。
+
+**示例**：
+将 `/app1` 的请求重写为内部服务器的特定路径。
+
+```conf
+location /app1/ {
+    proxy_pass http://backend1;
+    rewrite ^/app1/(.*)$ /$1 break;
+}
+```
+
+### 5. **安全性**
+通过隐藏实际的 URL 结构，可以提高系统的安全性，避免暴露内部实现细节。
+
+**示例**：
+隐藏实际的文件路径。
+
+```conf
+rewrite ^/downloads/([a-zA-Z0-9]+)$ /secure/files/$1 last;
+```
+
+### 6. **动态内容的静态化**
+将动态生成的内容重写为静态路径，减少服务器的负载。
+
+**示例**：
+将 `/article?id=123` 重写为静态文件路径 `/article/123.html`。
+
+```conf
+rewrite ^/article/(\d+)$ /article/$1.html last;
+```
+
+### 7. **域名或路径迁移**
+
+在域名或路径变更时，通过 `rewrite` 指令，可以将流量从旧域名或路径无缝地重定向到新域名或路径。
+
+**示例**：
+将旧域名的请求重定向到新域名。
+
+```conf
+server {
+    listen 80;
+    server_name old-domain.com;
+    rewrite ^(.*)$ http://new-domain.com$1 permanent;
+}
+```
+
+# java 实现
+
+主要分为 2 个部分：
+
+## URL 的替换
+
+针对 url 的替换核心策略：
+
+```java
+private String getReplacedUrl(final FullHttpRequest fullHttpRequest,
+                              NginxCommonConfigEntry matchRewriteConfig) {
+    // rewrite regex replacement
+    List<String> values = matchRewriteConfig.getValues();
+    final String regex = values.get(0);
+    final String replacement = values.get(1);
+    final String originalUrl = fullHttpRequest.uri();
+
+    Pattern pattern = Pattern.compile(regex);
+    Matcher matcher = pattern.matcher(originalUrl);
+
+    String rewrittenUrl = matcher.replaceAll(replacement);
+    return rewrittenUrl;
+}
+```
+
+
+## flag 的处理策略
+
+### 301-返回 301 永久重定向
+
+```java
+FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.MOVED_PERMANENTLY);
+response.headers().set(HttpHeaderNames.LOCATION, "/final-destination");
+ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+```
+
+### 302-临时重定向
+
+```java
+// 302 Found
+FullHttpResponse response = new DefaultFullHttpResponse(
+        HttpVersion.HTTP_1_1, HttpResponseStatus.FOUND);
+response.headers().set(HttpHeaderNames.LOCATION, "/final-destination");
+ctx.writeAndFlush(response).addListener(ChannelFutureListener.CLOSE);
+```
 
 # 小结
 
-本节我们实现了文件的压缩处理，这个对于文件的传输性能提升比较大。
+Nginx 的 `rewrite` 指令为 URL 重写和重定向提供了强大的功能，能够处理各种复杂的需求，从而提高网站的用户体验、SEO 排名、兼容性、安全性和性能。
 
-当然，压缩+解压本身也是对性能有损耗的。要结合具体的压缩比等考虑。
+通过灵活运用 `rewrite` 指令，可以有效地管理和优化 URL，使得网站在不同场景下都能表现良好。
 
-下一节，我们考虑实现一下 cors 的支持。
+下一节，我们考虑实现一下 try_files 的支持。
 
 我是老马，期待与你的下次重逢。
 
@@ -94,383 +251,8 @@ published: true
 
 > [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
 
+
 # chat
-
-
-## 详细介绍一下 nginx 的 rewrite 
-
-Nginx 的 `rewrite` 指令用于对 URL 进行重写（Rewrite），即将用户请求的 URL 按照指定的规则修改成新的 URL，然后再进行后续处理或跳转。
-
-它通常用于实现 URL 重定向、SEO 优化、URL 简化等功能。
-
-### 基本语法
-`rewrite` 指令的基本语法如下：
-
-```nginx
-rewrite regex replacement [flag];
-```
-
-- `regex`: 正则表达式，用于匹配请求的 URL。
-- `replacement`: 重写后的新 URL，可以包含捕获组（从 `regex` 中捕获的部分）。
-- `flag`: 可选参数，表示重写后的行为。
-
-### 常见的 flag
-
-- `last`: 停止当前所在的 `rewrite` 指令所在的位置，并重新搜索新的 location。相当于 Apache 的 `L` 标志。
-- `break`: 停止处理当前的 `rewrite` 指令，但继续处理剩下的指令，不会重新搜索 location。
-- `redirect`: 返回 302 临时重定向。
-- `permanent`: 返回 301 永久重定向。
-
-### 示例讲解
-
-#### 基本重写
-
-将所有访问 `http://example.com/old-path` 的请求重写为 `http://example.com/new-path`：
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        rewrite ^/old-path$ /new-path break;
-    }
-}
-```
-
-#### 捕获组
-
-使用正则表达式的捕获组，将动态路径的一部分包含在新的路径中：
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        rewrite ^/product/(\d+)$ /new-product/$1 break;
-    }
-}
-```
-
-在这个示例中，`/product/123` 将被重写为 `/new-product/123`。
-
-#### 永久重定向
-
-实现 301 永久重定向，将 `http://example.com/old-page` 重定向到 `http://example.com/new-page`：
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        rewrite ^/old-page$ /new-page permanent;
-    }
-}
-```
-
-#### 带查询参数的重写
-
-将带有查询参数的 URL 重写为不同的路径：
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        if ($arg_id) {
-            rewrite ^/details$ /details/$arg_id? last;
-        }
-    }
-}
-```
-
-在这个示例中，如果请求 URL 是 `http://example.com/details?id=123`，它将被重写为 `http://example.com/details/123`。
-
-#### 使用变量
-
-Nginx 支持使用变量来动态重写 URL：
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        set $new_url /new-path;
-        rewrite ^/old-path$ $new_url break;
-    }
-}
-```
-
-### 使用场景
-
-1. **SEO 优化**：将不友好的 URL 重写为更易读和包含关键词的 URL。
-2. **迁移兼容**：网站路径结构调整后，通过重写规则保持旧链接的有效性。
-3. **访问控制**：对特定路径进行条件性的访问控制，通过重写指向相应的处理脚本。
-4. **负载均衡**：在负载均衡器上，通过重写规则将请求分发到不同的后端服务器。
-
-### 注意事项
-
-1. **正则表达式**：编写和测试正则表达式时需要特别小心，以确保匹配的准确性。
-2. **顺序**：`rewrite` 指令的顺序会影响重写的结果，因此应根据实际需求合理安排重写规则。
-3. **性能**：大量的重写规则可能影响 Nginx 的性能，应尽量简化和优化规则。
-
-通过合理使用 Nginx 的 `rewrite` 指令，可以实现灵活的 URL 重写和重定向，满足各种应用需求。
-
-
-## 为什么 nginx 需要 rewrite?
-
-Nginx 需要 `rewrite` 指令的主要原因在于它能够灵活地处理和修改客户端请求的 URL，以满足不同的需求。
-
-这些需求包括但不限于 URL 重定向、SEO 优化、旧链接兼容性、访问控制和负载均衡等。
-
-具体来说，以下是几个主要的原因：
-
-### 1. **SEO 优化**
-
-搜索引擎更倾向于友好且包含关键词的 URL。通过 `rewrite`，可以将复杂或不友好的 URL 转换为简洁且易于理解的 URL，从而提升网页的 SEO 排名。
-
-```nginx
-rewrite ^/product/view/(\d+)$ /products/$1 permanent;
-```
-
-### 2. **旧链接兼容性**
-
-当网站的路径结构发生变化时，通过 `rewrite` 指令，可以将旧的 URL 重定向到新的 URL，从而保持旧链接的有效性，避免因链接失效而导致的用户流失或 SEO 损失。
-
-```nginx
-rewrite ^/old-path$ /new-path permanent;
-```
-
-### 3. **访问控制**
-
-可以根据 URL 路径来实现访问控制。例如，将某些路径的请求重定向到一个特定的处理脚本或页面，从而实现权限控制或内容过滤。
-
-```nginx
-rewrite ^/admin$ /admin-login.html break;
-```
-
-### 4. **负载均衡**
-
-在负载均衡器上，通过 `rewrite` 指令，可以根据请求的 URL 动态地将请求分发到不同的后端服务器或服务，从而实现负载均衡和高可用性。
-
-```nginx
-location / {
-    if ($request_uri ~* "/api") {
-        rewrite ^(.*)$ http://api-server$1 break;
-    }
-}
-```
-
-### 5. **统一资源路径**
-
-通过 `rewrite`，可以将不同格式或规则的 URL 统一到一个标准路径，从而简化后端的处理逻辑。例如，将所有的 `index.php` 请求统一重定向到根路径。
-
-```nginx
-rewrite ^/index.php/(.*)$ /$1 break;
-```
-
-### 6. **动态 URL 重写**
-
-在某些情况下，需要根据请求中的参数或路径部分动态生成新的 URL。`rewrite` 指令允许使用正则表达式和变量来实现这种动态重写。
-
-```nginx
-rewrite ^/user/(\d+)$ /profile?id=$1 break;
-```
-
-### 7. **简化配置**
-
-有时候，重写规则可以简化 Nginx 的配置，避免在不同 location 中重复配置相同的处理逻辑。例如，将所有以 `/old` 开头的路径重写到 `/new`，只需一条 `rewrite` 指令。
-
-```nginx
-rewrite ^/old/(.*)$ /new/$1 break;
-```
-
-### 总结
-
-通过使用 Nginx 的 `rewrite` 指令，可以灵活地管理和修改 URL，从而实现更好的用户体验、SEO 优化、访问控制和系统维护。
-
-这使得 Nginx 能够适应各种复杂的应用场景，并在保持高性能的同时提供强大的功能。
-
-## 给出 nginx rewrite 的使用例子
-
-当然，以下是几个常见的 Nginx `rewrite` 指令使用示例，涵盖了不同的应用场景：
-
-### 1. 基本 URL 重写
-
-将 `/old-path` 重写为 `/new-path`，但保持浏览器地址栏不变（内部重写）。
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        rewrite ^/old-path$ /new-path break;
-    }
-}
-```
-
-### 2. 简单的 URL 重定向
-
-将 `/old-page` 重定向到 `/new-page`，并返回 301 永久重定向。
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        rewrite ^/old-page$ /new-page permanent;
-    }
-}
-```
-
-### 3. 动态 URL 重写
-
-使用正则表达式和捕获组，将动态路径的一部分包含在新的路径中。
-
-比如，将 `/product/123` 重写为 `/new-product/123`。
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        rewrite ^/product/(\d+)$ /new-product/$1 break;
-    }
-}
-```
-
-### 4. 带查询参数的重写
-
-将带有查询参数的 URL 重写为不同的路径。例如，将 `/details?id=123` 重写为 `/details/123`。
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        if ($arg_id) {
-            rewrite ^/details$ /details/$arg_id? last;
-        }
-    }
-}
-```
-
-### 5. 条件重写
-
-根据请求头或其他条件重写 URL。例如，如果请求的主机名是 `old.example.com`，则重写为 `new.example.com`。
-
-```nginx
-server {
-    listen 80;
-    server_name old.example.com;
-
-    location / {
-        rewrite ^/(.*)$ http://new.example.com/$1 permanent;
-    }
-}
-```
-
-### 6. 使用变量
-
-通过变量动态地重写 URL。例如，根据请求的 URI 动态地设置新的路径。
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        set $new_url /new-path;
-        rewrite ^/old-path$ $new_url break;
-    }
-}
-```
-
-### 7. 将所有请求重写到单一入口点
-
-常见于单页应用（SPA）或使用前端路由的应用，将所有请求重写到 `index.html`。
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-}
-```
-
-### 8. 禁止特定路径访问
-
-如果需要禁止访问某些路径，可以将这些路径重写到一个错误页面或直接返回 403 Forbidden。
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        rewrite ^/admin/.*$ /forbidden.html break;
-    }
-
-    location = /forbidden.html {
-        internal;
-    }
-}
-```
-
-### 9. 处理 HTTPS 重定向
-
-将所有 HTTP 请求重定向到 HTTPS，以确保安全性。
-
-```nginx
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        rewrite ^/(.*)$ https://example.com/$1 permanent;
-    }
-}
-```
-
-### 10. 负载均衡
-
-在负载均衡器上，通过重写规则将请求分发到不同的后端服务器。
-
-```nginx
-upstream backend {
-    server backend1.example.com;
-    server backend2.example.com;
-}
-
-server {
-    listen 80;
-    server_name example.com;
-
-    location / {
-        proxy_pass http://backend;
-    }
-
-    location /api {
-        rewrite ^/api/(.*)$ /$1 break;
-        proxy_pass http://backend/api;
-    }
-}
-```
-
-这些示例展示了 Nginx `rewrite` 指令的多种应用场景，从简单的 URL 重写到复杂的条件重写和负载均衡。
-
-根据具体需求，可以灵活地配置和组合这些规则，以实现预期的效果。
 
 ## nginx rewrite 有哪些优缺点？
 
