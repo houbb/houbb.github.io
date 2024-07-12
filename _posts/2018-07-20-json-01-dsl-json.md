@@ -7,40 +7,6 @@ tags: [java, json, config, sf]
 published: true
 ---
 
-# json 系列
-
-## 字符串
-
-[DSL-JSON 最快的 java 实现](https://houbb.github.io/2018/07/20/json-01-dsl-json)
-
-[Ali-FastJson](https://houbb.github.io/2018/07/20/json-01-fastjson)
-
-[Google-Gson](https://houbb.github.io/2018/07/20/json-01-gson)
-
-[Jackson](https://houbb.github.io/2018/07/20/json-01-jackson)
-
-## 二进制
-
-[Google protocol buffer](https://houbb.github.io/2018/07/20/json-02-google-protocol-buffer)
-
-[Apache Thrift](https://houbb.github.io/2018/09/20/json-02-apache-thirft)
-
-[Hession](https://houbb.github.io/2018/07/20/json-02-hession)
-
-[Kryo](https://houbb.github.io/2018/07/20/json-02-kryo)
-
-[Fst](https://houbb.github.io/2018/07/20/json-01-fst)
-
-[Messagepack](https://houbb.github.io/2018/07/20/json-02-messagepack)
-
-[Jboss Marshaling](https://houbb.github.io/2018/07/20/json-02-jboss-marshaling)
-
-## 其他
-
-[JsonPath](https://houbb.github.io/2018/07/20/json-03-jsonpath)
-
-[JsonIter](https://houbb.github.io/2018/07/20/json-01-jsoniter)
-
 
 # DSL-Json
 
