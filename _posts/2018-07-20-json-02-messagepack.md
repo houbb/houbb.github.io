@@ -9,13 +9,13 @@ published: true
 
 # MessagePack
 
-[MessagePack](https://msgpack.org/) is an efficient binary serialization format. 
+[MessagePack](https://msgpack.org/) 是一种高效的二进制序列化格式。
 
-It lets you exchange data among multiple languages like JSON. 
+它可以像 JSON 一样在多种语言之间交换数据。
 
-But it's faster and smaller. 
+但它更快且更小。
 
-Small integers are encoded into a single byte, and typical short strings require only one extra byte in addition to the strings themselves.
+小整数被编码成一个字节，典型的短字符串只需要一个额外的字节来存储字符串本身。
 
 ## 特性
 
@@ -76,6 +76,41 @@ System.out.println(dst2.get(0));
 System.out.println(dst2.get(1));
 System.out.println(dst2.get(2));
 ```
+
+# json 系列
+
+## 字符串
+
+[DSL-JSON 最快的 java 实现](https://houbb.github.io/2018/07/20/json-01-dsl-json)
+
+[Ali-FastJson](https://houbb.github.io/2018/07/20/json-01-fastjson)
+
+[Google-Gson](https://houbb.github.io/2018/07/20/json-01-gson)
+
+[Jackson](https://houbb.github.io/2018/07/20/json-01-jackson)
+
+## 二进制
+
+[Google protocol buffer](https://houbb.github.io/2018/07/20/json-02-google-protocol-buffer)
+
+[Apache Thrift](https://houbb.github.io/2018/09/20/json-02-apache-thirft)
+
+[Hession](https://houbb.github.io/2018/07/20/json-02-hession)
+
+[Kryo](https://houbb.github.io/2018/07/20/json-02-kryo)
+
+[Fst](https://houbb.github.io/2018/07/20/json-01-fst)
+
+[Messagepack](https://houbb.github.io/2018/07/20/json-02-messagepack)
+
+[Jboss Marshaling](https://houbb.github.io/2018/07/20/json-02-jboss-marshaling)
+
+## 其他
+
+[JsonPath](https://houbb.github.io/2018/07/20/json-03-jsonpath)
+
+[JsonIter](https://houbb.github.io/2018/07/20/json-01-jsoniter)
+
 
 * any list
 {:toc}

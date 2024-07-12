@@ -7,9 +7,86 @@ tags: [java, json, config, sf]
 published: true
 ---
 
+# 入门例子
+
+### Maven 依赖
+
+首先，在你的 `pom.xml` 文件中添加 Fastjson 依赖：
+
+```xml
+<dependency>
+    <groupId>com.alibaba</groupId>
+    <artifactId>fastjson</artifactId>
+    <version>1.2.83</version>
+</dependency>
+```
+
+### 示例代码
+
+下面是一个简单的示例，演示如何使用 Fastjson 将 Java 对象转换为 JSON 字符串，以及如何将 JSON 字符串解析为 Java 对象。
+
+#### Java 对象转 JSON 字符串
+
+```java
+import com.alibaba.fastjson.JSON;
+
+public class FastjsonExample {
+    public static void main(String[] args) {
+        // 创建一个示例对象
+        User user = new User();
+        user.setId(1);
+        user.setName("Alice");
+        user.setEmail("alice@example.com");
+
+        // 将对象转换为 JSON 字符串
+        String jsonString = JSON.toJSONString(user);
+        System.out.println("JSON String: " + jsonString);
+    }
+}
+
+class User {
+    private int id;
+    private String name;
+    private String email;
+
+    // Getter and Setter methods
+}
+```
+
+#### JSON 字符串转 Java 对象
+
+```java
+import com.alibaba.fastjson.JSON;
+
+public class FastjsonExample {
+    public static void main(String[] args) {
+        // JSON 字符串
+        String jsonString = "{\"id\":1,\"name\":\"Alice\",\"email\":\"alice@example.com\"}";
+
+        // 将 JSON 字符串解析为对象
+        User user = JSON.parseObject(jsonString, User.class);
+        System.out.println("User ID: " + user.getId());
+        System.out.println("User Name: " + user.getName());
+        System.out.println("User Email: " + user.getEmail());
+    }
+}
+
+class User {
+    private int id;
+    private String name;
+    private String email;
+
+    // Getter and Setter methods
+}
+```
+
+以上示例展示了如何使用 Fastjson 将 Java 对象转换为 JSON 字符串以及将 JSON 字符串解析为 Java 对象。
+
 # FastJson
 
-[Fastjson](https://github.com/alibaba/fastjson) 是一个Java库，可用于将Java对象转换为其JSON表示。它还可以用于将JSON字符串转换为等效的Java对象。Fastjson可以使用任意Java对象，包括您没有源代码的预先存在的对象。
+[Fastjson](https://github.com/alibaba/fastjson) 是一个Java库，可用于将Java对象转换为其JSON表示。
+
+它还可以用于将JSON字符串转换为等效的Java对象。Fastjson可以使用任意Java对象，包括您没有源代码的预先存在的对象。
 
 ## 多余的属性 json 转为对象
 
@@ -267,6 +344,41 @@ for (;;) {
     // ... ...  
 }  
 ```
+
+
+# json 系列
+
+## 字符串
+
+[DSL-JSON 最快的 java 实现](https://houbb.github.io/2018/07/20/json-01-dsl-json)
+
+[Ali-FastJson](https://houbb.github.io/2018/07/20/json-01-fastjson)
+
+[Google-Gson](https://houbb.github.io/2018/07/20/json-01-gson)
+
+[Jackson](https://houbb.github.io/2018/07/20/json-01-jackson)
+
+## 二进制
+
+[Google protocol buffer](https://houbb.github.io/2018/07/20/json-02-google-protocol-buffer)
+
+[Apache Thrift](https://houbb.github.io/2018/09/20/json-02-apache-thirft)
+
+[Hession](https://houbb.github.io/2018/07/20/json-02-hession)
+
+[Kryo](https://houbb.github.io/2018/07/20/json-02-kryo)
+
+[Fst](https://houbb.github.io/2018/07/20/json-01-fst)
+
+[Messagepack](https://houbb.github.io/2018/07/20/json-02-messagepack)
+
+[Jboss Marshaling](https://houbb.github.io/2018/07/20/json-02-jboss-marshaling)
+
+## 其他
+
+[JsonPath](https://houbb.github.io/2018/07/20/json-03-jsonpath)
+
+[JsonIter](https://houbb.github.io/2018/07/20/json-01-jsoniter)
 
 
 # 拓展阅读

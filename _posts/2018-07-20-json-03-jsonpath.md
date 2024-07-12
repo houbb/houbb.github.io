@@ -7,6 +7,7 @@ tags: [java, json, config, sf]
 published: true
 ---
 
+
 # 场景
 
 以前工作中，习惯于将对象转换为 json。并一直感觉这种转换非常的方便。
@@ -191,8 +192,59 @@ final ReadContext jsonContext = JsonPath.parse(json);
 Object value = jsonContext.read(jsonPath);
 ```
 
+# jsonpath 报错的问题
+
+发现 jsonPath 在处理值的时候，如果值不存在，会直接报错。
+
+怎么解决呢？
+
+## 解决方案
+
+```java
+Configuration configuration = Configuration.builder().options(Option.DEFAULT_PATH_LEAF_TO_NULL).build();
+val value = JsonPath.parse(document, configuration).read("$.root.family.hasChild"));
+```
+
+这样就不会报错了。
+
+# json 系列
+
+## 字符串
+
+[DSL-JSON 最快的 java 实现](https://houbb.github.io/2018/07/20/json-01-dsl-json)
+
+[Ali-FastJson](https://houbb.github.io/2018/07/20/json-01-fastjson)
+
+[Google-Gson](https://houbb.github.io/2018/07/20/json-01-gson)
+
+[Jackson](https://houbb.github.io/2018/07/20/json-01-jackson)
+
+## 二进制
+
+[Google protocol buffer](https://houbb.github.io/2018/07/20/json-02-google-protocol-buffer)
+
+[Apache Thrift](https://houbb.github.io/2018/09/20/json-02-apache-thirft)
+
+[Hession](https://houbb.github.io/2018/07/20/json-02-hession)
+
+[Kryo](https://houbb.github.io/2018/07/20/json-02-kryo)
+
+[Fst](https://houbb.github.io/2018/07/20/json-01-fst)
+
+[Messagepack](https://houbb.github.io/2018/07/20/json-02-messagepack)
+
+[Jboss Marshaling](https://houbb.github.io/2018/07/20/json-02-jboss-marshaling)
+
+## 其他
+
+[JsonPath](https://houbb.github.io/2018/07/20/json-03-jsonpath)
+
+[JsonIter](https://houbb.github.io/2018/07/20/json-01-jsoniter)
+
 
 # 参考资料
+
+https://www.null123.com/question/detail-2064645.html
 
 * any list
 {:toc}

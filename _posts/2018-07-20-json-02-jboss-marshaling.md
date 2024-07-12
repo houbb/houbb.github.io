@@ -7,9 +7,11 @@ tags: [java, json, config, sf]
 published: true
 ---
 
-# About JBoss Marshalling
+# 关于 JBoss Marshalling
 
-[JBoss Marshalling](https://jbossmarshalling.jboss.org/) is an alternative serialization API that fixes many of the problems found in the JDK serialization API while remaining fully compatible with java.io.Serializable and its relatives, and adds several new tunable parameters and additional features, all of which are pluggable via factory configuration (externalizers, class/instance lookup tables, class resolution, and object replacement, to name a few).
+[JBoss Marshalling](https://jbossmarshalling.jboss.org/) 是一个替代的序列化 API，修复了 JDK 序列化 API 中的许多问题，同时完全兼容 `java.io.Serializable` 及其相关接口，并添加了多个可调参数和附加功能。
+
+所有这些功能都可以通过工厂配置进行插拔（例如外部化器、类/实例查找表、类解析和对象替换）。
 
 ## 特性
 
@@ -64,33 +66,128 @@ published: true
 - 允许对象定义其外部格式。
 
 
-# 入门
 
-## 序列化
+# JBoss Marshalling 入门示例
 
-Writing objects and primitives to a stream is a straightforward process. 
+以下是一个简单的 JBoss Marshalling 使用示例
 
-For example:
+## Maven 依赖
 
-```java
-// Serialize today's date to a file.
-FileOutputStream f = new FileOutputStream("tmp");
-ObjectOutput s = new ObjectOutputStream(f);
-s.writeObject("Today");
-s.writeObject(new Date());
-s.flush();
+在你的 `pom.xml` 中添加以下依赖：
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.jboss.marshalling</groupId>
+        <artifactId>jboss-marshalling-api</artifactId>
+        <version>2.0.0.Final</version> <!-- 请使用最新版本 -->
+    </dependency>
+    <dependency>
+        <groupId>org.jboss.marshalling</groupId>
+        <artifactId>jboss-marshalling-river</artifactId>
+        <version>2.0.0.Final</version> <!-- 请使用最新版本 -->
+    </dependency>
+</dependencies>
 ```
 
-## 反序列化
+## 创建一个可序列化的类
 
-Reading an object from a stream, like writing, is straightforward:
+创建一个简单的 Java 类，例如 `Person`：
 
 ```java
-FileInputStream in = new FileInputStream("tmp");
-ObjectInputStream s = new ObjectInputStream(in);
-String today = (String)s.readObject();
-Date date = (Date)s.readObject();
+import java.io.Serializable;
+
+public class Person implements Serializable {
+    private String name;
+    private int age;
+
+    // 构造函数、getter 和 setter
+}
 ```
+
+## 序列化和反序列化示例
+
+以下是使用 JBoss Marshalling 进行序列化和反序列化的示例：
+
+```java
+import org.jboss.marshalling.Marshaller;
+import org.jboss.marshalling.Unmarshaller;
+import org.jboss.marshalling.Marshalling;
+import org.jboss.marshalling.MarshallingConfiguration;
+import org.jboss.marshalling.MarshallingContext;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            // 创建一个 Person 对象
+            Person person = new Person("Alice", 30);
+
+            // 设置序列化配置
+            MarshallingConfiguration config = new MarshallingConfiguration();
+            Marshaller marshaller = Marshalling.getMarshallerFactory().createMarshaller(config);
+            Unmarshaller unmarshaller = Marshalling.getUnmarshallerFactory().createUnmarshaller(config);
+
+            // 序列化
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            marshaller.start(Marshalling.createOutput(outputStream));
+            marshaller.writeObject(person);
+            marshaller.finish();
+            byte[] bytes = outputStream.toByteArray();
+
+            // 反序列化
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+            unmarshaller.start(Marshalling.createInput(inputStream));
+            Person deserializedPerson = (Person) unmarshaller.readObject();
+            unmarshaller.finish();
+
+            // 输出反序列化的结果
+            System.out.println("Name: " + deserializedPerson.getName());
+            System.out.println("Age: " + deserializedPerson.getAge());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+# json 系列
+
+## 字符串
+
+[DSL-JSON 最快的 java 实现](https://houbb.github.io/2018/07/20/json-01-dsl-json)
+
+[Ali-FastJson](https://houbb.github.io/2018/07/20/json-01-fastjson)
+
+[Google-Gson](https://houbb.github.io/2018/07/20/json-01-gson)
+
+[Jackson](https://houbb.github.io/2018/07/20/json-01-jackson)
+
+## 二进制
+
+[Google protocol buffer](https://houbb.github.io/2018/07/20/json-02-google-protocol-buffer)
+
+[Apache Thrift](https://houbb.github.io/2018/09/20/json-02-apache-thirft)
+
+[Hession](https://houbb.github.io/2018/07/20/json-02-hession)
+
+[Kryo](https://houbb.github.io/2018/07/20/json-02-kryo)
+
+[Fst](https://houbb.github.io/2018/07/20/json-01-fst)
+
+[Messagepack](https://houbb.github.io/2018/07/20/json-02-messagepack)
+
+[Jboss Marshaling](https://houbb.github.io/2018/07/20/json-02-jboss-marshaling)
+
+## 其他
+
+[JsonPath](https://houbb.github.io/2018/07/20/json-03-jsonpath)
+
+[JsonIter](https://houbb.github.io/2018/07/20/json-01-jsoniter)
+
 
 # 参考资料
 

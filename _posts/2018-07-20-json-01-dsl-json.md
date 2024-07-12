@@ -7,15 +7,50 @@ tags: [java, json, config, sf]
 published: true
 ---
 
+# json 系列
+
+## 字符串
+
+[DSL-JSON 最快的 java 实现](https://houbb.github.io/2018/07/20/json-01-dsl-json)
+
+[Ali-FastJson](https://houbb.github.io/2018/07/20/json-01-fastjson)
+
+[Google-Gson](https://houbb.github.io/2018/07/20/json-01-gson)
+
+[Jackson](https://houbb.github.io/2018/07/20/json-01-jackson)
+
+## 二进制
+
+[Google protocol buffer](https://houbb.github.io/2018/07/20/json-02-google-protocol-buffer)
+
+[Apache Thrift](https://houbb.github.io/2018/09/20/json-02-apache-thirft)
+
+[Hession](https://houbb.github.io/2018/07/20/json-02-hession)
+
+[Kryo](https://houbb.github.io/2018/07/20/json-02-kryo)
+
+[Fst](https://houbb.github.io/2018/07/20/json-01-fst)
+
+[Messagepack](https://houbb.github.io/2018/07/20/json-02-messagepack)
+
+[Jboss Marshaling](https://houbb.github.io/2018/07/20/json-02-jboss-marshaling)
+
+## 其他
+
+[JsonPath](https://houbb.github.io/2018/07/20/json-03-jsonpath)
+
+[JsonIter](https://houbb.github.io/2018/07/20/json-01-jsoniter)
+
+
 # DSL-Json
- 
-[dsl-json](https://github.com/ngs-doo/dsl-json) is Fastest JVM (Java/Android/Scala/Kotlin) JSON library with advanced compile-time databinding support. 
 
-Compatible with DSL Platform.
+[dsl-json](https://github.com/ngs-doo/dsl-json) 是最快的 JVM（Java/Android/Scala/Kotlin）JSON 库，具有先进的编译时数据绑定支持。
 
-Java JSON library designed for performance. 
+与 DSL Platform 兼容。
 
-Built for invasive software composition with DSL Platform compiler.
+这是一款为性能而设计的 Java JSON 库。
+
+与 DSL Platform 编译器一起构建，用于侵入式软件组合。
 
 ## 备注
 
@@ -137,6 +172,41 @@ dependencies {
 使用 DSL 标准，使得可以兼容所有的 JVM 语言。
 
 而不是仅仅局限于 Java。
+
+# json 系列
+
+## 字符串
+
+[DSL-JSON 最快的 java 实现](https://houbb.github.io/2018/07/20/json-01-dsl-json)
+
+[Ali-FastJson](https://houbb.github.io/2018/07/20/json-01-fastjson)
+
+[Google-Gson](https://houbb.github.io/2018/07/20/json-01-gson)
+
+[Jackson](https://houbb.github.io/2018/07/20/json-01-jackson)
+
+## 二进制
+
+[Google protocol buffer](https://houbb.github.io/2018/07/20/json-02-google-protocol-buffer)
+
+[Apache Thrift](https://houbb.github.io/2018/09/20/json-02-apache-thirft)
+
+[Hession](https://houbb.github.io/2018/07/20/json-02-hession)
+
+[Kryo](https://houbb.github.io/2018/07/20/json-02-kryo)
+
+[Fst](https://houbb.github.io/2018/07/20/json-01-fst)
+
+[Messagepack](https://houbb.github.io/2018/07/20/json-02-messagepack)
+
+[Jboss Marshaling](https://houbb.github.io/2018/07/20/json-02-jboss-marshaling)
+
+## 其他
+
+[JsonPath](https://houbb.github.io/2018/07/20/json-03-jsonpath)
+
+[JsonIter](https://houbb.github.io/2018/07/20/json-01-jsoniter)
+
 
 * any list
 {:toc}

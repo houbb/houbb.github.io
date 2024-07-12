@@ -45,7 +45,112 @@ Hessian协议有以下的设计目标：
 
 - 它必须支持加密,压缩,签名,还有事务的上下文
 
-# 拓展阅读
+# Hessian 入门示例
+
+以下是一个简单的 Hessian 使用示例，包括 Maven 依赖和代码示例。
+
+## Maven 依赖
+
+在你的 `pom.xml` 中添加以下依赖：
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>com.caucho</groupId>
+        <artifactId>hessian</artifactId>
+        <version>4.0.68</version> <!-- 请使用最新版本 -->
+    </dependency>
+</dependencies>
+```
+
+## 创建可序列化的类
+
+创建一个简单的 Java 类，例如 `Person`：
+
+```java
+import java.io.Serializable;
+
+public class Person implements Serializable {
+    private String name;
+    private int age;
+
+    // 构造函数、getter 和 setter
+}
+```
+
+## 序列化和反序列化示例
+
+以下是使用 Hessian 进行序列化和反序列化的示例：
+
+```java
+import com.caucho.hessian.client.HessianProxyFactory;
+import com.caucho.hessian.io.HessianInput;
+import com.caucho.hessian.io.HessianOutput;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            // 创建一个 Person 对象
+            Person person = new Person("Alice", 30);
+
+            // 序列化
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            HessianOutput hessianOutput = new HessianOutput(outputStream);
+            hessianOutput.writeObject(person);
+            byte[] bytes = outputStream.toByteArray();
+
+            // 反序列化
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+            HessianInput hessianInput = new HessianInput(inputStream);
+            Person deserializedPerson = (Person) hessianInput.readObject();
+
+            // 输出反序列化的结果
+            System.out.println("Name: " + deserializedPerson.getName());
+            System.out.println("Age: " + deserializedPerson.getAge());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+# json 系列
+
+## 字符串
+
+[DSL-JSON 最快的 java 实现](https://houbb.github.io/2018/07/20/json-01-dsl-json)
+
+[Ali-FastJson](https://houbb.github.io/2018/07/20/json-01-fastjson)
+
+[Google-Gson](https://houbb.github.io/2018/07/20/json-01-gson)
+
+[Jackson](https://houbb.github.io/2018/07/20/json-01-jackson)
+
+## 二进制
+
+[Google protocol buffer](https://houbb.github.io/2018/07/20/json-02-google-protocol-buffer)
+
+[Apache Thrift](https://houbb.github.io/2018/09/20/json-02-apache-thirft)
+
+[Hession](https://houbb.github.io/2018/07/20/json-02-hession)
+
+[Kryo](https://houbb.github.io/2018/07/20/json-02-kryo)
+
+[Fst](https://houbb.github.io/2018/07/20/json-01-fst)
+
+[Messagepack](https://houbb.github.io/2018/07/20/json-02-messagepack)
+
+[Jboss Marshaling](https://houbb.github.io/2018/07/20/json-02-jboss-marshaling)
+
+## 其他
+
+[JsonPath](https://houbb.github.io/2018/07/20/json-03-jsonpath)
+
+[JsonIter](https://houbb.github.io/2018/07/20/json-01-jsoniter)
 
 
 # 参考资料
