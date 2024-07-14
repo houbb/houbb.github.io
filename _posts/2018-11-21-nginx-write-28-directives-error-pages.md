@@ -75,117 +75,14 @@ published: true
 
 [从零手写实现 nginx-26-nginx rewrite 指令](https://houbb.github.io/2018/11/22/nginx-write-26-directives-rewrite)
 
+[从零手写实现 nginx-27-nginx return 指令](https://houbb.github.io/2018/11/22/nginx-write-27-directives-return)
+
+[从零手写实现 nginx-28-nginx error_pages 指令](https://houbb.github.io/2018/11/22/nginx-write-28-directives-error-pages)
+
+[从零手写实现 nginx-29-nginx try_files 指令](https://houbb.github.io/2018/11/22/nginx-write-29-directives-try_files)
+
+
 # nginx 的 error_page 指令
-
-# java+netty 实现 error_page
-
-## error_page 指令的处理
-
-```java
-package com.github.houbb.nginx4j.config.param.impl.dispatch;
-
-import com.github.houbb.heaven.util.util.CollectionUtil;
-import com.github.houbb.log.integration.core.Log;
-import com.github.houbb.log.integration.core.LogFactory;
-import com.github.houbb.nginx4j.config.NginxCommonConfigEntry;
-import com.github.houbb.nginx4j.config.NginxConfig;
-import com.github.houbb.nginx4j.config.param.AbstractNginxParamLifecycleDispatch;
-import com.github.houbb.nginx4j.exception.Nginx4jException;
-import com.github.houbb.nginx4j.support.errorpage.INginxErrorPageManage;
-import com.github.houbb.nginx4j.support.request.dispatch.NginxRequestDispatchContext;
-
-import java.util.List;
-
-/**
- * 参数处理类 响应头处理
- *
- * @since 0.25.0
- * @author 老马啸西风
- */
-public class NginxParamHandleErrorPage extends AbstractNginxParamLifecycleDispatch {
-
-    private static final Log logger = LogFactory.getLog(NginxParamHandleErrorPage.class);
-
-
-    @Override
-    public boolean doBeforeDispatch(NginxCommonConfigEntry configParam, NginxRequestDispatchContext context) {
-        List<String> values = configParam.getValues();
-        if(CollectionUtil.isEmpty(values) || values.size() < 2) {
-            throw new Nginx4jException("error_page 必须包含2个参数");
-        }
-
-        NginxConfig nginxConfig = context.getNginxConfig();
-        INginxErrorPageManage nginxErrorPageManage = nginxConfig.getNginxErrorPageManage();
-
-        // 直接拆分
-        String lastHtml = values.get(values.size()-1);
-        for(int i = 0; i < values.size()-1; i++) {
-            String code = values.get(i);
-            nginxErrorPageManage.register(code, lastHtml);
-        }
-
-        return true;
-    }
-
-    @Override
-    public boolean doAfterDispatch(NginxCommonConfigEntry configParam, NginxRequestDispatchContext context) {
-        return true;
-    }
-
-    @Override
-    protected String getKey(NginxCommonConfigEntry configParam, NginxRequestDispatchContext context) {
-        return "error_page";
-    }
-
-    @Override
-    public String directiveName() {
-        return "error_page";
-    }
-
-}
-```
-
-## 定义 error_page 映射关系的存储
-
-```java
-package com.github.houbb.nginx4j.support.errorpage;
-
-import com.github.houbb.log.integration.core.Log;
-import com.github.houbb.log.integration.core.LogFactory;
-
-import java.util.HashMap;
-import java.util.Map;
-
-/**
- * @since 0.25.0
- * @author 老马啸西风
- */
-public class NginxErrorPageManageDefault implements INginxErrorPageManage {
-
-    private static final Log logger = LogFactory.getLog(NginxErrorPageManageDefault.class);
-
-    private final Map<String, String> map = new HashMap<>();
-
-    @Override
-    public void register(String code, String htmlPath) {
-        map.put(code, htmlPath);
-        logger.info("error_page register code={}, path={}", code, htmlPath);
-    }
-
-    @Override
-    public String getPath(String code) {
-        String path = map.get(code);
-
-        logger.info("error_page register code={}, path={}", code, path);
-        return path;
-    }
-
-}
-```
-
-# chat
-
-## 详细介绍一下 nginx 的 error_page 指令
 
 `nginx` 的 `error_page` 指令用于定义自定义错误页面。
 
@@ -312,6 +209,114 @@ server {
 `nginx` 的 `error_page` 指令非常灵活，允许你根据需要自定义错误页面，以改善用户体验和提供更友好的错误消息。
 
 通过使用该指令，你可以轻松地创建品牌一致的错误页面，并将其集成到现有的 `nginx` 配置中。
+
+# java error_page
+
+## error_page 指令的处理
+
+```java
+package com.github.houbb.nginx4j.config.param.impl.dispatch;
+
+import com.github.houbb.heaven.util.util.CollectionUtil;
+import com.github.houbb.log.integration.core.Log;
+import com.github.houbb.log.integration.core.LogFactory;
+import com.github.houbb.nginx4j.config.NginxCommonConfigEntry;
+import com.github.houbb.nginx4j.config.NginxConfig;
+import com.github.houbb.nginx4j.config.param.AbstractNginxParamLifecycleDispatch;
+import com.github.houbb.nginx4j.exception.Nginx4jException;
+import com.github.houbb.nginx4j.support.errorpage.INginxErrorPageManage;
+import com.github.houbb.nginx4j.support.request.dispatch.NginxRequestDispatchContext;
+
+import java.util.List;
+
+/**
+ * 参数处理类 响应头处理
+ *
+ * @since 0.25.0
+ * @author 老马啸西风
+ */
+public class NginxParamHandleErrorPage extends AbstractNginxParamLifecycleDispatch {
+
+    private static final Log logger = LogFactory.getLog(NginxParamHandleErrorPage.class);
+
+
+    @Override
+    public boolean doBeforeDispatch(NginxCommonConfigEntry configParam, NginxRequestDispatchContext context) {
+        List<String> values = configParam.getValues();
+        if(CollectionUtil.isEmpty(values) || values.size() < 2) {
+            throw new Nginx4jException("error_page 必须包含2个参数");
+        }
+
+        NginxConfig nginxConfig = context.getNginxConfig();
+        INginxErrorPageManage nginxErrorPageManage = nginxConfig.getNginxErrorPageManage();
+
+        // 直接拆分
+        String lastHtml = values.get(values.size()-1);
+        for(int i = 0; i < values.size()-1; i++) {
+            String code = values.get(i);
+            nginxErrorPageManage.register(code, lastHtml);
+        }
+
+        return true;
+    }
+
+    @Override
+    public boolean doAfterDispatch(NginxCommonConfigEntry configParam, NginxRequestDispatchContext context) {
+        return true;
+    }
+
+    @Override
+    protected String getKey(NginxCommonConfigEntry configParam, NginxRequestDispatchContext context) {
+        return "error_page";
+    }
+
+    @Override
+    public String directiveName() {
+        return "error_page";
+    }
+
+}
+```
+
+## 定义 error_page 映射关系的存储
+
+```java
+package com.github.houbb.nginx4j.support.errorpage;
+
+import com.github.houbb.log.integration.core.Log;
+import com.github.houbb.log.integration.core.LogFactory;
+
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @since 0.25.0
+ * @author 老马啸西风
+ */
+public class NginxErrorPageManageDefault implements INginxErrorPageManage {
+
+    private static final Log logger = LogFactory.getLog(NginxErrorPageManageDefault.class);
+
+    private final Map<String, String> map = new HashMap<>();
+
+    @Override
+    public void register(String code, String htmlPath) {
+        map.put(code, htmlPath);
+        logger.info("error_page register code={}, path={}", code, htmlPath);
+    }
+
+    @Override
+    public String getPath(String code) {
+        String path = map.get(code);
+
+        logger.info("error_page register code={}, path={}", code, path);
+        return path;
+    }
+
+}
+```
+
+# chat
 
 ## Nginx 为什么要设计 error_page 指令
 
