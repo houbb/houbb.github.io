@@ -85,6 +85,8 @@ published: true
 
 [从零手写实现 nginx-31-nginx load-balance 负载均衡](https://houbb.github.io/2018/11/22/nginx-write-31-load-balance)
 
+[从零手写实现 nginx-32-nginx load-balance 算法 java 实现](https://houbb.github.io/2018/11/22/nginx-write-32-load-balance-java-impl)
+
 # nginx 负载均衡是什么？
 
 Nginx 负载均衡，就像一个聪明的分餐员，帮你把大量订单均匀地分配给不同的大厨，让每个大厨都能忙而不乱，最终让顾客都能快速拿到自己的餐品。
