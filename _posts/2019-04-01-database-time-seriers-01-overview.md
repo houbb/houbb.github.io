@@ -8,59 +8,33 @@ published: true
 ---
 
 
+# 时序数据库系列
 
-# 1.基本概念
+[时序数据库-01-时序数据库有哪些？为什么要使用](https://houbb.github.io/2019/04/01/database-time-seriers-01-overview)
 
-时序数据库(Time Series Database)是用于存储和管理时间序列数据的专业化数据库。时序数据库特别适用于物联网设备监控和互联网业务监控场景。
+[时序数据库-02-聊一聊时序数据库](https://houbb.github.io/2019/04/01/database-time-seriers-02-chat)
 
-下面介绍下时序数据库的一些基本概念(不同的时序数据库称呼略有不同)。
+[时序数据库-03-pentsdb-分布式时序数据库](https://houbb.github.io/2019/04/01/database-time-seriers-03-opentsdb)
 
-## 1.1 度量(metric)
+[时序数据库-04-InfluxData-分布式时序数据库](https://houbb.github.io/2019/04/01/database-time-seriers-04-influxdb)
 
-监测数据的指标，例如风力和温度。相当于关系型数据库中的table。
+[时序数据库-05-TDengine 是一款开源、高性能、云原生的时序数据库 (Time-Series Database, TSDB)](https://houbb.github.io/2019/04/01/database-time-seriers-05-00-tdengine-overview)
 
-## 1.2 标签(tag)
+[时序数据库-05-TDengine Time-Series Database, TSDB](https://houbb.github.io/2019/04/01/database-time-seriers-05-01-tdengine-chat)
 
-指标项监测针对的具体对象，属于指定度量下的数据子类别。一个标签(Tag)由一个标签键(TagKey)和一个对应的标签值(TagValue)组成。
+[时序数据库-05-TDengine windows11 WSL 安装实战笔记 docker](https://houbb.github.io/2019/04/01/database-time-seriers-05-02-windows-wls-install)
 
-例如在监测数据的时候，指定度量(Metric)是“气温”，“城市(TagKey)= 杭州(TagValue)”就是一个标签(Tag)，则监测的就是杭州市的气温。更多标签示例：机房 = A 、IP = 172.220.110.1。
+[时序数据库-06-01-vm VictoriaMetrics 快速、经济高效的监控解决方案和时间序列数据库](https://houbb.github.io/2019/04/01/database-time-seriers-06-01-vm-intro)
 
-## 1.3 域(field)
+[时序数据库-06-02-vm VictoriaMetrics install on docker 安装 vm](https://houbb.github.io/2019/04/01/database-time-seriers-06-02-vm-install-docker)
 
-在指定度量下数据的子类别，一般情况下存放的是会随着时间戳的变化而变化的数据。一个metric可支持多个field，如metric为风力，该度量可以有两个field：direction和speed。
+[时序数据库-06-03-vm VictoriaMetrics java 整合](https://houbb.github.io/2019/04/01/database-time-seriers-06-03-vm-java-integration)
 
-## 1.4 度量值(value)
+[时序数据库-06-04-vm VictoriaMetrics storage 存储原理简介](https://houbb.github.io/2019/04/01/database-time-seriers-06-04-vm-storage)
 
-度量对应的数值，如56°C、1000r/s等(实际中不带单位)。如果有多个field，每个field都有相应的value。不同的field支持不同的数据类型写入。对于同一个field，如果写入了某个数据类型的value之后，相同的field不允许写入其他数据类型。
+[时序数据库-06-05-vm VictoriaMetrics cluster 集群原理](https://houbb.github.io/2019/04/01/database-time-seriers-06-05-vm-cluster)
 
-## 1.5 时间戳(Timestamp)
-
-数据(度量值)产生的时间点。
-
-## 1.6 数据点 (Data Point)
-
-针对监测对象的某项指标(由度量和标签定义)按特定时间间隔(连续的时间戳)采集的每个度量值就是一个数据点。1个metric+1个field(可选)+1个timestamp+1个value + n个tag(n>=1)”唯一定义了一个数据点。相当于关系型数据库中的row。
-
-## 1.7 时间序列(Time Series)
-
-1个metric+1个field(可选) +n个tag(n>=1)”定义了一个时间序列。主要是针对某个监测对象的某项指标(由度量和标签定义)的描述。某个时间序列上产生的数据值的增加，不会导致时间序列的增加。
-
-## 1.8 时间精度
-
-时间线数据的写入时间精度——毫秒、秒、分钟、小时或者其他稳定时间频度。例如，每秒一个温度数据的采集频度，每 5 分钟一个负载数据的采集频度。
-
-## 1.9-1 数据组(Data Group)
-
-可以按标签这些数据分成不同的数据组。用来对比不同监测对象(由标签定义)的同一指标(由度量定义)的数据。
-
-例如，将温度指标数据按照不同城市进行分组查询，操作类似于该 SQL 语句：select temperature from xxx group by city where city in (shanghai, hangzhou)。
-
-## 1.9-2 聚合( Aggregation)
-
-可以对一段时间的数据点做聚合，如每10分钟的和值、平均值、最大值、最小值等。
-
-例如，当选定了某个城市某个城区的污染指数时，通常将各个环境监测点的指标数据平均值作为最终区域的指标数据，这个计算过程就是空间聚合。
-
+[时序数据库-06-06-vm VictoriaMetrics cluster 集群访问方式](https://houbb.github.io/2019/04/01/database-time-seriers-06-06-vm-cluster-access)
 
 # 3.基本特点
 
@@ -135,6 +109,61 @@ published: true
 时序数据的读取：如何支持在秒级对上亿数据的分组聚合运算。
 
 成本敏感：由海量数据存储带来的是成本问题。如何更低成本的存储这些数据，将成为时序数据库需要解决的重中之重。
+
+
+# 1.基本概念
+
+时序数据库(Time Series Database)是用于存储和管理时间序列数据的专业化数据库。时序数据库特别适用于物联网设备监控和互联网业务监控场景。
+
+下面介绍下时序数据库的一些基本概念(不同的时序数据库称呼略有不同)。
+
+## 1.1 度量(metric)
+
+监测数据的指标，例如风力和温度。相当于关系型数据库中的table。
+
+## 1.2 标签(tag)
+
+指标项监测针对的具体对象，属于指定度量下的数据子类别。一个标签(Tag)由一个标签键(TagKey)和一个对应的标签值(TagValue)组成。
+
+例如在监测数据的时候，指定度量(Metric)是“气温”，“城市(TagKey)= 杭州(TagValue)”就是一个标签(Tag)，则监测的就是杭州市的气温。更多标签示例：机房 = A 、IP = 172.220.110.1。
+
+## 1.3 域(field)
+
+在指定度量下数据的子类别，一般情况下存放的是会随着时间戳的变化而变化的数据。一个metric可支持多个field，如metric为风力，该度量可以有两个field：direction和speed。
+
+## 1.4 度量值(value)
+
+度量对应的数值，如56°C、1000r/s等(实际中不带单位)。如果有多个field，每个field都有相应的value。不同的field支持不同的数据类型写入。对于同一个field，如果写入了某个数据类型的value之后，相同的field不允许写入其他数据类型。
+
+## 1.5 时间戳(Timestamp)
+
+数据(度量值)产生的时间点。
+
+## 1.6 数据点 (Data Point)
+
+针对监测对象的某项指标(由度量和标签定义)按特定时间间隔(连续的时间戳)采集的每个度量值就是一个数据点。1个metric+1个field(可选)+1个timestamp+1个value + n个tag(n>=1)”唯一定义了一个数据点。相当于关系型数据库中的row。
+
+## 1.7 时间序列(Time Series)
+
+1个metric+1个field(可选) +n个tag(n>=1)”定义了一个时间序列。主要是针对某个监测对象的某项指标(由度量和标签定义)的描述。某个时间序列上产生的数据值的增加，不会导致时间序列的增加。
+
+## 1.8 时间精度
+
+时间线数据的写入时间精度——毫秒、秒、分钟、小时或者其他稳定时间频度。例如，每秒一个温度数据的采集频度，每 5 分钟一个负载数据的采集频度。
+
+## 1.9-1 数据组(Data Group)
+
+可以按标签这些数据分成不同的数据组。用来对比不同监测对象(由标签定义)的同一指标(由度量定义)的数据。
+
+例如，将温度指标数据按照不同城市进行分组查询，操作类似于该 SQL 语句：select temperature from xxx group by city where city in (shanghai, hangzhou)。
+
+## 1.9-2 聚合( Aggregation)
+
+可以对一段时间的数据点做聚合，如每10分钟的和值、平均值、最大值、最小值等。
+
+例如，当选定了某个城市某个城区的污染指数时，通常将各个环境监测点的指标数据平均值作为最终区域的指标数据，这个计算过程就是空间聚合。
+
+
 
 
 # 拓展阅读

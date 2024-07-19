@@ -7,37 +7,65 @@ tags: [database, dis-database, distributed, time-series, sf]
 published: true
 ---
 
+# 时序数据库系列
+
+[时序数据库-01-时序数据库有哪些？为什么要使用](https://houbb.github.io/2019/04/01/database-time-seriers-01-overview)
+
+[时序数据库-02-聊一聊时序数据库](https://houbb.github.io/2019/04/01/database-time-seriers-02-chat)
+
+[时序数据库-03-pentsdb-分布式时序数据库](https://houbb.github.io/2019/04/01/database-time-seriers-03-opentsdb)
+
+[时序数据库-04-InfluxData-分布式时序数据库](https://houbb.github.io/2019/04/01/database-time-seriers-04-influxdb)
+
+[时序数据库-05-TDengine 是一款开源、高性能、云原生的时序数据库 (Time-Series Database, TSDB)](https://houbb.github.io/2019/04/01/database-time-seriers-05-00-tdengine-overview)
+
+[时序数据库-05-TDengine Time-Series Database, TSDB](https://houbb.github.io/2019/04/01/database-time-seriers-05-01-tdengine-chat)
+
+[时序数据库-05-TDengine windows11 WSL 安装实战笔记 docker](https://houbb.github.io/2019/04/01/database-time-seriers-05-02-windows-wls-install)
+
+[时序数据库-06-01-vm VictoriaMetrics 快速、经济高效的监控解决方案和时间序列数据库](https://houbb.github.io/2019/04/01/database-time-seriers-06-01-vm-intro)
+
+[时序数据库-06-02-vm VictoriaMetrics install on docker 安装 vm](https://houbb.github.io/2019/04/01/database-time-seriers-06-02-vm-install-docker)
+
+[时序数据库-06-03-vm VictoriaMetrics java 整合](https://houbb.github.io/2019/04/01/database-time-seriers-06-03-vm-java-integration)
+
+[时序数据库-06-04-vm VictoriaMetrics storage 存储原理简介](https://houbb.github.io/2019/04/01/database-time-seriers-06-04-vm-storage)
+
+[时序数据库-06-05-vm VictoriaMetrics cluster 集群原理](https://houbb.github.io/2019/04/01/database-time-seriers-06-05-vm-cluster)
+
+[时序数据库-06-06-vm VictoriaMetrics cluster 集群访问方式](https://houbb.github.io/2019/04/01/database-time-seriers-06-06-vm-cluster-access)
+
 # Opentsdb
 
-[Opentsdb](http://opentsdb.net/) is the Scalable Time Series Database.
+[Opentsdb](http://opentsdb.net/) 是一个可扩展的时序数据库。
 
-Store and serve massive amounts of time series data without losing granularity.
+在不丢失数据粒度的情况下存储和服务大量的时序数据。
 
 # 特性
 
-## Store
+## 存储
 
-Data is stored exactly as you give it
+数据会被精确地按您提供的内容存储
 
-Write with millisecond precision
+支持毫秒级精度写入
 
-Keep raw data forever
+可永久保留原始数据
 
-## Scale
+## 扩展
 
-Runs on Hadoop and HBase
+运行在 Hadoop 和 HBase 上
 
-Scales to millions of writes per second
+每秒可扩展至百万级写入量
 
-Add capacity by adding nodes
+通过增加节点来增加容量
 
-## Read
+## 读取
 
-Generate graphs from the GUI
+可以从 GUI 生成图表
 
-Pull from the HTTP API
+可以从 HTTP API 提取数据
 
-Choose an open source front-end
+可以选择开源前端
 
 # 工作原理
 
