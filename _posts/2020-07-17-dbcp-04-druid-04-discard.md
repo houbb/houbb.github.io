@@ -1,6 +1,6 @@
 ---
 layout: post
-title: apache druid v1.2.5 报错 discard long time none received connection
+title: alibaba druid-04-apache druid v1.2.5 mysql 报错 discard long time none received connection
 date: 2024-03-27 21:01:55 +0800
 categories: [Database]
 tags: [database, jdbc, sh]

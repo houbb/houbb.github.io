@@ -7,11 +7,11 @@ tags: [framework, sh]
 published: true
 ---
 
-# Ligh4j
+# Light4j
 
-[light-4j](https://www.networknt.com/faq/what-is-light-4j/) is a platform or ecosystem for building and running cloud native microservices. 
+[Light-4j](https://www.networknt.com/faq/what-is-light-4j/) 是一个用于构建和运行云原生微服务的平台或生态系统。
 
-The design goal is higher throughput, lower latency and smaller memory footprint to lower production cost.
+其设计目标是更高的吞吐量、更低的延迟和更小的内存占用，以降低生产成本。
 
 # 特性
 
