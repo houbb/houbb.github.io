@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 时序数据库-08-vm VictoriaMetrics 快速、经济高效的监控解决方案和时间序列数据库
+title: 时序数据库-06-01-vm VictoriaMetrics 快速、经济高效的监控解决方案和时间序列数据库
 date:  2019-4-1 19:24:57 +0800
 categories: [Database]
 tags: [database, dis-database, distributed, time-series, monitor, sf]
