@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 时序数据库-03-pentsdb-分布式时序数据库
+title: 时序数据库-03-opentsdb-分布式时序数据库
 date:  2019-4-1 19:24:57 +0800
 categories: [Database]
 tags: [database, dis-database, distributed, time-series, sf]
@@ -13,7 +13,7 @@ published: true
 
 [时序数据库-02-聊一聊时序数据库](https://houbb.github.io/2019/04/01/database-time-seriers-02-chat)
 
-[时序数据库-03-pentsdb-分布式时序数据库](https://houbb.github.io/2019/04/01/database-time-seriers-03-opentsdb)
+[时序数据库-03-opentsdb-分布式时序数据库](https://houbb.github.io/2019/04/01/database-time-seriers-03-opentsdb)
 
 [时序数据库-04-InfluxData-分布式时序数据库](https://houbb.github.io/2019/04/01/database-time-seriers-04-influxdb)
 
