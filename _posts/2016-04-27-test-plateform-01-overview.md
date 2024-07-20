@@ -29,6 +29,8 @@ published: true
 
 [test perf-03-性能测试之 Gatling](https://houbb.github.io/2016/04/26/test-perf-03-gatling)
 
+[test perf-04-性能测试之 locust](https://houbb.github.io/2016/04/26/test-perf-04-locust-io)
+
 # 参考
 
 商业上可以参考：apifox 之类的测试工具。
