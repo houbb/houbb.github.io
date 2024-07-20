@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  rust-book-chinese rust 程序设计语言 中文版
+title:  rust-lang-02-在线学习资料
 date:  2018-07-13 10:32:21 +0800
 categories: [Programming Language]
 tags: [rust, book, sh]
@@ -10,6 +10,8 @@ published: true
 # 在线阅读地址
 
 [https://kaisery.github.io/trpl-zh-cn/](https://kaisery.github.io/trpl-zh-cn/)
+
+https://github.com/sunface/rust-course
 
 # 中文文档
 
