@@ -135,23 +135,15 @@ sudo docker pull gitlab/gitlab-ce
 我想在镜像网站 https://registry.cn-hangzhou.aliyuncs.com，拉取 gitlab/gitlab-ce。完整的命令怎么写？
 
 ```sh
+sudo docker pull docker.io/gitlab/gitlab-ce:latest
+sudo docker pull registry-1.docker.io/gitlab/gitlab-ce:latest
+sudo docker pull registry.hub.docker.com/gitlab/gitlab-ce:latest
+sudo docker pull mirror.baidubce.com/gitlab/gitlab-ce:latest
 sudo docker pull hub-mirror.c.163.com/gitlab/gitlab-ce:latest
-sudo docker pull mirrors.ustc.edu.cn/library/gitlab:gitlab-ce
-```
-
-看到测试的例子：
-
-```
-Run registrys="
-Test docker.io/library/nginx:1.25.1-alpine
-Test registry-1.docker.io/library/nginx:1.25.1-alpine
-Test registry.hub.docker.com/library/nginx:1.25.1-alpine
-Test mirror.baidubce.com/library/nginx:1.25.1-alpine
-Test hub-mirror.c.163.com/library/nginx:1.25.1-alpine
-Test docker.mirrors.ustc.edu.cn/library/nginx:1.25.1-alpine
-Test mirror.gcr.io/library/nginx:1.25.1-alpine
-Test dockerproxy.com/library/nginx:1.25.1-alpine
-Test ***/library/nginx:1.25.1-alpine
+sudo docker pull docker.mirrors.ustc.edu.cn/gitlab/gitlab-ce:latest
+sudo docker pull mirror.gcr.io/gitlab/gitlab-ce:latest
+sudo docker pull dockerproxy.com/gitlab/gitlab-ce:latest
+sudo docker pull ***/gitlab/gitlab-ce:latest
 ```
 
 TODO: 发现都不行，
