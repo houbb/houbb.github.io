@@ -104,6 +104,42 @@ phone
 
 相关的变更
 
+# 字段的设计
+
+tid
+
+appName
+
+alertTime
+
+sendTime
+
+## compare 对比
+
+## 血缘
+
+指标
+
+# 来源
+
+普米 / Zabbix
+
+CAT
+
+日志
+
+SQL
+
+# 大批量任务的执行
+
+可以让每一个执行器都均等 然后执行任务
+
+也可以按照不同的队列 分为权重不同的队列。
+
+然后处理在不同的机器上。
+
+
+
 # 参考资料
 
 https://forum.huawei.com/enterprise/zh/thread/580933924354408448
