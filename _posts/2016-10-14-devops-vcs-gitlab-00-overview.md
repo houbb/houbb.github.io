@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Devops-ci-code-01-代码仓库持续部署 gitlab
+title: Devops-vcs-00-代码仓库持续部署 gitlab
 date:  2016-10-14 10:15:54 +0800
 categories: [Devops]
-tags: [devops, ci, sh]
+tags: [devops, vcs, ci, sh]
 published: true
 ---
 
