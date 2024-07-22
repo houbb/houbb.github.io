@@ -23,6 +23,42 @@ published: true
 
 [持续集成平台 02 jenkins plugin 插件](https://houbb.github.io/2016/10/14/devops-jenkins-02-plugin)
 
+# DevOps
+
+![flow](https://blog.csdn.net/qq_42883074/article/details/125842147)
+
+1、PLAN   开发团队根据客户的目标指定开发计划
+ 
+2、CODE    根据"PLAN(开发计划)" 开始编写代码，需要将不同版本("稳定"/"最新")的代码存储在一个库中
+ 
+3、Build   代码编写完成后，需要将代码构建打包并且运行
+ 
+4、Test    成功构建项目后，需要测试代码是否存在BUG或者错误
+ 
+5、DEPLOY   代码经过"手动调试"和"自动化测试"后，认为可以部署了，选一个稳定版本部署
+ 
+6、OPERATE   运维团队将代码部署到生产环境中
+ 
+7、MONITOR   项目部署上线后，需要持续的监控产品
+ 
+8、INTEGRATE   然后将监控阶段收到的反馈发送回PLAN阶段，整体反复的流程就是DEVOPS的核心(ci/cd)
+
+# 如何实现 devops 流程
+
+1、开发人员将编写好的代码上传到gitlab代码仓库
+ 
+2、我们通过手动/自动的形式通过Jenkins将代码拉取下来
+ 
+3、jenkins会通过maven工具开始对代码构建(nexus 等包仓库)
+ 
+4、如果编译没问题，jenkins会将打好的jar包封装成镜像发给harbor镜像仓库
+ 
+5、jenkins再去通知服务器端通过docker/k8s拉取镜像并运行服务
+
+# 参考资料
+
+https://blog.csdn.net/qq_42883074/article/details/125842147
+
 # chat
 
 ## 详细介绍一下 devops
