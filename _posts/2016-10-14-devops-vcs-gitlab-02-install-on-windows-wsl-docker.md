@@ -63,7 +63,10 @@ sudo docker system prune
 
 ### 2）尝试2 修改镜像源头
 
-> [镜像超时](https://gist.github.com/y0ngb1n/7e8f16af3242c7815e7ca2f0833d3ea6)
+> [镜像加速器](https://yeasy.gitbook.io/docker_practice/install/mirror)
+
+由于镜像服务可能出现宕机，建议同时配置多个镜像。各个镜像站测试结果请到 [docker-practice/docker-registry-cn-mirror-test](https://github.com/docker-practice/docker-registry-cn-mirror-test/actions) 查看。
+
 
 ```sh
 sudo mkdir -p /etc/docker/
@@ -80,11 +83,10 @@ sudo vi /etc/docker/daemon.json
 
 ```json
 {
-    "registry-mirrors": [
-        "https://dockerproxy.com",
-        "https://docker.mirrors.ustc.edu.cn",
-        "https://docker.nju.edu.cn"
-    ]
+  "registry-mirrors": [
+    "https://hub-mirror.c.163.com",
+    "https://mirror.baidubce.com"
+  ]
 }
 ```
 
@@ -110,6 +112,18 @@ $ systemctl list-units --type=service | grep -i docker
 sudo systemctl restart snap.docker.dockerd.service
 ```
 
+#### 检查加速器是否生效
+执行 $ docker info，如果从结果中看到了如下内容，说明配置成功。
+
+
+```sh
+$ sudo docker info
+```
+
+Registry Mirrors:
+ https://hub-mirror.c.163.com/
+
+
 重新拉取：
 
 ```sh
@@ -121,8 +135,26 @@ sudo docker pull gitlab/gitlab-ce
 我想在镜像网站 https://registry.cn-hangzhou.aliyuncs.com，拉取 gitlab/gitlab-ce。完整的命令怎么写？
 
 ```sh
-sudo docker pull registry.cn-hangzhou.aliyuncs.com/gitlab/gitlab-ce:latest
+sudo docker pull hub-mirror.c.163.com/gitlab/gitlab-ce:latest
+sudo docker pull mirrors.ustc.edu.cn/library/gitlab:gitlab-ce
 ```
+
+看到测试的例子：
+
+```
+Run registrys="
+Test docker.io/library/nginx:1.25.1-alpine
+Test registry-1.docker.io/library/nginx:1.25.1-alpine
+Test registry.hub.docker.com/library/nginx:1.25.1-alpine
+Test mirror.baidubce.com/library/nginx:1.25.1-alpine
+Test hub-mirror.c.163.com/library/nginx:1.25.1-alpine
+Test docker.mirrors.ustc.edu.cn/library/nginx:1.25.1-alpine
+Test mirror.gcr.io/library/nginx:1.25.1-alpine
+Test dockerproxy.com/library/nginx:1.25.1-alpine
+Test ***/library/nginx:1.25.1-alpine
+```
+
+TODO: 发现都不行，
 
 # 2、创建目录
 
