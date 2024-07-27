@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  测试框架之 cucumber Behavior Driven Development，BDD
-date:  2017-10-13 10:24:52 +0800
+title:  测试框架之 cucumber Behavior Driven Development，行为驱动开发（Behavior Driven Development，BDD）
+date:  2016-04-26 14:10:52 +0800
 categories: [Test]
-tags: [test]
+tags: [java, test]
 published: true
 ---
 

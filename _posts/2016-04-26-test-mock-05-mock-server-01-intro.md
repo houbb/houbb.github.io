@@ -1,14 +1,11 @@
 ---
 layout: post
-title:  Mock Server
-date:  2017-11-3 09:39:47 +0800
+title: test mock-05-Mock Server 入门介绍
+date:  2016-4-26 12:53:12 +0800
 categories: [Test]
-tags: [mock]
+tags: [test, mock, sh]
 published: true
 ---
-
-
-
 
 # Mock Server
 
@@ -77,22 +74,5 @@ java -jar moco-runner-<version>-standalone.jar http -p 12306 -c foo.json
 浏览器访问 [http://localhost:12306](http://localhost:12306)，你将看到 "Hello, Moco"
 
 
-
-
-
 * any list
 {:toc}
-
-
-
-
-
-
-
-
-
-
-
-
- 
-

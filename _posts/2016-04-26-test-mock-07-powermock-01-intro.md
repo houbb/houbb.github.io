@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  PowerMock
-date:  2017-10-27 14:53:34 +0800
+title: test mock-07-powermock 入门介绍
+date:  2016-4-26 12:53:12 +0800
 categories: [Test]
-tags: [test, mock]
+tags: [test, mock, sh]
 published: true
 ---
 
