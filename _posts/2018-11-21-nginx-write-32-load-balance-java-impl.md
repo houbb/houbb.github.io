@@ -207,6 +207,98 @@ Nginx 支持多种负载均衡算法，包括轮询、权重轮询、最少连�
 
 每种算法适用于不同的场景，可以根据具体需求选择合适的算法来优化负载均衡策略。
 
+# 对应的配置信息
+
+在 Nginx 中配置负载均衡策略主要通过 `upstream` 块来实现。
+
+以下是一些常见的负载均衡策略及其相应的配置示例：
+
+1. **轮询（round-robin）**：
+   ```conf
+   upstream myapp {
+       server backend1.example.com;
+       server backend2.example.com;
+       server backend3.example.com;
+   }
+   ```
+
+2. **权重轮询（weighted round-robin）**：
+   ```conf
+   upstream myapp {
+       server backend1.example.com weight=3;
+       server backend2.example.com weight=2;
+       server backend3.example.com weight=1;
+   }
+   ```
+
+3. **最少连接（least_conn）**：
+   ```conf
+   upstream myapp {
+       least_conn;
+       server backend1.example.com;
+       server backend2.example.com;
+       server backend3.example.com;
+   }
+   ```
+
+4. **最少请求（least-requests）**：
+   ```conf
+   upstream myapp {
+       least-requests;
+       server backend1.example.com;
+       server backend2.example.com;
+       server backend3.example.com;
+   }
+   ```
+
+5. **源地址哈希（ip_hash）**：
+   ```conf
+   upstream myapp {
+       ip_hash;
+       server backend1.example.com;
+       server backend2.example.com;
+       server backend3.example.com;
+   }
+   ```
+
+6. **URL哈希（hash）**：
+   ```conf
+   upstream myapp {
+       hash $request_uri;
+       server backend1.example.com;
+       server backend2.example.com;
+       server backend3.example.com;
+   }
+   ```
+
+7. **第三方模块**：
+   - 使用第三方模块如 `chomp` 或 `fair` 可能需要安装额外的模块，并在 Nginx 配置中添加相应的指令。具体配置可能因模块而异，需要参考相应模块的文档。
+
+在 `upstream` 块中，你可以定义一个或多个 `server` 指令来指定后端服务器的地址和端口。每个 `server` 指令可以包含额外的参数，如权重或连接限制等。
+
+例如，使用权重轮询的配置文件可能如下所示：
+```conf
+http {
+    upstream myapp {
+        server backend1.example.com:8080 weight=3;
+        server backend2.example.com:8080 weight=2;
+        server backend3.example.com:8080 weight=1;
+    }
+
+    server {
+        listen 80;
+        server_name example.com;
+
+        location / {
+            proxy_pass http://myapp;
+        }
+    }
+}
+```
+
+在这个配置中，`myapp` 是一个 `upstream` 块的名称，它定义了三个后端服务器，每个服务器的权重不同。
+
+`proxy_pass` 指令将请求转发到 `myapp` 负载均衡器。
 
 # java 实现
 
