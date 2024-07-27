@@ -1,11 +1,10 @@
 ---
 layout: post
-title: package-info.java
+title: Java doc 之 package-info.java
 date:  2018-11-7 18:51:40 +0800
 categories: [Java]
 tags: [maven, java, sf]
 published: true
-excerpt: Java doc 之 package-info.java
 ---
 
 # package-info.java

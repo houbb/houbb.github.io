@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Compress Althgorim-Common Compress 归档器 
+title: Compress Althgorim-05-Common Compress 归档器 
 date:  2018-11-9 18:55:36 +0800
 categories: [Althgorim]
 tags: [althgorim, compress, sh]

@@ -1,21 +1,13 @@
 ---
 layout: post
 title: Aapche POI java excel 操作工具包入门
-date:  2016-7-18 12:26:11 +0800
+date:  2016-7-19 12:26:11 +0800
 categories: [Java]
 tags: [java, tool, sf]
 published: true
 ---
 
 
-
-# POI
-
-Apache POI - the Java API for Microsoft Documents
-
-> [poi](http://poi.apache.org/)
-
-> [quick-start](http://poi.apache.org/spreadsheet/quick-guide.html)
 
 
 # Hello World
@@ -127,6 +119,12 @@ public static String getSheetContent(Sheet sheet, String charset) throws Unsuppo
     return stringBuffer.toString();
 }
 ```
+
+# 参考资料
+
+> [poi](http://poi.apache.org/)
+
+> [quick-start](http://poi.apache.org/spreadsheet/quick-guide.html)
 
 * any list
 {:toc}

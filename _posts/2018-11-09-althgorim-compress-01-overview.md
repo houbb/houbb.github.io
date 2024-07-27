@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Compress Althgorim-压缩算法概览
+title: Compress Althgorim-01-压缩算法概览
 date:  2018-11-9 18:55:36 +0800
 categories: [Althgorim]
 tags: [althgorim, compress, sh]

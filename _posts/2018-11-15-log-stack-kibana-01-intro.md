@@ -1,9 +1,9 @@
 ---
 layout: post
 title: 开源的数据可视化平台 Kibana 日志可视化 mac 安装笔记
-date:  2016-10-16 09:07:21 +0800
-categories: [Log]
-tags: [kibana, log, search]
+date:  2018-11-15 08:38:35 +0800
+categories: [Search]
+tags: [apache, search, index, es, sh]
 published: true
 ---
 

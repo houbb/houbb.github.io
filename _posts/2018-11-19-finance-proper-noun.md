@@ -1,11 +1,10 @@
 ---
 layout: post
-title: P2P O2O B2B B2C C2C
+title: P2P O2O B2B B2C C2C 等常见金融名词的解释和介绍
 date:  2018-11-19 08:38:35 +0800
 categories: [Finance]
 tags: [finance, sh]
 published: true
-excerpt: P2P O2O B2B B2C C2C 等常见金融名词的解释和介绍
 ---
 
 # P2P

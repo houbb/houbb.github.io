@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Compress Althgorim-Apache Common Compress 包
+title: Compress Althgorim-03-Apache Common Compress 包
 date:  2018-11-9 18:55:36 +0800
 categories: [Althgorim]
 tags: [althgorim, compress, sh]

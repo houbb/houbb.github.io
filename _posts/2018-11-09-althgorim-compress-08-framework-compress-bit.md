@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Roaring bitmap-更好的压缩位图算法
+title: Roaring bitmap-08-更好的压缩位图算法
 date:  2018-11-9 18:55:36 +0800
 categories: [Althgorim]
 tags: [althgorim, compress, bitmap, sh]

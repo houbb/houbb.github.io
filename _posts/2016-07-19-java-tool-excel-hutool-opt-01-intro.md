@@ -1,9 +1,9 @@
 ---
 layout: post
 title: 基于 hutool 的 EXCEL 导入导出优化框架实现
-date: 2021-09-13 21:01:55 +0800
+date:  2016-7-19 12:26:11 +0800
 categories: [Java]
-tags: [java, poi, tool, sh]
+tags: [java, tool, sf]
 published: true
 ---
 
@@ -49,7 +49,7 @@ hutool 的 poi 封装的很好，不过还是不够便捷。
 
 其中：
 
-```
+```xml
 <hutool.version>4.1.19</hutool.version>
 <poi.version>3.16</poi.version>
 ```
@@ -63,11 +63,6 @@ poi 只实现了读取到 map，以及 bean 的读取，但是字段名称是表
 ## @ExcelField 注解
 
 ```java
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
 /**
  * @author binbin.hou
  * @since 1.0.0
@@ -108,16 +103,6 @@ public @interface ExcelField {
 ## 工具类
 
 ```java
-import cn.hutool.core.util.ClassUtil;
-import cn.hutool.poi.excel.ExcelReader;
-import cn.hutool.poi.excel.ExcelUtil;
-import cn.hutool.poi.excel.ExcelWriter;
-import org.springframework.util.CollectionUtils;
-
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.*;
-
 /**
  * EXCEL 工具类
  * @author binbin.hou
@@ -252,18 +237,6 @@ public void test() {
     final String path2 = "EXPORT.xlsx";
     ExcelHelper.writeList(list, path2);
 }
-```
-
-# 开箱即用
-
-## maven 引入
-
-```xml
-<dependency>
-    <groupId>com.github.houbb</groupId>
-    <artifactId>iexcel-hutool</artifactId>
-    <version>1.0.0</version>
-</dependency>
 ```
 
 # 参考资料

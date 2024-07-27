@@ -1,7 +1,7 @@
 ---
 layout: post
-title: iexcel-excel 读取和写入，解决 excel OOM 问题
-date:  2016-7-18 12:26:11 +0800
+title: iexcel-excel 大文件读取和写入，解决 excel OOM 问题-01-入门介绍
+date:  2016-7-19 12:26:11 +0800
 categories: [Java]
 tags: [java, tool, sf]
 published: true
@@ -29,13 +29,9 @@ published: true
 
 - 支持 excel 文件内容 bytes[] 内容获取，便于用户自定义操作。
 
-## 变更日志
+## 开源地址
 
-> [变更日志](CHANGELOG.md)
-
-## v0.0.9 主要变更
-
-Fixed [@ExcelField注解失效问题](https://github.com/houbb/iexcel/issues/7)
+> [https://github.com/houbb/iexcel](https://github.com/houbb/iexcel)
 
 # 创作缘由
 
@@ -160,20 +156,9 @@ final String filePath = PathUtil.getAppTestResourcesPath()+"/excelReadBySax.xls"
 ExcelHelper.readBySax(User.class, saxReadHandler, filePath);
 ```
 
-# 文档
-
-[01-ExcelBs 引导类使用说明](doc/user/01-ExcelBs引导类讲解.md)
-
-[02-ExcelField 注解指定字段属性](doc/user/02-ExcelField注解使用说明.md)
-
-[03-ExcelField#order 指定列顺序](doc/user/03-ExcelField-order-列顺序指定.md)
-
-[04-ExcelBs#bytes 获取文件字节信息](doc/user/04-ExcelBs-bytes-获取文件字节信息.md)
-
 # Bug & Issues
 
 欢迎提出宝贵意见：[Bug & Issues](https://github.com/houbb/iexcel/issues)
-
 
 * any list
 {:toc}

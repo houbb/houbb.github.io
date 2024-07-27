@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Logstash 日志处理转换 ETL 入门介绍 
-date:  2016-10-16 10:04:46 +0800
-categories: [Log]
-tags: [etl, log]
+date:  2018-11-15 08:38:35 +0800
+categories: [Search]
+tags: [apache, search, index, es, sh]
 published: true
 ---
 

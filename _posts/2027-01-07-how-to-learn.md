@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  如何学习一门新的技术？从哪些方面进行提问？
-date:  2018-06-28 16:23:34 +0800
+date:  2027-01-07 16:23:34 +0800
 categories: [How]
 tags: [how, how-to-learn, sh]
 published: true
