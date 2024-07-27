@@ -1,7 +1,7 @@
 ---
 layout: post
 title: mybatis-11-Mybatis 查询结果为 null，实际 sql 查询有值
-date:  2016-07-27 10:40:05 16:09:17 +0800
+date:  2016-07-27 10:40:05 +0800
 categories: [SQL]
 tags: [mybatis, database]
 published: true
@@ -10,7 +10,6 @@ published: true
 # 现象
 
 今天使用 mybatis 查询列表，结果查出的是一个有 size 的列表，但是内容都是 `null`。
-
 
 # 分析
 

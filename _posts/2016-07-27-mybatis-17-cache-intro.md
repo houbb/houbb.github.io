@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Mybatis Cache
-date:  2018-09-08 11:11:06 +0800
+title:  mybatis-17-Mybatis 一级缓存，二级缓存详解。
+date:  2016-07-27 10:40:05 +0800
 categories: [Cache]
 tags: [cache, mybatis, sh]
 published: true
-excerpt: Mybatis 一级缓存，二级缓存详解。
 ---
 
 # Mybatis 缓存

@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Mybatis Cache in action
-date:  2018-09-08 12:18:10 +0800
+title:  Mybatis-18-Cache in action Mybatis 缓存实战
+date:  2016-07-27 10:40:05 +0800
 categories: [Cache]
 tags: [cache, mybatis, in-action, sh]
 published: true
-excerpt: Mybatis 缓存实战
 ---
 
 # Mybatis 缓存实战
