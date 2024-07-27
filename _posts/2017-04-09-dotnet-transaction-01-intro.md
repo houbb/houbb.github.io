@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Dotnet Transaction
+title:  Dotnet Transaction-01-事务介绍
 date:  2017-04-09 21:44:46 +0800
 categories: [C#]
 tags: [cshape, cshape, lang, .net, dotnet]
@@ -199,17 +199,6 @@ static public int CreateTransactionScope(
     return returnValue;
 }
 ```
-
-
-
-
-
-
-
-
-
-
-
 
   * any list
   {:toc}

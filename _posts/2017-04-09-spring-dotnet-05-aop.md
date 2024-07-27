@@ -1,89 +1,80 @@
 ---
 layout: post
-title:  Spring.NET-05-aop
+title:  Spring.NET-05-aop 切面编程
 date:  2017-04-09 22:48:05 +0800
 categories: [Spring]
 tags: [spring, dotnet]
-header-img: "static/app/res/img/article-bg.jpeg"
 published: true
 ---
 
 
-# AOP
+# 面向切面编程 (AOP)
 
-[Aspect-Oriented Programming](http://www.springframework.net/docs/1.3.2/reference/html/aop.html) (AOP) complements OOP by providing another way of thinking about program structure.
+[面向切面编程](http://www.springframework.net/docs/1.3.2/reference/html/aop.html) (AOP) 通过提供另一种思考程序结构的方法来补充面向对象编程 (OOP)。
 
-AOP is used in Spring.NET:
+AOP 在 Spring.NET 中的使用：
 
-- To provide declarative enterprise services, especially as a replacement for COM+ declarative services. 
+- 提供声明式企业服务，特别是作为 COM+ 声明式服务的替代品。
 
-The most important such service is declarative transaction management, which builds on Spring.NET's transaction abstraction. This functionality is planed for an upcoming release of Spring.NET
+最重要的服务是声明式事务管理，它建立在 Spring.NET 的事务抽象基础上。此功能计划在 Spring.NET 的即将发布版本中推出。
 
-- To allow users to implement custom aspects, complementing their use of OOP with AOP.
+- 允许用户实现自定义方面，使用 AOP 补充 OOP 的使用。
 
+## 概念
 
-# Concepts
+### 基础概念
 
-一、基础概念
+- Aspect（切面）
 
+对可能跨多个对象的关注点的模块化。事务管理是企业应用程序中跨领域关注点的一个很好的例子。切面在 Spring.NET 中实现为 Advisors 或拦截器。
 
-- Aspect
+- Joinpoint（连接点）
 
-A modularization of a concern for which the implementation might otherwise cut across multiple objects. Transaction management is a good example of a crosscutting concern in enterprise applications. 
-Aspects are implemented using Spring.NET as Advisors or interceptors.
+程序执行期间的一个点，例如方法调用或特定异常的抛出。
 
-- Joinpoint
+- Advice（通知）
 
-Point during the execution of a program, such as a method invocation or a particular exception being thrown.
+AOP 框架在特定连接点采取的操作。不同类型的通知包括 "around"、"before" 和 "throws" 通知。通知类型将在下文讨论。包括 Spring.NET 在内的许多 AOP 框架将通知建模为拦截器，在连接点周围维护一条拦截器链。
 
-- Advice
+- Pointcut（切入点）
 
-Action taken by the AOP framework at a particular joinpoint. Different types of advice include "around," "before" and "throws" advice. Advice types are discussed below. Many AOP frameworks, including Spring.NET, 
-model an advice as an interceptor, maintaining a chain of interceptors "around" the joinpoint.
+指定通知应该触发的一组连接点。AOP 框架必须允许开发人员指定切入点，例如使用正则表达式。
 
-- Pointcut
+- Introduction（引入）
 
-A set of joinpoints specifying when an advice should fire. An AOP framework must allow developers to specify pointcuts: for example, using regular expressions.
+向被通知的类添加方法或字段。Spring.NET 允许您将新接口引入任何被通知对象。例如，您可以使用引入使任何对象实现 IAuditable 接口，以简化对对象状态变化的跟踪。
 
-- Introduction
+- Target object（目标对象）
 
-Adding methods or fields to an advised class. Spring.NET allows you to introduce new interfaces to any advised object. For example, you could use an introduction to make any object implement an IAuditable interface, 
-to simplify the tracking of changes to an object's state.
+包含连接点的对象。也称为被通知对象或代理对象。
 
-- Target object
+- AOP proxy（AOP 代理）
 
-Object containing the joinpoint. Also referred to as advised or proxied object.
+由 AOP 框架创建的对象，包括通知。在 Spring.NET 中，AOP 代理是使用在运行时生成的 IL 代码的动态代理。
 
-- AOP proxy
+- Weaving（织入）
 
-Object created by the AOP framework, including advice. In Spring.NET, an AOP proxy is a dynamic proxy that uses IL code generated at runtime.
+组合切面以创建一个被通知对象。这可以在编译时完成（例如，使用 Gripper-Loom.NET 编译器），也可以在运行时完成。Spring.NET 在运行时进行织入。
 
-- Weaving
+### 不同类型
 
-Assembling aspects to create an advised object. This can be done at compile time (using the Gripper-Loom.NET compiler, for example), or at runtime. Spring.NET performs weaving at runtime.
+- Around advice（环绕通知）
 
-二、不同类型
+环绕连接点（如方法调用）的通知。这是最强大的通知类型。环绕通知将在方法调用前后执行自定义行为。它们负责选择是否继续执行连接点，或通过返回自己的返回值或抛出异常来中断执行。
 
-- Around advice
+- Before advice（前置通知）
 
-Advice that surrounds a joinpoint such as a method invocation. This is the most powerful kind of advice. Around advice will perform custom behaviour before and after the method invocation. 
-They are responsible for choosing whether to proceed to the joinpoint or to shortcut executing by returning their own return value or throwing an exception.
+在连接点之前执行的通知，但不能阻止执行流继续到连接点（除非它抛出异常）。
 
-- Before advice
+- Throws advice（异常通知）
 
-Advice that executes before a joinpoint, but which does not have the ability to prevent execution flow proceeding to the joinpoint (unless it throws an exception).
+在方法抛出异常时执行的通知。Spring.NET 提供强类型的异常通知，因此您可以编写捕获您感兴趣的异常（及其子类）的代码，而无需从 Exception 转型。
 
-- Throws advice
+- After returning advice（返回后通知）
 
-Advice to be executed if a method throws an exception. Spring.NET provides strongly typed throws advice, so you can write code that catches the exception (and subclasses) 
-you're interested in, without needing to cast from Exception.
+在连接点正常完成后执行的通知：例如，如果方法返回而不抛出异常。
 
-- After returning advice
-
-Advice to be executed after a joinpoint completes normally: for example, if a method returns without throwing an exception.
-
-
-# Quick Start
+# 快速开始
  
 - ICommand.cs
 
@@ -327,7 +318,7 @@ public class ConsoleLoggingBeforeAdvice : IMethodBeforeAdvice
 }
 ```
 
-call it
+执行调用：
 
 ```c#
 ProxyFactory factory = new ProxyFactory(new ServiceCommand());
@@ -337,7 +328,7 @@ command.Execute("Execute with before advice");
 ```
 
 
-result is 
+结果为：
 
 ```
 Intercepted call to this method : Execute
@@ -371,42 +362,13 @@ ServiceCommand Execute...Execute with before advice
 </object>
 ```
 
+### After Advice（后置通知）
 
-二、After Advice
+后置通知与前面提到的通知类型类似，当连接点完成后执行通知。无需详细说明。
 
-类似。不赘述。
+### Throws Advice（异常通知）
 
-
-三、Throws advice
-
-Throws advice is advice that executes when an advised method invocation throws an exception.
-
-
-
-
-
-
-
-
-
-
-
+异常通知是当被通知的方法调用抛出异常时执行的通知。
 
 * any list
 {:toc}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

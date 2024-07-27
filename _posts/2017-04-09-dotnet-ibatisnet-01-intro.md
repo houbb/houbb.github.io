@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  IbatisNet-01-hello world
+title:  IbatisNet-01-hello world 入门介绍
 date:  2017-04-09 21:44:46 +0800
 categories: [C#]
 tags: [cshape, cshape, lang, .net, dotnet]
@@ -10,8 +10,7 @@ published: true
 
 # IbatisNet
 
-
-- 写在前面
+## 写在前面
 
 原来尝试了[mybatisNet](https://houbb.github.io/2017/04/08/mybatis-dotnet)，实际使用无奈的发现语法和 ibatis.Net 是一样的。
 
@@ -20,38 +19,33 @@ published: true
 这个相对资料会多一些，而且有官方文档。
 
 
-- 简介
+## 简介
 
+iBATIS DataMapper 框架使在 Java 或 .NET 应用程序中使用数据库变得更加容易。
 
-The iBATIS DataMapper framework makes it easier to use a database with a Java or .NET application. 
+iBATIS DataMapper 使用 XML 描述符将对象与存储过程或 SQL 语句结合在一起。
 
-iBATIS DataMapper couples objects with stored procedures or SQL statements using a XML descriptor. 
+简单性是 iBATIS DataMapper 相对于对象关系映射工具的最大优势。
 
-Simplicity is the biggest advantage of the iBATIS DataMapper over object relational mapping tools.
- 
- 
+## ORM/ibatis？
 
-- ORM/ibatis?
+一如既往，最好的建议是使用其中一种方法实现项目的代表性部分，然后再做决定。
 
-As always, the best advice is to implement a representative part of your project using either approach, and then decide. 
+但一般来说，当你：
 
-But, in general, OR/M is a good thing when you
+- 对数据库实现有完全控制权
+- 团队中没有数据库管理员或 SQL 专家
+- 需要在数据库外将问题域建模为对象图
 
-- Have complete control over your database implementation
+时，对象关系映射（OR/M）是一个好选择。
 
-- Do not have a Database Administrator or SQL guru on the team
+同样，使用像 iBATIS 这样的数据映射器的最佳时机是：
 
-- Need to model the problem domain outside the database as an object graph.
+- 你对数据库实现没有完全控制权，或者希望在重构过程中继续访问旧数据库。
+- 团队中有数据库管理员或 SQL 专家。
+- 数据库被用于建模问题域，应用程序的主要角色是帮助客户使用数据库模型。
 
-
-Likewise, the best time to use a Data Mapper, like iBATIS, is when:
-
-- You do not have complete control over the database implementation, or want to continue to access a legacy database as it is being refactored.
-
-- You have database administrators or SQL gurus on the team.
-
-- The database is being used to model the problem domain, and the application's primary role is to help the client use the database model.
-
+## 小结
 
 简而言之：
 
@@ -86,3 +80,5 @@ Likewise, the best time to use a Data Mapper, like iBATIS, is when:
 ```
 
 
+* any list
+{:toc}

@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Spring.NET-02-DI
+title:  Spring.NET-02-DI 依赖注入
 date:  2017-04-09 22:13:58 +0800
 categories: [Spring]
 tags: [spring, dotnet]
@@ -9,13 +9,9 @@ published: true
 ---
 
 
-# DI
+# 依赖注入 (DI)
 
-[Dependency injection](http://www.springframework.net/doc-latest/reference/html/objects.html#objects-factory-collaborators) (DI) 
-is a process whereby objects define their dependencies, that is, the other objects they work with, 
-only through constructor arguments and properties that are set on the object instance after it is constructed.
-
-
+[依赖注入](http://www.springframework.net/doc-latest/reference/html/objects.html#objects-factory-collaborators) (DI) 是一个过程，通过该过程，对象仅通过构造函数参数和对象实例构造后设置的属性来定义它们的依赖项，即它们与之一起工作的其他对象。
 
 # Constructor-based DI
 
@@ -241,20 +237,40 @@ List<int> numbers;
 ```
 
 
-# Method-base DI
+# 基于方法的依赖注入
 
-In most application scenarios, most object in the container are singletons. 
-When a singleton object needs to collaborate with another singleton object, or a non-singleton object needs to collaborate with another non-singleton object, 
-you typically handle the dependency by defining one object as a property of the other. 
+在大多数应用场景中，容器中的大多数对象都是单例。当一个单例对象需要与另一个单例对象协作，或者一个非单例对象需要与另一个非单例对象协作时，通常通过将一个对象定义为另一个对象的属性来处理依赖关系。
 
-A problem arrises when the object lifecycles are different. Suppose singleton object A needs to use a non-singleton (prototype) object B, 
-perhaps on each method invocation on A. The container only creates the singleton object A once, and thus only gets one opportunity to set the properties. 
-The container cannot provide object A with a new instance of object B every time one is needed.
+当对象生命周期不同步时会出现问题。假设单例对象 A 需要使用非单例（原型）对象 B，可能在每次调用 A 的方法时需要使用 B。容器只创建一次单例对象 A，因此只有一次机会设置其属性。容器无法在每次需要时为对象 A 提供一个新的对象 B 实例。
 
-A solution is to forego some inversion of control. You can make object A aware of the container by implementing the `IApplicationContextAware` interface, 
-and by making a GetObject("B") call to the container ask for (a typically new) object B every time it needs it. 
+解决方案是放弃一些控制反转。你可以通过实现 `IApplicationContextAware` 接口使对象 A 感知容器，并在每次需要对象 B 时通过调用 `GetObject("B")` 向容器请求（通常是新的）对象 B。
 
-Find below an example of this approach
+以下是这种方法的一个示例：
+
+```csharp
+public class SingletonA : IApplicationContextAware {
+    private IApplicationContext applicationContext;
+
+    // Implementing the IApplicationContextAware interface
+    public IApplicationContext ApplicationContext {
+        set { applicationContext = value; }
+    }
+
+    public void DoSomething() {
+        // Requesting a new instance of PrototypeB from the application context
+        PrototypeB prototypeB = (PrototypeB)applicationContext.GetObject("B");
+        prototypeB.PerformTask();
+    }
+}
+
+public class PrototypeB {
+    public void PerformTask() {
+        // Implementation of task
+    }
+}
+```
+
+在这个示例中，`SingletonA` 类实现了 `IApplicationContextAware` 接口，并通过 `GetObject("B")` 调用从应用程序上下文请求一个新的 `PrototypeB` 实例。每次调用 `DoSomething` 方法时，都会获得一个新的 `PrototypeB` 实例并执行其任务。
 
 ```c#
 using System.Collections;
@@ -289,20 +305,15 @@ namespace Fiona.Apple
 }
 ```
 
-The preceding is not desirable, because the business code is aware of and coupled to the Sring Framework. 
-Method Injection, a somewhat advanced feature of the Spring IoC container, allows this use case to be handled in a clean fashion.
+上述方法并不理想，因为业务代码了解并依赖于 Spring 框架。方法注入是 Spring IoC 容器的一个相当高级的特性，它允许以一种干净的方式处理这种用例。
 
-
-
-
-
-# Other 
+# 其他
 
 ## depends-on
 
-The `depends-on` attribute can explicitly force one or more objects to be initialized before the object using this element is initialized. 
+`depends-on` 属性可以显式地强制一个或多个对象在使用此元素的对象初始化之前初始化。
 
-eg:
+例如：
 
 ```xml
 <object id="objectOne" type="Examples.ExampleObject, ExamplesLibrary" depends-on="manager">
@@ -312,41 +323,28 @@ eg:
 <object id="manager" type="Examples.ManagerObject, ExamplesLibrary"/>
 ```
 
-首先会强制初始化 **manager**。
- 
-## Lazily-initialized objects
+这将首先强制初始化 **manager**。
 
-By default, `IApplicationContext` implementations eagerly pre-instantiate all singleton objects as part of the initialization process.
+## 延迟初始化对象
 
-Generally this pre-instantiation is **desirable**, because errors in configuration or the surrounding environment are discovered immediately, as opposed to hours or even days later.
+默认情况下，`IApplicationContext` 实现会在初始化过程中急切地预先实例化所有单例对象。
 
-定义如下
+通常这种预先实例化是**可取的**，因为配置或环境中的错误会立即被发现，而不是在数小时甚至数天后才被发现。
+
+定义如下：
 
 ```xml
 <object id="lazy" type="MyCompany.ExpensiveToCreateObject, MyApp" lazy-init="true"/>
 <object name="not.lazy" type="MyCompany.AnotherObject, MyApp"/>
 ```
 
-You can also control lazy-initialization at the container level by using the default-lazy-init attribute on the `<objects/>`element; for example:
+您还可以通过在 `<objects/>` 元素上使用 `default-lazy-init` 属性来控制容器级别的延迟初始化；例如：
 
 ```xml
 <objects default-lazy-init="true">
-  <!-- no objects will be pre-instantiated... -->
+  <!-- 不会预先实例化任何对象... -->
 </objects>
 ```
 
-## Autowiring collaborators
-
-TBC。。。
-
-
-
 * any list
 {:toc}
-
-
-
-
-
-
-

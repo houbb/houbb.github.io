@@ -1,10 +1,9 @@
 ---
 layout: post
-title:  Windows Service
-date:  2017-4-21 15:47:49 +0800
-categories: [Network]
-tags: [windows service]
-header-img: "static/app/res/img/nightsky-bg.jpeg"
+title:  c#-023-Windows Service Windows 服务程序
+date:  2017-04-09 21:44:46 +0800
+categories: [C#]
+tags: [cshape, cshape, lang, .net, dotnet]
 published: true
 ---
 
@@ -12,12 +11,13 @@ published: true
  
 一个[Windows服务程序](https://msdn.microsoft.com/zh-cn/library/y817hyb6(v=vs.110).aspx)是在Windows操作系统下能完成特定功能的可执行的应用程序。
 
-Windows服务程序虽然是可执行的，但是它不像一般的可执行文件通过双击就能开始运行了，它必须有特定的启动方式。这些启动方式包括了**自动启动**和**手动启动**两种。
+Windows服务程序虽然是可执行的，但是它不像一般的可执行文件通过双击就能开始运行了，它必须有特定的启动方式。
+
+这些启动方式包括了**自动启动**和**手动启动**两种。
 
 # Hello World
 
 ## 创建Windows Service项目
-
 
 - Create
 

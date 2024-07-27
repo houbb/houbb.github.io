@@ -1,10 +1,9 @@
 ---
 layout: post
 title:  WCF-07-message contract
-date:  2017-04-24 22:52:37 +0800
+date:  2017-04-22 22:35:31 +0800
 categories: [Network]
-tags: [wcf]
-header-img: "static/app/res/img/nightsky-bg.jpeg"
+tags: [wcf, dotnet]
 published: true
 ---
 

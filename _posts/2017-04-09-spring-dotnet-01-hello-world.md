@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Spring.NET-01-hello world
+title:  Spring.NET-01-hello world 入门介绍
 date:  2017-04-08 20:52:59 +0800
 categories: [Spring]
 tags: [spring, dotnet]
@@ -10,31 +10,22 @@ published: true
 
 # Spring.NET
 
-[Spring.NET](http://www.springframework.net/) is an open source application framework that makes building  enterprise .NET applications easier.
-   
+[Spring.NET](http://www.springframework.net/) 是一个开源应用程序框架，可以简化企业 .NET 应用程序的构建。
 
-> Modules
+> 模块
 
 ![modules](https://raw.githubusercontent.com/houbb/resource/master/img/spring/2017-04-08-spring-net-overview.gif)
 
+# 安装
 
-# Install
-
-先尝试最基础的。`spring.core`，nuget直接搜索引入即可。现在为**2.0.1**版本。
-
+先尝试最基础的模块：`spring.core`。可以直接通过 NuGet 搜索并引入，目前的版本是 **2.0.1**。
 
 # IOC
 
-In early 2004, **Martin Fowler** asked the readers of his site: when talking about Inversion of Control: "the question, is what aspect of control are they inverting?". 
-After talking about the term Inversion of Control Martin suggests renaming the pattern, or at least giving it a more self-explanatory name, and starts to use the term Dependency Injection. 
-
+2004年初，**Martin Fowler** 向他网站的读者提问：谈论控制反转时，“问题是他们在反转哪方面的控制？” 
+在谈到控制反转这个术语之后，Martin 建议重命名该模式，或者至少给它一个更自解释的名称，并开始使用依赖注入这个术语。
 
 ## Hello World
-
-> [objects-dependencies](http://www.springframework.net/docs/1.3.2/reference/html/objects.html#objects-dependencies)
-
-> [xsd intergration](http://www.springframework.net/docs/1.3.2/reference/html/vsnet.html)
-
 
 文件目录
 
@@ -147,7 +138,7 @@ namespace springNet
 }
 ```
 
-run result:
+执行结果:
 
 ```
 User :[User: name=ryo, id=5]
@@ -197,13 +188,11 @@ public static void Main(string[] args)
 ```
 
 
+# 参考资料
 
+> [objects-dependencies](http://www.springframework.net/docs/1.3.2/reference/html/objects.html#objects-dependencies)
 
-
-
+> [xsd intergration](http://www.springframework.net/docs/1.3.2/reference/html/vsnet.html)
 
 * any list
 {:toc}
-
-
-

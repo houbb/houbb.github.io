@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Mybatis.NET
+title:  Mybatis.NET-01-入门介绍
 date:  2017-04-09 21:44:46 +0800
 categories: [C#]
 tags: [cshape, cshape, lang, .net, dotnet]
@@ -10,41 +10,33 @@ published: true
 
 # Mybatis.NET
 
-[MyBatis](https://www.codeproject.com/articles/894127/mybatis-net) is a data mapping tool. 
+[MyBatis](https://www.codeproject.com/articles/894127/mybatis-net) 是一个数据映射工具。
 
-It maps columns of a database query including stored procedure to properties of a business object. 
+它将数据库查询（包括存储过程）的列映射到业务对象的属性。
 
-One definition of mapper is “an object that sets up communication between two independent objects. 
+映射器的定义之一是“在两个独立对象之间建立通信的对象”。
 
-A Data Mapper is a "layer of mappers that moves data between objects and a database while keeping them independent of each other and the mapper itself.
+数据映射器是“一个映射层，它在对象和数据库之间移动数据，同时使它们彼此独立，并且独立于映射器本身”。
 
+# 为什么？
 
+.NET 平台已经提供了一个强大的库来访问数据库，无论是通过 SQL 语句还是存储过程，但在使用 ADO.NET 时，仍有一些事情很难做好，包括：
 
-# Why？
+- 将 SQL 代码与编程代码分离
 
-.NET platform already provides a capable library for accessing databases, whether through SQL statements or stored procedures but several things are still hard to do well when using ADO.NET, including:
+- 向库类传递输入参数并提取输出
 
-- Separating SQL code from programming code
+- 将数据访问类与业务逻辑类分离
 
-- Passing input parameters to the library classes and extracting the output
+- 缓存经常使用的数据直到它发生变化
 
-- Separating data access classes from business logic classes
+- 管理事务和线程
 
-- Caching often-used data until it changes
+iBATIS DataMapper 通过使用 XML 文档在普通对象和 SQL 语句或存储过程之间创建映射，解决了这些问题——以及更多问题。
 
-- Managing transactions and threading
-
-
-iBATIS DataMapper solves these problems -- and many more -- by using XML documents to create a mapping between a plain-old object and a SQL statement or a stored procedure. 
-
-The "plain-old object" can be a IDictionary or property object.
-
-
+“普通对象”可以是 IDictionary 或属性对象。
 
 # Hello World
-
-
-> [c# mybatis net +mysql 的一个初步摸索](http://blog.csdn.net/zzzxxbird/article/details/49388517)
 
 
 本文使用 Mysql 进行测试。如果是 SQL server 请直接参考本文最后的一系列文章。你可以在[这里](https://github.com/houbb/mybatisNet.git)查看完整代码。
@@ -695,31 +687,9 @@ LOG如下，且不会报错。
 2017/04/12 22:33:39:SSS [DEBUG] IBatisNet.DataMapper.Configuration.Statements.PreparedStatementFactory - Statement Id: [QueryMethodInfo] Prepared SQL: [SELECT id, methodName    FROM `methodInfo`     WHERE (id =  @param0 )]
 ```
 
+# 参考资料
 
-
-
+> [c# mybatis net +mysql 的一个初步摸索](http://blog.csdn.net/zzzxxbird/article/details/49388517)
 
 * any list
 {:toc}
-
-
-
-
-
-
-
-
-
-
-
-
-
- 
- 
-
-
-
-
-
-
-

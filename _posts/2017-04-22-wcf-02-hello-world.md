@@ -4,7 +4,6 @@ title:  WCF-02-hello world2
 date:  2017-04-22 22:35:31 +0800
 categories: [Network]
 tags: [wcf, dotnet]
-header-img: "static/app/res/img/nightsky-bg.jpeg"
 published: true
 ---
 

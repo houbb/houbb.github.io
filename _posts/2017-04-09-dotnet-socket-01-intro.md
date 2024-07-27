@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  .Net Socket
+title:  .Net Socket-01-套接字入门介绍
 date:  2017-04-09 21:44:46 +0800
 categories: [C#]
 tags: [cshape, cshape, lang, .net, dotnet]
@@ -8,16 +8,11 @@ published: true
 ---
 
 
-# Socket
+# 套接字
 
-
-A network [socket](https://en.wikipedia.org/wiki/Network_socket) is an internal endpoint for sending or receiving data at a single node in a computer network. 
-
-
-
+网络[套接字](https://en.wikipedia.org/wiki/Network_socket) 是计算机网络中用于在单个节点发送或接收数据的内部端点。
 
 # TCP
-
 
 一、 三次握手建立连接
 
@@ -233,5 +228,3 @@ server console
 
 * any list
 {:toc}
-
-

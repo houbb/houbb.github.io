@@ -1,10 +1,9 @@
 ---
 layout: post
 title:  WCF-03-service contract
-date:  2017-04-23 09:07:34 +0800
+date:  2017-04-22 22:35:31 +0800
 categories: [Network]
-tags: [wcf]
-header-img: "static/app/res/img/nightsky-bg.jpeg"
+tags: [wcf, dotnet]
 published: true
 ---
 

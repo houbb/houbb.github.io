@@ -1,10 +1,9 @@
 ---
 layout: post
 title:  WCF-06-simplex communication, duplex separation
-date:  2017-4-24 14:02:19 +0800
+date:  2017-04-22 22:35:31 +0800
 categories: [Network]
-tags: [wcf]
-header-img: "static/app/res/img/nightsky-bg.jpeg"
+tags: [wcf, dotnet]
 published: true
 ---
 
