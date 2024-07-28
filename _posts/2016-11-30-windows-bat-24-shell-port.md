@@ -64,7 +64,7 @@ winrdlv3.exe                 17064 Services                   0     34,664 K
 >taskkill /f /t /im "winrdlv3.exe"
 ```
 
-# 3306 端口占用
+## 3306 端口占用
 
 ```
 netstat -ano | findstr "3306"
