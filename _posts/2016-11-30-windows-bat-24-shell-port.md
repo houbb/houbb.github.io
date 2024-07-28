@@ -1,6 +1,6 @@
 ---
 layout: post
-title: windows 端口占用 Port 端口占用-如何发现端口占用并且强杀？kill windows port 
+title: windows bat-24-端口占用 Port 端口占用 如何发现端口占用并且强杀？kill windows port 
 date:  2016-11-30 14:14:36 +0800
 categories: [Windows]
 tags: [windows, shell]
@@ -29,7 +29,15 @@ published: true
 | 7000           | logstash        | 7000            |
 
 
-# 端口占用情况
+# 应用场景
+
+## 场景
+
+有时候本地测试，经常发现端口占用。
+
+如何找到端口占用，并且 kill 掉呢？
+
+## 端口占用情况
 
 1. ```lsof -i:XXX``` 查看
 
@@ -40,7 +48,7 @@ published: true
 4. ```ps -ef | grep XXX``` 根据分类条件查询信息
 
 
-# 发现并强杀
+## 发现并强杀
 
 ```
 >netstat -ano | findstr "8226"

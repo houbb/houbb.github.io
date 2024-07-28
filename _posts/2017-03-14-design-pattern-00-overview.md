@@ -49,7 +49,6 @@ Java 基础。如果没有接触过 Java，建议首先学习 Java。
 
 ![设计模式的关系](https://img-blog.csdn.net/20180506150933772?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3J5bzEwNjA3MzI0OTY=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70)
 
-
 # 代码开源地址
 
 所有的代码都在 [design-pattern-note](https://github.com/houbb/design-pattern/tree/master/design-pattern-note/src/main/java/com/ryo/design/pattern/note)

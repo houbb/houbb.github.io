@@ -3,12 +3,9 @@ layout: post
 title: 开源的分布式文件系统 Fastdfs 安装入门介绍
 date:  2016-12-31 10:48:42 +0800
 categories: [File]
-tags: [distributed, file]
+tags: [distributed, dfs, file]
 published: false
 ---
-
-
-
 
 # fastdfs
 
