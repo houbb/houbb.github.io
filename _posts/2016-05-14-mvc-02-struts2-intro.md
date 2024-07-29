@@ -632,11 +632,172 @@ public class AuthInterceptor extends AbstractInterceptor {
 
 ## 详细介绍一下 structs2
 
+Structs2 是一个流行的 Java Web 应用框架，主要用于构建基于 MVC（Model-View-Controller）模式的应用。它是 Struts 1 的继任者，相较于 Struts 1，Structs2 在设计和功能上有了显著的改进。以下是 Structs2 的一些主要特性和优点：
+
+### 主要特性
+
+1. **POJO（Plain Old Java Objects）行动类**：
+   Structs2 允许使用简单的 POJO 类来作为行动类，而不需要继承框架特定的类或实现接口，这使得代码更加简洁和易于测试。
+
+2. **拦截器（Interceptor）**：
+   Structs2 使用拦截器来处理大部分的框架逻辑，如验证、文件上传、数据预处理等。这使得业务逻辑和框架逻辑分离，代码更清晰。
+
+3. **可插拔的视图技术**：
+   Structs2 支持多种视图技术，如 JSP、FreeMarker、Velocity 等，开发者可以根据需求选择合适的视图技术。
+
+4. **强大的标签库**：
+   Structs2 提供了丰富的标签库，用于简化 JSP 页面的开发，如数据表单标签、UI 标签等。
+
+5. **内置验证框架**：
+   Structs2 提供了灵活的验证框架，支持 XML 配置、注解配置等方式，方便进行表单验证。
+
+6. **良好的集成能力**：
+   Structs2 能够与其他流行的 Java 框架和技术（如 Spring、Hibernate）无缝集成，增强了应用的扩展性和灵活性。
+
+### 架构概述
+
+Structs2 的架构主要包括以下几个组件：
+
+1. **Action**：代表用户的一个操作请求，处理业务逻辑并返回一个结果字符串。
+2. **Interceptor**：在 Action 执行前后进行预处理和后处理。
+3. **Result**：根据 Action 返回的结果字符串，决定如何呈现响应页面。
+4. **OGNL（Object-Graph Navigation Language）**：用于在 JSP 中访问和操作数据。
+
+### 工作流程
+
+1. **请求进入**：客户端发出请求。
+2. **拦截器链**：请求首先经过一系列的拦截器进行预处理。
+3. **Action 执行**：拦截器链处理完毕后，请求交给相应的 Action 处理。
+4. **结果处理**：Action 返回一个结果字符串，根据该字符串找到对应的 Result 类型，决定如何呈现响应页面。
+5. **视图渲染**：Result 负责渲染最终的响应页面，返回给客户端。
+
+### 使用示例
+
+以下是一个简单的 Structs2 使用示例：
+
+**1. 定义一个 Action 类：**
+
+```java
+package com.example.action;
+
+public class HelloWorldAction {
+    private String message;
+
+    public String execute() {
+        message = "Hello, Struts2!";
+        return "success";
+    }
+
+    public String getMessage() {
+        return message;
+    }
+}
+```
+
+**2. 配置文件 `struts.xml`：**
+
+```xml
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+        "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+    <package name="default" extends="struts-default">
+        <action name="hello" class="com.example.action.HelloWorldAction">
+            <result name="success">/hello.jsp</result>
+        </action>
+    </package>
+</struts>
+```
+
+**3. JSP 页面 `hello.jsp`：**
+
+```jsp
+<%@ taglib prefix="s" uri="/struts-tags" %>
+<html>
+<head>
+    <title>Hello World</title>
+</head>
+<body>
+    <h1><s:property value="message"/></h1>
+</body>
+</html>
+```
+
+通过这些配置，当客户端请求 `hello` 时，Structs2 框架会调用 `HelloWorldAction` 的 `execute` 方法，并返回 `hello.jsp` 页面，在页面中显示 `message` 属性的值。
+
+Structs2 框架的灵活性和扩展性使得它在开发复杂的 Java Web 应用时非常有用。通过合理使用拦截器、标签库和验证框架，可以大大提高开发效率和代码质量。
+
 ## structs2 的设计有哪些优秀之处？
+
+Structs2（Struts 2）在设计上有许多优秀之处，使其成为一个强大且灵活的 Web 应用框架。以下是 Structs2 设计上的一些优秀之处：
+
+### 1. 简单的 POJO Action
+Structs2 允许使用普通的 Java 类（POJO）作为 Action 类，而不需要继承特定的框架类或实现接口。这使得代码更加简洁、易于理解和测试，同时减少了对框架的依赖。
+
+### 2. 拦截器机制
+Structs2 使用拦截器（Interceptor）来处理大部分的框架逻辑，如验证、文件上传、数据预处理等。拦截器可以在 Action 执行前后进行处理，使得业务逻辑和框架逻辑分离，增强了代码的可维护性和可扩展性。
+
+### 3. 灵活的配置
+Structs2 提供了灵活的配置方式，可以使用 XML 配置文件（如 `struts.xml`）或者基于注解的配置方式。这种灵活性允许开发者根据项目需求选择最合适的配置方式。
+
+### 4. 丰富的标签库
+Structs2 提供了丰富的标签库，用于简化 JSP 页面的开发，如数据表单标签、UI 标签等。通过这些标签，开发者可以更加方便地进行表单数据绑定和页面展示。
+
+### 5. 内置验证框架
+Structs2 内置了一个强大的验证框架，支持多种验证方式（XML 配置、注解配置）。开发者可以非常方便地对表单输入进行验证，确保数据的正确性和安全性。
+
+### 6. OGNL（Object-Graph Navigation Language）
+Structs2 使用 OGNL 作为表达式语言，支持在 JSP 中访问和操作数据。这种方式使得数据绑定和表达式处理更加灵活和强大。
+
+### 7. 可插拔的视图技术
+Structs2 支持多种视图技术，如 JSP、FreeMarker、Velocity 等。开发者可以根据项目需求选择合适的视图技术，增强了应用的可扩展性和灵活性。
+
+### 8. 良好的集成能力
+Structs2 能够与其他流行的 Java 框架和技术（如 Spring、Hibernate）无缝集成。这使得开发者可以充分利用这些框架的优点，构建功能强大的应用程序。
+
+### 9. 多模块支持
+Structs2 支持多模块应用的开发，通过不同的 package 配置可以将应用程序的不同模块进行分离和组织，提高了代码的可维护性和可重用性。
+
+### 10. 国际化支持
+Structs2 提供了强大的国际化支持，可以非常方便地实现应用的多语言支持，通过配置不同的资源文件，可以根据用户的语言环境动态切换语言。
+
+### 11. 详尽的文档和社区支持
+Structs2 拥有详尽的文档和强大的社区支持。开发者可以很容易地找到所需的资源和帮助，解决在开发过程中遇到的问题。
+
+这些设计上的优秀之处使得 Structs2 成为一个灵活、强大且易于使用的 Web 应用框架，适用于各种规模的 Java Web 应用开发。
 
 ## 为什么 structs2 现在不再使用了？
 
+Structs2（Struts 2）曾经是一个非常流行的 Java Web 应用框架，但随着时间的推移，它的使用逐渐减少，主要原因包括以下几点：
 
+### 1. 新兴框架的崛起
+
+随着技术的不断发展，出现了许多新的 Web 框架，如 Spring MVC、Spring Boot、Play Framework 等，这些新框架在设计、功能和易用性上都有显著的改进。
+
+例如：
+
+- **Spring MVC** 和 **Spring Boot** 提供了更强大的依赖注入、自动配置和集成能力，使得开发变得更加简单和高效。
+- **Play Framework** 支持非阻塞式 I/O 和高度并发，适用于构建现代 Web 应用。
+
+### 2. 过时的设计理念
+尽管 Structs2 在设计上有许多优秀之处，但它的某些设计理念已经过时。例如，Structs2 主要依赖于 XML 配置文件，这在当今注重简洁和易用性的开发环境中显得繁琐和不便。现代框架更倾向于使用基于注解的配置，减少了配置的复杂性。
+
+### 3. 社区支持和活跃度下降
+随着新框架的崛起，Structs2 的社区支持和活跃度逐渐下降。开发者更倾向于选择那些有活跃社区和持续更新的框架，以获得更好的支持和最新的功能。
+
+### 4. 安全问题
+Structs2 曾经爆出过一些安全漏洞，如知名的 **CVE-2017-5638** 漏洞，这对其声誉造成了负面影响。尽管漏洞已经被修复，但一些企业开始转向其他更安全、更新的框架。
+
+### 5. 开发效率和现代化工具的缺乏
+现代开发工具和生态系统更倾向于支持像 Spring Boot 这样的框架，这些工具能够显著提高开发效率。例如，Spring Boot 的自动配置和嵌入式服务器使得开发和部署变得更加简单和快速，而 Structs2 在这方面显得相对较弱。
+
+### 6. 微服务架构的兴起
+随着微服务架构的普及，开发者更多地转向 Spring Cloud 等微服务框架，这些框架提供了更好的支持和工具链，用于构建和管理分布式系统。Structs2 的设计更多地面向传统的单体应用架构，无法很好地适应微服务架构的需求。
+
+### 总结
+
+虽然 Structs2 曾经是一个强大且灵活的 Web 应用框架，但随着技术的发展和新框架的崛起，它的使用逐渐减少。
+
+新兴框架在设计、功能、易用性、安全性和社区支持方面都有显著的优势，吸引了越来越多的开发者转向这些新的选择。
 
 * any list
 {:toc}

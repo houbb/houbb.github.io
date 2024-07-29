@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  手写 Hibernate ORM 框架 06-spring mybatis 原理
+title:  从零开始手写 mybatis-06-spring mybatis 原理
 date:  2020-6-21 15:11:16 +0800
 categories: [Java]
 tags: [java, hand-write, middleware, orm, mybatis, sql, sh]
