@@ -1,6 +1,6 @@
 ---
 layout: post
-title: java web mvc-02-struts2
+title: java web mvc-02-struts2 入门介绍
 date:  2016-5-14 11:58:26 +0800
 categories: [WEB]
 tags: [web, mvc]
@@ -9,9 +9,15 @@ published: false
 
 # 拓展阅读
 
+[Java Servlet 教程-20-自己手写实现 spring mvc 整体思路](https://houbb.github.io/2018/09/27/java-servlet-tutorial-20-fake-mvc)
+
+[Java Servlet 教程-21-自己手写 spring mvc 简单实现](https://houbb.github.io/2018/09/27/java-servlet-tutorial-21-fake-mvc-simple)
+
 [Spring Web MVC-00-重学 mvc](https://houbb.github.io/2019/12/25/springmvc-00-index)
 
 [mvc-01-Model-View-Controller 概览](https://houbb.github.io/2016/05/14/mvc-01-overview)
+
+[mvc-02-structs 介绍](https://houbb.github.io/2016/05/14/mvc-02-structs-intro)
 
 [web mvc-03-JFinal](https://houbb.github.io/2016/05/14/mvc-03-jfinal-intro)
 
@@ -25,14 +31,29 @@ published: false
 
 [web mvc-08-Grails](https://houbb.github.io/2016/05/14/mvc-08-Grails)
 
-# 拓展阅读
+# 从零手写组件系列
 
-> [The jdbc pool for java.(java 手写 jdbc 数据库连接池实现)](https://github.com/houbb/jdbc-pool)
+[java 从零手写 spring ioc 控制反转](https://github.com/houbb/ioc)
 
-> [The simple mybatis.（手写简易版 mybatis）](https://github.com/houbb/mybatis)
+[java 从零手写 spring mvc](https://github.com/houbb/mvc)
 
+[java 从零手写 jdbc-pool 数据库连接池](https://github.com/houbb/jdbc-pool)
 
-## Struts2
+[java 从零手写 mybatis](https://github.com/houbb/mybatis)
+
+[java 从零手写 hibernate](https://github.com/houbb/hibernate)
+
+[java 从零手写 rpc 远程调用](https://github.com/houbb/rpc)
+
+[java 从零手写 mq 消息组件](https://github.com/houbb/rpc)
+
+[java 从零手写 cache 缓存](https://github.com/houbb/cache)
+
+[java 从零手写 nginx4j](https://github.com/houbb/nginx4j)
+
+[java 从零手写 tomcat](https://github.com/houbb/minicat)
+
+# Struts2
 
 Apache Struts是一个用于创建优雅、现代Java Web应用程序的免费、开源的MVC框架。
 
@@ -605,6 +626,17 @@ public class AuthInterceptor extends AbstractInterceptor {
 ```
 
 > <a title="directives" href="{{ site.url }}/static/download/struts/struts.zip"><i class="fa fa-fw fa-download"></i>&nbsp;struts.zip</a>
+
+
+# chat
+
+## 详细介绍一下 structs2
+
+## structs2 的设计有哪些优秀之处？
+
+## 为什么 structs2 现在不再使用了？
+
+
 
 * any list
 {:toc}
