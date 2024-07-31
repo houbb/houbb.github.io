@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-06-文件夹内容的自动索引展示
+title:  从零手写实现 nginx-06-如何文件夹内容的自动索引展示?
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
@@ -12,12 +12,13 @@ published: true
 
 大家好，我是老马。很高兴遇到你。
 
-我们希望实现最简单的 http 服务信息，可以处理静态文件。
+我们为 java 开发者实现了 java 版本的 nginx, 可以处理静态文件
+
+> [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
 
 如果你想知道 servlet 如何处理的，可以参考我的另一个项目：
 
-> 手写从零实现简易版 tomcat [minicat](https://github.com/houbb/minicat) 
-
+> 手写从零实现简易版 tomcat [https://github.com/houbb/minicat](https://github.com/houbb/minicat) 
 
 ## 手写 nginx 系列
 
@@ -93,6 +94,18 @@ published: true
 
 [从零手写实现 nginx-35-proxy_pass netty 如何实现？](https://houbb.github.io/2018/11/22/nginx-write-35-http-proxy-pass-netty)
 
+
+# 系列
+
+从零手写实现 nginx-01-为什么不能有 java 版本的 nginx?
+
+从零手写实现 nginx-02-nginx 的核心能力
+
+从零手写实现 nginx-03-nginx 基于 Netty 实现
+
+从零手写实现 nginx-04-基于 netty 优化 http 出入参处理
+
+从零手写实现 nginx-05-MIME类型（多用途互联网邮件扩展类型）
 
 # 目标
 
