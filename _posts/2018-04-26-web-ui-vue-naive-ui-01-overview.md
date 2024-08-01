@@ -61,6 +61,104 @@ naive-ui 建议使用 xicons 作为图标库。
 
 ------------------------------------------------------------------------------------------------
 
+
+# 入门测试
+
+## vue3
+
+```
+> npm init vue@latest
+
+Vue.js - The Progressive JavaScript Framework
+
+√ 请输入项目名称： ... my-vue-app
+√ 是否使用 TypeScript 语法？ ... 否 / 是
+√ 是否启用 JSX 支持？ ... 否 / 是
+√ 是否引入 Vue Router 进行单页面应用开发？ ... 否 / 是
+√ 是否引入 Pinia 用于状态管理？ ... 否 / 是
+√ 是否引入 Vitest 用于单元测试？ ... 否 / 是
+√ 是否要引入一款端到端（End to End）测试工具？ » 不需要
+√ 是否引入 ESLint 用于代码质量检测？ ... 否 / 是
+√ 是否引入 Prettier 用于代码格式化？ ... 否 / 是
+√ 是否引入 Vue DevTools 7 扩展用于调试? (试验阶段) ... 否 / 是
+
+正在初始化项目 D:\code\front\my-vue-app...
+
+项目初始化完成，可执行以下命令：
+
+  cd my-vue-app
+  npm install
+  npm run dev
+```
+
+
+## 安装特别慢的问题
+
+设置：
+
+```sh
+npm config set registry https://registry.npmmirror.com
+```
+
+确认：
+
+```sh
+npm config get registry
+```
+
+## naive-ui 入门
+
+1. **安装**：通过 npm 或 yarn 安装 Naive UI。
+
+   ```bash
+   npm install naive-ui --save
+   ```
+
+会自动在 package.json 中添加：
+
+```json
+  "dependencies": {
+    "naive-ui": "^2.39.0",
+    "vue": "^3.4.29",
+    "vue-router": "^4.3.3"
+  },
+```
+
+
+2. **引入 Naive UI**：在你的 Vue 3 项目中引入 Naive UI，并全局注册所需的组件。
+
+调整 main.ts 如下：
+
+
+```js
+import './assets/main.css'
+
+import { createApp } from 'vue'
+import App from './App.vue'
+import router from './router'
+import NaiveUi from 'naive-ui';
+import 'naive-ui/dist/style.css';
+
+const app = createApp(App)
+
+app.use(router)
+app.use(NaiveUi);
+app.mount('#app')
+```
+
+3. **使用组件**：在 Vue 组件中使用 Naive UI 提供的标签来引入 UI 组件。
+
+   ```vue
+   <template>
+     <n-button>Click Me</n-button>
+   </template>
+   ```
+
+
+## 入门代码
+
+> []()
+
 # chat
 
 ## 详细介绍一下 naive ui
