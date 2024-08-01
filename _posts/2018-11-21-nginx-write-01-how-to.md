@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-01-为什么不能有 java 版本的 nginx?
+title:  从零手写实现 nginx-01-为什么不能有 java 版本的 nginx?（已完结，共计 35 讲）
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]

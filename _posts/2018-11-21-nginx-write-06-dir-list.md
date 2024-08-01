@@ -95,18 +95,6 @@ published: true
 [从零手写实现 nginx-35-proxy_pass netty 如何实现？](https://houbb.github.io/2018/11/22/nginx-write-35-http-proxy-pass-netty)
 
 
-# 系列
-
-从零手写实现 nginx-01-为什么不能有 java 版本的 nginx?
-
-从零手写实现 nginx-02-nginx 的核心能力
-
-从零手写实现 nginx-03-nginx 基于 Netty 实现
-
-从零手写实现 nginx-04-基于 netty 优化 http 出入参处理
-
-从零手写实现 nginx-05-MIME类型（多用途互联网邮件扩展类型）
-
 # 目标
 
 这一节我们想实现如果访问的是文件夹，我们就把文件夹内容全部列出来。

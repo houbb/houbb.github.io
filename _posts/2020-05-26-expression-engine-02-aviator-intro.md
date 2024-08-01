@@ -285,5 +285,12 @@ public class RegexFindIpDemo {
 
 不缓存的话，性能会非常差。约 19s
 
+
+如果是长文本，500+ 对比：
+
+Regex 方式，提前 pattern 优化：407ms
+
+表达式引擎方式 方式，cache pattern（其实不需要，提前编译好即可）：169ms
+
 * any list
 {:toc}
