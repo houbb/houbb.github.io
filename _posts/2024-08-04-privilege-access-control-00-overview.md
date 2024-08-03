@@ -128,11 +128,17 @@ published: true
 
 ## 安全
 
-### 加密
+### 加解密
 
 [加密算法简介](https://houbb.github.io/2018/11/09/althgorim-cryptograph-01-overview-01)
 
 [几种常见的加密算法](https://houbb.github.io/2018/11/09/althgorim-cryptograph-02-common-02)
+
+[密码学-01-密码学介绍](https://houbb.github.io/2022/10/27/web3-crypto-01-overview)
+
+[密码学-02-数字签名 Digital Signature](https://houbb.github.io/2022/10/27/web3-crypto-02-digit-sign)
+
+[密码学-03-零知识证明 zero-knowledge proof](https://houbb.github.io/2022/10/27/web3-crypto-03-zero-knowledge-proof)
 
 ### 攻防
 
@@ -184,6 +190,24 @@ published: true
 
 [web 安全系列-23-文件上传攻击](https://houbb.github.io/2020/08/09/web-safe-23-file-upload-attack)
 
+
+
+# 权限系列
+
+[privilege access control-00-权限访问控制概览](https://houbb.github.io/2018/11/21/privilege-access-control-01-overview)
+
+[privilege-02 RBAC-以角色为基础的权限管理系统设计](https://houbb.github.io/2018/11/21/privilege-access-control-02-rbac-01-what-is)
+
+[privilege-02 RBAC-02-数据库表设计](https://houbb.github.io/2018/11/21/privilege-access-control-02-rbac-02-table-design)
+
+[privilege-03-身份认证 Authentication](https://houbb.github.io/2018/11/21/privilege-access-control-03-Authentication-01-intro)
+
+[]()
+
+
+
+# UMS 系列
+
 # 问题模板
 
 是什么？
@@ -205,149 +229,6 @@ published: true
 ---------------------------------------------------------------------------------------------------
 
 # chat
-
-## java 除了 shiro spring security，还有哪些优秀的权限管理框架？
-
-除了 Apache Shiro 和 Spring Security，Java 中还有一些其他优秀的权限管理框架。
-
-以下是其中一些常用的：
-
-1. **Apache Shiro（Shiro）:**
-   - Apache Shiro 是一个功能强大且易于使用的 Java 安全框架，提供了身份认证、授权、加密和会话管理等功能。它的设计简单，易于集成到各种应用中。
-
-2. **Spring Security:**
-   - Spring Security 是 Spring 生态系统中专门用于处理安全性的框架。它提供了全面的身份认证和授权解决方案，可以轻松集成到 Spring 应用程序中。
-
-3. **Apache Shindig（Shindig）:**
-   - Apache Shindig 是一个开源社交应用程序的实现，它包括一些用于处理社交网络中安全和权限的功能。虽然它主要是一个社交框架，但也可用于一般的权限管理需求。
-
-4. **Keycloak:**
-   - Keycloak 是一个开源的身份和访问管理解决方案。它提供了单点登录、多因素认证、授权服务等功能，适用于构建安全的身份管理系统。
-
-5. **Apache Fortress（Fortress）:**
-   - Apache Fortress 是一个用于访问控制和身份管理的开源框架。它提供了基于角色的访问控制、会话管理等功能。
-
-6. **JSecurity:**
-   - JSecurity 是一个简单且灵活的 Java 安全框架，旨在提供身份认证、授权和会话管理等功能。
-
-7. **PicketBox:**
-   - PicketBox 是 JBoss 社区的一个项目，提供了一组安全组件，包括身份认证和授权。它通常与 WildFly（以前是 JBoss AS）应用服务器一起使用。
-
-8. **JAAS（Java Authentication and Authorization Service）:**
-   - JAAS 是 Java 平台的官方身份认证和授权框架。它允许开发者使用插件的方式实现不同的认证和授权机制。
-
-9. **OACC (Object-based Access Control):**
-   - OACC 是一个基于对象的访问控制框架，提供了一种灵活的方式来管理对应用程序中的对象的访问权限。
-
-10. **SecureREST:**
-    - SecureREST 是一个轻量级的 Java 框架，专注于为 RESTful 服务提供身份认证和授权。
-
-在选择权限管理框架时，需要根据项目的需求、复杂性和集成要求来做出合适的选择。
-
-不同的框架具有不同的特点和适用场景，因此最好根据具体情况进行评估。
-
-## 详细对比下上述开源组件，可有哪些优缺点，具体的适用场景？
-
-下面是对上述开源组件的一些简要对比，包括它们的优点、缺点以及适用场景：
-
-1. **Apache Shiro:**
-   - **优点：**
-     - 简单易用，适合小型和中小型项目。
-     - 提供了细粒度的访问控制和灵活的定制选项。
-     - 集成度高，能够与 Spring 等框架无缝协作。
-   - **缺点：**
-     - 某些复杂场景下可能缺乏一些高级功能。
-   - **适用场景：**
-     - 小型和中小型项目。
-     - 对简单的权限管理需求。
-
-2. **Spring Security:**
-   - **优点：**
-     - 继承自 Spring 生态系统，与 Spring 框架深度集成。
-     - 提供全面的身份认证和授权解决方案。
-     - 可以适应大型和复杂的企业级项目。
-   - **缺点：**
-     - 学习曲线相对较陡峭。
-     - 配置可能较为复杂。
-   - **适用场景：**
-     - 大型和复杂的企业级项目。
-     - 需要与其他 Spring 组件深度集成的项目。
-
-3. **Apache Shindig:**
-   - **优点：**
-     - 针对社交应用的开源框架，提供一些社交网络中的安全和权限功能。
-   - **缺点：**
-     - 作为社交框架，功能相对有限，不适合通用权限管理需求。
-   - **适用场景：**
-     - 社交应用程序或需要社交功能的项目。
-
-4. **Keycloak:**
-   - **优点：**
-     - 提供单点登录、多因素认证、授权服务等功能。
-     - 容易集成到现有的应用程序中。
-     - 可以用作独立的身份提供者或与其他系统集成。
-   - **缺点：**
-     - 在一些特定场景下可能需要定制配置。
-   - **适用场景：**
-     - 需要身份和访问管理的项目，特别是涉及单点登录和多系统集成的场景。
-
-5. **Apache Fortress:**
-   - **优点：**
-     - 提供基于角色的访问控制和会话管理等功能。
-     - 适合需要灵活的身份和访问管理的项目。
-   - **缺点：**
-     - 社区支持相对有限。
-   - **适用场景：**
-     - 企业级项目，需要基于角色的访问控制和会话管理。
-
-6. **JSecurity:**
-   - **优点：**
-     - 简单易用，适合小型项目。
-     - 提供基本的身份认证和授权功能。
-   - **缺点：**
-     - 功能相对有限，不适用于复杂的权限管理需求。
-   - **适用场景：**
-     - 小型项目，对功能要求不高的场景。
-
-7. **PicketBox:**
-   - **优点：**
-     - 与 JBoss 生态系统深度集成，适合在 JBoss 应用服务器上使用。
-     - 提供一些安全组件，包括身份认证和授权。
-   - **缺点：**
-     - 相对于 Spring Security 等框架，生态系统支持较少。
-   - **适用场景：**
-     - 需要在 JBoss 环境中使用的项目。
-
-8. **JAAS (Java Authentication and Authorization Service):**
-   - **优点：**
-     - Java 平台的官方身份认证和授权框架。
-     - 支持插件，允许开发者自定义认证和授权机制。
-   - **缺点：**
-     - 学习曲线较陡峭，配置相对繁琐。
-   - **适用场景：**
-     - Java 平台上需要使用官方标准的身份认证和授权框架的项目。
-
-9. **OACC (Object-based Access Control):**
-   - **优点：**
-     - 提供基于对象的访问控制，适合需要对对象进行精细访问控制的项目。
-     - 允许定义自定义资源类型和权限。
-   - **缺点：**
-     - 社区支持相对较小。
-   - **适用场景：**
-     - 需要对对象进行细粒度访问控制的项目。
-
-10. **SecureREST:**
-    - **优点：**
-      - 轻量级，适用于简单的 RESTful 服务。
-      - 提供基本的身份认证和授权功能。
-    - **缺点：**
-      - 功能有限，不适用于复杂的权限管理需求。
-    - **适用场景：**
-      - 小型 RESTful 服务，对功能要求不高的场景。
-
-在选择权限管理框架时，需根据项目的规模、复杂性、技术栈以及具体的安全需求来综合考虑。
-
-最适合的框架取决于项目的具体要求和团队的熟悉程度。
 
 ## 详细介绍权限管理系统
 
@@ -410,9 +291,6 @@ published: true
 9. **PKCE（Proof Key for Code Exchange）：**
    - **简介：** PKCE是OAuth 2.0中的一项增强安全性的标准，用于在授权码授权流程中防止授权码被截获攻击。
 
-10. **Cognito（Amazon Cognito）：**
-    - **简介：** Amazon Cognito是AWS提供的身份管理服务，支持用户身份验证、授权和同步用户数据等功能。
-
 这些概念和技术共同构成了一个全面的权限管理体系，帮助开发者实现安全、灵活和可管理的应用程序访问控制。
 
 在实际项目中，根据具体需求选择适当的技术和组合是至关重要的。
@@ -455,45 +333,9 @@ published: true
 
 在实际应用中，深入理解这些概念将有助于更好地设计和实施安全可靠的系统。
 
-## java 优秀的开源权限组件介绍
-
-在Java生态系统中，有许多优秀的开源权限组件，用于简化和加强应用程序的访问控制和身份验证功能。
-
-以下是一些值得关注的开源权限组件：
-
-1. **Spring Security:**
-   - **官方网站:** [Spring Security](https://spring.io/projects/spring-security)
-   - **GitHub 地址:** [Spring Security on GitHub](https://github.com/spring-projects/spring-security)
-   - **简介:** Spring Security 是一个功能强大且高度可定制的身份验证和访问控制框架，广泛用于基于Spring的应用程序。它提供了各种身份验证机制、访问控制策略以及对常见攻击的防护机制。
-
-2. **Apache Shiro:**
-   - **官方网站:** [Apache Shiro](https://shiro.apache.org/)
-   - **GitHub 地址:** [Apache Shiro on GitHub](https://github.com/apache/shiro)
-   - **简介:** Apache Shiro 是一个功能强大且容易使用的Java安全框架，支持身份验证、授权、会话管理和密码学等功能。它可以轻松地集成到各种Java应用程序中。
-
-3. **Keycloak:**
-   - **官方网站:** [Keycloak](https://www.keycloak.org/)
-   - **GitHub 地址:** [Keycloak on GitHub](https://github.com/keycloak/keycloak)
-   - **简介:** Keycloak 是一个开源的身份和访问管理解决方案，支持单点登录（SSO）、多因素认证、OAuth 2.0 和 OpenID Connect。它可以作为独立的身份提供者或与现有应用程序集成。
-
-4. **Apache ShardingSphere:**
-   - **官方网站:** [Apache ShardingSphere](https://shardingsphere.apache.org/)
-   - **GitHub 地址:** [Apache ShardingSphere on GitHub](https://github.com/apache/shardingsphere)
-   - **简介:** Apache ShardingSphere 是一个开源的分布式数据库中间件，提供了分库分表、读写分离等功能。虽然它主要用于数据库分片，但也包含了一些身份验证和访问控制的功能。
-
-5. **Stormpath (现为Okta):**
-   - **官方网站:** [Okta](https://www.okta.com/)
-   - **GitHub 地址:** [Stormpath (Okta) on GitHub](https://github.com/okta)
-   - **简介:** Stormpath 是一个身份验证和访问控制服务，提供易于使用的API和库，帮助开发人员在应用程序中实现用户身份验证和授权。然而，Stormpath 已经合并到 Okta。
-
-这些开源权限组件都有着活跃的社区支持和广泛的应用，你可以根据项目需求选择适合的组件。
-
-在选择之前，建议查看它们的文档、示例和社区活跃度，以确保它们满足你的具体需求。
-
 ## 从零设计一个权限管理系统，你会如何设计？为什么？
 
 设计一个权限管理系统需要综合考虑系统的需求、规模、复杂性以及预期的未来扩展。
-
 
 以下是一个从零设计权限管理系统的基本步骤和关键考虑因素：
 
