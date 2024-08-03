@@ -1,7 +1,7 @@
 ---
 layout: post
-title: 解忧杂货铺
-date: 2030-12-09 21:01:55 +0800
+title: 解忧杂货铺-个人开源项目汇总
+date: 2024-08-03 21:01:55 +0800
 categories: [Tool]
 tags: [tool, index, sh]
 published: true
