@@ -48,8 +48,6 @@ published: true
 
 # 序言
 
-前面我们学习了 [spring security 与 springmvc 的整合入门教程](https://www.toutiao.com/i6884852647480787459/)。
-
 这一节我们来学习一下 spring security 与 springboot 整合，为了力求简单，此处不演示数据库相关操作。
 
 # 快速开始

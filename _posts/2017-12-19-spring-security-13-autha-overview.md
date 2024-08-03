@@ -47,18 +47,6 @@ published: true
 
 # 序言
 
-前面我们学习了 [spring security 与 springmvc 的整合入门教程](https://www.toutiao.com/i6884852647480787459/)。
-
-[spring secutity整合springboot入门](https://www.toutiao.com/item/6916894767628468747/)
-
-[spring security 使用 maven 导入汇总](https://www.toutiao.com/item/6917240713151398403/)
-
-[spring security 业界标准加密策略源码详解](https://www.toutiao.com/item/6917261378050982403/)
-
-[Spring Security 如何预防CSRF跨域攻击？](https://www.toutiao.com/item/6917618373924995591/)
-
-[Spring Security 安全响应头配置详解](https://www.toutiao.com/item/6918186604846842376/)
-
 这一节我们来学习一下 spring security 的整体架构设计。
 
 # Authorization

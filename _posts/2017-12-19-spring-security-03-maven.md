@@ -47,10 +47,6 @@ published: true
 
 # 序言
 
-前面我们学习了 [spring security 与 springmvc 的整合入门教程](https://www.toutiao.com/i6884852647480787459/)。
-
-[spring secutity整合springboot入门](https://www.toutiao.com/item/6916894767628468747/)
-
 这一节我们来学习一下 spring security 使用 maven 的几种导入方法。
 
 # springboot 整合使用
