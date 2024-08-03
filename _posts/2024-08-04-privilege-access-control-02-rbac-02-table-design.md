@@ -1,7 +1,7 @@
 ---
 layout: post
 title: privilege-02 RBAC-02-数据库表设计
-date: 2018-11-21 8:01:55 +0800
+date: 2024-08-04 21:01:55 +0800
 categories: [Design]
 tags: [design, privilege, sh]
 published: true
@@ -25,7 +25,6 @@ role_privilege
 # 二期特性
 
 操作日志
-
 
 
 

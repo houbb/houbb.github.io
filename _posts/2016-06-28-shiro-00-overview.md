@@ -8,11 +8,43 @@ published: true
 ---
 
 
-# RBAC
+# shiro 系列
 
-> [RBCA](http://www.katasoft.com/blog/2011/05/09/new-rbac-resource-based-access-control)
+[shiro-00-overview](https://houbb.github.io/2016/08/11/shiro-00-overview)
 
-> [RBCA zh_CN](http://www.thinksaas.cn/topics/0/150/150841.html)
+[Shiro-01-shiro 是什么?](https://houbb.github.io/2016/08/11/shiro-01-what-is-shiro)
+
+[Shiro-02-shiro 的架构设计详解](https://houbb.github.io/2016/08/11/shiro-02-architecture)
+
+[Shiro-03-5 分钟入门 shiro 安全框架实战笔记](https://houbb.github.io/2016/08/11/shiro-03-5-min-travel)
+
+[Shiro-04-Authentication 身份验证](https://houbb.github.io/2016/08/11/shiro-04-authentication)
+
+[Shiro-05-Authorization 授权](https://houbb.github.io/2016/08/11/shiro-05-authorization)
+
+[Shiro-06-Realms 领域](https://houbb.github.io/2016/08/11/shiro-06-realm)
+
+[Shiro-07-Session Management 会话管理](https://houbb.github.io/2016/08/11/shiro-07-session-management)
+
+[Shiro-08-Cryptography 编码加密](https://houbb.github.io/2016/08/11/shiro-08-Cryptography-intro)
+
+[Shiro-09-web 整合](https://houbb.github.io/2016/08/11/shiro-09-web)
+
+[Shiro-10-caching 缓存](https://houbb.github.io/2016/08/11/shiro-10-caching)
+
+[Shiro-11-test 测试](https://houbb.github.io/2016/08/11/shiro-11-test)
+
+[Shiro-12-subject 主体](https://houbb.github.io/2016/08/11/shiro-12-subject)
+
+[Shiro-20-shiro 整合 spring 实战及源码详解](https://houbb.github.io/2016/08/11/shiro-20-intergrations-spring)
+
+[Shiro-21-shiro 整合 springmvc 实战及源码详解](https://houbb.github.io/2016/08/11/shiro-21-intergrations-springmvc)
+
+[Shiro-22-shiro 整合 springboot 实战](https://houbb.github.io/2016/08/11/shiro-22-intergrations-springboot)
+
+[Shiro-30-手写实现 shiro](https://houbb.github.io/2016/08/11/shiro-30-hand-write-overview)
+
+[Shiro-31-从零手写 shiro 权限校验框架 (1) 基础功能](https://houbb.github.io/2016/08/11/shiro-31-hand-write-basic)
 
 # Shiro
 
@@ -60,9 +92,9 @@ Shiro 提供了应用程序安全 API，用于执行以下方面：
 </dependencies>
 ```
 
-- shiro.ini
+# shiro.ini
 
-> create this file under the classpath.
+> 在类路径下创建此文件。
 
 ```
 [users]
@@ -148,7 +180,7 @@ public class MyRealm implements Realm {
 
 - shiro-realm.ini
 
-create this file under the classpath.
+在类路径下创建此文件。
 
 ```
 #declear realm
@@ -182,7 +214,7 @@ public void testRealm() {
 
 ## multi-realm
 
-- define another realm SecondRealm.java
+- 定义另一个 realm SecondRealm.java
 
 ```java
 public class SecondRealm implements Realm {
@@ -208,7 +240,7 @@ public class SecondRealm implements Realm {
 }
 ```
 
-- define shiro-multi-realm.ini
+- 定义 shiro-multi-realm.ini
 
 ```
 [main]
@@ -247,11 +279,9 @@ public void testMultiRealm() {
 
 <label class="label label-warning">Notice</label>
 
-The realm worked only after you used it.
-
 ## JDBC Realm
 
-- Add jars info your pom.xml, here I user ```MySQL``` and ```druid``` datasource for test.
+- 在你的 pom.xml 文件中添加以下依赖项，这里我使用 MySQL 和 druid 数据源进行测试。
 
 ```xml
 <dependency>
@@ -266,7 +296,7 @@ The realm worked only after you used it.
 </dependency>
 ```
 
-- Here are some sql to init database.
+- 初始化的脚本
 
 ```sql
 DROP DATABASE IF EXISTS shiro;
@@ -556,7 +586,7 @@ securityManager.realms=$firstRealm,$secondRealm
     }
 ```
 
-- if you change the *shiro-authenticator-onlyone-success.ini* into
+- 如果你把 *shiro-authenticator-onlyone-success.ini* 变为：
 
 ```ini
 #define and uer realms.
@@ -565,7 +595,7 @@ thirdRealm=com.ryo.shiro.ThirdRealm
 securityManager.realms=$firstRealm,$thirdRealm
 ```
 
-You will get an error as following.
+将会得到如下错误
 
 ```
 org.apache.shiro.authc.AuthenticationException: Authentication token of type [class org.apache.shiro.authc.UsernamePasswordToken] 

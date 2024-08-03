@@ -7,6 +7,56 @@ tags: [web, web-safe, sf]
 published: true
 ---
 
+# 安全系列
+
+[web 安全系列-01-SQL injection SQL 注入](https://houbb.github.io/2020/08/09/web-safe-01-sql-injection)
+
+[web 安全系列-02-XSS 跨站脚本攻击](https://houbb.github.io/2020/08/09/web-safe-02-xss)
+
+[web 安全系列-03-CRLF 注入 & HRS 漏洞](https://houbb.github.io/2020/08/09/web-safe-03-crlf)
+
+[web 安全系列-03-XSS 的解决方案及一些绕过方式](https://houbb.github.io/2020/08/09/web-safe-03-xss-more)
+
+[web 安全系列-04-CSRF 跨站请求伪造](https://houbb.github.io/2020/08/09/web-safe-04-csrf)
+
+[web 安全系列-05-weak password 弱口令](https://houbb.github.io/2020/08/09/web-safe-05-weak-password)
+
+[web 安全系列-06-URL Redirect 开放重定向漏洞](https://houbb.github.io/2020/08/09/web-safe-06-redirect)
+
+[web 安全系列-07-XXE XML外部实体注入攻击](https://houbb.github.io/2020/08/09/web-safe-07-xxe)
+
+[web 安全系列-08-SSRF 服务端请求伪造](https://houbb.github.io/2020/08/09/web-safe-08-ssrf)
+
+[web 安全系列-09-command injection 命令注入](https://houbb.github.io/2020/08/09/web-safe-09-command)
+
+[web 安全系列-10-webshell 攻击](https://houbb.github.io/2020/08/09/web-safe-10-webshell)
+
+[web 安全系列-11-XPath 注入攻击](https://houbb.github.io/2020/08/09/web-safe-11-xpath)
+
+[web 安全系列-12-SSTI 模板注入](https://houbb.github.io/2020/08/09/web-safe-12-ssti)
+
+[web 安全系列-13-Serializable 序列化漏洞](https://houbb.github.io/2020/08/09/web-safe-13-serial)
+
+[web 安全系列-14-path travel 目录穿越](https://houbb.github.io/2020/08/09/web-safe-14-path-travel)
+
+[web 安全系列-15-subdomain takeover 子域劫持](https://houbb.github.io/2020/08/09/web-safe-15-subdomain-takeover)
+
+[web 安全系列-16-buffer overflow 缓冲区溢出](https://houbb.github.io/2020/08/09/web-safe-16-buffer-overflow)
+
+[web 安全系列-17-config safe 配置安全](https://houbb.github.io/2020/08/09/web-safe-17-config-safe)
+
+[web 安全系列-18-web cache deception Web Cache欺骗攻击](https://houbb.github.io/2020/08/09/web-safe-18-web-cache-deception)
+
+[web 安全系列-19-HTTP Desync Attacks HTTP请求走私](https://houbb.github.io/2020/08/09/web-safe-19-http-desync-attack)
+
+[web 安全系列-20-middleware 中间件常见漏洞](https://houbb.github.io/2020/08/09/web-safe-20-middleware)
+
+[web 安全系列-21-文件读取攻击](https://houbb.github.io/2020/08/09/web-safe-21-file-read-attack)
+
+[web 安全系列-22-文件包含攻击](https://houbb.github.io/2020/08/09/web-safe-22-file-contains-attack)
+
+[web 安全系列-23-文件上传攻击](https://houbb.github.io/2020/08/09/web-safe-23-file-upload-attack)
+
 #  web 安全的重要性
 
 所有的开发其实一直在追求三样东西：
@@ -18,42 +68,6 @@ published: true
 （3）安全
 
 本系列重点讲述一下 web 的安全问题。
-
-# 主要内容
-
-[01-SQL 注入](https://houbb.github.io/2020/08/09/web-safe-01-sql-injection)
-
-[02-XSS 跨站脚本攻击](https://houbb.github.io/2020/08/09/web-safe-02-xss)
-
-[03-CRLF 回车换行攻击](https://houbb.github.io/2020/08/09/web-safe-03-crlf)
-
-[04-CSRF 跨站请求伪造](https://houbb.github.io/2020/08/09/web-safe-04-csrf)
-
-[05-weak password 弱口令](https://houbb.github.io/2020/08/09/web-safe-05-weak-password)
-
-[06-URL redirect 开放重定向漏洞](https://houbb.github.io/2020/08/09/web-safe-06-redirect)
-
-[07-XXE XML 外部实体](https://houbb.github.io/2020/08/09/web-safe-07-xxe)
-
-[08-SSRF 服务端请求伪造](https://houbb.github.io/2020/08/09/web-safe-08-ssrf)
-
-[09-OS 命令注入](https://houbb.github.io/2020/08/09/web-safe-09-command)
-
-[10-webshell 攻击](https://houbb.github.io/2020/08/09/web-safe-10-webshell)
-
-[11-xpath 注入](https://houbb.github.io/2020/08/09/web-safe-11-xpath)
-
-[12-SSTI 模板注入](https://houbb.github.io/2020/08/09/web-safe-12-ssti)
-
-[13-序列化漏洞](https://houbb.github.io/2020/08/09/web-safe-13-serial)
-
-[14-目录穿越](https://houbb.github.io/2020/08/09/web-safe-14-path-travel)
-
-[15-ddos 攻击](https://houbb.github.io/2020/07/19/acp-learn-08-DDos)
-
-[16-子域劫持](https://houbb.github.io/2020/08/09/web-safe-15-subdomain-takeover)
-
-[17-缓冲区溢出](https://houbb.github.io/2020/08/09/web-safe-16-buffer-overflow)
 
 配置安全
 

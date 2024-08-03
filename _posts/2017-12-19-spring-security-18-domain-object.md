@@ -1,32 +1,59 @@
 ---
 layout: post
-title:  Spring Security  Authorization  Domain Object Security (ACLs)
+title:  Spring Security-18-Authorization  Domain Object Security (ACLs)
 date:  2017-12-19 22:29:09 +0800
 categories: [Spring]
 tags: [spring, spring-security, web-safe]
 published: true
 ---
 
+# Spring Security 系列
+
+[Spring Security-01-Hello World](https://houbb.github.io/2017/12/19/spring-security-01-hello-world)
+
+[Spring Security-02-springboot 入门使用实战](https://houbb.github.io/2017/12/19/spring-security-02-springboot)
+
+[Spring Security-03-maven 整合使用](https://houbb.github.io/2017/12/19/spring-security-03-maven)
+
+[Spring Security-04-密码加密详解及源码分析](https://houbb.github.io/2017/12/19/spring-security-04-passwordEncoder)
+
+[Spring Security-05-CSRF 跨域攻击](https://houbb.github.io/2017/12/19/spring-security-05-csrf)
+
+[Spring Security-06-安全响应头配置详解](https://houbb.github.io/2017/12/19/spring-security-06-security-response-headers)
+
+[Spring Security-07-整体架构概览](https://houbb.github.io/2017/12/19/spring-security-07-big-picture)
+
+[Spring Security-08-Authentication 认证详解](https://houbb.github.io/2017/12/19/spring-security-08-authc)
+
+[Spring Security-09-Authentication session 管理](https://houbb.github.io/2017/12/19/spring-security-09-authc-session-management)
+
+[Spring Security-10-Authentication 记住我特性实现](https://houbb.github.io/2017/12/19/spring-security-10-authc-remember-me)
+
+[Spring Security-11-Authentication 匿名登录特性 & RunAS 以 xx 身份](https://houbb.github.io/2017/12/19/spring-security-11-authc-annoy)
+
+[Spring Security-12-Authentication logout 登出特性](https://houbb.github.io/2017/12/19/spring-security-12-authc-logout)
+
+[Spring Security-13-Authorization 授权](https://houbb.github.io/2017/12/19/spring-security-13-autha-overview)
+
+[Spring Security-14-Authorization 使用FilterSecurityInterceptor授权HttpServletRequest](https://houbb.github.io/2017/12/19/spring-security-14-autha-servlet)
+
+[Spring Security-15-Authorization 基于表达式的访问控制](https://houbb.github.io/2017/12/19/spring-security-15-expression)
+
+[Spring Security-16-Authorization 安全对象实施](https://houbb.github.io/2017/12/19/spring-security-16-security-object)
+
+[Spring Security-17-Authorization 方法安全](https://houbb.github.io/2017/12/19/spring-security-17-method-security)
+
+[Spring Security-18-Authorization Domain Object Security (ACLs)](https://houbb.github.io/2017/12/19/spring-security-18-domain-object)
 
 # 序言
-
-前面我们学习了 [spring security 与 springmvc 的整合入门教程](https://www.toutiao.com/i6884852647480787459/)。
-
-[spring secutity整合springboot入门](https://www.toutiao.com/item/6916894767628468747/)
-
-[spring security 使用 maven 导入汇总](https://www.toutiao.com/item/6917240713151398403/)
-
-[spring security 业界标准加密策略源码详解](https://www.toutiao.com/item/6917261378050982403/)
-
-[Spring Security 如何预防CSRF跨域攻击？](https://www.toutiao.com/item/6917618373924995591/)
-
-[Spring Security 安全响应头配置详解](https://www.toutiao.com/item/6918186604846842376/)
 
 这一节我们来学习一下 spring security 的整体架构设计。
 
 # 域对象安全性（ACL）
 
-复杂的应用程序经常会发现需要定义访问权限，而不仅仅是在Web请求或方法调用级别。取而代之的是，安全决策需要同时包括谁（身份验证），哪里（方法调用）和什么（SomeDomainObject）。
+复杂的应用程序经常会发现需要定义访问权限，而不仅仅是在Web请求或方法调用级别。
+
+取而代之的是，安全决策需要同时包括谁（身份验证），哪里（方法调用）和什么（SomeDomainObject）。
 
 换句话说，授权决策还需要考虑方法调用的实际域对象实例主题。
 

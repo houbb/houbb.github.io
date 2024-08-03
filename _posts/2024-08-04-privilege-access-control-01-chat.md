@@ -1,7 +1,7 @@
 ---
 layout: post
-title: privilege access control-00-权限访问控制概览
-date: 2018-11-21 8:01:55 +0800
+title: privilege access control-01-聊一聊权限访问控制
+date: 2024-08-04 21:01:55 +0800
 categories: [Design]
 tags: [design, privilege, sh]
 published: true
@@ -29,8 +29,6 @@ published: true
 
 5. **ACL（Access Control List）：**
    - **定义：** ACL 是一种定义资源访问权限的列表，其中列出了每个用户或用户组对资源的具体权限。ACL 可以应用于文件系统、数据库等各种环境。
-
-   
 
 6. **会话管理（Session Management）：**
    - **定义：** 会话管理涉及到在用户登录后维护用户的身份状态。这包括生成和验证会话令牌，处理用户注销等。

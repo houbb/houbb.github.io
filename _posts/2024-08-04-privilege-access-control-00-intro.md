@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  privilege basic-00-权限设计概览 overview
-date:  2020-9-17 21:38:08 +0800
+title:  privilege access control-00-权限设计概览 overview
+date: 2024-08-04 21:01:55 +0800
 categories: [Design]
 tags: [design, privilege, intro, overview]
 published: true
@@ -9,27 +9,180 @@ published: true
 
 # 拓展阅读
 
-[spring security 系列](https://houbb.github.io/2017/12/19/spring-security-hello)
+## 安全框架
 
-[shiro 系列](https://houbb.github.io/2016/08/11/shiro)
+### shiro 系列
 
-[JWT-01-JWT 是什么？JWT 入门使用介绍](https://houbb.github.io/2018/03/25/jwt)
+[shiro-00-overview](https://houbb.github.io/2016/08/11/shiro-00-overview)
 
-[分布式 session: spring session](https://houbb.github.io/2018/09/26/session-sharing)
+[Shiro-01-shiro 是什么?](https://houbb.github.io/2016/08/11/shiro-01-what-is-shiro)
+
+[Shiro-02-shiro 的架构设计详解](https://houbb.github.io/2016/08/11/shiro-02-architecture)
+
+[Shiro-03-5 分钟入门 shiro 安全框架实战笔记](https://houbb.github.io/2016/08/11/shiro-03-5-min-travel)
+
+[Shiro-04-Authentication 身份验证](https://houbb.github.io/2016/08/11/shiro-04-authentication)
+
+[Shiro-05-Authorization 授权](https://houbb.github.io/2016/08/11/shiro-05-authorization)
+
+[Shiro-06-Realms 领域](https://houbb.github.io/2016/08/11/shiro-06-realm)
+
+[Shiro-07-Session Management 会话管理](https://houbb.github.io/2016/08/11/shiro-07-session-management)
+
+[Shiro-08-Cryptography 编码加密](https://houbb.github.io/2016/08/11/shiro-08-Cryptography-intro)
+
+[Shiro-09-web 整合](https://houbb.github.io/2016/08/11/shiro-09-web)
+
+[Shiro-10-caching 缓存](https://houbb.github.io/2016/08/11/shiro-10-caching)
+
+[Shiro-11-test 测试](https://houbb.github.io/2016/08/11/shiro-11-test)
+
+[Shiro-12-subject 主体](https://houbb.github.io/2016/08/11/shiro-12-subject)
+
+[Shiro-20-shiro 整合 spring 实战及源码详解](https://houbb.github.io/2016/08/11/shiro-20-intergrations-spring)
+
+[Shiro-21-shiro 整合 springmvc 实战及源码详解](https://houbb.github.io/2016/08/11/shiro-21-intergrations-springmvc)
+
+[Shiro-22-shiro 整合 springboot 实战](https://houbb.github.io/2016/08/11/shiro-22-intergrations-springboot)
+
+[Shiro-30-手写实现 shiro](https://houbb.github.io/2016/08/11/shiro-30-hand-write-overview)
+
+[Shiro-31-从零手写 shiro 权限校验框架 (1) 基础功能](https://houbb.github.io/2016/08/11/shiro-31-hand-write-basic)
+
+### spring security
+
+[Spring Security-01-Hello World](https://houbb.github.io/2017/12/19/spring-security-01-hello-world)
+
+[Spring Security-02-springboot 入门使用实战](https://houbb.github.io/2017/12/19/spring-security-02-springboot)
+
+[Spring Security-03-maven 整合使用](https://houbb.github.io/2017/12/19/spring-security-03-maven)
+
+[Spring Security-04-密码加密详解及源码分析](https://houbb.github.io/2017/12/19/spring-security-04-passwordEncoder)
+
+[Spring Security-05-CSRF 跨域攻击](https://houbb.github.io/2017/12/19/spring-security-05-csrf)
+
+[Spring Security-06-安全响应头配置详解](https://houbb.github.io/2017/12/19/spring-security-06-security-response-headers)
+
+[Spring Security-07-整体架构概览](https://houbb.github.io/2017/12/19/spring-security-07-big-picture)
+
+[Spring Security-08-Authentication 认证详解](https://houbb.github.io/2017/12/19/spring-security-08-authc)
+
+[Spring Security-09-Authentication session 管理](https://houbb.github.io/2017/12/19/spring-security-09-authc-session-management)
+
+[Spring Security-10-Authentication 记住我特性实现](https://houbb.github.io/2017/12/19/spring-security-10-authc-remember-me)
+
+[Spring Security-11-Authentication 匿名登录特性 & RunAS 以 xx 身份](https://houbb.github.io/2017/12/19/spring-security-11-authc-annoy)
+
+[Spring Security-12-Authentication logout 登出特性](https://houbb.github.io/2017/12/19/spring-security-12-authc-logout)
+
+[Spring Security-13-Authorization 授权](https://houbb.github.io/2017/12/19/spring-security-13-autha-overview)
+
+[Spring Security-14-Authorization 使用FilterSecurityInterceptor授权HttpServletRequest](https://houbb.github.io/2017/12/19/spring-security-14-autha-servlet)
+
+[Spring Security-15-Authorization 基于表达式的访问控制](https://houbb.github.io/2017/12/19/spring-security-15-expression)
+
+[Spring Security-16-Authorization 安全对象实施](https://houbb.github.io/2017/12/19/spring-security-16-security-object)
+
+[Spring Security-17-Authorization 方法安全](https://houbb.github.io/2017/12/19/spring-security-17-method-security)
+
+[Spring Security-18-Authorization Domain Object Security (ACLs)](https://houbb.github.io/2017/12/19/spring-security-18-domain-object)
+
+## 单点登录
 
 [OAuth 2.0-01-Overview](https://houbb.github.io/2017/02/25/oauth2-01-overview-01)
 
+[OAuth2-02-java 整合](https://houbb.github.io/2017/02/25/oauth2-02-java-integration)
+
+[OAuth2-03-springboot 整合](https://houbb.github.io/2017/02/25/oauth2-03-springboot-integration)
+
+
 [SSO-01-单点登录入门](https://houbb.github.io/2018/07/16/sso-01)
 
-[LDAP 登录方式简介](https://houbb.github.io/2021/08/02/ldap-01-overview)
+[SSO-02-登入实现流程](https://houbb.github.io/2018/07/16/sso-02-login-flow-02)
 
-[Spring LDAP](https://houbb.github.io/2017/12/16/spring-ldap)
+[SSO-03-单点登出实现流程](https://houbb.github.io/2018/07/16/sso-02-logout-flow-03)
 
-## 加密
+## 分布式 session
+
+[web 会话机制之 session cookie 详解](https://houbb.github.io/2018/07/18/session-cookie)
+
+[JWT-01-JWT 是什么？JWT 入门使用介绍](https://houbb.github.io/2018/03/25/jwt-01-intro)
+
+[JWT-02-常见问题及其解决方案](https://houbb.github.io/2018/03/25/jwt-02-problem-sloves)
+
+[JWT-03-分布式系统 session 共享解决方案 JWT 实战笔记](https://houbb.github.io/2018/03/25/jwt-03-in-action)
+
+[JWT-04-核心源码分析](https://houbb.github.io/2018/03/25/jwt-04-sourcec-code)
+
+
+[分布式 session: spring session](https://houbb.github.io/2018/09/26/session-sharing)
+
+[Spring Session 为什么需要？session 的演化流程](https://houbb.github.io/2018/09/26/spring-session-00-overview)
+
+[Spring Session 入门教程](https://houbb.github.io/2018/09/26/spring-session-01-hello-world)
+
+[Spring Session 结合拦截器实战](https://houbb.github.io/2018/09/26/spring-session-02-interceptor)
+
+[Spring Session-04-深入源码，和你一起重新认识 spring session](https://houbb.github.io/2018/09/26/spring-session-04-redis-detail)
+
+
+## 安全
+
+### 加密
 
 [加密算法简介](https://houbb.github.io/2018/11/09/althgorim-cryptograph-01-overview-01)
 
 [几种常见的加密算法](https://houbb.github.io/2018/11/09/althgorim-cryptograph-02-common-02)
+
+### 攻防
+
+[web 安全系列-01-SQL injection SQL 注入](https://houbb.github.io/2020/08/09/web-safe-01-sql-injection)
+
+[web 安全系列-02-XSS 跨站脚本攻击](https://houbb.github.io/2020/08/09/web-safe-02-xss)
+
+[web 安全系列-03-CRLF 注入 & HRS 漏洞](https://houbb.github.io/2020/08/09/web-safe-03-crlf)
+
+[web 安全系列-03-XSS 的解决方案及一些绕过方式](https://houbb.github.io/2020/08/09/web-safe-03-xss-more)
+
+[web 安全系列-04-CSRF 跨站请求伪造](https://houbb.github.io/2020/08/09/web-safe-04-csrf)
+
+[web 安全系列-05-weak password 弱口令](https://houbb.github.io/2020/08/09/web-safe-05-weak-password)
+
+[web 安全系列-06-URL Redirect 开放重定向漏洞](https://houbb.github.io/2020/08/09/web-safe-06-redirect)
+
+[web 安全系列-07-XXE XML外部实体注入攻击](https://houbb.github.io/2020/08/09/web-safe-07-xxe)
+
+[web 安全系列-08-SSRF 服务端请求伪造](https://houbb.github.io/2020/08/09/web-safe-08-ssrf)
+
+[web 安全系列-09-command injection 命令注入](https://houbb.github.io/2020/08/09/web-safe-09-command)
+
+[web 安全系列-10-webshell 攻击](https://houbb.github.io/2020/08/09/web-safe-10-webshell)
+
+[web 安全系列-11-XPath 注入攻击](https://houbb.github.io/2020/08/09/web-safe-11-xpath)
+
+[web 安全系列-12-SSTI 模板注入](https://houbb.github.io/2020/08/09/web-safe-12-ssti)
+
+[web 安全系列-13-Serializable 序列化漏洞](https://houbb.github.io/2020/08/09/web-safe-13-serial)
+
+[web 安全系列-14-path travel 目录穿越](https://houbb.github.io/2020/08/09/web-safe-14-path-travel)
+
+[web 安全系列-15-subdomain takeover 子域劫持](https://houbb.github.io/2020/08/09/web-safe-15-subdomain-takeover)
+
+[web 安全系列-16-buffer overflow 缓冲区溢出](https://houbb.github.io/2020/08/09/web-safe-16-buffer-overflow)
+
+[web 安全系列-17-config safe 配置安全](https://houbb.github.io/2020/08/09/web-safe-17-config-safe)
+
+[web 安全系列-18-web cache deception Web Cache欺骗攻击](https://houbb.github.io/2020/08/09/web-safe-18-web-cache-deception)
+
+[web 安全系列-19-HTTP Desync Attacks HTTP请求走私](https://houbb.github.io/2020/08/09/web-safe-19-http-desync-attack)
+
+[web 安全系列-20-middleware 中间件常见漏洞](https://houbb.github.io/2020/08/09/web-safe-20-middleware)
+
+[web 安全系列-21-文件读取攻击](https://houbb.github.io/2020/08/09/web-safe-21-file-read-attack)
+
+[web 安全系列-22-文件包含攻击](https://houbb.github.io/2020/08/09/web-safe-22-file-contains-attack)
+
+[web 安全系列-23-文件上传攻击](https://houbb.github.io/2020/08/09/web-safe-23-file-upload-attack)
 
 # 问题模板
 
@@ -49,12 +202,15 @@ published: true
 
 如何自己设计实现？为什么
 
+---------------------------------------------------------------------------------------------------
 
-# 介绍
+# chat
 
 ## java 除了 shiro spring security，还有哪些优秀的权限管理框架？
 
-除了 Apache Shiro 和 Spring Security，Java 中还有一些其他优秀的权限管理框架。以下是其中一些常用的：
+除了 Apache Shiro 和 Spring Security，Java 中还有一些其他优秀的权限管理框架。
+
+以下是其中一些常用的：
 
 1. **Apache Shiro（Shiro）:**
    - Apache Shiro 是一个功能强大且易于使用的 Java 安全框架，提供了身份认证、授权、加密和会话管理等功能。它的设计简单，易于集成到各种应用中。
@@ -86,7 +242,9 @@ published: true
 10. **SecureREST:**
     - SecureREST 是一个轻量级的 Java 框架，专注于为 RESTful 服务提供身份认证和授权。
 
-在选择权限管理框架时，需要根据项目的需求、复杂性和集成要求来做出合适的选择。不同的框架具有不同的特点和适用场景，因此最好根据具体情况进行评估。
+在选择权限管理框架时，需要根据项目的需求、复杂性和集成要求来做出合适的选择。
+
+不同的框架具有不同的特点和适用场景，因此最好根据具体情况进行评估。
 
 ## 详细对比下上述开源组件，可有哪些优缺点，具体的适用场景？
 
@@ -220,80 +378,6 @@ published: true
 10. **远程访问控制：** 对于具有分布式网络或远程用户的组织，权限管理系统需要支持有效的远程访问控制。
 
 综合来看，权限管理系统对于维护信息系统的安全性、确保合规性、简化用户管理以及提高整体效率都至关重要。
-
-## 详细介绍一下 ACL
-
-ACL（Access Control List）是一种权限控制机制，用于定义和控制对资源（如文件、目录、网络资源等）的访问权限。ACL 将权限信息与资源关联起来，指定了哪些用户或系统实体具有对特定资源的访问权限以及何种类型的权限。ACL 是在许多操作系统、网络设备和应用程序中广泛使用的访问控制模型。
-
-以下是 ACL 的主要概念和要点：
-
-1. **资源：**
-   - 资源可以是文件、目录、网络端口、数据库表等，需要进行访问控制的对象。
-
-2. **权限：**
-   - 权限定义了对资源执行的具体操作，如读取、写入、执行等。不同的资源类型和系统可能支持不同的权限。
-
-3. **ACL 条目：**
-   - ACL 包含一个或多个 ACL 条目，每个条目指定了一个或一组用户或系统实体以及对应的权限。每个 ACL 条目通常包括：
-      - **标识（Identifier）：** 用户或系统实体的标识符，可以是用户名、用户组、用户ID等。
-      - **权限（Permissions）：** 资源允许的操作，如读、写、执行等。
-      - **可选条件：** 一些系统支持在 ACL 条目中添加条件，使得访问控制更加灵活。
-
-4. **默认权限：**
-   - ACL 可能包含默认权限，用于指定在创建新资源时，应该赋予该资源的默认权限。
-
-5. **ACL 类型：**
-   - 有两种主要的 ACL 类型：
-      - **基于访问控制项（DACL）：** 控制对资源的访问权限。
-      - **基于系统访问控制列表（SACL）：** 用于设置安全审计规则，记录对资源的访问尝试。
-
-6. **继承：**
-   - 许多系统中的 ACL 具有继承特性，允许在目录层次结构中继承权限设置。子目录或文件会继承父目录的 ACL 条目。
-
-7. **限定范围：**
-   - ACL 可能具有限定范围，指定了 ACL 条目的生效范围，可以是某个特定的用户、组、角色等。
-
-8. **管理工具：**
-   - 操作系统和应用程序通常提供管理 ACL 的工具，使管理员能够直观地配置和维护访问控制规则。
-
-9. **网络设备中的 ACL：**
-   - 在网络设备（如路由器、交换机）中，ACL 用于控制数据流的访问权限，可以基于源 IP、目标 IP、协议、端口等进行配置。
-
-10. **安全性和审计：**
-    - ACL 不仅用于提供访问控制，还可以用于安全审计，记录用户对资源的访问尝试，以便进行安全分析。
-
-11. **ACL 的常见问题：**
-    - 由于 ACL 可能变得复杂，管理不当可能导致权限错误，因此需要定期审查和测试以确保安全性。
-
-总体而言，ACL 是一种灵活和常见的访问控制机制，可以根据具体需求对资源进行精细的权限管理。在使用 ACL 时，需要小心配置和维护，以确保系统的安全性和可维护性。
-
-## 访问控制列表（ACL）要如何设计与优雅的实现呢？
-
-设计和实现访问控制列表（ACL）时，可以考虑以下几个关键方面，以确保系统安全、灵活性和可维护性：
-
-1. **需求分析：** 在设计 ACL 之前，明确系统的访问需求和安全政策。了解哪些资源需要受到保护，以及哪些用户或角色需要访问这些资源，是设计有效 ACL 的基础。
-
-2. **明确资源：** 确定需要保护的资源，这可能包括文件、目录、数据库表、API 端点等。每个资源都应有一个唯一的标识符，便于在 ACL 中进行引用。
-
-3. **用户和角色管理：** 将用户组织成角色，然后为每个角色定义一组权限。这种角色-based 访问控制（RBAC）模型可以简化权限管理，提高可维护性。
-
-4. **分层次结构：** 将 ACL 组织成分层次结构，以便更好地管理复杂的权限关系。例如，可以有系统级别的 ACL、组织级别的 ACL、部门级别的 ACL 等。
-
-5. **权限细分：** 将权限细分到最小单位，以确保最小化了可能的滥用。不要赋予用户比他们需要的更多权限。
-
-6. **默认规则：** 定义适当的默认规则，以确保对于未明确授权的资源，默认情况下是拒绝访问，以增加系统的安全性。
-
-7. **灵活性：** 考虑到未来的变化和扩展，设计灵活的 ACL 结构。例如，支持新资源的添加、新角色的创建等。
-
-8. **审计和监控：** 实施审计和监控机制，以便可以追踪谁访问了哪些资源，从而能够检测潜在的安全问题。
-
-9. **错误处理：** 设计良好的错误处理机制，以便当用户请求未经授权的资源时，系统能够提供有意义的错误信息，并记录相关事件。
-
-10. **文档：** 编写清晰的文档，说明 ACL 的结构、规则和设计原理。这对于系统管理员和开发人员理解和维护 ACL 非常重要。
-
-11. **测试和演练：** 在实际应用之前，进行充分的测试和演练，以确保 ACL 的设计符合预期，并能够满足系统的安全和访问要求。
-
-最终，实现优雅的 ACL 需要在设计初期考虑到系统的需求，遵循最佳实践，并在整个开发过程中进行不断的测试和优化。
 
 ## 权限管理中除了 sso oauth jwt session 还有哪些知识？
 

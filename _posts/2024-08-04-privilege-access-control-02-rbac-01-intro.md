@@ -1,7 +1,7 @@
 ---
 layout: post
 title: privilege-02 RBAC-以角色为基础的权限管理系统设计
-date: 2018-11-21 8:01:55 +0800
+date: 2024-08-04 21:01:55 +0800
 categories: [Design]
 tags: [design, privilege, sh]
 published: true
@@ -16,6 +16,22 @@ published: true
 之后，美国国家标准局重新定义了以角色为基础的访问控制模型，并将之纳为一种标准，称之为NIST RBAC。
 
 以角色为基础的访问控制模型是一套较强制访问控制以及自由选定访问控制更为中性且更具灵活性的访问控制技术。
+
+# chat
+
+## 是什么？what
+
+## 为什么？why
+
+## 适合使用的场景？when where who 
+
+## 如何实现？ how
+
+## 应该实现哪些核心能力？how-much
+
+
+
+
 
 # 参考资料
 
