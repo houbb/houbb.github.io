@@ -29,7 +29,6 @@ published: true
 | 子资源（Subresources） | Amazon S3 使用子资源机制存储特定于对象的其他信息。子资源与某些其他实体（如对象或存储桶）相关联。子资源的更多信息。 |
 | 访问控制信息（Access Control Information） | 控制对 Amazon S3 中存储的对象的访问。支持基于资源的访问控制（如ACL和存储桶策略）和基于用户的访问控制。 |
 
-
 对于对象的管理
 
 upload/download
