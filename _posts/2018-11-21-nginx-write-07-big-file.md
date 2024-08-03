@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-07-大文件传输 分块传输（chunked transfer）/ 分页传输（paging）
+title:  从零手写实现 nginx-07-如何实现大文件分块传输? 分块传输（chunked transfer）/ 分页传输（paging）
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
@@ -12,11 +12,13 @@ published: true
 
 大家好，我是老马。很高兴遇到你。
 
-我们希望实现最简单的 http 服务信息，可以处理静态文件。
+我们为 java 开发者实现了 java 版本的 nginx, 可以处理静态文件
+
+> [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
 
 如果你想知道 servlet 如何处理的，可以参考我的另一个项目：
 
-> 手写从零实现简易版 tomcat [minicat](https://github.com/houbb/minicat) 
+> 手写从零实现简易版 tomcat [https://github.com/houbb/minicat](https://github.com/houbb/minicat) 
 
 
 ## 手写 nginx 系列

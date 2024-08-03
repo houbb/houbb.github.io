@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  从零手写实现 nginx-08-range 范围查询
+title:  从零手写实现 nginx-08-如何实现 http 范围请求（Range Requests）
 date: 2018-11-22 8:01:55 +0800
 categories: [Web]
 tags: [nginx, nginx-in-action, sh]
@@ -8,15 +8,6 @@ published: true
 ---
 
 
-# 前言
-
-大家好，我是老马。很高兴遇到你。
-
-我们希望实现最简单的 http 服务信息，可以处理静态文件。
-
-如果你想知道 servlet 如何处理的，可以参考我的另一个项目：
-
-> 手写从零实现简易版 tomcat [minicat](https://github.com/houbb/minicat) 
 
 
 ## 手写 nginx 系列
@@ -93,6 +84,18 @@ published: true
 
 [从零手写实现 nginx-35-proxy_pass netty 如何实现？](https://houbb.github.io/2018/11/22/nginx-write-35-http-proxy-pass-netty)
 
+
+# 前言
+
+大家好，我是老马。很高兴遇到你。
+
+我们为 java 开发者实现了 java 版本的 nginx, 可以处理静态文件
+
+> [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
+
+如果你想知道 servlet 如何处理的，可以参考我的另一个项目：
+
+> 手写从零实现简易版 tomcat [https://github.com/houbb/minicat](https://github.com/houbb/minicat) 
 
 # 什么是 http 范围查询？
 
@@ -307,6 +310,20 @@ content-range: bytes 255-198/199
 curl: (8) Invalid Content-Length: value
 ```
 
+# 小结
+
+本节我们实现了文件的范围查询，这个在断点续传，视频播放时还是非常方便的。
+
+下一节，我们考虑实现以下文件的压缩处理，提升传输的效率。
+
+我是老马，期待与你的下次重逢。
+
+# 开源地址
+
+为了便于大家学习，已经将 nginx 开源
+
+> [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
+
 ------------------------------------------------------------------------------------------------
 
 # chat
@@ -396,19 +413,7 @@ sudo systemctl restart nginx  # 重启 Nginx 服务
 
 
 
-# 小结
 
-本节我们实现了文件的范围查询，这个在断点续传，视频播放时还是非常方便的。
-
-下一节，我们考虑实现以下文件的压缩处理，提升传输的效率。
-
-我是老马，期待与你的下次重逢。
-
-# 开源地址
-
-为了便于大家学习，已经将 nginx 开源
-
-> [https://github.com/houbb/nginx4j](https://github.com/houbb/nginx4j)
 
 # 参考资料
 
