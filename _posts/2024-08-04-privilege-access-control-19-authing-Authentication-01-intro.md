@@ -1,6 +1,6 @@
 ---
 layout: post
-title: privilege-03-身份认证 Authentication
+title: privilege-19-身份认证（Authentication）
 date: 2024-08-04 21:01:55 +0800
 categories: [Design]
 tags: [design, privilege, sh]
@@ -12,7 +12,9 @@ published: true
 
 ## 介绍一下 认证（Authentication）
 
-认证（Authentication）是计算机系统中的一项关键安全概念，用于验证用户或系统实体的身份，确保其所声称的身份是合法的。认证是信息系统中确保只有授权用户能够访问资源和执行操作的关键过程。
+认证（Authentication）是计算机系统中的一项关键安全概念，用于验证用户或系统实体的身份，确保其所声称的身份是合法的。
+
+认证是信息系统中确保只有授权用户能够访问资源和执行操作的关键过程。
 
 以下是认证的详细介绍：
 

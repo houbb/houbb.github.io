@@ -30,12 +30,7 @@ published: true
    - **GitHub 地址:** [Keycloak on GitHub](https://github.com/keycloak/keycloak)
    - **简介:** Keycloak 是一个开源的身份和访问管理解决方案，支持单点登录（SSO）、多因素认证、OAuth 2.0 和 OpenID Connect。它可以作为独立的身份提供者或与现有应用程序集成。
 
-4. **Apache ShardingSphere:**
-   - **官方网站:** [Apache ShardingSphere](https://shardingsphere.apache.org/)
-   - **GitHub 地址:** [Apache ShardingSphere on GitHub](https://github.com/apache/shardingsphere)
-   - **简介:** Apache ShardingSphere 是一个开源的分布式数据库中间件，提供了分库分表、读写分离等功能。虽然它主要用于数据库分片，但也包含了一些身份验证和访问控制的功能。
-
-5. **Stormpath (现为Okta):**
+4. **Stormpath (现为Okta):**
    - **官方网站:** [Okta](https://www.okta.com/)
    - **GitHub 地址:** [Stormpath (Okta) on GitHub](https://github.com/okta)
    - **简介:** Stormpath 是一个身份验证和访问控制服务，提供易于使用的API和库，帮助开发人员在应用程序中实现用户身份验证和授权。然而，Stormpath 已经合并到 Okta。

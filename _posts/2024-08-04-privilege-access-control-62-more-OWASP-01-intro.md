@@ -1,6 +1,6 @@
 ---
 layout: post
-title: privilege-10-OWASP（Open Web Application Security Project）开放网络应用安全项目
+title: privilege-62-OWASP（Open Web Application Security Project）开放网络应用安全项目
 date: 2024-08-04 21:01:55 +0800
 categories: [Design]
 tags: [design, privilege, sh]

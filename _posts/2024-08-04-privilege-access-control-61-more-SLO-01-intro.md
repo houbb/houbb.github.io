@@ -1,6 +1,6 @@
 ---
 layout: post
-title: privilege-11-Single Logout（SLO）
+title: privilege-61-Single Logout（SLO）
 date: 2024-08-04 21:01:55 +0800
 categories: [Design]
 tags: [design, privilege, sh]

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: UMS 用户权限管理-12-OAuth 2.0
+title: privilege-22-OAuth 2.0 授权框架
 date: 2024-08-04 21:01:55 +0800
 categories: [Basic]
 tags: [basic, user, ums, priviliage, sh]

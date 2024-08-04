@@ -1,6 +1,6 @@
 ---
 layout: post
-title: UMS 用户权限管理-13-OIDC OpenID Connect 身份层协议，建立在OAuth 2.0之上，用于实现单点登录（SSO）和用户身份验证
+title: privilege-23-OIDC OpenID Connect 身份层协议，建立在OAuth 2.0之上，用于实现单点登录（SSO）和用户身份验证
 date: 2024-08-04 21:01:55 +0800
 categories: [Basic]
 tags: [basic, user, ums, priviliage, sh]
@@ -23,7 +23,9 @@ OIDC的设计目标是通过安全、灵活的方式来实现用户的身份验�
 ### **1. OpenID Connect概述**
 
 #### **1.1 什么是OpenID Connect**
-OpenID Connect（OIDC）是一个身份层协议，用于在OAuth 2.0协议基础上提供用户身份验证功能。OIDC使得客户端能够验证用户身份并获取用户的基本信息。
+OpenID Connect（OIDC）是一个身份层协议，用于在OAuth 2.0协议基础上提供用户身份验证功能。
+
+OIDC使得客户端能够验证用户身份并获取用户的基本信息。
 
 #### **1.2 OpenID Connect的主要目标**
 - **身份验证**：提供用户身份验证功能，确保用户身份的真实性。
@@ -240,13 +242,6 @@ OpenID Connect是在OAuth 2.0协议基础上扩展出的身份验证层
 协议，提供了用户身份验证、单点登录和用户信息获取等功能。
 
 了解OIDC的工作原理、组件、授权流程和实现技术，有助于设计和实施安全、可靠的身份验证和授权解决方案。
-
-
-
-
-
-
-
 
 # 参考资料
 

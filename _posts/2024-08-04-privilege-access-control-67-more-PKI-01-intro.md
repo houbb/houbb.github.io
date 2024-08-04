@@ -1,6 +1,6 @@
 ---
 layout: post
-title: privilege-07-PKI（Public Key Infrastructure）公钥基础设施
+title: privilege-67-PKI（Public Key Infrastructure）公钥基础设施
 date: 2024-08-04 21:01:55 +0800
 categories: [Design]
 tags: [design, privilege, sh]

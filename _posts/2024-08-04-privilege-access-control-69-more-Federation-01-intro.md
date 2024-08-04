@@ -1,6 +1,6 @@
 ---
 layout: post
-title: privilege-09-联合身份管理（Identity Federation）
+title: privilege-69-联合身份管理（Identity Federation）
 date: 2024-08-04 21:01:55 +0800
 categories: [Design]
 tags: [design, privilege, sh]

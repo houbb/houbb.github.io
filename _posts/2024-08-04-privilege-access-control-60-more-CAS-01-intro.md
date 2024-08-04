@@ -1,6 +1,6 @@
 ---
 layout: post
-title: privilege-06-CAS（Central Authentication Service）
+title: privilege-60-CAS（Central Authentication Service）
 date: 2024-08-04 21:01:55 +0800
 categories: [Design]
 tags: [design, privilege, sh]

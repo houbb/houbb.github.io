@@ -1,6 +1,6 @@
 ---
 layout: post
-title: UMS 用户权限管理-11-SSO 单点登录
+title: privilege-21-SSO 单点登录
 date: 2024-08-04 21:01:55 +0800
 categories: [Basic]
 tags: [basic, user, ums, priviliage, sh]

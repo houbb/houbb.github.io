@@ -1,9 +1,9 @@
 ---
 layout: post
-title: privilege-12-Risk-Based Authentication（风险基础身份验证）
+title: privilege-40-Risk-Based Authentication（风险基础身份验证）
 date: 2024-08-04 21:01:55 +0800
 categories: [Design]
-tags: [design, privilege, sh]
+tags: [design, privilege, safe, sh]
 published: true
 ---
 

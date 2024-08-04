@@ -190,21 +190,7 @@ published: true
 
 [web 安全系列-23-文件上传攻击](https://houbb.github.io/2020/08/09/web-safe-23-file-upload-attack)
 
-
-
 # 权限系列
-
-[privilege access control-00-权限访问控制概览](https://houbb.github.io/2018/11/21/privilege-access-control-01-overview)
-
-[privilege-02 RBAC-以角色为基础的权限管理系统设计](https://houbb.github.io/2018/11/21/privilege-access-control-02-rbac-01-what-is)
-
-[privilege-02 RBAC-02-数据库表设计](https://houbb.github.io/2018/11/21/privilege-access-control-02-rbac-02-table-design)
-
-[privilege-03-身份认证 Authentication](https://houbb.github.io/2018/11/21/privilege-access-control-03-Authentication-01-intro)
-
-[]()
-
-
 
 # UMS 系列
 

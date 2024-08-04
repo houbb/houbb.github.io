@@ -1,6 +1,6 @@
 ---
 layout: post
-title: privilege-08-PKCE（Proof Key for Code Exchange）
+title: privilege-68-PKCE（Proof Key for Code Exchange）
 date: 2024-08-04 21:01:55 +0800
 categories: [Design]
 tags: [design, privilege, sh]
