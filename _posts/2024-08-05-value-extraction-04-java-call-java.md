@@ -9,7 +9,7 @@ published: true
 
 # 场景
 
-我们希望通过 java 执行 groovy，如何实现呢?
+我们希望通过 java 执行 java，如何实现呢?
 
 # 入门例子
 

@@ -13,6 +13,18 @@ published: true
 
 # 入门例子
 
+## maven 依赖
+
+```xml
+   <dependency>
+       <groupId>org.codehaus.groovy</groupId>
+       <artifactId>groovy</artifactId>
+       <version>3.0.9</version>
+   </dependency>
+```
+
+## 代码
+
 ```java
 package org.example;
 
