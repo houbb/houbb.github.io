@@ -1,11 +1,39 @@
 ---
 layout: post
-title: 字符串值提取工具-02-java 调用 js
+title: 字符串值提取工具-02-value-extraction java 调用 js
 date: 2024-08-05 21:01:55 +0800
 categories: [Java]
 tags: [java, open-source, tool, sh]
 published: true
 ---
+
+# 场景
+
+我们经常需要从字符串中提取指定的值。
+
+如果要设计一个平台，常见提取策略都要支持。从零实现起来会比较麻烦。
+
+希望实现一个整合常见提取策略的工具，便于在各个场景复用。
+
+## 开源地址
+
+> [value-extraction 值提取核心](https://github.com/houbb/value-extraction)
+
+## 值提取系列
+
+[字符串值提取工具-01-概览](https://houbb.github.io/2024/08/05/value-extraction-01-overview)
+
+[字符串值提取工具-02-java 调用 js](https://houbb.github.io/2024/08/05/value-extraction-02-java-call-js)
+
+[字符串值提取工具-03-java 调用 groovy](https://houbb.github.io/2024/08/05/value-extraction-03-java-call-groovy)
+
+[字符串值提取工具-04-java 调用 java? Janino 编译工具](https://houbb.github.io/2024/08/05/value-extraction-04-java-call-java)
+
+[字符串值提取工具-05-java 调用 shell](https://houbb.github.io/2024/08/05/value-extraction-05-java-call-shell)
+
+[字符串值提取工具-06-java 调用 python](https://houbb.github.io/2024/08/05/value-extraction-06-java-call-python)
+
+[字符串值提取工具-07-java 调用 go](https://houbb.github.io/2024/08/05/value-extraction-07-java-call-go)
 
 # 场景
 
