@@ -156,7 +156,83 @@ public class JaninoExample {
 }
 ```
 
+## 直接执行该方法
 
+```java
+package com.github.houbb.value.extraction.test;
+
+import org.codehaus.janino.ScriptEvaluator;
+
+public class JavaDemoTest {
+
+    public static void main(String[] args) throws Exception {
+        // Java 脚本字符串
+        String script =
+                "System.out.println(\"Hello, World!\");";
+
+        // 创建脚本求值器实例
+        ScriptEvaluator scriptEvaluator = new ScriptEvaluator();
+
+        // 编译并执行脚本
+        scriptEvaluator.cook(script);
+        scriptEvaluator.evaluate(null);
+    }
+
+}
+```
+
+## 传入参数，直接执行
+
+```java
+package com.github.houbb.value.extraction.test;
+
+import org.codehaus.janino.ScriptEvaluator;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class JaninoExample {
+
+    public static void main(String[] args) throws Exception {
+        // 创建一个包含参数的 Map
+        Map<String, Object> bindings = new HashMap<>();
+        bindings.put("a", 10);
+        bindings.put("b", 20);
+
+        // 定义要执行的脚本
+        String script = "System.out.println(\"Result: \" + (a + b));";
+
+        // 调用方法来执行脚本
+        executeScriptWithBindings(script, bindings);
+    }
+
+    public static void executeScriptWithBindings(String script, Map<String, Object> bindings) throws Exception {
+        // 提取 Map 中的键（参数名）和值（参数值）
+        String[] parameterNames = bindings.keySet().toArray(new String[0]);
+        Class<?>[] parameterTypes = new Class<?>[parameterNames.length];
+
+        // 假设所有参数的类型都是 Object，可以根据需要修改类型推断逻辑
+        for (int i = 0; i < parameterNames.length; i++) {
+            parameterTypes[i] = bindings.get(parameterNames[i]).getClass();
+        }
+
+        // 创建 ScriptEvaluator 实例
+        ScriptEvaluator scriptEvaluator = new ScriptEvaluator();
+
+        // 设置脚本的参数名称和类型
+        scriptEvaluator.setParameters(parameterNames, parameterTypes);
+
+        // 编译脚本
+        scriptEvaluator.cook(script);
+
+        // 提取 Map 中的值作为参数
+        Object[] parameterValues = bindings.values().toArray();
+
+        // 执行脚本
+        scriptEvaluator.evaluate(parameterValues);
+    }
+}
+```
 
 ------------------------------------------
 
