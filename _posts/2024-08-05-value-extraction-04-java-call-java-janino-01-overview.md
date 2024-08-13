@@ -199,7 +199,7 @@ System.out.println(ee.evaluate()); // Prints "7".
 ```
 
 
-# 基础示例：Janino作为表达式求值器
+# 基础示例：Janino 作为表达式求值器
 
 Janino作为一个表达式求值器：
 
@@ -249,9 +249,323 @@ public class Main {
 }
 ```
 
-# todo
+注意：如果你传递一个字符串字面量作为表达式，一定要转义所有的 Java 特殊字符，特别是反斜杠。
 
-...
+在我的机器上（2 GHz P4），编译表达式需要 670 微秒，而评估表达式仅需 0.35 微秒（大约比编译快 2000 倍）。
+
+有一个示例程序 "ExpressionDemo" 你可以用来试验 ExpressionEvaluator，或者你可以研究 ExpressionDemo 的源代码来了解 ExpressionEvaluator 的 API。
+
+```
+$ java -cp janino.jar:commons-compiler.jar \
+> org.codehaus.commons.compiler.samples.ExpressionDemo \
+> -help
+Usage:
+  ExpressionDemo { <option> } <expression> { <parameter-value> }
+Compiles and evaluates the given expression and prints its value.
+Valid options are
+ -et <expression-type>                        (default: any)
+ -pn <comma-separated-parameter-names>        (default: none)
+ -pt <comma-separated-parameter-types>        (default: none)
+ -te <comma-separated-thrown-exception-types> (default: none)
+ -di <comma-separated-default-imports>        (default: none)
+ -help
+The number of parameter names, types and values must be identical.
+$ java -cp janino.jar:commons-compiler.jar \
+> org.codehaus.commons.compiler.samples.ExpressionDemo \
+> -et double \
+> -pn x \
+> -pt double \
+> "Math.sqrt(x)" \
+> 99
+Result = 9.9498743710662
+$
+```
+
+# Janino 作为脚本评估器
+
+类似于表达式评估器，ScriptEvaluator API 存在于编译和处理 Java "块"（即方法体）中。
+
+如果定义了一个非 "void" 的返回值，那么该块必须返回该类型的值。
+
+作为一个特殊功能，它允许声明方法。方法声明的位置和顺序无关紧要。
+
+示例：
+
+```java
+package foo;
+ 
+import java.lang.reflect.InvocationTargetException;
+ 
+import org.codehaus.commons.compiler.CompileException;
+import org.codehaus.janino.ScriptEvaluator;
+ 
+public class Main {
+ 
+    public static void
+    main(String[] args) throws CompileException, NumberFormatException, InvocationTargetException {
+ 
+        ScriptEvaluator se = new ScriptEvaluator();
+ 
+        se.cook(
+            ""
+            + "static void method1() {\n"
+            + "    System.out.println(1);\n"
+            + "}\n"
+            + "\n"
+            + "method1();\n"
+            + "method2();\n"
+            + "\n"
+            + "static void method2() {\n"
+            + "    System.out.println(2);\n"
+            + "}\n"
+        );
+ 
+        se.evaluate();
+    }
+}
+```
+
+
+# Janino 作为类体评估器
+
+类似于表达式评估器和脚本评估器，ClassBodyEvaluator 用于编译和处理 Java 类体，即一系列方法和变量声明。
+
+如果你规定类体应该定义一个名为 "main()" 的方法，那么你的脚本将几乎像一个 "C" 程序一样：
+
+```java
+public static void
+main(String[] args) {
+    System.out.println(java.util.Arrays.asList(args));
+}
+```
+
+“ClassBodyDemo” 程序（源代码）演示了这一点：
+
+```
+$ java -cp janino.jar:commons-compiler.jar \
+> org.codehaus.commons.compiler.samples.ClassBodyDemo -help
+Usage:
+  ClassBodyDemo <class-body> { <argument> }
+  ClassBodyDemo -help
+If <class-body> starts with a '@', then the class body is read
+from the named file.
+The <class-body> must declare a method "public static void main(String[])"
+to which the <argument>s are passed. If the return type of that method is
+not VOID, then the returned value is printed to STDOUT.
+$ java -cp janino.jar:commons-compiler.jar \
+> org.codehaus.commons.compiler.samples.ClassBodyDemo '
+> public static void
+> main(String[] args) {
+>     System.out.println(java.util.Arrays.asList(args));
+> }' \
+> a b c
+[a, b, c]
+$
+```
+
+# Janino 作为简单编译器
+
+SimpleCompiler 编译单个 .java 文件（“编译单元”）。
+
+与常规的 Java 编译不同，该编译单元可以声明多个公共类型。
+
+示例：
+
+```java
+// This is file "Hello.java", but it could have any name.
+ 
+public
+class Foo {
+ 
+    public static void
+    main(String[] args) {
+        new Bar().meth();
+    }
+}
+ 
+public
+class Bar {
+ 
+    public void
+    meth() {
+        System.out.println("HELLO!");
+    }
+}
+```
+
+它返回一个 ClassLoader，你可以从中获取已编译的类。
+
+要运行此程序，请输入：
+
+```
+$ java -cp janino.jar:commons-compiler.jar \
+> org.codehaus.janino.SimpleCompiler -help
+Usage:
+    org.codehaus.janino.SimpleCompiler <source-file> <class-name> { <argument> }
+Reads a compilation unit from the given <source-file> and invokes method
+"public static void main(String[])" of class <class-name>, passing the
+given <argument>s.
+$ java -cp janino.jar:commons-compiler.jar \
+> org.codehaus.janino.SimpleCompiler \
+> Hello.java Foo
+HELLO!
+$
+```
+
+# Janino 作为编译器
+
+Compiler 编译一组 .java 文件（“编译单元”），并生成 .class 文件。
+
+每个编译单元可以声明不同的包，且这些编译单元可以相互引用，甚至可以循环引用。
+
+示例：
+
+```java
+ICompiler compiler = compilerFactory.newCompiler();
+ 
+compiler.compile(new File("pkg1/A.java"), new File("pkg2/B.java"));
+```
+
+然而，Compiler 可以重新配置，以从不同的源读取编译单元，和/或将类存储在不同的位置，例如存储到一个 Map 中，然后通过 ClassLoader 将其加载到虚拟机中：
+
+```java
+ICompiler compiler = compilerFactory.newCompiler();
+ 
+// Store generated .class files in a Map:
+Map<String, byte[]> classes = new HashMap<String, byte[]>();
+compiler.setClassFileCreator(new MapResourceCreator(classes));
+ 
+// Now compile two units from strings:
+compiler.compile(new Resource[] {
+    new StringResource(
+        "pkg1/A.java",
+        "package pkg1; public class A { public static int meth() { return pkg2.B.meth(); } }"
+    ),
+    new StringResource(
+        "pkg2/B.java",
+        "package pkg2; public class B { public static int meth() { return 77;            } }"
+    ),
+});
+ 
+// Set up a class loader that uses the generated classes.
+ClassLoader cl = new ResourceFinderClassLoader(
+    new MapResourceFinder(classes),    // resourceFinder
+    ClassLoader.getSystemClassLoader() // parent
+);
+ 
+Assert.assertEquals(77, cl.loadClass("pkg1.A").getDeclaredMethod("meth").invoke(null));
+```
+
+# 高级示例
+
+Janino 作为源代码类加载器
+
+JavaSourceClassLoader 扩展了 Java 的 java.lang.ClassLoader 类，具有直接从源代码加载类的功能。
+
+具体来说，如果通过这个类加载器加载一个类，它会在给定的“源路径”中的任何目录中搜索匹配的 ".java" 文件，读取、扫描、解析并编译它，并在 JVM 中定义生成的类。必要时，更多的类将通过父类加载器和/或源路径加载。
+
+文件系统中不会创建任何中间文件。
+
+示例：
+
+```java
+// srcdir/pkg1/A.java
+ 
+package pkg1;
+ 
+import pkg2.*;
+ 
+public class A extends B {
+}
+```
+
+```java
+// srcdir/pkg2/B.java
+ 
+package pkg2;
+ 
+public class B implements Runnable {
+    public void run() {
+        System.out.println("HELLO");
+    }
+}
+```
+
+```java
+// Sample code that reads, scans, parses, compiles and loads
+// "A.java" and "B.java", then instantiates an object of class
+// "A" and invokes its "run()" method.
+ClassLoader cl = new JavaSourceClassLoader(
+    this.getClass().getClassLoader(),  // parentClassLoader
+    new File[] { new File("srcdir") }, // optionalSourcePath
+    (String) null,                     // optionalCharacterEncoding
+    DebuggingInformation.NONE          // debuggingInformation
+);
+ 
+// Load class A from "srcdir/pkg1/A.java", and also its superclass
+// B from "srcdir/pkg2/B.java":
+Object o = cl.loadClass("pkg1.A").newInstance();
+ 
+// Class "B" implements "Runnable", so we can cast "o" to
+// "Runnable".
+((Runnable) o).run(); // Prints "HELLO" to "System.out".
+```
+
+如果 Java 源代码不在文件中，而是在其他存储（如数据库、主内存等）中，你可以指定一个自定义的 ResourceFinder，而不是基于目录的源路径。
+
+如果你有许多源文件，并且想要减少编译时间，可以使用 CachingJavaSourceClassLoader，它利用应用程序提供的缓存来存储类文件以便重复使用。
+
+# jsh - Java shell
+
+JANINO 有一个姊妹项目 "jsh"，它实现了一个类似于 "bash"、"ksh"、"csh" 等的 "shell" 程序，但使用 Java 语法。
+
+# Janino 作为命令行 Java 编译器
+
+Compiler 类模仿了 ORACLE 的 javac 工具的行为。它将一组“编译单元”（即 Java 源文件）编译成一组类文件。
+
+使用 "-warn" 选项，Janino 会发出一些可能非常有趣的警告，这些警告可能帮助你“清理”源代码。
+
+BASH 脚本 "bin/janinoc" 实现了一个 ORACLE 的 JAVAC 工具的替代品：
+
+```
+$ janinoc -sourcepath src -d classes src/com/acme/MyClass.java
+$ janinoc -help
+A drop-in replacement for the JAVAC compiler, see the documentation for JAVAC
+Usage:
+ 
+  java java.lang.Compiler [ <option> ] ... <source-file> ...
+ 
+Supported <option>s are:
+  -d <output-dir>           Where to save class files
+  -sourcepath <dirlist>     Where to look for other source files
+  -classpath <dirlist>      Where to look for other class files
+  -extdirs <dirlist>        Where to look for other class files
+  -bootclasspath <dirlist>  Where to look for other class files
+  -encoding <encoding>      Encoding of source files, e.g. "UTF-8" or "ISO-8859-1"
+  -verbose
+  -g                        Generate all debugging info
+  -g:none                   Generate no debugging info (the default)
+  -g:{source,lines,vars}    Generate only some debugging info
+  -rebuild                  Compile all source files, even if the class files
+                            seem up-to-date
+  -help
+ 
+The default encoding in this environment is "UTF-8".
+$
+```
+
+# Janino 作为 ANT 编译器
+
+你可以通过 AntCompilerAdapter 类将 JANINO 插入到 ANT 工具中。
+
+只需确保 janino.jar 在类路径上，然后使用以下命令行选项运行 ANT：
+
+```bash
+-antcompiler janino
+```
+
+
+
 
 
 # 参考资料
