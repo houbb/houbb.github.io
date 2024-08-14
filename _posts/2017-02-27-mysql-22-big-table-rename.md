@@ -35,7 +35,9 @@ published: true
 
 有一张大表，发现加索引直接导致超时，如何通过 rename 尽可能降低风险？
 
-## 解释
+# 流程简单版本
+
+## 核心流程
 
 可以通过 rename
 
@@ -70,6 +72,13 @@ RENAME TABLE new_table TO old_table;
 ```sql
 DROP TABLE old_table_backup;
 ```
+
+## 不足
+
+复制数据这一步，如果服务有写入，会导致数据不是最新，最全。
+
+
+
 
 
 
@@ -170,6 +179,10 @@ DROP TABLE old_table_backup;
 10. **使用工具**：考虑使用专业的数据库迁移工具，这些工具可能提供了更高级的事务性和错误恢复机制。
 
 请注意，虽然`RENAME TABLE`是原子性的，但在实际操作中，特别是在生产环境中，最好还是通过测试来验证你的迁移策略在特定情况下的行为。此外，确保在低峰时段进行这些操作，以最小化对用户的影响。
+
+# 参考资料
+
+https://zhuanlan.zhihu.com/p/625676479?utm_id=0
 
 * any list
 {:toc}
