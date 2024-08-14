@@ -7,6 +7,29 @@ tags: [java, open-source, tool, sh]
 published: true
 ---
 
+# 值提取系列
+
+## 值提取系列
+
+[字符串值提取工具-01-概览](https://houbb.github.io/2024/08/05/value-extraction-01-overview)
+
+[字符串值提取工具-02-java 调用 js](https://houbb.github.io/2024/08/05/value-extraction-02-java-call-js)
+
+[字符串值提取工具-03-java 调用 groovy](https://houbb.github.io/2024/08/05/value-extraction-03-java-call-groovy)
+
+[字符串值提取工具-04-java 调用 java? Janino 编译工具](https://houbb.github.io/2024/08/05/value-extraction-04-java-call-java)
+
+[字符串值提取工具-05-java 调用 shell](https://houbb.github.io/2024/08/05/value-extraction-05-java-call-shell)
+
+[字符串值提取工具-06-java 调用 python](https://houbb.github.io/2024/08/05/value-extraction-06-java-call-python)
+
+[字符串值提取工具-07-java 调用 go](https://houbb.github.io/2024/08/05/value-extraction-07-java-call-go)
+
+## 代码地址
+
+> [value-extraction 值提取核心](https://github.com/houbb/value-extraction)
+
+
 # 场景
 
 我们希望通过 java 执行 groovy，如何实现呢?

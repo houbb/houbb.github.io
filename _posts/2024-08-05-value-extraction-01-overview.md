@@ -15,9 +15,6 @@ published: true
 
 希望实现一个整合常见提取策略的工具，便于在各个场景复用。
 
-## 开源地址
-
-> [value-extraction 值提取核心](https://github.com/houbb/value-extraction)
 
 ## 值提取系列
 
@@ -34,6 +31,11 @@ published: true
 [字符串值提取工具-06-java 调用 python](https://houbb.github.io/2024/08/05/value-extraction-06-java-call-python)
 
 [字符串值提取工具-07-java 调用 go](https://houbb.github.io/2024/08/05/value-extraction-07-java-call-go)
+
+## 开源地址
+
+> [value-extraction 值提取核心](https://github.com/houbb/value-extraction)
+
 
 # 整体目标
 
