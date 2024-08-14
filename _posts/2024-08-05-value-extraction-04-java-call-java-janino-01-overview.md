@@ -556,17 +556,172 @@ $
 
 # Janino 作为 ANT 编译器
 
-你可以通过 AntCompilerAdapter 类将 JANINO 插入到 ANT 工具中。
+你可以通过 `AntCompilerAdapter` 类将 Janino 插入到 ANT 工具中。
 
-只需确保 janino.jar 在类路径上，然后使用以下命令行选项运行 ANT：
+只需确保 `janino.jar` 在类路径中，然后使用以下命令行选项运行 ANT：
 
 ```bash
--antcompiler janino
+-Dbuild.compiler=org.codehaus.janino.AntCompilerAdapter
 ```
 
+# Janino 作为 TOMCAT 编译器
 
+如果你想在 TOMCAT 中使用 Janino，只需将 `janino.jar` 文件复制到 TOMCAT 的 `common/lib` 目录中，然后在 TOMCAT 的 `conf/web.xml` 文件中的 JSP servlet 定义部分添加以下初始化参数段：
 
+```xml
+<init-param>
+    <param-name>compiler</param-name>
+    <param-value>org.codehaus.janino.AntCompilerAdapter</param-value>
+</init-param>
+```
 
+# Janino 作为代码分析器  
+
+除了编译 Java 代码之外，Janino 还可以用于静态代码分析：
+
+基于解析器生成的 AST（“抽象语法树”），遍历器会遍历 AST 的所有节点，派生类可以对它们进行各种分析，例如计算声明数量：
+
+```bash
+$ java org.codehaus.janino.samples.DeclarationCounter DeclarationCounter.java
+Class declarations:     1
+Interface declarations: 0
+Fields:                 4
+Local variables:        4
+$
+```
+
+这就是所有这些精巧的代码度量和样式检查的基础。
+
+# Janino 作为代码操控器  
+
+如果你想将一个 Java 编译单元读入内存，对其进行操控，然后将其写回文件以进行编译，只需执行以下步骤：
+
+```java
+// 从 Reader "r" 中读取编译单元到内存中。
+Java.CompilationUnit cu = new Parser(new Scanner(fileName, r)).parseCompilationUnit();
+ 
+// 在内存中操控 AST。
+// ...
+ 
+// 将 AST 转换回文本。
+UnparseVisitor.unparse(cu, new OutputStreamWriter(System.out));
+```
+
+`AstTest.testMoveLocalVariablesToFields()` 测试用例演示了如何操控 AST。
+
+# 替代编译器实现
+
+Janino 可以配置为使用其他 Java 编译器实现，而不是其自身的编译器。这些替代实现基本上需要实现 `ICompilerFactory` 接口。其中一个替代实现基于 `javax.tools` API，并作为 Janino 发行版的一部分提供：`commons-compiler-jdk.jar`。
+
+基本上有两种方式可以切换实现：
+
+1. 使用 `org.codehaus.commons.compiler.jdk.ExpressionEvaluator` 及其相关类，而不是 `org.codehaus.janino.ExpressionEvaluator`；在编译时和运行时的类路径中使用 `commons-compiler-jdk.jar` 代替 `janino.jar`。（`commons-compiler.jar` 必须始终在类路径中，因为它包含所有实现所需的基本类。）
+
+2. 使用 `org.codehaus.commons.compiler.CompilerFactoryFactory.getDefaultFactory().newExpressionEvaluator()`，并且只对 `commons-compiler.jar` 进行编译（不需要具体实现）。在运行时，添加一个实现（`janino.jar` 或 `commons-compiler-jdk.jar`）到类路径中，`getDefaultFactory()` 会在运行时找到它。
+
+基于 JDK 的实现生成的代码性能与 Janino 实现的性能相同；然而，编译速度则慢了 22 倍（通过编译表达式“a + b”两个整数来测量，见下文）。主要原因是 `javax.tools` 编译器通过类路径加载所需的 JRE 类，而 Janino 则使用已经加载到运行中的 JVM 中的类。因此，`CompilerDemo`（JAVAC 的直接替代品）并不比 JAVAC 更快（通过编译 Janino 源代码来测量，见下文）。
+
+| 活动                         | Janino  | JDK     |
+|------------------------------|---------|---------|
+| 编译表达式“a + b”            | 0.44 ms | 9.84 ms |
+| 编译 Janino 源代码            | 6.417 s | 5.864 s |
+
+（使用 JDK 17 和 JRE 17 测量。）
+
+# 安全性
+
+**警告**: JRE 17 报告“`System::setSecurityManager` 将在未来版本中移除”，因此你不应该在 JRE 17 及更高版本中使用 Janino 沙箱。
+
+由于 Janino 生成的字节码可以完全访问 JRE，因此如果正在编译和执行的表达式、脚本、类体或编译单元包含用户输入，可能会产生安全问题。
+
+如果用户是一个有经验的系统管理员，可以预期他或她会负责任地使用 Janino，并遵循你提供的文档和注意事项；然而，如果用户是来自内部网或互联网的用户，无法假定他们不会表现得笨拙、轻率、富有创造性、一根筋，甚至是恶意的。
+
+Janino 包含一个非常易于使用的安全 API，可以用来将表达式、脚本、类体和编译单元锁定在一个“沙箱”中，该沙箱由 Java 安全管理器保护。
+
+```java
+import java.security.Permissions;
+import java.security.PrivilegedAction;
+import java.util.PropertyPermission;
+import org.codehaus.janino.ScriptEvaluator;
+import org.codehaus.commons.compiler.Sandbox;
+ 
+public class SandboxDemo {
+ 
+    public static void
+    main(String[] args) throws Exception {
+ 
+        // Create a JANINO script evaluator. The example, however, will work as fine with
+        // ExpressionEvaluators, ClassBodyEvaluators and SimpleCompilers.
+        ScriptEvaluator se = new ScriptEvaluator();
+        se.setDebuggingInformation(true, true, false);
+ 
+        // Now create a "Permissions" object which allows to read the system variable
+        // "foo", and forbids everything else.
+        Permissions permissions = new Permissions();
+        permissions.add(new PropertyPermission("foo", "read"));
+ 
+        // Compile a simple script which reads two system variables - "foo" and "bar".
+        PrivilegedAction<?> pa = se.createFastEvaluator((
+            "System.getProperty(\"foo\");\n" +
+            "System.getProperty(\"bar\");\n" +
+            "return null;\n"
+        ), PrivilegedAction.class, new String[0]);
+ 
+        // Finally execute the script in the sandbox. Getting system property "foo" will
+        // succeed, and getting "bar" will throw a
+        //    java.security.AccessControlException: access denied (java.util.PropertyPermission bar read)
+        // in line 2 of the script. Et voila!
+        Sandbox sandbox = new Sandbox(permissions);
+        sandbox.confine(pa);
+    }
+}
+```
+
+Java 安全管理器的官方文档由 ORACLE 提供，标题为《Java Essentials: The Security Manager》。由权限保护的操作包括：
+
+- 接受来自指定主机和端口号的套接字连接
+- 修改线程（更改其优先级、停止它等）
+- 打开到指定主机和端口号的套接字连接
+- 创建新的类加载器
+- 删除指定文件
+- 创建新进程
+- 使应用程序退出
+- 加载包含本地方法的动态库
+- 在指定的本地端口号上等待连接
+- 从指定包中加载类（由类加载器使用）
+- 将新类添加到指定包中（由类加载器使用）
+- 访问或修改系统属性
+- 访问指定的系统属性
+- 从指定文件读取
+- 向指定文件写入
+
+这些操作是攻击者可能进行的“真正恶意的行为”。然而，未受到保护的操作包括：
+
+- 分配内存
+- 创建新线程
+- 过度使用 CPU 时间
+
+幸运的是，`Thread` 构造函数会进行一些反射操作，因此可以通过不允许新的 `RuntimePermission("accessDeclaredMembers")` 来防止脚本创建新线程。
+
+内存分配无法直接受到保护，不过，`com.sun.management.ThreadMXBean.getThreadAllocatedBytes(long threadId)` 似乎可以统计线程所分配的字节数，因此它可能是检测运行中脚本过度内存分配的一个有效措施。
+
+# debug 调试
+
+即使生成的类是动态创建的，也可以进行交互式调试。
+
+只需在启动 JVM 时设置两个系统属性，例如：
+
+```bash
+$ java \
+> ... \
+> -Dorg.codehaus.janino.source_debugging.enable=true \
+> -Dorg.codehaus.janino.source_debugging.dir=C:\tmp \
+> ...
+```
+
+（第二个属性是可选的；如果未设置，则临时文件将创建在默认的临时文件目录中。）
+
+当 Janino 扫描表达式、脚本、类体或编译单元时，它会将源代码的副本存储在一个临时文件中，调试器通过其源路径访问该文件。（JVM 终止时，临时文件将被删除。）
 
 # 参考资料
 

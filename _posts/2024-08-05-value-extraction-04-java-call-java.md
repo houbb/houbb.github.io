@@ -234,6 +234,50 @@ public class JaninoExample {
 }
 ```
 
+但是感觉这个很麻烦，而且有问题
+
+## 另一种执行的方式
+
+```java
+package com.github.houbb.value.extraction.test.javas;
+
+import org.codehaus.commons.compiler.CompileException;
+import org.codehaus.janino.ScriptEvaluator;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+
+public class JaninoScriptMapExample {
+
+    public static void main(String[] args) throws CompileException, InvocationTargetException {
+        // 示例脚本，使用 Map 参数
+        String script =
+                "return map.get(\"greeting\") + \", \" + map.get(\"name\") + \"!\";";
+
+        // 创建 ScriptEvaluator 实例，指定返回类型、参数名和参数类型
+        ScriptEvaluator se = new ScriptEvaluator(
+                script,                      // 脚本代码
+                Object.class,                // 返回值类型
+                new String[]{"map"},         // 参数名列表
+                new Class<?>[]{Map.class}    // 参数类型列表
+        );
+
+        // 准备传入的 Map 参数
+        Map<String, Object> params = new HashMap<>();
+        params.put("greeting", "Hello");
+        params.put("name", "Janino");
+
+        // 执行脚本，传入 Map 参数
+        Object result = se.evaluate(new Object[]{params});
+
+        // 输出结果
+        System.out.println(result);
+    }
+
+}
+```
+
 ------------------------------------------
 
 # chat
