@@ -43,7 +43,9 @@ public class JavaScriptExecutor {
 
 ### 如何支持其他脚本语言
 
-如果你需要在 Java 中支持其他脚本语言，可以使用外部库或脚本引擎实现。例如，Jython（用于运行 Python 脚本）、JRuby（用于运行 Ruby 脚本）等。
+如果你需要在 Java 中支持其他脚本语言，可以使用外部库或脚本引擎实现。
+
+例如，Jython（用于运行 Python 脚本）、JRuby（用于运行 Ruby 脚本）等。
 
 #### 使用 Jython 支持 Python
 

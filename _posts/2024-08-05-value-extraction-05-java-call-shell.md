@@ -9,7 +9,7 @@ published: true
 
 # 场景
 
-我们希望通过 java 执行 groovy，如何实现呢?
+我们希望通过 java 执行 windows shell，如何实现呢?
 
 
 # windows 脚本效果
