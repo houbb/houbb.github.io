@@ -32,7 +32,7 @@ published: true
 
 [字符串值提取工具-07-java 调用 go](https://houbb.github.io/2024/08/05/value-extraction-07-java-call-go)
 
-## 开源地址
+## 代码地址
 
 > [value-extraction 值提取核心](https://github.com/houbb/value-extraction)
 
