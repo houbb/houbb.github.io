@@ -7,6 +7,22 @@ tags: [html, js, sh]
 published: true
 ---
 
+# http 请求系列
+
+[http request-01-XMLHttpRequest XHR 简单介绍](https://houbb.github.io/2020/03/27/http-request-00-XHR-intro)
+
+[http request-01-XMLHttpRequest XHR 标准](https://houbb.github.io/2020/03/27/http-request-00-XHR-standard)
+
+[Ajax 详解-01-AJAX（Asynchronous JavaScript and XML）入门介绍](https://houbb.github.io/2020/03/27/http-request-01-ajax-intro)
+
+[Ajax XHR 的替代方案-fetch](https://houbb.github.io/2020/03/27/http-request-02-fetch-intro)
+
+[Ajax XHR 的替代方案-fetch 标准](https://houbb.github.io/2020/03/27/http-request-02-fetch-standard)
+
+[Ajax 的替代方案-axios.js](https://houbb.github.io/2020/03/27/http-request-03-axios-intro)
+
+[http 请求-04-promise 对象 + async/await](https://houbb.github.io/2020/03/27/http-request-04-promise-intro)
+
 # chat
 
 ## 详细介绍一下 Promise
@@ -284,6 +300,95 @@ async function fetchAllData() {
 ```
 
 在实际开发中，选择使用 Promise 或 async/await 通常取决于个人偏好、代码可读性和项目需求。
+
+## 在 JavaScript 中，除了 Promise 和 async/await，还有哪些处理异步操作的方法？
+
+在 JavaScript 中，除了 Promise 和 async/await，还有其他几种处理异步操作的方法：
+
+1. **回调函数（Callbacks）**:
+   - 这是最传统的异步处理方式。例如，许多 Node.js 的 API 使用回调函数来处理异步操作。
+   - 缺点是可能导致“回调地狱”，当多个异步操作嵌套时，代码可读性差。
+
+   ```javascript
+   function asyncOperation(callback) {
+     setTimeout(() => {
+       callback('结果');
+     }, 1000);
+   }
+
+   asyncOperation(result => {
+     console.log(result);
+   });
+   ```
+
+2. **事件发射器（Event Emitters）**:
+   - 主要用于 Node.js 中，基于事件的异步编程模型。
+   - 使用 `.on()`、`.emit()` 和 `.off()` 方法来注册事件监听器、触发事件和移除事件监听器。
+
+   ```javascript
+   const EventEmitter = require('events');
+   const emitter = new EventEmitter();
+
+   emitter.on('message', data => {
+     console.log(data);
+   });
+
+   // 触发 'message' 事件
+   emitter.emit('message', 'Hello, World!');
+   ```
+
+3. **观察者模式（Observers）**:
+   - 这是一种设计模式，允许对象订阅和接收通知，当某个事件或状态发生变化时。
+
+4. **生成器函数（Generators）**:
+   - 使用 `function*` 和 `yield` 关键字，可以暂停和恢复函数的执行。
+   - 与 Promise 结合使用，可以优雅地处理异步流。
+
+   ```javascript
+   function* generator() {
+     const result = yield Promise.resolve('Hello');
+     console.log(result);
+   }
+
+   const gen = generator();
+   gen.next().value.then(data => gen.next(data));
+   ```
+
+5. **async 迭代器（Async Iterators）**:
+   - 允许异步迭代，使用 `async function*` 创建迭代器，并使用 `for await...of` 进行迭代。
+
+   ```javascript
+   async function* asyncGenerator() {
+     yield Promise.resolve(1);
+     yield Promise.resolve(2);
+   }
+
+   async function iterateAsync() {
+     for await (const value of asyncGenerator()) {
+       console.log(value);
+     }
+   }
+   ```
+
+6. **RxJS 和其他响应式编程库**:
+   - 这些库提供了更复杂的响应式编程模型，用于处理异步数据流。
+
+7. **Thunk 函数**:
+   - 在函数式编程中，Thunk 函数是一种延迟计算的技术，常用于处理高阶函数。
+
+8. **Node.js Streams**:
+   - 用于处理流式数据，例如文件读写、网络传输等。
+
+9. **CSP（Communicating Sequential Processes）**:
+   - 一个并发编程模型，通过通道（channels）来传递消息。
+
+10. **Worker 线程（Web Workers）**:
+    - 在浏览器中，Web Workers 允许在后台线程运行脚本，不干扰用户界面的响应。
+
+每种方法都有其适用场景，开发者可以根据具体需求和上下文选择最合适的异步处理方式。
+
+随着 JavaScript 的发展，Promise 和 async/await 成为了主流的异步编程解决方案，但了解其他方法可以帮助我们更好地解决特定的问题。
+
 
 # 参考资料
 
