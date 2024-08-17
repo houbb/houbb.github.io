@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 字符串值提取工具-08-java 执行 xml 解析, xpath
+title: 字符串值提取工具-09-java 执行 json 解析, json-path
 date: 2024-08-05 21:01:55 +0800
 categories: [Java]
 tags: [java, open-source, tool, sh]
@@ -25,10 +25,15 @@ published: true
 
 [字符串值提取工具-08-java 通过 xml-path 解析 xml](https://houbb.github.io/2024/08/05/value-extraction-08-java-xpath)
 
+# 拓展阅读
+
+如果你对 json-path 不是很熟悉，建议学习：
+
+[Json Path-另一种解析 json 的方式 jsonpath](https://houbb.github.io/2018/07/20/json-03-jsonpath)
 
 # 场景
 
-我们希望通过 java 执行 xml-path 解析 xml。
+我们希望通过 java 执行 json-path 解析 json。
 
 # chat
 

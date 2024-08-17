@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ajax XHR 的替代方案-fetch 标准
+title: http request-02-Ajax XHR 的替代方案-fetch 标准
 date:  2020-3-27 17:53:59 +0800
 categories: [HTML]
 tags: [html, js, sh]

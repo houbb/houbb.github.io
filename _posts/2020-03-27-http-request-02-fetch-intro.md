@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ajax XHR 的替代方案-fetch
+title: http 请求-02-Ajax XHR 的替代方案 fetch api 入门介绍
 date:  2020-3-27 17:53:59 +0800
 categories: [HTML]
 tags: [html, js, sh]

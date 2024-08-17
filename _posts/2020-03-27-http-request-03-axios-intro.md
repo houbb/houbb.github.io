@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ajax 的替代方案-axios.js 
+title: http request-03-Ajax 的替代方案 axios.js 入门介绍
 date:  2020-3-27 17:53:59 +0800
 categories: [HTML]
 tags: [html, js, sh]
@@ -19,7 +19,7 @@ published: true
 
 [Ajax XHR 的替代方案-fetch 标准](https://houbb.github.io/2020/03/27/http-request-02-fetch-standard)
 
-[Ajax 的替代方案-axios.js](https://houbb.github.io/2020/03/27/http-request-03-axios-intro)
+[http request-03-Ajax 的替代方案 axios.js 入门介绍](https://houbb.github.io/2020/03/27/http-request-03-axios-intro)
 
 [http 请求-04-promise 对象 + async/await](https://houbb.github.io/2020/03/27/http-request-04-promise-intro)
 

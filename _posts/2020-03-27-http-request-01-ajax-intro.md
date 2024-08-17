@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Ajax 详解-01-AJAX（Asynchronous JavaScript and XML）入门介绍
+title: http 请求-01-AJAX（Asynchronous JavaScript and XML）入门介绍
 date:  2020-3-27 17:53:59 +0800
 categories: [HTML]
 tags: [html, js, sh]
@@ -13,7 +13,7 @@ published: true
 
 [http request-01-XMLHttpRequest XHR 标准](https://houbb.github.io/2020/03/27/http-request-00-XHR-standard)
 
-[Ajax 详解-01-AJAX（Asynchronous JavaScript and XML）入门介绍](https://houbb.github.io/2020/03/27/http-request-01-ajax-intro)
+[http 请求-01-AJAX（Asynchronous JavaScript and XML）入门介绍](https://houbb.github.io/2020/03/27/http-request-01-ajax-intro)
 
 [Ajax XHR 的替代方案-fetch](https://houbb.github.io/2020/03/27/http-request-02-fetch-intro)
 
