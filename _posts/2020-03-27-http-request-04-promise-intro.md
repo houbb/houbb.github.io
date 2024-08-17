@@ -25,7 +25,7 @@ published: true
 
 # chat
 
-## 详细介绍一下 Promise
+## Promise 是什么？
 
 Promise 是 JavaScript 中用于异步编程的一种对象。它代表了一个可能现在还没有结果，但将来会有结果的值。
 
