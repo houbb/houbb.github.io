@@ -25,6 +25,10 @@ published: true
 
 [字符串值提取工具-08-java 通过 xml-path 解析 xml](https://houbb.github.io/2024/08/05/value-extraction-08-java-xpath)
 
+[字符串值提取工具-09-java 执行 json 解析, json-path](https://houbb.github.io/2024/08/05/value-extraction-09-java-json-path)
+
+[字符串值提取工具-10-java 执行表达式引擎](https://houbb.github.io/2024/08/05/value-extraction-10-java-expression)
+
 # 拓展阅读
 
 如果你对 json-path 不是很熟悉，建议学习：
