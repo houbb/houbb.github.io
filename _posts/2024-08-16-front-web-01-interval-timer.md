@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 字符串值提取工具-07-java 调用 go
+title: 前端如何设置定时触发查询？setInterval
 date: 2024-08-05 21:01:55 +0800
-categories: [Java]
-tags: [java, open-source, tool, sh]
+categories: [Web]
+tags: [web, front, js, sh]
 published: true
 ---
 
