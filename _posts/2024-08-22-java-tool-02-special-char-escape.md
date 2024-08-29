@@ -33,6 +33,54 @@ public class Main {
 }
 ```
 
+# % uri 的问题
+
+## 问题
+
+然后发现一些 uri 的特殊符号也会存在问题，比如 %22 之类的。
+
+## 解决方法
+
+于是，首先执行一次解码。
+
+```java
+URLDecoder.decode("文本内容", "UTF-8");
+```
+
+# % 单独的中文转义失败
+
+## 问题
+
+整体的文本向上面进行 decode 处理，结果发现有些就是一个单独的 `%` 符号，导致失败报错：
+
+```
+java.lang.IllegalArgumentException: URLDecoder: Illegal hex characters in escape (%) pattern : %&d
+```
+
+## 解决方式
+
+请求的时候把%decode之后会有问题，这样就可以解决问题。
+
+只需要把上传参数中的%换成%25
+
+```java
+class Main {
+
+    public static void main(String[] args) throws java.lang.Exception {
+
+        String url = "[http://example.com/test?q=%.P%20some%20other%20Text](http://example.com/test?q=%.P%20some%20other%20Text)";
+
+        url = url.replaceAll("%(?![0-9a-fA-F]{2})", "%25");
+
+        System.out.println(url);
+
+    }
+
+}
+```
+
+最核心的就是 `url = url.replaceAll("%(?![0-9a-fA-F]{2})", "%25");`
+
 
 # chat
 
@@ -101,6 +149,8 @@ public class Main {
 https://blog.csdn.net/u011456337/article/details/86180383
 
 github项目地址：https://github.com/lufei222/san-holiday.git
+
+https://www.jianshu.com/p/ed1e220979a0
 
 * any list
 {:toc}
