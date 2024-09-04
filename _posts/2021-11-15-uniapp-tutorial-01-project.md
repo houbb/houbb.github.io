@@ -1,6 +1,6 @@
 ---
 layout: post
-title: uniapp 教程-01-overview
+title: uniapp 教程-01-project 项目
 date: 2021-11-15 21:01:55 +0800
 categories: [WEB]
 tags: [web, cross-plateform, uni-app, sh]
