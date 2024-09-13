@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 记账工具 app-02-核心特性
+title: 记账工具 app-03-用户管理设计
 date: 2024-09-04 21:01:55 +0800
 categories: [Life]
 tags: [life, tool, sh]
@@ -11,9 +11,17 @@ published: true
 
 核心特性设计。
 
-## 需求
+# 用户表
 
+## 注册
 
+## 注销
+
+## 登录/登出
+
+## 密码管理
+
+## 个人信息管理
 
 
 # chat
