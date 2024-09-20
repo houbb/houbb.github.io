@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  CDN 加速原理
+title:  CDN 加速原理 内容分发网络（Content Delivery Network）
 date:  2022-07-03 09:22:02 +0800
 categories: [Distributed]
 tags: [distributed, sh]

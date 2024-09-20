@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 高可用之限流 07-leaky bucket漏桶算法
+title: 高可用之限流 08-leaky bucket漏桶算法
 date: 2018-12-23 13:55:13 +0800
 categories: [Distributed]
 tags: [distributed, ha, limit, sh]
