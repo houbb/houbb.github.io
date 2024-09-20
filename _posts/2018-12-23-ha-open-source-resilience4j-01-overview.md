@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Resilience4j
-date: 2018-11-29 07:32:26 +0800
+title: 高可用开源库之 Resilience4j-01-Netflix Hystrix 的替代者 overview
+date: 2018-12-23 13:55:13 +0800
 categories: [Distributed]
 tags: [distributed, sh]
 published: true
-excerpt: Resilience4j-Netflix Hystrix 的替代者
 ---
 
 # Resilience4j
