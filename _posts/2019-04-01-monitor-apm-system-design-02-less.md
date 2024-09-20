@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 如何设计监控报警系统报警合并和抑制?
+title: 监控报警系统-02-如何设计监控报警系统报警合并和抑制?
 date:  2021-06-20 16:52:15 +0800
 categories: [APM]
 tags: [apm, system-design]
