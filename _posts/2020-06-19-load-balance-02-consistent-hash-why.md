@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  load balance 02-consistent hash algorithm 一致性哈希算法原理详解
-date:  2018-08-13 17:41:51 +0800
+date:  2020-6-19 09:26:03 +0800
 categories: [Distributed]
 tags: [distributed, hash, sf]
 published: true

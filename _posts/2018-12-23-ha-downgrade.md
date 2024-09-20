@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 高可用之降级
+title: 高可用之降级 downgrade
 date: 2018-12-23 13:55:13 +0800
 categories: [Distributed]
 tags: [distributed, ha, sh]
