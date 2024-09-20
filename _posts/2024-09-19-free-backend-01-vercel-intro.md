@@ -1,11 +1,134 @@
 ---
 layout: post
-title: 免费的后端服务器？ vercel
+title: 免费的后端服务器？ vercel nodejs 部署前后端实战笔记
 date: 2024-09-19 21:01:55 +0800
 categories: [Cloud]
 tags: [cloud, deploy, sh]
 published: true
 ---
+
+# 部署实战
+
+## 代码
+
+代码直接放在 github 上，项目结构:
+
+```plaintext
+my-vercel-app/
+├── api/
+│   └── index.js
+|── public/
+│   └── index.html
+├── package.json
+└── vercel.json
+```
+
+- `package.json` 文件
+
+```json
+{
+  "name": "my-vercel-app",
+  "version": "1.0.0",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js"
+  }
+}
+```
+
+- `api/index.js` 文件
+
+在 Vercel 中，每个 API 处理器就是一个无服务器函数。
+
+我们用一个简单的函数来替代 Express。
+
+```javascript
+module.exports = (req, res) => {
+  res.status(200).json({ message: 'Hello from Vercel!' });
+};
+```
+
+- `vercel.json` 文件
+
+确保 `vercel.json` 文件存在，以便 Vercel 识别到你希望部署的是 API 函数。
+
+```json
+{
+  "version": 2,
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
+    }
+  ]
+}
+```
+
+- public/index.html 首页 HTML
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Vercel App</title>
+</head>
+<body>
+  <h1>Hello from Vercel!</h1>
+  <p>This is the homepage.</p>
+</body>
+</html>
+```
+
+## vercel 注册+部署
+
+#### 1. 创建 GitHub 仓库
+
+将上面的代码上传到 GitHub 仓库，Vercel 将会通过 GitHub 仓库进行代码拉取。
+
+#### 2. 登录 Vercel 并创建项目
+
+1. 打开 [Vercel 官网](https://vercel.com/) 并注册或登录。
+2. 登录后点击 "New Project" 按钮。
+3. 连接 Vercel 到 GitHub 账户，并选择刚刚创建的 GitHub 仓库。
+4. 点击 "Import" 按钮。
+5. Vercel 会自动识别项目并进行部署。
+
+#### 3. 等待部署完成
+
+Vercel 会自动从你的 GitHub 仓库拉取代码并执行部署，几分钟后你的后端服务就会自动上线。
+
+#### 4. 访问服务
+
+## 访问
+
+部署成功后，Vercel 会提供一个 URL。
+
+比如我的：
+
+https://my-vercel-m2twrk8yh-houbb1s-projects.vercel.app/
+
+直接返回首页：
+
+```html
+Hello from Vercel!
+This is the homepage.
+```
+
+访问 api:
+
+https://my-vercel-m2twrk8yh-houbb1s-projects.vercel.app/api/index
+
+
+返回：
+
+```json
+{"message":"Hello from Vercel!"}
+```
+
+
+
 
 # chat
 
@@ -75,93 +198,6 @@ Vercel 允许你在项目中使用无服务器函数，这些函数可以用来�
 
 总的来说，虽然 Vercel 的核心功能是针对前端和静态内容的，但它通过无服务器函数和 API 路由功能，支持一定程度的后端服务。如果你的项目需要更复杂的后端逻辑或长时间运行的任务，可能需要考虑与其他后端服务集成或使用专门的后端平台。
 
-## 有没有可以免费部署后端服务的云服务器？
-
-是的，有几种提供免费计划的云服务器平台，适合用来部署后端服务。以下是一些主要选项：
-
-### 1. **Heroku**
-- **免费计划**：Heroku 提供了一个免费的计划，允许你部署和管理应用程序。虽然免费计划有一些限制，比如每月有限的运行时间和休眠策略，但对于轻量级的应用程序和开发环境来说，它是一个不错的选择。
-- **特点**：支持多种编程语言（如 Node.js、Python、Ruby、Java），提供易于使用的 CLI 和 web 界面，内置数据库和插件支持。
-
-### 2. **Vercel**
-- **免费计划**：虽然 Vercel 主要用于前端部署，但它的无服务器函数也可以用作后端服务。免费计划允许你使用一定数量的无服务器函数和其他资源。
-- **特点**：自动化部署、全球 CDN、集成 GitHub/GitLab/Bitbucket，适合前后端集成的应用。
-
-### 3. **Netlify**
-- **免费计划**：Netlify 提供了免费的部署计划，支持静态网站和无服务器函数（Netlify Functions）。免费计划适合小型项目和开发测试环境。
-- **特点**：简单的部署流程、集成 Git、支持无服务器函数和持续集成。
-
-### 4. **Glitch**
-- **免费计划**：Glitch 提供了一个免费的计划，用于创建和部署 Node.js 应用程序。它适合用作开发和测试环境。
-- **特点**：实时协作编辑、自动部署、简单的界面和开发工具。
-
-### 5. **Render**
-- **免费计划**：Render 提供免费的计划，支持部署静态网站、Web 服务和无服务器功能。免费计划有资源限制，但足够用于轻量级的项目。
-- **特点**：支持多种编程语言、自动部署、SSL 和自定义域名。
-
-### 6. **Fly.io**
-- **免费计划**：Fly.io 提供免费的计划，用于部署和运行分布式应用程序。它允许在多个数据中心部署应用以提供更好的全球覆盖。
-- **特点**：支持容器化应用、自动扩展、全球部署。
-
-### 7. **Railway**
-- **免费计划**：Railway 提供免费的计划，允许你轻松部署后端服务和数据库。它的免费计划适合中小型项目。
-- **特点**：简单的设置和管理、自动部署、内置数据库支持。
-
-### 8. **Firebase**
-- **免费计划**：Firebase 提供了免费的计划，适合使用其云函数（Firebase Cloud Functions）来处理后端逻辑。Firebase 的免费计划适合小型应用和开发测试。
-- **特点**：与 Google Cloud Platform 集成、支持无服务器函数、实时数据库和身份验证。
-
-这些平台大多数提供免费层级，但可能会有一些资源和功能限制。
-
-如果你的需求超出了这些免费计划的范围，你可能需要考虑付费计划或其他云服务提供商。
-
-
-## 详细介绍一下 无服务器函数
-
-无服务器函数（Serverless Functions），也称为函数即服务（FaaS），是一种计算服务模型，允许开发者编写和部署代码片段（函数），而无需管理服务器基础设施。无服务器函数的核心概念是将代码作为功能单元进行部署和执行，而平台负责处理所有底层基础设施的管理和资源调配。以下是关于无服务器函数的详细介绍：
-
-### 1. **基本概念**
-
-- **事件驱动**：无服务器函数通常是事件驱动的，这意味着它们在特定事件发生时被触发。例如，当 HTTP 请求到达时、数据库记录被创建时、消息队列中有新消息时等。
-- **短暂运行**：无服务器函数通常是短暂的，即每次函数调用后，运行时间较短（一般在几秒到几分钟之间），适合处理短时间任务。
-- **按需计费**：你只需为函数的实际运行时间付费，而不是为服务器实例的运行时间付费。这种按需计费模式有助于节省成本。
-
-### 2. **主要特点**
-
-- **无需管理基础设施**：开发者无需担心服务器硬件、操作系统、更新或安全补丁。无服务器平台处理所有这些问题，允许开发者专注于代码本身。
-- **自动扩展**：无服务器函数会根据需要自动扩展。当函数的调用量增加时，平台会自动分配更多资源以处理请求，而当负载减少时，资源会相应缩减。
-- **轻量级**：函数的运行时间通常较短，适合处理简单的、短期的任务，如数据处理、API 请求、消息传递等。
-
-### 3. **常见用例**
-
-- **API 处理**：用作 REST API 的端点，处理 HTTP 请求并返回响应。
-- **数据处理**：处理实时数据流、对数据进行转换或格式化。
-- **事件响应**：响应数据库事件、文件上传、消息队列中的消息等。
-- **自动化任务**：定期执行的任务，如定时备份、报告生成、数据清理等。
-
-### 4. **主要平台**
-
-- **AWS Lambda**：Amazon Web Services 提供的无服务器计算服务，支持多种编程语言（如 Node.js、Python、Java、C#）。AWS Lambda 与其他 AWS 服务紧密集成。
-- **Azure Functions**：微软 Azure 提供的无服务器计算服务，支持多种语言和触发器，如 HTTP 请求、定时任务、消息队列等。
-- **Google Cloud Functions**：Google Cloud 提供的无服务器计算服务，支持 Node.js、Python、Go 和其他语言。
-- **Netlify Functions**：Netlify 提供的无服务器函数，适用于与静态网站和前端项目集成。
-- **Vercel Functions**：Vercel 提供的无服务器函数，专注于前端应用的后端逻辑。
-
-### 5. **优点**
-
-- **简化开发**：减少基础设施管理的复杂性，使开发者能够专注于应用逻辑。
-- **自动扩展**：根据需求自动调整资源，处理流量高峰时的负载。
-- **成本效益**：按需计费，节省不必要的资源费用。
-- **快速部署**：简化代码的部署流程，缩短开发到生产的时间。
-
-### 6. **缺点**
-
-- **冷启动延迟**：函数在闲置一段时间后首次被调用可能会出现延迟（冷启动），影响响应时间。
-- **运行时间限制**：许多无服务器平台对单次函数调用的最大运行时间有限制（如 15 分钟），不适合长时间运行的任务。
-- **调试复杂性**：调试和监控无服务器函数可能会比传统服务器更加复杂，尤其是在分布式系统中。
-
-无服务器函数是一种灵活且高效的计算模型，适合处理多种业务场景，尤其是那些需要自动扩展和按需计算的应用。通过利用无服务器平台，你可以降低基础设施管理的复杂性，并专注于实现业务功能。
-
 ## Vercel Functions 可以做什么？默认支持哪些语言？我的 java 程序支持部署吗？
 
 Vercel Functions 是 Vercel 平台提供的无服务器计算功能，允许你在 Vercel 上运行后端代码。
@@ -228,6 +264,148 @@ Vercel 的无服务器函数平台主要支持 JavaScript (Node.js)、TypeScript
 这样可以充分利用 Vercel 的前端优化能力，同时在支持的环境中运行 Java 代码。
 
 
+## velcel 部署
+
+在 Vercel 上免费部署一个简单的 Node.js 后端服务也是非常方便的，Vercel 支持静态站点和无服务器（Serverless）函数。
+
+由于 Vercel 更专注于无服务器架构，部署过程稍有不同，需要将代码调整为 Vercel 的 Serverless 函数格式。
+
+### 1. 调整代码适应 Vercel
+
+Vercel 无法直接部署 Node.js Express 应用，但可以使用无服务器函数（Serverless Functions）来处理请求。以下是将代码调整为 Vercel 可用的最简单方式：
+
+#### 项目结构
+```plaintext
+my-vercel-app/
+├── api/
+│   └── index.js
+├── package.json
+└── vercel.json
+```
+
+#### `package.json` 文件
+```json
+{
+  "name": "my-vercel-app",
+  "version": "1.0.0",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js"
+  }
+}
+```
+
+#### `api/index.js` 文件
+
+在 Vercel 中，每个 API 处理器就是一个无服务器函数。我们用一个简单的函数来替代 Express。
+
+```javascript
+module.exports = (req, res) => {
+  res.status(200).json({ message: 'Hello from Vercel!' });
+};
+```
+
+#### `vercel.json` 文件
+
+确保 `vercel.json` 文件存在，以便 Vercel 识别到你希望部署的是 API 函数。
+
+```json
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node"
+    }
+  ]
+}
+```
+
+### 2. 部署流程
+
+#### 1. 创建 GitHub 仓库
+
+将上面的代码上传到 GitHub 仓库，Vercel 将会通过 GitHub 仓库进行代码拉取。
+
+#### 2. 登录 Vercel 并创建项目
+
+1. 打开 [Vercel 官网](https://vercel.com/) 并注册或登录。
+2. 登录后点击 "New Project" 按钮。
+3. 连接 Vercel 到 GitHub 账户，并选择刚刚创建的 GitHub 仓库。
+4. 点击 "Import" 按钮。
+5. Vercel 会自动识别项目并进行部署。
+
+#### 3. 等待部署完成
+
+Vercel 会自动从你的 GitHub 仓库拉取代码并执行部署，几分钟后你的后端服务就会自动上线。
+
+#### 4. 访问服务
+
+部署成功后，Vercel 会提供一个 URL。你可以通过这个 URL 访问部署的后端服务，例如 `https://your-app.vercel.app/api/index`，这时会返回 `{"message":"Hello from Vercel!"}`。
+
+### 3. 注意事项
+
+- Vercel 提供的无服务器函数适合处理简单的 API 请求。
+- Vercel 的免费计划有一定的请求配额，适用于小型项目或测试阶段。
+
+通过这些步骤，你就可以在 Vercel 上免费部署一个简单的后端服务了。
+
+
+## 部署完成后访问 404
+
+在 Vercel 上，访问根路径（`/`）时会尝试加载一个静态站点，而当前项目是通过无服务器函数提供 API 端点的。由于项目没有配置静态页面，访问根路径时会导致 404 错误。
+
+要解决这个问题，你有两种选择：
+
+### 1. 添加静态页面
+
+如果你希望访问根路径 `/` 时看到一个页面，可以添加一个简单的静态 HTML 文件。
+
+#### 项目结构更新
+```plaintext
+my-vercel-app/
+├── api/
+│   └── index.js
+├── public/
+│   └── index.html
+├── package.json
+└── vercel.json
+```
+
+#### `public/index.html`
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Vercel App</title>
+</head>
+<body>
+  <h1>Hello from Vercel!</h1>
+  <p>This is the homepage.</p>
+</body>
+</html>
+```
+
+Vercel 会自动将 `public/index.html` 作为根路径的页面展示。添加 `public/` 文件夹和 `index.html` 后，重新部署项目即可解决根路径报 404 的问题。
+
+### 2. 使用 API 路径
+
+如果你只想提供 API 服务，建议使用 API 路径进行访问。例如，访问你的后端 API 路径：
+
+```bash
+https://my-vercel-app-pink.vercel.app/api/index
+```
+
+这个路径会返回 `{"message": "Hello from Vercel!"}`，因为你部署的无服务器函数位于 `api/index.js`。
+
+### 解决步骤
+
+1. 如果你希望根路径展示静态内容，按 **方法 1** 添加 `index.html` 并重新部署。
+2. 如果你只需要 API，不需要根路径静态内容，可以直接通过 `/api/index` 访问服务。
+
+这将解决 Vercel 上 404 错误的问题。
 
 # 参考资料
 
