@@ -402,7 +402,7 @@ published: true
 	包数=（成交金额-退款金额）/客单价      <br/>
 	克价=商品公斤价/1000  <br/>
 	技术服务费=成交金额*0.02  <br/>
-	运费险=(成交单数-退款单数)*0.13  <br/>
+	运费险=(成交单数-退款单数)*0.14  <br/>
 
 	<h2>2.2 费用配置</h2>
 	成交总人数: <input id="configSuccessPersonCount" value="0"></input>
