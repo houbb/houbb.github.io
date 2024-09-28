@@ -145,6 +145,21 @@
 	function exportTableToExcel(tableId, tableName) {
 		 // 获取表格元素
 		  var table = document.getElementById(tableId);
+
+          // 修正 input 无法导出的问题
+                // 遍历表格的每一行
+        for (var r = 0; r < table.rows.length; r++) {
+            var row = table.rows[r];
+            // 遍历每一行中的每一个单元格
+            for (var c = 0; c < row.cells.length; c++) {
+                var cell = row.cells[c];
+                // 检查单元格中是否有input元素
+                if (cell.getElementsByTagName('input').length > 0) {
+                    // 如果有input元素，获取其值并设置为单元格的文本内容
+                    cell.innerHTML = cell.getElementsByTagName('input')[0].value;
+                }
+            }
+        }
 		  
 		  // 将表格转换为工作簿
 		  var ws = XLSX.utils.table_to_sheet(table);
