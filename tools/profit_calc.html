@@ -133,7 +133,7 @@
 
     
 
-    <script>
+    <script>    
 	function exportOrderSummary() {
 		exportTableToExcel('dataTable', '交易汇总');
 	}
@@ -260,6 +260,41 @@
 			  return totalWeight;
 		}
 
+        function getProductInPricePerKg(productName) {
+            const productMap = new Map([
+                ['玫瑰', 58],
+                ['酸枣仁', 100],
+                ['鹿茸菇', 55],
+                ['虫草花', 45],
+                ['羊肚菌', 320],
+                ['枸杞', 43],
+                ['桂圆', 22],
+                ['红枣', 15],
+                ['山楂', 35],
+                ['雪燕', 18],
+                ['桃胶', 32],
+                ['皂角米', 28],
+                ['燕麦', 7],
+                ['小香菇', 60],
+                ['猴头菇', 55],
+                ['菌汤包', 66.67],
+                ['姬松茸', 135],
+                ['鸡油菇', 55],
+                ['桑葚', 19],
+                ['苦荞米', 12],
+                ['大麦茶', 5],
+            ]);
+            
+            // 遍历Map中的每个键值对
+            for (let [key, value] of productMap) {
+                // 检查商品全名是否包含商品简称
+                if (productName.includes(key)) {
+                    return value; // 如果包含，返回对应的价格
+                }
+            }
+            return 0; // 如果没有找到匹配项，返回null
+        }
+
         function generateProductTable(data) {
             const productStats = {};
             const headers = data[0];
@@ -360,7 +395,10 @@
                 const inputWeight = document.createElement('input');
                 inputWeight.type = 'number';
                 inputWeight.placeholder = '公斤价';
-				inputWeight.value=10;
+				inputWeight.value = getProductInPricePerKg(stats.productName);
+                if(inputWeight.value == 0) {
+                    inputWeight.style.color = 'red';
+				}
                 weightCell.appendChild(inputWeight);
                 tr.appendChild(weightCell);
 
