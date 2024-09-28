@@ -1,11 +1,15 @@
 ---
 layout: post
-title: Excel 解析分析-03-页面样式优化
+title: Excel 解析分析-04-明细导出+样式优化+删除上传文件
 date: 2024-09-26 21:01:55 +0800
 categories: [Excel]
 tags: [excel, data-analysis, sh]
 published: true
 ---
+
+# 新特性
+
+明细导出+样式优化+删除上传文件
 
 # 核心代码
 
@@ -19,7 +23,8 @@ published: true
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+	
     <style>
       
     </style>
@@ -32,7 +37,7 @@ published: true
 	
 	<div>
 	    <div class="row" style="margin-top: 10px;">
-		  <label class="col-sm-1 col-form-label col-form-label">当前用户</label>
+		  <label class="col-sm-1 col-form-label col-form-label"> 👩‍💼当前用户</label>
 		  <div class="col-sm-11">
 			<img class="img-thumbnail" style="width:40px;height:40px;"src="https://bkimg.cdn.bcebos.com/pic/242dd42a2834349b033bb3129abe02ce36d3d5391055?x-bce-process=image/format,f_auto/quality,Q_70/resize,m_lfit,limit_1,w_536"/>
 	        <span>阿滚</span>
@@ -40,7 +45,7 @@ published: true
 		</div>
 		
 		<div class="row" style="margin-top: 10px;">
-		  <label class="col-sm-1 col-form-label col-form-label">输入密码</label>
+		  <label class="col-sm-1 col-form-label col-form-label">🔏输入密码</label>
 		  <div class="col-sm-11">
 			<input id="password" type="password" class="form-control" placeholder="请输入密码">
 		  </div>
@@ -49,10 +54,24 @@ published: true
 	
 	<br/>
 	
-    <input type="file" id="fileInput" accept=".xls,.xlsx" class="form-control">
+	<div class="row">
+	  <label class="col-sm-1 col-form-label col-form-label">📗文件上传</label>
+	  <div class="col-sm-6">
+		<input type="file" id="fileInput" accept=".xls,.xlsx" class="form-control">
+	  </div>
+	  <div class="col-sm-2">
+		<button class = "btn btn-warning" onclick="deleteFile()">❌删除文件</button>
+	  </div>
+	  <div class="col-sm-2">
+		<button class = "btn btn-success" onclick="exportOrderSummary()">📘导出交易汇总</button>
+	  </div>
+	</div>
+	
+    
+	
 	
 	<br/>
-    <table id="dataTable" class="table table-striped table-bordered">
+    <table id="dataTable" class="table table-striped table-bordered" data-toggle="table" data-resizable="true">
         <thead>
             <tr>
                 <th>商品名称</th>
@@ -75,7 +94,7 @@ published: true
 	2. 利润计算
 	</h3>
 	
-	<h4>2.1 计算解释</h2>
+	<h4>2.1 计算解释</h4>
 	毛利=（单场成交GMV-退款金额）-原料成本-（成交人数*快递单价）-（成交单数*包材单价）-（成交单数*技术服务费单价）-（成交单数*运费险单价） <br/>
 	原料成本=包数*商品克价*规格克重       <br/>
 	包数=（成交金额-退款金额）/客单价      <br/>
@@ -83,17 +102,17 @@ published: true
 	技术服务费=成交金额*0.02  <br/>
 	运费险=(成交单数-退款单数)*0.14  <br/>
 
-	<h4>2.2 费用配置</h2>
+	<h4>2.2 费用配置</h4>
 	
 	<div class="row">
-	  <label class="col-sm-1 col-form-label col-form-label">成交人数</label>
+	  <label class="col-sm-1 col-form-label col-form-label">🕵️‍♂️成交人数</label>
 	  <div class="col-sm-11">
 		<input id="configSuccessPersonCount" class="form-control" value="0">
 	  </div>
 	</div>
 	
 	<div class="row" style="margin-top: 10px;">
-	  <label class="col-sm-1 col-form-label col-form-label">快递单价</label>
+	  <label class="col-sm-1 col-form-label col-form-label">💼快递单价</label>
 	  <div class="col-sm-11">
 		<input id="configKuaiduFeePerson" value="2" class="form-control">
 	  </div>
@@ -103,10 +122,11 @@ published: true
 	
 	<!-- 成交总人数: <input id="configSuccessPersonCount" value="0" class="form-control"></input> -->
 	<!-- 快递单价(元)：<input id="configKuaiduFeePerson" value="2" class="form-control"></input> -->
-				
-    <button id="calculateProfit" class="hidden btn btn-primary">计算利润</button>
+    <br/> 				
+    <button id="calculateProfit" class="hidden btn btn-primary">🏅计算利润</button>
+    <button id="exportTableProfit" class="btn btn-success" onclick="exportTableProfit()">📘导出利润明细</button>
     
-    <h4>2.3 利润汇总</h2>
+    <h4>2.3 利润汇总</h4>
 	总利润=商品利润之和-(成交人数*快递单价)
 	
 	<div id="totalProfit" class="hidden"></div>
@@ -130,6 +150,46 @@ published: true
     
 
     <script>
+	function exportOrderSummary() {
+		exportTableToExcel('dataTable', '交易汇总');
+	}
+	function exportTableProfit() {
+		exportTableToExcel('costTable', '利润明细');
+	}
+	
+	// 表格导出到 EXCEL
+	function exportTableToExcel(tableId, tableName) {
+		 // 获取表格元素
+		  var table = document.getElementById(tableId);
+		  
+		  // 将表格转换为工作簿
+		  var ws = XLSX.utils.table_to_sheet(table);
+		  var wb = XLSX.utils.book_new();
+		  XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+		  
+		  // 为文件名添加时间戳
+		  var timestamp = new Date().toISOString().replace(/[:\.]/g, '-');
+		  let filename = tableName+"_"+ timestamp + '.xlsx';
+		  
+		  // 使用JSZip生成Excel文件
+		  XLSX.writeFile(wb, filename);
+	}
+	
+
+	// 删除文件的函数
+	function deleteFile() {
+	    var fileInput = document.getElementById('fileInput');
+		// 清空文件输入框的值
+		fileInput.value = '';
+		// 可以在这里添加额外的逻辑，比如更新界面显示等
+	}
+
+	    function calculateMD5(input) {
+		    if(input && input != "") {
+				return CryptoJS.MD5(input).toString();
+			}
+			return "";
+		}
 		function isExpire() {
 			const today = new Date();
 			const targetDate = new Date('2024-10-31');
@@ -149,7 +209,8 @@ published: true
 			}
 			
 			let passwordElement = document.getElementById('password');
-			if ('xxxx' == passwordElement.value) {
+			let pwdMd5 = calculateMD5(passwordElement.value);
+			if ('d5792307ca46844fd13e0ee78c858a11' == pwdMd5) {
 				return true;
 			}
 			alert('账户或者密码错误!');
@@ -402,7 +463,6 @@ published: true
     </script>
 </body>
 </html>
-
 ```
 
 # 总结
