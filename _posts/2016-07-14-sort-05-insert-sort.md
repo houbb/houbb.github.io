@@ -144,6 +144,69 @@ System.out.println("完成排序：" + list);
 
 欢迎大家 fork/star，鼓励一下作者~~
 
+
+
+# 优化版本
+
+## v1-基础版本
+
+```java
+    /**
+     * 插入排序
+     * @param nums
+     * @return
+     */
+    public static List<Integer> insertSort(int[] nums) {
+        List<Integer> resultList = new ArrayList<>(nums.length);
+        // 第一个元素。默认有序
+        resultList.add(nums[0]);
+
+        // 从数组中的第二个元素开始
+        for(int i = 1; i < nums.length; i++) {
+            // 从后向前遍历，把大于当前元素的信息全部向后移动。
+            int position = getInsertPosition(resultList, nums[i]);
+            resultList.add(position, nums[i]);
+        }
+
+        return resultList;
+    }
+
+    //O(n) 的插入寻找算法
+    private static int getInsertPosition(List<Integer> resultList, int target) {
+        for(int i = 0; i < resultList.size(); i++) {
+            int current = resultList.get(i);
+            if(target <= current) {
+                return i;
+            }
+        }
+
+        // 插入到最后
+        return resultList.size();
+    }
+```
+
+## v2-binarySearch 版本
+
+思路：我们把上面的 O(n) 查询，优化为 binary-search 算法
+
+```java
+private static int getInsertPosition(List<Integer> resultList, int target) {
+        int left = 0;
+        int right = resultList.size();
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            if (target <= resultList.get(mid)) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        // left 就是插入的索引位置
+        return left;
+    }
+```
+
+
 # 小结
 
 堆排序是一种选择排序，整体主要由构建初始堆+交换堆顶元素和末尾元素并重建堆两部分组成。其中构建初始堆经推导复杂度为O(n)，在交换并重建堆的过程中，需交换n-1次，而重建堆的过程中，根据完全二叉树的性质，[log2(n-1),log2(n-2)...1]逐步递减，近似为nlogn。

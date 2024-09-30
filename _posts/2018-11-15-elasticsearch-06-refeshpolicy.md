@@ -101,6 +101,7 @@ PUT /test/_doc/2?refresh=true
 第三步才是决定做
 
 开始做的时候，一定要局部最小开始处理。避免范围影响太大。
+
 # 参考资料
 
 https://www.jianshu.com/p/76d7564ee180

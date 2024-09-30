@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leetcode 291 Contains Duplicate II
+title: leetcode 219 Contains Duplicate II
 date:  2020-1-23 10:09:32 +0800 
 categories: [Algorithm]
 tags: [algorithm, leetcode, hash, bit, sort, sh]
