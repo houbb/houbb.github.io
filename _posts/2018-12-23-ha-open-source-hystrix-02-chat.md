@@ -9,7 +9,19 @@ published: true
 
 # chat
 
-## 详细介绍一下 Hystrix
+## 详细介绍一下 Hystrix what
+
+## 详细介绍一下 Hystrix 的核心概念 what
+
+## 为什么需要 Hystrix? 解决了什么问题？  why
+
+## Hystrix 有哪些优缺点？适合的场景  when/where?
+
+## 如何使用 Hystrix？给出入门例子 how?
+
+## Hystrix 使用的最佳实践 best-practice
+
+## 还有哪些类似于 Hystrix 的开源库？ others?
 
 
 
