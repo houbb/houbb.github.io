@@ -79,12 +79,13 @@
 	</h3>
 	
 	<h4>2.1 计算解释</h4>
-	毛利=（单场成交GMV-退款金额）-原料成本-（成交人数*快递单价）-（成交单数*包材单价）-（成交单数*技术服务费单价）-（成交单数*运费险单价） <br/>
+	毛利=（单场成交GMV-退款金额）-原料成本-（成交人数*快递单价）-（成交单数*包材单价）-（成交单数*技术服务费单价）-（成交单数*运费险单价）-(包数*包材人工费) <br/>
 	原料成本=包数*商品克价*规格克重       <br/>
 	包数=（成交金额-退款金额）/客单价      <br/>
 	克价=商品公斤价/1000  <br/>
 	技术服务费=成交金额*0.02  <br/>
 	运费险=(成交单数-退款单数)*0.14  <br/>
+    包材人工=包数*包材人工费=包数*0.25 <br/>
 
 	<h4>2.2 费用配置</h4>
 	
@@ -125,7 +126,7 @@
                 <th>技术服务费</th>
                 <th>运费险</th>
                 <th>利润</th>
-				<th>利润明细=(成交订单金额总计-退款订单金额总计）-原料成本-（成交单数*包材单价）-（成交单数*技术服务费单价）</th>
+				<th>利润明细=(成交订单金额总计-退款订单金额总计）-原料成本-（成交单数*包材单价）-（成交单数*技术服务费单价）-(包数*包材人工费)</th>
             </tr>
         </thead>
         <tbody id="costBody"></tbody>
@@ -473,7 +474,7 @@
                 const technicalServiceFee = totalOrderAmount * 0.02;
                 const shippingInsurance = (totalOrders - totalRefundedOrders) * 0.14;
                 const rawMaterialCost = packageCount * gramPrice * userCustomWeight;
-                const profit = (totalOrderAmount - totalRefundedAmount) - rawMaterialCost - technicalServiceFee - shippingInsurance;
+                const profit = (totalOrderAmount - totalRefundedAmount) - rawMaterialCost - technicalServiceFee - shippingInsurance - packageCount * 0.25;
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -484,7 +485,7 @@
                     <td>${technicalServiceFee.toFixed(2)}</td>
                     <td>${shippingInsurance.toFixed(2)}</td>
 					<td>${profit.toFixed(2)}</td>
-                    <td>(${totalOrderAmount.toFixed(2)} - ${totalRefundedAmount.toFixed(2)}) - ${rawMaterialCost.toFixed(2)} - (${technicalServiceFee.toFixed(2)}) - (${shippingInsurance.toFixed(2)})</td>
+                    <td>(${totalOrderAmount.toFixed(2)} - ${totalRefundedAmount.toFixed(2)}) - ${rawMaterialCost.toFixed(2)} - (${technicalServiceFee.toFixed(2)}) - (${shippingInsurance.toFixed(2)}) - (${packageCount} * 0.25)</td>
                 `;
                 costBody.appendChild(tr);
                 totalProfit += profit;
