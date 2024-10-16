@@ -1,6 +1,6 @@
 ---
 layout: post
-title: UMS 用户权限管理-02-整体架构设计
+title: UMS 用户权限管理-21-整体架构设计
 date: 2024-08-04 21:01:55 +0800
 categories: [Basic]
 tags: [basic, user, ums, priviliage, sh]
