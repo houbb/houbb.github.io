@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Cache Travel-10-多层缓存概览
+title:  Cache Travel-10-02-layering-cache 是一个支持分布式环境的多级缓存框架
 date:  2018-09-01 12:24:42 +0800
 categories: [Cache]
 tags: [cache, redis, lru, sh]
