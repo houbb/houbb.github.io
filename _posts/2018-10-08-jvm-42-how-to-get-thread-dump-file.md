@@ -1,6 +1,6 @@
 ---
 layout: post
-title: jvm-41-java 如何获取 jvm thread dump 线程转储文件？ jstack / jcmd
+title: jvm-42-java 如何获取 jvm thread dump 线程转储文件？ jstack / jcmd
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, thread, sh]

@@ -113,10 +113,7 @@ published: true
 
 ### 补充说明
 
-jvm 如何获取内存 dump 文件？
-
-
-
+[jvm 如何获取内存 dump 文件？](https://houbb.github.io/2018/10/08/jvm-41-how-to-get-memory-dump-file)
 
 ## 问题分析
 
@@ -432,6 +429,129 @@ dataSource.setPoolPreparedStatements(false);
 
 线上定位问题就是这样，改问题不难，难的是知道哪里会出问题，并且对知识广度也是有要求的，问题可能在网络、数据库、linux系统参数配置、内存等等，所以有空多看看跨领域的书也是有帮助的，哈哈。
 
+# 第三篇-druid导致oracle内存溢出,druid – Oracle数据库下PreparedStatementCache内存问题解决方案...
+
+## 说明
+
+个人觉得这一篇分析写的不错，所以记录一下，作为上面的补充。
+
+Oracle支持游标，一个PreparedStatement对应服务器一个游标，如果PreparedStatement被缓存起来重复执行，PreparedStatement没有被关闭，服务器端的游标就不会被关闭，性能提高非常显著。
+
+在类似 `SELECT * FROM T WHERE ID = ?` 这样的场景，性能可能是一个数量级的提升。
+
+由于PreparedStatementCache性能提升明显，DruidDataSource、DBCP、JBossDataSource、WeblogicDataSource都实现了PreparedStatementCache。
+
+## PreparedStatementCache带来的问题
+
+阿里巴巴在使用jboss连接池做PreparedStatementCache时，遇到了full gc频繁的问题。
+
+通过mat来分析jmap dump的结果，发现T4CPreparedStatement占内存很多，出问题的几个项目，有的300M，有的500M，最夸张的900M。
+
+这些应用 都是用jboss连接池访问Oracle数据库，T4CPreparedStatement是Oracle JDBC Driver的PreparedStatement一种实现。 
+
+oracle driver不是开源，通过逆向工程以及mat分析，发现其中占内存的是字段char[] defineChars，defineChars大小的计算公式是这样的：
+
+```
+defineChars大小 = rowSize * rowPrefetchCount
+```
+
+rowPrefetchCount在Oracle中，缺省值为10。
+
+其中rowSize是执行查询设计的每一列的大小的和。
+
+计算公式是：
+
+```
+rowSize = col_1_size + col_2_size + ... + col_n_size
+```
+
+很悲剧，有些列数据类型是varchar2(4000)，于是rowSize巨大，很多个表关联的SQL，rowSize可能高达数十K，再乘以 rowPrefetchCount，defineChars大小接近1M。
+
+可以想想，maxPoolSize设置为 30，PreparedStatementCacheSize设置为50的场景下，是可能导致PreparedStatementCache占据上G的内存。 
+
+实际测试得到的结果如下：
+
+```
+varchar2(4000) col_size 4000 chars
+clob -> col_size col_size 4000 bytes
+```
+
+实际占据内存的公式：
+
+```
+占据内存大小峰值 = defineChars大小 * PreparedStatementCacheSize * MaxPoolSize
+```
+
+我们实际分析，一个应用运行的SQL大约数百条，PreparedStatementCacheSize为 50，PreparedStatementCache的算法为LRU，很多的SQL执行之后，在Cache中HitCount为0就被淘汰了，淘汰的过程，其位置从第1移到第50，这个漫长的过程导致了defineChars不能够被young gc回收。
+
+## Druid的解决方案
+
+使用OracleDriver提供的PreparedStatementCache支持方法，清理PreparedStatement所持有的buffer。 
+
+Oracle在10.x和11.x的Driver中，都提供了如下管理PreparedStatementCache的接口，如下：
+
+```java
+package oracle.jdbc.internal;
+
+import java.sql.SQLException;
+
+public interface OraclePreparedStatement extends oracle.jdbc.OraclePreparedStatement, OracleStatement {
+
+public void enterImplicitCache() throws SQLException;
+
+public void exitImplicitCacheToActive() throws SQLException;
+
+public void exitImplicitCacheToClose() throws SQLException;
+
+}
+```
+
+DruidDataSource在管理Oracle PreparedStatement Cache时，调用了上述方法。
+
+当调用了enterImplicitCache之后，T4CPreparedStatement中的 defineChars和defineBytes都会被清空。
+
+测试表明，通过上述处理，能够有效降低内存。
+
+根据PreparedStatement执行的结果，计算RowPrefetch大小 DrudDataSource对在PreparedStatement.executeQuery和execute方法返回的ResultSet做监控统计执行SQL返回的行数，然后根据统计的结果来设置rowPrefetchSize。
+
+例如SQL
+
+```sql
+SELECT * FROM ORDER WHERE ID = ?
+```
+
+这样的SQL每次返回的纪录数量都是0或者1，根据这个统计的最大值来设置rowPrefetchSize。如果最大值为1，则需要设置rowPrefetchSize为2。
+
+计算公式如下：
+
+```java
+int maxRowFetchCount = max(resultSet.size) + 1;
+
+if (maxRowFetchCount > defaultRowPrefetch) {
+
+maxRowFetchCount = defaultRowPreftech;
+
+}
+
+prearedStatement.rowPrefetch = maxRowFetchCount;
+```
+
+根据生产环境的监控统计，大多数的SQL返回的行数都是比较小的，通常是1。
+
+通过这种算法，能够减少PreparedStatementCache的内存占用。
+
+添加PreparedStatementCache计数器 包括：
+
+```
+PreparedStatementCacheCurrentSize
+PreparedStatementCacheDeleteCount 缓存删除次数
+PreparedStatementCacheHitCount 缓存命中次数
+PreparedStatementCacheMissCount 缓存不命中次数
+PreparedStatementCacheAccessCount 缓存访问次数
+```
+
+通过这五个计数器，我们清晰了解PreparedStatementCache的工作情况，然后根据实际情况调整。
+
 # 参考资料
 
 [惨遭DruidDataSource和Mybatis暗算,导致OOM](https://segmentfault.com/a/1190000021636834)
@@ -443,6 +563,8 @@ https://www.jianshu.com/p/fb37ab115121
 [Druid参数配置导致的内存占用以及线上问题分析的一般方法](https://www.modb.pro/db/108768)
 
 [阿里巴巴 Druid配置详解](https://zhuanlan.zhihu.com/p/706211380)
+
+https://blog.csdn.net/weixin_39688750/article/details/116320980
 
 * any list
 {:toc}
