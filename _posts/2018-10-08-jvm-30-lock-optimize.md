@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JVM-锁消除+锁粗化 自旋锁、偏向锁、轻量级锁 逃逸分析-30
+title: JVM-30-锁消除+锁粗化 自旋锁、偏向锁、轻量级锁 逃逸分析
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, sh]

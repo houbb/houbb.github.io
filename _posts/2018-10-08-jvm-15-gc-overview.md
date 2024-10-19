@@ -1,11 +1,10 @@
 ---
 layout: post
-title: JVM-GC 概览-15
+title: JVM-15-GC 概览
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, sh]
 published: true
-excerpt: Java GC 概览
 ---
 
 # 垃圾收集调整简介

@@ -1,11 +1,10 @@
 ---
 layout: post
-title: JVM-05-class load 
+title: JVM-05-class load Java 类加载机制
 date:  2018-10-08 16:04:16 +0800
 categories: [Java]
 tags: [sql, java, jvm, sh]
 published: true
-excerpt: JVM 学习笔记之 Java 类加载机制
 ---
 
 # 一道题目引发的血案

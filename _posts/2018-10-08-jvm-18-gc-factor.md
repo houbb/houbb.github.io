@@ -1,11 +1,10 @@
 ---
 layout: post
-title: JVM-影响 gc 的因素-18
+title: JVM-18-影响 GC 的因素
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, sh]
 published: true
-excerpt: Java 影响 gc 的因素
 ---
 
 # 影响垃圾收集性能的因素

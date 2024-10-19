@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  JVM-13-compile optimize
+title:  JVM-13-compile optimize 编译时期优化
 date:  2018-10-08 16:04:16 +0800
 categories: [JVM]
 tags: [java, log, jvm, sf]
 published: true
-excerpt: JVM 编译时期优化
 ---
 
 # JVM编译器优化

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JVM-反编译字节码 decompile bytecode-32
+title: JVM-32-反编译字节码 decompile bytecode
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, bytecode, sh]
@@ -12,7 +12,6 @@ published: true
 有编译，就有反编译。
 
 实际使用中，我们最常见的需求，应该是根据 class 文件，阅读相关的源码信息。
-
 
 # CFR(Class File Reader)
 

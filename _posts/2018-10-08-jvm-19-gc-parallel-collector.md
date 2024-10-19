@@ -1,11 +1,10 @@
 ---
 layout: post
-title: JVM-并行垃圾收集器-19
+title: JVM-19-并行垃圾收集器 The Parallel Collector / UseParallelGC
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, sh]
 published: true
-excerpt: Java 并行垃圾收集器
 ---
 
 # The Parallel Collector

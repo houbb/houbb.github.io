@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JVM-逃逸分析-31
+title: JVM-31-逃逸分析(Escape Analysis) 
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, sh]

@@ -5,18 +5,15 @@ date:  2018-10-08 16:04:16 +0800
 categories: [JVM]
 tags: [java, log, jvm, sf]
 published: true
-excerpt: JVM 字节码类加载实战
 ---
 
 # 类加载
-
 
 [OSGI](https://houbb.github.io/2018/12/25/osgi) 学习类加载机制
 
 [jboss](https://houbb.github.io/2018/12/20/jboss) 源码学习 JEE 标准
 
 [Tomcat](https://houbb.github.io/2018/09/05/container-tomcat) 学习经典的类加载机制
-
 
 # 动态字节码
 

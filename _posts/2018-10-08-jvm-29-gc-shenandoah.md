@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JVM-Shenandoah GC-29
+title: JVM-29-Shenandoah GC 
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, sh]

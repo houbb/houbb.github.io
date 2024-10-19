@@ -1,11 +1,10 @@
 ---
 layout: post
-title: JVM-GC Ergonomics-16
+title: JVM16--GC Ergonomics 人体工程学
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, sh]
 published: true
-excerpt: Java GC 人体工程学
 ---
 
 # 人机工程学(Ergonomics)

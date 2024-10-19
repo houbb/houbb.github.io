@@ -1,6 +1,6 @@
 ---
 layout: post
-title: java -jar 基础介绍
+title: jvm-40-java -jar 基础介绍
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, thread, sh]
@@ -16,7 +16,6 @@ published: true
 [JVM FULL GC 生产问题 III-多线程执行队列的封装实现，进一步抽象](https://houbb.github.io/2018/10/08/jvm-full-gc-38-inaction3)
 
 [java 多线程实现通用方法 threadpool implement in java](https://houbb.github.io/2018/10/08/jvm-full-gc-39-inaction4)
-
 
 # 业务说明
 

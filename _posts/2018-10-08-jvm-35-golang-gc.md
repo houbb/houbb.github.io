@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JVM-GoLang GC 于 java 对比-35
+title: JVM-35-GoLang GC 于 java 对比
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, bytecode, sh]

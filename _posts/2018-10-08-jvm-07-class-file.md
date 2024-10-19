@@ -1,11 +1,10 @@
 ---
 layout: post
-title: JVM-07-class file
+title: JVM-07-class file JVM class file 文件信息
 date:  2018-10-08 16:04:16 +0800
 categories: [Java]
 tags: [sql, java, jvm, sh]
 published: true
-excerpt: JVM class file 文件信息
 ---
 
 # class 文件查看

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JVM-生成性能问题定位-34
+title: JVM-34-生成性能问题定位
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, bytecode, sh]

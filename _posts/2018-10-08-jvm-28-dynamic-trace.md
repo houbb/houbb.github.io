@@ -1,6 +1,6 @@
 ---
 layout: post
-title: JVM-动态追踪-28
+title: JVM-28-动态追踪 
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, sh]
