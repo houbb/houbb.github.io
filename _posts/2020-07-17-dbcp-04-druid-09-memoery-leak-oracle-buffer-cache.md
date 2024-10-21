@@ -159,6 +159,186 @@ JVM参数：-Xms14g -Xmx14g -XX:MetaspaceSize=200m -XX:MaxMetaspaceSize=256m -XX
 
 GC日志分析报告：优化前：gceasy.ycrash.cn，优化后：gceasy.ycrash.cn
 
+
+# Oracle JDBC Memory Management中的客户端缓存
+
+> [Oracle JDBC Memory Management中的客户端缓存](https://blog.csdn.net/jackyrongvip/article/details/84394652)
+
+
+对于oracle jdbc中，一个容易忽略的参数是：prepared-statement-cache-size，这次转来http://xulingbo.net/?p=109这篇好文，详细讲解了这个参数用法。
+
+从Oracle10g开始在JDBC驱动中，增加了对执行每个Statement的缓存。目的就是对相同的SQL缓存其查询结果，从而提高查询的性能。这种缓存形式，在服务端做的比较多，但是Oracle是通过JDBC将结果缓存在离应用程序最近的地方(客户端)，不知道其他数据库是否有同样的功能。
+
+## 缓存的意义
+
+为什么要通过Statement来缓存数据，这样做的前提是PreparedStatement或者是CallableStatement而不是Statement，因为前两者数据库可以根据用户提交的SQL做预编译，只要是SQL语句是一样的，数据库就认为是同一次查询，数据库就可以根据查询结果做缓存或者优化。那什么样的SQL语句数据库认为是一样的呢？如下面：
+
+```sql
+Select * from userinfo where username = 'junshan' and id = 1
+Select * from userinfo where username = 'bobo' and id = 2
+```
+
+显然这两条SQL语句是不一样的，如果你通过下面这样执行
+
+```java
+statement.execute("Select * from userinfo where username = 'junshan' and id = 1")
+```
+
+或者
+
+```java
+statement.execute("Select * from userinfo where username = 'bobo' and id = 2")
+```
+
+数据库完全认为这是两个毫不相干的SQL操作，不仅要重新解释这个SQL，构造SQL语法树，语法树的优化，准备执行环境等等。所有这些操作都用做一遍。但是很明显这两个SQL除了参数不一样，其他都是一样的，而对数据库来说，唯一不同的是，只要在第一次查询出来的结果集中根据参数值重新过滤一下即可，而前面的SQL解释，构建语法树，甚至数据都可能不要在数据库中重新捞一把。
+
+为此JDBC提供一种根据理想的PreparedStatement、和其子类CallableStatement。
+
+他们就是将单纯的SQL语句和SQL中的参数值分开，然后将值再映射过去。
+
+关于映射这一部分可以参数《深入分析Ibatis框架之系统架构与映射原理》。
+
+这样数据库就可以根据单纯的SQL做更多优化。上面的SQL应该这样写更为合理
+
+```java
+Connection conn= DriverManager.getConnection(url,user,password);
+java.sql.PreparedStatement st = conn.prepareStatement("Select * from userinfo where username = ? and id = ?");
+st.setString(0,'junshan');
+st.setInt(1,1);
+st.execute();
+```
+
+前面说到都是在数据库服务端，但是在Oracle10g以后的JDBC中，在客户端以做了数据的缓存，这里的缓存只是针对和一个PreparedStatement对应的数据的缓存。
+
+这样做就可以让相同的SQL的执行完全不需要请求道数据库，达到更好的性能，但是这样必然会给客户端增加内存负担，在Oracle的官方说明中也提到了可能会导致严重的内存问题。
+
+## Oracle JDBC驱动如何缓存
+
+下面看一下Oracle JDBC客户端如何缓存：
+
+客户端可以指定缓存一定数量的Statement，每个Statement持有两个buffers，一个是byte[]一个是char[]。
+
+这些buffers又在一个叫做Implicit Statement Cache的cache中。char[]主要是存储char类型的数据，而byte[]存储所有其他类型的数据。
+
+当一个Statement被执行时这来两个buffer就将被创建，由于buffer创建是在获取数据之前，所以是不知道应该创建多大的buffer来存查询返回结果，为此只能按照Statement中申明的字段类型来分配buffer大小。
+
+分配的规则就是声明的字段类占用的字节数乘以最大的存储数量如VARCHAR2(10)就是10*2 bytes其他的类型如NUMBER、DATE都是安装22bytes分配还有一些如CLOB、BLOB存储的是数据地址，最大地址空间能达到4k所以至少分配4K给他们。
+
+
+10g的Oracle JDBC驱动程序，具有比以前的版本更大、更复杂的类层次结构。这些类的对象存储了更多的信息，所以需要更多的内存。这确实增加了内存的使用，但并这并不是真正的问题所在。真正的问题是用来存储查询结果的buffer。每个语句（包括PreparedStatement和CallableStatement的）都持有两个缓冲区，一个byte[]（字节数组）和一个char []（字符数组）。char[]用来保存所有字符类型的行数据，如：CHAR，VARCHAR2，NCHAR等，byte[]用来保存所有的其它类型的行数据。这些buffer在在SQL被解析的时候分配，一般也就是在第一次执行该Statement的时候。Statement会持有这两个buffer，直到它被关闭。
+
+由于buffer是在SQL解析的时候被分配的，buffer的大小并不取决于查询返回的行数据的实际长度，而是行数据可能的最大的长度。
+
+在SQL解析时，每列的类型是已知的，从该信息中驱动程序可以计算存储每一列所需的内存的最大长度。
+
+驱动程序也有fetchSize属性，也就是每次fetch返回的行数。有了每列有大小和行数的大小，驱动程序可以由此计算出一次fetch所返回的数据最大绝对长度。这也就是所分配的buffer的大小。
+
+某些大类型，如LONG和LONG RAW，由于太大而无法直接存于buffer中会采取另外一种不同的处理方式。如果查询结果包含一个LONG或LONG RAW，将fetchSize设置为1之后，所遇见的内存问题就会变得明朗很多了。这种类型的问题不在这里讨论了。
+
+字符数据存储在char[] buffer中。Java中的每个字符占用两个字节。一个VARCHAR2（10）列将包含最多10个字符，也就是10个Java的字符，也就是每行20个字节。一个VARCHAR2（4000）列将占用每行8K字节。重要的其实是column的定义大小，而不是实际数据的大小。一个VARCHAR2（4000）但是只包含了NULL的列，仍然需要每行8K字节。buffer是在驱动程序看到的查询结果之前被分配的，因此驱动程序必须分配足够的内存，以应付最大可能的行大小。一个定义为VARCHAR2（4000）的列最多可包含4000个字符。Buffer必须大到足以容纳4000个字符分配，尽管实际的结果数据可能没有那么大。
+
+BFILE，BLOB和CLOB会被存储为locator。Locator可高达4K字节，每个BFILE，BLOB和CLOB列的byte[]必须有至少每行4K字节。
+
+RAW列最多可以包含4K字节。其它类型的则需要很少的字节。一个合理的近似值是假设所有其它类型的列，每行占用22个字节。
+
+## 范例
+
+```java
+CREATE TABLE TAB (ID NUMBER(10), NAME VARCHAR2(40), DOB DATE)
+
+ResultSet r = stmt.executeQuery("SELECT * FROM TAB");
+```
+
+当驱动器执行executeQuery方法，数据库将解析SQL。数据库会返回结果集将有三列：一个NUMBER（10），一个VARCHAR2（40），和一个DATE。第一列的需要（约）每行22个字节。第二列需要每行40个字符。第三列的需要（约）每行22个字节。
+
+因此，每行需要 `22 +（40 * 2）+ 22 = 124` 个字节。
+
+请记住，每个字符需要两个字节。fetchSize默认是10行，所以驱动程序将分配一个 `char[] 10 * 40 = 400` 个字符（800字节）和一个 `byte[] 10 *（22 + 22）= 440` 个字节，共1240字节。 1240字节不会导致什么内存问题。但有一些查询结果会比较更大一些。
+
+在最坏的情况下，考虑一个返回255个VARCHAR（4000）列查询。每行每列需要8K字节。乘以255列，每行2040K字节也就是2MB。
+
+如果fetchSize设置为1000行，那么驱动程序将尝试分配一个2GB的char[]。
+
+这将是很糟糕的。
+
+## Oracle的建议是：
+
+小心的定义每列的数据类型和最大的数据大小如不要每个VARCHAR2都需要定义为VARCHAR2(4000)；还有就是设置fetchSize这个参数，就是分配多少行的缓存量，如有的SQL最多都是查询一行的数据你设置10行，那就是完全的浪费。
+
+通常单个Statement引起的内存问题可能性有但是很小，最大的可能就是客户端会同时创建多个Statement并执行，还有一个潜在的问题就是缓存住Statement而不关闭，通常当Statement被关闭时这个 Statement持有的buffer也就被释放。
+
+但是如果被缓存的Statement都是比较大的数据很可能会撑爆内存。
+
+如果发现每条Statement分配的buffer较多，但是缓存的Statement数量有很多的话，就应该将缓存Statement的数量调小一点。
+
+通常这个配置是下面的选项：
+
+```xml
+<datasources>
+<local-tx-datasource>
+<jndi-name>DB1DataSource_cm2</jndi-name>
+<connection-url>jdbc:oracle:oci:@tbdb1_cm2</connection-url>
+<connection-property name=”SetBigStringTryClob”>true</connection-property>
+<connection-property name=”defaultRowPrefetch”>50</connection-property>
+<driver-class>oracle.jdbc.driver.OracleDriver</driver-class>
+
+<min-pool-size>2</min-pool-size>
+<max-pool-size>3</max-pool-size>
+<idle-timeout-minutes>10</idle-timeout-minutes>
+<prepared-statement-cache-size>75</prepared-statement-cache-size>
+<exception-sorter-class-name>org.jboss.resource.adapter.jdbc.vendor.OracleExceptionSorter</exception-sorter-class-name>
+<metadata><type-mapping>Oracle9i</type-mapping></metadata>
+
+<user-name>taobao</user-name>
+<password>taobao</password>
+<security-domain>EncryptDB1Password_cm2</security-domain>
+</local-tx-datasource>
+```
+
+上面提到是在向数据库查询时Oracle驱动缓存的数据量。但是在写入时Oracle驱动同样会分配空间给写入的参数。但是这个数据和查询的数据相比会小很多。同时数据的实际大小也是知道的，不需要想查询时都是分配最大的数量。
+
+但是如果是批量插入时Oracle为了提高执行性能不是按照每个Statement执行然后再重新配置另一个Statement的buffer而是同时缓存每个Statement的参数数据，然后一次执行所有的Statement，这样也可能会有大数据缓存的情况。但是这种情况在淘宝通常比较少爷容易控制。
+
+## 不同版本的区别
+
+Oracle10g的以后版本对上面的方式增加了更多的控制，更加灵活一点。
+
+10.2.0.4这个版本增加了oracle.jdbc.freeMemoryOnEnterImplicitCache这个选项，这选项可以控制当Statement被缓存时，可以控制这个Statement的锁持有的buffer要不要也一起缓存。例如前面缓存75个Statement但是可以设置不缓存这75个Statement的buffer，也就是每当重新使用被缓存的Statement时，驱动会重新再分配buffer给他们。设为TRUE时在Statement被缓存之前会释放他持有的buffer，为FALSE将会同时缓存Statement的buffer，默认是FALSE。
+
+11.1.0.6.0对Statement的buffer控制更加精准。与前面相比，这个版本将每个Statement的buffer转移出来，组合成一个buffer cache，上面意思呢？就是当某个Statement被缓存时，他持有的buffer将不再是有freeMemoryOnEnterImplicitCache控制，而是将其buffer放到buffer cache中，当这个Statement被重新使用时再从buffer cache中重新恢复出来，这样做的好处就是不需要每次Statement从缓存中回复时都用给他重新分配buffer了。这样做也有另一个问题：就是每个Statement持有的buffer都不一样，怎么能把这些buffer放到buffer cache 中。打个比喻就是首先建一个大水池，水池中有多个形状的水箱，这些水箱的形状是可以变化，然后根据使用情况重新组成一个水箱，使用时把这个水箱装的水打走，不使用时再将这个水箱和水一起放到这个大水池中。这样就能充分利用这个大水池的水了。
+
+11.1.0.7.0这个版本在前面版本的基础上给buffer cache又增加了一个控制项 `oracle.jdbc.maxCachedBufferSize`，他就是控制在buffercache 中最大的buffer的大小。
+
+Oracle驱动把个别非常大的buffer不保存在buffer cache中，这些比较大的buffer还是根据前面的方式当持有的Statement被缓存时释放buffer，当重新使用时再重新分配。
+
+这种方式主要是优化了大水池的水的重复利用情况，防止水被少数几个大买家独占，而大部分小买家却老是没水喝。
+
+这个版本中还有一个控制项是oracle.jdbc.useThreadLocalBufferCache，通常前面所说的buffer cache都是和一个connection像关联的，但是通常一个应用会建立多个connection，在pool中。但是通常一个客户端查询数据同一时刻都是通过一个线程来完成的，这样又可以将buffer cache关联到用户的线程而不是connection。
+
+11.2中又增加了一个控制项是oracle.jdbc.implicitStatementCacheSize，他可以控制statement cache的大小。默认是0。
+
+以上说的这些控制项都可以通过OracleConnection.setXXX来设置。
+
+此外，在http://www.dbafree.net/?p=287中提到：
+
+BaseWrapperManagedConnection是一个连接管理的抽象类，对于每一个数据库的连接，都有独立的PreparedStatementCache。
+
+在ORACLE数据库中，使用PreparedStatementCache能够显著的提高系统的性能，前提是SQL都使用了绑定变量，因为对于ORACLE数据库而言，在PreparedStatementCache中存在的SQL,不需要open cursor，可以减少一次网络的交互，并能够绕过数据库的解析，即所有的SQL语句，不需要解析即可以直接执行。但是PreparedStatementCache中的PreparedStatement对象会一直存在，并占用较多的内存。
+
+在MYSQL数据库中，因为没有绑定变量这个概念，MYSQL本身在执行所有的SQL之前，都需要进行解析，因此在MYSQL中这个值对性能没有明显的影响，这个值可以不设置，但是我觉得设置了这个值，可以避免在客户端频繁的创建PreparedStatement,并且对于相同的SQL，可以避免从服务器频繁的获取metadata，也有一定的好处（这是我所知道益处，总的来说，意义并没有ORACLE那么大）。
+
+另外，PreparedStatementCache也不是设置越大越好，毕竟，PreparedStatementCache是会占用JVM内存的。
+
+之前出现过一个核心系统因为在增加了连接数（拆分数据源）后，这个参数设置没有修改，导致JVM内存被撑爆的情况。
+
+（`JVM内存占用情况=连接总数*PreparedStatementCache设置大小*每个PreparedStatement占用的平均内存`）
+
+补充：关于MYSQL的PreparedStatement,其C API中也提供了这个方法（mysql_prepare, mysql_execute and mysql_real_query），但是其具体实现，我并不清楚，不过可以肯定的时，能带来的性能提升并不会很大，这个我也实际测试过。
+
+可以用下面这句话来解释：prepared statement只需要获取数据库SQL的metadata一次，而 statement必需每次都获取一下metadata。
+
+这应该就是MYSQL中（也包含其它所有的数据库）的主要区别
+
 # chat
 
 ## 详细介绍一下 oracle jdbc 的 fetchSize
