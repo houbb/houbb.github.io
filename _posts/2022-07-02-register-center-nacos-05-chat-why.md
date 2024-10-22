@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  分布式注册中心 nacos-03-分布式协同原理
+title:  分布式注册中心 nacos-05-聊一聊分布式协同原理
 date:  2022-07-02 09:22:02 +0800
 categories: [Distributed]
 tags: [distributed, register-center, sofa, sh]

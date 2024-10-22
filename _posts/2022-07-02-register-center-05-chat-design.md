@@ -1,6 +1,6 @@
 ---
 layout: post
-title: config center-00-注册中心统一的开发 java 组件设计
+title: config center-05-聊一聊 注册中心统一的开发 java 组件设计
 date:  2016-09-25 12:21:05 +0800
 categories: [Apache]
 tags: [zookeeper, config-center]

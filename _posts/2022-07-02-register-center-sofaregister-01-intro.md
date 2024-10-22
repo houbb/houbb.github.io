@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  分布式注册中心-02-SOFARegistry
+title:  分布式注册中心 SOFARegistry 01 入门介绍
 date:  2022-07-02 09:22:02 +0800
 categories: [Distributed]
 tags: [distributed, register-center, sofa, sh]

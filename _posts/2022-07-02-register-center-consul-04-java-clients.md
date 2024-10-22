@@ -1,14 +1,16 @@
 ---
 layout: post
-title: Consul-03-consul java client 常见客户端对比 orbitz + ecwid
-date:  2018-11-01 06:48:58 +0800
+title: 注册中心 Consul-03-consul java client 常见客户端对比 orbitz + ecwid
+date:  2022-07-02 09:22:02 +0800
 categories: [Distributed]
-tags: [distributed, service-mesh, sh]
+tags: [distributed, service-mesh, register-center, sh]
 published: true
 ---
 
 
-# Q1-Consul 的 java 客户端有哪些？介绍一下
+# chat
+
+## Q1-Consul 的 java 客户端有哪些？介绍一下
 
 在Java中，有几个常用的Consul客户端库可以用来与Consul进行交互。
 
@@ -26,7 +28,7 @@ published: true
 
 无论你选择哪个库，它们都提供了方便的方法来访问Consul的功能，并简化了与Consul进行交互的过程。
 
-# Q2: 介绍一下 Consul客户端（orbitz 与ecwid）
+## Q2: 介绍一下 Consul客户端（orbitz 与ecwid）
 
 Consul客户端库是用于与Consul进行交互的软件库，它们提供了方便的方法和工具来访问Consul的功能，如服务发现、健康检查、KV存储等。
 
@@ -40,7 +42,7 @@ Consul客户端库是用于与Consul进行交互的软件库，它们提供了�
 
 它们都有广泛的文档和示例代码可供参考，帮助开发人员快速上手并使用Consul的各种功能。
 
-# Q3-二者的区别与联系？二者的 github star 数量。社区活跃等对比。推荐用哪一个？
+## Q3-二者的区别与联系？二者的 github star 数量。社区活跃等对比。推荐用哪一个？
 
 Orbitz和Ecwid是两个不同的Consul客户端库，它们在功能和设计上有一些区别和联系。
 
@@ -57,11 +59,6 @@ Orbitz和Ecwid是两个不同的Consul客户端库，它们在功能和设计上
 推荐使用哪个库取决于您的具体需求和偏好。建议您先了解每个库的功能、文档和示例，然后根据您的项目要求、开发经验和团队偏好做出选择。您还可以考虑查看它们的GitHub社区活跃度、最近的更新情况和问题解决情况，以帮助您做出决策。
 
 请注意，以上信息可能随时间和版本的变化而有所不同。建议在选择之前查看最新的文档和社区讨论，以确保您做出的选择是基于最新和准确的信息。
-
-
-
-
-
 
 # 参考资料
 

@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Consul-02-windows10 docker 部署实战
-date:  2018-11-01 06:48:58 +0800
+title: 注册中心 Consul-02-windows10 docker 部署实战
+date:  2022-07-02 09:22:02 +0800
 categories: [Distributed]
-tags: [distributed, service-mesh, sh]
+tags: [distributed, service-mesh, register-center, sh]
 published: true
-excerpt: 分布式服务发现框架 Consul
 ---
 
 

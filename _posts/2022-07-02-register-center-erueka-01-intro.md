@@ -1,9 +1,9 @@
 ---
 layout: post
-title: eureka-用于弹性中间层负载平衡和故障转移的 AWS 服务注册表。 
+title: 注册中心 register-center eureka-01-用于弹性中间层负载平衡和故障转移的 AWS 服务注册表 入门介绍
 date: 2021-09-06 21:01:55 +0800
 categories: [Distributed]
-tags: [java, distributed, sh]
+tags: [java, distributed, register-center, sh]
 published: true
 ---
 

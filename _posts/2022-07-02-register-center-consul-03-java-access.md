@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Consul-03-java 实现 consul 的增删改查入门例子
-date:  2018-11-01 06:48:58 +0800
+title: 注册中心 Consul-03-java 实现 consul 的增删改查入门例子
+date:  2022-07-02 09:22:02 +0800
 categories: [Distributed]
-tags: [distributed, service-mesh, sh]
+tags: [distributed, service-mesh, register-center, sh]
 published: true
 ---
 
