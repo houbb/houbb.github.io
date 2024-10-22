@@ -1,6 +1,6 @@
 ---
 layout: post
-title: SLF4j MDC-日志添加唯一标识 
+title: slf4j-03-SLF4j MDC 如何为日志添加唯一标识 
 date: 2018-12-06 11:35:23 +0800
 categories: [AI]
 tags: [ai, sh]
