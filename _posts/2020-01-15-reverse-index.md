@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 倒排索引原理与实现
+title: 倒排索引原理与实现 reverse-index
 date:  2020-1-9 10:09:32 +0800
 categories: [Search]
-tags: [search, reverse-index, index, lucene, sh]
+tags: [search, reverse-index, index, lucene, nlp, sh]
 published: true
 ---
 
