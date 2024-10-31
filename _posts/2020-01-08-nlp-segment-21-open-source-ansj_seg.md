@@ -7,6 +7,48 @@ tags: [java, nlp, segment, sh]
 published: true
 ---
 
+# 拓展阅读
+
+## 分词系列专题
+
+[jieba-fenci 01 结巴分词原理讲解 segment](https://houbb.github.io/2020/01/08/jieba-source-01-overview)
+
+[jieba-fenci 02 结巴分词原理讲解之数据归一化 segment](https://houbb.github.io/2020/01/08/jieba-source-02-normalize)
+
+[jieba-fenci 03 结巴分词与繁简体转换 segment](https://houbb.github.io/2020/01/08/jieba-source-03-chinese-format)
+
+[jieba-fenci 04 结巴分词之词性标注实现思路 speechTagging segment](https://houbb.github.io/2020/01/08/jieba-source-04-pos-tagging)
+
+## 关键词系列专题
+
+[倒排索引原理与实现 reverse-index](https://houbb.github.io/2020/01/09/reverse-index)
+
+[TF-IDF 自动生成文章摘要](https://houbb.github.io/2020/01/09/tf-idf-auto-summary)
+
+[TF-IDF 自动提取关键词](https://houbb.github.io/2020/01/09/tf-idf-keyword)
+
+[相似文章算法之语义指纹-文本内容去重](https://houbb.github.io/2020/01/09/tf-idf-smiliarty-yuyizhiwen)
+
+[TF-IDF 找出相似文章算法](https://houbb.github.io/2020/01/09/tf-idf-smiliarty)
+
+## 开源项目
+
+为了便于大家学习，项目开源地址如下，欢迎 fork+star 鼓励一下老马~
+
+[nlp-keyword 关键词](https://github.com/houbb/nlp-keyword)
+
+[pinyin 汉字转拼音](https://github.com/houbb/pinyin)
+
+[segment 高性能中文分词](https://github.com/houbb/segment)
+
+[opencc4j 中文繁简体转换](https://github.com/houbb/opencc4j)
+
+[nlp-hanzi-similar 汉字相似度](https://github.com/houbb/nlp-hanzi-similar)
+
+[word-checker 拼写检测](https://github.com/houbb/word-checker)
+
+[sensitive-word 敏感词](https://github.com/houbb/sensitive-word)
+
 # Ansj 中文分词
 
 这是一个基于n-Gram+CRF+HMM的中文分词的java实现。

@@ -73,11 +73,15 @@ public class T_minMeetingRooms {
 
     public static void main(String[] args) {
         T_minMeetingRooms minMeetingRooms = new T_minMeetingRooms();
-        int[][] array = {{0, 30}, {5, 10}, {15, 20}};
+        int[][] array = {
+            {0, 30}, {5, 10}, {15, 20}
+        };
         System.out.println(minMeetingRooms.minMeetingRooms(array));;
 
         // [[7,10],[2,4]]
-        int[][] array2 = {{7,10}, {2,4}};
+        int[][] array2 = {
+            {7,10}, {2,4}
+        };
         System.out.println(minMeetingRooms.minMeetingRooms(array2));
     }
 
