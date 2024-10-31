@@ -1,6 +1,6 @@
 ---
 layout: post
-title: HanLP 未来十年的自然语言处理。 标记化、词性标注、命名实体识别、句法和语义依赖解析、文档分类 
+title: NLP segment-20-分词开源项目介绍 HanLP 未来十年的自然语言处理
 date:  2020-1-8 10:09:32 +0800
 categories: [NLP]
 tags: [java, nlp, segment, sh]

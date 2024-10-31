@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ansj_seg  ansj分词.ict的真正java实现.分词效果速度都超过开源版的ict. 中文分词,人名识别,词性标注,用户自定义词典
+title: NLP segment-21-分词开源项目介绍 ansj_seg
 date:  2020-1-8 10:09:32 +0800
 categories: [NLP]
 tags: [java, nlp, segment, sh]
