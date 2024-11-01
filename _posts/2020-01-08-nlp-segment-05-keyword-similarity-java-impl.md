@@ -1,6 +1,6 @@
 ---
 layout: post
-title: NLP segment-04-自动摘要 auto-summary java 开源实现  
+title: NLP segment-05-文本相似度计算 similarity java 开源实现  
 date:  2020-1-8 10:09:32 +0800
 categories: [NLP]
 tags: [ai, nlp, sf]
@@ -69,7 +69,9 @@ published: true
 
 前面一些内容，我们介绍了分词。以及 TF-IDF 的实现原理。
 
-本节，我们基于分词实现 auto-summary 自动摘要。
+基于分词实现 auto-summary 自动摘要。
+
+这一节我们来一起看一下文本相似度的计算。
 
 # nlp-keyword
 
@@ -85,24 +87,31 @@ published: true
 
 > [变更日志](https://github.com/houbb/nlp-keyword/blob/master/CHANGELOG.md)
 
-# 自动摘要
+# 文本相似度
 
 ## maven 引入
 
 ```xml
 <dependency>
     <groupId>com.github.houbb</groupId>
-    <artifactId>nlp-keyword-summary</artifactId>
-    <version>1.1.0</version>
+    <artifactId>nlp-keyword-similarity</artifactId>
+    <version>1.2.0</version>
 </dependency>
 ```
 
 ## 入门例子
 
 ```java
-final String text = "你好啊，我的老伙计。最近过得怎么样？我实在是觉得太久没有看见你了。听说北海的花开了，太久没去了。故事的最后会怎么样呢？我也不清楚。";
+final String source = "我喜欢看电影，读书和旅游。";
+final String target = "我不喜欢看电影。我爱唱跳、RAP、Music~";
 
-String summary = AutoSummaryHelper.autoSummary(text);
+double rank = SimilarityHelper.similarity(source, target);
+```
+
+结果：
+
+```
+0.677537337470188
 ```
 
 * any list

@@ -29,6 +29,8 @@ published: true
 
 [NLP segment-04-自动摘要 auto-summary java 开源实现](https://houbb.github.io/2020/01/08/nlp-segment-04-keyword-auto-summary-java-impl)
 
+[NLP segment-05-文本相似度计算 similarity java 开源实现](https://houbb.github.io/2020/01/08/nlp-segment-05-keyword-similarity-java-impl)
+
 [NLP segment-20-分词开源项目介绍 HanLP 未来十年的自然语言处理](https://houbb.github.io/2020/01/08/nlp-segment-20-open-source-hannlp)
 
 [NLP segment-21-分词开源项目介绍 ansj_seg](https://houbb.github.io/2020/01/08/nlp-segment-21-open-source-ansj_seg)
