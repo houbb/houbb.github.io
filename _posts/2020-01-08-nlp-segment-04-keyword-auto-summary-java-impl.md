@@ -1,6 +1,6 @@
 ---
 layout: post
-title: NLP segment-03-基于 TF-IDF 实现关键词提取 java 开源实现  
+title: NLP segment-04-自动摘要 auto-summary java 开源实现  
 date:  2020-1-8 10:09:32 +0800
 categories: [NLP]
 tags: [ai, nlp, sf]
@@ -65,13 +65,9 @@ published: true
 
 # 前言
 
-前面一些内容，我们介绍了分词。
+前面一些内容，我们介绍了分词。以及 TF-IDF 的实现原理。
 
-以及 TF-IDF 的实现原理。
-
-当然，这些都是知识，但不是工具。
-
-我们将其转换为方便可用的 java 工具。
+本节，我们基于分词实现 auto-summary 自动摘要。
 
 # nlp-keyword
 
@@ -87,54 +83,25 @@ published: true
 
 > [变更日志](https://github.com/houbb/nlp-keyword/blob/master/CHANGELOG.md)
 
-# 快速开始
+# 自动摘要
 
 ## maven 引入
 
 ```xml
 <dependency>
     <groupId>com.github.houbb</groupId>
-    <artifactId>keyword</artifactId>
-    <version>1.0.0</version>
+    <artifactId>keyword-summary</artifactId>
+    <version>1.1.0</version>
 </dependency>
 ```
 
-## 快速开始
-
-- 获取关键词
+## 入门例子
 
 ```java
-final String text = "这是一个伸手不见五指的黑夜，夜太美。";
+final String text = "你好啊，我的老伙计。最近过得怎么样？我实在是觉得太久没有看见你了。听说北海的花开了，太久没去了。故事的最后会怎么样呢？我也不清楚。";
 
-List<IKeywordResult> keywords =  KeywordHelper.keyword(text);
-Assert.assertEquals("[伸手不见|0.86879235325, 太美|0.70848301840625, 伸手不见五指|0.63371734601875, 黑夜|0.509854654010625, 伸手|0.43563643037625]", keywords.toString());
+String summary = AutoSummaryHelper.autoSummary(text);
 ```
-
-- 指定返回的个数
-
-```java
-final String text = "这是一个伸手不见五指的黑夜，夜太美。";
-
-List<IKeywordResult> keywords =  KeywordHelper.keyword(text, 1);
-Assert.assertEquals("[伸手不见|0.86879235325]", keywords.toString());
-```
-
-- 指定返回的格式
-
-```java
-final String text = "这是一个伸手不见五指的黑夜，夜太美。";
-
-List<String> keywords =  KeywordHelper.keyword(text, 1, KeywordResultHandlers.words());
-Assert.assertEquals("[伸手不见]", keywords.toString());
-```
-
-# ROAD-MAP
-
-- [] 字典数据独立，便于用户自定义选择
-
-- [] 文本相似度
-
-- [] auto-summary 自动摘要
 
 * any list
 {:toc}
