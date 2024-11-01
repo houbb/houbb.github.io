@@ -19,6 +19,8 @@ published: true
 
 [jieba-fenci 04 结巴分词之词性标注实现思路 speechTagging segment](https://houbb.github.io/2020/01/08/jieba-source-04-pos-tagging)
 
+[jieba-fenci 05 结巴分词之简单聊一聊](https://houbb.github.io/2020/01/08/jieba-source-05-chat)
+
 ## 关键词系列专题
 
 [NLP segment-01-聊一聊分词](https://houbb.github.io/2020/01/08/nlp-segment-01-overview)

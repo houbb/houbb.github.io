@@ -1,6 +1,6 @@
 ---
 layout: post
-title: jieba-fenci 结巴分词原理讲解之数据归一化 segment
+title: jieba-fenci 02 结巴分词原理讲解之数据归一化 segment
 date:  2020-1-8 10:09:32 +0800
 categories: [NLP]
 tags: [java, nlp, sf]
@@ -16,6 +16,19 @@ published: true
 > [敏感词 sensitive-word](https://github.com/houbb/sensitive-word)
 
 > [分词 segment](https://github.com/houbb/segment)
+
+## 分词系列专题
+
+[jieba-fenci 01 结巴分词原理讲解 segment](https://houbb.github.io/2020/01/08/jieba-source-01-overview)
+
+[jieba-fenci 02 结巴分词原理讲解之数据归一化 segment](https://houbb.github.io/2020/01/08/jieba-source-02-normalize)
+
+[jieba-fenci 03 结巴分词与繁简体转换 segment](https://houbb.github.io/2020/01/08/jieba-source-03-chinese-format)
+
+[jieba-fenci 04 结巴分词之词性标注实现思路 speechTagging segment](https://houbb.github.io/2020/01/08/jieba-source-04-pos-tagging)
+
+[jieba-fenci 05 结巴分词之简单聊一聊](https://houbb.github.io/2020/01/08/jieba-source-05-chat)
+
 
 # 结巴分词的归一化
 
