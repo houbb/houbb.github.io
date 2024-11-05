@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  【leetcode】121-best-time-to-buy-and-sell-stock 力扣 121. 买卖股票的最佳时机
+title:  【leetcode】40-best-time-to-buy-and-sell-stock 力扣 121. 买卖股票的最佳时机
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, backtrack, leetcode]
@@ -96,6 +96,72 @@ published: true
         return maxResult;
     }
 ```
+
+## V2.5-代码性能优化
+
+## 优化思路
+
+上面的分支判断太多
+
+## 核心实现
+
+```java
+class Solution {
+
+    public int maxProfit(int[] prices) {
+        int maxResult = 0;
+        int minVal = prices[0];
+        for(int i = 0; i < prices.length; i++) {
+            minVal = Math.min(minVal, prices[i]);
+            maxResult = Math.max(prices[i] - minVal, maxResult);
+        }
+
+        return maxResult;
+    }
+    
+}
+```
+
+## 效果
+
+1ms 击败100.00%
+
+# V3-DP 的思路-贯穿整体解法
+
+## 思路
+
+我们一共完成了一笔完整的交易，分为两步：
+
+1. b1 买入1
+2. s1 卖出1
+
+卖出+买入构成了完整的交易。
+
+每一天我们都可以决定是否买，是否卖？
+
+### 初始化
+
+b1 买入时，我们初始化为 -prices[0];
+
+s1 卖出时，初始化为0；
+
+## 代码
+
+```java
+public int maxProfit(int[] prices) {
+    int b1 = -prices[0];
+    int s1 = 0;
+
+    for(int i = 0; i < prices.length; i++) {
+        // 卖出第一笔 是否卖？  不卖则为s1, 卖出则为 b1 + prices[i]
+        s1 = Math.max(s1, b1 + prices[i]);
+        // 买入第一笔 是否买？  如果买，则花费为当前金额;
+        b1 = Math.max(b1, - prices[i]);
+    }
+    return s1;
+}
+```
+
 
 # 参考资料
 
