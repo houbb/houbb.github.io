@@ -7,6 +7,26 @@ tags: [algorithm, backtrack, leetcode]
 published: true
 ---
 
+# 买卖股票系列
+
+[【leetcode】40-best-time-to-buy-and-sell-stock 力扣 121. 买卖股票的最佳时机](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-40-leetcode-121-best-time-to-buy-and-sell-stock)
+
+[【leetcode】41-best-time-to-buy-and-sell-stock-ii 力扣 122. 买卖股票的最佳时机 II](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-41-leetcode-122-best-time-to-buy-and-sell-stock-ii)
+
+[【leetcode】42-best-time-to-buy-and-sell-stock-iii 力扣 123. 买卖股票的最佳时机 III](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-42-leetcode-123-best-time-to-buy-and-sell-stock-iii)
+
+[【leetcode】43-best-time-to-buy-and-sell-stock-iv 力扣 188. 买卖股票的最佳时机 IV](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-43-leetcode-188-best-time-to-buy-and-sell-stock-iv)
+
+[【leetcode】44-best-time-to-buy-and-sell-stock-with-cooldown 力扣 309. 买卖股票的最佳时机包含冷冻期](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-44-leetcode-309-best-time-to-buy-and-sell-stock-with-cooldown)
+
+[【leetcode】45-best-time-to-buy-and-sell-stock-with-cooldown 力扣 714. 买卖股票的最佳时机包含手续费](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-45-leetcode-714-best-time-to-buy-and-sell-stock-with-transaction-fee)
+
+## 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
+
 # 121. 买卖股票的最佳时机
 
 给定一个数组 prices ，它的第 i 个元素 prices[i] 表示一支给定股票第 i 天的价格。
@@ -164,20 +184,6 @@ public int maxProfit(int[] prices) {
 
 
 # 参考资料
-
-https://leetcode.cn/problems/combinations/
-
-https://leetcode.cn/problems/combination-sum/
-
-https://leetcode.cn/problems/combination-sum-ii/
-
-https://leetcode.cn/problems/combination-sum-iii/
-
-https://leetcode.com/problems/combination-sum-iv/
-
-[TLE to 100% beat | Optimisation | step by step | 7 solutions](https://leetcode.com/problems/combination-sum-iv/solutions/372950/tle-to-100-beat-optimisation-step-by-step-7-solutions/)
-
-https://leetcode.com/problems/combination-sum-iv/solutions/2381079/java-1ms-dp-top-down-memoization-easy/
 
 * any list
 {:toc}
