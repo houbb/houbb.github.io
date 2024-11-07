@@ -72,60 +72,11 @@ backtracking? 回溯？
 
 这个还算好解决，可以存储一下，对比即可。
 
+感觉直接做这一题有点难，先做其他题目找找感觉，
 
-
-
-
-
-## 实现
-
-```java
-public int longestWPI(int[] hours) {
-        final int n = hours.length;
-        int[] nums = new int[n];
-        for(int i = 0; i < n; i++) {
-            if(hours[i] > 8) {
-                nums[i] = 1;
-            } else {
-                nums[i] = -1;
-            }
-        }
-
-
-        // 然后计算最长子数组？
-        int[] prefix = new int[n];
-        prefix[0] = nums[0];
-        for(int i = 1; i < n; i++) {
-            prefix[i] = prefix[i-1] + nums[i];
-        }
-
-        // 计算最长的数组？
-        // 找到大于0的最长子数组
-        for(int step = nums.length-1; step >= 0; step--) {
-            for(int i = 0; i < nums.length - step; i++) {
-                int sum = prefix[i+step] - prefix[i] + nums[i];
-                if(sum > 0) {
-                    return step+1;
-                }
-            }
-        }
-
-        return 0;
-    }
-```
-
-## 效果
-
-399ms, 6.87%
+TBC.....
 
 ## 小结
-
-这道题的下方查询方式值得优化。
-
-结果发现好像不是那么回事。
-
-初步考虑可以采用二分法，或者改进后的双指针。
-
 
 
 # 参考资料
