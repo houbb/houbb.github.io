@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  【leetcode】53-523. continuous-subarray-sum  力扣 523. 连续的子数组和 同余定理
+title:  【leetcode】53-523. continuous-subarray-sum  力扣 523. 连续的子数组和 同余定理  前缀和+HashMap
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, backtrack, leetcode]
