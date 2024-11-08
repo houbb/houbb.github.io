@@ -95,83 +95,13 @@ class Solution {
 ## 效果
 
 ```
-1395ms 6.43%
+19ms 95.20%
 ```
-
-勉强 AC
 
 ## 小结
 
-这里用的是前缀和+暴力的解法。
+前面做多了，这里也就很自然的想到了前缀和+HashMap
 
-比较好想到，但是暴力匹配确实性能比较差。
-
-# v2-改进
-
-## 思路
-
-我猜测有一种解法应该可以用位运算来实现。
-
-可惜位运算一直比较菜。
-
-TBC...
-
-# v3-前缀和+HashMap
-
-## 思路
-
-这一题不说和 T523 一模一样吧，只能说是一模一样。
-
-## 数据处理
-
-我们把 0 处理为 -1，1 保持不变。问题就变成了求 **如何求得最长一段区间和为 0 的子数组**
-
-## 怎么求
-
-sum[i] = sum[j]
-
-那么
-
-```
-sum[i] - [sum]j = 0
-```
-
-根据前缀和定义，二者位置的数据就是等于 0 的。
-
-## 代码
-
-```java
-public int findMaxLength(int[] nums) {
-        final int n = nums.length;
-        int[] prefix = new int[n+1];
-        // 初始化
-        prefix[0] = nums[0] == 1 ? 1 : -1;
-        for(int i = 1; i < n; i++) {
-            // 预处理，简化计算
-            int val =  nums[i] == 1 ? 1 : -1;
-            prefix[i] = prefix[i-1] + val;
-        }
-
-        Map<Integer, Integer> map = new HashMap<>();
-        // 处理从索引0开始的子数组
-        map.put(0, -1);
-        int maxLen = 0;
-
-        for(int i = 0; i < n; i++) {
-            int sum = prefix[i];
-            if(map.containsKey(sum)) {
-                maxLen = Math.max(maxLen, i - map.get(sum));
-            } else {
-                map.put(sum, i);
-            }
-        }
-        return maxLen;
-    }
-```
-
-## 效果
-
-21ms 击败 77.14%
 
 # 参考资料
 
