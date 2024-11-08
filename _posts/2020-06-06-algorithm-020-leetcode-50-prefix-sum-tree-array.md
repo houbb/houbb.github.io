@@ -3,7 +3,7 @@ layout: post
 title:  【leetcode】50-树状数组 Binary Indexed Tree，简称 BIT FenwickTree
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, backtrack, leetcode]
+tags: [algorithm, prefix-sum, leetcode]
 published: true
 ---
 

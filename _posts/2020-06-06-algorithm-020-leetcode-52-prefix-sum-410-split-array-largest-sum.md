@@ -3,7 +3,7 @@ layout: post
 title:  【leetcode】52-410. split-array-largest-sum  力扣 410. 分割数组的最大值
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, backtrack, leetcode]
+tags: [algorithm, prefix-sum, leetcode]
 published: true
 ---
 

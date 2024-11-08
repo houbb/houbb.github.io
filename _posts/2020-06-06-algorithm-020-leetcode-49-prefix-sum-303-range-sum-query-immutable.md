@@ -3,7 +3,7 @@ layout: post
 title:  【leetcode】49-303. range-sum-query-immutable  力扣 303. 区域和检索 - 数组不可变
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, backtrack, leetcode]
+tags: [algorithm, prefix-sum, leetcode]
 published: true
 ---
 

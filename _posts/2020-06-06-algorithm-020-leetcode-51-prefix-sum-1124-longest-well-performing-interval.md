@@ -3,7 +3,7 @@ layout: post
 title:  【leetcode】51-1124. longest-well-performing-interval  力扣 1124. 表现良好的最长时间段  前缀和+HashMap
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, backtrack, leetcode]
+tags: [algorithm, prefix-sum, leetcode]
 published: true
 ---
 

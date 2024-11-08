@@ -3,7 +3,7 @@ layout: post
 title:  【leetcode】48-product-of-array-except-self 力扣 238. 除自身以外的数组的乘积
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, backtrack, leetcode]
+tags: [algorithm, prefix-sum, leetcode]
 published: true
 ---
 
