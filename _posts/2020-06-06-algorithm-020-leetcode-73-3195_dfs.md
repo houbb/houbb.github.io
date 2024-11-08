@@ -58,24 +58,26 @@ grid[i][j] 是 0 或 1。
 我们可以遍历整个数组，直接找到最小的边界值。
 
 ```java
-class Solution {
-    public int minimumArea(int[][] grid) {
-        int m = grid.length, n = grid[0].length;
-        int x1 = m, y1 = n;
-        int x2 = 0, y2 = 0;
-        for (int i = 0; i < m; ++i) {
-            for (int j = 0; j < n; ++j) {
+public int minimumArea(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        // 最low的解法，遍历找到最小的 x,y 和最大的 x,y
+        int xMin = Integer.MAX_VALUE, yMin = Integer.MAX_VALUE;
+        int xMax = 0, yMax = 0;
+        for (int i = 0; i < grid.length; ++i) {
+            for (int j = 0; j < grid[i].length; ++j) {
+                // 如果是1
                 if (grid[i][j] == 1) {
-                    x1 = Math.min(x1, i);
-                    y1 = Math.min(y1, j);
-                    x2 = Math.max(x2, i);
-                    y2 = Math.max(y2, j);
+                    xMin = Math.min(xMin, i);
+                    yMin = Math.min(yMin, j);
+                    xMax = Math.max(xMax, i);
+                    yMax = Math.max(yMax, j);
                 }
             }
         }
-        return (x2 - x1 + 1) * (y2 - y1 + 1);
+        // 面积需要+1
+        return (xMax - xMin + 1) * (yMax - yMin + 1);
     }
-}
 ```
 
 
