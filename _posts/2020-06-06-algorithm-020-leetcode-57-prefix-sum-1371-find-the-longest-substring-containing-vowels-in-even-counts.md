@@ -197,7 +197,7 @@ TBC
 class Solution {
     
 
-            private void toggleState(int[] states, int index) {
+    private void toggleState(int[] states, int index) {
         states[index] = states[index] == 1 ? 0 : 1;
     }
 
@@ -262,10 +262,56 @@ class Solution {
 
 性能比较差，为什么比较差呢？
 
+# v3-性能优化
+
+## 思路
+
+下面的方法比较难想到一些，就是借助位运算提升性能。
+
+直接用一下官方解法。
+
+## 代码
+
+```java
+public int findTheLongestSubstring(String s) {
+        int n = s.length();
+        int[] pos = new int[1 << 5];
+        Arrays.fill(pos, -1);
+        int ans = 0, status = 0;
+        pos[0] = 0;
+        for (int i = 0; i < n; i++) {
+
+            // 直接通过位运算，更新对应的数据。
+            char ch = s.charAt(i);
+            if (ch == 'a') {
+                status ^= (1 << 0);
+            } else if (ch == 'e') {
+                status ^= (1 << 1);
+            } else if (ch == 'i') {
+                status ^= (1 << 2);
+            } else if (ch == 'o') {
+                status ^= (1 << 3);
+            } else if (ch == 'u') {
+                status ^= (1 << 4);
+            }
+
+            if (pos[status] >= 0) {
+                ans = Math.max(ans, i + 1 - pos[status]);
+            } else {
+                pos[status] = i + 1;
+            }
+        }
+        return ans;
+    }
+```
+
+## 效果
+
+11ms 97.87%
 
 # 参考资料
 
-https://leetcode.cn/problems/longest-well-performing-interval/submissions/578871050/?envType=problem-list-v2&envId=prefix-sum
+https://leetcode.cn/problems/find-the-longest-substring-containing-vowels-in-even-counts/submissions/579064348/?envType=problem-list-v2&envId=prefix-sum
 
 * any list
 {:toc}
