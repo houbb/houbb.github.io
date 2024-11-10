@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leetcode 数组专题 01-leetcode.1 two-sum 力扣.1 两数之和 5种解法
+title: leetcode 数组专题 01-leetcode.1 two-sum 力扣.1 两数之和 3种解法
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, array, binary-search, sf]
@@ -56,8 +56,6 @@ published: true
 2. 数组排序+二分
 
 3. HashSet/HashMap 优化
-
-4. 前缀和
 
 # v1-暴力解法
 
@@ -223,7 +221,77 @@ class Solution {
 
 不过依然后进步的空间。
 
-# v3-HashMap
+# v3-排序+双指针
+
+在做完了第 T167 之后，收到了双指针的启发。
+
+## 思路
+
+我们定义两个指针 
+
+```
+left=0
+right=n-1
+sum=num[left]+num[right-1]
+```
+
+因为数组有有序的，所以只有 3 种情况：
+
+1. sum == target 直接满足
+
+2. sum < target，left++
+
+3. sum > target, right--
+
+## 实现
+
+```java
+class Solution {
+
+    
+    public int[] twoSum(int[] nums, int target) {
+        int n = nums.length;
+
+        // 存储值+下标 避免排序后找不到原始的索引
+        List<int[]> indexList = new ArrayList<>();
+        for(int i = 0; i < n; i++) {
+            indexList.add(new int[]{nums[i], i});
+        }
+        Collections.sort(indexList, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+
+        // 双指针
+        int left = 0;
+        int right = n-1;
+        while (left < right) {
+            int sum = indexList.get(left)[0] + indexList.get(right)[0];
+            if(sum == target) {
+                return new int[]{indexList.get(left)[1], indexList.get(right)[1]};
+            }
+            if(sum < target) {
+                left++;
+            }
+            if(sum > target) {
+                right--;
+            }
+        }
+
+        //NOT FOUND
+        return new int[]{-1, -1};
+    }
+
+}
+```
+
+## 效果
+
+8ms 39.15%
+
+# v4-HashMap
 
 ## 思路
 
@@ -242,9 +310,34 @@ class Solution {
 ## 代码
 
 ```java
-
+public int[] twoSum(int[] nums, int target) {
+    int n = nums.length;
+    HashMap<Integer, Integer> hashMap = new HashMap<>();
+    for(int i = 0; i < n; i++) {
+        int other = target - nums[i];
+        if(hashMap.containsKey(other)) {
+            int j = hashMap.get(other);
+            return new int[]{i, j};
+        }
+        // 存储
+        hashMap.put(nums[i], i);
+    }
+    return new int[]{-1, -1};
+}
 ```
 
+
+## 效果
+
+2ms 99.68%
+
+只能说效果拔群，Hash 确实是这类方法中最快的。
+
+# 小结
+
+这类题目的思路基本都是类似的。
+
+我们后续将看一下 n 数之和的系列，感兴趣的小伙伴点点赞，关注不迷路。
 
 * any list
 {:toc}
