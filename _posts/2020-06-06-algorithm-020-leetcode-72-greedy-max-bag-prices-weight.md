@@ -96,17 +96,6 @@ public class T2548_maxPriceBag_V2 {
         return remainingCapacity == 0 ? maxPrice : -1.0;
     }
 
-    public static void main(String[] args) {
-        T2548_maxPriceBag_V2 sol = new T2548_maxPriceBag_V2();
-        int[][] items1 = {{50, 1}, {10, 8}};
-        int capacity1 = 5;
-        System.out.printf("%.5f\n", sol.fillBackpack(items1, capacity1)); // 输出：55.00000
-
-        int[][] items2 = {{100, 30}};
-        int capacity2 = 50;
-        System.out.printf("%.5f\n", sol.fillBackpack(items2, capacity2)); // 输出：-1.00000
-    }
-
 }
 ```
 
@@ -160,17 +149,6 @@ public class Solution {
 
         // 检查背包是否被完全填满
         return remainingCapacity == 0 ? maxPrice : -1.0;
-    }
-
-    public static void main(String[] args) {
-        Solution sol = new Solution();
-        int[][] items1 = {{50, 1}, {10, 8}};
-        int capacity1 = 5;
-        System.out.printf("%.5f\n", sol.fillBackpack(items1, capacity1)); // 输出：55.00000
-
-        int[][] items2 = {{100, 30}};
-        int capacity2 = 50;
-        System.out.printf("%.5f\n", sol.fillBackpack(items2, capacity2)); // 输出：-1.00000
     }
 }
 ```

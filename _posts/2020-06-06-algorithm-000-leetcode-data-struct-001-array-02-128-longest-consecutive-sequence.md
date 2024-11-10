@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leetcode 01-leetcode.128 longest-consecutive-sequence 力扣.128 最长连续系列
+title: leetcode 数组专题 01-leetcode.128 longest-consecutive-sequence 力扣.128 最长连续系列
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, array, sf]
