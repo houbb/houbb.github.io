@@ -1,20 +1,35 @@
 ---
 layout: post
-title: leetcode 数组专题 01-leetcode.128 longest-consecutive-sequence 力扣.128 最长连续系列
+title: leetcode 数组专题 01-力扣.128 最长连续序列 leetcode longest-consecutive-sequence 
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, array, sf]
 published: true
 ---
 
+# 数组系列
+
+[力扣数据结构之数组-00-概览](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-00-overview)
+
+[力扣.53 最大子数组和 maximum-subarray ](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-01-51-maximum-subarray)
+
+[力扣.128 最长连续序列 longest-consecutive-sequence](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-02-128-longest-consecutive-sequence)
+
+[力扣.1 两数之和 N 种解法 two-sum](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-03-001-two-sum)
+
+[力扣.167 两数之和 II two-sum-ii](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-03-001-two-sum-ii)
+
+[力扣.170 两数之和 III two-sum-iii](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-03-001-two-sum-iii)
+
+[力扣.653 两数之和 IV two-sum-IV](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-03-001-two-sum-iv)
+
+[力扣.015 三数之和 three-sum](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-04-015-three-sum)
 
 # 题目
 
 给定一个未排序的整数数组 nums ，找出数字连续的最长序列（不要求序列元素在原数组中连续）的长度。
 
 请你设计并实现时间复杂度为 O(n) 的算法解决此问题。
-
- 
 
 示例 1：
 
@@ -30,7 +45,8 @@ published: true
 提示：
 
 0 <= nums.length <= 10^5
--109 <= nums[i] <= 10^9
+
+-10^9 <= nums[i] <= 10^9
 
 # v1-基本解法
 

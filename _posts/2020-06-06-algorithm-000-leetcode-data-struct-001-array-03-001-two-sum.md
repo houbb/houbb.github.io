@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leetcode 数组专题 01-leetcode.1 two-sum 力扣.1 两数之和 3种解法
+title: leetcode 数组专题 01-leetcode.1 two-sum 力扣.1 两数之和 N 种解法
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, array, binary-search, sf]
