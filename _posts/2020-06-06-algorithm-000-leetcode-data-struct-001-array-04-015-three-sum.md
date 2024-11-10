@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leetcode 数组专题 04-leetcode.15 three-sum 力扣.1 三数之和 
+title: leetcode 数组专题 04-leetcode.15 three-sum 力扣.15 三数之和 
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, array, binary-search, sf]
