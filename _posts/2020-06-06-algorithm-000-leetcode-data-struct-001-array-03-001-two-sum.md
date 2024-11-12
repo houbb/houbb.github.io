@@ -78,6 +78,8 @@ published: true
 
 3. HashSet/HashMap 优化
 
+4. HashMap+数组压缩
+
 # v1-暴力解法
 
 ## 思路
@@ -353,6 +355,64 @@ public int[] twoSum(int[] nums, int target) {
 2ms 99.68%
 
 只能说效果拔群，Hash 确实是这类方法中最快的。
+
+# v5-HashMap+数组压缩
+
+## 思路
+
+整体的计算思想不变，我们利用数组替代 HashMap。
+
+## 实现
+
+```java
+public int[] twoSum(int[] nums, int target) {
+    int min = Integer.MAX_VALUE;
+    int max = Integer.MIN_VALUE;
+
+    // 找到数组中的最大和最小值
+    for (int num : nums) {
+        if (num < min) min = num;
+        if (num > max) max = num;
+    }
+
+    // 计算偏移和数组长度
+    int offset = -min; // 偏移量，将最小值对齐到 0
+    int size = max - min + 1; // 数组大小，以便容纳所有数
+
+    // 使用数组代替 HashMap
+    int[] map = new int[size]; // 数组默认值为 0
+    for (int i = 0; i < size; i++) {
+        map[i] = -1; // 初始化为 -1，表示还未存储任何索引
+    }
+
+    for (int i = 0; i < nums.length; i++) {
+        int complement = target - nums[i];
+
+        // 检查 complement 是否存在
+        int compIndex = complement + offset;
+        if (compIndex >= 0 && compIndex < size && map[compIndex] != -1) {
+            return new int[] { map[compIndex], i };
+        }
+
+        // 存储当前元素的索引
+        map[nums[i] + offset] = i;
+    }
+
+    // 若无结果，返回默认值
+    return new int[]{-1, -1};
+}
+```
+
+## 效果
+
+超出内存限制 52 / 63 个通过的测试用例
+
+```
+nums = [50000000,3,2,4,50000000]
+target = 100000000
+```
+
+看的出来，这个数组压缩还是有一定的局限性的，不能直接生搬硬套。
 
 # 小结
 
