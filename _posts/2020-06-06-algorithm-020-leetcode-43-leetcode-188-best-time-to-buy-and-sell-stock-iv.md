@@ -21,11 +21,10 @@ published: true
 
 [【leetcode】45-best-time-to-buy-and-sell-stock-with-cooldown 力扣 714. 买卖股票的最佳时机包含手续费](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-45-leetcode-714-best-time-to-buy-and-sell-stock-with-transaction-fee)
 
-## 开源地址
 
-为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+# 买卖股票系列
 
-> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
+经过了前面几次的洗礼，借来让我迎来新的篇章。
 
 # 188. 买卖股票的最佳时机 IV
 
@@ -148,6 +147,12 @@ s1, s2, ..., sk 初始化为0
 # 小结
 
 完整的思路，其实 T123 的拓展是一个比较完整的解法。
+
+## 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
 
 # 参考资料
 

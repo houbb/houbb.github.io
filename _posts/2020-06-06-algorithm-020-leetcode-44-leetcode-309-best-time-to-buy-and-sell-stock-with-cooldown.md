@@ -21,11 +21,7 @@ published: true
 
 [【leetcode】45-best-time-to-buy-and-sell-stock-with-cooldown 力扣 714. 买卖股票的最佳时机包含手续费](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-45-leetcode-714-best-time-to-buy-and-sell-stock-with-transaction-fee)
 
-## 开源地址
-
-为了便于大家学习，所有实现均已开源。欢迎 fork + star~
-
-> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
+# 买卖股票系列
 
 # 题目
 
@@ -35,8 +31,6 @@ published: true
 
 卖出股票后，你无法在第二天买入股票 (即冷冻期为 1 天)。
 注意：你不能同时参与多笔交易（你必须在再次购买前出售掉之前的股票）。
-
- 
 
 示例 1:
 
@@ -159,6 +153,13 @@ class Solution {
 # 小结
 
 完整的思路，其实 T123 的拓展是一个比较完整的解法。
+
+## 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
+
 
 # 参考资料
 
