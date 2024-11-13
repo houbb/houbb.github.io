@@ -21,11 +21,15 @@ published: true
 
 [【leetcode】45-best-time-to-buy-and-sell-stock-with-cooldown 力扣 714. 买卖股票的最佳时机包含手续费](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-45-leetcode-714-best-time-to-buy-and-sell-stock-with-transaction-fee)
 
-## 开源地址
+# 前言
 
-为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+在经历了前面一系列的股市算法洗礼之后，老马作为一名股市韭菜，发现投资技术没有长进。
 
-> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
+于是决定本篇作为股市系列的最后篇算法题。
+
+真股市研究，还是要看国际大势+经济学+博弈论+心理学+运气+...
+
+不吹了，我们来看股市系列的最后一套题。
 
 # 题目
 
@@ -172,6 +176,12 @@ class Solution {
 这样，我们就完成了买卖股票比较完整的整个系列。
 
 最核心的还是 DP，基本可以从头到尾。
+
+## 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
 
 # 参考资料
 
