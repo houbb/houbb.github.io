@@ -99,8 +99,6 @@ leetcode 中的常见算法题，按照数据结构和算法分类的话：
    - 强连通分量
    - 双连通分量
 
-10. **双指针 (Two Pointers)**
-   
 11. **单调队列 (Monotonic Queue)**
    
 12. **双向链表 (Doubly Linked List)**
@@ -113,6 +111,8 @@ leetcode 中的常见算法题，按照数据结构和算法分类的话：
 
 
 ### **按算法分类**
+
+0. **双指针 (Two Pointers)**
 
 1. **动态规划 (Dynamic Programming)**
    
