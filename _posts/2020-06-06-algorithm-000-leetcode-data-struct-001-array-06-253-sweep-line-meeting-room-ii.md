@@ -198,14 +198,6 @@ public class MeetingRoomsII {
 
         return maxRooms;
     }
-
-    public static void main(String[] args) {
-        int[][] intervals1 = {{0, 30}, {5, 10}, {15, 20}};
-        System.out.println(minMeetingRooms(intervals1)); // Expected output: 2
-
-        int[][] intervals2 = {{7, 10}, {2, 4}};
-        System.out.println(minMeetingRooms(intervals2)); // Expected output: 1
-    }
 }
 ```
 
