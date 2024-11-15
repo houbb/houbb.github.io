@@ -1,12 +1,21 @@
 ---
 layout: post
-title: leetcode 数组专题 06-leetcode.252 meeting room 力扣.252 会议室
+title: leetcode 扫描线专题 06-leetcode.252 meeting room 力扣.252 会议室
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, array, sweep-line, sf]
 published: true
 ---
 
+# 扫描线专题
+
+[leetcode 扫描线专题 06-扫描线算法（Sweep Line Algorithm）](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-06-000-sweep-line-intro)
+
+[leetcode 扫描线专题 06-leetcode.218 the-skyline-problem 力扣.218 天际线问题](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-06-218-sweep-line-skyline)
+
+[leetcode 扫描线专题 06-leetcode.252 meeting room 力扣.252 会议室](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-06-252-sweep-line-meeting-room)
+
+[leetcode 扫描线专题 06-leetcode.253 meeting room ii 力扣.253 会议室 II](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-array-06-253-sweep-line-meeting-room-ii)
 
 # 题目
 
@@ -360,6 +369,12 @@ public class MeetingScheduler {
 不得不说，用数组替代 map 的方法确实令人叹为观止。
 
 那么，我们前面的 two-sum 是不是也可以这样优化？
+
+# 开源地址
+
+为了便于大家学习，所有实现均已开源。欢迎 fork + star~
+
+> [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
 
 # 参考资料
 
