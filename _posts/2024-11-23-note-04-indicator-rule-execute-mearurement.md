@@ -7,6 +7,17 @@ tags: [note, sh]
 published: true
 ---
 
+# 随笔
+
+[从千万粉丝“何同学”抄袭开源项目说起，为何纯技术死路一条？](https://houbb.github.io/2024/11/22/note-02-he-tech)
+
+[数据源的统一与拆分](https://houbb.github.io/2024/11/22/note-03-split-apache-calcite)
+
+[报警系统的指标、规则与执行闭环](https://houbb.github.io/2024/11/22/note-04-indicator-rule-execute-mearurement)
+
+[java 老矣，尚能饭否？](https://houbb.github.io/2024/11/22/note-05-is-java-so-old)
+
+[一骑红尘妃子笑，无人知是荔枝来!](https://houbb.github.io/2024/11/22/note-06-lizhi)
 
 # 有所依
 
