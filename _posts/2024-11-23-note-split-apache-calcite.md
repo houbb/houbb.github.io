@@ -1,0 +1,50 @@
+---
+layout: post
+title: 数据源的统一与拆分-02-apache calcite
+date: 2024-11-23 01:18:08 +0800
+categories: [Note]
+tags: [note, sh]
+published: true
+---
+
+
+# 数据库的分类
+
+数据库作为我们常用的底层服务之一，有很多的种类。
+
+![数据库的分类](https://i-blog.csdnimg.cn/blog_migrate/12978d8d61b8b7311c27edf5890d357c.png)
+
+每一种数据库都有对应的查询语句。比如 mysql / oracle / mongodb / es / vm 等等...
+
+这么多，怎么记得住呢?
+
+# 统一
+
+有没有类似于 slf4j 统一日志输出一样，也有人统一一下 SQL 的查询呢？
+
+答案是有的。
+
+apache calcite 提供了一个行业标准的 SQL 解析器和验证器，一个可定制的优化器，具有可插拔规则和成本函数，逻辑和物理代数运算符，从 SQL 到代数（以及相反）的各种转换算法，以及许多适配器，用于在 Cassandra、Druid、Elasticsearch、MongoDB、Kafka 等系统上执行 SQL 查询，配置最小。
+
+![calcite](https://www.baeldung.com/wp-content/uploads/2024/01/calcite-process-v4.svg)
+
+# 方言
+
+不过实际使用中，发现对于一些方言语法的兼容还是没那么好。
+
+一开始想设计 SQL 引擎的时候使用，但是实际上发现业务方使用 SQL 造诣非常之高，乃至很多语法 calcite 并不支持。
+
+所以使用体验反而会很差，权衡之下， mysql/oracle 还是选择了使用原生的语法。
+
+# 为什么不能全部统一
+
+不同的数据库解决不同的场景难题,不同的流派有着自己的理念优势，不同的民族有着独特的文化美食。
+
+![文化差异](http://www.cuzhiwang.com/forum.php?mod=attachment&aid=MzYwfGEwZDZjNjVmfDE3MzIzMzk0MDh8MHw5NjY%3D&noupdate=yes)
+
+取长补短，兼容并包，方是正道。
+
+# 参考资料
+
+* any list
+{:toc}
