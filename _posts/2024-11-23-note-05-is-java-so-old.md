@@ -13,7 +13,7 @@ published: true
 
 [数据源的统一与拆分](https://houbb.github.io/2024/11/22/note-03-split-apache-calcite)
 
-[报警系统的指标、规则与执行闭环](https://houbb.github.io/2024/11/22/note-04-indicator-rule-execute-mearurement)
+[监控报警系统的指标、规则与执行闭环](https://houbb.github.io/2024/11/22/note-04-indicator-rule-execute-mearurement)
 
 [java 老矣，尚能饭否？](https://houbb.github.io/2024/11/22/note-05-is-java-so-old)
 
