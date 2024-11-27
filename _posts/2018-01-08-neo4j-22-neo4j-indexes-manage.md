@@ -49,6 +49,7 @@ CALL db.constraints()
 这将列出所有的约束，包括唯一约束、存在约束等。
 
 ### 例子：查看所有唯一约束
+
 ```cypher
 CALL db.constraints() YIELD name, label, type, properties
 WHERE type = 'UNIQUENESS'
