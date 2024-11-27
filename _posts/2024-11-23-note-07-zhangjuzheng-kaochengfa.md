@@ -21,7 +21,7 @@ published: true
 
 [java 老矣，尚能饭否？](https://houbb.github.io/2024/11/22/note-05-is-java-so-old)
 
-[一骑红尘妃子笑，无人知是荔枝来!](https://houbb.github.io/2024/11/22/note-06-lizhi)
+[一骑红尘妃子笑](https://houbb.github.io/2024/11/22/note-06-lizhi)
 
 [张居正的考成法，对我们有何参考价值？](https://houbb.github.io/2024/11/22/note-07-zhangjuzheng-kaochengfa)
 
