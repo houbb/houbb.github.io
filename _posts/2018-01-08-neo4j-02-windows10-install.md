@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Neo4j-02-图数据库 neo4j install on windows10 安装笔记
+title:  Neo4j-02-图数据库 neo4j install on windows10 安装笔记 neo4j 官网 403 问题
 date:  2018-1-8 14:18:33 +0800
 categories: [SQL]
 tags: [nosql, neo4j]
@@ -59,6 +59,14 @@ neo4j:3.5.22-community
 我们这里重点记录下第三种。 Neo4j Desktop 安装。
 
 # windows10 安装 Neo4j Desktop
+
+## 403 的问题
+
+2024年11月28日 左右访问页面，发现直接 403.
+
+可以考虑直接使用下面的链接：
+
+https://neo4j.com/artifact.php?name=neo4j-desktop-offline-1.6.1-setup.exe
 
 ## Download
 
