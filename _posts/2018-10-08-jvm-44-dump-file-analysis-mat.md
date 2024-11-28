@@ -15,7 +15,15 @@ published: true
 
 [JVM FULL GC 生产问题 III-多线程执行队列的封装实现，进一步抽象](https://houbb.github.io/2018/10/08/jvm-full-gc-38-inaction3)
 
-[java 多线程实现通用方法 threadpool implement in java](https://houbb.github.io/2018/10/08/jvm-full-gc-39-inaction4)
+[jvm-44-jvm 内存性能分析工具 Eclipse Memory Analyzer Tool (MAT) / 内存分析器 (MAT)](https://houbb.github.io/2018/10/08/jvm-44-dump-file-analysis-mat)
+
+[jvm-45-jvm dump 文件内存介绍+获取方式+堆内存可视分析化工具](https://houbb.github.io/2018/10/08/jvm-45-dump-file-analysis-visual)
+
+[jvm-46-jvm Thread Dump 线程的堆栈跟踪信息+获取方式+可视分析化工具 FastThread](https://houbb.github.io/2018/10/08/jvm-46-dump-thread-file-analysis-visual)
+
+[jvm-47-jvm GC 垃圾回收日志+获取方式+可视分析化工具 gcviewer](https://houbb.github.io/2018/10/08/jvm-47-gc-file-analysis-visual)
+
+[jvisualvm java 性能分析工具](https://houbb.github.io/2018/11/12/jvisualvm)
 
 # 场景 
 
