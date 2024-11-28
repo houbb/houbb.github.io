@@ -37,6 +37,10 @@ published: true
 > [value-extraction 值提取核心](https://github.com/houbb/value-extraction)
 
 
+# 可以考虑做的工具
+
+根据值提取，实现一个转换工具，这样我们可以通过各种数据的处理，达到 ETL 的效果。
+
 # 整体目标
 
 ## 希望支持的文本类别
@@ -72,6 +76,12 @@ csv/指定符号分隔==>split
 2）[aviator 表达式引擎](https://houbb.github.io/2020/05/26/expression-engine-02-aviator-intro)
 
 3) [grovvy 脚本](https://houbb.github.io/2023/05/09/grovvy-08-grovvy-in-action)
+
+
+
+
+
+------------------------------------------------------------------------------------------------------
 
 # chat
 
