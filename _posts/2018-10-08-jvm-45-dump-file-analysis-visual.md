@@ -1,6 +1,6 @@
 ---
 layout: post
-title: jvm-45-jvm dump 文件内存介绍+获取方式+堆内存可视分析化工具
+title: jvm-45-jvm dump 文件如何获取和分析？
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, thread, sh]
@@ -32,6 +32,10 @@ JVM内存Dump是指在Java虚拟机运行时，将其内存状态（堆、栈等
 内存Dump文件通常用于故障排查、性能分析和诊断。
 
 当JVM出现崩溃、内存泄漏或严重的性能瓶颈时，生成内存Dump文件可以帮助开发人员进一步分析内存状态，找出根本原因。
+
+![dump](https://image-tt-private.toutiao.com/tos-cn-i-6w9my0ksvp/fd90db726da046f1a8cf6a7454d50606~tplv-obj.image?_iz=115383&c=811c9dc5&from=image_upload&lk3s=72284de7&policy=eyJ2bSI6MywidWlkIjoiNjM3ODU5MTk0MCJ9&x-orig-authkey=5a21e4afda5945d9a206a695e4c78a63&x-orig-expires=2363958283&x-orig-sign=1EAeQVdb4TQiXU0LEEYWgJERbgU%3D)
+
+这个东西需要实战处理一次，不然很容易忘记。
 
 ## 内存 Dump 文件类型
 
@@ -106,6 +110,12 @@ Heap Dump通常用于分析内存泄漏、对象分配情况等问题。
 希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
 
 我是老马，期待与你的下次相遇。
+
+
+
+
+
+
 
 
 --------------------------------------------------------------------------------------------------------------------------------

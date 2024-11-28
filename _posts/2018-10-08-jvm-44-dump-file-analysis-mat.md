@@ -33,6 +33,8 @@ JVM DUMP 文件应该如何分析？
 
 **Eclipse Memory Analyzer Tool (MAT)** 是一个强大的 Java 堆内存分析工具，常用于分析 Java 内存转储（heap dump），帮助开发者找到内存泄漏、检查大对象等问题。以下是对 MAT 的详细介绍，包括其核心功能、使用场景以及分析步骤。
 
+![MAT](https://image-tt-private.toutiao.com/tos-cn-i-6w9my0ksvp/34205a56ee8643b2bfdc62bf05f31479~tplv-obj.image?_iz=115383&c=811c9dc5&from=image_upload&lk3s=72284de7&policy=eyJ2bSI6MywidWlkIjoiNjM3ODU5MTk0MCJ9&x-orig-authkey=5a21e4afda5945d9a206a695e4c78a63&x-orig-expires=2363957969&x-orig-sign=%2B5Ib45ZM9mRKR3JMe%2BkLmJJxqtY%3D)
+
 ### 1. **MAT 的核心功能**
    - **查找内存泄漏**：MAT 通过分析 heap dump，可以帮助发现潜在的内存泄漏点，特别是无法被垃圾回收的对象。
    - **识别大对象**：MAT 可以快速识别占用大量内存的对象及其引用路径，帮助优化应用程序的内存使用。
