@@ -1,6 +1,6 @@
 ---
 layout: post
-title: jvm-46-jvm Thread Dump 线程的堆栈跟踪信息+获取方式+可视分析化工具 FastThread
+title: jvm-46-jvm Thread Dump 线程的信息获取+可视分析化工具 FastThread
 date: 2018-10-08 23:36:46 +0800
 categories: [Java]
 tags: [jvm, gc, thread, sh]
@@ -19,7 +19,7 @@ published: true
 
 [jvm-45-jvm dump 文件内存介绍+获取方式+堆内存可视分析化工具](https://houbb.github.io/2018/10/08/jvm-45-dump-file-analysis-visual)
 
-[jvm-46-jvm Thread Dump 线程的堆栈跟踪信息+获取方式+可视分析化工具 FastThread](https://houbb.github.io/2018/10/08/jvm-46-dump-thread-file-analysis-visual)
+[jvm-46-jvm Thread Dump 线程的信息获取+可视分析化工具 FastThread](https://houbb.github.io/2018/10/08/jvm-46-dump-thread-file-analysis-visual)
 
 [jvm-47-jvm GC 垃圾回收日志+获取方式+可视分析化工具 gcviewer](https://houbb.github.io/2018/10/08/jvm-47-gc-file-analysis-visual)
 
