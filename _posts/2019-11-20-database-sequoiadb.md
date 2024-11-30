@@ -1,6 +1,6 @@
 ---
 layout: post
-title: SequoiaDB
+title: SequoiaDB 巨杉数据库是一款金融级分布式关系型数据库
 date:  2019-11-20 11:18:30 +0800
 categories: [Database]
 tags: [database, distributed-database, olap, oltp, htap, sh]
