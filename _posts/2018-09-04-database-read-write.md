@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Database Read Write Separation
+title:  Database Read Write Separation  mysql 读写分离。
 date:  2018-09-04 08:05:56 +0800
 categories: [Design]
 tags: [database, sql, read-write, design, sh]
 published: true
-excerpt: mysql 读写分离。
 ---
 
 # 读写分离

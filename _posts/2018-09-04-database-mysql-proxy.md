@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  MySQL Proxy
+title:  MySQL Proxy mysql proxy 读写分离中间件。
 date:  2018-09-04 15:27:31 +0800
 categories: [Database]
 tags: [database, sql, read-write, sh]
 published: true
-excerpt: mysql proxy 读写分离中间件。
 ---
 
 # MySQL Proxy

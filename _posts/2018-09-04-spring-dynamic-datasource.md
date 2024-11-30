@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Dynamic Spring Datasource
-date:  2018-09-04 13:32:36 +0800
+title:  Dynamic Spring Datasource Spring 动态数据源
+date:  2018-09-04 13:32:36 +0800 
 categories: [Spring]
 tags: [database, sql, spring, sh]
 published: true
-excerpt: Spring 动态数据源
 ---
 
 # Spring Datasource

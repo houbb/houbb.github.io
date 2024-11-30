@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Distributed High Availability
+title:  Distributed High Availability 分布式架构高可用性
 date:  2018-09-04 09:29:39 +0800
 categories: [Distributed]
 tags: [id, sql, distributed, design, sh]
 published: true
-excerpt: 分布式架构高可用性
 ---
 
 # 高可用
