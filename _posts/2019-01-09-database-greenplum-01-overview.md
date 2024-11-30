@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Greenplum Database Greenplum 数据库
+title: Greenplum Database Greenplum 数据库 分布式数据库
 date: 2019-1-9 08:44:18 +0800
 categories: [Database]
 tags: [database, big-data, sh]

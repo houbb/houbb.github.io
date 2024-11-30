@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Greenplum Database-02-sharing nothing/everything/disk/memory
+title: Greenplum Database-02-sharing nothing/everything/disk/memory 分布式数据库
 date: 2019-1-9 08:44:18 +0800
 categories: [Database]
 tags: [database, big-data, sh]
