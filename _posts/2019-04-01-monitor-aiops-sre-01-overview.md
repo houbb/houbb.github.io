@@ -127,6 +127,12 @@ SRE（Site Reliability Engineering）、DevOps 和工程效能团队虽然在某
 
 在一个现代化的工程组织中，它们通常会紧密协作，以确保在提高开发效率的同时，也能够保证系统的稳定性与可用性。
 
+## 团队分类
+
+这种团队的粒度，一家软件技术公司还有哪些，全部罗列出来，最好还能有一个分类。
+
+
+
 # 参考资料
 
 https://www.infoq.cn/article/m78zwql2nc4sdpapcxpg
