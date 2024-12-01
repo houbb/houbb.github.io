@@ -109,6 +109,14 @@ published: true
 
 [DevOps 平台越发展，开发运维越快失业？](https://houbb.github.io/2024/11/22/note-09-devops-how-to-go)
 
+[开源如何健康长久的发展](https://houbb.github.io/2024/11/22/note-10-opensource-way)
+
+[为什么会有流水线？](https://houbb.github.io/2024/11/22/note-11-pipeline)
+
+[既然选择了远方 便只顾风雨兼程](https://houbb.github.io/2024/11/22/note-12-positive-negative)
+
+[银行是如何挣钱的？](https://houbb.github.io/2024/11/22/note-13-bank-profit)
+
 # 参考资料
 
 * any list
