@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 算饭程序=》开源项目+服务+平台+解决实际问题
+title: 算法程序=》开源项目+服务+平台+解决实际问题
 date: 2024-11-23 01:18:08 +0800
 categories: [Note]
 tags: [note, sh]
