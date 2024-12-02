@@ -7,6 +7,32 @@ tags: [jvm, bytebuddy, bytecode, chaos-engineering, sh]
 published: true
 ---
 
+# 测试混沌工程
+
+[ChaosBlade-01-测试混沌工程平台整体介绍](https://houbb.github.io/2023/08/08/jvm-chaosblade-01-overview)
+
+[ChaosBlade-02-Chaosblade-box：一个具有丰富场景的混沌工程平台](https://houbb.github.io/2023/08/08/jvm-chaosblade-02-chaosblade-box-intro)
+
+[ChaosBlade-03-Chaosblade-exec-jvm 对 Java 应用实施混沌实验的 chaosblade 执行器](https://houbb.github.io/2023/08/08/jvm-chaosblade-03-chaosblade-exec-jvm-intro)
+
+[ChaosBlade-04-Chaosblade chat 聊一聊 Chaosblade](https://houbb.github.io/2023/08/08/jvm-chaosblade-04-chaosblade-chat)
+
+[ChaosBlade-05-混沌工程（Chaos Engineering）介绍](https://houbb.github.io/2023/08/08/jvm-chaosblade-05-chaos-enginnering-intro)
+
+[ChaosBlade-06-混沌工程准则 PRINCIPLES OF CHAOS ENGINEERING POC](https://houbb.github.io/2023/08/08/jvm-chaosblade-06-chaos-principle)
+
+[ChaosBlade-07-混沌工程开源工具 Chaos Monkey](https://houbb.github.io/2023/08/08/jvm-chaosblade-07-chaos-tool-chaos-monkey)
+
+[ChaosBlade-08-混沌工程开源工具 Chaos Monkey for Spring Boot](https://houbb.github.io/2023/08/08/jvm-chaosblade-08-chaos-tool-chaos-monkey-for-sb)
+
+[ChaosBlade-09-混沌工程有哪些成功的应用？](https://houbb.github.io/2023/08/08/jvm-chaosblade-09-usage)
+
+## 测试开源组件
+
+[data-factory: Auto generate mock data for java test.(便于 Java 测试自动生成对象信息)](https://github.com/houbb/data-factory)
+
+[junitperf: Junit performance rely on junit5 and jdk8+.(java 性能测试框架。性能测试。压测。测试报告生成。)](https://github.com/houbb/junitperf)
+
 # 简介
 
 ChaosBlade 是阿里巴巴 2019 年开源的混沌工程项目，包含混沌工程实验工具 chaosblade 和混沌工程平台 chaosblade-box，旨在通过混沌工程帮助企业解决云原生过程中高可用问题。
