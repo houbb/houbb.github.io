@@ -7,17 +7,23 @@ tags: [nosql, neo4j]
 published: true
 ---
 
-# 
+# neo4j apoc 系列
 
-# chat
+[Neo4j APOC-01-图数据库 apoc 插件介绍](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-01-intro)
 
-## 详细介绍一下 neo4j 的 apoc
+[Neo4j APOC-01-图数据库 apoc 插件安装 neo4j on windows10](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-02-windows10-install-plugins)
+
+[Neo4j APOC-03-图数据库 apoc 实战使用使用](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-03-basic-usage)
+
+[Neo4j APOC-04-图数据库 apoc 实战使用使用 apoc.path.spanningTree 最小生成树](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-04-minist-tree)
+
+# neo4j 的 apoc
 
 Neo4j 的 APOC（Awesome Procedures on Cypher）是一个非常强大的 Neo4j 插件，它扩展了 Cypher 查询语言的功能，提供了大量的实用函数和存储过程，极大地增强了 Neo4j 的功能性。
 
 APOC 适用于需要更复杂数据处理和操作的场景，支持各种数据转换、图算法、数据导入/导出、集成外部系统等操作。
 
-### 1. **APOC 的基本功能**
+## 1. **APOC 的基本功能**
 
 APOC 插件包含了以下几类常用功能：
 
@@ -36,15 +42,15 @@ APOC 插件包含了以下几类常用功能：
   - APOC 支持通过 HTTP 访问外部 REST API，或者与文件系统交互（如上传、下载文件），以便集成外部数据源。
   - 也支持与外部数据库的连接，如导入其他数据库的数据到 Neo4j。
 
-### 总结
+## 总结
 
 APOC 是一个功能丰富且灵活的 Neo4j 插件，它为 Cypher 查询语言提供了大量实用的扩展，涵盖了数据处理、图算法、外部系统集成等方面。
 
 通过使用 APOC，开发者可以大大提高图数据库的操作效率和灵活性，尤其是在复杂的数据处理和分析任务中。
 
-## apoc 常用的功能，示例，表格形式返回
+# apoc 常用的功能
 
-下面是一些常用的 **APOC** 插件功能和示例，以表格形式展示，帮助你更好地理解和使用 APOC 插件。
+下面是一些常用的 **APOC** 插件功能和示例
 
 | **功能**                           | **存储过程/函数**                  | **描述**                                                 | **示例**                                                                                  |
 |------------------------------------|------------------------------------|----------------------------------------------------------|-------------------------------------------------------------------------------------------|
@@ -69,13 +75,6 @@ APOC 是一个功能丰富且灵活的 Neo4j 插件，它为 Cypher 查询语言
 |                                    | `apoc.path.subgraphNodes()`        | 获取路径的子图节点                                      | `MATCH (a:Person {name: 'Alice'}) CALL apoc.path.subgraphNodes(a, {relationshipFilter: 'KNOWS'}) YIELD node RETURN node` |
 | **字符串处理**                      | `apoc.text.split()`                | 按指定分隔符将字符串分割成多个部分                      | `RETURN apoc.text.split('a,b,c,d', ',')`                                                      |
 |                                    | `apoc.text.replace()`              | 在字符串中进行替换操作                                  | `RETURN apoc.text.replace('Hello World', 'World', 'Neo4j')`                                  |
-
-### 说明：
-- **apoc.convert.toJson()**: 用于将节点、关系或图中的其他数据结构转换为 JSON 格式，便于查看或外部系统的集成。
-- **apoc.coll.flatten()**: 适用于将嵌套的集合（例如列表中的列表）扁平化为一维集合。
-- **apoc.algo.shortestPath()**: 计算两个节点之间的最短路径，适用于图遍历和路径分析。
-- **apoc.load.csv()**: 从 CSV 文件中加载数据，可以通过指定文件路径来读取本地文件。
-- **apoc.date.convert()**: 用于将字符串格式的日期转换为时间戳，常用于时间戳的计算或比较。
 
 这些功能覆盖了图数据库的许多常见操作，如数据转换、导入导出、图算法、路径计算等，能够有效扩展 Neo4j 的使用场景。
 
