@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+  <div id="app">
+    <el-tree :data="data" :props="defaultProps" @node-click="handleNodeClick">
+      <span class="custom-tree-node" slot-scope="{ node, data }">
+        {{ data.label }}
+        <!-- 添加“新增”和“删除”按钮 -->
+        <el-button size="mini" @click.stop="addNode(node)" style="margin-left: 10px;">新增</el-button>
+        <el-button size="mini" @click.stop="deleteNode(node, data)" type="danger" style="margin-left: 5px;">删除</el-button>
+      </span>
+    </el-tree>
+  </div>
+
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+        return {
+          // 只保留一个根节点 "ROOT"
+          data: [
+            {
+              label: 'ROOT',
+              children: []
+            }
+          ],
+          // 树的配置
+          defaultProps: {
+            children: 'children',
+            label: 'label'
+          }
+        };
+      },
+      methods: {
+        handleNodeClick(data) {
+          alert('Node clicked: ' + data.label);
+        },
+        // 新增子节点
+        addNode(node) {
+          const newNode = {
+            label: 'New Node ' + (Math.random() * 1000).toFixed(0)
+          };
+          if (!node.data.children) {
+            this.$set(node.data, 'children', []);
+          }
+          node.data.children.push(newNode);
+        },
+        // 删除当前节点及其子节点
+        deleteNode(node, data) {
+          const parent = node.parent;
+          if (parent) {
+            const index = parent.data.children.indexOf(data);
+            if (index !== -1) {
+              parent.data.children.splice(index, 1);
+            }
+          } else {
+            const index = this.data.indexOf(data);
+            if (index !== -1) {
+              this.data.splice(index, 1);
+            }
+          }
+        }
+      }
+    })
+  </script>
+</body>
+</html>

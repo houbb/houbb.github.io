@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+  <style>
+    #app {
+      display: flex;
+      height: 100vh;
+    }
+    .tree-panel {
+      width: 30%;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+    }
+    .form-panel {
+      flex: 1;
+      padding: 20px;
+    }
+    .form-panel h3 {
+      margin-bottom: 20px;
+    }
+    .submit-btn {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- 左侧树形结构 -->
+    <div class="tree-panel">
+      <el-tree ref="tree" :data="data" :props="defaultProps" @node-click="handleNodeClick">
+        <span class="custom-tree-node" slot-scope="{ node, data }">
+          {{ data.label }}
+          <el-button size="mini" @click.stop="showAddOptions(node)" style="margin-left: 10px;">新增</el-button>
+          <el-button size="mini" @click.stop="deleteNode(node, data)" type="danger" style="margin-left: 5px;">删除</el-button>
+        </span>
+      </el-tree>
+      <!-- 提交按钮 -->
+      <el-button type="primary" class="submit-btn" @click="submitTree">提交</el-button>
+    </div>
+
+    <!-- 右侧表单 -->
+    <div class="form-panel" v-if="currentNode && currentNode !== 'ROOT'">
+      <h3>{{ formTitle }}</h3>
+      <el-form :model="form" label-width="100px">
+        <el-form-item label="节点名称">
+          <el-input v-model="form.name"></el-input>
+        </el-form-item>
+        <el-form-item label="节点内容">
+          <el-input type="textarea" v-model="form.content"></el-input>
+        </el-form-item>
+        <el-button type="primary" @click="saveNode">保存</el-button>
+      </el-form>
+    </div>
+
+    <!-- 弹出选项 -->
+    <el-dialog title="选择新增类型" :visible.sync="dialogVisible">
+      <el-button @click="addNode('IF条件')">IF条件</el-button>
+      <el-button @click="addNode('并发循环')">并发循环</el-button>
+      <el-button @click="addNode('顺序循环')">顺序循环</el-button>
+    </el-dialog>
+  </div>
+
+  <!-- import Vue and Element -->
+  <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+        return {
+          data: [
+            { label: 'ROOT', children: [] }
+          ],
+          defaultProps: { children: 'children', label: 'label' },
+          dialogVisible: false,
+          currentNode: null,
+          currentParentNode: null,
+          formTitle: '',
+          form: {
+            type: '',
+            name: '',
+            content: ''
+          }
+        };
+      },
+      methods: {
+        handleNodeClick(data) {
+          if (data.label === 'ROOT') {
+            this.currentNode = null; // ROOT节点不显示编辑内容
+            return;
+          }
+          this.currentNode = data;
+          this.form = { ...data.config }; // 反显编辑
+          this.formTitle = data.type;
+        },
+        showAddOptions(node) {
+          this.dialogVisible = true;
+          this.currentParentNode = node;
+        },
+        addNode(type) {
+          this.dialogVisible = false;
+          this.form = { type, name: '', content: '' };
+          this.formTitle = type;
+          this.currentNode = null; // 清空右侧表单
+          
+          // 创建新节点
+          const newNode = {
+            label: `${type} - 新节点`,
+            type,
+            config: { ...this.form },
+            children: []
+          };
+          
+          // 将新节点添加到父节点
+          if (!this.currentParentNode.data.children) {
+            this.$set(this.currentParentNode.data, 'children', []);
+          }
+          this.currentParentNode.data.children.push(newNode);
+          
+          // 自动选中新节点
+          this.currentNode = newNode;
+          this.form = { ...this.currentNode.config }; // 显示新节点的配置
+          this.formTitle = newNode.type;
+
+          // 展开新增节点的父节点
+          this.$nextTick(() => {
+            this.$refs.tree.expandNode(this.currentParentNode, true);
+          });
+        },
+        saveNode() {
+          if (this.currentNode) {
+            // 编辑模式
+            this.currentNode.label = `${this.form.type} - ${this.form.name}`;
+            this.currentNode.config = { ...this.form };
+          }
+          this.currentNode = null;
+          this.form = { type: '', name: '', content: '' };
+        },
+        deleteNode(node, data) {
+          const parent = node.parent;
+          if (parent) {
+            const index = parent.data.children.indexOf(data);
+            if (index !== -1) {
+              parent.data.children.splice(index, 1);
+            }
+          } else {
+            const index = this.data.indexOf(data);
+            if (index !== -1) {
+              this.data.splice(index, 1);
+            }
+          }
+          if (this.currentNode === data) {
+            this.currentNode = null; // 清空右侧表单
+          }
+        },
+        submitTree() {
+          const serializeTree = (node) => {
+            // 递归处理树节点，并包含配置数据
+            const nodeData = {
+              label: node.label,
+              type: node.type,
+              config: node.config,
+              children: node.children ? node.children.map(serializeTree) : []
+            };
+            return nodeData;
+          };
+
+          // 序列化整个树形结构
+          const treeData = this.data.map(serializeTree);
+          console.log(JSON.stringify(treeData)); // 格式化输出为 JSON
+        }
+      }
+    });
+  </script>
+</body>
+</html>
