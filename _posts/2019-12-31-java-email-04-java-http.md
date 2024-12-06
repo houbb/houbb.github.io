@@ -1014,7 +1014,7 @@ public class JavaxJavaMailClient {
 
 邮件模板
 
-```
+```html
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -1098,6 +1098,7 @@ title
 content
 
 附件：
+attachFileBase64 内容过多。
 attachFileBase64
 attachFileName
 
