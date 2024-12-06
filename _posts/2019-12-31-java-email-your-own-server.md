@@ -7,6 +7,26 @@ tags: [java, sf]
 published: true
 ---
 
+# 邮件系列
+
+[java 如何实现发送邮件 email?](https://houbb.github.io/2019/12/25/java-email)
+
+[java 搭建属于自己的邮件服务器](https://houbb.github.io/2019/12/25/java-email-your-own-server)
+
+[java 发送邮件 css-style 样式丢失错乱问题，有解决方案](https://houbb.github.io/2019/12/25/java-email-css-style)
+
+[java 发送邮件-04-java 邮件发送 http 接口如何定义？](https://houbb.github.io/2019/12/25/java-email-04-java-http)
+
+## 开源项目
+
+[email: 一行代码实现邮件发送](https://github.com/houbb/email)
+
+# 前言
+
+大家好，我是老马。
+
+大家日常开发，对于邮件发送应该能不陌生。本系列就让我们一起学习一下邮件相关的内容。
+
 # 目的
 
 有时候处于安全的考虑，我们需要有属于自己的邮件服务器。

@@ -1,11 +1,31 @@
 ---
 layout: post
-title: java 发送邮件-04-java 如何实现邮件发送？
+title: java 发送邮件-04-java 邮件发送 http 接口如何定义？
 date:  2019-12-25 16:57:12 +0800
 categories: [Java]
 tags: [java, sf]
 published: true
 ---
+
+# 邮件系列
+
+[java 如何实现发送邮件 email?](https://houbb.github.io/2019/12/25/java-email)
+
+[java 搭建属于自己的邮件服务器](https://houbb.github.io/2019/12/25/java-email-your-own-server)
+
+[java 发送邮件 css-style 样式丢失错乱问题，有解决方案](https://houbb.github.io/2019/12/25/java-email-css-style)
+
+[java 发送邮件-04-java 邮件发送 http 接口如何定义？](https://houbb.github.io/2019/12/25/java-email-04-java-http)
+
+## 开源项目
+
+[email: 一行代码实现邮件发送](https://github.com/houbb/email)
+
+# 前言
+
+大家好，我是老马。
+
+大家日常开发，对于邮件发送应该能不陌生。本系列就让我们一起学习一下邮件相关的内容。
 
 # 业务背景
 
@@ -13,8 +33,42 @@ published: true
 
 满足统一的 email 请求参数。
 
-# 使用java mail 实现发送带附件的邮件功能（过程回顾和总结）
+# 请求参数
 
+## 基本参数
+
+```
+checkum 验签
+traceId 跟踪标识
+source 来源系统
+```
+
+## 业务参数
+
+from 发送邮箱
+fromUsername 发送用户
+fromPassword 发送密码
+
+可以提供默认值，后2者可以统一收口简化掉。
+通过一张配置表，简化用户的使用体验。
+
+toList 收件人
+ccList 抄送人
+
+title
+content
+
+附件：
+attachFileBase64 内容过多，序列化的时候隐藏掉。
+attachFileBase64
+attachFileName
+
+sendType 更多的 text/html 格式等，考虑默认为 html
+
+
+------------------------------------------------------------------------
+
+# 他山之石
 
 ## 问题
 
@@ -1070,39 +1124,6 @@ public String templateHtml(){
 }
 ```
 
-
-
-
-# 请求参数
-
-## 基本参数
-
-```
-checkum 验签
-traceId 跟踪标识
-source 来源系统
-```
-
-## 业务参数
-
-from 发送邮箱
-fromUsername 发送用户
-fromPassword 发送密码
-
-可以提供默认值，后2者可以统一收口简化掉。
-
-toList 收件人
-ccList 抄送人
-
-title
-content
-
-附件：
-attachFileBase64 内容过多。
-attachFileBase64
-attachFileName
-
-sendType 更多的 text/html 格式等
 
 
 

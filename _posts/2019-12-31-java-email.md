@@ -1,11 +1,25 @@
 ---
 layout: post
-title: java 发送邮件
+title: java 如何实现发送邮件 email?
 date:  2019-12-25 16:57:12 +0800
 categories: [Java]
 tags: [java, sf]
 published: true
 ---
+
+# 邮件系列
+
+[java 如何实现发送邮件 email?](https://houbb.github.io/2019/12/25/java-email)
+
+[java 搭建属于自己的邮件服务器](https://houbb.github.io/2019/12/25/java-email-your-own-server)
+
+[java 发送邮件 css-style 样式丢失错乱问题，有解决方案](https://houbb.github.io/2019/12/25/java-email-css-style)
+
+[java 发送邮件-04-java 邮件发送 http 接口如何定义？](https://houbb.github.io/2019/12/25/java-email-04-java-http)
+
+## 开源项目
+
+[email: 一行代码实现邮件发送](https://github.com/houbb/email)
 
 # 如何使用IMAP服务？
 
