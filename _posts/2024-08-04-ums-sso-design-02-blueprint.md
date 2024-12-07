@@ -1,6 +1,6 @@
 ---
 layout: post
-title: UMS 用户权限管理-23-内网权限系统蓝图/草案
+title: UMS sso-02-内网权限系统蓝图/草案
 date: 2024-08-04 21:01:55 +0800
 categories: [Basic]
 tags: [basic, user, ums, priviliage, sh]
@@ -18,6 +18,28 @@ published: true
 > [ums-server](https://github.com/houbb/ums-server)
 
 > [ums-server-h5](https://github.com/houbb/ums-server-h5)
+
+# 边界
+
+系统之间的边界在哪里？
+
+每一个系统的职责是什么？
+
+如何更好的结合起来？发挥一个平台的力量？
+
+## SSO
+
+系统定位：负责公司内部所有的登录验证校验。不关注密码的修改等，只关注最核心的校验。
+
+# 核心能力
+
+安全
+
+可拓展
+
+全面
+
+生态 / 插件化？
 
 # 内网-内部系统
 
@@ -49,15 +71,6 @@ cmdb 统一资源
 审批流：便于留痕+追溯==》标准化
 
 度量
-
-
-## 边界
-
-系统之间的边界在哪里？
-
-每一个系统的职责是什么？
-
-如何更好的结合起来？发挥一个平台的力量？
 
 
 
