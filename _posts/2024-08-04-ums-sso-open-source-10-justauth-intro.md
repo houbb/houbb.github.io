@@ -1,13 +1,11 @@
 ---
 layout: post
 title: 开源项目之 justauth 小而全而美的第三方登录开源组件
-date: 2024-12-4 10:06:37 +0800
-categories: [OpenSource]
-tags: [open-source, sh]
+date: 2024-08-04 21:01:55 +0800
+categories: [SSO]
+tags: [sso, open-source, ums, priviliage, sh]
 published: true
 ---
-
-
 
 # justauth
 
