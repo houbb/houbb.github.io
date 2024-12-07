@@ -30,67 +30,7 @@ published: true
 [cross-plateform 跨平台应用程序-10-naitvescript 介绍](https://houbb.github.io/2024/09/05/cross-plateform-10-framework-naitvescript)
 
 
-# chat
-
-## 如果只能选择一跨平台框架技术，近10年内可以使用，你觉得哪一个最有学习和使用的价值？为什么
-
-选择一个跨平台框架技术时，需要考虑多个因素，包括框架的成熟度、社区支持、性能、生态系统、以及未来发展趋势。
-
-基于当前（2024年）的市场和技术趋势，以下是几个值得考虑的跨平台框架：
-
-1. **React Native**：
-   - 由 Facebook 支持，拥有庞大的社区和丰富的生态系统。
-   - 允许使用 JavaScript 和 React 构建原生应用，适合 Web 开发者。
-   - 性能优良，许多流行的应用如 Instagram 和 Facebook 都使用 React Native。
-
-2. **Flutter**：
-   - 由 Google 支持，使用 Dart 语言。
-   - 提供了高性能的渲染引擎和丰富的组件库。
-   - 支持跨平台开发，包括移动、Web、桌面和嵌入式设备。
-
-3. **Xamarin**：
-   - 由 Microsoft 支持，使用 C# 和 .NET 框架。
-   - 允许开发者利用现有的 .NET 技能来构建原生应用。
-   - 提供了良好的性能和访问原生 API 的能力。
-
-4. **NativeScript**：
-   - 开源框架，使用 JavaScript 或 TypeScript。
-   - 直接使用原生平台的 UI 组件，提供原生应用的性能和用户体验。
-
-在这些框架中，**Flutter** 和 **React Native** 尤为突出，它们都有强大的企业支持、活跃的社区和不断增长的生态系统。它们都支持最新的开发实践和技术，如热重载、丰富的组件库和现代的编程语言。
-
-如果要选择一个在未来10年内具有持续价值的框架，我会选择 **Flutter**，原因如下：
-
-1. **性能**：Flutter 使用自己的渲染引擎，提供了高性能的图形和动画，这对于现代应用至关重要。
-
-2. **语言支持**：Dart 语言由 Google 支持，并且正在不断发展，它提供了稳定的性能和未来的发展潜力。
-
-3. **跨平台支持**：Flutter 不仅支持移动平台，还支持 Web、桌面和嵌入式设备，这使得它具有更广泛的应用范围。
-
-4. **成熟度和稳定性**：Flutter 自2017年发布以来已经证明了其稳定性和成熟度，许多大型企业和应用都选择了 Flutter。
-
-5. **未来趋势**：随着 5G 和物联网的发展，Flutter 的跨平台能力和高性能特性将更加重要。
-
-当然，最终的选择还应考虑你的具体需求、团队的技术栈、项目类型和目标用户群体。每个框架都有其优势和限制，因此在做出决策时，应进行全面的评估。
-
-## flutter vs React Native 的性能差异
-
-React Native 和 Flutter 都是流行的跨平台移动应用开发框架，它们在性能方面各有特点和优势。
-
-**React Native**：
-- React Native 允许使用 JavaScript 和 React 构建原生应用，其性能在不断优化。例如，React Native 0.75 版本引入了 Yoga 3.1，增强了布局能力，并继续推进新架构的稳定化，提高了性能和稳定性 。
-- React Native 的性能受限于 JavaScript 桥接层与原生代码的交互，这可能会引入额外的性能开销。但是，React Native 提供了多种优化手段，比如使用 `FlatList` 或 `SectionList` 组件来优化长列表的渲染性能 。
-
-**Flutter**：
-- Flutter 使用自己的渲染引擎 Skia，并且通过 Dart 的 Ahead-Of-Time (AOT) 编译，使得应用性能非常接近原生应用。Flutter 应用通常能提供流畅的用户体验，因为它们直接与硬件交互，减少了桥接层的开销 。
-- Flutter 性能调优包括减少资源消耗操作、控制 `build()` 方法耗时、谨慎使用 `saveLayer()`、减少不透明度和裁剪的使用、优化列表渲染等 。
-- 某些 Flutter 应用性能一般可能是因为应用本身的优化不足，如过度使用复杂 Widget、资源管理不当或冗余的 UI 更新 。
-
-总的来说，React Native 和 Flutter 都能构建高性能的移动应用，但它们的性能也受到开发者编码实践和优化工作的影响。
-
-选择合适的框架取决于项目需求、团队熟悉度以及期望的应用性能和用户体验。
-
-## 个人选择
+# 个人选择
 
 个人理解，flutter 整体的设计理念还是比较值得学习。
 
@@ -99,8 +39,6 @@ React Native 和 Flutter 都是流行的跨平台移动应用开发框架，它�
 整体而言设计理念+生态才是最重要的，其他的体积之类的可以优化改造。
 
 大不了直接分别编译。
-
-----------------------------------------------------------------------------------------------------
 
 # flutter vs React Native？
 
@@ -240,86 +178,6 @@ Flutter 和 React Native 都有蓬勃发展的社区，每年都会举办大量�
 
 您可以与专家交谈并获得帮助解决您的开发问题的社区和沟通渠道的规模怎么强调都不为过。
 
-
-## 集成开发环境（IDE）
-
-如果你愿意，你可以在好的记事本中编写移动应用程序。但在专用的集成开发环境 (IDE) 中进行开发会更加愉快和高效，该环境具有内置调试器、代码编辑器、构建自动化工具、编译器和其他方便的开发工具。
-
-Flutter 允许开发人员选择他们的 IDE，例如 Android Studio 或 Visual Studio。例如，在 React Native 中，您可以使用 Visual Studio 或WebStorm。
-对于具有一些原生 Android 开发经验的开发人员来说，在 Flutter 中工作可能会感觉更轻松，因为他们会熟悉 Android Studio，这对开发人员非常友好。
-
-## 跨平台能力
-
-React Native 允许开发人员通过 React 为 iOS 和 Android 以及 Web 构建应用程序。
-
-最近，Microsoft 推出了一个很棒的项目，其中可以使用 React Native（适用于 macOS 和 Windows）编写桌面应用程序。
-
-对于 React Native 0.71 版（最初遇到了一些麻烦），团队专注于改善默认情况下使用 TypeScript 的跨平台开发人员体验、新架构更新以及通过 Flexbox Gap 进行布局管理。此版本还提供了受网络启发的样式和可访问性道具，以跨平台调整 RN 的 API。
-
-使用 Flutter，您可以为 Web、macOS、Windows、Linux、Android、iOS 和嵌入式系统（例如，汽车中的信息娱乐系统）开发应用程序。
-
-Flutter 3 承诺提供真正的跨平台开发功能，SDK 允许开发人员在所有兼容平台之间共享代码。
-
-事实上，Flutter 4 将专注于桌面应用程序开发。另一方面，Flutter 的最新版本 Flutter 3.7 通过 iOS 上的新渲染引擎和后台处理改进以及对开发人员工具和国际化以及 Material 3 支持的其他更新来提升性能。
-
-## 热重载
-
-热重载对于开发人员来说是一项非常方便的功能，它允许开发人员重新加载应用程序并在 UI 中查找更改。
-
-React Native 的 hot reload 对应物是 Fast Refresh，它基本上和 Flutter 的 Hot Reload 做同样的事情。
-
-该功能的任一版本的缺点是代码中的高级更改（例如，将无状态小部件更改为有状态小部件）无法热重新加载。复杂的更改需要重新编译应用程序。
-
-## 编程语言
-
-Dart 编程语言与 Java/Kotlin (Android) 非常相似，这使得来自原生移动开发的开发人员更容易学习。
-
-JavaScript 不太直观，因此更难掌握。
-
-## 谁在使用Flutter？
-
-Flutter 存在于公司的技术栈中，例如：
-
-Alibaba
-BMW
-eBay
-Square
-Groupon
-CapitalOne
-
-## 谁在使用 React Native？
-
-React Native为许多全球知名品牌提供支持：
-
-Uber Eats
-Skype
-Tesla
-Coinbase
-Instagram
-Salesforce
-
-## 使用Flutter和React Native相对于原生开发的优势：
-
-非常快速地创建应用程序原型，不需要最新的原生功能。而原生开发要花费更长时间。
-
-热重载包含在React Native和Flutter中，可以让开发人员快速得到有关布局更改的反馈。
-
-每当您更改某些内容时，可以在无需重新编译应用程序的情况下检查其在应用程序中的外观。这大大加快了开发过程。
-
-注：热重载也受到原生Android和iOS的支持，但是与React Native和Flutter相比，其功能受到限制。
-
-## 使用 React Native 或 Flutter 与原生应用程序开发的缺点
-
-尽管React Native和Flutter都是快速构建移动应用的优秀工具，但调整跨平台应用程序以适应操作系统更新时会有一定的开销（无论是iOS还是Android），而本地应用程序则会自动更新。
-
-使用本地应用程序开发，实现出色的应用程序性能更加容易。尽管在Flutter或React Native中构建的iOS和Android应用程序的性能差异越来越不明显。
-
-此外，在本地应用程序中实现完美的像素级设计更加简单。然而，这要求您分别为两个平台进行实现，从而增加了开发时间和成本。
-
-另一方面，Flutter的组件（例如按钮或文本框）高度可配置，使您可以微调设计并实现完美的像素级别。
-
-一些新功能在本地iOS和Android上可用，更容易在本地应用程序中实现。
-
 ## 结论：React Native 比 Flutter 好吗？
 
 长期以来，CTO们一直在问React Native比Flutter好在哪里，但这个问题的参数已经在一段时间内发生了转变。
@@ -333,24 +191,6 @@ Salesforce
 Flutter的温和学习曲线是一项宝贵的资产，当你需要开发者快速跳入项目时，Flutter的文档配合相对较容易的Dart肯定会有所帮助。
 
 但是不要忘记，与React Native中极受欢迎的JavaScript相比，Dart不是非常流行的编程语言。因此，难以招募到熟练的Flutter开发人员。
-
-## 何时使用Flutter
-
-Flutter 在以下情况下会很好地工作：
-
-您的预算较少（无需两个团队进行原生 Android 和 iOS 开发）
-您需要快速发布产品（截止日期短）
-您希望拥有像素完美的设计和组件来创建出色的 UI
-您需要为您的用户（桌面、移动、汽车信息娱乐）构建跨平台体验
-
-## 何时使用 React Native
-
-在以下情况下使用 React Native：
-
-你有一个桌面应用程序或网站，并且可以为移动应用程序重用组件（只有一个技术栈）
-您拥有一支熟悉现有资产的 JavaScript 团队，他们可以使用庞大的 npm 存储库中的插件、模块和小部件
-你时间紧迫，找不到 React Native 开发团队（Flutter 开发人员目前更难找到）
-
 
 # 经常问的问题
 
@@ -377,8 +217,6 @@ Flutter 很久以前就已经可以投入生产了。事实上，该工具允许
 ## Flutter 是原生的还是混合的？
 
 Flutter 是一个 SDK，用于开发具有原生 UI 组件的混合或跨平台移动应用程序。
-
-
 
 # 参考资料
 

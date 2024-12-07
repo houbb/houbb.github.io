@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Electron-03-流程模型
-date:  2018-07-05 21:01:28 +0800
-categories: [Tool]
-tags: [tool, electron, sh]
+title:  cross-plateform 跨平台应用 Electron-03-流程模型
+date: 2024-09-05 21:01:55 +0800
+categories: [WEB]
+tags: [web, cross-plateform, uni-app, sh]
 published: true
 ---
 

@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  Electron-00-Electron 入门及打包实战笔记
-date:  2018-07-05 21:01:28 +0800
-categories: [Tool]
-tags: [tool, electron, sh]
+title:  cross-plateform 跨平台应用 Electron-00-Electron 入门及打包实战笔记
+date: 2024-09-05 21:01:55 +0800
+categories: [WEB]
+tags: [web, cross-plateform, uni-app, sh]
 published: true
 ---
 
