@@ -43,6 +43,14 @@ For Android development, run:
 
 ## 安装依赖
 
+国内切换数据源，解决慢的问题：
+
+```sh
+npm config set registry https://npmmirror.com/
+```
+
+执行：
+
 ```sh
 cd tauri-app
 npm install
