@@ -1,6 +1,6 @@
 ---
 layout: post
-title: java 发送邮件-04-java 邮件发送 http 接口如何定义？
+title:  
 date:  2019-12-25 16:57:12 +0800
 categories: [Java]
 tags: [java, sf]
@@ -49,8 +49,7 @@ from 发送邮箱
 fromUsername 发送用户
 fromPassword 发送密码
 
-可以提供默认值，后2者可以统一收口简化掉。
-通过一张配置表，简化用户的使用体验。
+可以提供默认值，后2者可以统一收口简化掉。通过一张配置表，简化用户的使用体验。
 
 toList 收件人
 ccList 抄送人
@@ -65,8 +64,263 @@ attachFileName
 
 sendType 更多的 text/html 格式等，考虑默认为 html
 
+## 附件的设计
 
-------------------------------------------------------------------------
+附件的话，如果采用文件传输的话，会与 post 冲突。
+
+1) `@RequestBody` 的接收的Http请求Header的content-type属性为：`application/json`
+
+2) `@RequestParam MultipartFile file` 的接收的Http请求Header的content-type属性为：`multipart/form-data`
+
+且 2 的优先级高于 1，导致二者不能共存。
+
+所以上面退而求其次，使用文件内容的 base64 来处理。
+
+客户端调用时，将文件转换为 base64，服务端解析处理，重新转换为 File。
+
+
+
+# 核心代码
+
+附送一些常见的实现代码，根据自己的需求调整。
+
+## 简单文本发送
+
+```java
+import com.sun.mail.util.MailSSLSocketFactory;
+ 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import java.util.Properties;
+ 
+public class MailDemo01 {
+    public static void main(String[] args) throws Exception {
+        Properties prop=new Properties();
+        prop.setProperty("mail.host","smtp.qq.com");///设置QQ邮件服务器
+        prop.setProperty("mail.transport.protocol","smtp");///邮件发送协议
+        prop.setProperty("mail.smtp.auth","true");//需要验证用户密码
+        //QQ邮箱需要设置SSL加密
+        MailSSLSocketFactory sf=new MailSSLSocketFactory();
+        sf.setTrustAllHosts(true);
+        prop.put("mail.smtp.ssl.enable","true");
+        prop.put("mail.smtp.ssl.socketFactory",sf);
+ 
+        //使用javaMail发送邮件的5个步骤
+        //1.创建定义整个应用程序所需要的环境信息的session对象
+        Session session=Session.getDefaultInstance(prop, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("XXXX@qq.com","授权码");
+            }
+        });
+        //开启session的debug模式，这样可以查看到程序发送Email的运行状态
+        session.setDebug(true);
+        //2.通过session得到transport对象
+        Transport ts=session.getTransport();
+        //3.使用邮箱的用户名和授权码连上邮件服务器
+        ts.connect("smtp.qq.com","XXXX@qq.com","授权码");
+        //4.创建邮件：写文件
+        //注意需要传递session
+        MimeMessage message=new MimeMessage(session);
+        //指明邮件的发件人
+        message.setFrom(new InternetAddress("XXXX@qq.com"));
+        //指明邮件的收件人
+        message.setRecipient(Message.RecipientType.TO,new InternetAddress("XXXX@qq.com"));
+        //邮件标题
+        message.setSubject("发送的标题");
+        //邮件的文本内容
+        message.setContent("内容","text/html;charset=UTF-8");
+        //5.发送邮件
+        ts.sendMessage(message,message.getAllRecipients());
+ 
+        //6.关闭连接
+        ts.close();
+ 
+    }
+}
+```
+
+## 复杂文件内容的发送
+
+每一个文本、图片、附件可以分为一个MimeBodyPart，最后由MimeMultipart完成组装
+
+### 包含图片的发送
+
+```java
+import com.sun.mail.util.MailSSLSocketFactory;
+ 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+import java.util.Properties;
+ 
+public class MailDemo02 {
+    public static void main(String[] args) throws Exception {
+        Properties prop=new Properties();
+        prop.setProperty("mail.host","smtp.qq.com");///设置QQ邮件服务器
+        prop.setProperty("mail.transport.protocol","smtp");///邮件发送协议
+        prop.setProperty("mail.smtp.auth","true");//需要验证用户密码
+        //QQ邮箱需要设置SSL加密
+        MailSSLSocketFactory sf=new MailSSLSocketFactory();
+        sf.setTrustAllHosts(true);
+        prop.put("mail.smtp.ssl.enable","true");
+        prop.put("mail.smtp.ssl.socketFactory",sf);
+ 
+        //使用javaMail发送邮件的5个步骤
+        //1.创建定义整个应用程序所需要的环境信息的session对象
+        Session session=Session.getDefaultInstance(prop, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("11927XXX@qq.com","授权码");
+            }
+        });
+        //开启session的debug模式，这样可以查看到程序发送Email的运行状态
+        session.setDebug(true);
+        //2.通过session得到transport对象
+        Transport ts=session.getTransport();
+        //3.使用邮箱的用户名和授权码连上邮件服务器
+        ts.connect("smtp.qq.com","11927XXX@qq.com","授权码");
+        //4.创建邮件：写文件
+        //注意需要传递session
+        MimeMessage message=new MimeMessage(session);
+        //指明邮件的发件人
+        message.setFrom(new InternetAddress("11927XXX@qq.com"));
+        //指明邮件的收件人
+        message.setRecipient(Message.RecipientType.TO,new InternetAddress("11927XXX@qq.com"));
+        //邮件标题
+        message.setSubject("java发出");
+ 
+        //邮件的文本内容
+        //=================================准备图片数据=======================================
+        MimeBodyPart image=new MimeBodyPart();
+        //图片需要经过数据化的处理
+        DataHandler dh=new DataHandler(new FileDataSource("D:\\Bert\\1594126632(1).jpg"));
+        //在part中放入这个处理过图片的数据
+        image.setDataHandler(dh);
+        //给这个part设置一个ID名字
+        image.setContentID("bz.jpg");
+ 
+        //准备正文的数据
+        MimeBodyPart text=new MimeBodyPart();
+        text.setContent("这是一张正文<img src='cid:bz.jpg'>","text/html;charset=UTF-8");
+ 
+        //描述数据关系
+        MimeMultipart mm=new MimeMultipart();
+        mm.addBodyPart(text);
+        mm.addBodyPart(image);
+        mm.setSubType("related");
+ 
+        //设置到消息中，保存修改
+        message.setContent(mm);
+        message.saveChanges();
+        //5.发送邮件
+        ts.sendMessage(message,message.getAllRecipients());
+ 
+        //6.关闭连接
+        ts.close();
+ 
+    }
+}
+```
+
+## 包含附件的发送
+
+```java
+import com.sun.mail.util.MailSSLSocketFactory;
+ 
+import javax.activation.DataHandler;
+import javax.activation.FileDataSource;
+import javax.mail.*;
+import javax.mail.internet.*;
+import java.util.Properties;
+ 
+public class MailDemo03 {
+    public static void main(String[] args) throws Exception {
+        Properties prop=new Properties();
+        prop.setProperty("mail.host","smtp.qq.com");///设置QQ邮件服务器
+        prop.setProperty("mail.transport.protocol","smtp");///邮件发送协议
+        prop.setProperty("mail.smtp.auth","true");//需要验证用户密码
+        //QQ邮箱需要设置SSL加密
+        MailSSLSocketFactory sf=new MailSSLSocketFactory();
+        sf.setTrustAllHosts(true);
+        prop.put("mail.smtp.ssl.enable","true");
+        prop.put("mail.smtp.ssl.socketFactory",sf);
+ 
+        //使用javaMail发送邮件的5个步骤
+        //1.创建定义整个应用程序所需要的环境信息的session对象
+        Session session=Session.getDefaultInstance(prop, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("1192XXXX@qq.com","授权码");
+            }
+        });
+        //开启session的debug模式，这样可以查看到程序发送Email的运行状态
+        session.setDebug(true);
+        //2.通过session得到transport对象
+        Transport ts=session.getTransport();
+        //3.使用邮箱的用户名和授权码连上邮件服务器
+        ts.connect("smtp.qq.com","1192XXXX@qq.com","授权码");
+        //4.创建邮件：写文件
+        //注意需要传递session
+        MimeMessage message=new MimeMessage(session);
+        //指明邮件的发件人
+        message.setFrom(new InternetAddress("1192XXXX@qq.com"));
+        //指明邮件的收件人
+        message.setRecipient(Message.RecipientType.TO,new InternetAddress("1192XXXX@qq.com"));
+        //邮件标题
+        message.setSubject("java发出");
+ 
+        //邮件的文本内容
+        //=================================准备图片数据
+        MimeBodyPart image=new MimeBodyPart();
+        //图片需要经过数据化的处理
+        DataHandler dh=new DataHandler(new FileDataSource("D:\\Bert\\1594126632(1).jpg"));
+        //在part中放入这个处理过图片的数据
+        image.setDataHandler(dh);
+        //给这个part设置一个ID名字
+        image.setContentID("bz.jpg");
+ 
+        //=================================准备正文数据
+        MimeBodyPart text=new MimeBodyPart();
+        text.setContent("这是一张正文<img src='cid:bz.jpg'>","text/html;charset=UTF-8");
+ 
+        //=================================准备附件数据
+        MimeBodyPart body1= new MimeBodyPart();
+        body1.setDataHandler(new DataHandler(new FileDataSource("D:\\Bert\\cmd.txt")));
+        body1.setFileName("1.txt");
+ 
+        //描述数据关系
+        MimeMultipart mm=new MimeMultipart();
+        mm.addBodyPart(body1);
+        mm.addBodyPart(text);
+        mm.addBodyPart(image);
+        mm.setSubType("mixed");
+ 
+        //设置到消息中，保存修改
+        message.setContent(mm);
+        message.saveChanges();
+        //5.发送邮件
+        ts.sendMessage(message,message.getAllRecipients());
+ 
+        //6.关闭连接
+        ts.close();
+ 
+    }
+}
+```
+
+# 小结
+
+邮件的发送是一个非常常用的功能，建议封装一个统一的服务，便于统一的拓展和管理。
+
+可以提供统一的默认值，邮件模板等等，来提升用户体验。
+
+-------------------------------------------------------------------------------------------------------------
 
 # 他山之石
 
@@ -1130,6 +1384,8 @@ public String templateHtml(){
 
 
 # 参考资料
+
+https://blog.csdn.net/supercool7/article/details/143080462
 
 https://www.cnblogs.com/antLaddie/p/15583991.html
 
