@@ -7,6 +7,30 @@ tags: [edit-distance, chinese, nlp, algorithm, sh]
 published: true
 ---
 
+# 拼写纠正系列
+
+[NLP 中文拼写检测实现思路](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct)
+
+[NLP 中文拼写检测纠正算法整理](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct-02)
+
+[NLP 英文拼写算法，如果提升 100W 倍的性能？](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct-03-100w-faster)
+
+[NLP 中文拼写检测纠正 Paper](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct-paper)
+
+[java 实现中英文拼写检查和错误纠正？可我只会写 CRUD 啊！](https://houbb.github.io/2020/01/20/nlp-chinese-word-checker)
+
+[一个提升英文单词拼写检测性能 1000 倍的算法？](https://houbb.github.io/2020/01/20/nlp-chinese-word-checker-02-1000x)
+
+[单词拼写纠正-03-leetcode edit-distance 72.力扣编辑距离](https://houbb.github.io/2020/01/20/nlp-chinese-word-checker-03-edit-distance-intro)
+
+## 开源项目
+
+[nlp-hanzi-similar 汉字相似度](https://github.com/houbb/nlp-hanzi-similar)
+
+[word-checker 拼写检测](https://github.com/houbb/word-checker)
+
+[sensitive-word 敏感词](https://github.com/houbb/sensitive-word)
+
 # 简单的需求
 
 临近下班，小明忙完了今天的任务，正准备下班回家。
