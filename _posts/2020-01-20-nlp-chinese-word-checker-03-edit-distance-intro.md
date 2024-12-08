@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  单词拼写纠正-03-leetcode edit-distance 72.力扣编辑距离
+title:  单词拼写纠正-03-72.力扣编辑距离 4 种解法 leetcode edit-distance 
 date:  2020-1-20 10:09:32 +0800
 categories: [Data-Struct]
 tags: [edit-distance, chinese, nlp, algorithm, sh]

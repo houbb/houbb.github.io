@@ -413,7 +413,7 @@ word-checker 用于单词拼写检查。支持英文单词拼写检测，和中�
 <dependency>
      <groupId>com.github.houbb</groupId>
      <artifactId>word-checker</artifactId>
-    <version>0.0.8</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
