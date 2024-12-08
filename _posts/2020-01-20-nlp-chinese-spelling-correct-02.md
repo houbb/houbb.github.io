@@ -7,6 +7,18 @@ tags: [chinese, nlp, algorithm, sh]
 published: true
 ---
 
+# 拼写纠正系列
+
+[NLP 中文拼写检测实现思路](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct)
+
+[NLP 中文拼写检测纠正算法整理](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct-02)
+
+[NLP 英文拼写算法，如果提升 100W 倍的性能？](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct-03-100w-faster)
+
+[NLP 中文拼写检测纠正 Paper](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct-paper)
+
+
+
 # 中文拼写纠正
 
 最基本的思想，将所有的常见错别字整理为字典。

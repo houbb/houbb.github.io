@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  一个提升英文单词拼写检测性能 1000 倍的算法？
-date:  2018-08-11 09:44:54 +0800
-categories: [NLP]
-tags: [chinese, nlp, algorithm, sh]
+date:  2020-1-20 10:09:32 +0800
+categories: [Data-Struct]
+tags: [edit-distance, chinese, nlp, algorithm, sh]
 published: true
 ---
 
