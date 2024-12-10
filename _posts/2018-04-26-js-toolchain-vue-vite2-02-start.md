@@ -1,6 +1,6 @@
 ---
 layout: post
-title: vite2.0-02-实战入门笔记
+title: vite2.0-02-下一代的前端工具链 vite 实战入门笔记
 date: 2024-05-07 21:01:55 +0800
 categories: [Web]
 tags: [web, vue, vite, sh]

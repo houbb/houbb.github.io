@@ -1,11 +1,19 @@
 ---
 layout: post
-title: vite2.0-00-聊一聊 vite
+title: vite2.0-00-聊一聊 vite 下一代的前端工具链
 date: 2024-05-07 21:01:55 +0800
 categories: [Web]
 tags: [web, vue, vite, sh]
 published: true
 ---
+
+# vite 系列
+
+[00-聊一聊 vite](https://houbb.github.io/2024/05/07/js-toolchain-vue-vite2-00-chat)
+
+[01-vite 等构建工具对比](https://houbb.github.io/2024/05/07/js-toolchain-vue-vite2-01-compare)
+
+[02-vite 实战入门](https://houbb.github.io/2024/05/07/js-toolchain-vue-vite2-02-start)
 
 # vite 是什么？
 

@@ -1,11 +1,19 @@
 ---
 layout: post
-title: vite2.0-01-vite 和其他类似构建工具对比
+title: vite2.0-01-下一代的前端工具链 vite 和其他构建工具对比
 date: 2024-05-07 21:01:55 +0800
 categories: [Web]
 tags: [web, vue, vite, sh]
 published: true
 ---
+
+# vite 系列
+
+[00-聊一聊 vite](https://houbb.github.io/2024/05/07/js-toolchain-vue-vite2-00-chat)
+
+[01-vite 等构建工具对比](https://houbb.github.io/2024/05/07/js-toolchain-vue-vite2-01-compare)
+
+[02-vite 实战入门](https://houbb.github.io/2024/05/07/js-toolchain-vue-vite2-02-start)
 
 # Vite 与传统构建工具的对比
 
@@ -62,8 +70,6 @@ Rollup: 主要用于 JavaScript 库的构建，生成优化的小体积包，适
 Turbo: 专注于大型 monorepo 项目，增量构建和缓存优化是其特色，适合企业级应用。
 
 选择合适的构建工具通常取决于项目的需求和复杂性，Vite、esbuild 和 Parcel 更适合开发过程中对速度和简易性的需求，而 Webpack 和 Rollup 则适合需要高度定制和优化的应用。
-
-
 
 
 # chat
