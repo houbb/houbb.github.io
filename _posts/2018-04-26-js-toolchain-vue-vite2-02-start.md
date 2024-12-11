@@ -7,6 +7,14 @@ tags: [web, vue, vite, sh]
 published: true
 ---
 
+# vite 系列
+
+[00-聊一聊 vite](https://houbb.github.io/2024/05/07/js-toolchain-vue-vite2-00-chat)
+
+[01-vite 等构建工具对比](https://houbb.github.io/2024/05/07/js-toolchain-vue-vite2-01-compare)
+
+[02-vite 实战入门](https://houbb.github.io/2024/05/07/js-toolchain-vue-vite2-02-start)
+
 # 总览
 
 Vite（法语意为 "快速的"，发音 /vit/，发音同 "veet"）是一种新型前端构建工具，能够显著提升前端开发体验。它主要由两部分组成：
@@ -16,8 +24,6 @@ Vite（法语意为 "快速的"，发音 /vit/，发音同 "veet"）是一种新
 一套构建指令，它使用 Rollup 打包你的代码，并且它是预配置的，可输出用于生产环境的高度优化过的静态资源。
 
 Vite 意在提供开箱即用的配置，同时它的 插件 API 和 JavaScript API 带来了高度的可扩展性，并有完整的类型支持。
-
-你可以在 为什么选 Vite 中了解更多关于项目的设计初衷。
 
 # 浏览器支持
 
