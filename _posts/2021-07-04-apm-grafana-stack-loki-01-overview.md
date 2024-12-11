@@ -7,260 +7,147 @@ tags: [apm, grafana]
 published: true
 ---
 
+# Loki：像 Prometheus，但用于日志
 
-# Loki: like Prometheus, but for logs.
+Loki 是一个水平可扩展、高可用的多租户日志聚合系统，灵感来源于 [Prometheus](https://prometheus.io/)。  
+它的设计目标是具有较高的性价比且易于操作。  
+它不对日志内容进行索引，而是对每个日志流的标签集合进行索引。
 
-Loki是一个水平可扩展、高可用、多租户的日志聚合系统，受到Prometheus启发而设计。它旨在非常经济高效且易于操作。
+与其他日志聚合系统相比，Loki：
 
-Loki不会对日志内容进行全文索引，而是为每个日志流存储一组标签。
+- 不对日志进行全文索引。通过存储压缩的、非结构化的日志并仅索引元数据，Loki 更容易操作，运行成本也较低。
+- 使用与 Prometheus 中相同的标签来索引和分组日志流，使您能够无缝地在指标和日志之间切换，且无需更改已经在 Prometheus 中使用的标签。
+- 特别适合存储 [Kubernetes](https://kubernetes.io/) Pod 日志。诸如 Pod 标签等元数据会被自动抓取并进行索引。
+- 在 Grafana 中原生支持（需要 Grafana v6.0）。
 
-与其他日志聚合系统相比，Loki具有以下特点：
+基于 Loki 的日志栈由三个组件组成：
 
-- 不对日志进行全文索引。通过存储压缩的非结构化日志并仅索引元数据，Loki更容易操作且运行成本更低。
-- 使用与Prometheus相同的标签对日志流进行索引和分组，使您可以在度量和日志之间无缝切换，使用与Prometheus相同的标签。
-- 特别适用于存储Kubernetes Pod日志。如Pod标签等元数据会自动被抓取和索引。
-- 在Grafana中具有原生支持（需要Grafana v6.0）。
+- `promtail` 是代理，负责收集日志并将其发送到 Loki。
+- `loki` 是主服务器，负责存储日志和处理查询。
+- [Grafana](https://github.com/grafana/grafana) 用于查询和显示日志。
 
-基于Loki的日志堆栈由3个组件组成：
+**注意，Promtail 被认为已完成特性开发，未来的日志收集开发将在 [Grafana Alloy](https://github.com/grafana/alloy) 中进行**
 
-- promtail是代理，负责收集日志并将其发送到Loki。
-- loki是主服务器，负责存储日志和处理查询。
-- Grafana用于查询和显示日志。
+Loki 像 Prometheus，但用于日志：我们更倾向于使用基于多维标签的方法进行索引，并且希望拥有一个单一的二进制文件，易于操作且没有依赖。  
+Loki 与 Prometheus 的不同之处在于，它专注于日志而非指标，并且通过推送方式传递日志，而非拉取方式。
 
-Loki类似于Prometheus，但用于日志：我们倾向于使用基于多维标签的方法进行索引，并希望有一个单一的二进制、易于操作且无依赖的系统。
+## 入门
 
-与Prometheus不同，Loki专注于日志而不是指标，并通过推送而不是拉取来传递日志。
+* [安装 Loki](https://grafana.com/docs/loki/latest/installation/)
+* [安装 Promtail](https://grafana.com/docs/loki/latest/clients/promtail/installation/)
+* [入门指南](https://grafana.com/docs/loki/latest/get-started/)
 
+## 升级
 
-# chat
+* [升级 Loki](https://grafana.com/docs/loki/latest/upgrading/)
 
-## Q: 详细介绍一下 loki
+## 文档
 
-Loki是一个用于日志聚合和查询的开源系统，它的设计目标是提供水平可扩展、高可用、多租户的解决方案。
+* [最新版本](https://grafana.com/docs/loki/latest/)
+* [即将发布的版本](https://grafana.com/docs/loki/next/)，位于主分支的最新版本
 
-Loki的灵感来自于另一个开源项目，即Prometheus，但Loki专注于处理日志而不是指标。
+常用部分：
 
-以下是对Loki的详细介绍：
+- [API 文档](https://grafana.com/docs/loki/latest/api/) 用于将日志导入 Loki。
+- [标签](https://grafana.com/docs/loki/latest/getting-started/labels/)
+- [操作](https://grafana.com/docs/loki/latest/operations/)
+- [Promtail](https://grafana.com/docs/loki/latest/clients/promtail/) 是一个代理，用于跟踪日志文件并将其推送到 Loki。
+- [管道](https://grafana.com/docs/loki/latest/clients/promtail/pipelines/) 介绍了日志处理管道。
+- [Docker 驱动程序客户端](https://grafana.com/docs/loki/latest/clients/docker-driver/) 是一个 Docker 插件，用于直接从 Docker 容器将日志发送到 Loki。
+- [LogCLI](https://grafana.com/docs/loki/latest/query/logcli/) 提供了一个命令行接口来查询日志。
+- [Loki Canary](https://grafana.com/docs/loki/latest/operations/loki-canary/) 用于监控 Loki 安装是否丢失日志。
+- [故障排除](https://grafana.com/docs/loki/latest/operations/troubleshooting/) 提供了解决错误消息的帮助。
+- [Grafana 中的 Loki](https://grafana.com/docs/loki/latest/operations/grafana/) 介绍了如何在 Grafana 中设置 Loki 数据源。
 
-### 核心特性：
+## 获取帮助
 
-1. **水平可扩展：** Loki被设计成可以水平扩展，以适应不断增长的日志数据量。这使得系统能够处理大规模的日志流量而不牺牲性能。
+如果您有任何关于 Loki 的问题或反馈：
 
-2. **高可用性：** Loki支持高可用性配置，确保在系统故障或节点失效时依然能够提供可靠的服务。这使得Loki成为生产环境中关键日志数据的可信赖存储解决方案。
+- 在 Grafana Labs 社区论坛中搜索关于 Loki 的现有讨论：[https://community.grafana.com](https://community.grafana.com/c/grafana-loki/)
+- 在 Loki Slack 频道上提问。若要邀请自己加入 Grafana Slack，请访问 [https://slack.grafana.com/](https://slack.grafana.com/) 并加入 #loki 频道。
+- [提交问题](https://github.com/grafana/loki/issues/new) 报告错误、问题和功能建议。
+- 发送电子邮件至 [lokiproject@googlegroups.com](mailto:lokiproject@googlegroups.com)，或使用 [Web 界面](https://groups.google.com/forum/#!forum/lokiproject)。
+- UI 问题请直接在 [Grafana](https://github.com/grafana/grafana/issues/new) 提交。
 
-3. **多租户支持：** Loki允许在同一实例中支持多个租户，每个租户都可以拥有独立的日志数据集和查询权限。这种灵活性使得Loki适用于多团队、多应用的环境。
+我们欢迎您的反馈。
 
-4. **经济高效：** 与一些其他日志聚合系统不同，Loki采用了一种不对日志内容进行全文索引的策略，而是仅索引元数据。这降低了系统的运行成本，并简化了操作。
+## 进一步阅读
 
-5. **与Prometheus集成：** Loki与Prometheus密切集成，使用相同的标签模型。这意味着您可以使用相同的标签来索引和查询Prometheus指标以及Loki日志，实现度量和日志之间的无缝切换。
+- 原始的 [设计文档](https://docs.google.com/document/d/11tjK_lvp1-SVsFZjgOTr1vV3-q6vBAsZYIQ5ZeYBkyM/view) 是讨论动机和设计决策的一个好来源。
+- Callum Styan 2019 年 3 月 DevOpsDays Vancouver 演讲 "[Grafana Loki: Log Aggregation for Incident Investigations][devopsdays19-talk]"。
+- Grafana Labs 博客文章 "[How We Designed Loki to Work Easily Both as Microservices and as Monoliths][architecture-blog]"。
+- Tom Wilkie 2019 年早期 CNCF Paris/FOSDEM 演讲 "[Grafana Loki: like Prometheus, but for logs][fosdem19-talk]" ([幻灯片][fosdem19-slides], [视频][fosdem19-video])。
+- David Kaltschmidt 2018 年 KubeCon 演讲 "[On the OSS Path to Full Observability with Grafana][kccna18-event]" ([幻灯片][kccna18-slides], [视频][kccna18-video]) 讲解了 Loki 如何适应云原生环境。
+- Goutham Veeramachaneni 的博客文章 "[Loki: Prometheus-inspired, open source logging for cloud natives](https://grafana.com/blog/2018/12/12/loki-prometheus-inspired-open-source-logging-for-cloud-natives/)" 详细介绍了 Loki 的架构。
+- David Kaltschmidt 的博客文章 "[Closer look at Grafana's user interface for Loki](https://grafana.com/blog/2019/01/02/closer-look-at-grafanas-user-interface-for-loki/)" 讲解了 Grafana 的日志界面设计理念。
 
-6. **特定于容器环境：** Loki对于存储和查询Kubernetes Pod日志特别适用。它能够自动抓取和索引Pod标签等元数据，简化了在容器环境中管理日志的过程。
+[devopsdays19-talk]: https://grafana.com/blog/2019/05/06/how-loki-correlates-metrics-and-logs--and-saves-you-money/
+[architecture-blog]: https://grafana.com/blog/2019/04/15/how-we-designed-loki-to-work-easily-both-as-microservices-and-as-monoliths/
+[fosdem19-talk]: https://fosdem.org/2019/schedule/event/loki_prometheus_for_logs/
+[fosdem19-slides]: https://speakerdeck.com/grafana/grafana-loki-like-prometheus-but-for-logs
+[fosdem19-video]: https://mirror.as35701.net/video.fosdem.org/2019/UB2.252A/loki_prometheus_for_logs.mp4
+[kccna18-event]: https://kccna18.sched.com/event/GrXC/on-the-oss-path-to-full-observability-with-grafana-david-kaltschmidt-grafana-labs
+[kccna18-slides]: https://speakerdeck.com/davkal/on-the-path-to-full-observability-with-oss-and-launch-of-loki
+[kccna18-video]: https://www.youtube.com/watch?v=U7C5SpRtK74&list=PLj6h78yzYM2PZf9eA7bhWnIh_mK1vyOfU&index=346
 
-7. **Grafana支持：** Loki与Grafana有原生集成，使得您可以使用Grafana界面轻松地进行查询和展示Loki中的日志数据。
+## 贡献
 
-### 架构和组件：
+请参考 [CONTRIBUTING.md](CONTRIBUTING.md)
 
-Loki的体系结构主要由三个组件组成：
+### 从源代码构建
 
-- **promtail：** 是Loki的代理组件，负责在各个节点上收集日志，并将它们发送到Loki服务器。它还能够自动抓取和索引日志中的元数据。
+Loki 可以在单个主机、无依赖模式下运行，使用以下命令：
 
-- **loki：** 是Loki的主服务器，负责存储和索引日志数据，以及处理查询请求。它支持水平扩展以处理大量数据。
+您需要安装 `go`，
 
-- **Grafana：** 作为一个可选的组件，Grafana用于查询和可视化Loki中的日志数据。它提供了直观的仪表板和强大的查询功能。
+推荐使用 [我们的构建 Dockerfile](https://github.com/grafana/loki/blob/main/loki-build-image/Dockerfile) 中的版本。
 
-通过这些组件的协同工作，Loki提供了一个强大而灵活的日志管理解决方案，适用于各种规模和类型的应用程序环境。
+```bash
+$ go get github.com/grafana/loki
+$ cd $GOPATH/src/github.com/grafana/loki # 默认情况下 GOPATH 为 $HOME/go
 
-## Q: loki 和 ELK 技术栈有什么区别？为什么要选择 loki 呢？
-
-Loki和ELK（Elasticsearch, Logstash, Kibana）都是用于日志管理和分析的技术栈，但它们有一些关键区别。以下是Loki和ELK技术栈的比较，以及为什么有人可能选择Loki：
-
-### Loki vs. ELK 技术栈：
-
-1. **存储和查询模型：**
-   - **Loki：** 使用标签（label）和日志流的方式进行索引和查询，类似于Prometheus。它不对日志内容进行全文索引，而是关注于索引元数据，因此更加轻量、简单，适用于大规模的日志数据。
-   - **ELK：** 使用Elasticsearch进行全文索引，以支持强大的文本搜索和复杂的查询。这使得ELK在需要复杂文本搜索和分析的场景中非常强大。
-
-2. **成本和操作复杂性：**
-   - **Loki：** 由于采用了索引元数据而非内容的方法，Loki通常更加经济高效且易于操作。它的设计目标之一是简化运维工作，降低运行成本。
-   - **ELK：** Elasticsearch可能需要更多的资源和复杂的配置，特别是在大规模环境中。这可能导致更高的运维成本和资源需求。
-
-3. **适用场景：**
-   - **Loki：** 特别适用于容器化环境，如Kubernetes，因为它能够自动抓取和索引Pod标签等元数据。适用于需要经济高效、易于操作的日志解决方案。
-   - **ELK：** 适用于需要进行复杂文本搜索、全文索引和强大数据分析的场景。ELK通常在企业级和较为复杂的日志分析需求中得到应用。
-
-4. **集成：**
-   - **Loki：** 与Prometheus紧密集成，使用相似的标签模型。与Grafana原生集成，提供了强大的可视化和查询工具。
-   - **ELK：** 使用Elasticsearch、Logstash和Kibana组成的技术栈，各个组件之间有更多的灵活性和定制化选项。
-
-### 为什么选择 Loki：
-
-- **轻量和经济：** Loki采用了经济高效的设计，通过索引元数据而不是内容，降低了存储和操作成本。
-  
-- **容器环境适用性：** Loki对于Kubernetes等容器化环境的支持较好，能够自动处理容器标签等元数据，简化了在这类环境中的日志管理。
-
-- **Prometheus集成：** 对于那些已经在使用Prometheus进行指标收集的团队，Loki提供了一种无缝切换、一致的标签模型，方便整合日志和指标的查询。
-
-- **易于操作：** Loki的设计目标之一是简化运维工作，使得系统易于操作，特别是对于需要较小团队或资源受限的场景。
-
-总体而言，选择Loki还是ELK取决于您的具体需求和环境。
-
-如果您注重经济性、轻量性，并且在容器环境中运行，Loki可能是一个更好的选择。
-
-如果您需要全文索引、复杂查询和更多的定制化选项，ELK可能更适合您的用例。
-
-## Q: 给一个具体的日志例子，看一下 es 和 loki 对于加日志索引和存储的具体区别
-
-假设我们有一个简单的日志条目，记录了某个系统的请求信息：
-
-```plaintext
-2023-01-01T12:00:00Z [INFO] - Request received: /api/data - Status: 200 - Response Time: 50ms
+$ go build ./cmd/loki
+$ ./loki -config.file=./cmd/loki/loki-local-config.yaml
+...
 ```
 
-在Elasticsearch（ELK）和Loki中，对于这个日志的索引和存储方式会有一些区别。
+要在非 Linux 平台上构建 Promtail，使用以下命令：
 
-### Elasticsearch（ELK）例子：
-
-1. **索引模型：** 在ELK中，可能会将上述日志的不同字段（例如时间戳、日志级别、请求路径、状态码、响应时间）映射为Elasticsearch索引的字段。
-
-2. **Index Pattern：** 可能会创建一个类似于 `logstash-yyyy-mm-dd` 的索引模式，其中 "logstash" 是默认的Logstash索引前缀，而 "yyyy-mm-dd" 是日期。
-
-3. **存储：** 日志条目将以结构化的形式存储，可以通过各种字段进行检索和查询。Elasticsearch将对这些字段进行全文索引，以支持复杂的搜索和分析。
-
-### Loki 例子：
-
-1. **标签模型：** 在Loki中，日志将会被标签化。上述日志可能会使用标签如 `{job="api-server", status="200"}`。这些标签可以是日志中提取的字段，也可以是用户指定的元数据。
-
-2. **存储：** Loki更加关注元数据的索引，而不是对整个日志内容进行全文索引。因此，实际的日志内容可能会以压缩的方式存储，而索引将包含标签和其他元数据。
-
-3. **查询：** 查询时，可以使用标签来检索特定条件下的日志。例如，可以查询所有具有状态码为200的日志，并且只关注特定的标签。
-
-### 对比：
-
-- **ELK：** 偏向于全文索引，支持强大的文本搜索和复杂查询，适用于需要深入分析日志内容的场景。
-
-- **Loki：** 偏向于标签索引，关注元数据，更加轻量，适用于需要快速索引和查询大量日志的场景，特别是在容器化环境中。
-
-需要注意的是，具体的索引和存储方式可能会根据实际的配置和需求而有所不同。上述例子仅为演示目的，实际的配置和字段映射可能会根据具体的使用情况而有所调整。
-
-## Q: 那这样的话，我想检索日志中的某一个关键词，岂不是查不到
-
-在Loki中，虽然它侧重于标签索引和元数据，但你仍然能够检索包含特定关键词的日志。
-
-Loki 使用 `~` 操作符来进行模糊搜索，这与正则表达式类似。你可以使用 `~` 操作符来在日志内容中搜索包含某个关键词的日志。
-
-例如，假设你想检索包含关键词 "error" 的日志，你可以使用如下查询：
-
-```plaintext
-{job="api-server"} |~ "error"
+```bash
+$ go build ./clients/cmd/promtail
 ```
 
-这个查询将返回包含 "error" 关键词的日志。需要注意的是，这里的 `{job="api-server"}` 是一个标签过滤，你可以根据实际情况修改或添加其他标签过滤条件。
+在 Linux 上，如果启用了 Journal 支持，Promtail 需要安装 systemd 头文件。  
+要启用 Journal 支持，应该使用 Go 构建标志 `promtail_journal_enabled`。
 
-虽然不同于 ELK 中的全文索引，Loki 的这种查询方式可能会相对简单，但它足以满足许多基本的日志查询需求。在实际使用中，你可以根据具体的需求和场景选择适合的日志系统。
+在 Ubuntu 上启用 Journal 支持，运行以下命令：
 
-## loki 中使用 ~ 模糊查询，是通过 like 模糊查询吗？性能会不会很差？
+```bash
+$ sudo apt install -y libsystemd-dev
+$ go build --tags=promtail_journal_enabled ./clients/cmd/promtail
+```
 
-Loki 中的 `~` 操作符实际上使用的是 [Glob](https://en.wikipedia.org/wiki/Glob_(programming)) 模式匹配，而不是 SQL 中的 `LIKE` 模糊查询或正则表达式。 
+在 CentOS 上启用 Journal 支持，运行以下命令：
 
-Glob 模式匹配是一种简化的模式匹配语法，通常用于文件名匹配等场景。
+```bash
+$ sudo yum install -y systemd-devel
+$ go build --tags=promtail_journal_enabled ./clients/cmd/promtail
+```
 
-使用 `~` 进行模糊查询可能会在性能上更加高效，因为 Glob 模式匹配相对于正则表达式来说更简单。
+否则，要在没有 Journal 支持的情况下构建 Promtail，运行 `go build` 并禁用 CGO：
 
-但是需要注意的是，Glob 模式匹配的灵活性可能不如正则表达式，因此在某些复杂的匹配需求下，可能会受到一些限制。
+```bash
+$ CGO_ENABLED=0 go build ./clients/cmd/promtail
+```
 
-性能的好坏也受到数据量、查询复杂度、索引的设计等多个因素的影响。在实际使用中，你可以通过性能测试和优化索引来确保 Loki 能够满足你的查询需求。如果对性能有特别高要求，可能需要根据具体情况进行更深入的优化或考虑其他日志系统。
+## 采用者
 
-总体而言，Loki 的设计目标之一是提供简单、高效的日志查询和索引机制，以适应大规模的日志数据。
+请参阅 [ADOPTERS.md](ADOPTERS.md) 了解当前使用 Loki 的一些组织。  
+如果您希望将您的组织添加到此列表，请打开 PR 将其添加。
 
-在绝大多数场景下，Loki 的性能是足够的，而且它的简单性和与 Prometheus 集成的优势可能会使它成为一种很有吸引力的选择。
+## 许可证
 
-## Glob 模式匹配 和正则的区别是什么？和 mysql like 的区别是什么？
-
-Glob 模式匹配、正则表达式和 MySQL `LIKE` 操作符都是用于字符串匹配的工具，但它们之间有一些关键的区别。
-
-### 1. Glob 模式匹配：
-
-- **语法简单：** Glob 模式是一种简化的通配符模式匹配语法，它只支持少量的通配符，如 `*` 和 `?`。这使得它比正则表达式更容易学习和理解。
-
-- **通配符：**
-  - `*` 匹配零个或多个字符。
-  - `?` 匹配任意一个字符。
-
-- **不支持字符类和量词：** 与正则表达式相比，Glob 模式不支持字符类（例如 `[a-z]`）和量词（例如 `+`、`{1,3}`）等更复杂的模式。
-
-### 2. 正则表达式：
-
-- **强大的模式匹配：** 正则表达式提供了更灵活和强大的模式匹配工具，支持字符类、量词、分组等高级特性。
-
-- **复杂性：** 正则表达式的语法相对复杂，需要一些时间来学习和理解。
-
-- **精准匹配：** 正则表达式能够进行更精准的字符串匹配，但由于其灵活性，有时也容易造成性能问题。
-
-### 3. MySQL `LIKE` 操作符：
-
-- **简单通配符：** MySQL `LIKE` 操作符使用通配符进行简单的字符串匹配。
-  
-- **通配符：**
-  - `%` 匹配任意长度的字符串。
-  - `_` 匹配任意一个字符。
-
-- **性能：** 对于较大的数据集，MySQL 的 `LIKE` 可能会在性能上受到一些影响，特别是在使用 `%` 进行开头的模糊匹配时。
-
-### 总结：
-
-- **应用场景：**
-  - Glob 模式适用于简单的通配符匹配，通常用于文件名匹配等。
-  - 正则表达式适用于更复杂的模式匹配需求，提供了更高级的匹配功能。
-  - MySQL `LIKE` 适用于基本的字符串匹配，但在某些情况下可能受到性能问题的影响。
-
-- **复杂度和性能：**
-  - Glob 模式简单，性能通常较好。
-  - 正则表达式功能更强大，但可能复杂，性能可能受到模式复杂度的影响。
-  - MySQL `LIKE` 简单，但对于模糊匹配可能会影响性能。
-
-在选择使用哪种模式匹配工具时，需要考虑具体的匹配需求、性能要求以及用户对于模式匹配语法的熟悉程度。
-
-## Q: 说一下 loki 的优缺点，并给出和 es 的对比表格
-
-### Loki 的优缺点：
-
-#### 优点：
-
-1. **轻量和经济：** Loki 的设计注重经济性，通过索引元数据而不是内容，降低了存储和操作成本。
-
-2. **容器环境适用性：** Loki 对于容器化环境（如Kubernetes）有良好的支持，能够自动处理容器标签等元数据。
-
-3. **Prometheus集成：** 与Prometheus集成，使用相似的标签模型，实现了度量和日志的无缝切换。
-
-4. **易于操作：** Loki 的设计目标之一是简化运维工作，使得系统易于操作，适用于较小团队或资源受限的场景。
-
-5. **原生Grafana支持：** Loki 有原生的Grafana支持，简化了日志的查询和可视化。
-
-#### 缺点：
-
-1. **查询复杂性：** 对于一些复杂的文本搜索和匹配需求，Loki 的查询语言可能相对简单，不如正则表达式等灵活。
-
-2. **全文索引的限制：** 由于不进行全文索引，Loki 在一些复杂的文本搜索和匹配需求上可能受到一些限制。
-
-3. **对于大型数据集的查询性能：** 随着数据集的增大，某些查询性能可能会受到影响，特别是在不经过优化的情况下。
-
-### Loki vs. Elasticsearch（ELK）对比：
-
-| 特征/优势                | Loki                                           | Elasticsearch (ELK)                        |
-|------------------------|------------------------------------------------|-------------------------------------------|
-| 存储模型                | 索引元数据，关注标签，存储压缩的非结构化日志内容 | 全文索引，支持复杂的文本搜索和分析                 |
-| 查询语言                | 简单的标签过滤，支持Glob模式匹配              | 强大的查询语言，支持正则表达式、复杂的文本搜索       |
-| 经济性                  | 经济高效，索引元数据而非内容，操作成本相对较低   | 灵活，但可能需要更多资源和配置，操作成本较高        |
-| 容器环境适用性            | 适用，自动处理容器标签等元数据                    | 可以适用，但需要额外配置来处理容器环境的元数据        |
-| 数据可视化               | 原生Grafana支持                                   | Kibana是Elasticsearch的原生数据可视化工具           |
-| 复杂性                  | 相对简单，易于学习和使用                           | 功能更丰富，但学习曲线较陡峭                         |
-| 数据量和性能              | 适用于大规模数据，但某些查询性能可能受到影响      | 适用于大规模数据，全文索引提供了更快的查询性能         |
-| 适用场景                | 容器化环境，经济高效，适用于日志查询和度量的整合      | 复杂的文本搜索、全文索引，适用于广泛的日志和指标分析需求 |
-
-需要注意的是，选择 Loki 还是 Elasticsearch 取决于具体的需求和环境。
-
-Loki 适用于对经济性和简单性有要求的场景，特别是在容器化环境中，而 Elasticsearch 则在需要全文索引、复杂文本搜索和更丰富功能的场景中更为强大。
-
+Grafana Loki 采用 [AGPL-3.0-only](LICENSE) 许可证发布。如需了解 Apache-2.0 的例外，请参阅 [LICENSING.md](LICENSING.md)。
 
 # 参考资料
 
