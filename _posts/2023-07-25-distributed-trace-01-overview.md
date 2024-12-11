@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 分布式链路追踪简介 dapper skywalking
+title: 分布式链路追踪简介-01-dapper 论文思想介绍
 date:  2023-07-25 +0800
 categories: [Trace]
 tags: [trace, distributed, sh]
@@ -186,13 +186,13 @@ Google Dapper论文发出来之后，很多公司基于链路追踪的基本原�
 
 附各大开源组件的地址：
 
-• zipkinhttps://zipkin.io/
+• zipkin https://zipkin.io/
 
-• Jaegerwww.jaegertracing.io/
+• Jaeger www.jaegertracing.io/
 
-• Pinpointhttps://github.com/pinpoint-apm/pinpoint
+• Pinpoint https://github.com/pinpoint-apm/pinpoint
 
-• SkyWalkinghttp://skywalking.apache.org/
+• SkyWalking http://skywalking.apache.org/
 
 接下来介绍一下Zipkin基本实现。
 

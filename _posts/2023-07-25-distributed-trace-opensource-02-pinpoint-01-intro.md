@@ -1,9 +1,9 @@
 ---
 layout: post
-title: PinPoint-监控
-date:  2019-4-1 19:24:57 +0800
-categories: [Monitor]
-tags: [monitor, apm, sf]
+title: 开源分布式系统追踪 pinpoint-01-入门介绍
+date:  2023-07-25 +0800
+categories: [Trace]
+tags: [trace, distributed, opensource, apm, sh]
 published: true
 ---
 
@@ -76,6 +76,7 @@ published: true
 # 参考资料
 
 [Opentsdb Document](http://opentsdb.net/docs/build/html/index.html)
+
 
 * any list
 {:toc}

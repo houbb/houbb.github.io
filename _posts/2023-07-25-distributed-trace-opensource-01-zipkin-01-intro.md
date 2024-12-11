@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Zipkin
-date: 2018-11-25 09:14:43 +0800
-categories: [Devops]
-tags: [devops, distrubited, sh]
+title: 开源分布式系统追踪 Zipkin-01-入门介绍
+date:  2023-07-25 +0800
+categories: [Trace]
+tags: [trace, distributed, opensource, apm, sh]
 published: true
-excerpt: Zipkin 分布式系统追踪
 ---
 
 # Zipkin
@@ -19,7 +18,6 @@ Zipkin的设计基于Google Dapper论文。
 Zipkin UI还提供了一个依赖关系图，显示了每个应用程序通过的跟踪请求数。如果要解决延迟问题或错误，可以根据应用程序，跟踪长度，注释或时间戳对所有跟踪进行筛选或排序。选择跟踪后，您可以看到每个跨度所需的总跟踪时间百分比，从而可以识别问题应用程序。
 
 ![zipkin](https://zipkin.io/public/img/web-screenshot.png)
-
 
 # 快速开始
 
