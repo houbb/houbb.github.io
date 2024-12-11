@@ -117,10 +117,6 @@ nohup ./n9e-edge --configs etc/edge &> edge.log &
 
 更推荐使用 Categraf + n9e-edge 的方式来采集数据，其架构如图 region01 所示。当 Categraf 采集的数据上报给 n9e-edge 后，n9e-edge 就可以从监控数据中解析出机器信息，然后通过中心端的 n9e 写入数据库 target 表，这样就可以在页面上看到机器列表了。就可以使用机器分组，自定义标签，告警自愈之类的功能。
 
-
-
-
-
 # 参考资料
 
 https://github.com/dromara/hertzbeat/blob/master/README_CN.md

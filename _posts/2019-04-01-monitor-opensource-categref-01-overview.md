@@ -3,7 +3,7 @@ layout: post
 title: Categraf 致力于打造监控数据采集领域大一统的方案-01-overview
 date:  2019-4-1 19:24:57 +0800
 categories: [Monitor]
-tags: [monitor, apm, api, sf]
+tags: [monitor, apm, api, opensource, sf]
 published: true
 ---
 
