@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 开源分布式系统追踪 Zipkin-01-入门介绍
+title: 开源分布式系统追踪-01-Zipkin-01-入门介绍
 date:  2023-07-25 +0800
 categories: [Trace]
 tags: [trace, distributed, opensource, apm, sh]
