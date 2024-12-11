@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 分布式链路追踪-08-adaptive collect 自适应采样
-date:  2023-07-25 +0800
+date:  2023-07-25 08:00:00 +0800
 categories: [Trace]
 tags: [trace, distributed, sh]
 published: true

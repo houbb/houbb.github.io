@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 分布式链路追踪-05-mdc 等信息如何跨线程?  InheritableThreadLocal
-date:  2023-07-25 +0800
+date:  2023-07-25 08:00:00 +0800
 categories: [Trace]
 tags: [trace, distributed, sh]
 published: true

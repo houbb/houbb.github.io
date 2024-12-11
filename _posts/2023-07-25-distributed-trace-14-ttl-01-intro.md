@@ -1,9 +1,9 @@
 ---
 layout: post
 title: TransmittableThreadLocal (TTL) 解决异步执行时上下文传递的问题
-date:  2023-07-19 +0800
-categories: [Java]
-tags: [java, sh]
+date:  2023-07-25 08:00:00 +0800
+categories: [Trace]
+tags: [trace, distributed, sh]
 published: true
 ---
 

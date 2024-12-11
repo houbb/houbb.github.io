@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 分布式链路追踪-03-和 chatGPT 聊一下分布式系统跟踪工具，如何设计 span 
-date:  2023-07-25 +0800
+date:  2023-07-25 08:00:00 +0800
 categories: [Trace]
 tags: [trace, distributed, sh]
 published: true
