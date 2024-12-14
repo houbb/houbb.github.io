@@ -7,6 +7,17 @@ tags: [java, sh]
 published: true
 ---
 
+# java agent 系列
+
+[java agent 介绍](https://houbb.github.io/2023/07/12/java-agent-01-intro)
+
+[java agent-02-Java Instrumentation API](https://houbb.github.io/2023/07/12/java-agent-02-instrumentation-api)
+
+[java agent-03-Java Instrumentation 结合 bytekit 实战笔记 agent attach](https://houbb.github.io/2023/07/12/java-agent-03-bytekit-agent-attach)
+
+[java agent-03-Java Instrumentation 结合 bytekit 实战笔记 agent premain](https://houbb.github.io/2023/07/12/java-agent-03-bytekit-premain-inaction)
+
+
 # 介绍一下 Java Instrumentation API
 
 Java Instrumentation API是Java平台提供的一组API，它允许开发者在运行时通过修改字节码来监测和改变Java应用程序的行为。
