@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Devops-01-devops 是什么？
+title: Devops-04-持续部署（Continuous deployment，缩写为CD）
 date:  2016-10-14 10:15:54 +0800
 categories: [Devops]
 tags: [devops, ci, sh]
@@ -25,8 +25,6 @@ published: true
 
 # DevOps
 
-![flow](https://i-blog.csdnimg.cn/blog_migrate/7c1db52deec6e03c46f2f2ce3c63d1e4.png)
-
 1、PLAN   开发团队根据客户的目标指定开发计划
  
 2、CODE    根据"PLAN(开发计划)" 开始编写代码，需要将不同版本("稳定"/"最新")的代码存储在一个库中
@@ -43,50 +41,16 @@ published: true
  
 8、INTEGRATE   然后将监控阶段收到的反馈发送回PLAN阶段，整体反复的流程就是DEVOPS的核心(ci/cd)
 
-# 如何实现 devops 流程
 
-1、开发人员将编写好的代码上传到gitlab代码仓库
- 
-2、我们通过手动/自动的形式通过Jenkins将代码拉取下来
- 
-3、jenkins会通过maven工具开始对代码构建(nexus 等包仓库)
- 
-4、如果编译没问题，jenkins会将打好的jar包封装成镜像发给harbor镜像仓库
- 
-5、jenkins再去通知服务器端通过docker/k8s拉取镜像并运行服务
+# 持续部署
 
-# 技术选型
+持续部署（英语：Continuous deployment，缩写为CD），是一种软件工程方法，意指在软件开发流程中，以自动化方式，频繁而且持续性的，将软件部署到生产环境（production environment）中，使软件产品能够快速的发展[1][2][3]。
 
-在初期，最主要的是让整个流程跑起来。
+持续部署可以整合到持续整合与持续交付（Continuous delivery）的流程之中。
 
-除了购买已有的服务，可以优先选择开源：
+# chat
 
-主流工具就是业内大家用得比较多的，在各种分享文章里面高频出现的，使用经验一搜一大把的那种工具。
-
-我给你提供一些工具，你可以参考一下：
-
-```
-需求管理工具Jira；
-知识管理工具Confluence；
-
-版本控制系统GitLab；
-持续集成工具Jenkins；
-代码质量工具SonarQube；
-构建工具Maven/Gradle；
-制品管理Artifactory/Harbor；
-配置管理工具Ansible；
-配置中心Apollo；
-测试工具RF/Selenium/Appium/Jmeter/TestNG；
-安全合规工具BlackDuck/Fortify；
-环境管理-虚拟化：k8s docker 
-```
-
-====> 企业级**度量平台**
-
-# 参考资料
-
-https://blog.csdn.net/qq_42883074/article/details/125842147
-
+## 
 ## 其他开源
 
 [蓝鲸持续集成平台(蓝盾)](https://github.com/TencentBlueKing/bk-ci)
