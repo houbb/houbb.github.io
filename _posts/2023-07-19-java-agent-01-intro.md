@@ -2,8 +2,8 @@
 layout: post
 title: java agent 介绍
 date:  2023-07-12 +0800
-categories: [Java]
-tags: [java, sh]
+categories: [Trace]
+tags: [trace, distributed, opensource, sh]
 published: true
 ---
 
