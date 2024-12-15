@@ -2,7 +2,7 @@
 layout: post
 title: java agent-03-Java Instrumentation 结合 bytekit 实战笔记 agent premain
 date:  2023-07-12 +0800
-categories: [Java]
+categories: [Trace]
 tags: [trace, distributed, opensource, sh]
 published: true
 ---
