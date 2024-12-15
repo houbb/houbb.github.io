@@ -1,21 +1,25 @@
 ---
 layout: post
 title: java agent-02-Java Instrumentation API
-date:  2023-07-12 +0800
+date:  2023-07-19 08:00:00 +0800
 categories: [Trace]
-tags: [trace, distributed, opensource, sh]
+tags: [jvm, trace, distributed, opensource, sh]
 published: true
 ---
 
 # java agent 系列
 
-[java agent 介绍](https://houbb.github.io/2023/07/12/java-agent-01-intro)
+[java agent 介绍](https://houbb.github.io/2023/07/19/java-agent-01-intro)
 
-[java agent-02-Java Instrumentation API](https://houbb.github.io/2023/07/12/java-agent-02-instrumentation-api)
+[java agent-02-Java Instrumentation API](https://houbb.github.io/2023/07/19/java-agent-02-instrumentation-api)
 
-[java agent-03-Java Instrumentation 结合 bytekit 实战笔记 agent attach](https://houbb.github.io/2023/07/12/java-agent-03-bytekit-agent-attach)
+[java agent-03-Java Instrumentation 结合 bytekit 实战笔记 agent attach](https://houbb.github.io/2023/07/19/java-agent-03-bytekit-agent-attach)
 
-[java agent-03-Java Instrumentation 结合 bytekit 实战笔记 agent premain](https://houbb.github.io/2023/07/12/java-agent-03-bytekit-premain-inaction)
+[java agent-03-Java Instrumentation 结合 bytekit 实战笔记 agent premain](https://houbb.github.io/2023/07/19/java-agent-03-bytekit-premain-inaction)
+
+[java agent-04-统一管理众多的Java Agent](https://houbb.github.io/2023/07/19/java-agent-04-javaoneagent-01-intro)
+
+[java agent-05-bytekit 入门介绍](https://houbb.github.io/2023/07/19/java-agent-03-bytekit-premain-inaction)
 
 
 # 介绍一下 Java Instrumentation API
