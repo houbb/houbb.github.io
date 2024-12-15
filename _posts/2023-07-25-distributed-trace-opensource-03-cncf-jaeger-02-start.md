@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 开源分布式系统追踪-03-CNCF jaeger-02-快速开始
+title: 开源分布式系统追踪-03-CNCF jaeger-02-如何通过 docker 安装？
 date:  2023-07-25 08:00:00 +0800
 categories: [Trace]
 tags: [trace, distributed, opensource, apm, sh]
@@ -47,6 +47,16 @@ published: true
 
 [开源分布式系统追踪-03-CNCF jaeger-01-入门介绍](https://houbb.github.io/2023/07/25/distributed-trace-opensource-03-cncf-jaeger)
 
+# Jaeger
+
+Jaeger是一个分布式追踪平台，由Uber Technologies于2016年发布为开源项目，并捐赠给Cloud Native Computing Foundation（CNCF），目前已成为CNCF的毕业项目。
+
+通过Jaeger，您可以：
+
+- 监控和排查分布式工作流
+- 识别性能瓶颈
+- 查找根本原因
+- 分析服务依赖关系
 
 # windows10 docker
 
@@ -127,6 +137,12 @@ docker compose -f docker-compose-v2.yml up
 ### 服务性能监控（SPM）
 
 服务性能监控（SPM）页面有一个快速入门，展示了如何探索 Jaeger 中的这一功能。
+
+# 小结
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 
