@@ -21,150 +21,16 @@ published: true
 
 [持续集成平台 01 jenkins 入门介绍](https://houbb.github.io/2016/10/14/devops-jenkins-01-intro)
 
-# chat
 
-## 介绍一下 Jpom
+# jpom
 
-Jpom 是一款开源的持续集成/持续部署（CI/CD）系统，它专门针对 Java 开发的项目进行构建、部署和管理。
+🚀简而轻的低侵入式在线构建、自动部署、日常运维、项目监控软件
 
-它提供了一套功能强大的工具，帮助开发团队实现自动化构建、测试和部署，从而提高开发效率和软件质量。
+更是一款原生 ops 软件
 
-以下是 Jpom 的一些主要特性和功能：
+# 😭 日常开发中，您是否有以下痛点？
 
-1. **Web 界面管理**: Jpom 提供了直观友好的 Web 界面，可以通过浏览器轻松管理项目、配置构建和部署任务。
-
-2. **项目管理**: Jpom 允许用户创建和管理多个项目，并为每个项目配置不同的构建和部署规则。
-
-3. **持续集成**: Jpom 支持持续集成，可以自动从版本控制系统（如 Git）拉取代码，并在每次提交或定时触发时执行构建任务。
-
-4. **构建任务配置**: 用户可以通过 Jpom 配置构建任务，包括编译、打包、测试、静态代码分析等，以及构建成功后的处理方式。
-
-5. **部署管理**: Jpom 允许用户配置自动化部署任务，支持将构建好的应用程序部署到指定的服务器上，可以通过 SSH、FTP 等方式进行部署。
-
-6. **多环境支持**: Jpom 支持多个环境（如开发环境、测试环境、生产环境）的配置和管理，可以针对不同环境配置不同的构建和部署规则。
-
-7. **权限管理**: Jpom 提供了细粒度的权限管理功能，可以根据用户角色对项目和任务进行权限控制，确保安全性和可控性。
-
-8. **日志和报告**: Jpom 会记录构建和部署过程的日志，用户可以通过 Web 界面查看详细的构建日志和部署状态，便于故障排查和监控。
-
-9. **插件扩展**: Jpom 支持插件扩展机制，用户可以根据需要安装和使用各种插件，扩展系统的功能和灵活性。
-
-总的来说，Jpom 是一款功能强大、易于使用的 CI/CD 工具，适用于 Java 开发的项目，能够帮助开发团队实现自动化构建、测试和部署，提高开发效率和软件质量。
-
-## jpom 的核心实现流程和底层原理
-
-Jpom 的核心实现流程主要包括项目配置、构建、部署和监控等步骤，其底层原理涉及到版本控制、构建工具、部署方式等方面。
-
-下面是 Jpom 的核心实现流程和底层原理的详细解释：
-
-1. **项目配置**：
-   - 用户通过 Jpom 的 Web 界面创建项目，并配置项目的基本信息，如项目名称、源代码仓库地址、构建脚本、部署目标等。
-   - 用户可以为项目配置构建触发条件，如定时触发、提交代码触发等。
-
-2. **构建**：
-   - 当触发条件满足时，Jpom 会从指定的版本控制系统（如 Git）拉取代码，并根据用户配置的构建脚本执行构建任务。
-   - 构建过程包括编译源代码、运行测试、生成部署包等步骤，具体的构建任务由用户在项目配置中定义。
-
-3. **部署**：
-   - 构建成功后，Jpom 可以自动将构建好的部署包部署到预先配置的部署目标，如服务器。
-   - 部署方式可以是通过 SSH、FTP 等协议进行文件传输，也可以是调用远程部署脚本实现自定义的部署逻辑。
-
-4. **监控与日志**：
-   - 在整个构建和部署过程中，Jpom 会记录详细的日志信息，包括构建日志、部署日志等，方便用户查看和排查问题。
-   - Jpom 还提供了监控功能，可以实时监控构建和部署的状态，及时发现和处理异常情况。
-
-底层原理方面，Jpom 主要依赖以下技术和工具实现：
-
-- **版本控制系统**（如 Git）：用于管理项目的源代码，Jpom 可以从版本控制系统中获取最新的代码，并触发构建任务。
-  
-- **构建工具**（如 Maven、Gradle）：用于编译、打包和测试项目，Jpom 可以调用构建工具执行项目的构建任务。
-
-- **部署方式**：Jpom 支持多种部署方式，可以通过 SSH、FTP 等协议将构建好的部署包传输到目标服务器，并执行部署操作。
-
-- **日志记录和监控**：Jpom 使用日志记录工具记录构建和部署过程中的详细日志信息，同时提供监控功能，实时监测构建和部署任务的状态。
-
-综上所述，Jpom 的核心实现流程涵盖了项目配置、构建、部署和监控等步骤，其底层原理涉及到版本控制、构建工具、部署方式等多个方面的技术和工具。
-
-## jpom 的入门使用教程，详细
-
-以下是 Jpom 的入门使用教程，详细介绍了如何安装、配置和使用 Jpom 进行持续集成和持续部署：
-
-### 步骤 1：安装 Jpom
-
-1. **准备环境**：
-   - 确保服务器上已安装 Java 运行环境（Java 8 或以上版本）和 Maven（如果需要构建 Java 项目）。
-   - 确保服务器上已安装 Git 或其他版本控制系统（如果需要从代码仓库拉取代码）。
-
-2. **下载 Jpom**：
-   - 前往 Jpom 的官方网站或 GitHub 仓库下载最新版本的 Jpom。
-   - 解压下载的 Jpom 压缩包到服务器的指定目录。
-
-3. **配置数据库**：
-   - Jpom 使用 MySQL 或 SQLite 作为数据库存储数据，需提前准备好数据库，并创建对应的数据库和用户。
-   - 修改 Jpom 的配置文件 `jpom/application.yml`，配置数据库连接信息。
-
-4. **启动 Jpom**：
-   - 在 Jpom 的安装目录下执行命令 `./jpom.sh start`（Linux）或 `./jpom.bat start`（Windows）启动 Jpom 服务。
-   - 访问 `http://your-server-ip:2122`（默认端口为 2122）即可进入 Jpom 的 Web 界面。
-
-### 步骤 2：创建项目
-
-1. **登录 Jpom**：
-   - 首次访问 Jpom 时需要设置管理员账户和密码，完成注册后即可登录。
-
-2. **创建项目**：
-   - 进入 Jpom 的 Web 界面后，点击界面左侧的“项目管理”，然后点击“新增项目”按钮。
-   - 输入项目名称、Git 仓库地址等信息，点击“保存”按钮创建项目。
-
-### 步骤 3：配置构建任务
-
-1. **编辑项目**：
-   - 在项目列表中点击要编辑的项目，进入项目详情页面。
-
-2. **配置构建任务**：
-   - 在项目详情页面的“构建设置”中，点击“新增构建”按钮。
-   - 配置构建任务的触发条件、构建脚本等信息，并保存配置。
-
-### 步骤 4：执行构建
-
-1. **手动触发构建**：
-   - 在项目详情页面的“构建设置”中，点击“构建”按钮手动触发构建任务。
-   - Jpom 将从代码仓库拉取最新的代码，并根据配置的构建任务执行构建过程。
-
-### 步骤 5：部署项目
-
-1. **配置部署任务**：
-   - 在项目详情页面的“部署设置”中，点击“新增部署”按钮配置部署任务。
-   - 配置部署目标、部署路径、部署脚本等信息，并保存配置。
-
-2. **手动触发部署**：
-   - 在项目详情页面的“部署设置”中，点击“部署”按钮手动触发部署任务。
-   - Jpom 将部署构建好的部署包到指定的部署目标。
-
-### 步骤 6：监控和日志
-
-1. **查看日志**：
-   - 在项目详情页面的“构建日志”和“部署日志”中可以查看构建和部署过程的详细日志信息。
-
-2. **监控任务状态**：
-   - 在项目列表页面可以查看所有项目的构建和部署任务的状态，及时发现和处理异常情况。
-
-### 其他操作
-
-- **插件扩展**：根据需要安装和使用各种插件，扩展 Jpom 的功能和灵活性。
-- **权限管理**：在系统设置中配置用户角色和权限，控制用户对项目和任务的访问权限。
-
-通过以上步骤，您可以完成 Jpom 的安装、配置和基本使用，实现持续集成和持续部署。
-
-随着对 Jpom 的进一步了解和实践，您还可以深入探索更多高级功能和技巧。
-
-# 官方教程
-
-ps: 以内内容来自官方网站，作为后续学习之用。
-
-## 😭 日常开发中，您是否有以下痛点？
-
-- <font color="red">**团队中没有专业的运维，开发还要做运维的活**</font>，需要自己手动构建、部署项目。
+- 团队中没有专业的运维，开发还要做运维的活，需要自己手动构建、部署项目。
 - 不同的项目有不同的构建、部署命令。
 - 有开发、测试、生产等多环境打包的需求。
 - 需要同时监控多个项目的运行状态。
@@ -176,7 +42,7 @@ ps: 以内内容来自官方网站，作为后续学习之用。
 
 > 如果是分布式的项目，以上步骤则更加繁琐。
 >
-> 让 Jpom 来帮你解决这些痛点吧！然而，这些只是 Jpom 解决的最基础的功能。
+> 让 Jpom 来帮您解决这些痛点吧！然而，这些只是 Jpom 解决的最基础的功能。
 
 ### 😁 使用 [Jpom](https://gitee.com/dromara/Jpom) 后
 
@@ -186,8 +52,8 @@ ps: 以内内容来自官方网站，作为后续学习之用。
 	3. 账号可以开启 **MFA 两步验证**提高账号安全性
 - 界面形式实时查看项目运行状态、控制台日志、管理项目文件
 	1. 在线修改项目文本文件
-- Docker 容器管理、Docker swarm 集群管理（**Docker ui**）
-- **在线 SSH 终端**，让您在没有 Xshell、FinalShell 等软件也能轻松管理服务器
+- Docker 容器管理、Docker Swarm 集群管理（**Docker UI**）
+- **在线 SSH 终端**，让您在没有 PuTTY、Xshell、FinalShell 等软件也能轻松管理服务器
 	1. 登录 Jpom 系统后不需要知道服务器密码
 	2. 能指定 SSH 禁止执行的命令，避免执行高风险命令，并且能自动执行命令日志
 	3. 设置文件目录，在线查看管理对应项目文件及配置文件
@@ -206,7 +72,7 @@ ps: 以内内容来自官方网站，作为后续学习之用。
 - 项目状态监控异常自动报警、自动尝试重启
 	1. 支持邮件 + 钉钉群 + 微信群通知，主动感知项目运行状况
 - 节点脚本模版+定时执行或者触发器，拓展更多功能
-- 重要路径白名单模式，杜绝用户误操作系统文件
+- 重要路径授权配置，杜绝用户误操作系统文件
 
 ### 🔔️ 特别提醒
 
@@ -263,7 +129,7 @@ bash install.sh Server jdk
 ```
 
 启动成功后，服务端的端口为 `2122`，可通过 `http://127.0.0.1:2122/`
-访问管理页面（如果不是本机访问，需要把 127.0.0.1 换成你安装的服务器 IP 地址）。
+访问管理页面（如果不是本机访问，需要把 127.0.0.1 换成您安装的服务器 IP 地址）。
 
 > 如无法访问管理系统，执行命令 `systemctl status firewalld` 检查下是否开启了防火墙
 > ，如状态栏看到绿色显示 `Active: active (running)` 需要放行 `2122` 端口。
@@ -275,7 +141,7 @@ bash install.sh Server jdk
 >firewall-cmd --reload
 >```
 >
->如果在操作系统上放行了端口仍无法访问，并且你使用的是云服务器，请到云服务器后台中检查安全组规则是否放行 2122 端口。
+>如果在操作系统上放行了端口仍无法访问，并且您使用的是云服务器，请到云服务器后台中检查安全组规则是否放行 2122 端口。
 >
 >⚠️ 注意： Linux 系统中有多种防火墙：Firewall、Iptables、SELinux 等，再检查防火墙配置时候需要都检查一下。
 
@@ -320,6 +186,23 @@ docker run -p 2122:2122 --name jpom-server jpomdocker/jpom
 
 #### 使用挂载方式存储相关数据（在部分环境可能出现兼容性问题）
 
+1. 阿里仓库
+
+```shell
+docker pull registry.cn-chengdu.aliyuncs.com/jpomdocker/jpom
+mkdir -p /home/jpom-server/logs
+mkdir -p /home/jpom-server/data
+mkdir -p /home/jpom-server/conf
+docker run -d -p 2122:2122 \
+	--name jpom-server \
+	-v /home/jpom-server/logs:/usr/local/jpom-server/logs \
+	-v /home/jpom-server/data:/usr/local/jpom-server/data \
+	-v /home/jpom-server/conf:/usr/local/jpom-server/conf \
+	jpomdocker/jpom
+```
+
+2. dockerhub 仓库
+
 ```shell
 docker pull jpomdocker/jpom
 mkdir -p /home/jpom-server/logs
@@ -334,6 +217,23 @@ docker run -d -p 2122:2122 \
 ```
 
 #### 使用容器卷方式存储相关数据
+
+1. 阿里仓库
+
+```shell
+docker pull registry.cn-chengdu.aliyuncs.com/jpomdocker/jpom
+docker volume create jpom-server-data
+docker volume create jpom-server-logs
+docker volume create jpom-server-conf
+docker run -d -p 2122:2122 \
+	--name jpom-server \
+	-v jpom-server-data:/usr/local/jpom-server/data \
+	-v jpom-server-logs:/usr/local/jpom-server/logs \
+	-v jpom-server-conf:/usr/local/jpom-server/conf \
+	jpomdocker/jpom
+```
+
+2. dockerhub 仓库
 
 ```shell
 docker pull jpomdocker/jpom
@@ -362,15 +262,15 @@ docker run -d -p 2122:2122 \
 1. 下载安装包 [https://jpom.top/pages/all-downloads/](https://jpom.top/pages/all-downloads/)
 2. 解压文件
 3. 安装插件端
-	1. agent-x.x.x-release 目录为插件端的全部安装文件
+	1. `agent-x.x.x-release` 目录为插件端的全部安装文件
 	2. 上传到对应服务器（整个目录）
 	3. 启动插件端，Windows 环境用 bat 脚本，Linux 环境用 sh 脚本。（如果出现乱码或者无法正常执行，请检查编码格式、换行符是否匹配。）
 	4. 插件端默认运行端口：`2123`
 4. 安装服务端
-	1. server-x.x.x-release 目录为服务端的全部安装文件
+	1. `server-x.x.x-release` 目录为服务端的全部安装文件
 	2. 上传到对应服务器（整个目录）
 	3. 启动服务端，Windows 环境用 bat 脚本，Linux 环境用 sh 脚本。（如果出现乱码或者无法正常执行，请检查编码格式、换行符是否匹配。）
-	4. 服务端默认运行端口：`2122`，访问管理页面：`http://127.0.0.1:2122/`（非本机访问把 127.0.0.1 换成你的服务器 IP 地址）
+	4. 服务端默认运行端口：`2122`，访问管理页面：`http://127.0.0.1:2122/`（非本机访问把 `127.0.0.1` 换成您的服务器 IP 地址）
 
 ### 方式四：⌨️ 编译安装
 
@@ -379,15 +279,15 @@ docker run -d -p 2122:2122 \
 3. 执行 `npm run build` 进行 vue 项目打包
 4. 切换到项目根目录执行：`mvn clean package`
 5. 安装插件端
-	1. 查看插件端安装包 modules/agent/target/agent-x.x.x-release
+	1. 查看插件端安装包 `modules/agent/target/agent-x.x.x-release`
 	2. 打包上传服务器运行（整个目录）
 	3. 启动插件端，Windows 环境用 bat 脚本，Linux 环境用 sh 脚本。（如果出现乱码或者无法正常执行，请检查编码格式、换行符是否匹配。）
 	4. 默认运行端口：`2123`
 6. 安装服务端
-	1. 查看插件端安装包 modules/server/target/server-x.x.x-release
+	1. 查看插件端安装包 `modules/server/target/server-x.x.x-release`
 	2. 打包上传服务器运行（整个目录）
 	3. 启动服务端，Windows 环境用 bat 脚本，Linux 环境用 sh 脚本。（如果出现乱码或者无法正常执行，请检查编码格式、换行符是否匹配。）
-	4. 服务端默认运行端口：`2122`，访问管理页面：`http://127.0.0.1:2122/`（非本机访问把 127.0.0.1 换成你的服务器 IP 地址）
+	4. 服务端默认运行端口：`2122`，访问管理页面：`http://127.0.0.1:2122/`（非本机访问把 `127.0.0.1` 换成您的服务器 IP 地址）
 
 > 也可以使用 `script/release.bat` 或 `script/release.sh` 快速打包。
 
@@ -422,8 +322,8 @@ docker-compose -f docker-compose.yml up
 	2. 服务端默认运行端口：`2122`
 4. 构建 vue 页面，切换到 `web-vue` 目录（前提需要本地开发环境有 node、npm 环境）
 5. 安装项目 vue 依赖，控制台执行 `npm install`
-6. 启动开发模式，控制台执行 `npm run serve`
-7. 根据控制台输出的地址访问前端页面：`http://127.0.0.1:3000/`（非本机访问把 127.0.0.1 换成你的服务器 IP 地址）
+6. 启动开发模式，控制台执行 `npm run dev`
+7. 根据控制台输出的地址访问前端页面：`http://127.0.0.1:3000/`（非本机访问把 `127.0.0.1` 换成您的服务器 IP 地址）
 
 ## 管理 Jpom 命令
 
@@ -431,18 +331,18 @@ docker-compose -f docker-compose.yml up
 
 ```bash
 # 服务端管理脚本 （命令行）
-./bin/Server.bat start 启动Jpom服务端
-./bin/Server.bat stop 停止Jpom服务端
-./bin/Server.bat restart 重启Jpom服务端
-./bin/Server.bat status 查看Jpom服务端运行状态
+./bin/Server.bat start   # 启动Jpom服务端
+./bin/Server.bat stop    # 停止Jpom服务端
+./bin/Server.bat restart # 重启Jpom服务端
+./bin/Server.bat status  # 查看Jpom服务端运行状态
 # 服务端管理脚本 （控制面板），按照面板提示输入操作
 ./bin/Server.bat
 
 # 插件端管理脚本
-./bin/Agent.bat start 启动Jpom插件端
-./bin/Agent.bat stop 停止Jpom插件端
-./bin/Agent.bat restart 重启Jpom插件端
-./bin/Agent.bat status 查看Jpom插件端运行状态
+./bin/Agent.bat start   # 启动Jpom插件端
+./bin/Agent.bat stop    # 停止Jpom插件端
+./bin/Agent.bat restart # 重启Jpom插件端
+./bin/Agent.bat status  # 查看Jpom插件端运行状态
 # 插件端管理脚本（控制面板），按照面板提示输入操作
 ./bin/Agent.bat
 
@@ -455,18 +355,18 @@ docker-compose -f docker-compose.yml up
 
 ```bash
 # 服务端
-./bin/Server.sh start     启动Jpom服务端
-./bin/Server.sh stop      停止Jpom服务端
-./bin/Server.sh restart   重启Jpom服务端
-./bin/Server.sh status    查看Jpom服务端运行状态
-./bin/Service.sh install    创建Jpom服务端的应用服务（jpom-server）
+./bin/Server.sh start     # 启动Jpom服务端
+./bin/Server.sh stop      # 停止Jpom服务端
+./bin/Server.sh restart   # 重启Jpom服务端
+./bin/Server.sh status    # 查看Jpom服务端运行状态
+./bin/Service.sh install  # 创建Jpom服务端的应用服务（jpom-server）
 
 # 插件端
-./bin/Agent.sh start     启动Jpom插件端
-./bin/Agent.sh stop      停止Jpom插件端
-./bin/Agent.sh restart   重启Jpom插件端
-./bin/Agent.sh status    查看Jpom插件端运行状态
-./bin/Service.sh install     创建Jpom插件端的应用服务（jpom-agent）
+./bin/Agent.sh start     # 启动Jpom插件端
+./bin/Agent.sh stop      # 停止Jpom插件端
+./bin/Agent.sh restart   # 重启Jpom插件端
+./bin/Agent.sh status    # 查看Jpom插件端运行状态
+./bin/Service.sh install # 创建Jpom插件端的应用服务（jpom-agent）
 ```
 
 ## Linux 服务方式管理
@@ -497,27 +397,6 @@ docker-compose -f docker-compose.yml up
 2. 服务端示例：
    [`logback.xml`](https://gitee.com/dromara/Jpom/blob/master/modules/server/src/main/resources/config_default/logback.xml)
 
-## 构建案例仓库代码
-
-1. [Jboot 案例代码](https://gitee.com/keepbx/Jpom-demo-case/tree/master/jboot-test)
-2. [SpringBoot 案例代码(ClassPath)](https://gitee.com/keepbx/Jpom-demo-case/tree/master/springboot-test)
-3. [SpringBoot 案例代码(Jar)](https://gitee.com/keepbx/Jpom-demo-case/tree/master/springboot-test-jar)
-4. [node vue 案例代码(antdv)](https://gitee.com/keepbx/Jpom-demo-case/tree/master/antdv)
-5. [python 案例代码](https://gitee.com/keepbx/Jpom-demo-case/tree/master/python)
-
-> nodejs 编译指定目录：
-
-```bash
-yarn --cwd xxxx/ install
-yarn --cwd xxxx/ build
-```
-
-> maven 编译指定目录：
-
-```bash
-mvn -f xxxx/pom.xml clean package
-```
-
 ## 📝 常见问题、操作说明
 
 - [文档主页](https://jpom.top/)
@@ -538,9 +417,96 @@ mvn -f xxxx/pom.xml clean package
 8. [容器构建 + 项目发布 java 项目](https://jpom.top/pages/practice/build-docker-java-node-release/)
 9. [更新实践案例>>](https://jpom.top/pages/practice/)
 
+## 构建案例仓库代码
+
+1. [Jboot 案例代码](https://gitee.com/keepbx/Jpom-demo-case/tree/master/jboot-test)
+2. [SpringBoot 案例代码(ClassPath)](https://gitee.com/keepbx/Jpom-demo-case/tree/master/springboot-test)
+3. [SpringBoot 案例代码(Jar)](https://gitee.com/keepbx/Jpom-demo-case/tree/master/springboot-test-jar)
+4. [node vue 案例代码(antdv)](https://gitee.com/keepbx/Jpom-demo-case/tree/master/antdv)
+5. [python 案例代码](https://gitee.com/keepbx/Jpom-demo-case/tree/master/python)
+
+> Node.js 编译指定目录：
+
+```bash
+yarn --cwd xxxx/ install
+yarn --cwd xxxx/ build
+```
+
+> Maven 编译指定目录：
+
+```bash
+mvn -f xxxx/pom.xml clean package
+```
+
 ## 🛠️ 整体架构
 
-![jpom-func-arch](https://jpom.top/images/jpom-func-arch.jpg)
+![jpom-func-arch](https://jpom.top/images/jpom-func-arch.png)
+
+
+## 🐞 交流讨论 、反馈 BUG、提出建议等
+
+1. 快扫描下方左侧微信群二维码和我们一起交流讨论吧！（添加小助手：备注 Jpom 进群）
+2. 开源项目离不开社区的支持，如果项目帮助到了您，并且想给我们加个餐。
+   欢迎扫描下方[微信、支付宝收款码赞赏](https://jpom.top/images/qrcode/praise-all.png)
+   或通过[码云赞赏](https://gitee.com/dromara/Jpom)
+   （在项目首页下方点击捐赠，支持微信和支付宝）。[赞赏记录](https://jpom.top/pages/praise/publicity/)
+3. 购买开源周边商品：[周边介绍](https://jpom.top/pages/shop/)
+4. 企业技术服务请单独与我们联系沟通服务方案
+5. 反馈 BUG、提出建议，欢迎新建：[issues](https://gitee.com/dromara/Jpom/issues)，开发人员会不定时查看回复。
+6. 参与贡献，请查看[贡献指南](#贡献指南)。
+
+
+## 🔨贡献指南
+
+> 提交贡献即认为签署了 [CLA](https://gitee.com/dromara/Jpom/blob/master/CLA.md) 协议
+
+### 贡献须知
+
+Jpom 作为开源项目，离不开社区的支持，欢迎任何人修改和提出建议。贡献无论大小，您的贡献会帮助背后成千上万的使用者以及开发者，您做出的贡献也会永远的保留在项目的贡献者名单中，这也是开源项目的意义所在！
+
+为了保证项目代码的质量与规范，以及帮助您更快的了解项目的结构，请在贡献之前阅读：
+
+- [Jpom 贡献说明](https://gitee.com/dromara/Jpom/blob/master/CODE_OF_CONDUCT.md)
+- [中英文排版规范](https://gitee.com/dromara/Jpom/blob/dev/typography-specification.md)
+
+### 贡献步骤
+
+1. Fork 本仓库。
+
+2. Fork 后会在您的账号下多了一个和本仓库一模一样的仓库，把您账号的仓库 clone 到本地。
+
+   注意替换掉链接中的`分支名`和`用户名`。
+
+   如果是贡献代码，分支名填 `dev`；如果是贡献文档，分支名填 `docs`
+
+   ```bash
+   git clone -b 分支名 https://gitee.com/用户名/Jpom.git
+   ```
+
+3. 修改代码/文档，修改后提交上来。
+
+   ```bash
+   # 把修改的文件添加到暂存区
+   git add .
+   # 提交到本地仓库，说明您具体做了什么修改
+   git commit -m '填写您做了什么修改'
+   # 推送到远程仓库，分支名替换成 dev 或者 docs
+   git push origin 分支名
+   ```
+
+4. 登录您的仓库，然后会看到一条 PR 请求，点击请求合并，等待管理员把您的代码合并进来。
+
+### 项目分支说明
+
+| 分支     | 说明                                                   |
+|--------|------------------------------------------------------|
+| master | 主分支，受保护分支，此分支不接受 PR。在 beta 分支后经过测试没问题后会合并到此分支。       |
+| beta   | beta 版本 分支，受保护分支，此分支不接受 PR。在 dev 分支后经过测试没问题后会合并到此分支。 |
+| dev    | 开发分支，接受 PR，PR 请提交到 dev 分支。                           |
+| docs   | 项目文档分支，接受 PR，介绍项目功能、汇总常见问题等。                         |
+
+> 目前用到的主要是 dev 和 docs 分支，接受 PR 修改，其他的分支为归档分支，贡献者可以不用管。
+
 
 ## 🔔 精品项目推荐
 
