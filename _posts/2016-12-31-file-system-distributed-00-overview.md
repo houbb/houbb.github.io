@@ -13,6 +13,30 @@ published: true
 
 [Apache Hadoop-03-HDFS Distributed File System 分布式文件系统](https://houbb.github.io/2017/12/04/apache-hadoop-03-hdfs)
 
+# 开发流程
+
+可以先开发一个单机版本的
+
+然后逐步改进到分布式
+
+保证对外的 api 不变化，兼容 S3
+
+可以参考 minio 来设计。
+
+# 差异化
+
+## 安全
+
+加密
+
+## 多端
+
+移动端+多个端的支持？
+
+## 高可用
+
+分布式+高性能
+
 
 # 开源组件
 
