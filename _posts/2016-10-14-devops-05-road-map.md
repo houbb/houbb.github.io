@@ -61,13 +61,11 @@ published: true
 
 如果你喜欢或者正在使用这个项目来学习或开始你的解决方案，请给它点个星星，谢谢！
 
-![DevOps 路线图](DevOps%20Roadmap.png)
+![DevOps 路线图](https://github.com/milanm/DevOps-Roadmap/blob/master/DevOps%20Roadmap.png?raw=true)
 
 ## PDF 版本
 
-[![DevOps 路线图](pdfversion.png)](DevOps%20Roadmap.pdf)
-
-下载 [PDF 版本](DevOps%20Roadmap.pdf)。
+下载 [PDF 版本](https://github.com/milanm/DevOps-Roadmap/blob/master/DevOps%20Roadmap.pdf)。
 
 ## 目录
 
@@ -357,7 +355,7 @@ CI/CD 管道包含 **不同阶段**，例如：**构建、测试和部署**，�
 - **容器编排**：**[Docker](https://www.docker.com/)**，**[Kubernetes](https://kubernetes.io/)**，**[Red Hat OpenShift](https://www.redhat.com/en/technologies/cloud-computing/openshift)**。
 - **监控**：**[Prometheus](https://prometheus.io/)**，**[Grafana](https://grafana.com/)**，**[Splunk](https://www.splunk.com/)**，**[Dynatrace](https://www.dynatrace.com/)**，**[Kibana](https://www.elastic.co/kibana/)**。
 
-![DevOps 路线图](devops%20tools.png)
+![DevOps 路线图](https://github.com/milanm/DevOps-Roadmap/blob/master/devops%20tools.png?raw=true)
 
 ### 书籍
 
@@ -389,13 +387,11 @@ CI/CD 管道包含 **不同阶段**，例如：**构建、测试和部署**，�
 
     本书解释了 Google 开发、部署和监控的整个生命周期，以及如何管理世界上最大的软件系统（即 SRE）。任何自认为偏向 DevOps 中 "Ops" 方面的人员，或想加强 Dev 和 Ops 团队之间联系的人都应该阅读这本书。
 
-![DevOps 书籍](DevOpsBooks.jpg)
-
 ## DevOps 作为汉堡包（DaaB）
 
 我们甚至可以将这个路线图展示为一个汉堡包：)
 
-![DevOps 作为汉堡包](DevOpsBurger.jpg)
+![DevOps 作为汉堡包](https://github.com/milanm/DevOps-Roadmap/blob/master/DevOpsBurger.jpg?raw=true)
 
 ## 结语
 
