@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 分布式链路追踪-02-Dapper, a Large-Scale Distributed Systems Tracing Infrastructure dapper 论文介绍
+title: 分布式链路追踪-02-Dapper 论文介绍, a Large-Scale Distributed Systems Tracing Infrastructure dapper 
 date:  2023-07-25 08:00:00 +0800
 categories: [Trace]
 tags: [trace, distributed, sh]
