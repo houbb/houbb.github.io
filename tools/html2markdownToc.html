@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>文本转换工具</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 10px;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      justify-content: space-between;
+    }
+    .container {
+      display: flex;
+      justify-content: space-between;
+      flex-grow: 0.9; /* 使容器占据剩余空间 */
+    }
+    .box {
+      width: 45%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+    }
+    textarea {
+      width: 100%;
+      height: 100%;
+      padding: 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .button-container {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 10px; /* 增加按钮与内容框之间的距离 */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 左侧输入框 -->
+    <div class="box">
+      <h3>原始内容</h3>
+      <textarea id="inputText" placeholder="请输入文本..."></textarea>
+    </div>
+    
+    <!-- 右侧输出框 -->
+    <div class="box">
+      <h3>输出内容</h3>
+      <textarea id="outputText" readonly placeholder="转换后的内容将显示在这里..."></textarea>
+    </div>
+  </div>
+
+  <!-- 转换按钮 -->
+  <div class="button-container">
+    <button onclick="convertToMarkdown()">转 Markdown</button>
+    <button onclick="convertToHTML()">转 HTML</button>
+    <button onclick="swapContent()">互换</button>
+    <button onclick="generateTableOfContents()">生成目录</button>
+  </div>
+
+  <!-- 引入 turndown 库 -->
+  <script src="https://cdn.jsdelivr.net/npm/turndown/dist/turndown.min.js"></script>
+  
+  <!-- 引入 marked 库 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <script>
+    // 交换输入框和输出框的内容
+    function swapContent() {
+      const inputText = document.getElementById('inputText').value;
+      const outputText = document.getElementById('outputText').value;
+      document.getElementById('inputText').value = outputText;
+      document.getElementById('outputText').value = inputText;
+    }
+
+    // 将文本转换为Markdown格式
+    function convertToMarkdown() {
+      const input = document.getElementById('inputText').value;
+      const turndownService = new TurndownService();
+      const markdown = turndownService.turndown(input); // HTML 转换为 Markdown
+      document.getElementById('outputText').value = markdown;
+    }
+
+    // 将文本转换为HTML格式
+    function convertToHTML() {
+      const input = document.getElementById('inputText').value;
+      // 使用 marked.parse 来替代 marked 函数调用
+      const html = marked.parse(input); // Markdown 转换为 HTML
+      document.getElementById('outputText').value = html;
+    }
+
+    // 生成目录
+    function generateTableOfContents() {
+      const inputText = document.getElementById('inputText').value;
+      let tocContent = '';
+
+      // 检查是 HTML 还是 Markdown 格式
+      if (inputText.includes('<h1>') || inputText.includes('<h2>') || inputText.includes('<h3>')) {
+        // HTML 格式的目录生成
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(inputText, 'text/html');
+        const headings = doc.querySelectorAll('h1, h2, h3');
+
+        headings.forEach((heading, index) => {
+          const level = parseInt(heading.tagName[1]);
+          const id = heading.textContent.trim().toLowerCase().replace(/\s+/g, '-');
+          heading.setAttribute('id', id);  // 给每个标题添加 id，方便链接
+
+          tocContent += `${'  '.repeat(level - 1)}- [${heading.textContent}](#${id})\n`;
+        });
+      } else {
+        // Markdown 格式的目录生成
+        const lines = inputText.split('\n');
+        for (let i = 0; i < lines.length; i++) {
+          const line = lines[i].trim();
+
+          // 如果当前行是标题行
+          const nextLine = lines[i + 1] ? lines[i + 1].trim() : '';
+
+          // 匹配 Setext-style 一级标题（====）
+          if (nextLine === '='.repeat(nextLine.length) && line !== '' && nextLine.length > 0) {
+            const title = line.trim();
+            const id = title.toLowerCase().replace(/\s+/g, '-');
+            tocContent += `- [${title}](#${id})\n`;
+            i++; // 跳过下划线行
+          }
+          // 匹配 Setext-style 二级标题（-----）
+          else if (nextLine === '-'.repeat(nextLine.length) && line !== '' && nextLine.length > 0) {
+            const title = line.trim();
+            const id = title.toLowerCase().replace(/\s+/g, '-');
+            tocContent += `  - [${title}](#${id})\n`;
+            i++; // 跳过下划线行
+          }
+
+          // 处理 Atx-style 标题（如 # 一级标题、## 二级标题）
+          const atxH1Match = line.match(/^# (.+)$/);  // # 标记一级标题
+          const atxH2Match = line.match(/^## (.+)$/); // ## 标记二级标题
+
+          if (atxH1Match) {
+            // 一级标题
+            const title = atxH1Match[1].trim();
+            const id = title.toLowerCase().replace(/\s+/g, '-');
+            tocContent += `- [${title}](#${id})\n`;
+          } else if (atxH2Match) {
+            // 二级标题
+            const title = atxH2Match[1].trim();
+            const id = title.toLowerCase().replace(/\s+/g, '-');
+            tocContent += `  - [${title}](#${id})\n`;
+          }
+        }
+      }
+
+      document.getElementById('outputText').value = tocContent;
+    }
+  </script>
+
+</body>
+</html>
