@@ -7,7 +7,9 @@ tags: [open-source, tool, sh]
 published: true
 ---
 
-# 在进行开源软件选型时，需要留意一下开源协议，开源选件往往可以免费使用，但不意味着随意使用，根据你的用途，协议的要求会对你产生一定的影响。
+# 开源协议
+
+在进行开源软件选型时，需要留意一下开源协议，开源选件往往可以免费使用，但不意味着随意使用，根据你的用途，协议的要求会对你产生一定的影响。
 
 截止到写稿时，经过OSI（Open Source Initiative）组织批准的开源协议就有82种之多，可以参见：（[https://opensource.org/licenses/alphabetical)，]。
 
