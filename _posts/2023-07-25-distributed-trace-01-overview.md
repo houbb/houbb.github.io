@@ -7,6 +7,65 @@ tags: [trace, distributed, sh]
 published: true
 ---
 
+
+# 开源项目
+
+[auto-log 自动日志输出](https://github.com/houbb/auto-log)
+
+# 分布式链路跟踪系列
+
+## agent 系列
+
+[java agent 介绍](https://houbb.github.io/2023/07/19/java-agent-01-intro)
+
+[java agent-02-Java Instrumentation API](https://houbb.github.io/2023/07/19/java-agent-02-instrumentation-api)
+
+[java agent-03-Java Instrumentation 结合 bytekit 实战笔记 agent attach](https://houbb.github.io/2023/07/19/java-agent-03-bytekit-agent-attach)
+
+[java agent-03-Java Instrumentation 结合 bytekit 实战笔记 agent premain](https://houbb.github.io/2023/07/19/java-agent-03-bytekit-premain-inaction)
+
+[java agent-04-统一管理众多的Java Agent](https://houbb.github.io/2023/07/19/java-agent-04-javaoneagent-01-intro)
+
+[java agent-05-bytekit 入门介绍](https://houbb.github.io/2023/07/19/java-agent-03-bytekit-premain-inaction)
+
+## CAT
+
+[cat monitor 分布式监控 CAT-是什么？](https://houbb.github.io/2023/09/19/cat-monitor-01-overview)
+
+[cat monitor-02-分布式监控 CAT埋点](https://houbb.github.io/2023/09/19/cat-monitor-02-event-tracking)
+
+[cat monitor-03-深度剖析开源分布式监控CAT](https://houbb.github.io/2023/09/19/cat-monitor-03-depth)
+
+[cat monitor-04-cat 服务端部署实战](https://houbb.github.io/2023/09/19/cat-monitor-04-server-deploy-in-action)
+
+[cat monitor-05-cat 客户端集成实战](https://houbb.github.io/2023/09/19/cat-monitor-05-client-intergration-in-action)
+
+[cat monitor-06-cat 消息存储](https://houbb.github.io/2023/09/19/cat-monitor-06-message-store)
+
+## skywalking
+
+[监控-skywalking-01-APM 监控入门介绍](https://houbb.github.io/2019/04/01/monitor-skyworking-01-overview)
+
+[监控-skywalking-02-深入学习 skywalking 的实现原理的一些问题](https://houbb.github.io/2019/04/01/monitor-skyworking-02-chat)
+
+[监控-skywalking-03-深入浅出介绍全链路跟踪](https://houbb.github.io/2019/04/01/monitor-skyworking-03-intro)
+
+[监控-skywalking-04-字节码增强原理](https://houbb.github.io/2019/04/01/monitor-skyworking-04-why)
+
+[监控-skywalking-05-in action 实战笔记](https://houbb.github.io/2019/04/01/monitor-skyworking-05-in-action)
+
+[监控-skywalking-06-SkyWalking on the way 全链路追踪系统的建设与实践](https://houbb.github.io/2019/04/01/monitor-skyworking-06-summary)
+
+## 其他
+
+[开源分布式系统追踪-00-overview](https://houbb.github.io/2023/07/25/distributed-trace-opensource-00-overview)
+
+[开源分布式系统追踪-01-Zipkin-01-入门介绍](https://houbb.github.io/2023/07/25/distributed-trace-opensource-01-zipkin-01-intro)
+
+[开源分布式系统追踪 02-pinpoint-01-入门介绍](https://houbb.github.io/2023/07/25/distributed-trace-opensource-02-pinpoint-01-intro)
+
+[开源分布式系统追踪-03-CNCF jaeger-01-入门介绍](https://houbb.github.io/2023/07/25/distributed-trace-opensource-03-cncf-jaeger)
+
 # 分布式链路追踪简介
 
 随着业务系统的不断发展、微服务架构的演进，从原来的单体应用架构、垂直应用架构、分布式 SOA 架构到现在的微服务架构，系统逐步走向微服务化以适应用户高并发请求等需求。
@@ -173,6 +232,15 @@ cr：ClientReceived，表示客户端获取到服务端返回信息；
 ![存储](https://ucc.alicdn.com/pic/developer-ecology/be4cf1181a5c421f9e4da23a2a736e23.png)
 
 链路中的span数据经过收集和上报后会集中存储在一个地方，Dapper使用了BigTable数据仓库，常用的存储还有ElasticSearch, HBase, In-memory DB等。
+
+# 小结
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
+
+--------------------------------------------------------------------------------------------
+
 
 # 业界常用链路追踪系统
 
