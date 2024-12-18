@@ -14,6 +14,44 @@ published: true
 [Apache Hadoop-03-HDFS Distributed File System 分布式文件系统](https://houbb.github.io/2017/12/04/apache-hadoop-03-hdfs)
 
 
+# 如何选择？
+
+链接：https://www.zhihu.com/question/435267324/answer/2466262817
+
+说到开源的分布式文件系统，可以分两个时代来看。
+
+第一个机房时代，受 Google File System 论文的影响产出了一批开源项目，有 GlusterFS、CephFS、HDFS、MooseFS、Lustre、BeeGFS。这些项目都在 2003~2009 这个时间段出现，都为当时的 IDC 环境而设计。
+
+其中 GlusterFS 和 Ceph 都被 Red Hat 收购了，最近几年前者曝光不多，Ceph 到时很火，应该受 Kubernetes 流行影响。
+
+但是 Ceph 实在不适合云环境，很难利用云的好处，但是 Kubernetes 在很多业务中需要共享文件系统，CephFS 还是被很多用户尝试了，不少也是从入门到放弃，因为运维门槛比较高，没有丰富分布式系统和存储系统运维经验的众多业务开发者很难搞定。
+
+其他的几个项目，HDFS 一直是大数据领域专属，发展15年多了，只有 Java SDK 成熟，用它来做通用的业务开发肯定不方便。
+
+MooseFS 是欧洲项目，最近 10 年发展不多。
+
+Lustre 前两年主要的维护者之一 Intel 宣布不再维护，现在主要是 DDN 在维护和提供商用服务，个人觉得是 AI 领域的发展让曾经支持并行计算的霸主 Lustre 出现了很多限制，比如海量小文件（10亿以上），这样的挑战是 2003 年那一批产品在诞生时还看不到的，而架构已经如基因一样定了下来，后面再做大的调整并不容易。
+
+其他回答中还提到几个项目：
+
+mogileFS(mogilefs)，这个很古老了，Perl 开发的，也没人维护了，不建议用了；
+
+TFS 和 FastDFS 应该更像是对象存储，没有提供 POSIX 兼容。
+
+MinIO 是兼容 S3 API 的对象存储，没有 POSIX 兼容。优点是部署特别简单，缺点是不能动态增加节点，必须部署时确定集群规模，小对象性能不好，因为数据落盘是每个对象对应一个文件，直接存在本地文件系统上。
+
+第二个云时代，最近五年又出现了一些新的分布式文件存储项目，介绍几个：
+
+JuiceFS（https://github.com/juicedata/juicefs），我们在做的。
+
+开源社区关注度提升很快，已有不少大厂用在生产环境上了。全球公有云上都有云服务，开箱即用。
+
+CubeFS（CubeFS），之前叫 ChubaoFS，最早诞生于京东内部。
+
+SeaweadFS（SeaweedFS），最初是对象存储，基于 Haystack 架构，最近两年加入了更多功能，包括 POSIX 支持。
+
+在云环境和 Kubernetes 环境中使用，推荐大家看看这几年的项目。
+
 # 开源组件
 
 ## 1. Ceph
