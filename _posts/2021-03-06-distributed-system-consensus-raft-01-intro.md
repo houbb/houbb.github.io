@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Raft-一致性算法
-date:  2018-10-30 09:31:33 +0800
+date:  2021-3-06 16:52:15 +0800
 categories: [Distributed]
 tags: [algorithm, distributed, java, sh]
 published: true

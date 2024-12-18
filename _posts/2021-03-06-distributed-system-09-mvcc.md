@@ -3,7 +3,7 @@ layout: post
 title:  分布式系统-09-MVCC 多版本并发控制
 date:  2021-3-06 16:52:15 +0800
 categories: [Distributed]
-tags: [distributed, sh]
+tags: [distributed, distributed-system, sh]
 published: true
 ---
 

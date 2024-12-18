@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 分布式原理：Gossip 协议
-date:  2018-10-30 09:31:33 +0800
+date:  2021-3-06 16:52:15 +0800
 categories: [Distributed]
 tags: [algorithm, distributed, java, sh]
 published: true

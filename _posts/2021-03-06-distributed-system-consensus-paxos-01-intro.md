@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Paxos-一致性算法
-date:  2018-10-30 09:00:26 +0800
+date:  2021-3-06 16:52:15 +0800
 categories: [Distributed]
 tags: [distributed, algorithm, java, sh]
 published: true

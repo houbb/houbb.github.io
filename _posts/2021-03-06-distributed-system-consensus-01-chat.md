@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 分布式共识机制/一致性协议 consensus-01-一致性协议 chat
-date:  2018-10-30 09:31:33 +0800
+date:  2021-3-06 16:52:15 +0800
 categories: [Distributed]
 tags: [algorithm, distributed, consensus, java, sh]
 published: true

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Byzantine failures 拜占庭将军问题
-date:  2018-10-30 09:31:33 +0800
+date:  2021-3-06 16:52:15 +0800
 categories: [Distributed]
 tags: [algorithm, distributed, bit-coin, block-chain, sh]
 published: true
@@ -78,18 +78,6 @@ published: true
 “拜占庭将军问题”中的“叛徒”就是互联网金融交易中的“骗子”，如果第三方平台出现了大漏洞或者为了规避过多的步骤将第三方信任机构撤走，“叛徒”就会利用信息在没有第三方信任机构的担保之下进行“行骗”。
 
 在不去花费大量时间、资源揪出这个“叛徒”的情况下，能够让交易者双方都彼此信任、进行正常交易的方式就是区块链。
-
-# 解决算法
-
-[Paxos-一致性算法](https://houbb.github.io/2018/10/30/paxos)
-
-[Raft-一致性算法](https://houbb.github.io/2018/10/30/raft)
-
-[ZAB-一致性算法](https://houbb.github.io/2018/10/30/zab)
-
-[时间戳-分布式一致性算法](https://houbb.github.io/2018/08/31/lock-time-series-02)
-
-[Vector Lock 时钟向量-一致性算法](https://houbb.github.io/2018/08/31/lock-vector-clock-01)
 
 # 参考资料
 

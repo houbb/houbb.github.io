@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  分布式系统中的 CAP 定理是什么？
-date:  2018-09-06 08:25:14 +0800
+date:  2021-3-06 16:52:15 +0800
 categories: [Distributed]
 tags: [micro-service, distributed, sh]
 published: true
