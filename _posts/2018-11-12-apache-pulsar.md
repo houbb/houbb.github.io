@@ -1,11 +1,10 @@
 ---
 layout: post
-title: Apache Pulsar 
+title: Apache Pulsar 分布式消息队列的后起之秀
 date:  2018-11-12 08:38:35 +0800
 categories: [MQ]
 tags: [mq, apache, distributed, sh]
 published: true
-excerpt:  Apache Pulsar 分布式消息队列的后起之秀
 ---
 
 # Apache Pulsar 

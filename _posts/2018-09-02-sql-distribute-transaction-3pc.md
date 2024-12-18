@@ -7,6 +7,23 @@ tags: [sql, transaction, distributed, tx, sh]
 published: true
 ---
 
+# 数据库分布式事务
+
+[SQL 分布式事务 distributed transaction 二段提交, 本地消息表, Saga 事务, 最大努力通知](https://houbb.github.io/2018/09/02/sql-distribute-transaction)
+
+[分布式事务-本地消息表 （经典的ebay模式）](https://houbb.github.io/2018/09/02/sql-distribute-transaction-mq)
+
+[TCC Try-Confirm-Cancel 分布式事务](https://houbb.github.io/2018/09/02/sql-distribute-transaction-tcc)
+
+[SQL 2PC-两阶段提交 SQL 分布式事务两阶段提交协议(2PC)是一种原子承诺协议(ACP)。](https://houbb.github.io/2018/09/02/sql-distribute-transaction-2pc)
+
+[SQL 2PL-两阶段锁定](https://houbb.github.io/2018/09/02/sql-distribute-transaction-2pl)
+
+[3pc Three-Phase Commit 三阶段提交 分布式事务](https://houbb.github.io/2018/09/02/sql-distribute-transaction-3pc)
+
+[Compensating Transaction pattern 分布式锁事务](https://houbb.github.io/2018/09/02/sql-distribute-transaction-compensating)
+
+
 # 3PC
 
 在上文中，我们讲解了[二阶段提交协议](https://houbb.github.io/2018/09/02/sql-distribute-transaction-2pc)的设计和实现原理，并明确指出了其在实际运行过程中可能存在的诸如同步阻塞、协调者的单点问题、脑裂和太过保守的容错机制等缺陷，因此研究者在二阶段提交协议的基础上进行了改进，提出了三阶段提交协议。

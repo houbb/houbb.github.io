@@ -7,6 +7,23 @@ tags: [sql, transaction, distributed, sh]
 published: true
 ---
 
+# 数据库分布式事务
+
+[SQL 分布式事务 distributed transaction 二段提交, 本地消息表, Saga 事务, 最大努力通知](https://houbb.github.io/2018/09/02/sql-distribute-transaction)
+
+[分布式事务-本地消息表 （经典的ebay模式）](https://houbb.github.io/2018/09/02/sql-distribute-transaction-mq)
+
+[TCC Try-Confirm-Cancel 分布式事务](https://houbb.github.io/2018/09/02/sql-distribute-transaction-tcc)
+
+[SQL 2PC-两阶段提交 SQL 分布式事务两阶段提交协议(2PC)是一种原子承诺协议(ACP)。](https://houbb.github.io/2018/09/02/sql-distribute-transaction-2pc)
+
+[SQL 2PL-两阶段锁定](https://houbb.github.io/2018/09/02/sql-distribute-transaction-2pl)
+
+[3pc Three-Phase Commit 三阶段提交 分布式事务](https://houbb.github.io/2018/09/02/sql-distribute-transaction-3pc)
+
+[Compensating Transaction pattern 分布式锁事务](https://houbb.github.io/2018/09/02/sql-distribute-transaction-compensating)
+
+
 # 分布式事务
 
 ## 概念

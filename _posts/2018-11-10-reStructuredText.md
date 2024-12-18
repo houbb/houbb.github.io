@@ -1,11 +1,10 @@
 ---
 layout: post
-title: reStructuredText
+title: reStructuredText 标记语言语法入门介绍
 date:  2018-11-10 10:10:13 +0800
 categories: [Doc]
 tags: [markup, doc, sh]
 published: true
-excerpt: reStructuredText 标记语言语法入门介绍
 ---
 
 # reStructuredText

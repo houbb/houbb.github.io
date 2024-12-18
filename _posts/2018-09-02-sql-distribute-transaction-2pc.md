@@ -7,6 +7,23 @@ tags: [sql, transaction, distributed, tx, sh]
 published: true
 ---
 
+# 数据库分布式事务
+
+[SQL 分布式事务 distributed transaction 二段提交, 本地消息表, Saga 事务, 最大努力通知](https://houbb.github.io/2018/09/02/sql-distribute-transaction)
+
+[分布式事务-本地消息表 （经典的ebay模式）](https://houbb.github.io/2018/09/02/sql-distribute-transaction-mq)
+
+[TCC Try-Confirm-Cancel 分布式事务](https://houbb.github.io/2018/09/02/sql-distribute-transaction-tcc)
+
+[SQL 2PC-两阶段提交 SQL 分布式事务两阶段提交协议(2PC)是一种原子承诺协议(ACP)。](https://houbb.github.io/2018/09/02/sql-distribute-transaction-2pc)
+
+[SQL 2PL-两阶段锁定](https://houbb.github.io/2018/09/02/sql-distribute-transaction-2pl)
+
+[3pc Three-Phase Commit 三阶段提交 分布式事务](https://houbb.github.io/2018/09/02/sql-distribute-transaction-3pc)
+
+[Compensating Transaction pattern 分布式锁事务](https://houbb.github.io/2018/09/02/sql-distribute-transaction-compensating)
+
+
 # 2PC
 
 2PC，是Two-Phase Commit的缩写，即二阶段提交，是计算机网络尤其是在数据库领域内，为了使基于分布式系统架构下的所有节点在进行事务处理过程中能够保持原子性和一致性而设计的一种算法。通常，二阶段提交协议也被认为是一种一致性协议，用来保证分布式系统数据的一致性。
