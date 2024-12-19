@@ -9,7 +9,7 @@ published: true
 
 # 开源项目
 
-[auto-log 自动日志输出](https://github.com/houbb/auto-log)
+> 自动日志输出 [https://github.com/houbb/auto-log](https://github.com/houbb/auto-log)
 
 # Jaeger、Zipkin 中的 spanId 是如何生成的？
 
@@ -17,11 +17,11 @@ published: true
 
 下面分别介绍它们的生成方式：
 
-1. Jaeger 中的 Span ID 生成：
+Jaeger 中的 Span ID 生成：
 
    在 Jaeger 中，Span ID 是通过 Snowflake 算法生成的。Snowflake 算法是 Twitter 开源的一种全局唯一 ID 生成算法，用于生成 64 位的唯一标识符。Jaeger 使用 Snowflake 算法生成 64 位的 Span ID，保证在整个分布式系统中每个 Span 的 ID 都是唯一的。
 
-2. Zipkin 中的 Span ID 生成：
+Zipkin 中的 Span ID 生成：
 
    在 Zipkin 中，Span ID 是一个 64 位的十六进制数字，通常由随机算法生成。Zipkin 不像 Jaeger 一样使用 Snowflake 算法，而是依赖于随机数生成器来生成 Span ID。这样也可以保证在整个分布式系统中每个 Span 的 ID 都是唯一的。
 
@@ -29,20 +29,20 @@ published: true
 
 在 SkyWalking 中，Span ID 是一种用于唯一标识分布式追踪的重要组成部分。
 
-1. 全局唯一标识符（UUID）：SkyWalking 使用 UUID 作为 Span ID 的生成方式。UUID 是一个 128 位的全局唯一标识符，能够保证在整个分布式系统中每个 Span ID 都是唯一的。
+全局唯一标识符（UUID）：SkyWalking 使用 UUID 作为 Span ID 的生成方式。UUID 是一个 128 位的全局唯一标识符，能够保证在整个分布式系统中每个 Span ID 都是唯一的。
 
-2. 基于 Snowflake 的 Trace ID：除了 Span ID，SkyWalking 还引入了 Trace ID 的概念。Trace ID 是用于唯一标识一个跟踪操作链的标识符。每个跟踪链都有一个 Trace ID，并且跟踪链中的所有 Span 都共享同一个 Trace ID。在 SkyWalking 中，Trace ID 通常由 Snowflake 算法生成，确保在整个分布式系统中每个 Trace ID 都是唯一的。
+基于 Snowflake 的 Trace ID：除了 Span ID，SkyWalking 还引入了 Trace ID 的概念。Trace ID 是用于唯一标识一个跟踪操作链的标识符。每个跟踪链都有一个 Trace ID，并且跟踪链中的所有 Span 都共享同一个 Trace ID。在 SkyWalking 中，Trace ID 通常由 Snowflake 算法生成，确保在整个分布式系统中每个 Trace ID 都是唯一的。
 
-3. 父子关系：SkyWalking 通过在 Span 数据中记录父 Span 的 ID，来建立 Span 之间的父子关系。这样，就可以构建完整的操作依赖关系图，帮助了解操作之间的调用链路。
+父子关系：SkyWalking 通过在 Span 数据中记录父 Span 的 ID，来建立 Span 之间的父子关系。这样，就可以构建完整的操作依赖关系图，帮助了解操作之间的调用链路。
 
 # 为什么 skywalking 会用两种算法？直接用一种不行吗
 
 SkyWalking 之所以采用两种算法（UUID 和 Snowflake）来生成 Span ID 和 Trace ID，是为了在不同的场景下兼顾唯一性、顺序性和性能。
 
-1. UUID 算法：
+UUID 算法：
    UUID（Universally Unique Identifier）是一种标准化的全局唯一标识符，可以保证在不同的系统和环境中生成的 ID 都是唯一的。使用 UUID 算法生成 Span ID 可以确保在整个分布式系统中每个 Span 的 ID 都是唯一的，避免了冲突和数据混淆。
 
-2. Snowflake 算法：
+Snowflake 算法：
    Snowflake 算法是一种用于生成分布式唯一 ID 的算法，通常由时间戳、机器ID和序列号组成。在 SkyWalking 中，Snowflake 算法用于生成 Trace ID，用于唯一标识一个跟踪链。通过在 Trace ID 中包含时间戳信息，可以在一定程度上保证 Trace ID 的顺序性，即在同一节点上生成的 Trace ID 是按照时间顺序递增的。
 
 使用两种算法的组合，SkyWalking 在实现跟踪数据的唯一性和顺序性的同时，也考虑了性能的因素。UUID 算法生成 Span ID 具有较高的唯一性，而 Snowflake 算法生成 Trace ID 具有较好的顺序性。这样的设计使得 SkyWalking 在处理大规模分布式系统的跟踪数据时能够有较好的性能表现。
@@ -63,37 +63,11 @@ SkyWalking 之所以采用两种算法（UUID 和 Snowflake）来生成 Span ID 
 
 在分布式系统跟踪中，选择 Span ID 的生成方式是一个涉及多个因素的决策。虽然 Snowflake 算法在生成分布式唯一 ID 方面效果良好，但在分布式系统跟踪中，通常会选择使用 UUID（Universally Unique Identifier）作为 Span ID 的生成方式，原因如下：
 
-1. 全局唯一性：UUID 是标准化的全局唯一标识符，由128位数字组成。使用 UUID 生成 Span ID 可以确保在整个分布式系统中每个 Span 的 ID 都是唯一的，避免了冲突和数据混淆。对于大规模分布式系统，全局唯一性是确保跟踪数据准确性和关联性的重要保证。
+全局唯一性：UUID 是标准化的全局唯一标识符，由128位数字组成。使用 UUID 生成 Span ID 可以确保在整个分布式系统中每个 Span 的 ID 都是唯一的，避免了冲突和数据混淆。对于大规模分布式系统，全局唯一性是确保跟踪数据准确性和关联性的重要保证。
 
-2. 简单性和易用性：UUID 的生成过程相对简单，并且在现代编程语言和框架中都有相应的库和函数可用。使用 UUID 生成 Span ID 不需要额外的设置和复杂的算法，简化了代码的实现和维护。
+简单性和易用性：UUID 的生成过程相对简单，并且在现代编程语言和框架中都有相应的库和函数可用。使用 UUID 生成 Span ID 不需要额外的设置和复杂的算法，简化了代码的实现和维护。
 
-3. 随机性：UUID 是通过随机算法生成的，它不依赖于时间戳或序列号，避免了在生成过程中需要考虑时间戳的顺序性问题。这使得 Span ID 更具有随机性，有助于避免在跟踪数据中产生局部的顺序关联，从而更好地反映分布式系统的实际执行情况。
-
-# 给一下 skywalking 中 spanId 的设计文档地址，深入学习资料
-
-截至我掌握的知识（2021年9月），SkyWalking 的 Span ID 设计文档并不是单独的独立文档。SkyWalking 是一个开源项目，其设计和实现涉及多个方面和模块，包括 Span ID 的生成方式。
-
-如果您对 SkyWalking 中 Span ID 的设计和实现感兴趣，可以参考以下资源深入学习：
-
-1. SkyWalking 官方文档：
-   SkyWalking 官方网站提供了完整的文档，其中包含了对于跟踪数据、Span ID 和 Trace ID 的解释和说明。您可以在官方文档中查找关于 Span ID 的相关信息，并了解其生成方式和使用方法。
-   - 链接：https://skywalking.apache.org/docs/
-
-2. SkyWalking GitHub 仓库：
-   SkyWalking 的开源代码托管在 GitHub 上，您可以查看源代码，了解 Span ID 的生成方式以及相关实现细节。
-   - 链接：https://github.com/apache/skywalking
-
-3. SkyWalking 博客：
-   SkyWalking 的开发者和社区成员可能会在博客中分享关于系统设计、原理和实现的文章。通过搜索相关的 SkyWalking 博客文章，您可能会找到更深入的技术资料。
-   - 链接：https://skywalking.apache.org/blog/
-
-4. SkyWalking 社区：
-   SkyWalking 有一个活跃的社区，您可以参与讨论和交流，向其他开发者提问，并获得关于 Span ID 设计和实现的更多信息。
-   - 链接：https://skywalking.apache.org/community/
-
-请注意，开源项目的文档和代码库是不断更新和演进的，因此建议查阅最新版本的文档和代码，以获取最准确和最新的信息。
-
-在学习和研究 SkyWalking 中的 Span ID 设计时，官方文档和代码库是您最可靠的信息来源。
+随机性：UUID 是通过随机算法生成的，它不依赖于时间戳或序列号，避免了在生成过程中需要考虑时间戳的顺序性问题。这使得 Span ID 更具有随机性，有助于避免在跟踪数据中产生局部的顺序关联，从而更好地反映分布式系统的实际执行情况。
 
 # 小结
 

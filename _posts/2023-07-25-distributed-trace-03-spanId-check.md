@@ -9,7 +9,7 @@ published: true
 
 # 开源项目
 
-[auto-log 自动日志输出](https://github.com/houbb/auto-log)
+> 自动日志输出 [https://github.com/houbb/auto-log](https://github.com/houbb/auto-log)
 
 # 分布式系统跟踪工具，如何设计 span
 
