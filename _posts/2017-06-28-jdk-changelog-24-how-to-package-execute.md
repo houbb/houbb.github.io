@@ -15,6 +15,23 @@ published: true
 
 # chat
 
+## 简单的方式
+
+直接生成对应的 bat shell 脚本
+
+然后指定 jdk + 对应的 java 包路径。
+
+如何实现一个打包的工具能力？
+
+```
+/my-app
+├── lib/        # 所有依赖的 JAR 文件
+├── conf/       # 配置文件
+├── logs/       # 日志文件
+├── bin/        # 启动脚本
+└── app.jar     # 可执行的 Spring Boot JAR 文件
+```
+
 ## 如何把 java 程序打包成为一个可执行的文件？
 
 使用第三方工具创建可执行文件：
