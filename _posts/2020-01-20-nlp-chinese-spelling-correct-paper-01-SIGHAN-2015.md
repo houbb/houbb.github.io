@@ -1,15 +1,15 @@
 ---
 layout: post
-title: NLP 中文拼写检测纠正 Paper
+title: NLP 中文拼写检测纠正论文-01-介绍了SIGHAN 2015 拼写中文拼写检查，包括任务描述，数据准备， 绩效指标和评估结果
 date:  2020-1-20 10:09:32 +0800
 categories: [Data-Struct]
-tags: [chinese, nlp, algorithm, sh]
+tags: [chinese, nlp, algorithm, paper, sh]
 published: true
 ---
 
 # 拼写纠正系列
 
-[NLP 中文拼写检测实现思路](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct)
+[NLP 中文拼写检测实现思路](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct-01-intro)
 
 [NLP 中文拼写检测纠正算法整理](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct-02)
 
@@ -17,7 +17,7 @@ published: true
 
 [NLP 中文拼写检测纠正 Paper](https://houbb.github.io/2020/01/20/nlp-chinese-spelling-correct-paper)
 
-[java 实现中英文拼写检查和错误纠正？可我只会写 CRUD 啊！](https://houbb.github.io/2020/01/20/nlp-chinese-word-checker)
+[java 实现中英文拼写检查和错误纠正？可我只会写 CRUD 啊！](https://houbb.github.io/2020/01/20/nlp-chinese-word-checker-01-intro)
 
 [一个提升英文单词拼写检测性能 1000 倍的算法？](https://houbb.github.io/2020/01/20/nlp-chinese-word-checker-02-1000x)
 
@@ -30,6 +30,10 @@ published: true
 [word-checker 拼写检测](https://github.com/houbb/word-checker)
 
 [sensitive-word 敏感词](https://github.com/houbb/sensitive-word)
+
+# 论文地址
+
+可以参考：https://paperswithcode.com/task/chinese-spell-checking
 
 # 摘要
 
