@@ -175,7 +175,7 @@ FASPell：一种基于DAE解码器范式的快速、适应性强、简单、强�
 
 - 图2
 
-![F2](../static/img/2024-12-22-204712-faspell-f2.png)
+![F2](https://houbb.github.io/static/img/2024-12-22-204712-faspell-f2.png)
 
 
 **图2**：一个字符的IDS可以在不同的粒度层次上给出，如图①-③所示，表示简体字“贫”（意思是贫穷）。
@@ -237,7 +237,7 @@ CSD的机制解释如下，并且其有效性也得到了验证：
 
 - 图3
 
-![F3](../static/img/2024-12-22-205023-faspell-F3.png)
+![F3](https://houbb.github.io/static/img/2024-12-22-205023-faspell-F3.png)
 
 **Figure 3**: 所有四个图都展示了相同的信心-相似度候选图，其中候选字符被分类为真实检测和真实修正（T-d&T-c）、真实检测和错误修正（T-d&F-c）以及错误检测（F-d）。
 
@@ -327,7 +327,7 @@ CSD的机制解释如下，并且其有效性也得到了验证：
 
 *请根据实际数据填写表格内容。*
 
-![T6](../static/img/2024-12-22-205751-faspell-T6.png)
+![T6](https://houbb.github.io/static/img/2024-12-22-205751-faspell-T6.png)
 
 ## 3.3 过滤速度
 
@@ -361,7 +361,7 @@ Zhao等人（2017）通过在一个由句子中每个词汇的所有候选项构
 
 第一行的四个图展示了每个字符的候选数如何影响F1性能。第二行的四个图则展示了拼写检查轮数对性能的影响。
 
-![F4](../static/img/2024-12-22-210010-faspell-F4.png)
+![F4](https://houbb.github.io/static/img/2024-12-22-210010-faspell-F4.png)
 
 # 致谢
 

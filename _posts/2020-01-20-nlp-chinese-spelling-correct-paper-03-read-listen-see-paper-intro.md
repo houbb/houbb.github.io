@@ -132,7 +132,7 @@ Cheng 等（2020）提出了 SpellGCN 模型，该模型通过图卷积网络（
 
 在示例输入中，为了纠正错误字符“轻”（qīng，轻），我们不仅需要上下文的文本信息，还需要该字符本身的语音和图形信息。
 
-![F1](../static/img/2024-12-22-211039-yinxingyi-F1.png)
+![F1](https://houbb.github.io/static/img/2024-12-22-211039-yinxingyi-F1.png)
 
 ## 2.2 多模态学习  
 
@@ -445,7 +445,7 @@ BERT 在 CSC 任务中有多个成功应用，如 **FASpell** 和 **SpellGCN**�
 
 本文的主要动机是通过结合声学和视觉信息来发现字符相似性关系。如果移除语音或图形编码器，我们可以看到模型在两个层面上的性能有所下降，但仍然显著优于 BERT。这表明检查模型可以从多模态信息中获益。无论我们移除哪个组件，REALISE 的性能都会下降，这充分证明了我们模型中每个部分的有效性。
 
-![F2-T5](../static/img/2024-12-22212418-yinxingyi-F2-T5.png)
+![F2-T5](https://houbb.github.io/static/img/2024-12-22212418-yinxingyi-F2-T5.png)
 
 - F2
 

@@ -138,12 +138,12 @@ published: true
 
 - F2
 
-![F2](../static/img/2024-12-22-ACG-F2.png)
+![F2](https://houbb.github.io/static/img/2024-12-22-ACG-F2.png)
 
 
 - F3
 
-![F2](../static/img/2024-12-22-AGC-F3-T2.png)
+![F2](https://houbb.github.io/static/img/2024-12-22-AGC-F3-T2.png)
 
 ## 2.2 基于ASR的生成方法
 
@@ -174,7 +174,7 @@ published: true
 
 - T3+T4+T5
 
-![F2](../static/img/2024-12-22-AGC-T4-T4-T5.png)
+![F2](https://houbb.github.io/static/img/2024-12-22-AGC-T4-T4-T5.png)
 
 # 3 评估
 
@@ -231,7 +231,7 @@ C_{train:test} = \frac{|E_{train} \cap E_{test}|}{|E_{test}|}
 
 - T6-F4
 
-![T6-F4](../static/img/2024-12-22-AGC-T6-F4.png)
+![T6-F4](https://houbb.github.io/static/img/2024-12-22-AGC-T6-F4.png)
 
 
 ## 3.3 定量比较
