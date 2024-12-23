@@ -1,9 +1,9 @@
 ---
 layout: post
-title: NLP 中文拼写检测开源-02-CSC ChineseSpellingCheck 中文拼写检测 CSC
+title: NLP 中文拼写检测纠正论文-10-Chunk-based Chinese Spelling Check with Global Optimization
 date:  2020-1-20 10:09:32 +0800
 categories: [Data-Struct]
-tags: [chinese, nlp, algorithm, sh]
+tags: [chinese, nlp, algorithm, csc, paper, sh]
 published: true
 ---
 
@@ -23,15 +23,13 @@ published: true
 
 [单词拼写纠正-03-leetcode edit-distance 72.力扣编辑距离](https://houbb.github.io/2020/01/20/nlp-chinese-word-checker-03-edit-distance-intro)
 
-# NLP 开源项目
+## 开源项目
 
 [nlp-hanzi-similar 汉字相似度](https://github.com/houbb/nlp-hanzi-similar)
 
+[pinyin 汉字拼音](https://github.com/houbb/pinyin)
+
 [word-checker 拼写检测](https://github.com/houbb/word-checker)
-
-[pinyin 汉字转拼音](https://github.com/houbb/pinyin)
-
-[opencc4j 繁简体转换](https://github.com/houbb/opencc4j)
 
 [sensitive-word 敏感词](https://github.com/houbb/sensitive-word)
 
@@ -39,30 +37,19 @@ published: true
 
 大家好，我是老马。
 
-下面学习整理一些其他优秀小伙伴的设计和开源实现。
+下面学习整理一些其他优秀小伙伴的设计、论文和开源实现。
 
-# ChineseSpellingCheck
+## 论文 & 源码
 
-https://github.com/zhangsonglei/ChineseSpellingCheck
+论文：https://arxiv.org/pdf/2004.14166
 
-这个项目 java 实现，但是没文章解释。
+源码：https://github.com/ACL2020SpellGCN/SpellGCN
 
-# 小结
-
-希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
-
-我是老马，期待与你的下次相遇。
-
+# 
 
 # 参考资料
 
-[贝叶斯公式与拼写检查器](https://blog.csdn.net/dc_726/article/details/7107364)
-
-http://mindhacks.cn/2008/09/21/the-magical-bayesian-method/
-
-https://blog.youxu.info/spell-correct.html
-
-[基于贝叶斯算法的拼写检查器](https://blog.csdn.net/HLK_1135/article/details/78988141)
+https://aclanthology.org/2020.findings-emnlp.184.pdf
 
 * any list
 {:toc}
