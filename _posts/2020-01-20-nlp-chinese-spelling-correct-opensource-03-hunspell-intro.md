@@ -1,6 +1,6 @@
 ---
 layout: post
-title: NLP 中文拼写检测开源-04-hunspell 拼写纠正算法入门介绍
+title: NLP 中文拼写检测开源-03-hunspell 拼写纠正算法入门介绍
 date:  2020-1-20 10:09:32 +0800
 categories: [Data-Struct]
 tags: [chinese, nlp, algorithm, sh]
