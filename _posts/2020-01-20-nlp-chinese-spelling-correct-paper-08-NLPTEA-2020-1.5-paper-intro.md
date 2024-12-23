@@ -89,8 +89,7 @@ NLPTEA CGED任务的目标是指出中文作为外语学习者写作中的语法
 
 表1展示了一些典型示例。
 
-![T1+F1](https://github.io/static/img/2024-12-23-nlp2020-T1-F1.png)
-
+![T1+F1](https://houbb.github.io/static/img/2024-12-23-nlp2020-T1-F1.png)
 
 # 3 方法论
 
