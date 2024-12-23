@@ -1,6 +1,6 @@
 ---
 layout: post
-title: NLP 中文拼写检测开源-03-hunspell 拼写纠正算法入门介绍
+title: NLP 中文拼写检测开源-03-hunspell 拼写纠正算法入门介绍 CSC
 date:  2020-1-20 10:09:32 +0800
 categories: [Data-Struct]
 tags: [chinese, nlp, algorithm, sh]
@@ -23,11 +23,15 @@ published: true
 
 [单词拼写纠正-03-leetcode edit-distance 72.力扣编辑距离](https://houbb.github.io/2020/01/20/nlp-chinese-word-checker-03-edit-distance-intro)
 
-## 开源项目
+# NLP 开源项目
 
 [nlp-hanzi-similar 汉字相似度](https://github.com/houbb/nlp-hanzi-similar)
 
-[word-checker 拼写检测](https://github.com/houbb/word-checker)
+[word-checker 中英文拼写检测](https://github.com/houbb/word-checker)
+
+[pinyin 汉字转拼音](https://github.com/houbb/pinyin)
+
+[opencc4j 繁简体转换](https://github.com/houbb/opencc4j)
 
 [sensitive-word 敏感词](https://github.com/houbb/sensitive-word)
 
@@ -37,9 +41,6 @@ published: true
 
 下面学习整理一些其他优秀小伙伴的设计和开源实现。
 
-# spellcheck
-
-[朴素，但通用的 Spell Check 拼写检查和修复工具，基于 hunspell 实现，适合用于 Objective-C 项目本地和 CI 检查常见的拼写错误](https://github.com/jiyee/spellcheck)
 
 # hunspell
 
@@ -278,10 +279,15 @@ teached  2: taught, teacher
 verybaaaaaaaaaaaaaaaaaaaaaad  1: verybaaaaaaaaaaaaaaaaaaaaaad
 ```
 
+# 小结
 
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
 
+我是老马，期待与你的下次相遇。
 
 # 参考资料
+
+[朴素，但通用的 Spell Check 拼写检查和修复工具，基于 hunspell 实现，适合用于 Objective-C 项目本地和 CI 检查常见的拼写错误](https://github.com/jiyee/spellcheck)
 
 https://github.com/jiyee/spellcheck
 

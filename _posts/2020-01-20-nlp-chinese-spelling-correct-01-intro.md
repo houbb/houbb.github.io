@@ -23,7 +23,7 @@ published: true
 
 [单词拼写纠正-03-leetcode edit-distance 72.力扣编辑距离](https://houbb.github.io/2020/01/20/nlp-chinese-word-checker-03-edit-distance-intro)
 
-# 开源项目
+# NLP 开源项目
 
 [nlp-hanzi-similar 汉字相似度](https://github.com/houbb/nlp-hanzi-similar)
 
