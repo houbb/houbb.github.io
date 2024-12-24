@@ -13,6 +13,101 @@ published: true
 
 [Java Lambda](https://houbb.github.io/2017/06/28/java-lambda)
 
+
+# jpackage 打包实战
+
+## maven 项目
+
+- Main
+
+```java
+package org.example.jpackage.demo;
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+    }
+}
+```
+
+- pom.xml
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>jpackage-demo</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <mainClass>org.example.jpackage.demo.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+```
+
+## 打包为 jar
+
+```
+mvn clean package
+```
+
+## 执行 jpackage
+
+```sh
+D:\tool\jdk\graalvm-jdk-23_windows-x64_bin\graalvm-jdk-23.0.1+11.1\bin\jpackage --type exe --input target/ --name myapp --main-jar jpackage-demo-1.0-SNAPSHOT.jar --main-class org.example.jpackage.demo.Main
+```
+
+
+报错：
+
+```
+package-demo-1.0-SNAPSHOT.jar --main-class org.example.jpackage.demo.Main
+[09:26:39.774] 找不到 WiX 工具 (light.exe, candle.exe)
+[09:26:39.774] 从 https://wixtoolset.org 下载 WiX 3.0 或更高版本，然后将其添加到 PATH。
+```
+
+
+# 下载组件
+
+我们根据提示，去 https://wixtoolset.org
+
+个人下载的是：
+
+https://github.com/wixtoolset/wix3/releases/tag/wix3141rtm
+
+执行安装
+
+# 如何执行效果呢？
+
+
+
+
+
 # chat
 
 ## 是什么？
@@ -25,7 +120,10 @@ published: true
 
 ### 1. `jpackage` 的功能
 
-- 打包 Java 应用程序：`jpackage` 可以将 Java 应用程序和所有依赖的 JRE（Java Runtime Environment）一起打包成平台特定的安装包。这样，用户无需预先安装 JDK 或 JRE，就能运行 Java 应用。
+- 打包 Java 应用程序：`jpackage` 可以将 Java 应用程序和所有依赖的 JRE（Java Runtime Environment）一起打包成平台特定的安装包。
+
+这样，用户无需预先安装 JDK 或 JRE，就能运行 Java 应用。
+
 - 创建平台特定的安装包：支持将应用程序打包成多种平台的安装包，包括：
   - Windows：`.exe` 安装程序
   - macOS：`.dmg` 文件
