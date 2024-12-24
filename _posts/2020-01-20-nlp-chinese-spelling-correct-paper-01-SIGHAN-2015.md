@@ -23,11 +23,15 @@ published: true
 
 [单词拼写纠正-03-leetcode edit-distance 72.力扣编辑距离](https://houbb.github.io/2020/01/20/nlp-chinese-word-checker-03-edit-distance-intro)
 
-## 开源项目
+# NLP 开源项目
 
 [nlp-hanzi-similar 汉字相似度](https://github.com/houbb/nlp-hanzi-similar)
 
-[word-checker 拼写检测](https://github.com/houbb/word-checker)
+[word-checker 中英文拼写检测](https://github.com/houbb/word-checker)
+
+[pinyin 汉字转拼音](https://github.com/houbb/pinyin)
+
+[opencc4j 繁简体转换](https://github.com/houbb/opencc4j)
 
 [sensitive-word 敏感词](https://github.com/houbb/sensitive-word)
 
@@ -369,7 +373,7 @@ ps: 这里可以看到原理和分词很类似，都是基于概率或者熵去�
 
 此外，将从CFL学习者那里获得的新数据集将进行调查，以进一步丰富该研究主题。
 
-# 个人说活
+# 个人感受
 
 这篇 paper 虽然没有说具体的实现方式，但是整体的评估思路是提供了的。
 

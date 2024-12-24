@@ -23,13 +23,15 @@ published: true
 
 [单词拼写纠正-03-leetcode edit-distance 72.力扣编辑距离](https://houbb.github.io/2020/01/20/nlp-chinese-word-checker-03-edit-distance-intro)
 
-## 开源项目
+# NLP 开源项目
 
 [nlp-hanzi-similar 汉字相似度](https://github.com/houbb/nlp-hanzi-similar)
 
-[pinyin 汉字拼音](https://github.com/houbb/pinyin)
+[word-checker 中英文拼写检测](https://github.com/houbb/word-checker)
 
-[word-checker 拼写检测](https://github.com/houbb/word-checker)
+[pinyin 汉字转拼音](https://github.com/houbb/pinyin)
+
+[opencc4j 繁简体转换](https://github.com/houbb/opencc4j)
 
 [sensitive-word 敏感词](https://github.com/houbb/sensitive-word)
 
