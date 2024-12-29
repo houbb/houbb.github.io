@@ -66,6 +66,11 @@
 </head>
 <body>
   <div class="container">
+    <h1>数字华容道</h1>
+	<div id="info">
+		<p>耗时：<span id="time">0</span>秒 步数：<span id="moves">0</span></p>
+	</div>
+  
     <div class="difficulty-select">
       <label for="difficulty">选择难度：</label>
       <select id="difficulty">
@@ -80,18 +85,38 @@
     </div>
     <div id="board" class="board"></div>
     <button onclick="shuffleBoard()">重置</button>
+    <button onclick="autoSolve()">自动</button>
     <div class="message" id="message"></div>
+
+    <audio id="move-sound" src="./music/move.mp3" preload="auto"></audio>
+    <audio id="victory-sound" src="./music/win.wav" preload="auto"></audio>
+
   </div>
 
   <script>
     let boardSize = 3; // 默认3x3
     let board = [];
     let emptyPos = { row: 2, col: 2 }; // 默认空格位置
+    let solutionQueue = []; // 自动求解步骤队列
+    let solutionIndex = 0; // 当前自动求解步骤索引
+	
+	let moves = 0;
+    let startTime;
+    let timerInterval;
 
     document.getElementById('difficulty').addEventListener('change', function() {
       boardSize = parseInt(this.value);
       initBoard();
     });
+
+    function playMoveSound() {
+      const moveSound = document.getElementById('move-sound');
+      moveSound.play();
+    }
+    function playVictorySound() {
+      const victorySound = document.getElementById('victory-sound');
+      victorySound.play();
+    }
 
     function initBoard() {
       const totalTiles = boardSize * boardSize;
@@ -113,6 +138,30 @@
 
       renderBoard();
       checkVictory(); // 初始化后检查是否胜利
+	  resetGame();
+    }
+	// 开始计时器
+    function startTimer() {
+      startTime = Date.now();
+      document.getElementById('time').textContent = '0';
+      clearInterval(timerInterval);
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+    // 更新计时器
+    function updateTimer() {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      document.getElementById('time').textContent = elapsed;
+    }
+    // 停止计时器
+    function stopTimer() {
+      clearInterval(timerInterval);
+    }
+	// 重置游戏
+    function resetGame() {
+      shuffleBoard();
+	  moves = 0;
+      document.getElementById('moves').textContent = moves;
+      startTimer();
     }
 
     function renderBoard() {
@@ -144,7 +193,11 @@
 
       if (canMoveTile(row, col)) {
         swapTiles(row, col);
+		moves++;
+        document.getElementById('moves').textContent = moves;
+		
         renderBoard();
+        playMoveSound(); // 播放每一步的音效  
         checkVictory(); // 每次点击后检查胜利
       }
     }
@@ -214,13 +267,139 @@
 
       const messageElement = document.getElementById('message');
       if (isVictory) {
+	    stopTimer();
+        playVictorySound(); // 播放胜利音效
         messageElement.textContent = '恭喜！你赢了！';
       } else {
         messageElement.textContent = '';
       }
     }
 
-    // 初始化游戏
+    function autoSolve() {
+      // 假设我们有一个函数来计算最短路径解决华容道
+      solutionQueue = solvePuzzle(); // 这里你可以加入更复杂的求解算法
+      solutionIndex = 0;
+
+      const intervalId = setInterval(() => {
+        if (solutionIndex < solutionQueue.length) {
+          const move = solutionQueue[solutionIndex];
+          swapTiles(move.row, move.col);
+          renderBoard();
+          solutionIndex++;
+          checkVictory();
+        } else {
+          clearInterval(intervalId);
+        }
+      }, 1000); // 每1秒移动一步
+    }
+
+    function solvePuzzle() {
+	  const targetState = [];
+	  let targetIndex = 0;
+	  for (let i = 0; i < boardSize; i++) {
+		for (let j = 0; j < boardSize; j++) {
+		  targetState.push(targetIndex++);
+		}
+	  }
+
+	  const initialState = flattenBoard(board);
+	  const initialStateStr = initialState.join(',');
+
+	  // 如果初始状态就是目标状态，直接返回
+	  if (initialStateStr === targetState.join(',')) {
+		return [];
+	  }
+
+	  // BFS 用来寻找最短路径
+	  const queue = [];
+	  const visited = new Set(); // 用来避免重复访问相同的状态
+	  const parentMap = new Map(); // 用来记录每个状态的父状态，以便回溯路径
+	  const moveMap = new Map(); // 记录每个状态是如何从父状态转移过来的
+
+	  queue.push(initialState);
+	  visited.add(initialStateStr);
+	  parentMap.set(initialStateStr, null); // 初始状态没有父状态
+
+	  const directions = [
+		{ row: -1, col: 0 }, // 上
+		{ row: 1, col: 0 },  // 下
+		{ row: 0, col: -1 }, // 左
+		{ row: 0, col: 1 }   // 右
+	  ];
+
+	  // BFS 遍历
+	  while (queue.length > 0) {
+		const currentState = queue.shift();
+		const emptyPos = currentState.indexOf(0); // 找到空格的位置
+		const emptyRow = Math.floor(emptyPos / boardSize);
+		const emptyCol = emptyPos % boardSize;
+
+		// 遍历空格的四个相邻位置
+		for (let dir of directions) {
+		  const newRow = emptyRow + dir.row;
+		  const newCol = emptyCol + dir.col;
+
+		  // 确保新的位置在有效范围内
+		  if (newRow >= 0 && newRow < boardSize && newCol >= 0 && newCol < boardSize) {
+			const newEmptyPos = newRow * boardSize + newCol;
+			const newState = [...currentState]; // 复制当前状态
+			// 交换空格与相邻数字
+			[newState[emptyPos], newState[newEmptyPos]] = [newState[newEmptyPos], newState[emptyPos]];
+
+			const newStateStr = newState.join(',');
+			if (!visited.has(newStateStr)) {
+			  // 如果新状态没有访问过，加入队列
+			  queue.push(newState);
+			  visited.add(newStateStr);
+			  parentMap.set(newStateStr, currentState); // 记录父状态
+			  moveMap.set(newStateStr, { row: newRow, col: newCol });
+
+			  // 如果到达目标状态，开始回溯路径
+			  if (newStateStr === targetState.join(',')) {
+				return backtrackSolution(newStateStr, parentMap, moveMap);
+			  }
+			}
+		  }
+		}
+	  }
+
+	  // 如果没有找到路径，返回空数组
+	  return [];
+	}
+
+	function flattenBoard(board) {
+	  let flatBoard = [];
+	  for (let i = 0; i < boardSize; i++) {
+		for (let j = 0; j < boardSize; j++) {
+		  flatBoard.push(board[i][j]);
+		}
+	  }
+	  return flatBoard;
+	}
+
+	// 回溯路径
+	function backtrackSolution(finalStateStr, parentMap, moveMap) {
+	  let path = [];
+	  let currentStateStr = finalStateStr;
+	  
+	  while (parentMap.get(currentStateStr) !== null) {
+		const parentState = parentMap.get(currentStateStr);
+		const emptyPos = currentStateStr.indexOf(0);
+		const parentEmptyPos = parentState.indexOf(0);
+		const direction = moveMap.get(currentStateStr);
+		
+		// 获取从父状态到当前状态的空格移动
+		const move = { row: direction.row, col: direction.col, from: parentEmptyPos, to: emptyPos };
+		path.unshift(move);
+		
+		currentStateStr = parentState.join(',');
+	  }
+
+	  return path;
+	}
+
+
+    // 初始化棋盘
     initBoard();
   </script>
 </body>
