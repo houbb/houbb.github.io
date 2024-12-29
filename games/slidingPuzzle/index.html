@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>数字华容道</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      text-align: center;
+    }
+    .difficulty-select {
+      margin-bottom: 20px;
+    }
+    .board {
+      display: grid;
+      gap: 5px;
+      justify-items: center;
+      margin-top: 20px;
+    }
+    .tile {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 20px;
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+    }
+    .tile.empty {
+      background-color: #f4f4f4;
+      cursor: default;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .message {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="difficulty-select">
+      <label for="difficulty">选择难度：</label>
+      <select id="difficulty">
+        <option value="3">3x3</option>
+        <option value="4">4x4</option>
+        <option value="5">5x5</option>
+        <option value="6">6x6</option>
+        <option value="7">7x7</option>
+        <option value="8">8x8</option>
+        <option value="9">9x9</option>
+      </select>
+    </div>
+    <div id="board" class="board"></div>
+    <button onclick="shuffleBoard()">重置</button>
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    let boardSize = 3; // 默认3x3
+    let board = [];
+    let emptyPos = { row: 2, col: 2 }; // 默认空格位置
+
+    document.getElementById('difficulty').addEventListener('change', function() {
+      boardSize = parseInt(this.value);
+      initBoard();
+    });
+
+    function initBoard() {
+      const totalTiles = boardSize * boardSize;
+      board = [];
+      let numbers = [...Array(totalTiles).keys()];
+      shuffleArray(numbers); // 随机打乱数字
+
+      // 将数字填充到棋盘中
+      for (let i = 0; i < boardSize; i++) {
+        board[i] = [];
+        for (let j = 0; j < boardSize; j++) {
+          const num = numbers.shift();
+          board[i].push(num);
+          if (num === 0) {
+            emptyPos = { row: i, col: j }; // 记录空格位置
+          }
+        }
+      }
+
+      renderBoard();
+      checkVictory(); // 初始化后检查是否胜利
+    }
+
+    function renderBoard() {
+      const boardElement = document.getElementById('board');
+      boardElement.innerHTML = '';
+      boardElement.style.gridTemplateColumns = `repeat(${boardSize}, 70px)`;
+
+      for (let i = 0; i < boardSize; i++) {
+        for (let j = 0; j < boardSize; j++) {
+          const tileValue = board[i][j];
+          const tileElement = document.createElement('div');
+          tileElement.classList.add('tile');
+          tileElement.textContent = tileValue === 0 ? '' : tileValue;
+          tileElement.dataset.row = i;
+          tileElement.dataset.col = j;
+          if (tileValue === 0) {
+            tileElement.classList.add('empty');
+          }
+          tileElement.addEventListener('click', handleTileClick);
+          boardElement.appendChild(tileElement);
+        }
+      }
+    }
+
+    function handleTileClick(event) {
+      const tile = event.target;
+      const row = parseInt(tile.dataset.row);
+      const col = parseInt(tile.dataset.col);
+
+      if (canMoveTile(row, col)) {
+        swapTiles(row, col);
+        renderBoard();
+        checkVictory(); // 每次点击后检查胜利
+      }
+    }
+
+    function canMoveTile(row, col) {
+      const dx = Math.abs(emptyPos.row - row);
+      const dy = Math.abs(emptyPos.col - col);
+      return (dx === 1 && dy === 0) || (dx === 0 && dy === 1);
+    }
+
+    function swapTiles(row, col) {
+      board[emptyPos.row][emptyPos.col] = board[row][col];
+      board[row][col] = 0;
+      emptyPos = { row, col };
+    }
+
+    function shuffleBoard() {
+      const totalMoves = 1000;
+      for (let i = 0; i < totalMoves; i++) {
+        const possibleMoves = getPossibleMoves();
+        const move = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+        swapTiles(move.row, move.col);
+      }
+      renderBoard();
+      checkVictory(); // 打乱后检查胜利
+    }
+
+    function getPossibleMoves() {
+      const moves = [];
+      const directions = [
+        { row: -1, col: 0 },
+        { row: 1, col: 0 },
+        { row: 0, col: -1 },
+        { row: 0, col: 1 },
+      ];
+
+      directions.forEach(direction => {
+        const newRow = emptyPos.row + direction.row;
+        const newCol = emptyPos.col + direction.col;
+        if (newRow >= 0 && newRow < boardSize && newCol >= 0 && newCol < boardSize) {
+          moves.push({ row: newRow, col: newCol });
+        }
+      });
+
+      return moves;
+    }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]]; // 交换元素
+      }
+    }
+
+    function checkVictory() {
+      let isVictory = true;
+      let count = 0;
+
+      for (let i = 0; i < boardSize; i++) {
+        for (let j = 0; j < boardSize; j++) {
+          if (board[i][j] !== count++) {
+            isVictory = false;
+            break;
+          }
+        }
+      }
+
+      const messageElement = document.getElementById('message');
+      if (isVictory) {
+        messageElement.textContent = '恭喜！你赢了！';
+      } else {
+        messageElement.textContent = '';
+      }
+    }
+
+    // 初始化游戏
+    initBoard();
+  </script>
+</body>
+</html>
