@@ -95,7 +95,87 @@ published: true
 这个示例实现了一个简单的机器人路径规划。机器人从起点出发，使用最小作用量原理来确定每一步的最优路径，并绘
 
 
-# 路径只是简单的线段问题？
+# 随机波动
+
+看起来上面的路径就是一个简单的线段，我们添加一些曲线让其更加真实有趣。
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Path Optimization</title>
+    <style>
+        canvas { border: 1px solid black; background-color: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <h1>Robot Path Optimization</h1>
+    <canvas id="canvas" width="600" height="400"></canvas>
+
+    <script>
+        const canvas = document.getElementById("canvas");
+        const ctx = canvas.getContext("2d");
+
+        let start = { x: 50, y: 350 };
+        let end = { x: 550, y: 50 };
+        let path = [start];  // 初始路径
+
+        // 计算路径上的每个点，加入随机扰动
+        function generatePath() {
+            let currentPos = { ...start };
+            let stepSize = 10;
+            let angleStep = Math.PI / 8;  // 角度步进
+
+            // 继续生成路径直到接近终点
+            while (Math.abs(currentPos.x - end.x) > stepSize || Math.abs(currentPos.y - end.y) > stepSize) {
+                let angle = Math.atan2(end.y - currentPos.y, end.x - currentPos.x);
+
+                // 添加随机扰动来生成曲线
+                angle += (Math.random() - 0.5) * angleStep;  // 随机改变角度
+
+                currentPos.x += Math.cos(angle) * stepSize;
+                currentPos.y += Math.sin(angle) * stepSize;
+                path.push({ ...currentPos });
+            }
+        }
+
+        // 绘制路径
+        function drawPath() {
+            ctx.beginPath();
+            ctx.moveTo(path[0].x, path[0].y);
+            path.forEach(point => {
+                ctx.lineTo(point.x, point.y);
+            });
+            ctx.strokeStyle = 'blue';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        // 绘制起点和终点
+        function drawStartAndEnd() {
+            ctx.beginPath();
+            ctx.arc(start.x, start.y, 10, 0, Math.PI * 2);
+            ctx.fillStyle = 'green';
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(end.x, end.y, 10, 0, Math.PI * 2);
+            ctx.fillStyle = 'red';
+            ctx.fill();
+        }
+
+        // 开始路径生成和绘制
+        generatePath();
+        drawStartAndEnd();
+        drawPath();
+    </script>
+</body>
+</html>
+```
+
+# 路径只是简单的线段问题？-添加障碍物
 
 确实，当前的路径规划示例使用了简单的直线路径，这样的效果非常基础，而且没有考虑障碍物或路径的复杂性。
 
