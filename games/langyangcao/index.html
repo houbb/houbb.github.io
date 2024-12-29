@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>狼、羊、草 沙盒模拟</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: space-between;
+            margin: 0;
+        }
+        .left-panel {
+            flex-grow: 1;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .sandbox {
+            display: grid;
+            grid-template-columns: repeat(50, 15px);
+            grid-template-rows: repeat(50, 15px);
+            gap: 1px;
+            margin-top: 20px;
+        }
+        .cell {
+            width: 15px;
+            height: 15px;
+            border: 1px solid #ccc;
+            text-align: center;
+            vertical-align: middle;
+            font-size: 12px;
+            font-family: "Segoe UI Emoji", sans-serif;
+        }
+        .wolf {
+            color: red;
+        }
+        .sheep {
+            color: lightgreen;
+        }
+        .grass {
+            color: green;
+        }
+        .empty {
+            background-color: white;
+        }
+        .right-panel {
+            width: 250px;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            text-align: left;
+        }
+        .right-panel div {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="left-panel">
+        <div class="sandbox" id="sandbox"></div>
+    </div>
+    
+    <div class="right-panel">
+        <h3>统计信息</h3>
+        <div>当前天气: <span id="weather"></span></div>
+        <div>当前季节: <span id="season"></span></div>
+        <div>时间: <span id="time"></span></div>
+        <div>狼的数量: <span id="wolfCount"></span></div>
+        <div>羊的数量: <span id="sheepCount"></span></div>
+        <div>草的数量: <span id="grassCount"></span></div>
+        <div>模拟时间: <span id="simTime"></span> 秒</div>
+    </div>
+
+    <button onclick="startSimulation()">开始模拟</button>
+
+    <script>
+        const sandboxSize = 50;
+        const seasons = ['春', '夏', '秋', '冬'];
+        let grid = [];
+        let animals = {
+            wolf: [],
+            sheep: []
+        };
+        let grass = [];
+        let seasonIndex = 0;
+        let weather = '晴天';
+        let simTime = 0;
+        let simInterval;
+        
+        function createSandbox() {
+            const sandbox = document.getElementById('sandbox');
+            for (let i = 0; i < sandboxSize; i++) {
+                const row = [];
+                for (let j = 0; j < sandboxSize; j++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    sandbox.appendChild(cell);
+                    row.push(cell);
+                }
+                grid.push(row);
+            }
+        }
+
+        function randomPosition() {
+            return {
+                row: Math.floor(Math.random() * sandboxSize),
+                col: Math.floor(Math.random() * sandboxSize)
+            };
+        }
+
+        function initializeEntities() {
+            // 初始化草
+            for (let i = 0; i < 500; i++) {
+                const pos = randomPosition();
+                if (!grass.some(g => g.row === pos.row && g.col === pos.col)) {
+                    grass.push(pos);
+                    grid[pos.row][pos.col].innerText = '🌿';
+                }
+            }
+            // 初始化羊
+            for (let i = 0; i < 20; i++) {
+                const pos = randomPosition();
+                animals.sheep.push(pos);
+                grid[pos.row][pos.col].innerText = '🐑';
+            }
+            // 初始化狼
+            for (let i = 0; i < 10; i++) {
+                const pos = randomPosition();
+                animals.wolf.push(pos);
+                grid[pos.row][pos.col].innerText = '🐺';
+            }
+        }
+
+        function nextSeason() {
+            seasonIndex = (seasonIndex + 1) % 4;
+            updateWeather();
+        }
+
+        function updateWeather() {
+            // 简单的天气变化逻辑
+            const weatherConditions = ['晴天', '雨天', '暴风雪'];
+            weather = weatherConditions[Math.floor(Math.random() * 3)];
+            document.getElementById('weather').textContent = weather;
+        }
+
+        function moveAnimals() {
+			// 移动狼
+			animals.wolf.forEach(wolf => {
+				// 计算新位置
+				const direction = Math.random() > 0.5 ? 1 : -1;
+				const newRow = wolf.row + direction * (Math.random() > 0.5 ? 1 : 0);
+				const newCol = wolf.col + direction * (Math.random() > 0.5 ? 1 : 0);
+
+				// 判断新位置是否越界
+				if (newRow >= 0 && newRow < sandboxSize && newCol >= 0 && newCol < sandboxSize) {
+					// 清空原位置
+					grid[wolf.row][wolf.col].innerText = ' ';
+
+					// 更新狼的位置
+					wolf.row = newRow;
+					wolf.col = newCol;
+
+					const cell = grid[wolf.row][wolf.col];
+
+					// 狼碰到羊，吃掉羊
+					if (cell.innerText === '🐑') {
+						animals.sheep = animals.sheep.filter(s => s.row !== wolf.row || s.col !== wolf.col);
+						cell.innerText = '🐺';
+						// 羊的数量减少
+						sheepCount--;
+					} else {
+						cell.innerText = '🐺';
+					}
+				}
+			});
+
+			// 移动羊
+			animals.sheep.forEach(sheep => {
+				// 计算新位置
+				const direction = Math.random() > 0.5 ? 1 : -1;
+				const newRow = sheep.row + direction * (Math.random() > 0.5 ? 1 : 0);
+				const newCol = sheep.col + direction * (Math.random() > 0.5 ? 1 : 0);
+
+				// 判断新位置是否越界
+				if (newRow >= 0 && newRow < sandboxSize && newCol >= 0 && newCol < sandboxSize) {
+					// 清空原位置
+					grid[sheep.row][sheep.col].innerText = ' ';
+
+					// 更新羊的位置
+					sheep.row = newRow;
+					sheep.col = newCol;
+
+					const cell = grid[sheep.row][sheep.col];
+
+					// 羊碰到草，吃掉草
+					if (cell.innerText === '🌿') {
+						grass = grass.filter(g => g.row !== sheep.row || g.col !== sheep.col);
+						cell.innerText = '🐑';
+						// 草的数量减少
+						grassCount--;
+					} else {
+						cell.innerText = '🐑';
+					}
+				}
+			});
+		}
+
+
+        function growGrass() {
+            if (weather === '晴天' && seasonIndex === 0) {
+                // 春天晴天草快速生长
+                if (grass.length < 1000) {
+                    const pos = randomPosition();
+                    if (!grass.some(g => g.row === pos.row && g.col === pos.col)) {
+                        grass.push(pos);
+                        grid[pos.row][pos.col].innerText = '🌿';
+                    }
+                }
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('season').textContent = seasons[seasonIndex];
+            document.getElementById('time').textContent = new Date().toLocaleTimeString();
+            document.getElementById('wolfCount').textContent = animals.wolf.length;
+            document.getElementById('sheepCount').textContent = animals.sheep.length;
+            document.getElementById('grassCount').textContent = grass.length;
+            document.getElementById('simTime').textContent = simTime;
+        }
+
+		function resetInfo() {
+			grid = [];
+			animals = {
+				wolf: [],
+				sheep: []
+			};
+			grass = [];
+			seasonIndex = 0;
+			weather = '晴天';
+			simTime = 0;
+		}
+		
+		createSandbox();
+        initializeEntities();
+			
+        function startSimulation() {
+            simInterval = setInterval(() => {
+                moveAnimals();
+                growGrass();
+                nextSeason();
+                simTime++;
+                updateStats();
+            }, 1000); // 现实 1 分钟对应沙盒 1 小时
+        }
+    </script>
+
+</body>
+</html>
