@@ -63,9 +63,13 @@ C3.js 是一个基于 D3.js 的图表库，封装了常见的图表类型，使�
 ## 关键点说明
 
 - `c3.generate()`：创建图表实例，`bindto` 指定图表容器的 ID。
+
 - `data.columns`：数据系列，每个数组表示一个数据系列。
+
 - `data.type`：图表类型，`bar` 表示柱状图。
+
 - `axis.x`：X 轴配置，`type: 'category'` 表示分类轴，`categories` 指定 X 轴标签。
+
 - `bar.width`：柱子的宽度配置，`ratio` 表示柱子宽度的比例。
 
 * any list

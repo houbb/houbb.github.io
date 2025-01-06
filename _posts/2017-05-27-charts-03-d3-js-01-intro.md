@@ -79,9 +79,13 @@ published: true
 ## 关键点说明
 
 - `d3.scaleBand()`：用于创建 X 轴的比例尺，适合离散数据（如柱状图）。
+
 - `d3.scaleLinear()`：用于创建 Y 轴的比例尺，适合连续数据。
+
 - `d3.axisBottom()` 和 `d3.axisLeft()`：分别用于创建 X 轴和 Y 轴。
+
 - `d3.select()`：选择 DOM 元素，类似于 jQuery 的选择器。
+
 - `data().join()`：将数据绑定到 DOM 元素，并处理数据的增删改。
 
 * any list

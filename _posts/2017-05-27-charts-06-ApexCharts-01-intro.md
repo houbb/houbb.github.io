@@ -56,9 +56,13 @@ published: true
 ## 关键点
 
 - `type: 'line'`：指定图表类型为折线图。ApexCharts 还支持其他类型，如 `bar`（柱状图）、`pie`（饼图）等。
+
 - `series`：数据系列，可以包含多个数据集（例如多条折线）。
+
 - `xaxis.categories`：X 轴的标签。
+
 - `stroke.curve`：设置折线的样式，`smooth` 表示平滑曲线。
+
 - `colors`：设置折线的颜色。
 
 >  [ApexCharts 官方文档](https://apexcharts.com/docs/)。
