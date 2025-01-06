@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  Plotly 函数图像绘制
-date:  2018-02-22 10:45:33 +0800
-categories: [Math]
-tags: [math, html, js, plot]
+date:  2017-5-27 13:15:25 +0800
+categories: [UI]
+tags: [ui, html, chart, math, js]
 published: true
 ---
 
