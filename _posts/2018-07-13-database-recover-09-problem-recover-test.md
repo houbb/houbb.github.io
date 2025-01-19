@@ -27,6 +27,8 @@ published: true
 
 [数据库高可用方案-09-数据库的灾难恢复演练](https://houbb.github.io/2018/07/13/database-recover-09-problem-recover-test)
 
+[数据库高可用方案-10-最佳实践与踩坑点](https://houbb.github.io/2018/07/13/database-recover-10-best-practice)
+
 # 数据库的灾难恢复演练
 
 数据库的灾难恢复演练是确保数据库在灾难发生后能够迅速恢复并继续提供服务的关键措施。

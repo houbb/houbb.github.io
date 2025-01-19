@@ -27,6 +27,8 @@ published: true
 
 [数据库高可用方案-09-数据库的灾难恢复演练](https://houbb.github.io/2018/07/13/database-recover-09-problem-recover-test)
 
+[数据库高可用方案-10-最佳实践与踩坑点](https://houbb.github.io/2018/07/13/database-recover-10-best-practice)
+
 # 数据库的监控与报警
 
 数据库的监控与报警是确保数据库系统稳定性、性能和安全性的关键手段。通过有效的监控与报警机制，能够及时发现并解决潜在问题，防止系统故障和性能瓶颈的发生。以下是数据库监控与报警的详细介绍：
