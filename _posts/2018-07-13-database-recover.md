@@ -1,11 +1,32 @@
 ---
 layout: post
-title:  Database Recover
+title:  数据库高可用方案-01-数据库备份还原方案
 date:  2018-07-13 17:39:24 +0800
 categories: [Database]
 tags: [database, sql, master-slave, distributed, sh]
 published: true
 ---
+
+# 数据库数据高可用系列
+
+[数据库高可用方案-01-数据库备份还原方案](https://houbb.github.io/2018/07/13/database-recover)
+
+[数据库高可用方案-02-多机房部署](https://houbb.github.io/2018/07/13/database-recover-02-multi-place)
+
+[数据库高可用方案-03-主备等高可用架构](https://houbb.github.io/2018/07/13/database-recover-03-master-slave)
+
+[数据库高可用方案-04-删除策略](https://houbb.github.io/2018/07/13/database-recover-04-delete-strategy)
+
+[数据库高可用方案-05-备份与恢复](https://houbb.github.io/2018/07/13/database-recover-05-recover)
+
+[数据库高可用方案-06-监控与报警](https://houbb.github.io/2018/07/13/database-recover-06-monitor-and-alarm)
+
+[数据库高可用方案-07-一致性校验](https://houbb.github.io/2018/07/13/database-recover-07-checksum)
+
+[数据库高可用方案-08-多版本管理](https://houbb.github.io/2018/07/13/database-recover-08-version-manager)
+
+[数据库高可用方案-09-数据库的灾难恢复演练](https://houbb.github.io/2018/07/13/database-recover-09-problem-recover-test)
+
 
 # 数据库恢复
 
