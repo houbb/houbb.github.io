@@ -36,6 +36,14 @@ published: true
 
 [分布式存储系统-08-OrangeFS 是 PVFS 的下一代版本，是一个面向高性能计算的开源并行文件系统](https://houbb.github.io/2016/12/31/file-system-distributed-08-orangefs-intro)
 
+# 前言
+
+核心能力：用户 + UMS + SSO
+
+zabbix 报警
+
+文件=》minio=》抄一个
+
 # chat
 
 ## 文件存储服务系统是什么？what
