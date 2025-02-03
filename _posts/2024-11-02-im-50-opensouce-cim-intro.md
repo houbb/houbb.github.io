@@ -7,6 +7,33 @@ tags: [im, opensource, sh]
 published: true
 ---
 
+# IM 开源系列
+
+[IM 即时通讯系统-41-开源 野火IM 专注于即时通讯实时音视频技术，提供优质可控的IM+RTC能力](https://houbb.github.io/2024/11/02/im-41-opensouce-yehuo-overview)
+
+[IM 即时通讯系统-42-基于netty实现的IM服务端,提供客户端jar包,可集成自己的登录系统](https://houbb.github.io/2024/11/02/im-42-opensouce-yuanrw-im-intro)
+
+[IM 即时通讯系统-43-简单的仿QQ聊天安卓APP](https://houbb.github.io/2024/11/02/im-43-opensouce-xiuweikang-im)
+
+[IM 即时通讯系统-44-仿QQ即时通讯系统服务端](https://houbb.github.io/2024/11/02/im-44-opensouce-kingston-csj-im)
+
+[IM 即时通讯系统-45-merua0oo0 IM 分布式聊天系统](https://houbb.github.io/2024/11/02/im-45-opensouce-merua0oo0-im)
+
+[IM 即时通讯系统-46-OpenIM 提供了专为开发者设计的开源即时通讯解决方案](https://houbb.github.io/2024/11/02/im-46-opensouce-open-im-intro)
+
+[IM 即时通讯系统-47-beardlessCat IM 使用netty开发分布式Im，提供分布netty集群解决方案](https://houbb.github.io/2024/11/02/im-47-opensouce-beardlessCat-im-intro)
+
+[IM 即时通讯系统-48-aurora-imui 是个通用的即时通讯（IM）UI 库，不特定于任何 IM SDK](https://houbb.github.io/2024/11/02/im-48-opensouce-aurora-imui-intro)
+
+[IM 即时通讯系统-49-云信 IM UIKit 是基于 NIM SDK（网易云信 IM SDK）开发的一款即时通讯 UI 组件库，包括聊天、会话、圈组、搜索、群管理等组件](https://houbb.github.io/2024/11/02/im-49-opensouce-nim-uikit-android-intro)
+
+[IM 即时通讯系统-50-📲cim(cross IM) 适用于开发者的分布式即时通讯系统](https://houbb.github.io/2024/11/02/im-50-opensouce-cim-intro)
+
+[IM 即时通讯系统-51-MPush开源实时消息推送系统](https://houbb.github.io/2024/11/02/im-51-opensouce-mpush-intro)
+
+[IM 即时通讯系统-52-leo-im 服务端](https://houbb.github.io/2024/11/02/im-52-opensouce-leo-im-intro)
+
+[IM 即时通讯系统-53-im system server](https://houbb.github.io/2024/11/02/im-53-opensouce-linyu-intro)
 
 # IM
 
@@ -18,27 +45,28 @@ https://github.com/crossoverJie/cim
 
 # V2.0
 
-- [x] Upgrade to JDK17 & springboot3.0 
-- [x] Client SDK 
-- [ ] Client use [picocli](https://picocli.info/) instead of springboot.
-- [x] Support integration testing.
-- [ ] Integrate OpenTelemetry .
-- [ ] Support single node startup(Contains no components).
-- [ ] Third-party components support replacement(Redis/Zookeeper, etc.).
-- [ ] Support web client(websocket).
-- [ ] Support docker container.
-- [ ] Support kubernetes operation.
-- [ ] Supports binary client(build with golang).
+[x] 升级至 JDK17 和 Spring Boot 3.0
+[x] 客户端 SDK
+[ ] 客户端使用 picocli 替代 Spring Boot。
+[x] 支持集成测试。
+[ ] 集成 OpenTelemetry。
+[ ] 支持单节点启动（不含任何组件）。
+[ ] 支持第三方组件替换（如 Redis/Zookeeper 等）。
+[ ] 支持 Web 客户端（WebSocket）。
+[ ] 支持 Docker 容器。
+[ ] 支持 Kubernetes 运行。
+[ ] 支持二进制客户端（使用 Golang 构建）。
 
-## Introduction
+# 介绍
 
-`CIM(CROSS-IM)` is an `IM (instant messaging)` system for developers; it also provides some components to help developers build their own scalable `IM`.
-Using `CIM`, you can achieve the following requirements:
-- `IM` instant messaging system.
-- Message push middleware for `APP`.
-- Message middleware for `IOT` massive connection scenarios.
+CIM（CROSS-IM） 是一个面向开发者的 IM（即时通讯） 系统，同时也提供了一些组件，帮助开发者构建可扩展的 IM 系统。使用 CIM，您可以实现以下需求：
+实现 IM 即时通讯系统。
 
-> If you have any questions during use or development, you can [contact me](#联系作者).
+为 APP 提供消息推送中间件。
+
+为 IOT 大规模连接场景提供消息中间件。
+
+如果在使用或开发过程中有任何问题，您可以联系作者。
 
 ## 视频演示
 
@@ -70,40 +98,47 @@ Using `CIM`, you can achieve the following requirements:
 
 
 
-## Architecture
+## 架构
 
-![](pic/architecture.png)
+CIM 中的每个组件都是使用 SpringBoot 构建的。
 
-- Each component in `CIM` is built using `SpringBoot`
-  - Client build with [cim-client-sdk](https://github.com/crossoverJie/cim/tree/master/cim-client-sdk)
-- Use `Netty` to build the underlying communication.
-- `MetaStore` is used for registration and discovery of `IM-server` services.
+客户端使用 cim-client-sdk 构建。
 
+使用 Netty 构建底层通信。
 
-### cim-server
-IM server is used to receive client connections, message forwarding, message push, etc.
-Support cluster deployment.
+使用 MetaStore 用于 IM-server 服务的注册与发现。
 
-### cim-route
+## cim-server
 
-Route server; used to process message routing, message forwarding, user login, user offline, and some operation tools (get the number of online users, etc.).
+IM 服务器用于接收客户端连接、消息转发、消息推送等功能，支持集群部署。
 
-### cim-client
-IM client terminal, a command can be started and initiated to communicate with others (group chat, private chat).
+## cim-route
 
-## Flow Chart
+路由服务器，用于处理消息路由、消息转发、用户登录、用户离线以及一些运维工具（如获取在线用户数量等）。
 
-![](https://s2.loli.net/2024/10/13/8teMn7BSa5VWuvi.png)
+## cim-client
 
-- Server register to `MetaStore`
-- Route subscribe `MetaStore`
-- Client login to Route
-  - Route get Server info from `MetaStore`
-- Client open connection to Server
-- Client1 send message to Route
-- Route select Server and forward message to Server
-- Server push message to Client2
+IM 客户端终端，可以通过命令启动并与他人进行通信（群聊、私聊）。
 
+## 流程图
+
+![流程图](https://s2.loli.net/2024/10/13/8teMn7BSa5VWuvi.png)
+
+- 服务器向 MetaStore 注册。
+
+- 路由服务器订阅 MetaStore。
+
+- 客户端登录到路由服务器。
+
+- 路由服务器从 MetaStore 获取服务器信息。
+
+- 客户端与服务器建立连接。
+
+- 客户端 1 向路由服务器发送消息。
+
+- 路由服务器选择服务器并将消息转发到服务器。
+
+- 服务器将消息推送至客户端 2。
 
 ## 快速启动
 
@@ -214,7 +249,6 @@ java -jar cim-client-1.0.0-SNAPSHOT.jar --server.port=8084 --cim.user.id=上方�
 使用命令 `:q 关键字` 即可查询与个人相关的聊天记录。
 
 > 客户端聊天记录默认存放在 `/opt/logs/cim/`，所以需要这个目录的写入权限。也可在启动命令中加入 `--cim.msg.logger.path = /自定义` 参数自定义目录。
-
 
 
 ### AI 模式
