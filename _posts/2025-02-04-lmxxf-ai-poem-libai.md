@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 我李白承认，崔颢的黄鹤楼令人佩服
+title: 我李白承认，崔颢的黄鹤楼略胜于我
 date: 2025-2-3 13:04:22 +0800
 categories: [AI]
 tags: [ai, person, sh]

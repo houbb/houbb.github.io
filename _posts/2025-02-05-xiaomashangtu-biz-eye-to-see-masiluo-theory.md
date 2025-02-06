@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 为什么你的钱包总是不听话？
+title: 马斯洛：为什么你的钱包总是不听话？
 date: 2025-2-5 20:56:35 +0800
 categories: [Business]
 tags: [biz, sh]
