@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 在线免费 HTML 预览到处为图片，并且支持水平切割
+title: 在线免费 HTML 预览导出为图片，并且支持水平切割
 date: 2025-2-5 20:56:35 +0800
 categories: [Business]
 tags: [biz, sh]
@@ -53,9 +53,7 @@ async function exportAsImage() {
 
 ## 参考资料
 
-https://arxiv.org/abs/2501.12948
-
-https://aipapersacademy.com/deepseek-r1/
+https://houbb.github.io/2025/02/05/tools-html-image-export-and-split
 
 * any list
 {:toc}

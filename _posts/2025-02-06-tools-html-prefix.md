@@ -39,9 +39,7 @@ function updatePreview() {
 
 # 参考资料
 
-https://arxiv.org/abs/2501.12948
-
-https://aipapersacademy.com/deepseek-r1/
+https://houbb.github.io/2025/02/05/tools-html-prefix
 
 * any list
 {:toc}
