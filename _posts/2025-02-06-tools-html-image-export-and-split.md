@@ -12,7 +12,7 @@ published: true
 
 作用：可以直接预览 html 的页面效果，导出为图片，支持指定切割的数量，等高水平切割。
 
-> [https://houbb.github.io/tools/html-prefix.html](https://houbb.github.io/tools/html-prefix.html)
+> [https://houbb.github.io/tools/html-preview.html](https://houbb.github.io/tools/html-preview.html)
 
 # 创作背景
 

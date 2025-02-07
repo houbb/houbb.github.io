@@ -11,7 +11,7 @@ published: true
 
 作用：可以直接预览 html 的页面效果。
 
-> [https://houbb.github.io/tools/html-prefix.html](https://houbb.github.io/tools/html-prefix.html)
+> [https://houbb.github.io/tools/html-preview.html](https://houbb.github.io/tools/html-preview.html)
 
 # 创作背景
 
