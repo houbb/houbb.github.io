@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>HTML 实时预览工具</title>
+<style>
+body { margin: 0; padding: 20px; font-family: Arial; }
+.container { display: flex; height: 90vh; gap: 20px; }
+.editor-pane, .preview-pane { flex: 1; display: flex; flex-direction: column; }
+#html-input {
+width: 100%;
+height: 80%;
+border: 2px solid #ccc;
+font-family: 'Courier New';
+resize: none;
+}
+#preview-frame {
+width: 100%;
+height: 100%;
+border: 2px solid #4CAF50;
+flex: 1;
+}
+button {
+margin-top: 10px;
+height: 30px;
+background: #4CAF50;
+color: white;
+border: none;
+cursor: pointer;
+width: 48%;
+}
+</style>
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js "></script>
+
+<!-- 在head部分添加marked.js -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+</head>
+<body>
+<div class="container">
+<div class="editor-pane">
+<textarea id="html-input" placeholder="请输入HTML代码..."></textarea>
+
+
+<!-- 修改按钮容器 -->
+<div style="display: flex; gap: 4%; flex-wrap: wrap;">
+  <button onclick="updatePreview()">预览</button>
+  <button onclick="convertMarkdown()">markdown转html</button>
+  <div style="display: flex; align-items: center; gap: 5px;">
+    <button onclick="exportAsImage()">导出图片</button>
+    <input type="number" id="sliceCount" min="1" max="9" value="1" 
+           style="width:60px; height:30px; padding:5px;">
+  </div>
+</div>
+
+
+</div>
+<div class="preview-pane">
+<iframe id="preview-frame"></iframe>
+</div>
+</div>
+
+<footer>
+    <div class="footer">
+       <a href="https://github.com/houbb/tools" title="更多工具">更多工具</a> <br>
+	</div>
+	
+	<div style="text-align: center;">
+		<img src = "img/SIGN.png" style="height: 250px; width: 600px;"/>
+	</div>
+</footer>
+
+<script>
+function updatePreview() {
+const input = document.getElementById('html-input').value;
+const iframe = document.getElementById('preview-frame');
+iframe.srcdoc = input;
+}
+function convertMarkdown() {
+  const mdContent = document.getElementById('html-input').value;
+  const htmlContent = marked.parse(mdContent);
+  document.getElementById('html-input').value = htmlContent;
+  updatePreview();
+}
+
+async function exportAsImage() {
+  const sliceCount = Math.min(9, Math.max(1, parseInt(document.getElementById('sliceCount').value) || 1));
+  
+  const iframe = document.getElementById('preview-frame');
+  const doc = iframe.contentDocument || iframe.contentWindow.document;
+  
+  const totalHeight = doc.documentElement.scrollHeight;
+  const sliceHeight = Math.ceil(totalHeight / sliceCount);
+
+  for(let i=0; i<sliceCount; i++) {
+    await html2canvas(doc.documentElement, {
+      useCORS: true,
+      scrollY: i * sliceHeight,
+      windowHeight: sliceHeight,
+      height: sliceHeight,
+      y: i * sliceHeight
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = `slice_${i+1}.png`;
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  }
+}
+
+</script>
+</body>
+</html>
