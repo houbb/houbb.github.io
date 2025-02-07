@@ -3,7 +3,7 @@ layout: post
 title: 分布式共识机制/一致性协议 consensus-01-一致性协议 chat
 date:  2021-3-06 16:52:15 +0800
 categories: [Distributed]
-tags: [distributed, distributed-system, ,consensus, sh]
+tags: [distributed, distributed-system,consensus, sh]
 published: true
 ---
 
