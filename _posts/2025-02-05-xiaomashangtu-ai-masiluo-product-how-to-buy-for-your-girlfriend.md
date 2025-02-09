@@ -1,13 +1,11 @@
 ---
 layout: post
 title: 结合马斯洛需求理论，如何给女朋友挑选礼物？
-date: 2025-2-3 13:04:22 +0800
-categories: [AI]
-tags: [ai, person, sh]
+date: 2025-2-5 20:56:35 +0800
+categories: [Business]
+tags: [biz, sh]
 published: true
 ---
-
-
 
 ### 结合马斯洛需求层次理论，如何给女朋友买礼物？
 
