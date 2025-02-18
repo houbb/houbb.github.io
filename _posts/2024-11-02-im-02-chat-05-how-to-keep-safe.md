@@ -1,6 +1,6 @@
 ---
 layout: post
-title: IM 即时通讯系统-02-聊一聊 IM 要如何保证安全性？
+title: IM 即时通讯系统-05-聊一聊 IM 要如何保证安全性？
 date: 2024-11-02 21:01:55 +0800
 categories: [IM]
 tags: [im, opensource, sh]
