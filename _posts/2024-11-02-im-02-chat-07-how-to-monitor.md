@@ -9,9 +9,11 @@ published: true
 
 # IM 系列
 
+[im doc 实时通讯文档仓库](https://github.com/houbb/im-doc)
+
 [聊一聊 IM 是什么？](https://houbb.github.io/2024/11/02/im-02-chat)
 
-[IM 即时通讯系统概览](https://houbb.github.io/2024/11/02/im-01-overview)
+[聊一聊 IM 即时通讯系统](https://houbb.github.io/2024/11/02/im-01-overview)
 
 [聊一聊 IM 要如何设计？](https://houbb.github.io/2024/11/02/im-02-chat-01-how-to-design)
 
