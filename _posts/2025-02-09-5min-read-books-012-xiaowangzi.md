@@ -7,7 +7,7 @@ tags: [reading, book, 5min, sh]
 published: true
 ---
 
-##  序言
+## 序言
 
 在浩如烟海的书籍世界中，有这样一本奇妙之作——《小王子》。
 
