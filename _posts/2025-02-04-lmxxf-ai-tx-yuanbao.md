@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 最优停止理论帮你解决「选对象vs找工作」的纠结
+title: AI 元宝用户协议中产权全部归 TX 所有？！
 date: 2025-2-3 13:04:22 +0800
 categories: [AI]
 tags: [ai, person, sh]
