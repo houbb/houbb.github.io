@@ -95,6 +95,26 @@ published: true
 
 
 
+hello-world/
+├── public/               # 静态资源目录
+│   └── vite.svg          # Vite logo
+├── src/                  # 源代码目录
+│   ├── assets/           # 静态资源
+│   ├── components/       # 组件目录
+│   │   └── HelloWorld.vue # 示例组件
+│   ├── App.vue           # 根组件
+│   ├── main.ts           # 应用入口
+│   ├── style.css         # 全局样式
+│   └── vite-env.d.ts     # Vite环境类型声明
+├── .gitignore            # Git忽略文件
+├── index.html            # 应用入口HTML
+├── package.json          # 项目依赖和脚本
+├── README.md             # 项目说明
+├── tsconfig.json         # TypeScript配置
+├── tsconfig.app.json     # 应用TypeScript配置
+├── tsconfig.node.json    # Node TypeScript配置
+└── vite.config.ts        # Vite配置文件
+
 ## 参考资料
 
 
