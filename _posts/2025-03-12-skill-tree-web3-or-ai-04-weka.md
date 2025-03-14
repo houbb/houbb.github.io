@@ -19,7 +19,9 @@ published: true
 ---
 
 ### **一、Weka 概述**
-**Weka**（Waikato Environment for Knowledge Analysis）是由新西兰怀卡托大学开发的机器学习工具集，基于 Java 语言实现。它以 **易用性** 和 **算法丰富性** 著称，集成了数据预处理、特征工程、模型训练与评估的完整流程，支持 GUI 界面和 API 调用，广泛应用于学术研究和工业场景。
+**Weka**（Waikato Environment for Knowledge Analysis）是由新西兰怀卡托大学开发的机器学习工具集，基于 Java 语言实现。
+
+它以 **易用性** 和 **算法丰富性** 著称，集成了数据预处理、特征工程、模型训练与评估的完整流程，支持 GUI 界面和 API 调用，广泛应用于学术研究和工业场景。
 
 - **官方资源**：
   - 官网：[Weka Official Site](https://www.cs.waikato.ac.nz/ml/weka/)
@@ -152,6 +154,8 @@ System.out.println("Cluster Centers:\n" + kmeans.getClusterCentroids());
 
 ### **总结**
 Weka 是 Java 开发者进入机器学习领域的 **低成本入口工具**，尤其适合处理结构化数据和快速验证算法。尽管其深度学习能力有限，但在传统机器学习任务中仍具有不可替代的价值。对于企业级应用，建议将其作为预处理和快速实验工具，并与分布式框架（如 Spark）或深度学习库（如 DL4J）协同使用，构建完整的 AI 流水线。
+
+## 详细介绍一下 weka 有哪些核心能力
 
 
 
