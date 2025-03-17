@@ -68,7 +68,7 @@
                 rawData = data.data; // 仅存储原始数据
                 $("#cb-search-content").typeahead({
                     source: function(query, process) { // 动态处理数据
-                        if(query.length < 3) return process([]); // 关键过滤条件
+                        if(query.length < 2) return process([]); // 关键过滤条件
                         const matches = rawData.filter(item => 
                             item.title.toLowerCase().includes(query.toLowerCase())
                         );
