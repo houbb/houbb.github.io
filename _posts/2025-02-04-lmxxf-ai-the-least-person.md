@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AI 接管世界后，人类需要多少"火种"才能不灭？
+title: AI 接管世界后，人类需要多少火种才能不灭？
 date: 2025-2-3 13:04:22 +0800
 categories: [AI]
 tags: [ai, person, sh]
