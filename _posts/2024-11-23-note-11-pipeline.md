@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 流水线有什么价值? 如何搭建流水线?
+title: 流水线有什么价值? 如何搭建流水线? pipeline
 date: 2024-11-23 01:18:08 +0800
 categories: [Note]
-tags: [note, sh]
+tags: [note, pipeline, sh]
 published: true
 ---
 
