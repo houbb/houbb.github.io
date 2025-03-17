@@ -61,25 +61,47 @@
             time1 = 0;
         });
 
-        $.getJSON("/search/cb-search.json").done(function (data) {
-            if (data.code == 0) {
-                for (var index in data.data) {
-                    var item = data.data[index];
-                    names.push(item.title);
-                    urls.push(item.url);
-                }
 
+        let rawData = []; // 存储原始未处理数据
+        $.getJSON("/search/cb-search.json").done(function(data) {
+            if(data.code == 0) {
+                rawData = data.data; // 仅存储原始数据
                 $("#cb-search-content").typeahead({
-                    source: names,
-
-                    afterSelect: function (item) {
-						$(".cb-search-tool").css("display", "none");
-                        show = false;
-                        window.location.href = (urls[names.indexOf(item)]);
-                        return item;
+                    source: function(query, process) { // 动态处理数据
+                        if(query.length < 3) return process([]); // 关键过滤条件
+                        const matches = rawData.filter(item => 
+                            item.title.toLowerCase().includes(query.toLowerCase())
+                        );
+                        process(matches.map(m => m.title));
+                    },
+                    afterSelect: function(item) {
+                        const selected = rawData.find(d => d.title === item);
+                        window.location.href = selected?.url;
                     }
                 });
             }
         });
+
+        // 原始的方法，数据量特别大性能很差    
+        // $.getJSON("/search/cb-search.json").done(function (data) {
+        //     if (data.code == 0) {
+        //         for (var index in data.data) {
+        //             var item = data.data[index];
+        //             names.push(item.title);
+        //             urls.push(item.url);
+        //         }
+
+        //         $("#cb-search-content").typeahead({
+        //             source: names,
+
+        //             afterSelect: function (item) {
+		// 				$(".cb-search-tool").css("display", "none");
+        //                 show = false;
+        //                 window.location.href = (urls[names.indexOf(item)]);
+        //                 return item;
+        //             }
+        //         });
+        //     }
+        // });
 
     });
