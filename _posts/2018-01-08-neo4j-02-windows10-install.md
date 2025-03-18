@@ -60,6 +60,15 @@ neo4j:3.5.22-community
 
 # windows10 安装 Neo4j Desktop
 
+
+## 下载地址
+
+[https://github.com/neo4j/neo4j](https://github.com/neo4j/neo4j)
+
+下载地址：https://neo4j.com/download/
+
+PS: 默认应该需要科学，不然会存在问题，无法直接下载。
+
 ## 403 的问题
 
 2024年11月28日 左右访问页面，发现直接 403.
@@ -71,6 +80,14 @@ https://neo4j.com/artifact.php?name=neo4j-desktop-offline-1.6.1-setup.exe
 ## Download
 
 直接在 [官网下载](https://neo4j.com/download/?ref=product)，期间需要添加个注册信息，简单填写即可。
+
+拷贝对应的 code，点击对应的 windows 下载链接
+
+https://neo4j.com/artifact.php?name=neo4j-desktop-offline-1.6.1-setup.exe
+
+如果无法下载，可以试一下下面的云盘：
+
+链接: https://pan.baidu.com/s/1BsY0DXj87oGk0o5Lx7rgrg?pwd=qead 提取码: qead 复制这段内容后打开百度网盘手机App，操作更方便哦
 
 ## Install
 
