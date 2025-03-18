@@ -39,6 +39,89 @@ OpenJDK Runtime Environment Zulu11.50+19-CA (build 11.0.12+7-LTS)
 OpenJDK 64-Bit Server VM Zulu11.50+19-CA (build 11.0.12+7-LTS, mixed mode)
 ```
 
+### 实际记录
+
+查看版本
+
+```
+$ java -version
+openjdk version "1.8.0_432"
+OpenJDK Runtime Environment (build 1.8.0_432-8u432-ga~us1-0ubuntu2~22.04-ga)
+OpenJDK 64-Bit Server VM (build 25.432-bga, mixed mode)
+```
+
+安装 sdkman
+
+```sh
+curl -s "https://get.sdkman.io" | bash
+```
+
+报错：
+
+```
+Looking for a previous installation of SDKMAN...
+Looking for unzip...
+Not found.
+======================================================================================================
+ Please install unzip on your system using your favourite package manager.
+
+ Restart after installing unzip.
+======================================================================================================
+
+'exit 1': command failed with exit code 1.
+```
+
+需要先安装 unzip
+
+```
+sudo apt update
+sudo apt install unzip
+sudo apt install zip
+```
+
+重新安装，根据提示让其立刻生效
+
+```sh
+ source "/home/dh/.sdkman/bin/sdkman-init.sh"
+```
+
+### 安装 jdk11
+
+罗列：
+
+```sh
+sdk list java | grep 11
+```
+
+安装：
+
+```
+sdk install java 11.0.26-amzn
+```
+
+指定：
+
+```
+sdk use java 11.0.26-amzn
+sdk default java 11.0.26-amzn
+```
+
+查看
+
+```
+sdk current java
+```
+
+发现需要重启才行：
+
+```
+$ sdk current java
+
+Using java version 11.0.26-amzn
+```
+
+ 
+
 # 安装 neo4j
 
 1）下载安装包

@@ -317,8 +317,54 @@ D:\Users\dh\AppData\Local\Programs\Neo4j Desktop
 数据路径：
 
 ```
-C:\Users\dh\C:\Users\dh\.Neo4jDesktop
+C:\Users\dh\.Neo4jDesktop
 ```
 
 重新安装一定要把数据清理干净。
 
+本地安装路径：C:\Users\dh\AppData\Local\Programs\Neo4j Desktop
+
+## 无法启动
+
+neo4j desktop 安装完成后，点击启动没有任何效果。从哪里查看失败日志？
+
+windows 环境，安装环境为：C:\Users\dh\AppData\Local\Programs\Neo4j Desktop
+
+### 默认的日志路径
+
+大概率启动的时候需要科学？不难无法访问下方的文件。
+
+自己测试，发现在  `C:\Users\dh\.Neo4jDesktop\log.log` 下，启动异常如下：
+
+```
+[2025-03-18 18:04:05.108] [info]  ● ● ● Relate management API is running @ http://127.0.0.1:12783
+[2025-03-18 18:04:05.109] [info]  Configuring proxy: NO_PROXY
+[2025-03-18 18:04:05.992] [warn]  ERROR: {"error":"Fetch status [403]","url":"https://dist.neo4j.org/neo4j-desktop/win/latest.yml"}
+[2025-03-18 18:04:05.993] [error] App initialization error TypeError: Cannot read properties of undefined (reading 'name')
+    at isReachable (C:\Users\dh\AppData\Local\Programs\Neo4j Desktop\resources\app.asar\dist\main.prod.js:6285:25)
+    at process.processTicksAndRejections (node:internal/process/task_queues:96:5)
+    at async isOnline (C:\Users\dh\AppData\Local\Programs\Neo4j Desktop\resources\app.asar\dist\main.prod.js:6295:9)
+    at async broadcastOnline (C:\Users\dh\AppData\Local\Programs\Neo4j Desktop\resources\app.asar\dist\main.prod.js:11926:20)
+    at async configureProxy (C:\Users\dh\AppData\Local\Programs\Neo4j Desktop\resources\app.asar\dist\main.prod.js:12001:5)
+    at async initProxy (C:\Users\dh\AppData\Local\Programs\Neo4j Desktop\resources\app.asar\dist\main.prod.js:12012:5)
+    at async App.<anonymous> (C:\Users\dh\AppData\Local\Programs\Neo4j Desktop\resources\app.asar\dist\main.prod.js:13167:9)
+
+```
+
+然后发现启动报错如下：
+
+```
+[2025-03-18 18:11:10.880] [info]  ● ● ● Starting Neo4j Desktop 1.6.1 @ Windows_NT 10.0.22631, 12th Gen Intel(R) Core(TM) i7-1260P}
+[2025-03-18 18:11:10.924] [error] Protocol Manager type error: url must be string. url = undefined
+```
+
+清空整个文件夹：`C:\Users\dh\.Neo4jDesktop`
+
+
+还是不行。
+
+参考：
+
+https://github.com/neo4j-devtools/neo4j-desktop/issues/49
+
+https://github.com/neo4j-devtools/neo4j-desktop/issues/128
