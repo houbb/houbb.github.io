@@ -134,9 +134,14 @@ https://neo4j.com/download-center/
 
 > [https://go.neo4j.com/download-thanks.html?edition=community&release=4.4.29&flavour=unix](https://go.neo4j.com/download-thanks.html?edition=community&release=4.4.29&flavour=unix)
 
+https://neo4j.com/download-thanks/?edition=community&release=4.4.29&flavour=unix#
+
 直接 wget 可能无法下载。所以需要添加对应的处理。
 
 可以下载之后，然后 scp 等方式，上传到 linux 服务器。
+
+百度云盘：链接: https://pan.baidu.com/s/13kjH0G9YDtUaLUHI-_QCgw?pwd=pt32 提取码: pt32 复制这段内容后打开百度网盘手机App，操作更方便哦
+
 
 2) 解压
 
@@ -196,6 +201,8 @@ Started neo4j (pid:98357). It is available at http://0.0.0.0:17474
 There may be a short delay until the server is ready.
 ```
 
+日志可以在 logs/neo4j.log 中查看。
+
 5) 其他
 
 设置开机自启可参考：https://blog.csdn.net/daidaineteasy/article/details/54864776
@@ -217,6 +224,17 @@ bin/neo4j stop
 默认账户密码：neo4j/neo4j
 
 登录后需要修改密码，我们改成 12345678 测试，实际使用需要使用安全复杂的密码。
+
+
+
+## windows wsl 的安装路径问题
+
+如果使用 windows 直接安装的 wsl
+
+那么，对应的文件夹路径是：`\\wsl.localhost\Ubuntu\home\dh`
+
+可以直接拷贝到这里，然后就可以在 `/home/dh` 中看到。
+
 
 
 

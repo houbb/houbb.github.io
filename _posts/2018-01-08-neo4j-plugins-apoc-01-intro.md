@@ -17,6 +17,8 @@ published: true
 
 [Neo4j APOC-04-图数据库 apoc 实战使用使用 apoc.path.spanningTree 最小生成树](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-04-minist-tree)
 
+[Neo4j APOC-05-图数据库 apoc 实战使用使用 labelFilter](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-05-label-filter)
+
 # neo4j 的 apoc
 
 Neo4j 的 APOC（Awesome Procedures on Cypher）是一个非常强大的 Neo4j 插件，它扩展了 Cypher 查询语言的功能，提供了大量的实用函数和存储过程，极大地增强了 Neo4j 的功能性。

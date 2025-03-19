@@ -17,6 +17,8 @@ published: true
 
 [Neo4j APOC-04-图数据库 apoc 实战使用使用 apoc.path.spanningTree 最小生成树](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-04-minist-tree)
 
+[Neo4j APOC-05-图数据库 apoc 实战使用使用 labelFilter](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-05-label-filter)
+
 # 如何安装 APOC 插件
 
 安装 Neo4j 的 APOC 插件的步骤相对简单，具体取决于你使用的是哪种 Neo4j 版本（例如 Neo4j Desktop、Neo4j Aura 或 Neo4j 服务器）。
