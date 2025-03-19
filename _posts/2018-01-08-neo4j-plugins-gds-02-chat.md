@@ -20,8 +20,6 @@ published: true
 
 [Neo4j APOC-05-图数据库 apoc 实战使用使用 labelFilter](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-05-label-filter)
 
-# chat
-
 ## 详细介绍一下 neo4j GDS 插件库
 
 Neo4j **图数据科学（Graph Data Science, GDS）** 是专为图分析设计的行业领先工具库，提供丰富的算法、机器学习能力与高性能计算框架。以下从核心功能、技术架构、应用场景到实践指南全方位解析这一工具。

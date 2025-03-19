@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Neo4j GDS-01-graph-data-science 图数据科学 插件库概览
+title:  Neo4j GDS-01-graph-data-science 图数据科学插件库概览
 date:  2018-1-8 14:18:33 +0800
 categories: [SQL]
 tags: [nosql, neo4j]
@@ -179,16 +179,6 @@ sdk install java 17.0.7-tem   # JDK 17
 ## ⚖️ 许可协议
 
 **OpenGDS** 采用 [GNU GPL v3.0](https://www.gnu.org/licenses/gpl-3.0.html) 协议，所有内容版权归 **Neo4j Sweden AB** 所有。
-
----
-
-调整后的版本通过以下优化提升可读性：
-1. 使用清晰的标题层级（`#`、`##`、`###`）
-2. 代码块标注语言类型（如 `xml`、`bash`）
-3. 表格对齐与简洁化
-4. 重要内容用粗体/斜体/引用块突出
-5. 链接嵌入文字中避免长 URL
-6. 添加图标符号增强视觉引导（如 📥、⚙️、🐍 等）
 
 
 --------------- 
