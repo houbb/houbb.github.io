@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Neo4j GDS-02-graph-data-science 简单聊一聊图数据科学插件库
+title:  Neo4j GDS-03-graph-data-science 简单聊一聊图数据科学插件库
 date:  2018-1-8 14:18:33 +0800
 categories: [SQL]
 tags: [nosql, neo4j]
@@ -22,7 +22,9 @@ published: true
 
 ## 详细介绍一下 neo4j GDS 插件库
 
-Neo4j **图数据科学（Graph Data Science, GDS）** 是专为图分析设计的行业领先工具库，提供丰富的算法、机器学习能力与高性能计算框架。以下从核心功能、技术架构、应用场景到实践指南全方位解析这一工具。
+Neo4j **图数据科学（Graph Data Science, GDS）** 是专为图分析设计的行业领先工具库，提供丰富的算法、机器学习能力与高性能计算框架。
+
+以下从核心功能、技术架构、应用场景到实践指南全方位解析这一工具。
 
 ---
 
@@ -76,6 +78,7 @@ CALL gds.beta.pipeline.linkPrediction.train(
 ## 二、技术架构解析
 
 ### 1. 分层架构设计
+
 ```mermaid
 graph TD
     A[Cypher API] --> B[算法执行引擎]
