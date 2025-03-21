@@ -155,8 +155,6 @@ graph LR
 - **横向**：服务通信（RPC/Mesh）、监控（Tracer/Lookout）、治理（Registry/Dashboard）协作闭环  
 
 
-
-
 # 参考资料
 
 https://www.sofastack.tech/projects/

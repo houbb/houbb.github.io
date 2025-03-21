@@ -1,6 +1,6 @@
 ---
 layout: post
-title: istio 介绍-01-overview
+title: istio 介绍-01-一个用于连接、管理和保护微服务的开放平台 概览
 date:  2022-07-09 09:22:02 +0800
 categories: [Distributed]
 tags: [distributed, istio, sh]
