@@ -7,205 +7,6 @@ tags: [design, uml, tool]
 published: true
 ---
 
-
-# HTML 使用的例子
-
-以下是在HTML中实现Mermaid图表渲染的完整解决方案，包含CDN引用、初始化配置和实时预览功能：
-
-### 一、基础实现方案（自动渲染模式）
-
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <!-- 引入Mermaid核心库（最新稳定版） -->
-    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js"></script>
-</head>
-<body>
-    <!-- Mermaid代码容器 -->
-    <div class="mermaid">
-        flowchart LR
-        A[开始] --> B{条件判断}
-        B -->|是| C[执行操作]
-        B -->|否| D((结束))
-    </div>
-
-    <!-- 初始化脚本 -->
-    <script>
-        // 基础初始化配置 
-        mermaid.initialize({
-            startOnLoad: true,        // 页面加载自动渲染
-            theme: 'default',         // 主题（可选dark/forest）
-            flowchart: {
-                htmlLabels: false,    // 禁用HTML标签解析
-                curve: 'linear'       // 连接线样式
-            },
-            securityLevel: 'loose'    // 安全模式（允许外部资源）
-        });
-    </script>
-</body>
-</html>
-```
-
-
-### 二、进阶实现方案（手动控制渲染）
-```html
-<!DOCTYPE html>
-<html>
-<body>
-    <!-- 动态内容容器 -->
-    <div id="diagramContainer"></div>
-
-    <!-- 引入Mermaid库 -->
-    <script src="https://unpkg.com/mermaid@10.8.0/dist/mermaid.min.js"></script>
-    
-    <!-- 控制逻辑 -->
-    <script>
-        // 初始化配置 
-        const config = {
-            logLevel: 'warn',         // 日志级别
-            gantt: {
-                axisFormat: '%Y-%m-%d'// 甘特图日期格式
-            }
-        };
-        mermaid.initialize(config);
-
-        // 手动渲染函数
-        function renderDiagram(code) {
-            mermaid.parse(code); // 语法校验
-            mermaid.render(
-                'mermaidChart', 
-                code,
-                (svgCode) => {
-                    document.getElementById('diagramContainer').innerHTML = svgCode;
-                }
-            );
-        }
-
-        // 示例调用
-        const mermaidCode = `sequenceDiagram
-            用户->>服务器: GET /api/data
-            服务器-->>数据库: Query
-            数据库-->>服务器: ResultSet
-            服务器-->>用户: 200 OK`;
-        renderDiagram(mermaidCode);
-    </script>
-</body>
-</html>
-```
-
-
----
-### 三、实时编辑器实现方案
-```html
-<!DOCTYPE html>
-<html>
-<head>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.8.0/mermaid.min.js"></script>
-    <style>
-        #editor { width:45%; height:300px; float:left; }
-        #preview { width:45%; border:1px solid #ccc; float:right; }
-    </style>
-</head>
-<body>
-    <textarea id="editor" placeholder="输入Mermaid代码...">
-graph TD
-A[客户端] -->|请求| B(服务器)
-B -->|响应| A
-    </textarea>
-    <div id="preview"></div>
-
-    <script>
-        // 初始化渲染引擎 
-        mermaid.initialize({ 
-            securityLevel: 'loose',
-            themeCSS: '.node rect { fill: #e1f5fe; }' // 自定义样式
-        });
-
-        // 实时渲染逻辑
-        document.getElementById('editor').addEventListener('input', function() {
-            try {
-                mermaid.parse(this.value);
-                mermaid.render('dynamicDiagram', this.value, svg => {
-                    document.getElementById('preview').innerHTML = svg;
-                });
-            } catch(err) {
-                document.getElementById('preview').innerHTML = 
-                    `<div style="color:red">语法错误: ${err}</div>`;
-            }
-        }).dispatchEvent(new Event('input')); // 初始渲染
-    </script>
-</body>
-</html>
-```
-
-
----
-### 四、关键配置参数说明
-
-| 参数 | 类型 | 说明 | 默认值 | 参考来源 |
-|------|------|------|--------|----------|
-| `startOnLoad` | Boolean | 自动检测.mermaid类元素 | true |  |
-| `theme` | String | 主题样式(default/dark/forest) | default |  |
-| `fontFamily` | String | 全局字体设置 | '"trebuchet ms", verdana, arial' |  |
-| `logLevel` | String | 控制台日志级别(debug/info/warn/error) | warn |  |
-| `securityLevel` | String | 安全策略(strict/loose) | strict |  |
-| `flowchart` | Object | 流程图布局配置(curve/width) | { curve: 'linear' } |  |
-
-
----
-### 五、最佳实践建议
-1. **版本锁定**：生产环境应指定确切版本（如`mermaid@10.8.0`），避免CDN更新导致兼容性问题 
-2. **错误处理**：通过`try-catch`包裹渲染逻辑，防止脚本中断 
-3. **性能优化**：
-   ```javascript
-   // 使用防抖函数控制实时渲染频率
-   const debounceRender = _.debounce(render, 500);
-   editor.addEventListener('input', debounceRender);
-   ```
-
-4. **主题扩展**：通过CSS定制样式（需设置`securityLevel: 'loose'）
-   ```css
-   .mermaid .label { font-family: "Consolas"; }
-   .mermaid .edge-thickness-normal { stroke-width: 2px; }
-   ```
-
-
----
-### 六、跨平台集成方案
-1. **Markdown混合使用**：
-   ```html
-   <div class="mermaid">
-   ```
-mermaid
-   gantt
-title 项目计划
-section 阶段A
-需求分析 :a1, 2025-03-20, 5d
-系统设计 :after a1, 3d
-   ```
-   </div>
-   ```
-
-
-2. **框架集成示例（Vue）**：
-   ```javascript
-   // 组件化封装
-   Vue.component('mermaid-diagram', {
-       props: ['code'],
-       template: `<div class="mermaid"></div>`,
-       mounted() {
-           mermaid.init({}, this.$el).then(() => 
-               this.$el.innerHTML = this.code
-           );
-       }
-   })
-   ```
-
-
-以上方案覆盖了从基础到高级的多种实现场景，开发者可根据具体需求选择合适的集成方式。建议优先使用官方CDN服务，并通过初始化参数微调渲染效果。
-
-
 # Mermaid 官方文档
 
 Mermaid 通过解析类 Markdown 的文本语法来实现图表的创建和动态修改。
@@ -546,6 +347,206 @@ _Mermaid 是由 Knut Sveidqvist 创建，它为了更简单的文档编写而生
 
 
 # chat
+
+## HTML 使用的例子
+
+以下是在HTML中实现Mermaid图表渲染的完整解决方案，包含CDN引用、初始化配置和实时预览功能：
+
+### 一、基础实现方案（自动渲染模式）
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 引入Mermaid核心库（最新稳定版） -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.8.0/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <!-- Mermaid代码容器 -->
+    <div class="mermaid">
+        flowchart LR
+        A[开始] --> B{条件判断}
+        B -->|是| C[执行操作]
+        B -->|否| D((结束))
+    </div>
+
+    <!-- 初始化脚本 -->
+    <script>
+        // 基础初始化配置 
+        mermaid.initialize({
+            startOnLoad: true,        // 页面加载自动渲染
+            theme: 'default',         // 主题（可选dark/forest）
+            flowchart: {
+                htmlLabels: false,    // 禁用HTML标签解析
+                curve: 'linear'       // 连接线样式
+            },
+            securityLevel: 'loose'    // 安全模式（允许外部资源）
+        });
+    </script>
+</body>
+</html>
+```
+
+
+### 二、进阶实现方案（手动控制渲染）
+```html
+<!DOCTYPE html>
+<html>
+<body>
+    <!-- 动态内容容器 -->
+    <div id="diagramContainer"></div>
+
+    <!-- 引入Mermaid库 -->
+    <script src="https://unpkg.com/mermaid@10.8.0/dist/mermaid.min.js"></script>
+    
+    <!-- 控制逻辑 -->
+    <script>
+        // 初始化配置 
+        const config = {
+            logLevel: 'warn',         // 日志级别
+            gantt: {
+                axisFormat: '%Y-%m-%d'// 甘特图日期格式
+            }
+        };
+        mermaid.initialize(config);
+
+        // 手动渲染函数
+        function renderDiagram(code) {
+            mermaid.parse(code); // 语法校验
+            mermaid.render(
+                'mermaidChart', 
+                code,
+                (svgCode) => {
+                    document.getElementById('diagramContainer').innerHTML = svgCode;
+                }
+            );
+        }
+
+        // 示例调用
+        const mermaidCode = `sequenceDiagram
+            用户->>服务器: GET /api/data
+            服务器-->>数据库: Query
+            数据库-->>服务器: ResultSet
+            服务器-->>用户: 200 OK`;
+        renderDiagram(mermaidCode);
+    </script>
+</body>
+</html>
+```
+
+
+---
+### 三、实时编辑器实现方案
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.8.0/mermaid.min.js"></script>
+    <style>
+        #editor { width:45%; height:300px; float:left; }
+        #preview { width:45%; border:1px solid #ccc; float:right; }
+    </style>
+</head>
+<body>
+    <textarea id="editor" placeholder="输入Mermaid代码...">
+graph TD
+A[客户端] -->|请求| B(服务器)
+B -->|响应| A
+    </textarea>
+    <div id="preview"></div>
+
+    <script>
+        // 初始化渲染引擎 
+        mermaid.initialize({ 
+            securityLevel: 'loose',
+            themeCSS: '.node rect { fill: #e1f5fe; }' // 自定义样式
+        });
+
+        // 实时渲染逻辑
+        document.getElementById('editor').addEventListener('input', function() {
+            try {
+                mermaid.parse(this.value);
+                mermaid.render('dynamicDiagram', this.value, svg => {
+                    document.getElementById('preview').innerHTML = svg;
+                });
+            } catch(err) {
+                document.getElementById('preview').innerHTML = 
+                    `<div style="color:red">语法错误: ${err}</div>`;
+            }
+        }).dispatchEvent(new Event('input')); // 初始渲染
+    </script>
+</body>
+</html>
+```
+
+
+---
+### 四、关键配置参数说明
+
+| 参数 | 类型 | 说明 | 默认值 | 参考来源 |
+|------|------|------|--------|----------|
+| `startOnLoad` | Boolean | 自动检测.mermaid类元素 | true |  |
+| `theme` | String | 主题样式(default/dark/forest) | default |  |
+| `fontFamily` | String | 全局字体设置 | '"trebuchet ms", verdana, arial' |  |
+| `logLevel` | String | 控制台日志级别(debug/info/warn/error) | warn |  |
+| `securityLevel` | String | 安全策略(strict/loose) | strict |  |
+| `flowchart` | Object | 流程图布局配置(curve/width) | { curve: 'linear' } |  |
+
+
+---
+### 五、最佳实践建议
+1. **版本锁定**：生产环境应指定确切版本（如`mermaid@10.8.0`），避免CDN更新导致兼容性问题 
+2. **错误处理**：通过`try-catch`包裹渲染逻辑，防止脚本中断 
+3. **性能优化**：
+   ```javascript
+   // 使用防抖函数控制实时渲染频率
+   const debounceRender = _.debounce(render, 500);
+   editor.addEventListener('input', debounceRender);
+   ```
+
+4. **主题扩展**：通过CSS定制样式（需设置`securityLevel: 'loose'）
+   ```css
+   .mermaid .label { font-family: "Consolas"; }
+   .mermaid .edge-thickness-normal { stroke-width: 2px; }
+   ```
+
+
+---
+### 六、跨平台集成方案
+1. **Markdown混合使用**：
+   ```html
+   <div class="mermaid">
+   ```
+mermaid
+   gantt
+title 项目计划
+section 阶段A
+需求分析 :a1, 2025-03-20, 5d
+系统设计 :after a1, 3d
+   ```
+   </div>
+   ```
+
+
+2. **框架集成示例（Vue）**：
+   ```javascript
+   // 组件化封装
+   Vue.component('mermaid-diagram', {
+       props: ['code'],
+       template: `<div class="mermaid"></div>`,
+       mounted() {
+           mermaid.init({}, this.$el).then(() => 
+               this.$el.innerHTML = this.code
+           );
+       }
+   })
+   ```
+
+
+以上方案覆盖了从基础到高级的多种实现场景，开发者可根据具体需求选择合适的集成方式。
+
+建议优先使用官方CDN服务，并通过初始化参数微调渲染效果。
+
 
 ## 基本介绍
 
