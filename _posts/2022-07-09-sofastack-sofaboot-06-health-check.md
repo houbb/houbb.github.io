@@ -7,8 +7,6 @@ tags: [sofa, sofastack, sh]
 published: true
 ---
 
-# sofaboot
-
 ## 前言
 
 大家好，我是老马。
@@ -121,6 +119,12 @@ com.alipay.sofa.healthcheck.component.check.retry.interval 	组件健康检查�
 com.alipay.sofa.healthcheck.module.check.retry.count 	sofaboot 模块健康检查重试次数 	0 	2.4.10
 com.alipay.sofa.healthcheck.module.check.retry.interval 	sofaboot 模块健康检查重试间隔时间 	1000 (单位：ms) 	2.4.10 (之前版本重试间隔为 0)
 ```
+
+# 小结
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 

@@ -7,8 +7,6 @@ tags: [sofa, sofastack, sh]
 published: true
 ---
 
-# sofaboot
-
 ## 前言
 
 大家好，我是老马。

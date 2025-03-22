@@ -7,8 +7,6 @@ tags: [sofa, sofastack, sh]
 published: true
 ---
 
-# sofaboot
-
 ## 前言
 
 大家好，我是老马。
@@ -67,7 +65,7 @@ SOFABoot 是在 Spring Boot 的基础上提供的功能扩展。
 
 从 SOFABoot 3.1.1 版本开始，SOFABoot 开始支持使用 Gradle 来进行依赖管理，如果要使用 Gradle 来进行依赖管理，需要按照如下的形式来配置 build.gradle：
 
-```
+```ts
 buildscript {
     ext {
         sofaBootVersion = '3.1.1'
@@ -185,6 +183,12 @@ SOFABoot 官方提供了 SOFARPC 和 SOFATracer 的 ark 插件，例如在应用
        default-autowire="byName">
 </beans>
 ```
+
+# 小结
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 

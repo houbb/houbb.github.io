@@ -7,8 +7,6 @@ tags: [sofa, sofastack, sh]
 published: true
 ---
 
-# sofaboot
-
 ## 前言
 
 大家好，我是老马。
@@ -91,6 +89,12 @@ SOFABoot 异步初始化能力提供两个属性配置，用于指定负责异�
 + com.alipay.sofa.boot.asyncInitBeanCoreSize > 线程池基本大小，默认值为 CPU 核数加一 + com.alipay.sofa.boot.asyncInitBeanMaxSize > 线程池中允许的最大线程数大小，默认值为 CPU 核数加一
 
 配置可以通过 VM -D 参数或者 Spring Boot 配置文件 application.yml 设置。
+
+# 小结
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 

@@ -7,8 +7,6 @@ tags: [sofa, sofastack, sh]
 published: true
 ---
 
-# sofaboot
-
 ## 前言
 
 大家好，我是老马。
@@ -780,7 +778,11 @@ public class SpringListExtensionDescriptor {
 </sofa:extension-point>
 ```
 
+# 小结
 
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 

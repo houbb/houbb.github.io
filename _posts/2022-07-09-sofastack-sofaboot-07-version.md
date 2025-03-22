@@ -7,8 +7,6 @@ tags: [sofa, sofastack, sh]
 published: true
 ---
 
-# sofaboot
-
 ## 前言
 
 大家好，我是老马。
@@ -60,7 +58,7 @@ sofastack 其实出来很久了，第一次应该是在 2022 年左右开始关�
 
 在应用启动成功后，可以在浏览器中输入 http://localhost:8080/sofaboot/versions 查看 SOFA 中间件的版本信息，如：
 
-```
+```js
 [
   {
     GroupId: "com.alipay.sofa",
@@ -85,6 +83,12 @@ sofastack 其实出来很久了，第一次应该是在 2022 年左右开始关�
 （2）版本号，最后的发布时间
 
 （3）查看当前应用的一些基本依赖信息。
+
+# 小结
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 
