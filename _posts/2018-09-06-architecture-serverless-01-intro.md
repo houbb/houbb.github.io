@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Serverless
+title:  Serverless-01-无服务器架构介绍
 date:  2018-09-06 07:56:59 +0800
 categories: [Architecture]
 tags: [serverless, architecture, sh]
 published: true
-excerpt: Serverless 架构。
 ---
 
 今天大多数公司在开发应用程序并将其部署在服务器上的时候，无论是选择公有云还是私有的数据中心，都需要提前了解究竟需要多少台服务器、多大容量的存储和数据库的功能等。并需要部署运行应用程序和依赖的软件到基础设施之上。假设我们不想在这些细节上花费精力，是否有一种简单的架构模型能够满足我们这种想法？

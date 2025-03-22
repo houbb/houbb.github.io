@@ -23,8 +23,11 @@ published: true
 
 [Compensating Transaction pattern 分布式锁事务](https://houbb.github.io/2018/09/02/sql-distribute-transaction-compensating)
 
+# 分布式一致性算法系列
 
-# 分布式协议
+[Paxos-一致性算法](https://houbb.github.io/2021/03/06/distributed-system-consensus-paxos-01-intro)
+
+
 
 
 

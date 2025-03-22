@@ -7,6 +7,8 @@ tags: [distributed, algorithm, java, sh]
 published: true
 ---
 
+
+
 # Paxos 算法
 
 Paxos 算法是莱斯利·兰伯特于1990年提出的一种基于消息传递且具有高度容错特性的一致性算法。
