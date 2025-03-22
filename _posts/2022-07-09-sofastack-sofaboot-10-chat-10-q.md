@@ -3,7 +3,7 @@ layout: post
 title: SOFAStack-01-sofaboot 10 个问题
 date:  2022-07-09 09:22:02 +0800
 categories: [SOFA]
-tags: [sofa, SOFAStack, sofaboot, sh]
+tags: [sofa, sofastack, sh]
 published: true
 ---
 

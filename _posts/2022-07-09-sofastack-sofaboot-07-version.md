@@ -1,9 +1,9 @@
 ---
 layout: post
 title:  SOFABoot-07-版本查看
-date:  2021-01-05 08:11:27 +0800
+date:  2022-07-09 09:22:02 +0800
 categories: [SOFA]
-tags: [sofa, springboot, SOFABoot, sh]
+tags: [sofa, sofastack, sh]
 published: true
 ---
 
