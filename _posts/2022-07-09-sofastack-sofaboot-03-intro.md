@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  SOFABoot 介绍
+title:  SOFABoot-03-sofaboot 介绍
 date:  2022-07-09 09:22:02 +0800
 categories: [SOFA]
 tags: [sofa, sofastack, sh]
