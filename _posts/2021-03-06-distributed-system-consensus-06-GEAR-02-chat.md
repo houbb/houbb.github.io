@@ -10,8 +10,6 @@ published: true
 
 # chat
 
-
-
 ### 分布式一致性算法GEAR的全面解析
 
 #### 一、定义与背景

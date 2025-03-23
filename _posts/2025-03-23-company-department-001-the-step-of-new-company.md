@@ -1,9 +1,9 @@
 ---
 layout: post
 title: 新的技术公司，应该如何实现技术积累？
-date: 2030-08-31 21:01:55 +0800
+date: 2025-03-17 21:01:55 +0800
 categories: [Think]
-tags: [think, software, sh]
+tags: [think, software, company, department, sh]
 published: true
 ---
 

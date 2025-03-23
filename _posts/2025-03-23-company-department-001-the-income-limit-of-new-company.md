@@ -1,9 +1,9 @@
 ---
 layout: post
 title: 新的技术公司，如何解决公司的资质等方面？比如收单、小贷
-date: 2030-08-31 21:01:55 +0800
+date: 2025-03-17 21:01:55 +0800
 categories: [Think]
-tags: [think, software, sh]
+tags: [think, software, company, department, sh]
 published: true
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 技术软件公司的护城河是什么？
-date: 2030-08-31 21:01:55 +0800
+date: 2025-03-17 21:01:55 +0800
 categories: [Think]
 tags: [think, software, sh]
 published: true

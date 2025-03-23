@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 软件开发者经常被视为工具？如何避免成为螺丝钉，控制翻转，让公司、业务全部成为开发者的工具？
-date: 2030-08-31 21:01:55 +0800
+date: 2025-03-17 21:01:55 +0800
 categories: [Think]
 tags: [think, software, sh]
 published: true

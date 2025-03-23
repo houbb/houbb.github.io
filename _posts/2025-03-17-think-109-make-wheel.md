@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 从零开始造轮子？开源拿来主义二开？还是直接用商用
-date: 2030-08-31 21:01:55 +0800
+date: 2025-03-17 21:01:55 +0800
 categories: [Think]
 tags: [think, bigdata, sh]
 published: true

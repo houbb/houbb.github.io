@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 系统化架构评估方法 SAAM（Scenario-Based Architecture Analysis Method，基于场景的架构分析方法）
-date: 2030-08-31 21:01:55 +0800
+date: 2025-03-17 21:01:55 +0800
 categories: [Think]
 tags: [think, software, sh]
 published: true

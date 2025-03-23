@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 个人博客、开源项目如何良性发展？耗费大量的精力，如何获取一定收益保证积极性、长期性
-date: 2030-08-31 21:01:55 +0800
+date: 2025-03-17 21:01:55 +0800
 categories: [Think]
 tags: [think, software, sh]
 published: true
