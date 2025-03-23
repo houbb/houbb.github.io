@@ -1,11 +1,43 @@
 ---
 layout: post
-title:  Jarslink Jarslink 是一个 SOFA 方舟插件，用于管理多应用部署
-date:  2018-07-19 13:23:58 +0800
-categories: [Java]
-tags: [ali, java, virtual, sh]
+title:  Jarslink 是一个 SOFA 方舟插件，用于管理多应用部署
+date:  2022-07-09 09:22:02 +0800
+categories: [SOFA]
+tags: [sofa, SOFAStack, test, sh]
 published: true
 ---
+
+## 前言
+
+大家好，我是老马。
+
+sofastack 其实出来很久了，第一次应该是在 2022 年左右开始关注，但是一直没有深入研究。
+
+最近想学习一下 SOFA 对于生态的设计和思考。
+
+## sofaboot 系列
+
+[SOFABoot-00-sofaboot 概览](https://houbb.github.io/2022/07/09/sofastack-sofaboot-00-overview)
+
+[SOFABoot-01-蚂蚁金服开源的 sofaboot 是什么黑科技？](https://houbb.github.io/2022/07/09/sofastack-sofaboot-01-intro)
+
+[SOFABoot-02-模块化隔离方案](https://houbb.github.io/2022/07/09/sofastack-sofaboot-02-module-iosolation)
+
+[SOFABoot-03-sofaboot 介绍](https://houbb.github.io/2022/07/09/sofastack-sofaboot-03-intro)
+
+[SOFABoot-04-快速开始](https://houbb.github.io/2022/07/09/sofastack-sofaboot-04-quick-start)
+
+[SOFABoot-05-依赖管理](https://houbb.github.io/2022/07/09/sofastack-sofaboot-05-depency-solve)
+
+[SOFABoot-06-健康检查](https://houbb.github.io/2022/07/09/sofastack-sofaboot-06-health-check)
+
+[SOFABoot-07-版本查看](https://houbb.github.io/2022/07/09/sofastack-sofaboot-07-version)
+
+[SOFABoot-08-启动加速](https://houbb.github.io/2022/07/09/sofastack-sofaboot-08-speed-up)
+
+[SOFABoot-09-模块隔离](https://houbb.github.io/2022/07/09/sofastack-sofaboot-09-module-isolation)
+
+[SOFABoot-10-聊一聊 sofatboot 的十个问题](https://houbb.github.io/2022/07/09/sofastack-sofaboot-10-chat-10-q)
 
 # Jarslink
 
@@ -19,6 +51,8 @@ published: true
 - 跨应用内部通信，支持应用发布引用 JVM 服务，跨应用既可以使用 RPC 框架，也可以走内部 JVM 服务进行通信。
 
 - 支持应用健康检查。
+
+最新的消息是项目已不再继续添加新功能，处于维护模式；本项目已有功能已被合并进 Koupleless，并作为模块化研发框架和平台 Koupleless 的能力之一， 我们推荐您直接使用 [Koupleless](https://houbb.github.io/2022/07/09/sofastack-Koupleless-01-overview)
 
 # 背景
 
@@ -48,9 +82,13 @@ Jarslink2.0 是一款基于 SOFAArk 开发的 Ark Plugin 。
 
 SOFABoot 或者 Spring Boot 应用，甚至普通的模块都可以借助 SOFAArk 插件打包成一个标准的 Ark Biz 包。
 
-Jarslink2.0 支持多个 Ark Biz 运行在 SOFAArk 容器之上，从而做到多应用的合并部署。应用可以通过注解的形式快速发布服务或者引用其他应用发布的服务，达到相互通信的目的。下图是运行时多应用合并部署结构图：
+Jarslink2.0 支持多个 Ark Biz 运行在 SOFAArk 容器之上，从而做到多应用的合并部署。应用可以通过注解的形式快速发布服务或者引用其他应用发布的服务，达到相互通信的目的。
 
-![结构图](https://github.com/sofastack/sofa-jarslink/blob/master/resource/jarslink-runtime.png)
+下图是运行时多应用合并部署结构图：
+
+![结构图](https://github.com/sofastack/sofa-jarslink/raw/master/resource/jarslink-runtime.png)
+
+![结构图](https://i-blog.csdnimg.cn/direct/7c54ffc9bb0b4e0d89a9192e7a574e25.png#pic_center)
 
 从图中可以看到，使用 Jarslink2.0 通常需要引入两个 Ark Plugin, 下面介绍这两个 Ark Plugin 的作用。
 

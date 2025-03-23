@@ -7,6 +7,38 @@ tags: [sofa, SOFAActs, test, sh]
 published: true
 ---
 
+## 前言
+
+大家好，我是老马。
+
+sofastack 其实出来很久了，第一次应该是在 2022 年左右开始关注，但是一直没有深入研究。
+
+最近想学习一下 SOFA 对于生态的设计和思考。
+
+## sofaboot 系列
+
+[SOFABoot-00-sofaboot 概览](https://houbb.github.io/2022/07/09/sofastack-sofaboot-00-overview)
+
+[SOFABoot-01-蚂蚁金服开源的 sofaboot 是什么黑科技？](https://houbb.github.io/2022/07/09/sofastack-sofaboot-01-intro)
+
+[SOFABoot-02-模块化隔离方案](https://houbb.github.io/2022/07/09/sofastack-sofaboot-02-module-iosolation)
+
+[SOFABoot-03-sofaboot 介绍](https://houbb.github.io/2022/07/09/sofastack-sofaboot-03-intro)
+
+[SOFABoot-04-快速开始](https://houbb.github.io/2022/07/09/sofastack-sofaboot-04-quick-start)
+
+[SOFABoot-05-依赖管理](https://houbb.github.io/2022/07/09/sofastack-sofaboot-05-depency-solve)
+
+[SOFABoot-06-健康检查](https://houbb.github.io/2022/07/09/sofastack-sofaboot-06-health-check)
+
+[SOFABoot-07-版本查看](https://houbb.github.io/2022/07/09/sofastack-sofaboot-07-version)
+
+[SOFABoot-08-启动加速](https://houbb.github.io/2022/07/09/sofastack-sofaboot-08-speed-up)
+
+[SOFABoot-09-模块隔离](https://houbb.github.io/2022/07/09/sofastack-sofaboot-09-module-isolation)
+
+[SOFABoot-10-聊一聊 sofatboot 的十个问题](https://houbb.github.io/2022/07/09/sofastack-sofaboot-10-chat-10-q)
+
 # 1.1 简介与适用场景
 
 ## 什么是 Koupleless
@@ -21,51 +53,51 @@ Koupleless 是一种模块化的 Serverless 技术解决方案，它能让普通
 
 ### 痛点 1：应用构建发布慢或者 SDK 升级繁琐
 
-- **传统问题**：  
-  应用镜像化构建需 3-5 分钟，单机代码发布到启动需 3-5 分钟，开发者每次验证或上线需等待 **6-10 分钟**。SDK 升级需修改所有应用代码并重新构建发布，流程繁琐。  
-- **Koupleless 方案**：  
-  使用 **通用基座** 与配套工具，将应用切分为 **基座**（沉淀公共 SDK）和 **模块**（业务代码包）。基座升级对业务无感，模块热部署实现 **10 秒级构建发布** 和 **公共 SDK 升级无感**。  
+- 传统问题：  
+  应用镜像化构建需 3-5 分钟，单机代码发布到启动需 3-5 分钟，开发者每次验证或上线需等待 6-10 分钟。SDK 升级需修改所有应用代码并重新构建发布，流程繁琐。  
+- Koupleless 方案：  
+  使用 通用基座 与配套工具，将应用切分为 基座（沉淀公共 SDK）和 模块（业务代码包）。基座升级对业务无感，模块热部署实现 10 秒级构建发布 和 公共 SDK 升级无感。  
   ![应用构建发布速度](https://intranetproxy.alipay.com/skylark/lark/0/2023/png/671/1694592240984-8ea49823-ebd0-4bb7-909c-380f0439382b.png)
 
 ---
 
 ### 痛点 2：长尾应用资源与维护成本高
 
-- **传统问题**：  
-  企业 80% 的长尾应用 CPU 使用率低于 10%，造成 **资源浪费**。  
-- **Koupleless 方案**：  
-  通过 **合并部署** 将多个应用合并到同一基座，复用基座内存（Metaspace 和 Heap），构建产物从数百 MB 瘦身至几十 MB，提升 CPU 使用率。  
+- 传统问题：  
+  企业 80% 的长尾应用 CPU 使用率低于 10%，造成 资源浪费。  
+- Koupleless 方案：  
+  通过 合并部署 将多个应用合并到同一基座，复用基座内存（Metaspace 和 Heap），构建产物从数百 MB 瘦身至几十 MB，提升 CPU 使用率。  
   ![应用机器成本](https://intranetproxy.alipay.com/skylark/lark/0/2023/png/671/1694593117757-d2932c29-c4c2-4ecc-9a41-59a750d53823.png)
 
 ---
 
 ### 痛点 3：企业研发协作效率低
 
-- **传统问题**：  
+- 传统问题：  
   多人协作需统一时间窗口迭代开发，存在需求等待、环境抢占、迭代冲突等问题。  
-- **Koupleless 方案**：  
-  将应用拆分为 **基座** 和多个独立 **模块**，模块可并行开发与热部署，单次构建+发布从 **6-10 分钟缩短至十秒级**。  
+- Koupleless 方案：  
+  将应用拆分为 基座 和多个独立 模块，模块可并行开发与热部署，单次构建+发布从 6-10 分钟缩短至十秒级。  
   ![协作效率低](https://intranetproxy.alipay.com/skylark/lark/0/2023/png/671/1694594675815-3037ffe1-2048-4c86-bc50-456697b197d5.png)
 
 ---
 
 ### 痛点 4：难以沉淀业务资产提高中台效率
 
-- **传统问题**：  
+- 传统问题：  
   中台应用拆分独立部署带来高昂资源成本和运维负担。  
-- **Koupleless 方案**：  
-  基座沉淀业务资产（API/SPI 定义、公共逻辑），模块直接调用基座能力，单次构建+发布缩短至 **30 秒内**。  
+- Koupleless 方案：  
+  基座沉淀业务资产（API/SPI 定义、公共逻辑），模块直接调用基座能力，单次构建+发布缩短至 30 秒内。  
   ![提高中台效率](https://intranetproxy.alipay.com/skylark/lark/0/2023/png/671/1694601773808-b25f5beb-a4e4-4d93-ba55-6f61bf0377bc.png)
 
 ---
 
 ### 痛点 5：微服务演进成本高
 
-- **应用生命周期**：  
-  - **初创期**：采用单体架构。  
-  - **增长期**：拆分为基座与模块，提升协作效率。  
-  - **成熟期**：模块拆分为独立应用。  
-  - **长尾期**：模块合并部署实现降本增效。  
+- 应用生命周期：  
+  - 初创期：采用单体架构。  
+  - 增长期：拆分为基座与模块，提升协作效率。  
+  - 成熟期：模块拆分为独立应用。  
+  - 长尾期：模块合并部署实现降本增效。  
   ![微服务演进成本](https://intranetproxy.alipay.com/skylark/lark/0/2023/png/671/1694602307402-510d44ec-314c-44c4-96d8-bb978dd027ff.png)
 
 # 1.2 行业背景
@@ -143,7 +175,7 @@ Koupleless 是一种模块化的 Serverless 技术解决方案，它能让普通
 
 ### 如何合理拆分微服务
 
-微服务如何合理拆分始终是个老大难的问题，合理拆分始终没有清晰的标准，这也是为何会存在上述的大应用过大、小应用过多问题的原因。而这些问题背后的根因是**业务与组织灵活，与微服务拆分的成本高，两者的敏捷度不一致** 。
+微服务如何合理拆分始终是个老大难的问题，合理拆分始终没有清晰的标准，这也是为何会存在上述的大应用过大、小应用过多问题的原因。而这些问题背后的根因是业务与组织灵活，与微服务拆分的成本高，两者的敏捷度不一致 。
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2023/png/149473/1695113016136-8d591312-1300-496e-9df8-a5ed1a49abe4.png#clientId=u02591eed-2e18-4&from=paste&height=201&id=u7ce79cce&originHeight=554&originWidth=1222&originalType=binary&ratio=2&rotation=0&showTitle=false&size=182342&status=done&style=none&taskId=uf3c867d4-2d82-4922-a6d9-6572ca3a1f7&title=&width=443 )
 业务发展灵活，组织架构也在不断调整，而微服务拆分需要机器与长期维护的成本，两者的敏捷度不一致，导致容易出现未拆或过度拆分问题，从而出现大应用过大和小应用过多问题。这类问题不从根本上解决，会导致微服务应用治理过一波之后还会再次出现问题，导致研发同学始终处于低效的痛苦与治理的痛苦循环中。
@@ -164,7 +196,7 @@ Koupleless 的目的是为了解决这些问题而不断演进出来的一套研
 
 ## 模块化应用架构
 
-为了解决这些问题，我们对应用同时做了横向和纵向的拆分。首先第一步纵向拆分：把应用拆分成**基座** 和**业务** 两层，这两层分别对应两层的组织分工。基座小组与传统应用一样，负责机器维护、通用逻辑沉淀、业务架构治理，并为业务提供运行资源和环境。通过关注点分离的方式为业务屏蔽业务以下所有基础设施，聚焦在业务自身上。第二部我们将业务进行横向切分出多个模块，多个模块之间独立并行迭代互不影响，同时模块由于不包含基座部分，构建产物非常轻量，启动逻辑也只包含业务本身，所以启动快，具备秒级的验证能力，让模块开发得到极致的提效。
+为了解决这些问题，我们对应用同时做了横向和纵向的拆分。首先第一步纵向拆分：把应用拆分成基座 和业务 两层，这两层分别对应两层的组织分工。基座小组与传统应用一样，负责机器维护、通用逻辑沉淀、业务架构治理，并为业务提供运行资源和环境。通过关注点分离的方式为业务屏蔽业务以下所有基础设施，聚焦在业务自身上。第二部我们将业务进行横向切分出多个模块，多个模块之间独立并行迭代互不影响，同时模块由于不包含基座部分，构建产物非常轻量，启动逻辑也只包含业务本身，所以启动快，具备秒级的验证能力，让模块开发得到极致的提效。
 
 ![](https://intranetproxy.alipay.com/skylark/lark/0/2023/png/149473/1695131313965-18385213-eded-4a6b-b554-db5312fa2c9d.png#clientId=ua84a92a5-30aa-4&from=paste&height=431&id=udb6b29d5&originHeight=862&originWidth=3448&originalType=binary&ratio=2&rotation=0&showTitle=false&size=192627&status=done&style=none&taskId=u9a114a24-0887-48d9-87b2-57d3e15eb80&title=&width=1724)
 拆分之前，每个开发者可能感知从框架到中间件到业务公共部分到业务自身所有代码和逻辑，拆分后，团队的协作分工发生相应改变，研发人员分工出两种角色，基座和模块开发者，模块开发者不关心资源与容量，享受秒级部署验证能力，聚焦在业务逻辑自身上。
