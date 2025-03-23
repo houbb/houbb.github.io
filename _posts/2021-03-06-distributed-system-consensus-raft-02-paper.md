@@ -85,14 +85,6 @@ Paxos 的第二个问题是它没有为构建实际实现提供良好基础。�
 
 由于这些问题，我们得出结论：Paxos 无论是作为系统构建的基础还是教学工具都是不合适的。鉴于共识在大型软件系统中的重要性，我们决定尝试设计一种比 Paxos 具有更好特性的替代共识算法。Raft 是这一实验的成果。  
 
----
-
-（后续内容将分批次继续翻译，请告知是否继续。）
-
-以下是《In Search of an Understandable Consensus Algorithm (Extended Version)》论文的完整中文翻译（第4-6页），严格逐字逐句翻译：
-
----
-
 ### 第4页  
 ## 4 为可理解性设计  
 我们设计 Raft 时有几个目标：它必须为系统构建提供一个完整且实用的基础，从而显著减少开发者所需的设计工作；它必须在所有条件下保证安全性，并在典型操作条件下保持可用性；它必须对常见操作保持高效。但我们最重要的目标——也是最困难的挑战——是**可理解性**。必须让广大受众能够轻松理解该算法。此外，必须能够形成对算法的直觉，使系统构建者能够在现实实现中进行必然的扩展。  
@@ -150,13 +142,6 @@ Raft 使用**随机化选举超时**以确保选票分裂罕见且能快速解�
 
 选举是可理解性如何指导我们在设计替代方案间做出选择的示例。最初我们计划使用排名系统：每位候选人被分配唯一排名，用于在竞争候选人中选择。如果候选人发现更高排名的候选人，则恢复为跟随者状态以便后者更容易赢得后续选举。我们发现这种方法在可用性方面存在微妙问题（例如，若高排名服务器故障，低排名服务器可能需要超时并再次成为候选人，但如果过早操作会重置选举进程）。我们对算法进行了多次调整，但每次调整后都出现新的极端案例。最终我们得出结论：随机化重试方法更直观易懂。  
 
----
-
-（后续内容将继续翻译，请告知是否继续。）
-
-以下是《In Search of an Understandable Consensus Algorithm (Extended Version)》论文的完整中文翻译（第7-9页），严格逐字逐句翻译：
-
----
 
 ### 第7页  
 ### 5.3 日志复制  
@@ -245,13 +230,6 @@ Raft 的要求之一是安全性不得依赖时序：系统不能因事件快于
 
 广播时间和 MTBF 是底层系统属性，而选举超时需人为选择。Raft 的 RPC 通常要求接收方将信息持久化到稳定存储，因此广播时间可能在 0.5ms 到 20ms 之间，选举超时可能在 10ms 到 500ms 间。典型服务器 MTBF 为数月，完全满足时序要求。  
 
----
-
-（后续内容将继续翻译，请告知是否继续。）
-
-以下是《In Search of an Understandable Consensus Algorithm (Extended Version)》论文的完整中文翻译（第10-12页），严格逐字逐句翻译：
-
----
 
 ### 第10页  
 ## 6 集群成员变更  
@@ -309,15 +287,6 @@ Raft 的日志在正常操作中会不断增长以容纳更多客户端请求，
 1. **快照时机**：当日志达到固定大小时触发快照，大小需显著大于预期快照以减少磁盘开销；  
 2. **写入延迟**：使用写时复制（如 Linux 的 fork）技术避免快照写入阻塞正常操作。  
 
----
-
-（后续内容将继续翻译，请告知是否继续。）
-
-
-以下是《In Search of an Understandable Consensus Algorithm (Extended Version)》论文的完整中文翻译（第13-15页），严格逐字逐句翻译：
-
----
-
 ### 第13页  
 ## 8 客户端交互  
 本节描述客户端如何与 Raft 交互，包括客户端如何找到集群领导者以及 Raft 如何支持**线性一致性语义**[10]。这些问题适用于所有基于共识的系统，Raft 的解决方案与其他系统类似。  
@@ -366,9 +335,96 @@ Raft 的性能目标是在不影响可理解性的前提下与 Paxos 竞争。�
 
 **日志复制**：Raft 在正常操作中最大化提交吞吐量。使用 1 Gbps、5 节点的千兆网络集群，Raft 的吞吐量接近网络带宽极限（约 200,000 条/秒）。提交延迟由磁盘写入速度主导（约 5ms），远低于 Paxos 的理论下限。  
 
+### 第16页  
+## 10 相关工作  
+已有大量与共识算法相关的研究，大多属于以下类别之一：  
+- Lamport 对 Paxos 的原始描述 [15]，以及尝试更清晰解释它的工作 [16, 20, 21]；  
+- 对 Paxos 的扩展，填补缺失细节并修改算法以更好地支持实现 [26, 39, 13]；  
+- 实现共识算法的系统，如 Chubby [2, 4]、ZooKeeper [11, 12] 和 Spanner [6]。Chubby 和 Spanner 的算法未公开细节，但声称基于 Paxos。ZooKeeper 的算法已部分公开，但与 Paxos 差异显著；  
+- 可应用于 Paxos 的性能优化 [18, 19, 3, 25, 1, 27]；  
+- Oki 和 Liskov 的 **Viewstamped Replication (VR)**，一种与 Paxos 同期提出的替代共识方法。原始描述 [29] 与分布式事务协议交织，但核心共识协议已在近期更新 [22] 中分离。VR 采用基于领导者的方法，与 Raft 有诸多相似。  
+
+Raft 与 Paxos 的最大区别在于**强领导机制**：Raft 将领导者选举作为共识协议的核心部分，并将尽可能多的功能集中在领导者。这使得算法更简单易懂。例如，Paxos 的领导者选举是独立于基础共识协议的优化，而 Raft 将其作为共识两阶段中的第一阶段。这减少了机制的总量。  
+
+与 VR 和 ZooKeeper 相比，Raft 的非领导者节点功能更少。例如，Raft 的日志条目仅通过 AppendEntries RPC 从领导者单向流动；而 VR 的日志条目在选举期间可能双向流动（领导者可接收条目），增加了复杂性。ZooKeeper 的公开描述也允许日志条目双向流动，但实际实现更接近 Raft [35]。  
+
+Raft 的消息类型（4 种）远少于其他共识算法。例如，VR 和 ZooKeeper 分别定义了 10 种消息类型用于基础共识和成员变更（不包括日志压缩和客户端交互），而 Raft 仅需 4 种（两种 RPC 请求及响应）。尽管 Raft 的消息内容更密集，但总体更简单。此外，VR 和 ZooKeeper 的描述假设领导者变更时传输完整日志，实际优化需要额外消息类型。  
+
+Raft 的强领导机制简化了设计，但牺牲了部分性能优化。例如，**Egalitarian Paxos (EPaxos)** [27] 在无领导模式下，若并发提议的命令可交换（commutative），则只需一轮通信即可提交。EPaxos 在跨广域网（WAN）部署中能实现更低延迟和更好负载均衡，但显著增加了复杂性。  
+
+集群成员变更的多种方法已被提出或实现，包括 Lamport 的原始提案 [15]、VR [22] 和 SMART [24]。Raft 选择**联合共识**，因其复用现有共识协议机制，仅需极少额外逻辑。Lamport 的 α 方法不适用于 Raft，因其假设无需领导者即可达成共识。与 VR 和 SMART 相比，Raft 的成员变更允许集群在过渡期间持续处理请求，而非停止服务或限制请求数，且实现更简单。  
+
 ---
 
-（后续内容将继续翻译，请告知是否继续。）
+### 第17页  
+## 11 结论  
+算法设计通常以正确性、效率或简洁性为首要目标。尽管这些目标重要，但我们认为**可理解性**同等关键。在开发者将算法转化为实际实现之前，其他目标无从谈起。若开发者无法深入理解算法并形成直觉，将难以在实现中保持其理想特性。  
+
+本文聚焦分布式共识问题，挑战了广受认可但晦涩难懂的 Paxos 算法。我们提出的 Raft 算法显著更易理解，且为系统构建提供了更优基础。通过以可理解性为核心设计目标，我们采用以下技术：  
+- **问题分解**：分离领导者选举、日志复制与安全性；  
+- **状态空间简化**：消除日志空洞，限制不一致场景；  
+- **随机化**：如选举超时随机化减少冲突。  
+
+这些技术不仅提升了 Raft 的可理解性，也使我们更容易验证其正确性。用户研究表明 Raft 更易教学，其开源实现和工业应用验证了实用性。我们相信，将可理解性作为明确设计目标是共识算法领域的重大进步。  
+
+---
+
+## 12 致谢  
+用户研究的顺利进行得益于 Ali Ghodsi、David Mazieres 以及伯克利 CS 294-91 和斯坦福 CS 240 课程学生的支持。Scott Klemmer 协助设计研究方案，Nelson Ray 提供统计学指导。Paxos 讲座幻灯片部分基于 Lorenzo Alvisi 的原始材料。特别感谢 David Mazieres 和 Ezra Hoch 发现 Raft 的微妙错误。  
+
+感谢以下人员对论文和用户研究材料的宝贵反馈：  
+Ed Bugnion、Michael Chan、Hugues Evrard、Daniel Giffin、Arjun Gopalan、Jon Howell、Vimalkumar Jeyakumar、Ankita Kejriwal、Aleksandar Kracun、Amit Levy、Joel Martin、Satoshi Matsushita、Oleg Pesok、David Ramos、Robbert van Renesse、Mendel Rosenblum、Nicolas Schiper、Deian Stefan、Andrew Stone、Ryan Stutsman、David Terei、Stephen Yang、Matei Zaharia、24 位匿名会议评审（含重复提交），以及指导编辑 Eddie Kohler。Werner Vogels 在推特分享早期草稿，显著提升了 Raft 的曝光度。  
+
+本研究受以下机构资助：  
+- 半导体研究公司（SRC）的 Gigascale 系统研究中心和 Multiscale 系统中心；  
+- STARnet（由 MARCO 和 DARPA 资助的 SRC 项目）；  
+- 美国国家科学基金会（Grant No. 0963859）；  
+- Facebook、Google、Mellanox、NEC、NetApp、SAP 和三星的资助。  
+Diego Ongaro 获 Junglee Corporation 斯坦福研究生奖学金支持。  
+
+---
+
+### 第18页  
+## 参考文献  
+[1] Bolosky, W. J., Bradshaw, D., Haagens, R. B., Kusters, N. P., and Li, P. Paxos 复制的状态机作为高性能数据存储的基础。见《NSDI'11》，2011，USENIX，141-154。  
+[2] Burrows, M. Chubby：松散耦合分布式系统的锁服务。见《OSDI'06》，2006，USENIX，335-350。  
+[3] Camargos, L. J., Schmidt, R. M., and Pedone, F. 多协调 Paxos。见《PODC'07》，2007，ACM，316-317。  
+[4] Chandra, T. D., Griesemer, R., and Redstone, J. Paxos 实现：工程视角。见《PODC'07》，2007，ACM，398-407。  
+[5] Chang, F., Dean, J., Ghemawat, S., et al. Bigtable：结构化数据的分布式存储系统。见《OSDI'06》，2006，USENIX，205-218。  
+[6] Corbett, J. C., Dean, J., Epstein, M., et al. Spanner：谷歌的全球分布式数据库。见《OSDI'12》，2012，USENIX，251-264。  
+[7] Cousineau, D., Doligez, D., Lamport, L., et al. TLA+ 证明。见《FM'12》，2012，Springer，147-154。  
+[8] Ghemawat, S., Gobioff, H., and Leung, S.-T. 谷歌文件系统。见《SOSP'03》，2003，ACM，29-43。  
+[9] Gray, C., and Cheriton, D. 租约：分布式文件缓存一致性的高效容错机制。见《SOSP'89》，1989，ACM，202-210。  
+[10] Herlihy, M. P., and Wing, J. M. 线性一致性：并发对象的正确性条件。《ACM 编程语言与系统汇刊》12（1990），463-492。  
+[11] Hunt, P., Konar, M., Junqueira, F. P., and Reed, B. ZooKeeper：互联网级系统的无等待协调。见《ATC'10》，2010，USENIX，145-158。  
+[12] Junqueira, F. P., Reed, B. C., and Serafini, M. Zab：主备系统的高性能广播协议。见《DSN'11》，2011，IEEE，245-256。  
+[13] Kirsch, J., and Amir, Y. 系统构建者的 Paxos。技术报告 CNDS-2008-2，约翰霍普金斯大学，2008。  
+[14] Lamport, L. 时间、时钟与分布式系统事件排序。《ACM 通信》21, 7（1978），558-565。  
+[15] Lamport, L. 兼职议会。《ACM 计算机系统汇刊》16, 2（1998），133-169。  
+[16] Lamport, L. Paxos 简释。《ACM SIGACT 新闻》32, 4（2001），18-25。  
+[17] Lamport, L. TLA+ 语言及工具规范系统。Addison-Wesley，2002。  
+[18] Lamport, L. 广义共识与 Paxos。技术报告 MSR-TR-2005-33，微软研究院，2005。  
+[19] Lamport, L. 快速 Paxos。《分布式计算》19, 2（2006），79-103。  
+[20] Lampson, B. W. 如何基于共识构建高可用系统。见《分布式算法》，1996，Springer，1-17。  
+[21] Lampson, B. W. Paxos 的 ABCD。见《PODC'01》，2001，ACM，13-13。  
+[22] Liskov, B., and Cowling, J. 视图戳复制再探。技术报告 MIT-CSAIL-TR-2012-021，麻省理工学院，2012。  
+[23] LogCabin 源代码。http://github.com/logcabin/logcabin。  
+[24] Lorch, J. R., Adya, A., Bolosky, W. J., et al. 迁移有状态服务的 SMART 方法。见《EuroSys'06》，2006，ACM，103-115。  
+[25] Mao, Y., Junqueira, F. P., and Marzullo, K. Mencius：面向广域网的高效复制状态机。见《OSDI'08》，2008，USENIX，369-384。  
+[26] Mazieres, D. 实用的 Paxos。http://www.scs.stanford.edu/~dm/home/papers/paxos.pdf，2007。  
+[27] Moraru, I., Andersen, D. G., and Kaminsky, M. 平等议会中有更多共识。见《SOSP'13》，2013，ACM。  
+[28] Raft 用户研究。http://ramcloud.stanford.edu/~ongaro/usersstudy/。  
+[29] Oki, B. M., and Liskov, B. H. 视图戳复制：支持高可用分布式系统的新主副本方法。见《PODC'88》，1988，ACM，8-17。  
+[30] O’Neil, P., Cheng, E., Gawlick, D., and O’Neil, E. 日志结构合并树。《Acta Informatica》33, 4（1996），351-385。  
+[31] Ongaro, D. 共识：连接理论与实践。博士论文，斯坦福大学，2014。http://ramcloud.stanford.edu/~ongaro/thesis.pdf。  
+[32] Ongaro, D., and Ousterhout, J. 寻找一种可理解的共识算法。见《ATC'14》，2014，USENIX。  
+[33] Ousterhout, J., Agrawal, P., Erickson, D., et al. RAMCloud 的案例。《ACM 通信》54（2011），121-130。  
+[34] Raft 共识算法网站。http://raftconsensus.github.io。  
+[35] Reed, B. 个人通信，2013年5月17日。  
+[36] Rosenblum, M., and Ousterhout, J. K. 日志结构文件系统的设计与实现。《ACM 计算机系统汇刊》10（1992），26-52。  
+[37] Schneider, F. B. 使用状态机方法实现容错服务：教程。《ACM 计算调查》22, 4（1990），299-319。  
+[38] Shvachko, K., Kuang, H., Radia, S., and Chansler, R. Hadoop 分布式文件系统。见《MSST'10》，2010，IEEE，1-10。  
+[39] van Renesse, R. 适度复杂的 Paxos。技术报告，康奈尔大学，2012。  
 
 # 参考资料
 
