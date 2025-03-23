@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Git 开源的版本控制系统-03-时间数据回溯 时光机穿梭
-date:  2016-10-10 16:09:36 +0800
-categories: [VCS]
-tags: [git]
+date: 2019-1-17 09:34:35 +0800
+categories: [Git]
+tags: [git, devops, git-learn, git-topic, gitlab, sh]
 published: true
 ---
 
