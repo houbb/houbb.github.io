@@ -107,6 +107,7 @@ uleon.fumika@gmail.com"
 C:\Users\Administrator\AppData\Roaming\npm-cache
 ```
 
+很奇怪，发现这个问题还是没有解决。网上也查不到这个问题。
 
 
 ### 方式3-安装旧版本
