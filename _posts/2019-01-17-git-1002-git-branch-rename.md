@@ -1,9 +1,9 @@
 ---
 layout: post
 title: git 如何修改分支名称？
-date:  2023-05-09 +0800
-categories: [GIT]
-tags: [tool, git, sh]
+date: 2019-1-17 09:34:35 +0800
+categories: [Git]
+tags: [git, devops, git-learn, git-topic, sh]
 published: true
 ---
 

@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  GitBook
-date:  2018-01-06 12:29:02 +0800
-categories: [Tools]
-tags: [git, tool, devops]
+title:  GitBook-01-gitbook 发布文章入门介绍
+date: 2019-1-17 09:34:35 +0800
+categories: [Git]
+tags: [git, devops, git-learn, git-topic, gitbook, sh]
 published: true
 ---
 

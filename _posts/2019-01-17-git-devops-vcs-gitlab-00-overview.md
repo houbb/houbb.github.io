@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Devops-vcs-00-代码仓库持续部署 gitlab
-date:  2016-10-14 10:15:54 +0800
-categories: [Devops]
-tags: [devops, vcs, ci, sh]
+date: 2019-1-17 09:34:35 +0800
+categories: [Git]
+tags: [git, devops, git-learn, git-topic, gitlab, sh]
 published: true
 ---
 

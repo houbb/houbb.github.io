@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Gitlab-02-mac docker 安装笔记
-date:  2017-01-14 02:17:01 +0800
-categories: [Devops]
-tags: [gitlab, git, devops, docker, vcs]
+date: 2019-1-17 09:34:35 +0800
+categories: [Git]
+tags: [git, devops, git-learn, git-topic, gitlab, sh]
 published: true
 ---
 

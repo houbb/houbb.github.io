@@ -1,9 +1,9 @@
 ---
 layout: post
-title: Gitlab
-date:  2017-01-14 02:17:01 +0800
-categories: [Devops]
-tags: [gitlab, git, devops, vcs]
+title: Gitlab-01-gitlab 介绍
+date: 2019-1-17 09:34:35 +0800
+categories: [Git]
+tags: [git, devops, git-learn, git-topic, gitlab, sh]
 published: true
 ---
 

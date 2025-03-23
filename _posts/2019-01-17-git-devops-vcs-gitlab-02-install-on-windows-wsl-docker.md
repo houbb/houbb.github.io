@@ -1,9 +1,9 @@
 ---
 layout: post
 title: Devops-ci-code-02-代码仓库持续部署 gitlab install windows wsl docker 方式
-date:  2016-10-14 10:15:54 +0800
-categories: [Devops]
-tags: [devops, ci, docker, gitlab, git, sh]
+date: 2019-1-17 09:34:35 +0800
+categories: [Git]
+tags: [git, devops, git-learn, git-topic, gitlab, sh]
 published: true
 ---
 
