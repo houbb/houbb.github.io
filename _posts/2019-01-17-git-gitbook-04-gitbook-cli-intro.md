@@ -7,6 +7,152 @@ tags: [git, devops, git-learn, git-topic, gitbook, sh]
 published: true
 ---
 
+
+# 实战笔记
+
+## node
+
+```
+>node -v
+v20.10.0
+```
+
+## 安装 gitbook-cli
+
+```
+npm install -g gitbook-cli
+```
+
+版本验证：
+
+```
+$ gitbook -V
+CLI version: 2.3.2
+Installing GitBook 3.2.3
+C:\Users\Administrator\AppData\Roaming\npm\node_modules\gitbook-cli\node_modules\npm\node_modules\graceful-fs\polyfills.js:287
+      if (cb) cb.apply(this, arguments)
+                 ^
+
+TypeError: cb.apply is not a function
+    at C:\Users\Administrator\AppData\Roaming\npm\node_modules\gitbook-cli\node_modules\npm\node_modules\graceful-fs\polyfills.js:287:18
+    at FSReqCallback.oncomplete (node:fs:200:5)
+
+Node.js v20.10.0
+```
+
+### 解决报错方式1
+
+https://blog.csdn.net/qq_32966261/article/details/130645218
+
+依赖版本问题
+
+```
+cd C:\Users\Administrator\AppData\Roaming\npm\node_modules\gitbook-cli\node_modules\npm\node_modules\
+npm install graceful-fs@latest --save
+```
+
+重新测试：
+
+```
+$ gitbook -V
+CLI version: 2.3.2
+```
+
+但是发现实际上命令没有效果？
+
+### 方式2
+
+打开polyfills.js文件，找到这个函数
+
+```js
+function statFix (orig) {
+  if (!orig) return orig
+  // Older versions of Node erroneously returned signed integers for
+  // uid + gid.
+  return function (target, cb) {
+    return orig.call(fs, target, function (er, stats) {
+      if (!stats) return cb.apply(this, arguments)
+      if (stats.uid < 0) stats.uid += 0x100000000
+      if (stats.gid < 0) stats.gid += 0x100000000
+      if (cb) cb.apply(this, arguments)
+    })
+  }
+}
+```
+
+在第62-64行调用了这个函数
+
+```js
+fs.stat = statFix(fs.stat)
+fs.fstat = statFix(fs.fstat)
+fs.lstat = statFix(fs.lstat)
+```
+
+把这三行代码注释掉就解决报错了
+
+发现有一个新的报错
+
+```
+Error: Failed to parse json
+Unexpected token 'u' at 1:1
+uleon.fumika@gmail.com"
+```
+
+尝试清空缓存： `npm cache clean --force` 没啥用
+
+
+手动删除 cache，下 gitbook 开头的文件夹。然后卸载重装。
+
+```
+C:\Users\Administrator\AppData\Roaming\npm-cache
+```
+
+
+
+### 方式3-安装旧版本
+
+卸载以前的
+
+```
+npm uninstall -g gitbook-cli
+```
+
+或者指定安装旧版本：
+
+```
+npm install gitbook-cli@2.1.2 --global
+```
+
+测试版本：
+
+```
+$ gitbook -V
+2.1.2
+```
+
+但是发现 gitbook init 的时候会报错
+
+```
+$ gitbook init
+Installing GitBook 3.2.3
+
+Error: Failed to parse json
+Unexpected token 'u' at 1:1
+uleon.fumika@gmail.com"
+^
+```
+
+# gitbook-cli 使用
+
+## 初始化
+
+到对应的文件夹
+
+```
+cd D:\github\git-learn
+gitbook init
+```
+
 # chat
 
 ## gitbook-cli
@@ -195,6 +341,10 @@ GitBook CLI 是 GitBook 的命令行工具，允许用户本地创建、构建�
 https://docs.gitbook.com/
 
 https://docs.gitbook.com/getting-started/quickstart
+
+https://blog.csdn.net/weixin_42349568/article/details/108414441
+
+https://www.cnblogs.com/cyxroot/p/13754475.html
 
 * any list
 {:toc}
