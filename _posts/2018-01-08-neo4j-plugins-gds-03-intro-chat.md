@@ -32,7 +32,7 @@ published: true
 
 ## 详细介绍一下 neo4j GDS 插件库
 
-Neo4j **图数据科学（Graph Data Science, GDS）** 是专为图分析设计的行业领先工具库，提供丰富的算法、机器学习能力与高性能计算框架。
+Neo4j 图数据科学（Graph Data Science, GDS） 是专为图分析设计的行业领先工具库，提供丰富的算法、机器学习能力与高性能计算框架。
 
 以下从核心功能、技术架构、应用场景到实践指南全方位解析这一工具。
 
@@ -41,9 +41,9 @@ Neo4j **图数据科学（Graph Data Science, GDS）** 是专为图分析设计�
 ## 一、核心功能模块
 
 ### 1. 图算法库
-覆盖 **6大类60+种算法**，支持从基础分析到复杂模型计算：
+覆盖 6大类60+种算法，支持从基础分析到复杂模型计算：
 
-| **算法类型**       | **代表算法**                     | **应用场景**                     |
+| 算法类型       | 代表算法                     | 应用场景                     |
 |-------------------|----------------------------------|----------------------------------|
 | 中心性分析         | PageRank, Betweenness           | 影响力节点识别、关键枢纽发现      |
 | 社区检测           | Louvain, Label Propagation      | 社交网络群体划分、用户分群        |
@@ -53,7 +53,7 @@ Neo4j **图数据科学（Graph Data Science, GDS）** 是专为图分析设计�
 | 链接预测           | Adamic-Adar, Common Neighbors   | 关系预测、社交网络好友推荐        |
 
 ### 2. 机器学习管道
-**端到端图机器学习工作流**：
+端到端图机器学习工作流：
 ```cypher
 CALL gds.beta.pipeline.linkPrediction.create('fraud-pipeline')
 YIELD pipelineName, pipelineType
@@ -79,9 +79,9 @@ CALL gds.beta.pipeline.linkPrediction.train(
 ```
 
 ### 3. 图转换工具
-- **投影优化**：将原生图转换为内存优化格式，提升计算效率
-- **子图抽取**：基于属性/拓扑条件快速生成分析子图
-- **特征标准化**：Z-Score、Min-Max等标准化方法
+- 投影优化：将原生图转换为内存优化格式，提升计算效率
+- 子图抽取：基于属性/拓扑条件快速生成分析子图
+- 特征标准化：Z-Score、Min-Max等标准化方法
 
 ---
 
@@ -101,13 +101,13 @@ graph TD
 ```
 
 ### 2. 性能优化技术
-- **并行计算**：利用多核CPU实现算法并行化（如Louvain并行版本提速5-8倍）
-- **内存映射**：通过`OFF_HEAP`模式处理十亿级节点图
-- **近似算法**：提供`epsilon`参数平衡精度与速度（如Approximate Betweenness）
+- 并行计算：利用多核CPU实现算法并行化（如Louvain并行版本提速5-8倍）
+- 内存映射：通过`OFF_HEAP`模式处理十亿级节点图
+- 近似算法：提供`epsilon`参数平衡精度与速度（如Approximate Betweenness）
 
 ### 3. 部署模式对比
 
-| **模式**       | 适用场景                     | 资源需求       |
+| 模式       | 适用场景                     | 资源需求       |
 |----------------|----------------------------|---------------|
 | 单机模式        | 中小规模图（<1亿节点）       | 64GB+ RAM     |
 | 分布式模式      | 超大规模图/实时分析          | Kubernetes集群|
@@ -135,7 +135,7 @@ CALL gds.alpha.ml.linkPrediction.predict('money-flow', {
 })
 ```
 
-**技术亮点**：
+技术亮点：
 - 动态时序图分析
 - 复合特征工程（拓扑+属性）
 - 实时预测API
@@ -165,7 +165,7 @@ result = gds.pageRank.stream(
 top_products = result.sort_values('score', ascending=False).head(10)
 ```
 
-**优势**：
+优势：
 - 结合协同过滤与图拓扑特征
 - 实时更新推荐结果
 - 可解释性强
@@ -175,7 +175,7 @@ top_products = result.sort_values('score', ascending=False).head(10)
 ## 四、开发实践指南
 
 ### 1. 性能调优技巧
-- **内存配置**：
+- 内存配置：
   ```properties
   # neo4j.conf
   dbms.memory.heap.initial_size=8G
@@ -183,7 +183,7 @@ top_products = result.sort_values('score', ascending=False).head(10)
   dbms.memory.pagecache.size=4G
   ```
   
-- **投影优化**：
+- 投影优化：
   ```cypher
   CALL gds.graph.project(
     'optimized-graph',
@@ -194,7 +194,7 @@ top_products = result.sort_values('score', ascending=False).head(10)
   ```
 
 ### 2. 机器学习工作流
-**典型Pipeline**：
+典型Pipeline：
 1. 特征工程：节点嵌入+属性标准化
 2. 数据分割：时间窗口划分（训练集/测试集）
 3. 模型训练：XGBoost + 图神经网络
@@ -216,28 +216,28 @@ YIELD name, time, rows
 ## 五、生态整合
 
 ### 1. 与AI框架集成
-- **PyTorch Geometric**：直接加载GDS生成的图数据
-- **TensorFlow**：通过Neo4j Connector导入嵌入向量
-- **Apache Spark**：联合处理大规模属性数据
+- PyTorch Geometric：直接加载GDS生成的图数据
+- TensorFlow：通过Neo4j Connector导入嵌入向量
+- Apache Spark：联合处理大规模属性数据
 
 ### 2. 可视化工具链
-- **Neo4j Bloom**：交互式图探索
-- **Jupyter Notebook**：`graphdatascience`库支持可视化分析
-- **Gephi**：通过CSV导出实现高级可视化
+- Neo4j Bloom：交互式图探索
+- Jupyter Notebook：`graphdatascience`库支持可视化分析
+- Gephi：通过CSV导出实现高级可视化
 
 ---
 
 ## 六、资源推荐
 
-1. **官方学习路径**：
+1. 官方学习路径：
    - [GDS官方文档](https://neo4j.com/docs/graph-data-science/current/)
    - [Cypher for Graph Data Science](https://neo4j.com/online-training/graph-data-science-fundamentals/)
 
-2. **实战案例库**：
+2. 实战案例库：
    - [GitHub示例项目](https://github.com/neo4j/graph-data-science-client/tree/main/examples)
    - [Kaggle金融风控数据集](https://www.kaggle.com/competitions/ieee-fraud-detection)
 
-3. **性能白皮书**：
+3. 性能白皮书：
    - [十亿级节点图处理方案](https://neo4j.com/whitepapers/neo4j-graph-data-science-scale/)
    - [GPU加速图算法研究](https://arxiv.org/abs/2203.09394)
 
