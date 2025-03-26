@@ -7,6 +7,38 @@ tags: [sofa, test, sh]
 published: true
 ---
 
+## 前言
+
+大家好，我是老马。
+
+sofastack 其实出来很久了，第一次应该是在 2022 年左右开始关注，但是一直没有深入研究。
+
+最近想学习一下 SOFA 对于生态的设计和思考。
+
+## sofaboot 系列
+
+[SOFABoot-00-sofaboot 概览](https://houbb.github.io/2022/07/09/sofastack-sofaboot-00-overview)
+
+[SOFABoot-01-蚂蚁金服开源的 sofaboot 是什么黑科技？](https://houbb.github.io/2022/07/09/sofastack-sofaboot-01-intro)
+
+[SOFABoot-02-模块化隔离方案](https://houbb.github.io/2022/07/09/sofastack-sofaboot-02-module-iosolation)
+
+[SOFABoot-03-sofaboot 介绍](https://houbb.github.io/2022/07/09/sofastack-sofaboot-03-intro)
+
+[SOFABoot-04-快速开始](https://houbb.github.io/2022/07/09/sofastack-sofaboot-04-quick-start)
+
+[SOFABoot-05-依赖管理](https://houbb.github.io/2022/07/09/sofastack-sofaboot-05-depency-solve)
+
+[SOFABoot-06-健康检查](https://houbb.github.io/2022/07/09/sofastack-sofaboot-06-health-check)
+
+[SOFABoot-07-版本查看](https://houbb.github.io/2022/07/09/sofastack-sofaboot-07-version)
+
+[SOFABoot-08-启动加速](https://houbb.github.io/2022/07/09/sofastack-sofaboot-08-speed-up)
+
+[SOFABoot-09-模块隔离](https://houbb.github.io/2022/07/09/sofastack-sofaboot-09-module-isolation)
+
+[SOFABoot-10-聊一聊 sofatboot 的十个问题](https://houbb.github.io/2022/07/09/sofastack-sofaboot-10-chat-10-q)
+
 # Occlum
 
 **最新动态：** 我们的论文《Occlum：英特尔SGX单个飞地内安全高效的多任务处理》已被[ASPLOS'20](https://asplos-conference.org/programs/)接收。该研究论文重点阐述了Occlum采用单地址空间架构的优势，并描述了一种新颖的飞地内隔离机制以补充这一设计。
@@ -63,15 +95,11 @@ Occlum对程序而言亦有异曲同工之妙：
 
 当然，Occlum需运行于支持SGX的英特尔x86 CPU上方能施展其"魔法"。
 
-## 贡献者
+# 小结
 
-欢迎任何形式的贡献！待项目更稳定后，我们将发布贡献指南并接受Pull Request。
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
 
-感谢[所有为此项目贡献的开发者](https://github.com/occlum/occlum/blob/master/CONTRIBUTORS.md)。
-
-## 许可证
-
-Occlum遵循BSD许可证。版权信息详见[此处](https://github.com/occlum/occlum/blob/master/LICENSE)。
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 

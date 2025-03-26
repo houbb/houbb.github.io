@@ -1,11 +1,41 @@
 ---
 layout: post
-title: MOSN（Modular Open Smart Network）是一款主要使用 Go 语言开发的云原生网络代理平台，由蚂蚁集团开源并经过双 11 大促几十万容器的生产级验证
+title: MOSN（Modular Open Smart Network-01-是一款主要使用 Go 语言开发的云原生网络代理平台
 date:  2022-07-09 09:22:02 +0800
 categories: [SOFA]
 tags: [sofa, test, sh]
 published: true
 ---
+
+## 前言
+
+大家好，我是老马。
+
+sofastack 其实出来很久了，第一次应该是在 2022 年左右开始关注，但是一直没有深入研究。
+
+最近想学习一下 SOFA 对于生态的设计和思考。
+
+## sofaboot 系列
+
+[SOFAStack-00-sofa 技术栈概览](https://houbb.github.io/2022/07/09/sofastack-00-overview)
+
+[MOSN（Modular Open Smart Network）-00-简单聊一聊](https://houbb.github.io/2022/07/09/sofastack-mosn-00-chat)
+
+[MOSN（Modular Open Smart Network）-01-是一款主要使用 Go 语言开发的云原生网络代理平台](https://houbb.github.io/2022/07/09/sofastack-mosn-01-overview)
+
+[MOSN（Modular Open Smart Network）-02-核心概念](https://houbb.github.io/2022/07/09/sofastack-mosn-02-core-components)
+
+[MOSN（Modular Open Smart Network）-03-流量劫持](https://houbb.github.io/2022/07/09/sofastack-mosn-03-traffic-hijack)
+
+[MOSN（Modular Open Smart Network）-04-TLS 安全链路](https://houbb.github.io/2022/07/09/sofastack-mosn-04-tls)
+
+[MOSN（Modular Open Smart Network）-05-MOSN 平滑升级原理解析](https://houbb.github.io/2022/07/09/sofastack-mosn-05-soomth-upgrade)
+
+[MOSN（Modular Open Smart Network）-06-MOSN 多协议机制解析](https://houbb.github.io/2022/07/09/sofastack-mosn-06-multi-protocol)
+
+[MOSN（Modular Open Smart Network）-07-Sidecar 模式](https://houbb.github.io/2022/07/09/sofastack-mosn-07-sidecar)
+
+[MOSN（Modular Open Smart Network）-08-MOSN 扩展机制解析](https://houbb.github.io/2022/07/09/sofastack-mosn-08-extension)
 
 # MOSN 简介
 
@@ -89,13 +119,11 @@ MOSN 可以和 Istio 集成构建 Service Mesh，也可以作为独立的四、�
     - 支持自定义扩展配置
     - 支持四层/七层 Filter 扩展
 
-## 社区介绍
+# 小结
 
-MOSN 开源仍在高速发展中，有很多能力需要补全，欢迎所有人参与进来与我们一起共建。
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
 
-关于 MOSN 社区的详细介绍请查看 mosn/community 仓库，如有任何疑问欢迎提交 Issue。
-
-
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 

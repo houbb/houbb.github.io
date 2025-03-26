@@ -1,15 +1,27 @@
 ---
 layout: post
-title: SOFAJRaft 介绍-01-overview
+title: raft-01-SOFAJRaft 介绍
 date:  2022-07-09 09:22:02 +0800
 categories: [SOFA]
 tags: [sofa, SOFAJRaft, raft, sh]
 published: true
 ---
 
+## 前言
+
+大家好，我是老马。
+
+分布式系统中，一致性算法是最重要的基石，也是最难学习的部分。
+
+本系列根据 jraft 作为入口，学习一下 raft 的原理和实现。
+
+sofa 的实现比较专业，但是过于专业，可以放在这个之后学习。可以先从简单的一些实现入门。
+
+## raft 系列
+
+[SOFAStack-00-sofa 技术栈概览](https://houbb.github.io/2022/07/09/sofastack-00-overview)
 
 # SOFAJRaft 介绍
-
 
 本介绍内容来自 braft 文档，原文链接请参见[这里](https://github.com/baidu/braft/blob/master/docs/cn/overview.md)。
 

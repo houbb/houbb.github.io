@@ -1,11 +1,43 @@
 ---
 layout: post
-title: Layotto 是一款使用 Golang 开发的应用运行时，旨在帮助开发人员快速构建云原生应用，帮助应用和基础设施解耦
+title: Layotto 是一款使用 Golang 开发的应用运行时，旨在帮助开发人员快速构建云原生应用
 date:  2022-07-09 09:22:02 +0800
 categories: [SOFA]
 tags: [sofa, test, sh]
 published: true
 ---
+
+## 前言
+
+大家好，我是老马。
+
+sofastack 其实出来很久了，第一次应该是在 2022 年左右开始关注，但是一直没有深入研究。
+
+最近想学习一下 SOFA 对于生态的设计和思考。
+
+## sofaboot 系列
+
+[SOFABoot-00-sofaboot 概览](https://houbb.github.io/2022/07/09/sofastack-sofaboot-00-overview)
+
+[SOFABoot-01-蚂蚁金服开源的 sofaboot 是什么黑科技？](https://houbb.github.io/2022/07/09/sofastack-sofaboot-01-intro)
+
+[SOFABoot-02-模块化隔离方案](https://houbb.github.io/2022/07/09/sofastack-sofaboot-02-module-iosolation)
+
+[SOFABoot-03-sofaboot 介绍](https://houbb.github.io/2022/07/09/sofastack-sofaboot-03-intro)
+
+[SOFABoot-04-快速开始](https://houbb.github.io/2022/07/09/sofastack-sofaboot-04-quick-start)
+
+[SOFABoot-05-依赖管理](https://houbb.github.io/2022/07/09/sofastack-sofaboot-05-depency-solve)
+
+[SOFABoot-06-健康检查](https://houbb.github.io/2022/07/09/sofastack-sofaboot-06-health-check)
+
+[SOFABoot-07-版本查看](https://houbb.github.io/2022/07/09/sofastack-sofaboot-07-version)
+
+[SOFABoot-08-启动加速](https://houbb.github.io/2022/07/09/sofastack-sofaboot-08-speed-up)
+
+[SOFABoot-09-模块隔离](https://houbb.github.io/2022/07/09/sofastack-sofaboot-09-module-isolation)
+
+[SOFABoot-10-聊一聊 sofatboot 的十个问题](https://houbb.github.io/2022/07/09/sofastack-sofaboot-10-chat-10-q)
 
 # Layotto 项目文档
 
@@ -64,8 +96,11 @@ Layotto 提供以下标准化 API（截至 v0.1.0 版本）：
 
 ---
 
-> **注意**：以上内容基于公开搜索结果整理，可能与官网最新文档存在差异。建议访问 [Layotto 官网](https://mosn.io/layotto/) 获取完整信息。
+# 小结
 
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 

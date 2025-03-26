@@ -7,6 +7,40 @@ tags: [sofa, SOFAActs, test, sh]
 published: true
 ---
 
+## 前言
+
+大家好，我是老马。
+
+sofastack 其实出来很久了，第一次应该是在 2022 年左右开始关注，但是一直没有深入研究。
+
+最近想学习一下 SOFA 对于生态的设计和思考。
+
+## sofaboot 系列
+
+[SOFAStack-00-sofa 技术栈概览](https://houbb.github.io/2022/07/09/sofastack-00-overview)
+
+[SOFABoot-00-sofaboot 概览](https://houbb.github.io/2022/07/09/sofastack-sofaboot-00-overview)
+
+[SOFABoot-01-蚂蚁金服开源的 sofaboot 是什么黑科技？](https://houbb.github.io/2022/07/09/sofastack-sofaboot-01-intro)
+
+[SOFABoot-02-模块化隔离方案](https://houbb.github.io/2022/07/09/sofastack-sofaboot-02-module-iosolation)
+
+[SOFABoot-03-sofaboot 介绍](https://houbb.github.io/2022/07/09/sofastack-sofaboot-03-intro)
+
+[SOFABoot-04-快速开始](https://houbb.github.io/2022/07/09/sofastack-sofaboot-04-quick-start)
+
+[SOFABoot-05-依赖管理](https://houbb.github.io/2022/07/09/sofastack-sofaboot-05-depency-solve)
+
+[SOFABoot-06-健康检查](https://houbb.github.io/2022/07/09/sofastack-sofaboot-06-health-check)
+
+[SOFABoot-07-版本查看](https://houbb.github.io/2022/07/09/sofastack-sofaboot-07-version)
+
+[SOFABoot-08-启动加速](https://houbb.github.io/2022/07/09/sofastack-sofaboot-08-speed-up)
+
+[SOFABoot-09-模块隔离](https://houbb.github.io/2022/07/09/sofastack-sofaboot-09-module-isolation)
+
+[SOFABoot-10-聊一聊 sofatboot 的十个问题](https://houbb.github.io/2022/07/09/sofastack-sofaboot-10-chat-10-q)
+
 
 # SOFAArk
 
@@ -84,6 +118,12 @@ Ark Plugin: Ark 插件，满足特定目录格式要求的 Fat Jar，使用官�
 Ark Biz: Ark 应用模块，满足特定目录格式要求的 Fat Jar，使用官方提供的 Maven 插件 sofa-ark-maven-plugin 可以将工程应用打包成一个标准格式的 Ark Biz；Ark Biz 是工程应用以及其依赖包的组织单元，包含应用启动所需的所有依赖和配置；一个 Ark 包中可以包含多个 Ark Biz 包，按优先级依次启动，Biz 之间通过 JVM 服务交互；
 
 运行 Ark 包，Ark Container 优先启动，容器自动解析 Ark 包中含有的 Ark Plugin 和 Ark Biz，并读取他们的配置信息，构建类和资源的加载索引表；然后使用独立的 ClassLoader 加载并按优先级配置依次启动；需要指出的是，Ark Plugin 优先 Ark Biz 被加载启动；Ark Plugin 之间是双向类索引关系，即可以相互委托对方加载所需的类和资源；Ark Plugin 和 Ark Biz 是单向类索引关系，即只允许 Ark Biz 索引 Ark Plugin 加载的类和资源，反之则不允许。
+
+# 小结
+
+希望本文对你有所帮助，如果喜欢，欢迎点赞收藏转发一波。
+
+我是老马，期待与你的下次相遇。
 
 # 参考资料
 
