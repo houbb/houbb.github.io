@@ -123,9 +123,6 @@ MOSN凭借其模块化设计、高性能及云原生集成能力，已成为Serv
 
 我是老马，期待与你的下次相遇。
 
-# chat
-
-## 详细介绍一下 MOSN（Modular Open Smart Network）
 
 # 参考资料
 
