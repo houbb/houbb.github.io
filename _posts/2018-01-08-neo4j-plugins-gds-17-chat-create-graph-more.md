@@ -61,8 +61,6 @@ CREATE (phy1:i_phy {ip: '192.168.1.1'}),
 
 ```
 
-<svg xmlns="http://www.w3.org/2000/svg" width="645.1494140625" height="430.13616943359375" viewBox="-302.6226501464844 -264.75238037109375 645.1494140625 430.13616943359375"><title>Neo4j Graph Visualization</title><desc>Created using Neo4j (http://www.neo4j.com/)</desc><g class="layer relationships"><g class="relationship" transform="translate(63.732245518226115 130.73424519096707) rotate(301.704120370007)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 47.709570730751636 0.5 L 47.709570730751636 -0.5 L 25 -0.5 Z M 104.83066448075164 0.5 L 127.54023521150327 0.5 L 127.54023521150327 3.5 L 134.54023521150327 0 L 127.54023521150327 -3.5 L 127.54023521150327 -0.5 L 104.83066448075164 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="76.27011760575164" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">BELONGS_TO</text></g><g class="relationship" transform="translate(206.75889784282356 136.38376343206613) rotate(247.2856503161011)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 44.574181328066956 0.5 L 44.574181328066956 -0.5 L 25 -0.5 Z M 101.69527507806696 0.5 L 121.26945640613391 0.5 L 121.26945640613391 3.5 L 128.2694564061339 0 L 121.26945640613391 -3.5 L 121.26945640613391 -0.5 L 101.69527507806696 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="73.13472820306696" y="3" transform="rotate(180 73.13472820306696 0)" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">BELONGS_TO</text></g><g class="relationship" transform="translate(-152.55434594632288 -54.777440070040036) rotate(347.7080006612151)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 39.76214870308658 0.5 L 39.76214870308658 -0.5 L 25 -0.5 Z M 96.88324245308658 0.5 L 111.64539115617316 0.5 L 111.64539115617316 3.5 L 118.64539115617316 0 L 111.64539115617316 -3.5 L 111.64539115617316 -0.5 L 96.88324245308658 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="68.32269557808658" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">BELONGS_TO</text></g><g class="relationship" transform="translate(-273.62265237045773 -128.56128177038016) rotate(369.3839349009953)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 100.4226906291218 0.5 L 100.4226906291218 -0.5 L 25 -0.5 Z M 157.5437843791218 0.5 L 232.9664750082436 0.5 L 232.9664750082436 3.5 L 239.9664750082436 0 L 232.9664750082436 -3.5 L 232.9664750082436 -0.5 L 157.5437843791218 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="128.9832375041218" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">BELONGS_TO</text></g><g class="relationship" transform="translate(11.126711055774763 -16.122487068094273) rotate(430.29197349747244)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 49.60851087202265 0.5 L 49.60851087202265 -0.5 L 25 -0.5 Z M 99.38585462202265 0.5 L 123.9943654940453 0.5 L 123.9943654940453 3.5 L 130.9943654940453 0 L 123.9943654940453 -3.5 L 123.9943654940453 -0.5 L 99.38585462202265 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="74.49718274702265" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">POINTS_TO</text></g><g class="relationship" transform="translate(313.52674738758526 41.298459261290624) rotate(498.3123815404472)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 43.09662165741436 0.5 L 43.09662165741436 -0.5 L 25 -0.5 Z M 92.87396540741436 0.5 L 110.97058706482872 0.5 L 110.97058706482872 3.5 L 117.97058706482872 0 L 110.97058706482872 -3.5 L 110.97058706482872 -0.5 L 92.87396540741436 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="67.98529353241436" y="3" transform="rotate(180 67.98529353241436 0)" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">POINTS_TO</text></g><g class="relationship" transform="translate(-191.18744345449625 74.43980113888867) rotate(286.6455017328207)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 39.04576229761409 0.5 L 39.04576229761409 -0.5 L 25 -0.5 Z M 88.82310604761409 0.5 L 102.86886834522818 0.5 L 102.86886834522818 3.5 L 109.86886834522818 0 L 102.86886834522818 -3.5 L 102.86886834522818 -0.5 L 88.82310604761409 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="63.93443417261409" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">POINTS_TO</text></g><g class="relationship" transform="translate(-174.50487778276963 -235.75238620193252) rotate(492.75903087377344)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 44.60835907227846 0.5 L 44.60835907227846 -0.5 L 25 -0.5 Z M 94.38570282227846 0.5 L 113.99406189455692 0.5 L 113.99406189455692 3.5 L 120.99406189455692 0 L 113.99406189455692 -3.5 L 113.99406189455692 -0.5 L 94.38570282227846 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="69.49703094727846" y="3" transform="rotate(180 69.49703094727846 0)" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">POINTS_TO</text></g></g><g class="layer nodes"><g class="node" aria-label="graph-node0" transform="translate(147.57587761961588,-4.99833014520118)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#C990C0" stroke="#b261a5" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 192.168.…</text></g><g class="node" aria-label="graph-node1" transform="translate(-12.201980561994873,-85.35867502604003)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#C990C0" stroke="#b261a5" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 192.168.…</text></g><g class="node" aria-label="graph-node2" transform="translate(63.732245518226115,130.73424519096707)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#F79767" stroke="#f36924" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 10.0.0.1</text></g><g class="node" aria-label="graph-node3" transform="translate(206.75889784282356,136.38376343206613)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#F79767" stroke="#f36924" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 10.0.0.2</text></g><g class="node" aria-label="graph-node4" transform="translate(-152.55434594632288,-54.777440070040036)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#F79767" stroke="#f36924" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 10.0.0.3</text></g><g class="node" aria-label="graph-node5" transform="translate(-273.62265237045773,-128.56128177038016)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#F79767" stroke="#f36924" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 10.0.0.4</text></g><g class="node" aria-label="graph-node6" transform="translate(11.126711055774763,-16.122487068094273)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#57C7E3" stroke="#23b3d7" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> app1</text></g><g class="node" aria-label="graph-node7" transform="translate(313.52674738758526,41.298459261290624)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#57C7E3" stroke="#23b3d7" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> app2</text></g><g class="node" aria-label="graph-node8" transform="translate(-191.18744345449625,74.43980113888867)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#57C7E3" stroke="#23b3d7" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> app3</text></g><g class="node" aria-label="graph-node9" transform="translate(-174.50487778276963,-235.75238620193252)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#57C7E3" stroke="#23b3d7" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> app4</text></g></g></svg>
-
 ## 目标
 
 希望达到的效果：
@@ -80,42 +78,273 @@ neo4j 中。如何实现一个从 i_app 节点，且 i_app 的 AppName 属性 �
 
 3. gds pageRank 找到score 比较高的元素 Top9 返回。 
 
-先给我拆分具体的每一步的 cypher 语句
+先给我拆分具体的每一步的 cypher 语句，然后给出 java 实现.
 ```
 
 
-## 实现语句
+
+# 实现代码
 
 
-// 步骤1：动态生成子图路径
-MATCH (s:i_app { AppName: 'my-web' })
-CALL apoc.path.expandConfig(s, {
-    relationshipFilter: '>',      // 允许所有出边
-    labelFilter: '/i_vm|i_phy',  // 终止节点标签过滤
-    minLevel: 1,
-    maxLevel: 2,
-    bfs: false                   // 允许非BFS模式
-}) YIELD path
-WITH COLLECT(path) AS allPaths
+## 第一个版本
+
+```java
+package org.example;
+
+import org.neo4j.driver.*;
+
+import java.util.Arrays;
+import java.util.List;
+
+public class PageRankService implements AutoCloseable {
+    private final Driver driver;
+
+    // 初始化Driver（建议使用连接池）
+    public PageRankService(String uri, String user, String password) {
+        driver = GraphDatabase.driver(uri, AuthTokens.basic(user, password));
+    }
+
+    // 主业务方法（appNames为动态参数）
+    public List<Record> calculateTopPageRankNodes(List<String> appNames) {
+        try (Session session = driver.session()) {
+            // 步骤1：创建Cypher投影
+            createGraphProjection(session, appNames);
+
+            // 步骤2：执行PageRank算法
+            return session.writeTransaction(tx -> {
+                Result result = tx.run(
+                        "CALL gds.pageRank.stream('myGraph') "
+                                + "YIELD nodeId, score "
+                                + "RETURN gds.util.asNode(nodeId) AS node, score "
+                                + "ORDER BY score DESC LIMIT 9");
 
 
-```cypher
-// 直接生成匿名图用于算法
-MATCH (s:i_app { AppName: 'app1' })
-CALL apoc.path.subgraphNodes(s, {
-    relationshipFilter: '>',
-    labelFilter: '>i_vm|i_phy',  // 正向过滤终止标签
-    maxLevel: 2
-}) YIELD node
-WITH COLLECT(node) AS nodes
-CALL apoc.algo.cover(nodes) YIELD rel
-CALL gds.pageRank.stream({
-    nodeProjection: nodes,
-    relationshipProjection: rel
-}) YIELD nodeId, score
-RETURN *
+                // 删除
+                tx.run("CALL gds.graph.drop('myGraph')");
+
+                return result.list();
+            });
+        }
+    }
+
+    // 创建动态图投影（私有方法封装）
+    private void createGraphProjection(Session session, List<String> appNames) {
+        String nodeQuery =
+                "MATCH (start:i_app) WHERE start.name IN $appNames " +
+                        "CALL apoc.path.expandConfig(start, { " +
+                        "    relationshipFilter: '>', " +
+                        "    labelFilter: '/i_phy', " +
+                        "    minLevel: 1, " +
+                        "    maxLevel: 2, " +
+                        "    uniqueness: 'NODE_GLOBAL' " +
+                        "}) YIELD path " +
+                        "UNWIND nodes(path) AS node " +
+                        "RETURN DISTINCT id(node) AS id, labels(node) AS labels";
+
+        String relQuery =
+                "MATCH (start:i_app) WHERE start.name IN $appNames " +
+                        "CALL apoc.path.expandConfig(start, { " +
+                        "    relationshipFilter: '>', " +
+                        "    labelFilter: '/i_phy', " +
+                        "    minLevel: 1, " +
+                        "    maxLevel: 2, " +
+                        "    uniqueness: 'NODE_GLOBAL' " +
+                        "}) YIELD path " +
+                        "UNWIND relationships(path) AS rel " +
+                        "RETURN DISTINCT id(startNode(rel)) AS source, " +
+                        "id(endNode(rel)) AS target, type(rel) AS type";
+
+        // 执行Cypher投影（带参数）
+        session.run(
+                "CALL gds.graph.create.cypher($graphName, $nodeQuery, $relQuery, {parameters: {appNames: $appNames}})",
+                Values.parameters(
+                        "graphName", "myGraph",
+                        "nodeQuery", nodeQuery,
+                        "relQuery", relQuery,
+                        "appNames", appNames
+                )
+        ).consume(); // 显式消费结果确保执行
+    }
+
+    @Override
+    public void close() throws Exception {
+        driver.close();
+    }
+
+    // 示例用法
+    public static void main(String[] args) {
+        try (PageRankService service = new PageRankService("bolt://[::1]:17687", "neo4j", "12345678")) {
+            List<String> appNameList = Arrays.asList("app1", "app2", "app3", "app4");
+            List<Record> topNodes = service.calculateTopPageRankNodes(appNameList);
+            topNodes.forEach(record ->
+                    System.out.println(record.get("node").asNode() + " Score: " + record.get("score")));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+}
 ```
 
+## 执行异常
+
+```
+Exception in thread "main" java.lang.RuntimeException: org.neo4j.driver.exceptions.ClientException: There is no procedure with the name `gds.graph.create.cypher` registered for this database instance. Please ensure you've spelled the procedure name correctly and that the procedure is properly deployed.
+	at org.example.PageRankService.main(PageRankService.java:93)
+Caused by: org.neo4j.driver.exceptions.ClientException: There is no procedure with the name `gds.graph.create.cypher` registered for this database instance. Please ensure you've spelled the procedure name correctly and that the procedure is properly deployed.
+	at org.neo4j.driver.internal.util.Futures.blockingGet(Futures.java:111)
+	at org.neo4j.driver.internal.InternalSession.run(InternalSession.java:62)
+	at org.neo4j.driver.internal.InternalSession.run(InternalSession.java:47)
+	at org.neo4j.driver.internal.AbstractQueryRunner.run(AbstractQueryRunner.java:34)
+	at org.example.PageRankService.createGraphProjection(PageRankService.java:69)
+	at org.example.PageRankService.calculateTopPageRankNodes(PageRankService.java:22)
+	at org.example.PageRankService.main(PageRankService.java:89)
+	Suppressed: org.neo4j.driver.internal.util.ErrorUtil$InternalExceptionCause
+```
+
+## 修正
+
+首先确认当前 GDS 的方法到底是什么？
+
+这个应该是版本问题，这个版本中的 2.5.3 方法是 `gds.graph.project.cypher`，
+
+我当时测试另一个版本 1.8.8 确实是 `gds.graph.create.cypher`
+
+PS: 当初自己怎么安装了一个这么老的版本。
+
+```
+CALL gds.list()
+YIELD name, description
+WHERE name contains 'graph'
+RETURN name, description
+```
+
+结果：
+
+```
+╒═══════════════════════════════════════════════╤══════════════════════════════════════════════════════════════════════╕
+│name                                           │description                                                           │
+╞═══════════════════════════════════════════════╪══════════════════════════════════════════════════════════════════════╡
+...
+├───────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────┤
+│"gds.graph.project"                            │"Creates a named graph in the catalog for use by algorithms."         │
+├───────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────┤
+│"gds.graph.project.cypher"                     │"Creates a named graph in the catalog for use by algorithms."         │
+├───────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────┤
+...
+└───────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────┘
+```
+
+
+### 参数
+
+```
+CALL gds.list()
+YIELD name, description, signature
+WHERE name contains 'gds.graph.project.cypher'
+RETURN name, description, signature
+```
+
+如下：
+
+```
+╒═══════════════════════════════════╤═════════════════════════════════════════════════════════════════════╤══════════════════════════════════════════════════════════════════════╕
+│name                               │description                                                          │signature                                                             │
+╞═══════════════════════════════════╪═════════════════════════════════════════════════════════════════════╪══════════════════════════════════════════════════════════════════════╡
+│"gds.graph.project.cypher"         │"Creates a named graph in the catalog for use by algorithms."        │"gds.graph.project.cypher(graphName :: STRING?, nodeQuery :: STRING?, │
+│                                   │                                                                     │relationshipQuery :: STRING?, configuration = {} :: MAP?) :: (nodeQuer│
+│                                   │                                                                     │y :: STRING?, relationshipQuery :: STRING?, graphName :: STRING?, node│
+│                                   │                                                                     │Count :: INTEGER?, relationshipCount :: INTEGER?, projectMillis :: INT│
+│                                   │                                                                     │EGER?)"                                                               │
+├───────────────────────────────────┼─────────────────────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────
+```
+
+API 为：
+
+```java
+CALL gds.graph.project.cypher(
+    graphName: String, 
+    nodeQuery: String, 
+    relationshipQuery: String, 
+    configuration: Map
+)
+```
+
+
+## 再次执行
+
+修正为当前版本的方法名。
+
+```java
+session.run(
+                "CALL gds.graph.project.cypher($graphName, $nodeQuery, $relQuery, {parameters: {appNames: $appNames}})",
+                Values.parameters(
+                        "graphName", "myGraph",
+                        "nodeQuery", nodeQuery,
+                        "relQuery", relQuery,
+                        "appNames", appNames
+                )
+        ).consume(); // 显式消费结果确保执行
+```
+
+
+结果如下：
+
+```
+node<0> Score: 0.62175
+node<1> Score: 0.62175
+node<4> Score: 0.2775
+node<3> Score: 0.2775
+node<5> Score: 0.2775
+node<2> Score: 0.2775
+node<8> Score: 0.15000000000000002
+node<9> Score: 0.15000000000000002
+node<7> Score: 0.15000000000000002
+```
+
+发现如果匹配的数据为空，实际上会报错如下：
+
+```
+Exception in thread "main" java.lang.RuntimeException: org.neo4j.driver.exceptions.ClientException: Failed to invoke procedure `gds.graph.project.cypher`: Caused by: java.lang.IllegalArgumentException: Node-Query returned no nodes
+	at org.example.PageRankService.main(PageRankService.java:91)
+Caused by: org.neo4j.driver.exceptions.ClientException: Failed to invoke procedure `gds.graph.project.cypher`: Caused by: java.lang.IllegalArgumentException: Node-Query returned no nodes
+	at org.neo4j.driver.internal.util.Futures.blockingGet(Futures.java:111)
+	at org.neo4j.driver.internal.InternalResult.blockingGet(InternalResult.java:107)
+	at org.neo4j.driver.internal.InternalResult.consume(InternalResult.java:98)
+	at org.example.PageRankService.createGraphProjection(PageRankService.java:75)
+	at org.example.PageRankService.calculateTopPageRankNodes(PageRankService.java:20)
+	at org.example.PageRankService.main(PageRankService.java:87)
+```
+
+
+## 查询对应的数据
+
+我们可以直接查询对应的数据效果
+
+```
+MATCH (start:i_app) WHERE start.name IN ['app1', 'app2', 'app3', 'app4']
+CALL apoc.path.expandConfig
+(start, 
+{     
+    relationshipFilter: '>',     
+    labelFilter: '/i_phy',     
+    minLevel: 1,     
+    maxLevel: 2,     
+    uniqueness: 'NODE_GLOBAL' 
+}
+) 
+YIELD path 
+with path, nodes(path) as all_nodes
+UNWIND all_nodes as node
+with path, all_nodes, node
+where id(node) in [0]
+with path, all_nodes
+return distinct relationships(path) as all_relationships, all_nodes
+```
+
+效果如下：
+
+
+<svg xmlns="http://www.w3.org/2000/svg" width="335.4267272949219" height="328.6940002441406" viewBox="-156.72311401367188 -155.77711486816406 335.4267272949219 328.6940002441406"><title>Neo4j Graph Visualization</title><desc>Created using Neo4j (http://www.neo4j.com/)</desc><g class="layer relationships"><g class="relationship" transform="translate(64.32676514546043 143.91686644644471) rotate(306.39457944491096)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 43.55696618385781 0.5 L 43.55696618385781 -0.5 L 25 -0.5 Z M 93.33430993385781 0.5 L 111.89127611771562 0.5 L 111.89127611771562 3.5 L 118.89127611771562 0 L 111.89127611771562 -3.5 L 111.89127611771562 -0.5 L 93.33430993385781 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="68.44563805885781" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">POINTS_TO</text></g><g class="relationship" transform="translate(149.7036085657004 28.091593080134434) rotate(219.40552139148542)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 40.70405936294998 0.5 L 40.70405936294998 -0.5 L 25 -0.5 Z M 97.82515311294998 0.5 L 113.52921247589995 0.5 L 113.52921247589995 3.5 L 120.52921247589995 0 L 113.52921247589995 -3.5 L 113.52921247589995 -0.5 L 97.82515311294998 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="69.26460623794998" y="3" transform="rotate(180 69.26460623794998 0)" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">BELONGS_TO</text></g><g class="relationship" transform="translate(-127.72311814249437 -126.77710584159497) rotate(435.56822637411364)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 42.813713603696996 0.5 L 42.813713603696996 -0.5 L 25 -0.5 Z M 92.591057353697 0.5 L 110.40477095739399 0.5 L 110.40477095739399 3.5 L 117.40477095739399 0 L 110.40477095739399 -3.5 L 110.40477095739399 -0.5 L 92.591057353697 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="67.702385478697" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">POINTS_TO</text></g><g class="relationship" transform="translate(-92.23200700552373 11.134096827698855) rotate(329.7799574437129)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 42.866771029495254 0.5 L 42.866771029495254 -0.5 L 25 -0.5 Z M 99.98786477949525 0.5 L 117.85463580899051 0.5 L 117.85463580899051 3.5 L 124.85463580899051 0 L 117.85463580899051 -3.5 L 117.85463580899051 -0.5 L 99.98786477949525 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="71.42731790449525" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">BELONGS_TO</text></g></g><g class="layer nodes"><g class="node" aria-label="graph-node6" transform="translate(64.32676514546043,143.91686644644471)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#57C7E3" stroke="#23b3d7" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> app1</text></g><g class="node" aria-label="graph-node2" transform="translate(149.7036085657004,28.091593080134434)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#F79767" stroke="#f36924" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 10.0.0.1</text></g><g class="node" aria-label="graph-node0" transform="translate(37.25720222957948,-64.2910751317527)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#C990C0" stroke="#b261a5" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 192.168.…</text></g><g class="node" aria-label="graph-node7" transform="translate(-127.72311814249437,-126.77710584159497)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#57C7E3" stroke="#23b3d7" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> app2</text></g><g class="node" aria-label="graph-node3" transform="translate(-92.23200700552373,11.134096827698855)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#F79767" stroke="#f36924" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 10.0.0.2</text></g></g></svg>
 
 
 
@@ -145,7 +374,7 @@ RETURN *
 CALL gds.graph.project.cypher(
     'myGraph',
     // 节点查询：收集所有路径中的节点（包括i_app、中间节点、i_vm/i_phy）
-    'MATCH (start:i_app) WHERE start.AppName IN $appNames
+    'MATCH (start:i_app) WHERE start.name IN $appNames
      CALL apoc.path.expandConfig(start, {
          relationshipFilter: ">",       // 允许所有关系类型和方向
          labelFilter: ">i_vm|i_phy",   // 终止节点必须是i_vm或i_phy
@@ -156,7 +385,7 @@ CALL gds.graph.project.cypher(
      UNWIND nodes(path) AS node
      RETURN DISTINCT id(node) AS id, labels(node) AS labels',
     // 关系查询：收集所有路径中的关系
-    'MATCH (start:i_app) WHERE start.AppName IN $appNames
+    'MATCH (start:i_app) WHERE start.name IN $appNames
      CALL apoc.path.expandConfig(start, {
          relationshipFilter: ">",
          labelFilter: ">i_vm|i_phy",
@@ -217,7 +446,7 @@ LIMIT 9;
 // 步骤1+2：动态创建子图投影
 CALL gds.graph.project.cypher(
     'myGraph',
-    'MATCH (start:i_app) WHERE start.AppName IN $appNames
+    'MATCH (start:i_app) WHERE start.name IN $appNames
      CALL apoc.path.expandConfig(start, {
          relationshipFilter: ">",
          labelFilter: ">i_vm|i_phy",
@@ -227,7 +456,7 @@ CALL gds.graph.project.cypher(
      }) YIELD path
      UNWIND nodes(path) AS node
      RETURN DISTINCT id(node) AS id, labels(node) AS labels',
-    'MATCH (start:i_app) WHERE start.AppName IN $appNames
+    'MATCH (start:i_app) WHERE start.name IN $appNames
      CALL apoc.path.expandConfig(start, {
          relationshipFilter: ">",
          labelFilter: ">i_vm|i_phy",
@@ -255,7 +484,7 @@ LIMIT 9;
    - **路径深度限制**：最大深度设为2层，避免大规模图遍历。
    - **索引优化**：为`i_app`节点的`AppName`属性创建索引，加速起始节点查询。
      ```cypher
-     CREATE INDEX FOR (n:i_app) ON (n.AppName);
+     CREATE INDEX FOR (n:i_app) ON (n.name);
      ```
 
 
@@ -400,13 +629,13 @@ CALL gds.graph.project.cypher(
 CALL gds.graph.project.cypher(
     'filteredGraph',
     // 节点查询：筛选AppName在列表中的i_app节点及其关联节点
-    'MATCH (n:i_app) WHERE n.AppName IN $apps
+    'MATCH (n:i_app) WHERE n.name IN $apps
      CALL apoc.path.expandConfig(n, {maxLevel:2}) 
      UNWIND nodes(path) AS node 
      RETURN DISTINCT id(node) AS id, labels(node) AS labels',
     // 关系查询：捕获所有关联关系（含方向）
     'MATCH (a)-[r]->(b) 
-     WHERE a.AppName IN $apps AND b.AppName IN $apps 
+     WHERE a.name IN $apps AND b.name IN $apps 
      RETURN id(a) AS source, id(b) AS target, type(r) AS type',
     // 配置参数：动态传入应用名列表
     { parameters: { apps: ['my-web'] } }
@@ -488,7 +717,7 @@ public class PageRankService implements AutoCloseable {
     // 创建动态图投影（私有方法封装）
     private void createGraphProjection(Session session, List<String> appNames) {
         String nodeQuery = 
-            "MATCH (start:i_app) WHERE start.AppName IN $appNames " +
+            "MATCH (start:i_app) WHERE start.name IN $appNames " +
             "CALL apoc.path.expandConfig(start, { " +
             "    relationshipFilter: '>', " +
             "    labelFilter: '>i_vm|i_phy', " +
@@ -500,7 +729,7 @@ public class PageRankService implements AutoCloseable {
             "RETURN DISTINCT id(node) AS id, labels(node) AS labels";
 
         String relQuery = 
-            "MATCH (start:i_app) WHERE start.AppName IN $appNames " +
+            "MATCH (start:i_app) WHERE start.name IN $appNames " +
             "CALL apoc.path.expandConfig(start, { " +
             "    relationshipFilter: '>', " +
             "    labelFilter: '>i_vm|i_phy', " +
@@ -568,7 +797,7 @@ public class PageRankService implements AutoCloseable {
 1. **索引加速**：
    ```java
    // 在应用启动时创建索引
-   session.run("CREATE INDEX FOR (n:i_app) ON (n.AppName)").consume();
+   session.run("CREATE INDEX FOR (n:i_app) ON (n.name)").consume();
    ```
 
 
