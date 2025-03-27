@@ -32,6 +32,44 @@ neo4j 忘记密码，如何重置密码？
 dbms.security.auth_enabled=false
 ```
 
+这个属性值默认注释的，可以直接修改。
+
+或者直接新增一行。
+
+
+## 重启服务
+
+```
+bin/neo4j restart
+```
+
+## 登录
+
+```
+bin/cypher-shell -a bolt://localhost:17687 -u neo4j
+```
+
+此时密码变为默认的 neo4j。
+
+## 设置新密码
+
+```
+ALTER USER neo4j SET PASSWORD '12345678';
+```
+
+## 重新启用
+
+```
+dbms.security.auth_enabled=true
+```
+
+然后重启服务
+
+```
+
+```
+
+
 # chat
 
 ## 忘记密码了，如何重置
