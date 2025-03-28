@@ -315,6 +315,88 @@ Caused by: org.neo4j.driver.exceptions.ClientException: Failed to invoke procedu
 	at org.example.PageRankService.main(PageRankService.java:87)
 ```
 
+## 节点本身的基本信息
+
+NodeInfo 基本信息：
+
+```java
+public class NodeInfo {
+
+    private Long nodeId;
+    private List<String> labels;
+    private Map<String, Object> properties;
+
+    //get/set/toString
+
+}
+```
+
+核心方法：
+
+```java
+public List<NodeInfo> getNodeInfo(List<Long> nodeIds) {
+    Session session = driver.session();
+    String cypherQuery =
+            "MATCH (n) " +
+                    "WHERE id(n) IN $nodeIds " +
+                    "RETURN id(n) AS nodeId, labels(n) AS labels, properties(n) AS properties";
+    List<NodeInfo> nodeInfoList = new ArrayList<>();
+    session.readTransaction(tx -> {
+        Result result = tx.run(cypherQuery, Values.parameters("nodeIds", nodeIds));
+        while (result.hasNext()) {
+            Record record = result.next();
+            NodeInfo info = new NodeInfo();
+            info.setNodeId(record.get("nodeId").asLong());
+            info.setLabels(record.get("labels").asList(Value::asString));
+            info.setProperties(record.get("properties").asMap(Value::asObject));
+            nodeInfoList.add(info);
+        }
+        return null;
+    });
+    return nodeInfoList;
+}
+```
+
+测试效果：
+
+```java
+public static void main(String[] args) {
+        try (PageRankService_V2_5_3 service = new PageRankService_V2_5_3("bolt://[::1]:17687", "neo4j", "12345678")) {
+            List<String> appNameList = Arrays.asList("app1", "app2", "app3", "app4");
+            List<Record> topNodes = service.calculateTopPageRankNodes(appNameList);
+            topNodes.forEach(record ->
+                    System.out.println(record.get("node").asNode() + " Score: " + record.get("score")));
+
+            // 结果处理
+            List<Long> nodeIdList = topNodes.stream().map(new Function<Record, Long>() {
+                @Override
+                public Long apply(Record record) {
+                    return record.get("node").asNode().id();
+                }
+            }).collect(Collectors.toList());
+
+            List<NodeInfo> nodeInfoList = service.getNodeInfo(nodeIdList);
+            nodeInfoList.forEach(System.out::println);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+```
+
+输出如下：
+
+```
+NodeInfo{nodeId=0, labels=[i_phy], properties={ip=192.168.1.1}}
+NodeInfo{nodeId=1, labels=[i_phy], properties={ip=192.168.1.2}}
+NodeInfo{nodeId=2, labels=[i_vm], properties={ip=10.0.0.1}}
+NodeInfo{nodeId=3, labels=[i_vm], properties={ip=10.0.0.2}}
+NodeInfo{nodeId=4, labels=[i_vm], properties={ip=10.0.0.3}}
+NodeInfo{nodeId=5, labels=[i_vm], properties={ip=10.0.0.4}}
+NodeInfo{nodeId=7, labels=[i_app], properties={name=app2}}
+NodeInfo{nodeId=8, labels=[i_app], properties={name=app3}}
+NodeInfo{nodeId=9, labels=[i_app], properties={name=app4}}
+```
+
 
 ## 查询对应的数据
 
