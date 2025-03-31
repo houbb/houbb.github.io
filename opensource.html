@@ -1,75 +1,163 @@
----
-title: 开源免费工具类 opensource free tool
-layout: default
-header-img: "static/app/res/img/tags-bg.jpg"
-permalink: /opensource/
----
-
-
+<!DOCTYPE html>
+<html>
 <head>
-	<link rel="stylesheet" type="text/css"
-		href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.3.3/semantic.min.css">
-	<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9082537058031213"
-		crossorigin="anonymous"></script> -->
+    <title>Houbb's Projects</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 引入Font Awesome图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2188ff;
+            --card-bg: #f6f8fa;
+        }
+
+        .project-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+        }
+
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            padding: 0;
+        }
+
+        .project-card {
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid #e1e4e8;
+            border-radius: 8px;
+            transition: transform 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .project-icon {
+            font-size: 1.8rem;
+            margin-right: 1rem;
+            color: var(--primary-color);
+        }
+
+        .project-title {
+            color: #0366d6;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .project-desc {
+            color: #586069;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .project-meta {
+            margin-top: 1rem;
+            padding-top: 0.8rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9em;
+            color: #6a737d;
+        }
+
+        h2 {
+            color: #2f363d;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0.3em;
+            margin: 2em 0 1.5em;
+        }
+    </style>
 </head>
+<body>
+    <div class="project-container">
+        <h1>开源项目</h1>
+        
+        <h2>核心项目</h2>
+        <div class="project-grid" id="core-projects"></div>
 
-<style>
-	.main-content-container {
-		min-height: 650px;
-	}
+        <h2>其他项目</h2>
+        <div class="project-grid" id="incubating-projects"></div>
+    </div>
 
-	.stackable>a {
-		line-height: 80px;
-		text-align: center;
-		font-size: 26px;
-	}
-</style>
+    <script>
+        // 图标匹配规则
+        const ICON_MAP = {
+            // 根据仓库名称关键词匹配图标
+            'validator': 'fa-shield-halved',
+            'check': 'fa-check-double',
+            'ml': 'fa-robot',
+            'ai': 'fa-brain',
+            'csv': 'fa-table',
+            'core': 'fa-cube',
+            'cache': 'fa-database',
+            'json': 'fa-file-code',
+            'sync': 'fa-rotate',
+            'async': 'fa-bolt',
+            'common': 'fa-layer-group',
+            'rate': 'fa-chart-line',
+            'leetcode': 'fa-code',
+            'test': 'fa-flask',
+            'doc': 'fa-book',
+            'admin': 'fa-terminal',
+            'db': 'fa-database',
+            'default': 'fa-box-open'
+        };
 
+        // 获取图标类名
+        function getProjectIcon(repoName) {
+            const key = Object.keys(ICON_MAP).find(k => repoName.toLowerCase().includes(k));
+            return ICON_MAP[key] || ICON_MAP.default;
+        }
 
-<!-- Page Header -->
-<header class="intro-header"
-	style="background-image: url('{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}')">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-				<div class="site-heading" id="tag-heading">
-					<h1>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</h1>
-					<span class="subheading">{{ page.description }}</span>
-				</div>
-			</div>
-		</div>
-	</div>
-</header>
+        // 渲染项目卡片
+        function renderProject(repo) {
+            return `
+                <div class="project-card">
+                    <div class="card-header">
+                        <i class="fas ${getProjectIcon(repo.name)} project-icon"></i>
+                        <a href="${repo.html_url}" class="project-title" target="_blank">
+                            ${repo.name}
+                        </a>
+                    </div>
+                    <p class="project-desc">${repo.description || 'No description provided'}</p>
+                    <div class="project-meta">
+                        <span title="Stars">⭐ ${repo.stargazers_count}</span>
+                        <span title="Forks">⑂ ${repo.forks_count}</span>
+                        <span>Updated: ${new Date(repo.updated_at).toLocaleDateString()}</span>
+                    </div>
+                </div>
+            `;
+        }
 
-<!-- Main Content -->
-<div class="main-content-container container">
-	<div class="ui four column stackable padded grid">
-		<a class="red column" href="https://houbb.github.io/opensource/opencc4j"><span>中文繁简体转换(opencc4j)</span></a>
-		<a class="green column"
-			href="https://houbb.github.io/opensource/sensitive-word"><span>敏感词(sensitive-word)</span></a>
-		<a class="violet column" href="https://houbb.github.io/opensource/markdown-toc"><span>markdown
-				目录(markdown-toc)</span></a>
-		<a class="column" style="background-color:#EA8958; color: #FFFFFF;"
-			href="https://houbb.github.io/opensource/pinyin"><span>拼音(pinyin)</span></a>
-		<a class="orange column" href="https://houbb.github.io/opensource/segment"><span>分词(segment)</span></a>
-		<a class="yellow column"
-			href="https://houbb.github.io/opensource/nlp-hanzi-similar"><span>汉字相似度(nlp-hanzi-similar)</span></a>
-	</div>
-</div>
+        // GitHub API请求
+        fetch('https://api.github.com/users/houbb/repos?sort=updated&per_page=100')
+            .then(response => response.json())
+            .then(repos => {
+                const coreProjects = document.getElementById('core-projects');
+                const incubatingProjects = document.getElementById('incubating-projects');
 
-<div class="more-learn-wrapper" style="margin: 0 auto; text-align: center;">
-	<h2 id="更多学习">更多学习</h2>
-	<li>
-		<a class="my-a" href="https://github.com/houbb"><span class="icon icon--github">{% include icon-github.svg
-				%}</span>&nbsp;个人 Github</a>
-	</li>
-	<li>
-		<i class="fa fa-fw fa-wechat text-muted" title="wechat"></i>&nbsp;个人公众号
-	</li>
-	<p>更多实时资讯，前沿技术，生活趣事。尽在【老马啸西风】</p>
-	<p><img src="{{ site.url }}/SIGN.png" alt="image" /></p>
-</div>
-
-<!-- Google tag (gtag.js) -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-F03RP3XNVG"></script>
-<script src="/static/libs/google/gtag.js"></script> -->
+                repos.filter(repo => !repo.fork).forEach(repo => {
+                    const card = renderProject(repo);
+                    (repo.stargazers_count > 30 ? coreProjects : incubatingProjects)
+                        .insertAdjacentHTML('beforeend', card);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>
