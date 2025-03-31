@@ -81,6 +81,14 @@
             padding-bottom: 0.3em;
             margin: 2em 0 1.5em;
         }
+
+		.error {
+			color: #dc3545;
+			padding: 1rem;
+			border: 1px solid #f8d7da;
+			border-radius: 4px;
+			background: #f8d7da;
+		}
     </style>
 </head>
 <body>
@@ -145,19 +153,69 @@
         }
 
         // GitHub API请求
-        fetch('https://api.github.com/users/houbb/repos?sort=updated&per_page=100')
-            .then(response => response.json())
-            .then(repos => {
-                const coreProjects = document.getElementById('core-projects');
-                const incubatingProjects = document.getElementById('incubating-projects');
+        // 通用数据处理函数
+		function processRepositories(repos) {
+			const coreProjects = document.getElementById('core-projects');
+			const incubatingProjects = document.getElementById('incubating-projects');
+			
+			// 清空现有内容
+			coreProjects.innerHTML = '';
+			incubatingProjects.innerHTML = '';
 
-                repos.filter(repo => !repo.fork).forEach(repo => {
-                    const card = renderProject(repo);
-                    (repo.stargazers_count > 30 ? coreProjects : incubatingProjects)
-                        .insertAdjacentHTML('beforeend', card);
-                });
-            })
-            .catch(error => console.error('Error:', error));
+			repos.filter(repo => !repo.fork).forEach(repo => {
+				const card = renderProject(repo);
+				(repo.stargazers_count > 30 ? coreProjects : incubatingProjects)
+					.insertAdjacentHTML('beforeend', card);
+			});
+		}
+
+		// 增强版数据加载函数
+		function loadRepositoryData() {
+			// 优先尝试GitHub API
+			fetch('https://api.github.com/users/houbb/repos?sort=updated&per_page=100')
+				.then(response => {
+					if (!response.ok) {
+						throw new Error(`GitHub API请求失败 (HTTP ${response.status})`);
+					}
+					return response.json();
+				})
+				.then(repos => {
+					processRepositories(repos);
+					// 可选：保存最新数据到本地备用
+					localStorage.setItem('cachedRepos', JSON.stringify(repos));
+				})
+				.catch(error => {
+					console.warn('主数据源加载失败:', error);
+					// 尝试读取本地备用文件
+					fetch('./opensource-default.json')
+						.then(response => {
+							if (!response.ok) {
+								throw new Error('备用文件加载失败');
+							}
+							return response.json();
+						})
+						.then(localRepos => {
+							processRepositories(localRepos);
+							console.info('已使用本地备用数据');
+						})
+						.catch(localError => {
+							console.error('备用数据加载失败:', localError);
+							// 尝试读取本地缓存
+							const cached = localStorage.getItem('cachedRepos');
+							if (cached) {
+								processRepositories(JSON.parse(cached));
+								console.info('已使用本地缓存数据');
+							} else {
+								// 最终错误处理
+								document.getElementById('core-projects').innerHTML = 
+									'<p class="error">数据加载失败，请检查网络连接</p>';
+							}
+						});
+				});
+		}
+
+		// 初始化加载
+		loadRepositoryData();
     </script>
 </body>
 </html>
