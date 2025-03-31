@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkidrag"]=self["webpackChunkidrag"]||[]).push([[877],{866:function(t,n,r){r.r(n),r.d(n,{default:function(){return c}});var s=function(){var t=this,n=t._self._c;return n("div",{staticClass:"attr-list"},[n("CommonAttr")],1)},u=[],l=r(1616),e={components:{CommonAttr:l.Z}},a=e,i=r(1001),o=(0,i.Z)(a,s,u,!1,null,null,null),c=o.exports}}]);
-//# sourceMappingURL=877.ea9c86d5.js.map
