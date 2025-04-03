@@ -32,35 +32,66 @@ published: true
 ## 代码例子
 
 ```java
-final int proxyPort = 1080; //your proxy port
-final String proxyHost = "your proxy host";
-final String username = "proxy username";
-final String password = "proxy password";
-
-InetSocketAddress proxyAddr = new InetSocketAddress(proxyHost, proxyPort);
-Proxy proxy = new Proxy(Proxy.Type.HTTP, proxyAddr);
-
-Authenticator.setDefault(new Authenticator() {
-  @Override
-  protected PasswordAuthentication getPasswordAuthentication() {
-    if (getRequestingHost().equalsIgnoreCase(proxyHost)) {
-      if (proxyPort == getRequestingPort()) {
-        return new PasswordAuthentication(username, password.toCharArray());
-      }
+package com.example;
+ 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+ 
+import okhttp3.*;
+ 
+public class Main {
+ 
+    String run(String url) throws IOException {
+        // define your proxy details
+        String proxyHost = "140.238.247.9";
+        int proxyPort = 8100;
+ 
+        // create a proxy object and pass in the necessary details
+        Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
+ 
+        // create a OkHttpClient builder instance and configure it to use the proxy
+        OkHttpClient client = new OkHttpClient.Builder()
+            .proxy(proxy)
+            .authenticator(new Authenticator() {
+                @Override
+                public Request authenticate(Route route, Response response) throws IOException {
+                    // provide the credentials
+                    String credential = Credentials.basic("<YOUR_USERNAME>", "<YOUR_PASSWORD>");
+                    return response.request().newBuilder()
+                            .header("Proxy-Authorization", credential)
+                            .build();
+                }
+            }) 
+            .build();
+ 
+        // create a request with the provided URL
+        Request request = new Request.Builder()
+            .url(url)
+            .build();
+        // execute the request and obtain the response
+        try (Response response = client.newCall(request).execute()) {
+            // return the response body as a string
+            return response.body().string();
+        }
     }
-    return null;
-  }
-});
-
-
-OkHttpClient client = new OkHttpClient.Builder()
-        .proxy(proxy)
-        .build();
+ 
+    public static void main(String[] args) throws IOException {
+        // create an instance of the Main class
+        Main example = new Main();
+        // make a GET request to the specified URL and print the response
+        String response = example.run("https://httpbin.io/ip");
+        System.out.println(response);
+    }
+}
 ```
 
-# smariproxy 具体例子
+# smartproxy 具体例子
 
 
+TODO...
+
+需要找一个代理实际测试验证一下。
 
 
 # 参开资料
