@@ -38,7 +38,7 @@ final String username = "proxy username";
 final String password = "proxy password";
 
 InetSocketAddress proxyAddr = new InetSocketAddress(proxyHost, proxyPort);
-Proxy proxy = new Proxy(Proxy.Type.SOCKS, proxyAddr);
+Proxy proxy = new Proxy(Proxy.Type.HTTP, proxyAddr);
 
 Authenticator.setDefault(new Authenticator() {
   @Override
