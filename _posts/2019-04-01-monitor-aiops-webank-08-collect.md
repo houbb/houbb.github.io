@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 监控系统 AIOps webbank-07-化繁为简：业务异常的根因定位方法概述
+title: 监控系统 AIOps webbank-08-事件指纹库：构建异常案例的“博物馆
 date: 2018-11-25 09:14:43 +0800
 categories: [Devops]
 tags: [devops, monitor, apm, ai, aiops, sh]
