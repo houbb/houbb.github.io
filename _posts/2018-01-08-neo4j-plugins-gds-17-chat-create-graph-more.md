@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Neo4j GDS-16-neo4j GDS 库创建 graph 图投影更复杂的场景
+title:  Neo4j GDS-17-neo4j GDS 库创建 graph 图投影更复杂的场景
 date:  2018-1-8 14:18:33 +0800
 categories: [SQL]
 tags: [nosql, neo4j]
@@ -12,14 +12,6 @@ published: true
 
 [Neo4j APOC-01-图数据库 apoc 插件介绍](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-01-intro)
 
-[Neo4j APOC-01-图数据库 apoc 插件安装 neo4j on windows10](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-02-windows10-install-plugins)
-
-[Neo4j APOC-03-图数据库 apoc 实战使用使用](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-03-basic-usage)
-
-[Neo4j APOC-04-图数据库 apoc 实战使用使用 apoc.path.spanningTree 最小生成树](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-04-minist-tree)
-
-[Neo4j APOC-05-图数据库 apoc 实战使用使用 labelFilter](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-05-label-filter)
-
 [Neo4j GDS-01-graph-data-science 图数据科学插件库概览](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-01-overview)
 
 [Neo4j GDS-02-graph-data-science 插件库安装实战笔记](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-02-install-inaction)
@@ -30,6 +22,29 @@ published: true
 
 [Neo4j GDS-05-neo4j中的中心性分析算法](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-04-chat-middle-analysis-impl)
 
+[Neo4j GDS-06-neo4j GDS 库中社区检测算法介绍](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-06-chat-community-detection-intro)
+
+[Neo4j GDS-07-neo4j GDS 库中社区检测算法实现](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-07-chat-community-detection-impl)
+
+[Neo4j GDS-08-neo4j GDS 库中路径搜索算法介绍](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-08-chat-path-search-intro)
+
+[Neo4j GDS-09-neo4j GDS 库中路径搜索算法实现](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-09-chat-path-search-impl)
+
+[Neo4j GDS-10-neo4j GDS 库中相似度算法介绍](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-10-chat-similar-intro)
+
+[Neo4j GDS-11-neo4j GDS 库中相似度算法实现](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-11-chat-similar-impl)
+
+[Neo4j GDS-12-neo4j GDS 库中节点插入（Node Embedding）算法介绍](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-12-chat-node-embedding-intro)
+
+[Neo4j GDS-13-neo4j GDS 库中节点插入算法实现](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-13-chat-node-embedding-impl)
+
+[Neo4j GDS-14-neo4j GDS 库中链接预测算法介绍](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-14-chat-link-pre-intro)
+
+[Neo4j GDS-15-neo4j GDS 库中链接预测算法实现](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-15-chat-link-pre-impl)
+
+[Neo4j GDS-16-neo4j GDS 库创建 graph 图投影](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-16-chat-create-graph)
+
+[Neo4j GDS-17-neo4j GDS 库创建 graph 图投影更复杂的场景](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-17-chat-create-graph-more)
 
 # 实际测试
 
@@ -428,6 +443,16 @@ return distinct relationships(path) as all_relationships, all_nodes
 
 <svg xmlns="http://www.w3.org/2000/svg" width="335.4267272949219" height="328.6940002441406" viewBox="-156.72311401367188 -155.77711486816406 335.4267272949219 328.6940002441406"><title>Neo4j Graph Visualization</title><desc>Created using Neo4j (http://www.neo4j.com/)</desc><g class="layer relationships"><g class="relationship" transform="translate(64.32676514546043 143.91686644644471) rotate(306.39457944491096)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 43.55696618385781 0.5 L 43.55696618385781 -0.5 L 25 -0.5 Z M 93.33430993385781 0.5 L 111.89127611771562 0.5 L 111.89127611771562 3.5 L 118.89127611771562 0 L 111.89127611771562 -3.5 L 111.89127611771562 -0.5 L 93.33430993385781 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="68.44563805885781" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">POINTS_TO</text></g><g class="relationship" transform="translate(149.7036085657004 28.091593080134434) rotate(219.40552139148542)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 40.70405936294998 0.5 L 40.70405936294998 -0.5 L 25 -0.5 Z M 97.82515311294998 0.5 L 113.52921247589995 0.5 L 113.52921247589995 3.5 L 120.52921247589995 0 L 113.52921247589995 -3.5 L 113.52921247589995 -0.5 L 97.82515311294998 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="69.26460623794998" y="3" transform="rotate(180 69.26460623794998 0)" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">BELONGS_TO</text></g><g class="relationship" transform="translate(-127.72311814249437 -126.77710584159497) rotate(435.56822637411364)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 42.813713603696996 0.5 L 42.813713603696996 -0.5 L 25 -0.5 Z M 92.591057353697 0.5 L 110.40477095739399 0.5 L 110.40477095739399 3.5 L 117.40477095739399 0 L 110.40477095739399 -3.5 L 110.40477095739399 -0.5 L 92.591057353697 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="67.702385478697" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">POINTS_TO</text></g><g class="relationship" transform="translate(-92.23200700552373 11.134096827698855) rotate(329.7799574437129)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 42.866771029495254 0.5 L 42.866771029495254 -0.5 L 25 -0.5 Z M 99.98786477949525 0.5 L 117.85463580899051 0.5 L 117.85463580899051 3.5 L 124.85463580899051 0 L 117.85463580899051 -3.5 L 117.85463580899051 -0.5 L 99.98786477949525 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="71.42731790449525" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">BELONGS_TO</text></g></g><g class="layer nodes"><g class="node" aria-label="graph-node6" transform="translate(64.32676514546043,143.91686644644471)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#57C7E3" stroke="#23b3d7" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> app1</text></g><g class="node" aria-label="graph-node2" transform="translate(149.7036085657004,28.091593080134434)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#F79767" stroke="#f36924" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 10.0.0.1</text></g><g class="node" aria-label="graph-node0" transform="translate(37.25720222957948,-64.2910751317527)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#C990C0" stroke="#b261a5" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 192.168.…</text></g><g class="node" aria-label="graph-node7" transform="translate(-127.72311814249437,-126.77710584159497)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#57C7E3" stroke="#23b3d7" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> app2</text></g><g class="node" aria-label="graph-node3" transform="translate(-92.23200700552373,11.134096827698855)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#F79767" stroke="#f36924" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 10.0.0.2</text></g></g></svg>
 
+
+# 一些技巧
+
+有些保证图的删除。
+
+如果每次图都不同，又保证不同的图不冲突，可以生成唯一标识，生成后删除。
+
+或者改为定时删除。
+
+------------------
 
 
 # chat
