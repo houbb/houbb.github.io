@@ -11,6 +11,17 @@ published: true
 
 [Opencc4j](https://github.com/houbb/opencc4j) 支持中文繁简体转换，考虑到词组级别。
 
+[开源中文的繁简体转换 opencc4j-01-使用入门概览](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-01-overview)
+
+[开源中文的繁简体转换 opencc4j-02-一个汉字竟然对应两个 char？](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-02-two-char)
+
+[开源中文的繁简体转换 opencc4j-03-简体还是繁体，你说了算!](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-03-simple-or-not)
+
+[开源中文的繁简体转换 opencc4j-04-香港繁简体的支持](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-04-hk)
+
+[开源中文的繁简体转换 opencc4j-05-日文转换支持](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-05-jp)
+
+
 ## Features 特点
 
 - 严格区分「一简对多繁」和「一简对多异」。
@@ -29,7 +40,9 @@ published: true
 
 - 支持返回字符串中简体/繁体的列表信息 
 
-- 支持中国台湾地区繁简体转换
+- 支持中国台湾、香港地区繁简体转换
+
+- 支持与日文字的转换
 
 # 这么着，还是那么着
 

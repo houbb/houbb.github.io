@@ -11,21 +11,15 @@ published: true
 
 [Opencc4j](https://github.com/houbb/opencc4j) 支持中文繁简体转换，考虑到词组级别。
 
-## 拓展阅读
+[开源中文的繁简体转换 opencc4j-01-使用入门概览](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-01-overview)
 
-[pinyin 汉字转拼音](https://github.com/houbb/pinyin)
+[开源中文的繁简体转换 opencc4j-02-一个汉字竟然对应两个 char？](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-02-two-char)
 
-[pinyin2hanzi 拼音转汉字](https://github.com/houbb/pinyin2hanzi)
+[开源中文的繁简体转换 opencc4j-03-简体还是繁体，你说了算!](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-03-simple-or-not)
 
-[segment 高性能中文分词](https://github.com/houbb/segment)
+[开源中文的繁简体转换 opencc4j-04-香港繁简体的支持](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-04-hk)
 
-[opencc4j 中文繁简体转换](https://github.com/houbb/opencc4j)
-
-[nlp-hanzi-similar 汉字相似度](https://github.com/houbb/nlp-hanzi-similar)
-
-[word-checker 拼写检测](https://github.com/houbb/word-checker)
-
-[sensitive-word 敏感词](https://github.com/houbb/sensitive-word)
+[开源中文的繁简体转换 opencc4j-05-日文转换支持](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-05-jp)
 
 ## Features 特点
 
@@ -454,6 +448,22 @@ ps: 后续考虑引入更加简单的实现方式，比如基于文本拓展，�
 # 小结
 
 NLP 中文繁简体转换是一个非常基础的工具，后续分词、拼音等等都可以基于这个工具。
+
+## 拓展阅读
+
+[pinyin 汉字转拼音](https://github.com/houbb/pinyin)
+
+[pinyin2hanzi 拼音转汉字](https://github.com/houbb/pinyin2hanzi)
+
+[segment 高性能中文分词](https://github.com/houbb/segment)
+
+[opencc4j 中文繁简体转换](https://github.com/houbb/opencc4j)
+
+[nlp-hanzi-similar 汉字相似度](https://github.com/houbb/nlp-hanzi-similar)
+
+[word-checker 拼写检测](https://github.com/houbb/word-checker)
+
+[sensitive-word 敏感词](https://github.com/houbb/sensitive-word)
 
 * any list
 {:toc}
