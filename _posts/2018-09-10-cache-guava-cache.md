@@ -1,11 +1,10 @@
 ---
 layout: post
-title:  Guava Cache
+title:  Guava Cache-01-入门学习
 date:  2018-09-10 07:44:19 +0800
 categories: [Cache]
 tags: [cache, guava, middleware, google, in-memory cache, sh]
 published: true
-excerpt: Guava Cache 入门学习。
 ---
 
 # 适用性

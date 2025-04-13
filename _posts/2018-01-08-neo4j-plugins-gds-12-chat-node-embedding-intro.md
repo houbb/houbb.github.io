@@ -8,7 +8,7 @@ published: true
 ---
 
 
-# neo4j apoc 系列
+# neo4j GDS 系列
 
 [Neo4j APOC-01-图数据库 apoc 插件介绍](https://houbb.github.io/2018/01/08/neo4j-plugins-apoc-01-intro)
 
