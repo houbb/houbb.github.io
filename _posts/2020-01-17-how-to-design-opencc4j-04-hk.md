@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 开源中文的繁简体转换 opencc4j-04-香港繁简体的支持
+title: 开源中文的繁简体转换 opencc4j-04-香港地区转换支持
 date:  2020-1-9 10:09:32 +0800
 categories: [Search]
 tags: [nlp, java, pinyin, sh]
@@ -17,7 +17,7 @@ published: true
 
 [开源中文的繁简体转换 opencc4j-03-简体还是繁体，你说了算!](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-03-simple-or-not)
 
-[开源中文的繁简体转换 opencc4j-04-香港繁简体的支持](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-04-hk)
+[开源中文的繁简体转换 opencc4j-04-香港地区转换支持](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-04-hk)
 
 [开源中文的繁简体转换 opencc4j-05-日文转换支持](https://houbb.github.io/2020/01/09/how-to-design-opencc4j-05-jp)
 

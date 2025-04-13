@@ -47,10 +47,6 @@ published: true
 
 [OpenCC](https://github.com/BYVoid/OpenCC) 的思想非常优秀，做的也特别棒。但是没有特别为 java 提供的工具。
 
-- jopencc
-
-[jopencc](https://github.com/carlostse/jopencc) 没有提供分词功能。
-
 # 快速开始
 
 ## maven 引入
@@ -59,7 +55,7 @@ published: true
 <dependency>
     <groupId>com.github.houbb</groupId>
     <artifactId>opencc4j</artifactId>
-    <version>1.8.1</version>
+    <version>1.12.0</version>
 </dependency>
 ```
 
@@ -439,15 +435,13 @@ public interface IDataMap {
 
 ps: 后续考虑引入更加简单的实现方式，比如基于文本拓展，不过可扩展性没有接口灵活。
 
-# Issues & Bugs
-
-[需求和 BUG](https://github.com/houbb/opencc4j/issues) 在这里，欢迎提供宝贵的建议。
-
-如果对您有帮助，欢迎 Star 鼓励作者。
-
 # 小结
 
 NLP 中文繁简体转换是一个非常基础的工具，后续分词、拼音等等都可以基于这个工具。
+
+如果对您有帮助，欢迎 Star 鼓励作者。
+
+我是老马，期待与你的下次重逢。
 
 ## 拓展阅读
 
