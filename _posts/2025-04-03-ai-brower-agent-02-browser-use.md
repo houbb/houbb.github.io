@@ -8,7 +8,39 @@ published: true
 ---
 
 
-### 启用AI控制你的浏览器 🤖
+# AI MCP 系列
+
+[AgentGPT-01-入门介绍](https://houbb.github.io/2025/04/03/ai-brower-agent-01-agentGPT)
+
+[Browser-use 是连接你的AI代理与浏览器的最简单方式](https://houbb.github.io/2025/04/03/ai-brower-agent-02-browser-use)
+
+[AI MCP(大模型上下文)-01-入门介绍](https://houbb.github.io/2025/04/15/ai-mcp-01-intro)
+
+[AI MCP(大模型上下文)-02-awesome-mcp-servers 精选的 MCP 服务器](https://houbb.github.io/2025/04/15/ai-mcp-02-awesome-servers)
+
+[AI MCP(大模型上下文)-03-open webui 介绍 是一个可扩展、功能丰富且用户友好的本地部署 AI 平台，支持完全离线运行。](https://houbb.github.io/2025/04/15/ai-mcp-03-open-webui)
+
+[AI MCP(大模型上下文)-04-n8n 为技术团队打造的安全工作流自动化平台](https://houbb.github.io/2025/04/15/ai-mcp-04-n8n)
+
+[AI MCP(大模型上下文)-05-anything-llm AnythingLLM 您一直在寻找的全方位AI应用程序](https://houbb.github.io/2025/04/15/ai-mcp-05-anything-llm)
+
+[AI MCP(大模型上下文)-06-maxkb 强大易用的企业级 AI 助手](https://houbb.github.io/2025/04/15/ai-mcp-06-maxkb)
+
+[AI MCP(大模型上下文)-07-dify 入门介绍](https://houbb.github.io/2025/04/15/ai-mcp-07-dify-intro)
+
+[AI MCP(大模型上下文)-08-分享一些好用的 Dify DSL 工作流程](https://houbb.github.io/2025/04/15/ai-mcp-08-awesome-dify-workflow)
+
+[AI MCP(大模型上下文)-09-基于Dify自主创建的AI应用DSL工作流](https://houbb.github.io/2025/04/15/ai-mcp-09-difyaia)
+
+[AI MCP(大模型上下文)-10-Activepieces 一个开源的 Zapier 替代方案](https://houbb.github.io/2025/04/15/ai-mcp-10-activepieces)
+
+[AI MCP(大模型上下文)-11-微软 Playwright MCP server](https://houbb.github.io/2025/04/15/ai-mcp-11-playwright-mcp)
+
+[AI MCP(大模型上下文)-12-AWS MCP](https://houbb.github.io/2025/04/15/ai-mcp-12-aws-mcp)
+
+[AI MCP(大模型上下文)-13-github MCP](https://houbb.github.io/2025/04/15/ai-mcp-13-github-mcp)
+
+# 启用AI控制你的浏览器 🤖
 
 🌐 **Browser-use** 是将AI代理与浏览器连接的最简单方式。
 
