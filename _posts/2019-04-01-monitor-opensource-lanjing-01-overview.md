@@ -13,6 +13,19 @@ published: true
 
 然后平台之上七个融合联动的模块，包括消费驱动的CMDB、数据驱动的监控告警、敏捷运维流程、编排自动化，门户与可视化、运维数据治理和AIOps，实现企业IT运维一体化、自动化、数据化和智能化的逐步体系化演进。
 
+## BlueKing Community
+
+- [BK-CI](https://github.com/TencentBlueKing/bk-ci/) 蓝鲸持续集成平台(蓝盾)
+- [BK-BCS](https://github.com/Tencent/bk-bcs)：蓝鲸容器管理平台是以容器技术为基础，为微服务业务提供编排管理的基础服务平台。
+- [BK-CMDB](https://github.com/Tencent/bk-cmdb)：蓝鲸配置平台（蓝鲸CMDB）是一个面向资产及应用的企业级配置管理平台。
+- [BK-JOB](https://github.com/Tencent/bk-job)：蓝鲸作业平台(Job)是一套运维脚本管理系统，具备海量任务并发处理能力。
+- [BK-PaaS](https://github.com/Tencent/bk-PaaS)：蓝鲸PaaS平台是一个开放式的开发平台，让开发者可以方便快捷地创建、开发、部署和管理SaaS应用。
+- [BK-SOPS](https://github.com/Tencent/bk-sops)：蓝鲸标准运维（SOPS）是通过可视化的图形界面进行任务流程编排和执行的系统，是蓝鲸体系中一款轻量级的调度编排类SaaS产品。
+- [BK-Repo](https://github.com/Tencentblueking/bk-repo)：蓝鲸制品库平台是一套为企业提供各种类型制品包存储、代理、分发、晋级、扫描、依赖包管理的持续交付平台。
+- [BK-Turbo](https://github.com/Tencentblueking/bk-turbo): 蓝鲸编译加速平台为CI场景下提供UE、C/C++等多种语言的编译加速服务能力
+
+https://github.com/orgs/TencentBlueKing/repositories?type=all
+
 # 嘉为蓝鲸一体化运维解决方案
 
 嘉为蓝鲸新一代ITOM体系解决方案，基于IT运维价值和平台化架构治理视角出发，引流企业IT运维“两个并存、两个发展”：
