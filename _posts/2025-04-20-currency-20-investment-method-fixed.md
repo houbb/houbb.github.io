@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 投资方式之：定期投资/定投
+title: 投资方式之：定投/定期投资（Dollar Cost Averaging）
 date: 2025-4-19 14:31:52 +0800
 categories: [Note]
 tags: [note, bold, sh]
@@ -14,8 +14,6 @@ published: true
 # chat
 
 ## 定期投资
-
-
 
 以下是对投资中“定期”的详细介绍，涵盖其定义、类型、优劣势、应用案例及风险管理等内容：
 
