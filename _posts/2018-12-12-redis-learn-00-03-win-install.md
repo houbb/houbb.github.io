@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Redis learn-04-redis windows10 安装笔记
+title: Redis learn-04-redis install windows10 安装笔记 redis 安装 
 date:  2018-12-12 10:11:55 +0800
 categories: [Cache]
 tags: [redis, cache, nosql]
