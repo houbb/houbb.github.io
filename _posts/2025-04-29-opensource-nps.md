@@ -108,6 +108,41 @@ nps默认配置文件使用了80，443，8080，8024端口
 
 
 
+# windodws 安装笔记
+
+## 下载
+
+[releases](https://github.com/ehang-io/nps/releases) 中寻找合适的版本。
+
+这里选择 windows windows_amd64_server 版本。
+
+## 运行
+
+解压，之后直接运行 nps.exe
+
+日志：
+
+```
+2025/04/29 11:54:14.604 [I] [server.go:200]  tunnel task  start mode：httpHostServer port 0
+2025/04/29 11:54:14.606 [I] [connection.go:71]  web management start, access port is 8080
+2025/04/29 11:54:14.606 [I] [connection.go:62]  start https listener, port is 443
+2025/04/29 11:54:14.606 [I] [connection.go:53]  start http listener, port is 80
+```
+
+## 访问
+
+浏览器访问 http://localhost:8080/login/index
+
+默认账密：admin/123
+
+
+# 实际玩耍
+
+后续实际使用体验一下，感觉不错。
+
+可以内网搞一台自己的服务器。
+
+
 # 参考资料
 
 https://github.com/ehang-io/nps
