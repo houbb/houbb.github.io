@@ -1,9 +1,9 @@
 ---
 layout: post
-title: 技能树+发展路径
-date: 2030-03-17 21:01:55 +0800
+title: 聊一聊程序员技能树+发展路径
+date: 2025-4-29 09:10:20 +0800
 categories: [Awesome]
-tags: [awesome, java, sh]
+tags: [awesome, chat, sh]
 published: true
 ---
 
