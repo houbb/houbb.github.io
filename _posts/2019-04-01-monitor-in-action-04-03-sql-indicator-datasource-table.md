@@ -54,13 +54,20 @@ drop table if exists sql_execute_task;
 CREATE TABLE sql_execute_task (
     id bigint(20) PRIMARY KEY auto_increment comment '物理主键',
     task_name varchar(64) NOT NULL comment '任务名称',
-    task_status varchar(2) NOT NULL comment '任务状态(Y:启动;N:禁用)',
+    task_status varchar(2) NOT NULL comment '任务状态',
     task_remark varchar(512) NULL comment '任务备注',
     ref_datasource_id bigint(20) NOT NULL comment '引用的数据源ID',
     execute_sql TEXT NOT NULL comment '执行脚本',
+    value_extra_list TEXT NULL comment '表达式提取列表',
     after_action_condition varchar(512) NOT NULL comment '后置动作触发条件',
-    after_action varchar(16) NOT NULL comment '后置动作(alarm:报警;email:邮件;)',
-    receive_user_list varchar(1024) NULL comment '信息接收用户列表(英文逗号分隔)',
+    after_action varchar(16) NOT NULL comment '后置动作',
+    receive_user_list varchar(1024) NULL comment '信息接收用户列表',
+    next_trigger_time datetime NULL comment '下次执行时间',
+    schedule_cron_expression varchar(128) NOT NULL comment '调度表达式',
+    schedule_start_at datetime NULL comment '调度开始时间',
+    schedule_end_at datetime NULL comment '调度结束时间',
+    schedule_max_times bigint(20) null comment '最多执行次数',
+    schedule_current_times bigint(20) default 0 comment '当前执行次数',
     create_time datetime comment '创建时间',
     update_time datetime comment '更新时间',
     create_by VARCHAR(64) comment '创建人',
@@ -69,48 +76,22 @@ CREATE TABLE sql_execute_task (
 ) COMMENT 'SQL执行任务信息';
 ```
 
-## 任务调度信息
+## 任务动作历史表
 
 ```sql
-drop table if exists sql_execute_schedule;
-CREATE TABLE sql_execute_schedule (
+drop table if exists sql_task_action_history;
+CREATE TABLE sql_task_action_history (
     id bigint(20) PRIMARY KEY auto_increment comment '物理主键',
-    schedule_name varchar(64) NOT NULL comment '调度名称',
-    schedule_status varchar(2) NOT NULL comment '调度状态(Y:启动;N:禁用)',
-    schedule_remark varchar(512) NULL comment '调度备注',
-    ref_task_id bigint(20) NOT NULL comment '引用的任务ID',
-    cron_expression varchar(128) NOT NULL comment '调度表达式',
-    start_at datetime NULL comment '开始执行时间',
-    end_at datetime NULL comment '结束执行时间',
-    next_trigger_time datetime NULL comment '下次执行时间',
-    max_times bigint(20) null comment '最多执行次数',
-    current_times bigint(20) null comment '当前执行次数',
+    task_name varchar(64) NOT NULL comment '任务名称',
+    after_action varchar(16) NOT NULL comment '后置动作',
+    receive_user_list varchar(1024) NULL comment '信息接收用户列表',
+    action_content text comment '动作内容',
     create_time datetime comment '创建时间',
     update_time datetime comment '更新时间',
     create_by VARCHAR(64) comment '创建人',
     update_by VARCHAR(64) comment '更新人',
-    UNIQUE KEY (schedule_name)
-) COMMENT 'SQL执行调度';
-```
-
-## 任务调度锁
-
-多机器部署的时候，针对任务加锁。
-
-```sql
-drop table if exists sql_execute_lock;
-CREATE TABLE sql_execute_lock (
-    id bigint(20) PRIMARY KEY auto_increment comment '物理主键',
-    lock_key varchar(64) NOT NULL comment '锁唯一标识',
-    lock_status varchar(2) NOT NULL comment '锁状态(I:初始化;P:使用中;)',
-    lock_remark varchar(512) NULL comment '锁备注',
-    lock_expire_time datetime NULL comment '锁过期时间',
-    create_time datetime comment '创建时间',
-    update_time datetime comment '更新时间',
-    create_by VARCHAR(64) comment '创建人',
-    update_by VARCHAR(64) comment '更新人',
-    UNIQUE KEY (lock_key)
-) COMMENT 'SQL调度锁信息';
+    UNIQUE KEY (task_name)
+) COMMENT 'SQL执行动作历史表';
 ```
 
 # 小结
