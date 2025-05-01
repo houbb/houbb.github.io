@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 监控系统实战-04-03-SQL 指标的数据源表设计
+title: 监控系统实战-04-03-SQL 指标的数据源表设计 v1.1.0
 date: 2018-11-25 09:14:43 +0800
 categories: [Devops]
 tags: [devops, monitor, apm, zabbix, sh]
@@ -19,7 +19,10 @@ published: true
 
 ## 数据源基本信息
 
+清空
+
 ```sql
+drop table if exists jdbc_datasource_info;
 CREATE TABLE jdbc_datasource_info (
     id bigint(20) PRIMARY KEY auto_increment comment '物理主键',
     config_name varchar(64) NOT NULL comment '配置名称',
@@ -47,6 +50,7 @@ CREATE TABLE jdbc_datasource_info (
 ## 任务基本信息
 
 ```sql
+drop table if exists sql_execute_task;
 CREATE TABLE sql_execute_task (
     id bigint(20) PRIMARY KEY auto_increment comment '物理主键',
     task_name varchar(64) NOT NULL comment '任务名称',
@@ -68,6 +72,7 @@ CREATE TABLE sql_execute_task (
 ## 任务调度信息
 
 ```sql
+drop table if exists sql_execute_schedule;
 CREATE TABLE sql_execute_schedule (
     id bigint(20) PRIMARY KEY auto_increment comment '物理主键',
     schedule_name varchar(64) NOT NULL comment '调度名称',
@@ -78,8 +83,8 @@ CREATE TABLE sql_execute_schedule (
     start_at datetime NULL comment '开始执行时间',
     end_at datetime NULL comment '结束执行时间',
     next_trigger_time datetime NULL comment '下次执行时间',
-    max_count bigint(20) null comment '最多执行次数',
-    current_count bigint(20) null comment '当前执行次数',
+    max_times bigint(20) null comment '最多执行次数',
+    current_times bigint(20) null comment '当前执行次数',
     create_time datetime comment '创建时间',
     update_time datetime comment '更新时间',
     create_by VARCHAR(64) comment '创建人',
@@ -93,6 +98,7 @@ CREATE TABLE sql_execute_schedule (
 多机器部署的时候，针对任务加锁。
 
 ```sql
+drop table if exists sql_execute_lock;
 CREATE TABLE sql_execute_lock (
     id bigint(20) PRIMARY KEY auto_increment comment '物理主键',
     lock_key varchar(64) NOT NULL comment '锁唯一标识',
