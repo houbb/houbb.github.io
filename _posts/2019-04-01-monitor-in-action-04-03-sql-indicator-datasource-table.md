@@ -31,7 +31,6 @@ CREATE TABLE jdbc_datasource_info (
     jdbc_driver VARCHAR(100) NOT NULL comment '驱动信息',
     jdbc_username VARCHAR(50) NOT NULL comment '数据源用户',
     jdbc_password VARCHAR(256) NOT NULL comment '数据源密码',
-    jdbc_password_salt VARCHAR(256) NOT NULL comment '数据源密码盐值',
     jdbc_url VARCHAR(500) NOT NULL comment '链接信息',
     database_type VARCHAR(128) NOT NULL comment '数据库类型',
     initial_pool_size INT DEFAULT 4 comment '线程池初始化大小',
