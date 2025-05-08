@@ -286,7 +286,19 @@ RuoYi-Cloud-Vue3: 基于Spring Boot、Spring Cloud & Alibaba、Vue3 & Vite、Ele
 RuoYi-Vue3: 基于SpringBoot，Spring Security，JWT，Vue3 & Vite、Element Plus 的前后端分离权限管理系统
 
 
+# 思考
 
+不要重复造基础的轮子
+
+但是可以在这个轮子之上，构建更加有价值的东西。
+
+前后端拆分开。
+
+ums
+
+passport
+
+sso
 
 # 参考资料
 
