@@ -7,6 +7,10 @@ tags: [life, note, sh]
 published: true
 ---
 
+# Map
+
+<div id="travel-chinese-map"></div>
+
 # chat
 
 ## Q: 将深度旅游体验中国共有23个省、5个自治区、4个直辖市和2个特别行政区。从上海出发、公共交通，需要多久，给出具体的旅游地图规划。
