@@ -7,6 +7,34 @@ tags: [web, java, web-safe, in-action, sh]
 published: true
 ---
 
+# 限流系列
+
+[01-面试官：你们项目中是怎么做防重复提交的？](https://houbb.github.io/2018/09/14/avoid-repeated-submit-01-interview)
+
+[02-java 表单避免重复提交 resubmit 开源项目介绍](https://houbb.github.io/2018/09/14/avoid-repeated-submit-02-open-source-intro)
+
+[03-idempotent 幂等性介绍+如何防止重复提交？](https://houbb.github.io/2018/09/14/avoid-repeated-submit-03-idempotent)
+
+[04-简单聊一聊防重复提交](https://houbb.github.io/2018/09/14/avoid-repeated-submit-04-chat)
+
+## 开源矩阵
+
+下面是一些从防止重复提交相关，整个系列的开源矩阵规划。
+
+截止目前，整体进度如下：
+
+| 名称 | 介绍 | 状态 |
+|:---|:---|:---|
+| [resubmit](https://github.com/houbb/resubmit) | 防止重复提交核心库 | 已开源 |
+| [rate-limit](https://github.com/houbb/rate-limit) | 限流核心库 | 已开源 |
+| [cache](https://github.com/houbb/cache) | 手写渐进式 redis | 已开源 |
+| [lock](https://github.com/houbb/lock) | 开箱即用的分布式锁 | 已开源 |
+| [quota-server](https://github.com/houbb/quota-server) | 限额限次核心服务 | 待开始 |
+| [quota-admin](https://github.com/houbb/quota-admin) | 限额限次控台 | 待开始 |
+| [flow-control-server](https://github.com/houbb/flow-control-server) | 流控核心服务 | 待开始 |
+| [flow-control-admin](https://github.com/houbb/flow-control-admin) | 流控控台 | 待开始 |
+
+
 # 幂等性
 
 [幂等性](https://houbb.github.io/2018/09/02/idempotency-patterns)
