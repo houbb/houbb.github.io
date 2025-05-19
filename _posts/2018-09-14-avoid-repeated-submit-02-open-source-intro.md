@@ -5,9 +5,7 @@ date:  2018-09-14 12:02:42 +0800
 categories: [Web]
 tags: [web, java, web-safe, in-action, sh]
 published: true
-excerpt: java 表单避免重复提交
 ---
-
 
 # resubmit
 
@@ -374,7 +372,6 @@ public class SpringDefineConfig {
 [resubmit: 防重复提交](https://github.com/houbb/resubmit)
 
 [rate-limit: 限流](https://github.com/houbb/rate-limit/)
-
 
 
 * any list

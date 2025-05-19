@@ -1,11 +1,10 @@
 ---
 layout: post
-title: java 表单避免重复提交
+title: 面试官：你们项目中是怎么做防重复提交的？
 date:  2018-09-14 12:02:42 +0800
 categories: [Web]
 tags: [web, java, web-safe, in-action, sh]
 published: true
-excerpt: java 表单避免重复提交
 ---
 
 # 面试经历
