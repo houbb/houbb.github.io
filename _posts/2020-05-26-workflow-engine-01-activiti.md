@@ -7,27 +7,41 @@ tags: [engine, workflow-engine, workflow, flow]
 published: true
 ---
 
+# 前言
 
+大家好，我是老马。
+
+最近想设计一款审批系统，于是了解一下关于流程引擎的知识。
+
+下面是一些的流程引擎相关资料。
+
+## 工作流引擎系列
+
+[工作流引擎-00-流程引擎概览](https://houbb.github.io/2020/05/26/workflow-engine-00-overview)
+
+[工作流引擎-01-Activiti 是领先的轻量级、以 Java 为中心的开源 BPMN 引擎，支持现实世界的流程自动化需求](https://houbb.github.io/2020/05/26/workflow-engine-01-activiti)
+
+[工作流引擎-02-BPM OA ERP 区别和联系](https://houbb.github.io/2020/05/26/workflow-engine-02-bpm-oa-erp)
+
+[工作流引擎-03-聊一聊流程引擎](https://houbb.github.io/2020/05/26/workflow-engine-03-chat-what-is-flow)
+
+[工作流引擎-04-流程引擎 activiti 优秀开源项目](https://houbb.github.io/2020/05/26/workflow-engine-04-activiti-opensource)
+
+[工作流引擎-05-流程引擎 Camunda 8 协调跨人、系统和设备的复杂业务流程](https://houbb.github.io/2020/05/26/workflow-engine-05-camunda-intro)
+
+[工作流引擎-06-流程引擎 Flowable、Activiti 与 Camunda 全维度对比分析](https://houbb.github.io/2020/05/26/workflow-engine-06-compare)
+
+[工作流引擎-07-流程引擎 flowable-engine 入门介绍](https://houbb.github.io/2020/05/26/workflow-engine-07-flowable-intro)
+
+[工作流引擎-08-流程引擎 flowable-engine 优秀开源项目](https://houbb.github.io/2020/05/26/workflow-engine-08-flowable-opensource)
+
+[工作流引擎-09-XState 是一个 JavaScript 和 TypeScript 的状态管理库，它使用状态机和状态图来建模逻辑](https://houbb.github.io/2020/05/26/workflow-engine-09-xstate-intro)
 
 # Activiti 基础介绍
 
-以下是你提供的 Activiti 技术文档的中文翻译：
-
----
-
-# Activiti
-
 主页：[http://activiti.org](http://activiti.org)
 
-**Activiti** 是一个轻量级的工作流与业务流程管理（BPM）平台，面向业务人员、开发者和系统管理员。
-
-其核心是一个超快速且稳定的 Java BPMN 2 流程引擎。它是开源的，并采用 Apache 协议发布。
-
-Activiti 可以运行于任意 Java 应用中，可部署在服务器、集群或云端。它与 Spring 无缝集成，极其轻量，基于简单概念构建。
-
-> **注意：我们已将开发分支的所有内容迁移至 `master` 分支，该分支用于设计和开发项目的下一个主要版本。如果你希望参与 6.x 版本的开发，请查看 `6.x` 分支。**
-
-# 什么是 Activiti
+# 是什么
 
 在解释activiti之前我们看一下什么是工作流。
 
@@ -423,7 +437,6 @@ activiti5.13使用了23张表支持整个工作流框架，底层使用mybatis�
 组任务: 表act_ru_task的ASSIGNEE段为null, 相关信息在表act_ru_identitylink中, 组任务1见userid段;  
 
 组任务2见groupid段, 当然还需查询act_id_xxx表才能精确到人.
-
 
 # 参考资料
 

@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 工作流引擎-00-overview
+title: 工作流引擎-00-流程引擎（Process Engine）概览 overview
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
 tags: [engine, workflow-engine, workflow, flow]
@@ -8,9 +8,37 @@ published: true
 ---
 
 
-# 什么是工作流
+# 前言
 
-到底什么是工作流？
+大家好，我是老马。
+
+最近想设计一款审批系统，于是了解一下关于流程引擎的知识。
+
+下面是一些的流程引擎相关资料。
+
+## 工作流引擎系列
+
+[工作流引擎-00-流程引擎概览](https://houbb.github.io/2020/05/26/workflow-engine-00-overview)
+
+[工作流引擎-01-Activiti 是领先的轻量级、以 Java 为中心的开源 BPMN 引擎，支持现实世界的流程自动化需求](https://houbb.github.io/2020/05/26/workflow-engine-01-activiti)
+
+[工作流引擎-02-BPM OA ERP 区别和联系](https://houbb.github.io/2020/05/26/workflow-engine-02-bpm-oa-erp)
+
+[工作流引擎-03-聊一聊流程引擎](https://houbb.github.io/2020/05/26/workflow-engine-03-chat-what-is-flow)
+
+[工作流引擎-04-流程引擎 activiti 优秀开源项目](https://houbb.github.io/2020/05/26/workflow-engine-04-activiti-opensource)
+
+[工作流引擎-05-流程引擎 Camunda 8 协调跨人、系统和设备的复杂业务流程](https://houbb.github.io/2020/05/26/workflow-engine-05-camunda-intro)
+
+[工作流引擎-06-流程引擎 Flowable、Activiti 与 Camunda 全维度对比分析](https://houbb.github.io/2020/05/26/workflow-engine-06-compare)
+
+[工作流引擎-07-流程引擎 flowable-engine 入门介绍](https://houbb.github.io/2020/05/26/workflow-engine-07-flowable-intro)
+
+[工作流引擎-08-流程引擎 flowable-engine 优秀开源项目](https://houbb.github.io/2020/05/26/workflow-engine-08-flowable-opensource)
+
+[工作流引擎-09-XState 是一个 JavaScript 和 TypeScript 的状态管理库，它使用状态机和状态图来建模逻辑](https://houbb.github.io/2020/05/26/workflow-engine-09-xstate-intro)
+
+# 到底什么是工作流？
 
 工作流最早起源于生产组织和办公自动化领域，它是针对平时工作中的业务流程活动而提出的一个概念，目的是根据将工作分解成定义良好的任务或角色，根据一定的原则和过程来实施这些任务并加以监控，从而达到提高效率、控制过程、提升客户服务、增强有效管理业务流程等目的。
 
@@ -130,47 +158,7 @@ published: true
 
 另外，SWF（Simple Workflow）的一个Workflow不能太复杂，因为所有的流程控制都集中于Decider，如果太复杂的话Decider将无比庞大，给维护和扩展带来一定的困扰。
 
-## Activiti的优势：
 
-1、与jBPM4相比，Activiti5最令人瞩目的特性就在于它的协作工具组件。
-
-Activiti Modeler—建模器
-
-基于开源Signavio Web流程编辑器的一个定制版本，提供了对BPMN2.0图形化规范的支持，建模后的流程以文件格式进行存储。
-
-Activiti probe—管理及监控组件
-
-对流程引擎运行期实例提供管理及监控的Web控制台。包含部署的管理、流程定义的管理、数据库表的检视、日志查看、事务的平均执行时间、失败多次的工作等功能。
-
-2、Activiti拥有更简洁健壮的接口
-
-Activiti中提供TaskQuery接口，可以设置各种查询过滤，排序方式，最终通过list方法执行查询，相比jbpm，它还提供了分页查询功能，双方高下立判。
-
-3、Activiti拥有更友好的用户体验
-
-JBPM核心引擎完全没有关于表单的任何抽象，它的工作机制是通过全局常量，流程变量，任务变量，这些概念十分技术化。
-
-相比之下Activiti则更贴近实际的应用场景，它将为开始节点，以及人工任务提供了表单设置，用户可以设置字段名称，字段类型。
-
-通过Activiti的平台可以根据这些设置去生成表单，但如果不使用其平台只使用引擎的话，也支持通过它来表达与第三方表单的关系。这些表单设置的元数据信息也可以通过接口去获取。
-
-4、Activiti支持启动引擎后随时热部署
-
-JBPM存在一个软肋，一个RuntimeService只能在启动的时候指定bpmn资源，一旦启动后便不再能够去更新或者增加bpmn了，这会导致我们系统集成的困难，因为我们自然希望整个系统只有一个工作流引擎实例运行。
-
-Activiti则提供了Deploy机制，将bpmn资源的热部署，热更新都做了很好的支持
-
-5、Activiti拥有更友好易用的Eclipse编辑插件和在线插件
-
-6、Activiti依赖更少的jar包
-
-Activiti依赖的第三方jar包较少，主要就是mybatics，而JBPM则依赖了一大堆的jar，从drools到繁杂的hibernate，再到自身拆分的零零散散的jar包，让人不由觉得它是一个庞大的怪物。
-
-工作流有版本的概念，jBPM和Activiti上传一个新的版本后，版本号会增加1，旧版本还没执行完的流程实例还会继续执行。
-
-SWF的版本是个字符串，随意指定好了，这样也很好，字符串名称更明确。
-
-嵌入式部署即将流程引擎嵌入部署于Web应用中
 
 # 个人收获
 
