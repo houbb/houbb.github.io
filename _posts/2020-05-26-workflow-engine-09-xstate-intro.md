@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 工作流引擎-09-XState 是一个 JavaScript 和 TypeScript 的状态管理库，它使用**状态机**和**状态图**来建模逻辑。
+title: 工作流引擎-09-XState 是一个 JavaScript 和 TypeScript 的状态管理库，它使用状态机和状态图来建模逻辑。
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
 tags: [engine, workflow-engine, workflow, flow]

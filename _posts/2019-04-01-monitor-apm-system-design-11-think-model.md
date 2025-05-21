@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 监控报警系统-10-监控系统应该关注哪些指标？USE、RED、黄金四象限（Four Golden Signals）的思维模型
+title: 监控报警系统-11-监控系统应该关注哪些指标？USE、RED、黄金四象限（Four Golden Signals）的思维模型
 date:  2021-06-20 16:52:15 +0800
 categories: [APM]
 tags: [apm, system-design]
