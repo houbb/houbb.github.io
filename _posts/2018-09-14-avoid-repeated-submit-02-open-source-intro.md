@@ -1,6 +1,6 @@
 ---
 layout: post
-title: java 表单避免重复提交-02-resubmit 开源项目介绍
+title: resubmit-02-java 表单避免重复提交 resubmit 开源项目介绍
 date:  2018-09-14 12:02:42 +0800
 categories: [Web]
 tags: [web, java, web-safe, in-action, sh]

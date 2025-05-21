@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 面试官：你们项目中是怎么做防重复提交的？
+title: resubmit-01-面试官：你们项目中是怎么做防重复提交的？
 date:  2018-09-14 12:02:42 +0800
 categories: [Web]
 tags: [web, java, web-safe, in-action, sh]

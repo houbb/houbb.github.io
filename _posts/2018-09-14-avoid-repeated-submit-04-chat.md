@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  聊一聊如何进行防重复提交？
+title:  resubmit-04-聊一聊如何进行防重复提交？
 date:  2018-09-14 12:02:42 +0800
 categories: [Web]
 tags: [web, java, web-safe, in-action, sh]

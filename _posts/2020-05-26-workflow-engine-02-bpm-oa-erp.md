@@ -9,6 +9,36 @@ published: true
 
 # 前言
 
+大家好，我是老马。
+
+最近想设计一款审批系统，于是了解一下关于流程引擎的知识。
+
+下面是一些的流程引擎相关资料。
+
+## 工作流引擎系列
+
+[工作流引擎-00-流程引擎概览](https://houbb.github.io/2020/05/26/workflow-engine-00-overview)
+
+[工作流引擎-01-Activiti 是领先的轻量级、以 Java 为中心的开源 BPMN 引擎，支持现实世界的流程自动化需求](https://houbb.github.io/2020/05/26/workflow-engine-01-activiti)
+
+[工作流引擎-02-BPM OA ERP 区别和联系](https://houbb.github.io/2020/05/26/workflow-engine-02-bpm-oa-erp)
+
+[工作流引擎-03-聊一聊流程引擎](https://houbb.github.io/2020/05/26/workflow-engine-03-chat-what-is-flow)
+
+[工作流引擎-04-流程引擎 activiti 优秀开源项目](https://houbb.github.io/2020/05/26/workflow-engine-04-activiti-opensource)
+
+[工作流引擎-05-流程引擎 Camunda 8 协调跨人、系统和设备的复杂业务流程](https://houbb.github.io/2020/05/26/workflow-engine-05-camunda-intro)
+
+[工作流引擎-06-流程引擎 Flowable、Activiti 与 Camunda 全维度对比分析](https://houbb.github.io/2020/05/26/workflow-engine-06-compare)
+
+[工作流引擎-07-流程引擎 flowable-engine 入门介绍](https://houbb.github.io/2020/05/26/workflow-engine-07-flowable-intro)
+
+[工作流引擎-08-流程引擎 flowable-engine 优秀开源项目](https://houbb.github.io/2020/05/26/workflow-engine-08-flowable-opensource)
+
+[工作流引擎-09-XState 是一个 JavaScript 和 TypeScript 的状态管理库，它使用状态机和状态图来建模逻辑](https://houbb.github.io/2020/05/26/workflow-engine-09-xstate-intro)
+
+# 前言
+
 在全球著名咨询机构Gartner公布的“2008年十大战略性技术”中，BPM(Business Process Management)业务流程管理技术位列所有IT技术榜首，部署BPM将是企业提高组织内部的敏捷性、促进业务流程的改进以及增强灵活性和适应性的关键且带有战略性的决策。
 
 尽管BPM技术在国内从概念、方法、产品到客户认识都还存在诸多问题，不甚清晰，但BPM技术和客户认知正在以不可逆转的速度高速成长，2009-2012年将会成为企业部署BPM的关键阶段。
