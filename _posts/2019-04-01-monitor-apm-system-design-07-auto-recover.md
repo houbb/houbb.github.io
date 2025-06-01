@@ -258,7 +258,7 @@ published: true
    - **基于标签的强关联**：  
      ```sql
      -- Zabbix标签匹配恢复逻辑
-     {{ITEM.VALUE}.regsub(".*Component=(\w+).*", \1)}
+     {   {ITEM.VALUE}.regsub(".*Component=(\w+).*", \1)   }
      ```
   
    - **多维度关联验证**：  
