@@ -3,7 +3,7 @@ layout: post
 title: 工作流引擎-02-BPM OA ERP 区别和联系
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
-tags: [engine, workflow-engine, workflow, flow]
+tags: [engine, workflow-engine, workflow, bpm, flow]
 published: true
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title: 工作流引擎-08-流程引擎（Process Engine） flowable-engine 优秀开源项目
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
-tags: [engine, workflow-engine, workflow, flow]
+tags: [engine, workflow-engine, workflow, bpm, flow]
 published: true
 ---
 
@@ -24,10 +24,6 @@ published: true
 [the demo for flowable-springboot](https://github.com/puhaiyang/flowable-springboot)
 
 [采用springboot2.0.5+flowable6.4.0搭建工作流微服务项目，对flowable做了使用封装，使用起来更加方便，并对外提供了restful风格的接口。](https://github.com/wellzhi/springboot-flowable)
-
-
-
-
 
 # 参考资料
 

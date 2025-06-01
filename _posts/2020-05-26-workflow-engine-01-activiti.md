@@ -3,7 +3,7 @@ layout: post
 title: 工作流引擎-01-Activiti 是领先的轻量级、以 Java 为中心的开源 BPMN 引擎，支持现实世界的流程自动化需求。
 date:  2020-5-26 16:05:35 +0800
 categories: [Engine]
-tags: [engine, workflow-engine, workflow, flow]
+tags: [engine, workflow-engine, workflow, bpm, flow]
 published: true
 ---
 
