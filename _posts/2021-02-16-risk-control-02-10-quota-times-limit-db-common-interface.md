@@ -13,7 +13,11 @@ published: true
 
 ## 需求
 
-我想根据交易入参，实现这种统一的限额限次累加。帮我抽象为接口，底层实现可以用 redis mysql vm mongodb 来累加
+我想根据交易入参，实现这种统一的限额限次累加。
+
+帮我抽象为标准的 java 接口，来累加限额限次，可以查询，用于对比。
+
+底层实现可以用 redis mysql vm mongodb 
 
 ## mita
 
