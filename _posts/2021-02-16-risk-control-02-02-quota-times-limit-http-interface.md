@@ -84,11 +84,11 @@ transStatus: 交易状态
 
 ---
 
-### **1. 事前请求接口**
-**功能**：提交交易信息，进行额度/次数校验  
-**URL**：`POST /api/transaction/pre-event`  
-**Content-Type**：`application/json`  
-**请求体**：
+### 1. 事前请求接口
+功能：提交交易信息，进行额度/次数校验  
+URL：`POST /api/transaction/pre-event`  
+Content-Type：`application/json`  
+请求体：
 ```json
 {
   "appId": "APP123456",
@@ -109,13 +109,13 @@ transStatus: 交易状态
 }
 ```
 
-**签名生成规则**：  
+签名生成规则：  
 1. 排除`checksum`字段，将其他字段按字典序排序  
 2. 拼接键值对：`key1=value1&key2=value2...`  
 3. 末尾追加`appSecret`：`拼接串 + appSecret`  
 4. 计算SHA256：`checksum = SHA256(拼接串).toLowerCase()`
 
-**响应**：  
+响应：  
 ```json
 // 成功 (HTTP 200)
 {
@@ -135,11 +135,11 @@ transStatus: 交易状态
 
 ---
 
-### **2. 事后通知接口**
-**功能**：上报交易最终状态  
-**URL**：`POST /api/transaction/post-event`  
-**Content-Type**：`application/json`  
-**请求体**：
+### 2. 事后通知接口
+功能：上报交易最终状态  
+URL：`POST /api/transaction/post-event`  
+Content-Type：`application/json`  
+请求体：
 ```json
 {
   "appId": "APP123456",
@@ -151,9 +151,9 @@ transStatus: 交易状态
 }
 ```
 
-**签名生成**：同事前接口规则（排除`checksum`后排序签名）  
+签名生成：同事前接口规则（排除`checksum`后排序签名）  
 
-**响应**：
+响应：
 ```json
 // 成功 (HTTP 200)
 {
@@ -170,17 +170,17 @@ transStatus: 交易状态
 
 ---
 
-### **关键设计说明**
-1. **唯一性约束**  
+### 关键设计说明
+1. 唯一性约束  
    - 数据库对 `(appId + orderId)` 建立唯一索引，确保事前请求幂等
    - 重复请求返回 `DUPLICATE_ORDER` 错误码
 
-2. **安全机制**  
-   - **签名校验**：服务端按相同规则生成签名并比对
-   - **时效控制**：校验 `requestTime` 与服务器时间差（建议±5分钟）
-   - **防重放攻击**：缓存 `traceId` 短期有效（如10分钟）
+2. 安全机制  
+   - 签名校验：服务端按相同规则生成签名并比对
+   - 时效控制：校验 `requestTime` 与服务器时间差（建议±5分钟）
+   - 防重放攻击：缓存 `traceId` 短期有效（如10分钟）
 
-3. **数据存储设计**
+3. 数据存储设计
    ```sql
    CREATE TABLE transaction_records (
      id BIGINT AUTO_INCREMENT PRIMARY KEY,
@@ -199,7 +199,7 @@ transStatus: 交易状态
    );
    ```
 
-4. **状态机流转**  
+4. 状态机流转  
    ```mermaid
    stateDiagram
      [*] --> PENDING : 事前请求
@@ -209,7 +209,7 @@ transStatus: 交易状态
      FAIL --> [*]
    ```
 
-5. **错误码规范**
+5. 错误码规范
    | 错误码 | 含义                  |
    |--------|-----------------------|
    | 0      | 成功                  |
@@ -222,13 +222,13 @@ transStatus: 交易状态
 
 ---
 
-### **调用示例流程**
-1. **事前请求**  
+### 调用示例流程
+1. 事前请求  
    - 商户系统生成唯一`orderId`，计算签名  
    - 调用 `/pre-event` 获取额度检查结果  
    - 若通过则执行实际交易
 
-2. **事后通知**  
+2. 事后通知  
    - 交易完成后（无论成功/失败）  
    - 携带最终状态调用 `/post-event`  
    - 服务端更新状态并释放/占用额度
