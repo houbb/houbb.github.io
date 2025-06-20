@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ITSM（IT Service Management，IT服务管理）-01-ITIL 介绍
-date: 2024-08-04 21:01:55 +0800
+date: 2025-6-12 23:45:51 +0800
 categories: [ITSM]
 tags: [itsm, sh]
 published: true
@@ -117,6 +117,9 @@ ITIL作为ITSM的事实标准，通过结构化生命周期和持续改进机制
 > ① 顶层驱动：业务与IT战略对齐；  
 > ② 工具赋能：采用支持自动化的工作流平台（如ServiceNow）；  
 > ③ 文化适配：建立服务导向的团队协作机制。  
+
+
+## 
 
 
 # 参考资料

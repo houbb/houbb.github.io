@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ITSM（IT Service Management，IT服务管理）-00-overview
-date: 2024-08-04 21:01:55 +0800
+date: 2025-6-12 23:45:51 +0800
 categories: [ITSM]
 tags: [itsm, sh]
 published: true
