@@ -366,7 +366,7 @@ Assert.assertEquals(2, cache.size());
 
 [java从零开始手写redis（十六）实现渐进式 rehash map](https://mp.weixin.qq.com/s/Lwp2js4lrHAbuQ5Fexer6w)
 
-[java从零开始手写redis（十七）v1.0.0 全新版本架构优化+拓展性增强](https://houbb.github.io/2018/09/01/cache-09-cache-hand-write-17-v1.0.0-opt-code)
+[java从零开始手写redis（十七）v1.0.0 代码重构+拓展性增强](https://houbb.github.io/2018/09/01/cache-09-cache-hand-write-17-v1.0.0-opt-code)
 
 * any list
 {:toc}
