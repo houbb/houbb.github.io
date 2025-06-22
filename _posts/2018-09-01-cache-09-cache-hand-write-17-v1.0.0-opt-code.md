@@ -348,9 +348,9 @@ Assert.assertEquals(2, cache.size());
 
 [java从零开始手写redis（八）朴素 LRU 淘汰算法性能优化](https://mp.weixin.qq.com/s/H8gOujnlTinctjVQqW0ITA)
 
-[java从零开始手写redis（九）LRU 缓存淘汰算法如何避免缓存污染](https://houbb.github.io/2018/09/01/cache-09-cache-hand-write-09-evict-lru-optimize2)
+[java从零开始手写redis（九）LRU 缓存淘汰算法如何避免缓存污染](https://mp.weixin.qq.com/s/jzM_wDw37QXTeYMFYtRJaw)
 
-[java从零开始手写redis（十）缓存淘汰算法 LFU 最少使用频次](https://houbb.github.io/2018/09/01/cache-09-cache-hand-write-10-lfu)
+[java从零开始手写redis（十）缓存淘汰算法 LFU 最少使用频次](https://mp.weixin.qq.com/s/mUyCTCVObwY8XdLcO1pOWg)
 
 [java从零开始手写redis（十一）缓存淘汰算法 COLOK 算法](https://houbb.github.io/2018/09/01/cache-09-cache-hand-write-11-clock)
 
@@ -358,13 +358,13 @@ Assert.assertEquals(2, cache.size());
 
 [java从零开始手写redis（十三）redis渐进式rehash详解](https://houbb.github.io/2018/09/01/cache-09-cache-hand-write-13-redis-rehash)
 
-[java从零开始手写redis（十四）JDK HashMap 源码解析](https://houbb.github.io/2018/09/12/java-hashmap)
+[java从零开始手写redis（十四）JDK HashMap 源码解析](https://mp.weixin.qq.com/s/SURVmTf6K_ou85fShFzrNA)
 
 [java从零开始手写redis（十四）JDK ConcurrentHashMap 源码解析](https://houbb.github.io/2018/09/12/java-concurrent-hashmap)
 
-[java从零开始手写redis（十五）实现自己的 HashMap](https://houbb.github.io/2018/09/01/cache-09-cache-hand-write-15-write-hashmap)
+[java从零开始手写redis（十五）实现自己的 HashMap](https://mp.weixin.qq.com/s/e5fskVfeDMTuJhjEAd1gQw)
 
-[java从零开始手写redis（十六）实现渐进式 rehash map](https://houbb.github.io/2018/09/01/cache-09-cache-hand-write-16-rehash-map)
+[java从零开始手写redis（十六）实现渐进式 rehash map](https://mp.weixin.qq.com/s/Lwp2js4lrHAbuQ5Fexer6w)
 
 [java从零开始手写redis（十七）v1.0.0 全新版本架构优化+拓展性增强](https://houbb.github.io/2018/09/01/cache-09-cache-hand-write-17-v1.0.0-opt-code)
 
