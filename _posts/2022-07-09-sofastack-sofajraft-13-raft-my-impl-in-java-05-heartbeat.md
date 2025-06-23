@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 从零开始实现自己的 raft（五）heartbeat 心跳日志
+title: raft-13-从零开始实现自己的 raft（五）heartbeat 心跳日志
 date:  2022-07-09 09:22:02 +0800
 categories: [SOFA]
 tags: [sofa, SOFAJRaft, raft, sh]
