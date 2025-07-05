@@ -329,7 +329,7 @@ mvn clean deploy -P release -Dmaven.test.skip=true
 
 安心等待发布完成，可以点击上方的【Refresh】刷新。
 
-(发布的很慢，主要是没有 OSSRH 的具体执行进度。大概等个十多分钟)
+(发布的体感比较慢，主要是没有 OSSRH 的具体执行进度。大概等个十多分钟)
 
 等到看到 published 已发布的绿色状态，说明发布完成，可以像以前一样正常使用。
 
