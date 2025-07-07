@@ -7,6 +7,20 @@ tags: [maven, bash, bat, sh]
 published: true
 ---
 
+# maven 系列
+
+[maven-01-发布到中央仓库概览](https://houbb.github.io/2017/09/28/jar-to-maven-01-overview)
+
+[maven-02-发布到中央仓库常用脚本](https://houbb.github.io/2017/09/28/jar-to-maven-02-script)
+
+[maven-03-发布到中央仓库之持续集成](https://houbb.github.io/2017/09/28/jar-to-maven-03-ci)
+
+[maven-04-发布到中央仓库之 Ignore Licence](https://houbb.github.io/2017/09/28/jar-to-maven-04-ignore-licence)
+
+[maven-05-maven 配置进阶学习](https://houbb.github.io/2017/09/28/jar-to-maven-05-maven-advanced)
+
+[maven-06-maven 中央仓库 OSSRH 停止服务，Central Publishing Portal 迁移实战](https://houbb.github.io/2017/09/28/jar-to-maven-06-end-of-life)
+
 # Ignore
 
 ## 作用
