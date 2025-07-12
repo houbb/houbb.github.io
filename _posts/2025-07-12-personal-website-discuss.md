@@ -48,9 +48,9 @@ github 创建一个公开的仓库
 ```js
 <script src="https://giscus.app/client.js"
         data-repo="houbb/my-discussion"
-        data-repo-id="R_kgDOPLJ4lA"
+        data-repo-id="XXX"
         data-category="General"
-        data-category-id="DIC_kwDOPLJ4lM4Cs15z"
+        data-category-id="XXX"
         data-mapping="pathname"
         data-strict="0"
         data-reactions-enabled="1"
