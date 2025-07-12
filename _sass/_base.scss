@@ -233,7 +233,7 @@ pre {
 */
 
 // 评论样式
-iframe.giscus {
+.giscus {
     width: 80% !important;
     max-width: 1200px !important;
     min-width: 300px !important;   /* 添加最小宽度 */
@@ -243,4 +243,4 @@ iframe.giscus {
     // border-radius: 12px !important;  /* 可选：圆角 */
     // box-shadow: 0 3px 10px rgba(0,0,0,0.1) !important; /* 可选：阴影 */
     // box-sizing: border-box !important; /* 关键：包含 padding 在宽度内 */
-  }
+}
