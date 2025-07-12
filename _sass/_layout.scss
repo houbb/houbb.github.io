@@ -462,8 +462,13 @@ article {
 
 // 评论样式
 iframe.giscus {
-    width: 80%;         /* 宽度为父元素的80% */
-    margin: 0 auto;     /* 水平居中（上下边距0，左右自动） */
-    padding: 10px;      /* 内边距10像素 */
-    max-width: 1200px;
-}
+    width: 80% !important;
+    max-width: 1200px !important;
+    min-width: 300px !important;   /* 添加最小宽度 */
+    margin: 0 auto !important;  /* 增加垂直间距 */
+    // padding: 15px !important;
+    // display: block !important;
+    // border-radius: 12px !important;  /* 可选：圆角 */
+    // box-shadow: 0 3px 10px rgba(0,0,0,0.1) !important; /* 可选：阴影 */
+    // box-sizing: border-box !important; /* 关键：包含 padding 在宽度内 */
+  }
