@@ -207,3 +207,13 @@ pre.highlight {
 pre.highlight.padding-left {
     padding-left: 35px;
 }
+
+/**
+    评论样式
+ */
+iframe.giscus {
+    width: 80% !important;
+    max-width: 1200px !important;
+    min-width: 300px !important;   /* 添加最小宽度 */
+    margin: 0 auto !important;  /* 增加垂直间距 */
+}
