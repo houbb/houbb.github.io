@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 推广营销-05-头部效应（Head Effect）
+title: 程序员软技能之推广营销-05-头部效应（Head Effect）
 date: 2025-5-31 12:32:33 +0800
 categories: [Marketing]
 tags: [marketing, overview, sh]
@@ -10,8 +10,6 @@ published: true
 # chat
 
 ## 头部效应（Head Effect）
-
-
 
 ### 头部效应的全面解析
 

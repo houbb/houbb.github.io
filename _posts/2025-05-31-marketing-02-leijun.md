@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 推广营销-02-雷军对营销心法
+title: 程序员软技能之推广营销-02-雷军对营销心法
 date: 2025-5-31 12:32:33 +0800
 categories: [Marketing]
 tags: [marketing, overview, sh]

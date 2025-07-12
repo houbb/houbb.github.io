@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 推广营销-04-长尾效应（Long Tail Effect）与可口可乐(Coca-Cola)
+title: 程序员软技能之推广营销-04-长尾效应（Long Tail Effect）与可口可乐(Coca-Cola)
 date: 2025-5-31 12:32:33 +0800
 categories: [Marketing]
 tags: [marketing, overview, sh]
