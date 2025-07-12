@@ -65,11 +65,3 @@ $article-min-height: 300px;
         "layout",
         "syntax-highlighting"
 ;
-
-// 评论样式
-.giscus {
-    width: 80%;         /* 宽度为父元素的80% */
-    margin: 0 auto;     /* 水平居中（上下边距0，左右自动） */
-    padding: 10px;      /* 内边距10像素 */
-    max-width: 1200px;
-}
