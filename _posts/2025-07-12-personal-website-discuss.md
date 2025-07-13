@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 个人网站一键引入免费开关评论功能 giscus
+title: 个人网站如何免费引入评论功能 giscus
 date: 2025-7-12 14:12:33 +0800
 categories: [Web]
 tags: [web, tool, sh]
