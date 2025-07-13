@@ -2,8 +2,8 @@
 layout: post
 title: 软件技术不同阶段的输出+依赖平台
 date: 2025-7-9 14:12:33 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+categories: [Think]
+tags: [think, software, company, department, sh]
 published: true
 ---
 

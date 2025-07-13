@@ -2,8 +2,8 @@
 layout: post
 title: 初创软件公司如何找到用户的痛点和需求？市场上的公司都是如何发现用的需求的?
 date: 2025-7-9 14:12:33 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+categories: [Think]
+tags: [think, software, company, department, sh]
 published: true
 ---
 

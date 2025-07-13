@@ -2,8 +2,8 @@
 layout: post
 title: 初创公司软件公司应该如何从零开始建设？人力成本、组织架构、资金成本、时间成本等
 date: 2025-7-9 14:12:33 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+categories: [Think]
+tags: [think, software, company, department, sh]
 published: true
 ---
 

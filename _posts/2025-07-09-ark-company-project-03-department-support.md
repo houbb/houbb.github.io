@@ -2,8 +2,8 @@
 layout: post
 title: 初创公司应该有哪些部门支撑软件系统？像 CTO 一样思考
 date: 2025-7-9 14:12:33 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+categories: [Think]
+tags: [think, software, company, department, sh]
 published: true
 ---
 

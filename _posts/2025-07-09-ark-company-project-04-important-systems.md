@@ -2,8 +2,8 @@
 layout: post
 title: 新技术公司应该有哪些核心系统？
 date: 2025-7-9 14:12:33 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+categories: [Think]
+tags: [think, software, company, department, sh]
 published: true
 ---
 

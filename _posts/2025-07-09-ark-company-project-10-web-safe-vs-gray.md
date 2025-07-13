@@ -2,8 +2,8 @@
 layout: post
 title: 我是一名公司的安全+风控架构师，想知道市面上有哪些灰产行为，希望针对这些设计规则，如何预防？
 date: 2025-7-9 14:12:33 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+categories: [Think]
+tags: [think, software, company, department, sh]
 published: true
 ---
 
