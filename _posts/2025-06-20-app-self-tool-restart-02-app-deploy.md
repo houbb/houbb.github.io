@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 如何设计实现一个部署脚本
+title: 如何设计实现开发部署作业-02-流程
 date: 2025-6-20 23:45:51 +0800
 categories: [Tool]
 tags: [tool, sh]

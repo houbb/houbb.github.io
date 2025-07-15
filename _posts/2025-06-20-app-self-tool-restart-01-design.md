@@ -7,6 +7,14 @@ tags: [tool, sh]
 published: true
 ---
 
+# 自主重启系列
+
+[如何设计实现开发自助重启工具-01-设计篇](https://houbb.github.io/2025/06/20/app-self-tool-restart-01-design)
+
+[应用部署作业-02-流程](https://houbb.github.io/2025/06/20/app-self-tool-restart-02-app-deploy)
+
+[如何实现自助重启-03-实现篇](https://houbb.github.io/2025/06/20/app-self-tool-restart-03-how-to)
+
 # 开发自助重启
 
 说明：有时候研发产线需要重启，为了保证安全、或者说提升效率，最好有一个统一的研发自助重启页面。
