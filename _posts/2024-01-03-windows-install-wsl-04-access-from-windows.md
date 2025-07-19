@@ -3,7 +3,7 @@ layout: post
 title: windows wsl2 启动的 http 服务 windows 如何通过浏览器访问？  listen EADDRINUSE address already in use
 date: 2024-01-05 21:01:55 +0800
 categories: [Windows]
-tags: [windows, os, linux, sh]
+tags: [windows, os, linux, wsl, sh]
 published: true
 ---
 

@@ -3,7 +3,7 @@ layout: post
 title: windows wsl ubuntu 如何安装 maven
 date: 2024-01-05 21:01:55 +0800
 categories: [Windows]
-tags: [windows, os, linux, sh]
+tags: [windows, os, linux, wsl, sh]
 published: true
 ---
 

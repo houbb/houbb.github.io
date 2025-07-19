@@ -3,7 +3,7 @@ layout: post
 title: windows 如何安装 wsl ubuntu
 date: 2024-01-05 21:01:55 +0800
 categories: [Windows]
-tags: [windows, os, linux, sh]
+tags: [windows, os, linux, wsl, sh]
 published: true
 ---
 
@@ -209,6 +209,14 @@ sudo apt upgrade
 就是这样！你现在已经安装了 Windows Subsystem for Linux (WSL)，可以用它在 Windows 环境中运行 Linux 发行版。
 
 您可以在 Linux 发行版上安装其他软件包和工具，就像在本地 Linux 系统上一样。
+
+# windows wsl 的安装路径问题
+
+如果使用 windows 直接安装的 wsl
+
+那么，对应的文件夹路径是：`\\wsl.localhost\Ubuntu\home\dh`
+
+可以直接拷贝到这里，然后就可以在 `/home/dh` 中看到。
 
 # 参考资料
 
