@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 敏感词 v0.27.0 新特性之敏感词库独立拆分
+title: 敏感词 v0.27.0 新特性之词库独立拆分
 date:  2020-1-7 10:09:32 +0800
 categories: [Java]
 tags: [tree, data-struct, github, sensitive, sf]
