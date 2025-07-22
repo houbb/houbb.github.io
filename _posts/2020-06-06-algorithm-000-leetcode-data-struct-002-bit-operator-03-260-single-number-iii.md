@@ -123,55 +123,78 @@ public int[] singleNumber(int[] nums) {
 
 # v3-位运算
 
-位运算，我们看别人写的比较好的思路
+## 个人思路
 
-> [采用分治的思想将问题降维](https://leetcode.cn/problems/single-number-iii/solutions/6620/cai-yong-fen-zhi-de-si-xiang-jiang-wen-ti-jiang-we/?envType=problem-list-v2&envId=bit-manipulation)
+假设是这样一个数组[a, b, xx, xx, ...]
 
-## 解题思路
+只有 a, b 出现一次，其他都是重复 2 次。 
 
-第一步：
+1）直接 xor 会得到什么？
 
-把所有的元素进行异或操作，最终得到一个异或值。
+这一套题，我们很自然的想到 T136，如果我们把所有的数直接都异或一遍，最后的结果 xorSum 其实两个只出现一次的数字 a^b。
 
-因为是不同的两个数字，所以这个值必定不为 0；
+因为 a,b 不同，所以 xorSum != 0。
 
-```java
-int xor = 0;
-for (int num : nums) {
-      xor ^= num;
-} 
-```
+2）如何可以转换为 T136 题。
 
-第二步：
+136 题，是出现一次的数字只有一次，其他数字出现偶数次。
 
-取异或值最后一个二进制位为 1 的数字作为 mask，如果是 1 则表示两个数字在这一位上不同。
+那么如何将本次的数据，a 和 b 分到2个组呢？
 
-```java
-int mask = xor & (-xor);
-```
+答案就是 xorSum，这个数字一定有一位二进制不是0，我们找到最低的不是0的位数作为 mask 掩码，然后将整个数组和这个 mask 值做 `&` 运算。
 
-第三步：
+那么，a 与 b 必然被分配到 2 个组中。
 
-通过与这个 mask 进行与操作，如果为 0 的分为一个数组，为 1 的分为另一个数组。
+3）分组后的处理
 
-这样就把问题降低成了：“有一个数组每个数字都出现两次，有一个数字只出现了一次，求出该数字”。
+分组之后，我们就可以完全按照 136 的解法。
 
-对这两个子问题分别进行全异或就可以得到两个解。也就是最终的数组了。
+
+## 解法
 
 ```java
-int[] ans = new int[2];
-for (int num : nums) {
-    if ( (num & mask) == 0) {
-        ans[0] ^= num;
-    } else {
-        ans[1] ^= num;
+public int[] singleNumber(int[] nums) {
+        // 找到整体的 xor
+        int xor = 0;
+        for (int num : nums) {
+            xor ^= num;
+        }
+
+        // 找到最低位的 mask
+        int mask = 1;
+        for (int i = 0; i < 32; i++) {
+            if ((xor & mask) != 0) {  // 检查当前位是否为1
+                break;  // 找到最低位的1，停止循环
+            }
+            mask <<= 1;  // 左移1位，检查下一位
+        }
+
+        // 分成2个组
+
+        int a = 0;
+        int b = 0;
+        for(int num : nums) {
+            if((num & mask) == 0) {
+                a ^= num;
+            } else {
+                b ^= num;
+            }
+        }
+
+        int[] results = new int[]{a, b};
+        return results;
     }
-}
 ```
 
-## 小结
+## 效果
+
+1ms  击败 88.55%
+
+还算不错，这种算是一种比较自然的解法。
 
 这个有一个要求 就是我们必须要能想到这个异或的计算技巧。
+
+
 
 * any list
 {:toc}

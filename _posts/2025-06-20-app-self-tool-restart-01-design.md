@@ -7,7 +7,7 @@ tags: [tool, sh]
 published: true
 ---
 
-# 自主重启系列
+# 自助重启系列
 
 [如何设计实现开发自助重启工具-01-设计篇](https://houbb.github.io/2025/06/20/app-self-tool-restart-01-design)
 

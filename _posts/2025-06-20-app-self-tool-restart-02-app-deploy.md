@@ -1,11 +1,19 @@
 ---
 layout: post
-title: 如何设计实现开发部署作业-02-流程
+title: 应用部署作业-02-流程
 date: 2025-6-20 23:45:51 +0800
 categories: [Tool]
 tags: [tool, sh]
 published: true
 ---
+
+# 自助重启系列
+
+[如何设计实现开发自助重启工具-01-设计篇](https://houbb.github.io/2025/06/20/app-self-tool-restart-01-design)
+
+[应用部署作业-02-流程](https://houbb.github.io/2025/06/20/app-self-tool-restart-02-app-deploy)
+
+[如何实现自助重启-03-实现篇](https://houbb.github.io/2025/06/20/app-self-tool-restart-03-how-to)
 
 # 说明
 
