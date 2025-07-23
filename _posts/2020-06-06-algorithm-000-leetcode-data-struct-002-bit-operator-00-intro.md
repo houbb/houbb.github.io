@@ -1,12 +1,26 @@
 ---
 layout: post
-title: leetcode bit operator 位运算
+title: leetcode bit operator 位运算入门介绍
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, bit-operator, leetcode, sf]
 published: true
 ---
 
+
+# 位运算专题
+
+[Java Bit Operation-位运算基本概念介绍](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-00-base)
+
+[Java Bit Operation-位运算类型转换](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-00-convert)
+
+[leetcode bit operator 位运算入门介绍](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-00-intro)
+
+[leetcode 002-leetcode.136 single-number 力扣.136 只出现一次的数字](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-01-136-single-number)
+
+[leetcode 002-leetcode.137 single-number-ii 力扣.137 只出现一次的数字II](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-02-137-single-number-ii)
+
+[leetcode 002-leetcode.260 single-number-iii 力扣.260 只出现一次的数字III](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-03-260-single-number-iii)
 
 # 位运算介绍
 
@@ -16,9 +30,13 @@ Java 中的位运算是对整数类型（`byte`, `short`, `int`, `long`）的二
 
 Java 提供了多种位运算符，下面是对这些运算符的详细介绍：
 
+## 基本介绍
+
 ### 1. 按位与 (`&`)
 
-按位与运算符对两个操作数的每一位进行与操作。如果对应的位都为 `1`，结果为 `1`，否则为 `0`。
+按位与运算符对两个操作数的每一位进行与操作。
+
+如果对应的位都为 `1`，结果为 `1`，否则为 `0`。
 
 示例:
 ```java
@@ -113,19 +131,6 @@ Java 的 `int` 类型是 32 位，超出范围时会截断。
 
 需要注意的是，移位位数大于等于位数长度（例如 32 位整数移位 32 位或更多）时，会产生未定义的行为。
 
-### 9. 位运算的应用
-
-- 性能优化: 位运算通常比算术运算（如乘法、除法）更高效。比如，左移 `n` 位相当于乘以 `2^n`，右移 `n` 位相当于除以 `2^n`。
-- 判断奇偶: 判断一个数是否为奇数可以通过 `x & 1`，如果结果为 `1`，则 `x` 是奇数。
-- 交换两个数: 通过异或运算可以交换两个数的值而不需要临时变量：
-    ```java
-    a = a ^ b;
-    b = a ^ b;
-    a = a ^ b;
-    ```
-
-位运算虽然简单，但由于其底层性质，常常用在需要高效、精确控制的场景中。
-
 ## 记忆的技巧
 
 理解和记住位运算确实有一定难度，尤其是当它们在日常工作中不常用时。
@@ -139,12 +144,7 @@ Java 的 `int` 类型是 32 位，超出范围时会截断。
    - 按位或（`|`）: 只要有一个位是 1，结果就是 1，常用于合并状态或标记。
    - 左移/右移（`<<`, `>>`）: 左移相当于乘以 2 的幂，右移相当于除以 2 的幂。
 
-### 2. 通过例子加深记忆
-   在学习位运算时，实际操作几个简单例子非常有帮助。
-   
-   比如，手动做几个异或、与、或、移位的题目，逐步分析每一步的运算过程。这可以帮助你直观地理解每种运算的作用。
-
-### 3. 理解位运算在实际问题中的应用
+### 2. 理解位运算在实际问题中的应用
 
    位运算通常用于以下几种场景，理解这些场景有助于记住常见的使用模式：
    
@@ -152,13 +152,7 @@ Java 的 `int` 类型是 32 位，超出范围时会截断。
    - 状态标记: 使用位运算可以高效地管理多个布尔值，如通过按位与或按位或合并多个标志位。
    - 优化算法: 位运算有时可以取代较慢的算术运算（如左移代替乘法，右移代替除法）。
 
-### 4. 练习与反复应用
-
-   虽然位运算很抽象，但通过不断的练习可以逐渐变得熟悉。
-   
-   比如，可以尝试做一些相关的 LeetCode 题目，或者在项目中找机会用位运算解决一些问题。这样可以加深对位运算的理解和记忆。
-
-### 5. 记住一些常用模式
+### 3. 记住一些常用模式
 
    有些位运算的用法在问题中是非常常见的，可以把它们当作模板记住：
 

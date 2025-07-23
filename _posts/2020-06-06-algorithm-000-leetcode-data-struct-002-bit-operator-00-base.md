@@ -1,11 +1,26 @@
 ---
 layout: post
-title: Java Bit Operation-位运算-01
-date:  2018-09-13 13:09:36 +0800
-categories: [Java]
-tags: [java, java-base, TODO, sf]
+title: java 位运算介绍 bit operator base intro
+date:  2020-6-8 15:13:08 +0800
+categories: [Algorithm]
+tags: [algorithm, data-struct, bit-operator, leetcode, sf]
 published: true
 ---
+
+# 位运算专题
+
+[Java Bit Operation-位运算基本概念介绍](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-00-base)
+
+[Java Bit Operation-位运算类型转换](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-00-convert)
+
+[leetcode bit operator 位运算入门介绍](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-00-intro)
+
+[leetcode 002-leetcode.136 single-number 力扣.136 只出现一次的数字](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-01-136-single-number)
+
+[leetcode 002-leetcode.137 single-number-ii 力扣.137 只出现一次的数字II](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-02-137-single-number-ii)
+
+[leetcode 002-leetcode.260 single-number-iii 力扣.260 只出现一次的数字III](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-002-bit-operator-03-260-single-number-iii)
+
 
 # 进制
 
