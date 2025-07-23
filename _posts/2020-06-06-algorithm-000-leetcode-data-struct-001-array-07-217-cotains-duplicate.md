@@ -3,7 +3,7 @@ layout: post
 title: leetcode 002-leetcode.217 contains-duplicate 力扣.217 存在重复的元素
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, data-struct, bit-operator, sf]
+tags: [algorithm, data-struct, array, sort, sf]
 published: true
 ---
 
@@ -187,6 +187,13 @@ class Solution {
 # v5-位运算
 
 ## 解题思路
+
+如何通过位运算来解决这个问题呢？
+
+
+
+
+
 
 ## 小结
 
