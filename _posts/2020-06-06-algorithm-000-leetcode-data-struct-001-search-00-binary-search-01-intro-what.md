@@ -200,10 +200,7 @@ int rightBound(int[] nums, int target) {
 | ----- | ------------- | ----------------------------------------------------------------------------------------- |
 | 速度最小值 | 珂珂吃香蕉         | [875. 爱吃香蕉的珂珂](https://leetcode.cn/problems/koko-eating-bananas)                          |
 | 分配最小值 | 最少完成任务所需的最大时间 | [1011. 在D天内送达包裹的能力](https://leetcode.cn/problems/capacity-to-ship-packages-within-d-days) |
-| 条件最小化 | 最小能跳到终点的跳跃次数  | [45. 跳跃游戏 II](https://leetcode.cn/problems/jump-game-ii)（贪心 + 二分）                         |
-| 分段统计  | 分割数组使得最大值最小   | [410. 分割数组的最大值](https://leetcode.cn/problems/split-array-largest-sum)                     |
 
----
 
 ### 4️⃣ ✅ 旋转数组、变形数组的搜索
 
