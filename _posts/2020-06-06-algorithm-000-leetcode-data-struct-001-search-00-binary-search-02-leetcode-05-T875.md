@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  二分查找法？binary-search-02-leetcode 875. 爱吃香蕉的珂珂
+title:  二分查找法？binary-search-02-leetcode 875.  
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, topics, leetcode, binary-search, sf]
