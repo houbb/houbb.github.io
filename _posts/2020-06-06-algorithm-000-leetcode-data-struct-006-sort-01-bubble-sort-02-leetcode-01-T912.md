@@ -332,5 +332,545 @@ public int[] sortArray(int[] nums) {
 
 > [可视化](https://houbb.github.io/leetcode-visual/T192-sort-insert-sort-binary-search.html)
 
+# v5-归并排序
+
+## 思路
+
+把大问题拆分为子问题来解决：
+
+1. **分解（Divide）**：将数组从中间一分为二，递归地对子数组排序。
+
+2. **解决（Conquer）**：对子数组分别排序。
+
+3. **合并（Combine）**：将两个有序数组**合并成一个有序数组**。
+
+递归的思想：
+
+1）数组不停的拆分，拆分到数组只有一个数时，自然有序。
+
+2）剩下的就是将有序的 2 个数组不停的合并为1个
+
+### 递归排序拆分
+
+一个数组，mid 分开为 2 个部分
+
+1）左侧递归
+
+2）右侧递归
+
+终止条件 left <= right，只有一个元素的时候
+
+### 递归合并
+
+我们在上边的一步中，通过拆分获取到了有序的子数组。
+
+那么，如何合并两个有序数组成为一个呢？
+
+arr1 下标i
+arr2 下标j
+
+我们取二者的最小值，避免越界。minIx
+
+然后同时循环这个迭代，小的值放入数组。谁小，谁的下标移动一位
+
+那么最后可能二者 i j 元素没走完，把没走完的元素一次放在数组结尾即可。
+
+## 实现
+
+理解了之后，算不上特别难：
+
+```java
+    public int[] sortArray(int[] nums) {
+        mergeSort(nums, 0, nums.length-1);
+
+        return nums;
+    }
+
+    public void mergeSort(int[] nums, int left, int right) {
+        // 终止
+        if(left >= right) {
+            return;
+        }
+
+        // 拆分为子问题，递归处理
+        int mid = left + (right-left)/2;
+        mergeSort(nums, left, mid);
+        mergeSort(nums, mid+1, right);
+
+        // 整体合并
+        merge(nums, left, right, mid);
+    }
+
+    private void merge(int[] nums, int left, int right, int mid) {
+        int temp[] = new int[right-left+1];
+
+        int lx = left;
+        int rx = mid+1;
+
+        // 找小的，放入 temp
+        int tempIx = 0;
+        while (lx <= mid && rx <= right) {
+            //左边更小
+            if(nums[lx] <= nums[rx]) {
+                temp[tempIx++] = nums[lx++];
+            } else {
+                temp[tempIx++] = nums[rx++];
+            }
+        }
+
+        // 把二者没放完的，放入到 temp 中
+        while (lx <= mid) {
+            temp[tempIx++] = nums[lx++];
+        }
+        while (rx <= right) {
+            temp[tempIx++] = nums[rx++];
+        }
+
+        // 拷贝
+        for(int i = 0; i < temp.length; i++) {
+            nums[i+left] = temp[i];
+        }
+    }
+```
+
+
+## 效果
+
+28ms 击败 79.04%
+
+排名第二的解法。
+
+## 优化1
+
+### 思路
+
+我们把数组拷贝改为系统拷贝优化一下吗，改为：
+
+```java
+System.arraycopy(temp, 0, nums, left, temp.length);
+```
+
+### 效果
+
+27ms 击败83.35%
+
+区别不是特别大。
+
+## 优化 2
+
+### 思路
+
+避免 temp 每次都是创建
+
+### 实现
+
+接口参数需要调整下
+
+```java
+    public int[] sortArray(int[] nums) {
+        // 节省数组创建开销
+        int[] temp = new int[nums.length];
+        
+        mergeSort(nums, 0, nums.length-1, temp);
+
+        return nums;
+    }
+
+    public void mergeSort(int[] nums, int left, int right, int[] temp) {
+        // 终止
+        if(left >= right) {
+            return;
+        }
+
+        // 拆分为子问题，递归处理
+        int mid = left + (right-left)/2;
+        mergeSort(nums, left, mid, temp);
+        mergeSort(nums, mid+1, right, temp);
+
+        // 整体合并
+        merge(nums, left, right, mid, temp);
+    }
+
+    private void merge(int[] nums, int left, int right, int mid, int[] temp) {
+        int lx = left;
+        int rx = mid+1;
+
+        // 找小的，放入 temp
+        int tempIx = 0;
+        while (lx <= mid && rx <= right) {
+            //左边更小
+            if(nums[lx] <= nums[rx]) {
+                temp[tempIx++] = nums[lx++];
+            } else {
+                temp[tempIx++] = nums[rx++];
+            }
+        }
+
+        // 把二者没放完的，放入到 temp 中
+        while (lx <= mid) {
+            temp[tempIx++] = nums[lx++];
+        }
+        while (rx <= right) {
+            temp[tempIx++] = nums[rx++];
+        }
+
+        // 拷贝
+        System.arraycopy(temp, 0, nums, left, (right-left+1));
+    }
+```
+
+### 效果
+
+25ms 击败 91.94%
+
+接近极限
+
+## 优化3：merge 的优化
+
+### 思路
+
+我们在 merge 的时候，如果 `nums[mid] <= nums[mid + 1]` 时，其实说明左、右已经有序，可以跳过 merge。
+
+### 实现
+
+```java
+public void mergeSort(int[] nums, int left, int right, int[] temp) {
+    // 终止
+    if(left >= right) {
+        return;
+    }
+    // 拆分为子问题，递归处理
+    int mid = left + (right-left)/2;
+    mergeSort(nums, left, mid, temp);
+    mergeSort(nums, mid+1, right, temp);
+
+    // 整体合并
+    // merge 优化
+    if(nums[mid] <= nums[mid + 1]) {
+        return;
+    }
+
+    merge(nums, left, right, mid, temp);
+}
+```
+
+### 效果
+
+19 ms  击败 96.51%
+
+这个已经是目前的 TOP1 解法。
+
+## 可视化
+
+> [可视化](https://houbb.github.io/leetcode-visual/T192-sort-merge-sort.html)
+
+# v6-快速排序
+
+## 思路
+
+我们来用快速排序解决这个问题。
+
+整体思路其实还是递归，将数组分为两个部分：
+
+1）选择一个 pivotIndex 位置
+
+对数组进行 partion 分组，让其满足如下条件：
+
+pivot 左边全是 小于等于 pivot 的值；
+
+pivot 右边全是 大于 pivot 的值。
+
+2）完整的数组按照 pivotIndex 拆分为 2 个部分
+
+然后递归实现上面的步骤
+
+## 实现
+
+```java
+    public int[] sortArray(int[] nums) {
+        quickSort(nums, 0, nums.length-1);
+        return nums;
+    }
+
+    private void quickSort(int[] nums, int left, int right) {
+        // 终止
+        if (left >= right) {
+            return;
+        }
+
+        int partIx = partition(nums, left, right);
+
+        // 拆分为左右两边，递归排序
+        quickSort(nums, left, partIx-1);
+        quickSort(nums, partIx+1, right);
+    }
+
+    private int partition(int[] nums, int left, int right) {
+        // 初始选择最右边，方便理解
+        int pivotVal = nums[right];
+
+        // 标记，我们选择的拆分点的位置
+        int px = left;
+
+        // 将小于的 pivotVal 全部放在左边
+        // 对比值是最后一个，用小于判断右边界
+        for(int i = left; i < right; i++) {
+            // 这里可以验证一下，等于不变，会怎么样？
+            if(nums[i] < pivotVal) {
+                swap(nums, px, i);
+                px++;
+            }
+        }
+
+        // 将 pivotVal 放在中间，默认取的是 right 值，最后和 right 交换即可
+        swap(nums, px, right);
+
+        // 返回分割位置
+        return px;
+    }
+
+
+    private void swap(int[] arr, int i, int j) {
+        if (i != j) {
+            int tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
+        }
+    }
+```
+
+## 效果
+
+超出时间限制 17 / 21 个通过的测试用例
+
+## 优化1
+
+### 思路
+
+快速排序的缺点在于不稳定。
+
+好家伙 17/21 给我们扔一堆一样的数，我们直接炸了。
+
+问题出现在我们的 partition 方法上，我们选择最右边的数，会导致不稳定。
+
+很明显，这是针对快排弱点的测试用例。
+
+自然地，肯定也有解救的办法。
+
+对和 pivot 的数字，忽略处理即可。
+
+我们不左二分，而是三分天下。 改为三路快排！
+
+### 实现
+
+```java
+public int[] sortArray(int[] nums) {
+        quickSort(nums, 0, nums.length - 1);
+        return nums;
+    }
+
+    private void quickSort(int[] nums, int left, int right) {
+        if (left >= right) return;
+
+        // 三路快排
+        int pivot = nums[right]; // 仍然选右边作为 pivot
+
+        int lt = left;     // nums[left...lt-1] < pivot
+        int gt = right;    // nums[gt+1...right] > pivot
+        int i = left;      // 当前处理元素
+
+        while (i <= gt) {
+            if (nums[i] < pivot) {
+                swap(nums, lt, i);
+                lt++;
+                i++;
+            } else if (nums[i] > pivot) {
+                swap(nums, i, gt);
+                gt--;
+            } else {
+                i++; // nums[i] == pivot，跳过
+            }
+        }
+
+        quickSort(nums, left, lt - 1);
+        quickSort(nums, gt + 1, right);
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        if (i != j) {
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+        }
+    }
+```
+
+### 效果
+
+1445ms 击败 30.30%
+
+勉勉强强 AC
+
+## 可视化
+
+> [可视化](https://houbb.github.io/leetcode-visual/T192-sort-quick-sort.html)
+
+# v7-希尔排序
+
+## 思路
+
+希尔排序是 **分组+插入排序** 的组合：
+
+1. 将原始数组按一定“间隔 gap”分组
+2. 对每组执行插入排序
+3. 减小 gap（例如：gap = gap / 2），重复上述过程
+4. 最终 gap = 1 时，就是普通插排，此时数据已经基本有序，效率较高
+
+这种方式称为 **“缩小增量排序”**。
+
+## 回顾插入排序
+
+我们回顾一下插入排序：
+
+```java
+    public int[] sortArray(int[] nums) {
+        // 0 位置本身有序
+        for(int i = 1; i < nums.length; i++) {
+            int curNum = nums[i];
+
+            // 在左边找到合适的位置
+            int j = i-1;
+
+            // 需要等于，因为可能是最小值
+            while (j >= 0 && nums[j] > curNum) {
+                nums[j+1] = nums[j];    // 向后移动一位
+
+                j--;
+            }
+
+            // 插入新的数  j 是最小值下标，最小的时候 j=-1
+            nums[j+1] = curNum;
+        }
+
+        return nums;
+    }
+```
+
+## 实现
+
+我们数组加一个 gap。整个插入排序，从以前的移动一步，改为移动 gap
+
+其他的其实不变。
+
+但是觉得绕个完，需要考虑一下。
+
+```java
+public int[] sortArray(int[] nums) {
+    int n = nums.length;
+    int gap = n / 2;
+    while (gap > 0) {
+        // 对每个组进行插排
+        for (int i = gap; i < n; i++) {
+            int temp = nums[i];
+            int j = i;
+            // 按照 gap 的步骤切割数组
+            // 向左找到需要插入的位置
+            while ((j - gap) >= 0 && nums[j - gap] > temp) {
+                // 移动
+                nums[j] = nums[j - gap];
+                j -= gap;
+            }
+            // 插入
+            nums[j] = temp;
+        }
+        // 每次减少一半，逐步缩小步长
+        gap /= 2;
+    }
+    return nums;
+}
+```
+
+## 效果
+
+27ms 击败 83.35%
+
+## 可视化
+
+> [可视化](https://houbb.github.io/leetcode-visual/T192-sort-shell-sort.html)
+
+# v8-堆排序
+
+## 思路
+
+我们可以尝试使用堆排序来解决这个问题。
+
+## 算法
+
+
+```java
+    public int[] sortArray(int[] nums) {
+        heapSort(nums);
+        return nums;
+    }
+
+    private void heapSort(int[] nums) {
+        int n = nums.length;
+
+        // 1. 构建最大堆，从最后一个非叶子节点开始往前调整
+        for (int i = n / 2 - 1; i >= 0; i--) {
+            heapify(nums, n, i);
+        }
+
+        // 2. 依次将堆顶最大元素与末尾元素交换，缩小堆大小，并调整堆
+        for (int i = n - 1; i > 0; i--) {
+            swap(nums, 0, i);
+            heapify(nums, i, 0);
+        }
+    }
+
+    // 调整堆，使 subtree 根节点满足最大堆性质
+    private void heapify(int[] nums, int heapSize, int rootIndex) {
+        int largest = rootIndex;
+        int leftChild = 2 * rootIndex + 1;
+        int rightChild = 2 * rootIndex + 2;
+
+        if (leftChild < heapSize && nums[leftChild] > nums[largest]) {
+            largest = leftChild;
+        }
+
+        if (rightChild < heapSize && nums[rightChild] > nums[largest]) {
+            largest = rightChild;
+        }
+
+        if (largest != rootIndex) {
+            swap(nums, rootIndex, largest);
+            heapify(nums, heapSize, largest);
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int tmp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = tmp;
+    }
+```
+
+
+## 效果
+
+51ms 击败 44.74%
+
+## 可视化
+
+> [可视化](https://houbb.github.io/leetcode-visual/T192-sort-shell-sort.html)
+
+# 小结
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位极客的点赞收藏转发，是老马持续写作的最大动力！
+
+下一节我们将讲解二分的实战题目，感兴趣的小伙伴可以关注一波，精彩内容，不容错过。
+
 * any list
 {:toc}
