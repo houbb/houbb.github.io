@@ -71,13 +71,24 @@ published: true
 * 第2轮：`[2, 3, 4, 5]`
 * 第3轮：有序，无需再动
 
-## 🧠 三、伪代码逻辑
+## 🧠 三、代码逻辑
 
 ```c
-for i from 0 to n-1
-    for j from 0 to n-1-i
-        if arr[j] > arr[j+1]
-            swap arr[j] and arr[j+1]
+void bubbleSort(int[] arr) {
+    int n = arr.length;
+    for (int i = 0; i < n - 1; i++) {
+        boolean swapped = false;  // 优化点：如果一轮无交换说明已有序
+        for (int j = 0; j < n - 1 - i; j++) {
+            if (arr[j] > arr[j + 1]) {
+                int temp = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = temp;
+                swapped = true;
+            }
+        }
+        if (!swapped) break;
+    }
+}
 ```
 
 * 外层循环控制“轮次”
