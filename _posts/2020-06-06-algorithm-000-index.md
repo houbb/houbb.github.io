@@ -9,13 +9,29 @@ published: true
 
 # 算法索引
 
-- 查找
+## 查找
 
-> [The search tool for java.(java 查询工具)](https://github.com/houbb/search)
+[二分查找法？binary-search-01-基本概念介绍](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-search-00-binary-search-01-intro-what)
 
-[java 如何实现 binary search 二分查找法？](https://houbb.github.io/2020/06/08/algorithm-12-binary-search)
+[二分查找法？binary-search-02-leetcode 704 二分查找目标值是否存在](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-search-00-binary-search-02-leetcode-01-T704)
 
-- sort
+[二分查找法？binary-search-02-leetcode 35. 搜索插入位置](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-search-00-binary-search-02-leetcode-02-T035)
+
+[二分查找法？binary-search-02-leetcode 34. 在排序数组中查找元素的第一个和最后一个位置](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-search-00-binary-search-02-leetcode-03-T034)
+
+[二分查找法？binary-search-02-leetcode 852. 山脉数组的峰顶索引](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-search-00-binary-search-02-leetcode-04-T852)
+
+[二分查找法？binary-search-02-leetcode 875. 爱吃香蕉的珂珂](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-search-00-binary-search-02-leetcode-05-T875)
+
+[二分查找法？binary-search-02-leetcode 1011. 在 D 天内送达包裹的能力](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-search-00-binary-search-02-leetcode-06-T1011)
+
+[二分查找法？binary-search-02-leetcode 033. 搜索旋转排序数组](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-search-00-binary-search-02-leetcode-07-T033)
+
+[二分查找法？binary-search-02-leetcode 153. 寻找旋转排序数组中的最小值](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-search-00-binary-search-02-leetcode-08-T153)
+
+[二分查找法？binary-search-02-leetcode 154. 寻找旋转排序数组中的最小值 II](https://houbb.github.io/2020/06/08/algorithm-000-leetcode-data-struct-001-search-00-binary-search-02-leetcode-09-T154)
+
+## sort
 
 > [The sort tool for java.(java 排序工具)](https://github.com/houbb/sort)
 
@@ -43,7 +59,7 @@ published: true
 
 [java big file sort 超大文件如何实现排序？外归并排序（External merge sort）](https://houbb.github.io/2022/08/12/java-diff-sort-big-file)
 
-- 五大算法
+## 五大算法
 
 [五大基本算法概览](https://houbb.github.io/2020/01/23/data-struct-learn-07-base)
 
