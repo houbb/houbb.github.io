@@ -162,24 +162,47 @@ public void countingSort(int[] arr) {
 | ❌ 数据范围极大或稀疏    | 不推荐  |
 | ❌ 需要排序浮点数或复杂对象 | 不推荐  |
 
----
 
-## 🧩 八、LeetCode 相关题目
 
-### 🔹 [75. 颜色分类](https://leetcode.cn/problems/sort-colors/)
+# 经典题目
 
-* 类似计数排序思想，对 0、1、2 分类排序。
-
-### 🔹 [347. 前 K 个高频元素](https://leetcode.cn/problems/top-k-frequent-elements/)
-
-* 可用计数排序思想结合堆或桶排序实现。
+在 LeetCode（力扣）上，**计数排序（Counting Sort）**本身很少直接作为题目标签出现，但有不少**适合用计数排序优化**的题目，尤其是涉及「范围较小的整数频率统计」类问题。以下是一些经典代表题目，适合用或改造为计数排序思路解决：
 
 ---
 
-## 🔚 九、一句话总结
+### ✅ 经典适用题目推荐
 
-> **计数排序通过统计元素出现次数，利用数组下标直接定位，快速实现排序，适合数据范围有限的整数序列，是非比较排序中高效经典算法。**
+| 题号                                                                                         | 标题                | 说明                                            |
+| ------------------------------------------------------------------------------------------ | ----------------- | --------------------------------------------- |
+| [75](https://leetcode.cn/problems/sort-colors/)                                            | 颜色分类（Sort Colors） | 最经典的计数排序题之一，值域只有 0、1、2。可用计数排序（统计个数）或双指针三路快排思想 |
+| [1365](https://leetcode.cn/problems/how-many-numbers-are-smaller-than-the-current-number/) | 有多少小于当前数字的数字      | 值域 \[0, 100]，可用计数排序 + 前缀和快速解决                 |
+| [1331](https://leetcode.cn/problems/rank-transform-of-an-array/)                           | 数组序号转换            | 离散化题，可借用计数排序思想处理映射关系                          |
+| [347](https://leetcode.cn/problems/top-k-frequent-elements/)                               | 前 K 个高频元素         | 结合桶排序的思想（频率做桶），经典题                            |
+| [451](https://leetcode.cn/problems/sort-characters-by-frequency/)                          | 根据字符出现频率排序        | 可用计数 + 桶排序方式                                  |
+| [973](https://leetcode.cn/problems/k-closest-points-to-origin/)                            | 最接近原点的 K 个点       | 若用计数排序思想则需结合桶或值域限制                            |
+| [164](https://leetcode.cn/problems/maximum-gap/)                                           | 最大间距              | 桶排序/计数排序思想的进阶题                                |
 
+---
+
+### ✅ 进阶练习（计数排序或桶排序变种）
+
+| 题号                                                                           | 标题                 | 说明                    |
+| ---------------------------------------------------------------------------- | ------------------ | --------------------- |
+| [215](https://leetcode.cn/problems/kth-largest-element-in-an-array/)         | 数组中的第 K 个最大元素      | 可以通过计数排序加速（若值域小）      |
+| [242](https://leetcode.cn/problems/valid-anagram/)                           | 有效的字母异位词           | 典型的 26 个字母计数          |
+| [383](https://leetcode.cn/problems/ransom-note/)                             | 赎金信                | 也是字母频率统计问题            |
+| [389](https://leetcode.cn/problems/find-the-difference/)                     | 找不同                | 计数法可轻松解决              |
+| [299](https://leetcode.cn/problems/bulls-and-cows/)                          | 猜数字游戏              | 用计数数组统计牛数             |
+| [2085](https://leetcode.cn/problems/count-common-words-with-one-occurrence/) | 统计两个字符串数组中唯一字符串的数目 | 使用 Map 也行，但值域可控时计数更高效 |
+
+---
+
+### 🧠 总结：适合用计数排序的题目特征
+
+* 数据范围小（如 0-100 或 0-1000）
+* 无需比较操作
+* 可用频率统计 + 前缀和等技巧优化
+* 类似“桶排序”思想，计数作为中间结构
 
 
 * any list
