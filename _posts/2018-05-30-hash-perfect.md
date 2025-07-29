@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Hash 完美 hash
+title:  完美哈希函数(Perfect Hash Function)
 date:  2018-05-30 09:57:55 +0800
 categories: [Algorithm]
 tags: [algorithm, hash, sh]

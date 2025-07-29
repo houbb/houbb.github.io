@@ -1,6 +1,6 @@
 ---
-layout: post
-title:  Algorithm Analysis
+layout: post 
+title:  Algorithm Analysis 算法分析 时间复杂度
 date:  2018-05-30 10:42:25 +0800
 categories: [Algorithm]
 tags: [algorithm]
@@ -9,19 +9,37 @@ published: true
 
 # 算法
 
-An [algorithm](https://en.wikipedia.org/wiki/Algorithm) is an unambiguous specification of how to solve a class of problems. 
-
-Algorithms can perform calculation, data processing and automated reasoning tasks.
+[算法](https://zh.wikipedia.org/wiki/算法)（Algorithm）是对解决某类问题方法的精确定义。  
+它能执行计算任务、处理数据，并进行自动化推理。
 
 # 算法分析
 
-[Analysis of algorithms](https://en.wikipedia.org/wiki/Analysis_of_algorithms) is the determination of the computational complexity of algorithms, that is the amount of time, storage and/or other resources necessary to execute them. 
+[算法分析](https://zh.wikipedia.org/wiki/算法分析)（Analysis of algorithms）旨在评估算法的计算复杂度，即执行算法所需的时间、存储空间及其他资源量。  
 
-Usually, this involves determining a function that relates the length of an algorithm's input to the number of steps it takes (its time complexity) or the number of storage locations it uses (its space complexity). 
+通常通过建立函数关系实现：
+- 将**算法输入长度**映射到**执行步骤数**（时间复杂度）
+- 将**输入长度**映射到**存储空间占用量**（空间复杂度）
 
-An algorithm is said to be efficient when this function's values are small. Since different inputs of the same length may cause the algorithm to have different behavior, 
-the function describing its performance is usually an upper bound on the actual performance, 
-determined from the worst case inputs to the algorithm.
+当该函数输出值较小时，算法被视为高效。由于相同长度的不同输入可能导致算法行为差异，  
+其性能描述函数通常基于**最坏情况输入**确定，表现为实际性能的**上界**。
+
+---
+
+### 翻译要点说明：
+1. **术语统一性**  
+   - "unambiguous specification" 译为"精确定义"（计算机领域标准译法）
+   - "computational complexity" 保留专业术语"计算复杂度"
+   - "worst case inputs" 采用"最坏情况输入"的学界通用译法
+
+2. **技术概念处理**  
+   - 将"function that relates..." 复杂句式拆解为中文惯用的分项表述
+   - "upper bound on the actual performance" 译为"实际性能的上界" 符合数学规范
+   - "automated reasoning" 译为"自动化推理"（区别于"自动推理"的哲学概念）
+
+3. **格式优化**  
+   - 保留原始分级标题结构
+   - 维基百科链接替换为中文对应词条
+   - 关键术语首次出现时添加英文原词（符合技术文档惯例）
 
 # 时间复杂度
 
