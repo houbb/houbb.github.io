@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leetcode sort 排序-09-bucket sort 桶排序 451. 根据字符出现频率排序
+title: leetcode sort 排序-09-bucket sort 164. 最大间距 
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, sort, sf]
@@ -53,178 +53,119 @@ published: true
 
 6) 可视化
 
+# 164. 最大间距
 
-# 451. 根据字符出现频率排序
+给定一个无序的数组 nums，返回 数组在排序之后，相邻元素之间最大的差值 。
 
-给定一个字符串 s ，根据字符出现的 频率 对其进行 降序排序 。一个字符出现的 频率 是它出现在字符串中的次数。
+如果数组元素个数小于 2，则返回 0 。
 
-返回 已排序的字符串 。如果有多个答案，返回其中任何一个。
-
- 
+您必须编写一个在「线性时间」内运行并使用「线性额外空间」的算法。
 
 示例 1:
 
-输入: s = "tree"
-输出: "eert"
-解释: 'e'出现两次，'r'和't'都只出现一次。
-因此'e'必须出现在'r'和't'之前。此外，"eetr"也是一个有效的答案。
-
+输入: nums = [3,6,9,1]
+输出: 3
+解释: 排序后的数组是 [1,3,6,9], 其中相邻元素 (3,6) 和 (6,9) 之间都存在最大差值 3。
 示例 2:
 
-输入: s = "cccaaa"
-输出: "cccaaa"
-解释: 'c'和'a'都出现三次。此外，"aaaccc"也是有效的答案。
-注意"cacaca"是不正确的，因为相同的字母必须放在一起。
-
-示例 3:
-
-输入: s = "Aabb"
-输出: "bbAa"
-解释: 此外，"bbaA"也是一个有效的答案，但"Aabb"是不正确的。
-注意'A'和'a'被认为是两种不同的字符。
+输入: nums = [10]
+输出: 0
+解释: 数组元素个数小于 2，因此返回 0。
  
 
 提示:
 
-1 <= s.length <= 5 * 10s^5
+1 <= nums.length <= 10^5
+0 <= nums[i] <= 10^9
 
-s 由大小写英文字母和数字组成
 
-# v1-HashMap 版本
+# v1-排序+判断
 
 ## 思路
 
-通过 hashMap 记录次数
-
-但是次数的话，无法关联到对应的 char，所以们额外加一个 HashMap 记录次数和对应的 char 列表的关系。
+我们按照题意来实现，先排序，然后判断最大的 gap 即可。
 
 ## 实现
 
 ```java
-    public String frequencySort(String s) {
-        if(s.length() <= 1) {
-            return s;
+    public int maximumGap(int[] nums) {
+        Arrays.sort(nums);
+
+        int maxGap = 0;
+        
+        for(int i = 1; i < nums.length; i++) {
+            maxGap = Math.max(nums[i]-nums[i-1], maxGap);
         }
-
-        Map<Character, Integer> freqCountMap = new HashMap<>();
-
-        char[] chars = s.toCharArray();
-        for(char c : chars) {
-            Integer count = freqCountMap.getOrDefault(c, 0);
-            freqCountMap.put(c, ++count);
-        }
-
-        // 怎么按照次数排序呢？
-        Map<Integer, List<Character>> countCharsMap = new HashMap<>();
-        for(Map.Entry<Character, Integer> entry : freqCountMap.entrySet()) {
-            List<Character> characterList = countCharsMap.getOrDefault(entry.getValue(), new ArrayList<>());
-            characterList.add(entry.getKey());
-
-            countCharsMap.put(entry.getValue(), characterList);
-        }
-
-        // 整体数排序
-        List<Integer> countList = new ArrayList<>(countCharsMap.keySet());
-        Collections.sort(countList, new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                // 是否写反了？
-                return o2.compareTo(o1);
-            }
-        });
-
-
-        // 处理
-        StringBuffer stringBuffer = new StringBuffer();
-        for(Integer count : countList) {
-            List<Character> characterList = countCharsMap.get(count);
-
-            // 总数？
-            for(Character c : characterList) {
-                for(int i = 0; i < count; i++) {
-                    stringBuffer.append(c);
-                }
-            }
-        }
-
-        return stringBuffer.toString();
+        
+        return maxGap;
     }
 ```
 
 ## 效果
 
+44ms 击败 57.97%
 
-18ms 击败 38.74%
+很直观，不过不符合题意。
 
-just soso~
-
-如何改进呢？
-
-# v2-对象替代 map
+# v2-桶排序
 
 ## 思路
 
-如果你觉得用两个 map 不自然，也可以引入一个对象。
-
-整体思路类似。
+直接用间距为1的桶，进行桶排序。
 
 ## 实现
 
 ```java
-    private class Node {
-        private Character character;
-        private int count;
+public static int maximumGap(int[] nums) {
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
 
-        public Node(Character character, int count) {
-            this.character = character;
-            this.count = count;
-        }
-    }
-
-    public String frequencySort(String s) {
-        if (s.length() <= 1) {
-            return s;
-        }
-
-        Map<Character, Integer> freqCountMap = new HashMap<>();
-        char[] chars = s.toCharArray();
-        for (char c : chars) {
-            Integer count = freqCountMap.getOrDefault(c, 0);
-            freqCountMap.put(c, ++count);
-        }
-
-        // 怎么按照次数排序呢？
-        // 排序和大小堆的复杂度都是 OlogN()
-        List<Node> nodeList = new ArrayList<>();
-        for (Map.Entry<Character, Integer> entry : freqCountMap.entrySet()) {
-            Node node = new Node(entry.getKey(), entry.getValue());
-            nodeList.add(node);
-        }
-        Collections.sort(nodeList, new Comparator<Node>() {
-            @Override
-            public int compare(Node o1, Node o2) {
-                return o2.count - o1.count;
+        for(int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            if(num > max) {
+                max = num;
             }
-        });
-
-        // 处理
-        StringBuffer stringBuffer = new StringBuffer();
-        for (Node node : nodeList) {
-            for (int i = 0; i < node.count; i++) {
-                stringBuffer.append(node.character);
+            if(num < min) {
+                min = num;
             }
         }
 
-        return stringBuffer.toString();
+        // 最大值和最小值相同
+        if(min == max) {
+            return 0;
+        }
+
+        // 创建桶
+        int[] buckets = new int[max-min+1];
+
+        for(int i = 0; i < nums.length; i++) {
+            int num = nums[i];
+            buckets[num-min]++;
+        }
+
+        // 问题就变成了寻找连续为0的桶的个数？
+        int maxZeroCount = 0;
+        int zeroCount = 0;
+        for(int i = 0; i < buckets.length; i++) {
+            if(buckets[i] != 0) {
+                maxZeroCount = Math.max(zeroCount, maxZeroCount);
+                // 清空
+                zeroCount = 0;
+            } else {
+                zeroCount++;
+            }
+        }
+        return maxZeroCount+1;
     }
 ```
 
 ## 效果
 
-17ms 击败 43.61%
+超出内存限制 3 / 44 个通过的测试用例
 
+看的出来，步长不应该为1。
 
-# v3-桶排序版本
+# v2-桶排序步长版本
 
 ## 思路
 
