@@ -180,20 +180,131 @@ right 对应原始的下标。
 
 ## 实现
 
-todo...
+### 错误的解法1
+
+比如下面的解法，虽然考虑到了最后一个数字可能为0.是否需要重复的标识。
 
 ```java
+    public static void duplicateZeros(int[] arr) {
+        int n = arr.length;
 
+        // 通过快慢指针，找到结束时 left 指针的位置。
+        // 同时记录最后一个 0 是否需要复制
+        boolean lastZeroRepeatFlag = true;
+        int totalCount = 0;
+        int left = 0;
+        for(int i = 0; i < n; i++) {
+            left++;
+            totalCount++;
+            if(totalCount >= n) {
+                break;
+            }
+            if(arr[i] == 0) {
+                totalCount++;
+                // 如果最后一个0是因为刚好0复写变满了，那么则不需要复制。
+                if(totalCount >= n) {
+                    lastZeroRepeatFlag = false;
+                    break;
+                }
+            }
+        }
+
+        // 从哪里开始写
+        // 从后往前，最后一个位置开始
+        int i = n-1;
+        int leftIx = left - 1;
+        while (i >= 0 && leftIx >= 0) {
+            // 当前位置
+            arr[i--] = arr[leftIx];
+
+            // 当前位置是0
+            if(arr[leftIx] == 0 && i > 0) {
+                // 两个场景需要复制 0
+                //a. 不是最后一个0
+                //b. 最后一个0 lastZeroRepeatFlag=true
+                if(leftIx != (left-1)
+                    || (leftIx == left-1 && lastZeroRepeatFlag)) {
+                    arr[i--] = 0;
+                }
+            }
+
+            leftIx--;
+        }
+    }
 ```
 
+但是在测试用例
+
+```
+输入 arr = [8,4,5,0,0,0,0,7]
+
+输出 [0,0,0,0,0,0,0,0]
+
+预期结果 [8,4,5,0,0,0,0,0]
+```
+
+这个用例却过不去。
 
 
+### 正确解法
 
+这里还是看了三叶的解法，很优秀。
 
+> [三叶的解法](https://leetcode.cn/problems/duplicate-zeros/solutions/1607062/by-ac_oier-zivq/)
+
+这种写法真的很优雅。
+
+实现如下：
+
+```java
+    public static void duplicateZeros(int[] arr) {
+        int n = arr.length;
+
+        // 慢指针
+        int i = 0;
+        // 快指针，包含复写0的数据
+        int j = 0;
+        // 这个跳出写法，比我的优雅很多
+        while (j < n) {
+            if(arr[i] == 0) {
+                j++;
+            }
+            i++;
+            j++;
+        }
+
+        // 此时，位置实际上在预期的后面一位
+        i--;
+        j--;
+
+        //2.从尾到头进行双指针赋值 i : i->slow   j : n->fast
+        while (i >= 0) {
+            // j最后一步可能执行了+2操作,在此确保j的坐标小于n
+            if(j < n) {
+                arr[j] = arr[i];
+            }
+
+            //判断是否需要复写0
+            if(arr[i] == 0 && j > 0) {
+                arr[--j] = 0;
+            }
+
+            // 同时左移
+            i--;
+            j--;
+        }
+    }
+```
 
 ## 反思
 
-双指针适用性更强，值得深刻记忆。
+虽然看出来是双指针，但是无可奈何，依然没有写对。
+
+有进步，但是还不够。
+
+加油！
+
+
 
 ----------------------------------------------------------------
 
