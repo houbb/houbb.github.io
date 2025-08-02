@@ -348,7 +348,6 @@ break 提前退出比较重要，因为后面不会有重复的了。
     }
 ```
 
-
 ## 效果
 
 1ms 100%
@@ -362,6 +361,65 @@ break 提前退出比较重要，因为后面不会有重复的了。
 哈希模拟这种，其实比较适合字符集合比较简单的场景。
 
 但是 v4 适用性是最广的。
+
+## 模板方法
+
+或者也可以用模板的方法来实现
+
+其实是一样的，不过套模板可能更好记一点。
+
+### 模板
+
+```java
+int left = 0, right = 0;
+while (right < s.length()) {
+    // 扩大窗口
+    char c = s.charAt(right);
+    window.put(c, window.getOrDefault(c, 0) + 1);
+    right++;
+
+    // 判断是否需要收缩
+    while (窗口需要收缩) {
+        char d = s.charAt(left);
+        window.put(d, window.get(d) - 1);
+        left++;
+    }
+
+    // 更新结果（如果当前是一个合法解）
+}
+```
+
+### 实现
+
+```java
+    public static int lengthOfLongestSubstring(String s) {
+        int max = 0;
+
+        int left = 0;
+        int[] windows = new int[128];
+        for (int right = 0; right < s.length(); right++) {
+            char c = s.charAt(right);
+            windows[c]++;
+
+
+            // 收缩条件-如果满足重复条件，则不断移动 left 向右缩小范围
+            while (windows[c] > 1) {
+                char leftChar = s.charAt(left);
+                windows[leftChar]--;
+                left++;
+            }
+
+            // 更新结果
+            max = Math.max(max, right-left+1);
+        }
+
+        return max;
+    }
+```
+
+### 效果
+
+2ms 95.12%
 
 # 小结
 
