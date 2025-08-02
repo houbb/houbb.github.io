@@ -237,15 +237,5 @@ public static double findMaxAverage(int[] nums, int k) {
 
 6ms 击败 23.34%
 
-# 给出滑动窗口的经典题目，一简单，2中等，1困难
-
-| 难度 | 题目编号 & 名称          | 链接                                                                                   | 类型          |
-| -- | ------------------ | ------------------------------------------------------------------------------------ | ----------- |
-| 简单 | 643. 子数组最大平均数 I    | [力扣链接](https://leetcode.cn/problems/maximum-average-subarray-i/)                     | 固定长度滑窗      |
-| 中等 | 3. 无重复字符的最长子串      | [力扣链接](https://leetcode.cn/problems/longest-substring-without-repeating-characters/) | 动态窗口 + 去重   |
-| 中等 | 438. 找到字符串中所有字母异位词 | [力扣链接](https://leetcode.cn/problems/find-all-anagrams-in-a-string/)                  | 动态窗口 + 频率统计 |
-| 困难 | 76. 最小覆盖子串         | [力扣链接](https://leetcode.cn/problems/minimum-window-substring/)                       | 动态窗口 + 最小长度 |
-
-
 * any list
 {:toc}
