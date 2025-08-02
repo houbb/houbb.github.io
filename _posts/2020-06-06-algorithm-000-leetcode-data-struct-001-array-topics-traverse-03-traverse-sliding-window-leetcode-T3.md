@@ -363,37 +363,6 @@ break 提前退出比较重要，因为后面不会有重复的了。
 
 但是 v4 适用性是最广的。
 
-
-## 有趣的现象
-
-你有没有发现
-
-v4 HashMap 中，我们存储的是字符的 pos 位置；
-
-v5 array 中，我们为了避免 0 混淆，字符的位置是  pos +1
-
-为什么 `max = Math.max(max, i-start+1);` 为什么写法都一样？
-
-我们对比一个例子，比如 `0112`
-
-| i | v4 HashMap | v5 array 模拟 |
-|:---|:---|:---|
-| 0  | {'0'=0} | |
-| 1  |  | |
-| 2  |  | |
-| 3  |  | |
-
-
-
-# 给出滑动窗口的经典题目，一简单，2中等，1困难
-
-| 难度 | 题目编号 & 名称          | 链接                                                                                   | 类型          |
-| -- | ------------------ | ------------------------------------------------------------------------------------ | ----------- |
-| 简单 | 643. 子数组最大平均数 I    | [力扣链接](https://leetcode.cn/problems/maximum-average-subarray-i/)                     | 固定长度滑窗      |
-| 中等 | 3. 无重复字符的最长子串      | [力扣链接](https://leetcode.cn/problems/longest-substring-without-repeating-characters/) | 动态窗口 + 去重   |
-| 中等 | 438. 找到字符串中所有字母异位词 | [力扣链接](https://leetcode.cn/problems/find-all-anagrams-in-a-string/)                  | 动态窗口 + 频率统计 |
-| 困难 | 76. 最小覆盖子串         | [力扣链接](https://leetcode.cn/problems/minimum-window-substring/)                       | 动态窗口 + 最小长度 |
-
 # 小结
 
 希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
