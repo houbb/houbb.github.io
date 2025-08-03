@@ -129,9 +129,7 @@ int sumRegion(int row1, int col1, int row2, int col2) {
 | **LC 304**     | [二维区域和检索 - 矩阵不可变](https://leetcode.cn/problems/range-sum-query-2d-immutable)                                     | 🟢 简单 | 基础二维前缀和           |
 | **LC 1314**    | [矩阵区域和](https://leetcode.cn/problems/matrix-block-sum/)                                                          | 🟡 中等 | 二维前缀和 + 滑动窗口      |
 | **LC 308**（会员） | [二维区域和检索 - 可变](https://leetcode.cn/problems/range-sum-query-2d-mutable/)                                         | 🔴 困难 | 树状数组 / 线段树（动态前缀和） |
-| **LC 1732**    | [找到最高海拔](https://leetcode.cn/problems/find-the-highest-altitude/)                                                | 🟢 简单 | 类前缀和（可推广到二维）      |
 | **LC 1277**    | [统计全为 1 的正方形子矩阵](https://leetcode.cn/problems/count-square-submatrices-with-all-ones/)                           | 🟡 中等 | 前缀和优化判断           |
-| **LC 3049**    | [最大边长的正方形](https://leetcode.cn/problems/largest-side-length-of-square-with-sum-less-than-or-equal-to-threshold/) | 🟡 中等 | 二维前缀和 + 二分        |
 
 ## 💡 拓展技巧
 
