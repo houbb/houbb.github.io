@@ -45,9 +45,6 @@ published: true
 
 前缀和（Prefix Sum）是一种常见的数组预处理技巧，主要用于 **快速计算区间的累加和**，大幅度优化原本需要 `O(n)` 时间的区间求和操作，将其降为 `O(1)`。
 
-它是竞赛、面试和工程中常见的优化手段之一。
-
----
 
 ## 一、什么是前缀和？
 
@@ -70,7 +67,9 @@ sum(l, r) = prefixSum[r + 1] - prefixSum[l]
 
 > 注意：这里的 `prefixSum[i]` 是前 `i` 个数的和，因此需要 **从索引 1 开始存储原数组的前缀和**，`prefixSum[0] = 0`。
 
----
+## 在线可视化
+
+> [前缀和](https://houbb.github.io/leetcode-visual/array-prefix-sum-visual.html)
 
 ## 二、代码实现（以 Java 为例）
 

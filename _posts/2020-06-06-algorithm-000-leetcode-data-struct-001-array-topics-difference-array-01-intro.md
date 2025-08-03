@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  【leetcode】58-什么是差分数组（Difference Array）
+title:  【leetcode】什么是差分数组（Difference Array）
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, prefix-sum, difference-array, leetcode]
@@ -13,17 +13,13 @@ published: true
 
 > [https://github.com/houbb/leetcode](https://github.com/houbb/leetcode)
 
-好的，我们现在来系统讲解「差分数组（Difference Array）」，它是前缀和的“逆操作”，主要用于 **高效地进行区间修改**。
-
----
+# 差分数组
 
 ## 一、什么是差分数组？
 
 差分数组是一种 **通过修改端点来影响一个区间的值** 的技巧，适用于这种场景：
 
 > 「对一个数组 `nums` 的某个区间 `[l, r]`，整体加上一个值 `+k`，并且这样的操作会执行很多次，但我们不关心中间过程，只关心最终数组。」
-
----
 
 ### ✅ 举个例子：
 
@@ -75,7 +71,11 @@ diff[r + 1] -= k;
 
 之后，**只需要一次前缀和**，就能还原出所有累加后的最终数组。
 
----
+感觉和前缀和互为逆向操作？
+
+## 在线可视化
+
+> [前缀和](https://houbb.github.io/leetcode-visual/array-difference-array-visual.html)
 
 ## 四、完整代码实现（Java 示例）
 
