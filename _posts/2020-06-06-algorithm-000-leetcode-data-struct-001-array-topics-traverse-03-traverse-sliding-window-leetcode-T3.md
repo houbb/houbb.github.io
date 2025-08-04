@@ -112,15 +112,50 @@ s 由英文字母、数字、符号和空格组成
 
 ## 思路
 
-入
+我们可以用一个定长的 queue 来处理
 
-满足 
+这里唯一麻烦的点，就在于如果 char 重复，需要把重复的 char 以及之前的信息全部移除。
 
-出
+## 实现
+
+```java
+    public static int lengthOfLongestSubstring(String s) {
+        int max = 0;
+
+        char[] chars = s.toCharArray();
+        Queue<Character> queue = new LinkedList<>();
+
+        for(int i = 0; i < chars.length; i++) {
+            char c = chars[i];
+
+            // 是否满足条件
+            if(!queue.contains(c)) {
+                //add 入
+                queue.add(c);
+                continue;
+            }
+
+            // 已满
+            max = Math.max(max, queue.size());
+
+            // 包含这个字符，及前面的元素全部出队列
+            while (!queue.isEmpty() && queue.peek() != c) {
+                queue.poll();
+            }
+            queue.poll();
+
+            // 加入新元素
+            queue.add(c);
+        }
+        return max;
+    }
+```
 
 
+## 效果
 
 
+8ms 击败 20.13%
 
 
 
