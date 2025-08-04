@@ -118,7 +118,6 @@ s 由英文字母、数字、符号和空格组成
 
 ## 实现
 
-<<<<<<< HEAD
 ```java
     public static int lengthOfLongestSubstring(String s) {
         int max = 0;
@@ -154,64 +153,16 @@ s 由英文字母、数字、符号和空格组成
 
 
 ## 效果
-=======
-滑动窗口最自然的使用 queue 去实现。
 
-1）没有重复前，往 queue 加入 c
->>>>>>> 5ebef5e19b6cf76b502d005ba71d11b4f23e82b5
 
-2) 如果重复，那么判断最大长度。然后将 c 和之前的字符全部出队列。
-
-<<<<<<< HEAD
 8ms 击败 20.13%
-=======
-3）最后还需要判断一次，避免整个没有重复，
->>>>>>> 5ebef5e19b6cf76b502d005ba71d11b4f23e82b5
-
-## 实现
-
-```java
-    public static int lengthOfLongestSubstring(String s) {
-        char[] chars = s.toCharArray();
-        Queue<Character> queue = new LinkedList<>();
-
-        int max = 0;
-        for (int i = 0; i < chars.length; i++) {
-            char c = chars[i];
-
-            // 是否满足条件
-            if (!queue.contains(c)) {
-                queue.add(c);
-                continue;
-            }
-
-            // 已经有重复的数据
-            max = Math.max(max, queue.size());
-
-            //出队列，需要把和当前字符重复的和之前的字符全部异常
-            while (!queue.isEmpty() && queue.peek() != c) {
-                queue.poll();
-            }
-            queue.poll();
-            queue.add(c);
-        }
-
-        // 避免全部没重复的场景
-        max = Math.max(max, queue.size());
-
-        return max;
-    }
-```
-
-## 效果
-
-5ms 击败 82.69%
 
 ## 反思
 
 数据结构的问题，如果我们用基本的数据结构会怎么样？
 
 我们把 queue 改为基本的 array?
+
 
 # v3-基本数组模拟 queue
 
@@ -229,11 +180,11 @@ array 两个指针：start end，模拟队列的队头、队尾
 
 2) 逐个遍历字符，然后在已有在队列 [start, end] 中判断是否存在
 
-2.1 如果存在此 char。首先更新 max。然后寻找重复位置 i，进行 start=i+1  丢弃掉重复的字符和之前的所有字符
+2.1 如果存在此 char。首先更新 max。然后寻找重复位置 i，进行 start=i+1 丢弃掉重复的字符和之前的所有字符
 
-3）队尾新增字符 c  `array[end++] = c`
+3）队尾新增字符 c array[end++] = c
 
-4) 避免没有重复，再次判断 `max = Math.max(max, end-start+1)`;
+4) 避免没有重复，再次判断 max = Math.max(max, end-start+1);
 
 ## 实现
 
@@ -269,18 +220,15 @@ array 两个指针：start end，模拟队列的队头、队尾
 
         return max;
     }
-
 ```
-
 
 ## 效果
 
-1ms  100%
+1ms 100%
 
 break 提前退出比较重要，因为后面不会有重复的了。
 
 当然不加也是对的，但是会多遍历一些，耗时会变为 3ms。
-
 
 ## 反思
 
@@ -289,7 +237,6 @@ break 提前退出比较重要，因为后面不会有重复的了。
 因为外层循环一遍，里面还是要循环一遍。
 
 有没有更快的方法呢？
-
 
 # v4-HashMap 记录位置
 
@@ -301,11 +248,11 @@ break 提前退出比较重要，因为后面不会有重复的了。
 
 1）hashMap key 为 chat, value 为对应的位置。start 记录队列开始的位置。初始为 0
 
-2）判断 HashMap 中是否存在当前位置 i 的字符 c，如果存在，更新 start 位置为当前位置 `Math.max(start, map.get(c)+1)`。
+2）判断 HashMap 中是否存在当前位置 i 的字符 c，如果存在，更新 start 位置为当前位置 Math.max(start, map.get(c)+1)。
 
 这里的重复位置需要和 start 最大值比，避免位置又回去了。
 
-3) 更新长度 `max = Math.max(max, i - start + 1)`; 其实 i 等价于队列的 end 结束位置。
+3) 更新长度 max = Math.max(max, i - start + 1); 其实 i 等价于队列的 end 结束位置。
 
 整体解法实际上是一样的
 
@@ -351,6 +298,7 @@ break 提前退出比较重要，因为后面不会有重复的了。
 当然，我们可以用 array 来模拟哈希实现。
 
 这也属于一种内存的压缩技巧。
+
 
 # v5-数组模拟哈希
 
