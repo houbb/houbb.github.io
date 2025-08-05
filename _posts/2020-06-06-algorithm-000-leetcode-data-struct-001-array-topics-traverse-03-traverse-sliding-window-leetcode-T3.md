@@ -3,7 +3,7 @@ layout: post
 title: leetcode 数组专题之数组遍历-03-遍历滑动窗口 T3. 无重复字符的最长子串
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, data-struct, topics, leetcode, array, traverse, sliding-window, prefix-sum, sf]
+tags: [algorithm, data-struct, topics, leetcode, array, traverse, sliding-window, prefix-sum, top100, two-pointer, sf]
 published: true
 ---
 
@@ -238,6 +238,99 @@ break 提前退出比较重要，因为后面不会有重复的了。
 
 有没有更快的方法呢？
 
+
+# v3_1 双指针模拟 queue
+
+## 思路
+
+类似的，我们可以用 left right 来模拟实现 queue。
+
+left=right=0 开始都从最左边开始。
+
+用 set 记录是否存在重复的 char
+
+1) 数据不存在 则新增此 char，类似于入栈。此时 `maxSize=max(maxSize, right-left+1)` right++
+
+2) 数据存在 则移除左侧的数据（类似于出栈） `set.remove(s.charAt(left));` left++
+
+## 实现
+
+```java
+public static int lengthOfLongestSubstring(String s) {
+        int left = 0;
+        int right = 0;
+
+        int max = 0;
+        Set<Character> set = new HashSet<>();
+        while (right < s.length()) {
+            char c = s.charAt(right);
+            // 入栈
+            if(!set.contains(c)) {
+                max = Math.max(max, right-left+1);
+
+                set.add(c);
+                right++;
+            } else {
+                // 出栈
+                // 这里实际上是一个隐式的循环
+                set.remove(s.charAt(left));
+                left++;
+            }
+        }
+
+        return max;
+    }
+```
+
+## 效果
+
+6ms 击败 64.38%
+
+## 优化1-用数组替代 set
+
+### 思路
+
+其实，就是用 set 数组自哈希来替代 Set。
+### 实现
+
+```java
+public static int lengthOfLongestSubstring(String s) {
+    int left = 0;
+    int right = 0;
+    int max = 0;
+
+    int[] set = new int[128];
+
+    while (right < s.length()) {
+        char c = s.charAt(right);
+
+        // 不重复，直接加入窗口
+        if (set[c] == 0) {
+            set[c]++;
+            max = Math.max(max, right - left + 1);
+            right++;
+        } else {
+            // 重复了，移除左侧字符，收缩窗口
+            char leftChar = s.charAt(left);
+            set[leftChar]--;
+            left++;
+        }
+    }
+
+    return max;
+}
+```
+
+
+### 效果
+
+2ms 击败 95.10%
+
+### 反思
+
+个人比较喜欢这个解法，很直接。
+
+
 # v4-HashMap 记录位置
 
 ## 思路
@@ -248,9 +341,21 @@ break 提前退出比较重要，因为后面不会有重复的了。
 
 1）hashMap key 为 chat, value 为对应的位置。start 记录队列开始的位置。初始为 0
 
-2）判断 HashMap 中是否存在当前位置 i 的字符 c，如果存在，更新 start 位置为当前位置 Math.max(start, map.get(c)+1)。
+2）判断 HashMap 中是否存在当前位置 i 的字符 c，如果存在，更新 start 位置为当前位置 `Math.max(start, map.get(c)+1)`。
 
-这里的重复位置需要和 start 最大值比，避免位置又回去了。
+这里的重复位置需要和 start 最大值比，避免位置又回去了。这是最核心的一个点。
+
+如比：
+
+```
+s = "abba"
+
+i = 2，c = 'b'
+
+- b 之前在 i = 1 出现过
+- 但当前 start = 1，不能退回去 start = 2，要确保窗口向前收缩而不是回退
+```
+
 
 3) 更新长度 max = Math.max(max, i - start + 1); 其实 i 等价于队列的 end 结束位置。
 
