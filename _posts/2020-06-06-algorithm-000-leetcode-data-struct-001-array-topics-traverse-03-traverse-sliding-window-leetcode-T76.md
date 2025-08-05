@@ -1,9 +1,9 @@
 ---
 layout: post
-title: leetcode 数组专题之数组遍历-03-遍历滑动窗口 T6 最小覆盖子串
+title: leetcode 数组专题之数组遍历-03-遍历滑动窗口 T76 最小覆盖子串
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, data-struct, topics, leetcode, array, traverse, sliding-window, prefix-sum, sf]
+tags: [algorithm, data-struct, topics, leetcode, array, traverse, sliding-window, prefix-sum, top100, sf]
 published: true
 ---
 
