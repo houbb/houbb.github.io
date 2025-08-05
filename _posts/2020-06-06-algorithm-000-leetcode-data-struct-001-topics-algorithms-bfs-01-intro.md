@@ -156,7 +156,7 @@ public List<List<Integer>> levelOrder(TreeNode root) {
 
 * **题目：** [1091. 二进制矩阵中的最短路径](https://leetcode.cn/problems/shortest-path-in-binary-matrix)
 * **描述：** 从起点走到终点，求最少步数
-* **技巧：** 使用 `int[][] dirs = {{1,0}, {-1,0}, {0,1}, {0,-1}...}` 来处理方向
+* **技巧：** 使用 `int[][] dirs = [{1,0}, {-1,0}, {0,1}, {0,-1}...]` 来处理方向
 
 ---
 
