@@ -3,7 +3,7 @@ layout: post
 title: leetcode 数组专题之数组遍历-01-遍历 T27 移除元素
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, data-struct, topics, leetcode, array, traverse, sf]
+tags: [algorithm, data-struct, topics, leetcode, array, traverse, two-pointer, sf]
 published: true
 ---
 
