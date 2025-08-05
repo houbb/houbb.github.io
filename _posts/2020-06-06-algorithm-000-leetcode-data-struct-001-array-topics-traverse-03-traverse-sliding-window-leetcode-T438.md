@@ -3,7 +3,7 @@ layout: post
 title: leetcode 数组专题之数组遍历-03-遍历滑动窗口 438. 找到字符串中所有字母异位词
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, data-struct, topics, leetcode, array, traverse, sliding-window, prefix-sum, sf]
+tags: [algorithm, data-struct, topics, leetcode, array, traverse, sliding-window, prefix-sum, top100, sf]
 published: true
 ---
 
@@ -70,7 +70,7 @@ s 和 p 仅包含小写字母
 
 ## 思路
 
-我们先用最朴素的塞饭，直接找到全部满足的数据。
+我们先用最朴素的塞思路，直接找到全部满足的数据。
 
 ## 实现
 
@@ -276,6 +276,14 @@ public static List<Integer> findAnagrams(String s, String p) {
 ## 效果
 
 9ms 61.05%
+
+# 小结
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位极客的点赞收藏转发，是老马持续写作的最大动力！
+
+感兴趣的小伙伴可以关注一波，精彩内容，不容错过。
 
 * any list
 {:toc}
