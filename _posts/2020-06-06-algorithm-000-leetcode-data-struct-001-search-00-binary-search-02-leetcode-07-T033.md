@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  二分查找法？binary-search-02-leetcode 033. 搜索旋转排序数组
+title:  二分查找法？binary-search-02-leetcode 033. 搜索旋转排序数组 search-in-rotated-sorted-array
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, topics, leetcode, binary-search, sf]
@@ -167,13 +167,15 @@ public int search(int[] nums, int target) {
 原来是 for 循环遍历数组，查找断点；
 
 现在改为二分查找方式：
+
 每次判断 `nums[mid] > nums[mid + 1]`，如果是，就找到了旋转点；
+
 否则判断是往左边缩小范围还是右边缩小。
 
 ## 解法
 
 ```java
-private int getRandomIndex(int[] nums) {
+private int search(int[] nums) {
     int left = 0, right = nums.length - 1;
     // 没有旋转
     if (nums[left] <= nums[right]) {
