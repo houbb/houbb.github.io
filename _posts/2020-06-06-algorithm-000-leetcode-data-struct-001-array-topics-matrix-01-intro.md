@@ -56,7 +56,9 @@ for (int i = 0; i < m; i++) {
 
 ```java
 // 上下左右
-int[][] directions = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+int[][] directions = {
+    {-1,0}, {1,0}, {0,-1}, {0,1}
+};
 
 // 八个方向（对角线）
 int[][] directions8 = {

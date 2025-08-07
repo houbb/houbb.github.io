@@ -75,179 +75,179 @@ public boolean searchMatrix(int[][] matrix, int target) {
 
 ## 复杂度
 
-TC O(n^2)
+TC O(m*n)
 
 ## 反思
 
 看到有序，看到查找，应该想到二分法。
 
-
-
-
-
-
-
-
-
-# v1-借助空间
+# v2-单边的二分法
 
 ## 思路
 
-我们先借助空间，来解决这个问题。
-
-90° 个人理解可以拆分为横着从前往后，从上倒下读，然后竖着按照从上到下，从右往左来填充。
+我们最容易想到的是，是在某一行、某一列加一下对应的二分查找信息。
 
 ## 实现
 
 ```java
-    public void rotate(int[][] matrix) {
-        int n = matrix.length;
-
-        // 只是为了避免覆盖而已
-        int[][] copy = new int[n][n];
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                copy[i][j] = matrix[i][j];
+public boolean searchMatrix(int[][] matrix, int target) {
+        for(int i = 0; i < matrix.length; i++) {
+            int[] nums = matrix[i];
+            int index = binarySearch(nums, target);
+            if(index > -1) {
+                return true;
             }
         }
 
-        // 开始从 copy 直接覆盖到 matrix
-        // 从左到右
-        for(int i = 0; i < n; i++) {
-            for(int j = 0; j < n; j++) {
-                // 新的行 == 原始的列
-                // 新的列 == (n-原始行)
-                matrix[j][n-i-1] = copy[i][j];
+        return false;
+    }
+
+
+    // 返回对应的位置
+    private int binarySearch(int[] nums, int target) {
+        // 提前判断这一行是否可能存在
+        if(target < nums[0] || target > nums[nums.length-1]) {
+            return -1;
+        }
+
+        int left = 0;
+        int right = nums.length-1;
+
+        // 要等于吗？
+        while (left <= right) {
+            int mid = left + (right-left) / 2;
+            if(nums[mid] == target) {
+                return mid;
+            } else if(nums[mid] > target ) {
+                // 太大，那么就去左边
+                right = mid-1;
+            } else {
+                // 太小，在右边
+                left = mid+1;
             }
         }
+
+        return -1;
     }
 ```
 
 ## 效果
 
-0ms 100%
+7ms 击败 38.80%
 
-# v2-转置 + 行翻转法 
+## 复杂度
 
-题目要求是**就地旋转**（即不使用额外空间），我们可以通过以下两个步骤实现：
+TC: O(m * log n)
 
-## 思路：先转置，再翻转
+略有提升。
 
-对一个 `n x n` 的正方形矩阵来说：
+## 反思
 
-1. **先进行矩阵的转置（transpose）**
-   `matrix[i][j]` 和 `matrix[j][i]` 交换
-2. **然后左右翻转（reverse each row）**
-   即 `matrix[i][j]` 和 `matrix[i][n - j - 1]` 交换
+但是因为行+列都是有序的。
 
-## 举例：
+有没有办法可以同时加速呢？
 
-以 `3x3` 为例：
-
-```text
-原始矩阵：
-1 2 3
-4 5 6
-7 8 9
-
-转置后：
-1 4 7
-2 5 8
-3 6 9
-
-每一行左右翻转后：
-7 4 1
-8 5 2
-9 6 3
-```
-
-## 为什么可以这样做？
-
-旋转 90 度，其实是把元素从 `(i, j)` 映射到 `(j, n - i - 1)`。
-
-转置 + 左右翻转的组合，正好实现了这一变换。
-
-## 实现
-
-```java
-public void rotate(int[][] matrix) {
-    int n = matrix.length;
-
-    // 1. 转置矩阵
-    for (int i = 0; i < n; i++) {
-        for (int j = i + 1; j < n; j++) {
-            // 交换 matrix[i][j] 和 matrix[j][i]
-            int temp = matrix[i][j];
-            matrix[i][j] = matrix[j][i];
-            matrix[j][i] = temp;
-        }
-    }
-
-    // 2. 每一行左右翻转
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n / 2; j++) {
-            // 交换 matrix[i][j] 和 matrix[i][n - j - 1]
-            int temp = matrix[i][j];
-            matrix[i][j] = matrix[i][n - j - 1];
-            matrix[i][n - j - 1] = temp;
-        }
-    }
-}
-```
-
-
-
-# 四个角轮转法（Layer by Layer 4-way Swap）
+# v3-z字抖动
 
 ## 思路
 
-对一个 `n x n` 矩阵，从外向内一圈一圈处理，把每个位置的 4 个对称元素，顺时针旋转。
+对于一位有序，我们左右移动，来找到合适的位置。因为有序二分可以尽可能的排除掉不合适的数字。
 
-### 位置变换如下：
+那么推广到二维呢？
 
-对于某个位置 `(i, j)`，它旋转之后的位置关系如下：
+其实和二分类似，只不过我们一次移动一步。
 
-```text
-(       i,        j) -> (       j,     n-1-i)
-(       j,     n-1-i) -> (   n-1-i,   n-1-j)
-(   n-1-i,   n-1-j) -> (   n-1-j,        i)
-(   n-1-j,        i) -> (       i,        j)
+## 例子
+
+以一个示例矩阵举例：
+
+```
+matrix = [
+  [ 1,  4,  7, 11],
+  [ 2,  5,  8, 12],
+  [ 3,  6,  9, 16],
+  [10, 13, 14, 17]
+]
 ```
 
-我们一次性把这 4 个值**轮换**起来，就完成了旋转。
+### 想法推导思路：
+
+1. **观察二维有序性** → 行和列都是递增的
+2. **尝试从某个“边界角落”开始**：
+
+   * 左上角？两个方向都增大 → 无法决策 ❌
+   * 右下角？两个方向都减小 → 也不适合 ❌
+   * 左下角？上是减小，右是增大 → 可行 ✅
+   * 右上角？左是减小，下是增大 → 最直观 ✅✅
+3. **每次移动能排除一行或一列**，复杂度降到 O(m+n)
+
+
+### 右上角出发
+
+假设我们从 **右上角 `matrix[0][n-1]` = 11** 开始，看看四周的数据如何变化：
+
+🎯 如何根据比较结果移动？
+
+假设 `target = 9`，从 `11` 开始：
+
+* 11 > 9，太大了 → 往左（列--）
+* 到了 7，7 < 9，太小了 → 往下（行++）
+* 到了 8，还是小 → 行++
+* 到了 9，找到了 ✅
+
+✅ 总结出策略：
+
+从右上角开始，每次根据当前值和 `target` 的比较，**只需要做一个决策**：
+
+* 如果当前值 > target → 往左（col--）
+* 如果当前值 < target → 往下（row++）
+* 如果相等 → 找到了！
+
 
 ## 实现
 
+我们把二分，改成了从右上角来一步步移动
+
 ```java
-public void rotate(int[][] matrix) {
-    int n = matrix.length;
+public boolean searchMatrix(int[][] matrix, int target) {
+        int m = matrix.length;
+        int n = matrix[0].length;
 
-    // 分层进行旋转
-    for (int layer = 0; layer < n / 2; layer++) {
-        int first = layer;
-        int last = n - 1 - layer;
+        // 从右上角开始
+        int row = 0;
+        int col = n - 1;
+        // 往左走，变小   往下走，变大
+        // 要求：左边 >= 0   下边 < m
 
-        for (int i = first; i < last; i++) {
-            int offset = i - first;
-
-            // 保存 top
-            int top = matrix[first][i];
-
-            // left -> top
-            matrix[first][i] = matrix[last - offset][first];
-
-            // bottom -> left
-            matrix[last - offset][first] = matrix[last][last - offset];
-
-            // right -> bottom
-            matrix[last][last - offset] = matrix[i][last];
-
-            // top -> right
-            matrix[i][last] = top;
+        while (row < m && col >= 0) {
+            int cur = matrix[row][col];
+            if(cur == target) {
+                return true;
+            }
+            if(cur > target) {
+                col--;
+            }
+            if(cur < target) {
+                row++;
+            }
         }
+
+        return false;
     }
-}
 ```
+
+## 效果
+
+6ms 击败 99.99%
+
+## 复杂度
+
+O(m + n)	最优，空间 O(1)，适合面试
+
+## 反思
+
+前提是要能想到。
+
 
 # 小结
 
