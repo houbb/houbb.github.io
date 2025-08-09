@@ -94,10 +94,13 @@ public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
 
     // 当两个链表都不为空时，比较当前节点值，连接较小节点
     while (l1 != null && l2 != null) {
-        // 也可以调整一下（小的节点优先）
-        ListNode smallNode = l1.val <= l2.val ? l1 : l2;
-        current.next = smallNode;
-        smallNode = smallNode.next;
+        if (l1.val <= l2.val) {
+            current.next = l1;
+            l1 = l1.next;
+        } else {
+            current.next = l2;
+            l2 = l2.next;
+        }
 
         //current 向前走，指向刚接上的节点
         //这样保证了每次循环，current 都是合并链表的最后一个节点，方便继续往后面追加新的节点。
@@ -105,7 +108,7 @@ public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
     }
 
     // 连接剩余的非空链表节点
-    // current 不用动，直接 current->l1剩余的部分
+    // current 不用动，直接
     if (l1 != null) {
         current.next = l1;
     } else {
