@@ -1,9 +1,9 @@
 ---
 layout: post
-title:  【leetcode】力扣 数组 array-02-56. 合并区间
+title:  【leetcode】力扣 数组 array-02-LC56. 合并区间
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
-tags: [algorithm, data-struct, array, leetcode]
+tags: [algorithm, data-struct, array, greedy, leetcode]
 published: true
 ---
 
@@ -39,75 +39,7 @@ intervals[i].length == 2
 0 <= starti <= endi <= 10^4
 
 
-
-
-# v1-排序+贪心
-
-## 思路
-
-这一题的排序+贪心反而是最好理解的。
-
-但是贪心其实是不太好想的 因为每次贪心的策略都不同
-
-## 实现
-
-```java
-    public int[][] merge(int[][] intervals) {
-        // 按照开始位置排序
-        Arrays.sort(intervals, new Comparator<int[]>() {
-            @Override
-            public int compare(int[] o1, int[] o2) {
-                return o1[0] - o2[0];
-            }
-        });
-
-        int n = intervals.length;
-
-        
-        List<int[]> tempList = new ArrayList<>();
-
-        // 遍历所有区间，如果当前的起点在上一个末尾之前，则合并
-        // 如果在上一个区间末尾之后，则把上一个区间放到答案中去
-        int[] pre = intervals[0];
-        for(int i = 1; i < n; i++) {
-            int[] cur = intervals[i];
-            // 如果当前的起点在上一个末尾之前，则合并
-            if(cur[0] <= pre[1]) {
-                pre[1] = Math.max(pre[1], cur[1]);
-            } else {
-                // 无重叠，直接上一个元素结果
-                tempList.add(pre);
-
-                // 更新
-                pre = cur;
-            }
-        }
-
-        // 加入最后一个
-        tempList.add(pre);
-
-        // 转换为 array
-        int[][] results = new int[tempList.size()][2];
-        for(int i = 0; i< tempList.size(); i++) {
-            results[i] = tempList.get(i);
-        }
-        return results;
-    }
-```
-
-## 效果
-
-9ms击败 15.81%
-
-## 复杂度
-
-时间	O(n log n)（排序）+ O(n)（合并）
-
-空间	O(n)（结果列表）
-
-基本算是这一题的标准解法，其他的看了下技巧性太强，不太适合记忆。
-
-# v2-不排序+纯暴力
+# v1-不排序+纯暴力
 
 ## 思路
 
@@ -184,7 +116,7 @@ private int[] mergeTwo(int[] a, int[] b) {
 TC 最坏仍为 O(n²)
 
 
-# v3-不排序+递归
+# v2-不排序+递归
 
 ## 思路
 
@@ -246,6 +178,180 @@ private int[] mergeTwo(int[] a, int[] b) {
 
 TC 最坏仍为 O(n²)
 
+# v3-排序+贪心
+
+## 思路
+
+这一题的排序+贪心反而是最好理解的。
+
+但是贪心其实是不太好想的 因为每次贪心的策略都不同
+
+## 实现
+
+```java
+    public int[][] merge(int[][] intervals) {
+        // 按照开始位置排序
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+
+        int n = intervals.length;
+
+        
+        List<int[]> tempList = new ArrayList<>();
+
+        // 遍历所有区间，如果当前的起点在上一个末尾之前，则合并
+        // 如果在上一个区间末尾之后，则把上一个区间放到答案中去
+        int[] pre = intervals[0];
+        for(int i = 1; i < n; i++) {
+            int[] cur = intervals[i];
+            // 如果当前的起点在上一个末尾之前，则合并
+            if(cur[0] <= pre[1]) {
+                pre[1] = Math.max(pre[1], cur[1]);
+            } else {
+                // 无重叠，直接上一个元素结果
+                tempList.add(pre);
+
+                // 更新
+                pre = cur;
+            }
+        }
+
+        // 加入最后一个
+        tempList.add(pre);
+
+        // 转换为 array
+        int[][] results = new int[tempList.size()][2];
+        for(int i = 0; i< tempList.size(); i++) {
+            results[i] = tempList.get(i);
+        }
+        return results;
+    }
+```
+
+## 效果
+
+9ms击败 15.81%
+
+## 复杂度
+
+时间	O(n log n)（排序）+ O(n)（合并）
+
+空间	O(n)（结果列表）
+
+基本算是这一题的标准解法，其他的看了下技巧性太强，不太适合记忆。
+
+# v4-排序 + 双指针（扫描线的简化版）
+
+## 思路
+
+思路：
+
+先把 start[] 和 end[] 分开排序
+
+用两个指针扫描：
+
+如果 start[i] <= end[j]，说明还在当前区间范围内，继续
+如果 start[i] > end[j]，说明当前区间结束，记录下来
+
+## 实现
+
+```java
+public int[][] merge(int[][] intervals) {
+        int n = intervals.length;
+        int[] start = new int[n];
+        int[] end = new int[n];
+        for (int i = 0; i < n; i++) {
+            start[i] = intervals[i][0];
+            end[i] = intervals[i][1];
+        }
+        Arrays.sort(start);
+        Arrays.sort(end);
+
+        List<int[]> res = new ArrayList<>();
+
+        for (int i = 0, j = 0; i < n; i++) {
+            if (i == n - 1 || start[i + 1] > end[i]) { // 区间结束
+                res.add(new int[]{start[j], end[i]});
+                j = i + 1;
+            }
+        }
+
+        return res.toArray(new int[res.size()][]);
+    }
+```
+
+### 核心代码解释
+
+i 表示当前处理的 end 数组下标（终点）
+
+j 表示当前合并区间的 起点在 start[] 里的位置
+
+1） 判断条件
+
+`if (i == n - 1 || start[i + 1] > end[i])` 的意思：
+
+`i == n-1` 已经到最后一个终点了，当前合并区间必须结束
+
+`start[i+1] > end[i]` 下一个区间的起点已经超过当前的终点，说明没有重叠 → 当前合并段结束
+
+2) 动作
+
+`res.add(new int[]{start[j], end[i]});`
+
+当前合并区间是 `[start[j], end[i]]`
+
+然后 `j = i + 1` 表示下一个合并段从下一个起点重新开始
+
+## 效果
+
+5ms 击败 98.98%
+
+## 反思
+
+优点：代码很简短，没有复杂的 if 嵌套
+
+缺点：丢失了区间原本的对应关系（但题目不需要）
+
+# v5-扫描线（差分计数法）
+
+## 思路
+
+把所有区间的起点当作 +1，终点当作 -1（表示一个区间开始和结束）
+
+按坐标排序并累加计数
+
+当计数从 0 → 1 时，记录区间开始；从 1 → 0 时，记录区间结束
+
+## 实现
+
+```java
+public int[][] merge(int[][] intervals) {
+    List<int[]> events = new ArrayList<>();
+    for (int[] in : intervals) {
+        events.add(new int[]{in[0], 1});   // 起点：+1
+        events.add(new int[]{in[1], -1});  // 终点：-1
+    }
+    // 关键：同一坐标时把 start(+1) 放在 end(-1) 前面 -> 使用 b[1]-a[1]
+    events.sort((a, b) -> a[0] != b[0] ? a[0] - b[0] : b[1] - a[1]);
+
+    List<int[]> res = new ArrayList<>();
+    int count = 0, start = 0;
+    for (int[] e : events) {
+        if (count == 0) start = e[0];   // 从 0 -> 非0 时开始一个新的合并段
+        count += e[1];
+        if (count == 0) res.add(new int[]{start, e[0]}); // 从 非0 -> 0 时结束
+    }
+    return res.toArray(new int[0][]);
+}
+```
+
+## 效果
+
+11ms 击败 6.67%
 
 # 小结
 
@@ -254,8 +360,6 @@ TC 最坏仍为 O(n²)
 各位极客的点赞收藏转发，是老马持续写作的最大动力！
 
 感兴趣的小伙伴可以关注一波，精彩内容，不容错过。
-
-
 
 # 参考资料
 

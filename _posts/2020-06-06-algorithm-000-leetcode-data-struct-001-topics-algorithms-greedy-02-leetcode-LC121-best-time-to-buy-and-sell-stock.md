@@ -1,6 +1,6 @@
 ---
 layout: post
-title: leetcode 算法篇专题之贪心 Greedy 02-121. 买卖股票的最佳时机 best-time-to-buy-and-sell-stock
+title: leetcode 算法篇专题之贪心 Greedy 02-LC121. 买卖股票的最佳时机 best-time-to-buy-and-sell-stock
 date:  2020-6-8 15:13:08 +0800
 categories: [Algorithm]
 tags: [algorithm, data-struct, topics, leetcode, greedy, sf]
@@ -35,6 +35,20 @@ published: true
 为了照顾没有基础的小伙伴，会简单介绍一下1的基础理论。
 
 简单介绍1，重点为4。其他不是本系列的重点。
+
+# 买卖股票系列
+
+[力扣 121. 买卖股票的最佳时机](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-40-leetcode-121-best-time-to-buy-and-sell-stock)
+
+[力扣 122. 买卖股票的最佳时机 II](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-41-leetcode-122-best-time-to-buy-and-sell-stock-ii)
+
+[力扣 123. 买卖股票的最佳时机 III](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-42-leetcode-123-best-time-to-buy-and-sell-stock-iii)
+
+[【力扣 188. 买卖股票的最佳时机 IV](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-43-leetcode-188-best-time-to-buy-and-sell-stock-iv)
+
+[力扣 309. 买卖股票的最佳时机包含冷冻期](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-44-leetcode-309-best-time-to-buy-and-sell-stock-with-cooldown)
+
+[力扣 714. 买卖股票的最佳时机包含手续费](https://houbb.github.io/2020/06/08/algorithm-020-leetcode-45-leetcode-714-best-time-to-buy-and-sell-stock-with-transaction-fee)
 
 # 121. 买卖股票的最佳时机
 
@@ -101,6 +115,12 @@ published: true
 ## 结果
 
 1ms 击败 100.00%
+
+## 反思
+
+还是回顾一下这个系列吧，单个的题目还是不成体系。
+
+全部靠能不能想到可不行。
 
 * any list
 {:toc}
