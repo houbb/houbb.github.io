@@ -1,6 +1,6 @@
 ---
 layout: post
-title: IM 即时通讯系统-04-前后端交互设计策略
+title: IM 即时通讯系统-04-前后端交互设计策略 长轮询（Long Polling）、定时轮询（Polling）、SSE（Server-Sent Events）和 WebSocket（WS）
 date: 2024-11-02 21:01:55 +0800
 categories: [IM]
 tags: [im, opensource, sh]
