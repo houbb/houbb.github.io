@@ -98,7 +98,9 @@ published: true
 2. **四方向遍历模板**
 
 ```java
-int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
+int[][] dirs = {
+   {1,0},{-1,0},{0,1},{0,-1}
+};
 
 void dfs(int i, int j, char[][] grid) {
     if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] != '1') return;
