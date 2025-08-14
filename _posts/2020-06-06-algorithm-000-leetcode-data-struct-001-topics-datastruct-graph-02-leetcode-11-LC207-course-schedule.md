@@ -311,8 +311,102 @@ prerequisites[i] 中的所有课程对 互不相同
 
 略有优化
 
+当然还可以进一步将 zeroSet 优化为 queue，减少 set 创建。
 
+reverseMap 优化为 `List<Integer>[]`，进一步提升性能。
 
+不过这2个方式都是在数据结构上改进，算法上其实大同小异。
+
+我们来看一下另一种方案。
+
+# v4-思路 DFS+染色法
+
+## 思路
+
+最核心的其实是我们要检测是否存在环。
+
+如果课程互相依赖（存在环），那么肯定无法完成。
+
+如何检测呢？
+
+## 流程
+
+把课程和先修关系当成一个 有向图：
+
+g[a] 里存放所有从 a 出发能到达的课程（a 是先修课，指向依赖它的课）。
+
+课程能全部修完 ⇔ 图中无环。
+
+因为如果存在环（例如 0→1→2→0），你永远找不到一个“先修课已经完成”的起点。
+
+### 变量解释
+
+colors[i] 表示课程 i 的访问状态：
+
+0 = 未访问
+1 = 正在访问（当前 DFS 路径上的节点）
+2 = 访问完成（该节点的所有后续节点都检查过了，没有环）
+
+这个“染色法”可以快速检测环：
+
+如果 DFS 时遇到 colors[y] == 1，说明我们沿着路径又回到了一个正在访问的节点 → 形成环。
+
+## 实现
+
+```java
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        Map<Integer, Set<Integer>> preMap = new HashMap<>();
+
+        // 初始化
+        for(int[] ints : prerequisites) {
+            int cur = ints[0];
+            int pre = ints[1];
+
+            // 谁依赖了我
+            Set<Integer> preSet = preMap.getOrDefault(pre, new HashSet<>());
+            preSet.add(cur);
+            preMap.put(pre, preSet);
+        }
+
+        // 颜色
+        int[] colors = new int[numCourses];
+
+        // zero
+        for(int i = 0; i < numCourses; i++) {
+           if(colors[i] == 0 && dfsDetectCycle(i, preMap, colors)) {
+                return false;
+           }
+        }
+        return true;
+    }
+
+    public boolean dfsDetectCycle(int i, Map<Integer, Set<Integer>> preMap, int[] colors) {
+        // 正在访问
+        colors[i] = 1;
+        // 从当前位置可以到达的所有点
+        if(preMap.containsKey(i)) {
+            for (int y : preMap.get(i)) {
+
+                // DFS 时遇到 colors[y] == 1，说明我们沿着路径又回到了一个正在访问的节点 → 形成环。
+                if (colors[y] == 1 || (colors[y] == 0 && dfsDetectCycle(y, preMap, colors))) {
+                    return true;
+                }
+            }
+        }
+
+        // 访问完成
+        colors[i] = 2;
+        return false;
+    }
+```
+
+## 效果
+
+7ms 击败 30.41%
+
+## 在线可视化体验
+
+> [DFS 在线可视化](https://houbb.github.io/leetcode-visual/T207-course-schedule-DFS-color.html)
 
 * any list
 {:toc}
