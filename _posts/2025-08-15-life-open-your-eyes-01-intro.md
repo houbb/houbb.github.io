@@ -3,7 +3,7 @@ layout: post
 title: 如何做好职业规划？避免路越走越窄
 date: 2025-8-15 20:40:12 +0800
 categories: [Life]
-tags: [life, sh]
+tags: [life, career-planning, sh]
 published: true
 ---
 

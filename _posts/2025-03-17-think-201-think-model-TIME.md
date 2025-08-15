@@ -1,6 +1,6 @@
 ---
 layout: post
-title: TIME模型核心框架解析
+title: 思维模型之 TIME 模型核心框架解析
 date: 2025-03-17 21:01:55 +0800
 categories: [Think]
 tags: [think, software, sh]
