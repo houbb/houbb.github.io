@@ -17,18 +17,23 @@ https://github.com/aidbbook/aidbbook.github.io
 
 音乐：https://github.com/aidbmusic/aidbmusic.github.io
 
-
 ## jk
 
-it
+it √
 
-other
+other √
 
-middle
-## vpress
+middle √
+
+other √
+
+vpress √
+
+game √
 
 ## 面试
 
+面试圣经 √
 
 # 参考资料
 
