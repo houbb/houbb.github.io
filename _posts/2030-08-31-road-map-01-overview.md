@@ -368,6 +368,10 @@ mertric
 
 如何评估结果？
 
+# ALL-STACK
+
+![stack](https://houbb.github.io/static/img/2025-08-16-all-stack-road-map.jpg)
+
 # 参考资料
 
 https://github.com/jobbole/awesome-java-cn
