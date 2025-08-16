@@ -9,13 +9,6 @@ published: true
 
 
 
-# 拓展阅读
-
-> [《一人企业方法论》第二版，也适合做其他副业（比如自媒体、电商、数字商品）的非技术人群。](https://github.com/easychen/one-person-businesses-methodology-v2.0)
-
-> [精益副业：程序员如何优雅地做副业](https://github.com/easychen/lean-side-bussiness)
-
-> [程序员如何优雅的挣零花钱，2.0版，升级为小书了。Most of this not work outside China , so no English translate](https://github.com/easychen/howto-make-more-money)
 
 
 # 是什么？
@@ -141,6 +134,14 @@ NoCode软件：NoCode指的是将一系列可用于构建互联网应用的组�
 [针 对 独 立 开 发 者 的 趋 势 报 告 服 务](https://trends.vc/archive/)
 
 [全球知名的独立创作者社区](https://www.indiehackers.com/stories)
+
+# 拓展阅读
+
+> [《一人企业方法论》第二版，也适合做其他副业（比如自媒体、电商、数字商品）的非技术人群。](https://github.com/easychen/one-person-businesses-methodology-v2.0)
+
+> [精益副业：程序员如何优雅地做副业](https://github.com/easychen/lean-side-bussiness)
+
+> [程序员如何优雅的挣零花钱，2.0版，升级为小书了。Most of this not work outside China , so no English translate](https://github.com/easychen/howto-make-more-money)
 
 
 # 参考资料
