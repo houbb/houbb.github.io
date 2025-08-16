@@ -118,26 +118,11 @@ void backtrack(参数) {
 
 ## 📋 四、三大经典模板题型
 
-### ✅ 1. 组合类模板（如 LeetCode 77）
 
-```java
-void backtrack(int start, List<Integer> path) {
-    if (path.size() == k) {
-        res.add(new ArrayList<>(path));
-        return;
-    }
-
-    for (int i = start; i <= n; i++) {
-        path.add(i);           // 做选择
-        backtrack(i + 1, path);
-        path.remove(path.size() - 1); // 撤销选择
-    }
-}
-```
 
 ---
 
-### ✅ 2. 排列类模板（如 LeetCode 46）
+### 1 排列类模板（如 LeetCode 46）
 
 ```java
 void backtrack(List<Integer> path, boolean[] used) {
@@ -160,9 +145,24 @@ void backtrack(List<Integer> path, boolean[] used) {
 }
 ```
 
----
+### 2. 组合类模板（如 LeetCode 77）
 
-### ✅ 3. 子集类模板（如 LeetCode 78）
+```java
+void backtrack(int start, List<Integer> path) {
+    if (path.size() == k) {
+        res.add(new ArrayList<>(path));
+        return;
+    }
+
+    for (int i = start; i <= n; i++) {
+        path.add(i);           // 做选择
+        backtrack(i + 1, path);
+        path.remove(path.size() - 1); // 撤销选择
+    }
+}
+```
+
+### 3. 子集类模板（如 LeetCode 78）
 
 ```java
 void backtrack(int start, List<Integer> path) {
