@@ -1,3 +1,85 @@
+<style>
+/* -----------------------------
+   Navbar 科技风格优化
+------------------------------*/
+.navbar-custom {
+  background-color: #0f2027; /* 深色渐变背景 */
+  background-image: linear-gradient(90deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+  border: none;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+}
+
+.navbar-custom .navbar-nav > li > a {
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.navbar-custom .navbar-nav > li > a:hover,
+.navbar-custom .navbar-nav > li.active > a {
+  background-color: #1f3a4b; /* hover/active背景色 */
+  color: #00f6ff;
+  border-radius: 4px;
+}
+
+/* Dropdown 菜单样式 */
+.navbar-custom .dropdown-menu {
+  background-color: #1a2b36; /* 下拉背景深色 */
+  border: none;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  min-width: 200px;
+}
+
+.navbar-custom .dropdown-menu > li > a {
+  color: #ffffff;
+  padding: 10px 20px;
+  transition: all 0.2s ease;
+}
+
+.navbar-custom .dropdown-menu > li > a:hover {
+  background-color: #00f6ff; /* hover 高亮色 */
+  color: #0f2027; /* 文字反转 */
+}
+
+/* Dropdown caret 改色 */
+.navbar-custom .navbar-nav > li.dropdown > a .caret {
+  border-top-color: #ffffff;
+  border-bottom-color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+.navbar-custom .navbar-nav > li.dropdown:hover > a .caret {
+  border-top-color: #00f6ff;
+  border-bottom-color: #00f6ff;
+}
+
+/* 音乐按钮 hover */
+#bg-music-btn:hover i {
+  color: #00f6ff;
+  transform: rotate(20deg);
+  transition: all 0.3s ease;
+}
+
+/* 移动端折叠菜单颜色 */
+.navbar-custom .navbar-collapse.in {
+  background-color: #0f2027;
+}
+
+.navbar-custom .navbar-nav .open .dropdown-menu > li > a {
+  color: #ffffff;
+}
+
+/* 字体图标旋转效果 */
+.rotate-360 {
+  display: inline-block;
+  transition: transform 0.5s ease;
+}
+
+.rotate-360:hover {
+  transform: rotate(360deg);
+}
+</style>
+
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
   <div class="container-fluid">
@@ -40,25 +122,13 @@
         <!-- 个人与资源 dropdown -->
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
-            <i class="fa fa-fw fa-user"></i> 个人与资源 <span class="caret"></span>
+            <i class="fa fa-fw fa-user"></i> 个人资源 <span class="caret"></span>
           </a>
           <ul class="dropdown-menu">
             <li><a href="https://bbhou.github.io/lmxxf-notes/"><i class="fa fa-fw fa-bicycle"></i> 老马随笔</a></li>
             <li><a href="https://bbhou.github.io/my_bookmarks/"><i class="fa fa-fw fa-bookmark"></i> 个人书签</a></li>
             <li><a href="{{ site.url }}/opensource"><i class="fa fa-fw fa-heartbeat"></i> 开源项目</a></li>
             <li><a href="{{ site.url }}/tools/"><i class="fa fa-fw fa-wrench"></i> 实用工具</a></li>
-          </ul>
-        </li>
-
-        <!-- 娱乐与学习 -->
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
-            <i class="fa fa-fw fa-star"></i> 娱乐/学习 <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a href="https://bbhou.github.io/games/"><i class="fa fa-fw fa-gamepad"></i> 游戏</a></li>
-            <li><a href="https://bbhou.github.io/interview-bible/"><i class="fa fa-fw fa-graduation-cap"></i> 面试圣经</a></li>
-            <li><a href="{{ site.url }}/feed.xml"><i class="fa fa-fw fa-rss"></i> 订阅流</a></li>
           </ul>
         </li>
 
@@ -70,6 +140,18 @@
           <ul class="dropdown-menu">
             <li><a href="https://github.com/houbb"><i class="fa fa-fw fa-github"></i> GitHub</a></li>
             <li><a href="https://gitee.com/houbinbin"><i class="fa fa-fw fa-gitee"></i> Gitee</a></li>
+            <li><a href="{{ site.url }}/feed.xml"><i class="fa fa-fw fa-rss"></i> 订阅流</a></li>
+          </ul>
+        </li>
+
+                <!-- 娱乐与学习 -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">
+            <i class="fa fa-fw fa-star"></i> 其他 <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="https://bbhou.github.io/games/"><i class="fa fa-fw fa-gamepad"></i> 游戏</a></li>
+            <li><a href="https://bbhou.github.io/interview-bible/"><i class="fa fa-fw fa-graduation-cap"></i> 面试圣经</a></li>
           </ul>
         </li>
 
