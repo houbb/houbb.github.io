@@ -25,24 +25,18 @@ published: true
 
 示例 1：
 
-```
 输入：s = "()"
 输出：true
-```
 
 示例 2：
 
-```
 输入：s = "()[]{}"
 输出：true
-```
 
 示例 3：
 
-```
 输入：s = "(]"
 输出：false
-``` 
 
 ### 提示：
 
@@ -198,7 +192,6 @@ Memory Usage: 37.1 MB, less than 95.67% of Java online submissions for Valid Par
 
 示例：
 
-```
 输入：n = 3
 输出：[
        "((()))",
@@ -207,7 +200,6 @@ Memory Usage: 37.1 MB, less than 95.67% of Java online submissions for Valid Par
        "()(())",
        "()()()"
      ]
-```
 
 ## 思路分析
 
@@ -628,26 +620,20 @@ Memory Usage: 39.5 MB, less than 65.23% of Java online submissions for Generate 
 
 示例 1：
 
-```
 输入：s = "(()"
 输出：2
 解释：最长有效括号子串是 "()"
-```
 
 示例 2：
 
-```
 输入：s = ")()())"
 输出：4
 解释：最长有效括号子串是 "()()"
-```
 
 示例 3：
 
-```
 输入：s = ""
 输出：0
-``` 
 
 提示：
 
