@@ -244,13 +244,25 @@ public int climbStairs(int n) {
 | 返回值  | 通常是最后一个状态          |
 | 优化方向 | 滚动数组 / 记忆化 / 压缩状态  |
 
----
+# 开源项目
 
-如果你想继续深入，我可以帮你：
+为方便大家学习，所有相关文档和代码均已开源。
 
-* 布置一个 DP 训练计划（按题型刷）
-* 拿你不会的题拆解五步走
-* 写一份题解 + 动图 / 表格说明帮助你理解
+[leetcode-visual 资源可视化](https://github.com/houbb/leetcode-visual)
+
+[leetcode 算法实现源码](https://github.com/houbb/leetcode)
+
+[leetcode 刷题学习笔记](https://github.com/houbb/leetcode-notes)
+
+[老马技术博客](https://houbb.github.io/)
+
+# 小结
+
+希望本文对你有帮助，如果有其他想法的话，也可以评论区和大家分享哦。
+
+各位极客的点赞收藏转发，是老马持续写作的最大动力！
+
+下一节我们将讲解力扣经典，感兴趣的小伙伴可以关注一波，精彩内容，不容错过。
 
 
 * any list
