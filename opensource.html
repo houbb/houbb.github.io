@@ -1,221 +1,308 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>Houbb's Projects</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 引入Font Awesome图标库 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #2188ff;
-            --card-bg: #f6f8fa;
-        }
+  <title>Houbb's Projects</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #2188ff;
+      --card-bg: rgba(255,255,255,0.9);
+    }
 
-        .project-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-        }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+      background: radial-gradient(circle at top left, #1a2a6c, #b21f1f, #fdbb2d);
+      color: #f0f6fc;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
 
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            padding: 0;
-        }
+    /* 星空背景粒子 */
+    body::before {
+      content: "";
+      position: fixed;
+      width: 200%;
+      height: 200%;
+      background: transparent url("https://www.transparenttextures.com/patterns/stardust.png") repeat;
+      top: 0; left: 0;
+      opacity: 0.15;
+      animation: moveStars 60s linear infinite;
+      z-index: -1;
+    }
 
-        .project-card {
-            padding: 1.5rem;
-            background: var(--card-bg);
-            border: 1px solid #e1e4e8;
-            border-radius: 8px;
-            transition: transform 0.2s ease;
-            display: flex;
-            flex-direction: column;
-        }
+    @keyframes moveStars {
+      from { transform: translate(0,0); }
+      to { transform: translate(-500px,-500px); }
+    }
 
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+    header {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+      position: relative;
+    }
 
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
+    .home-link {
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      background: rgba(0,0,0,0.4);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
 
-        .project-icon {
-            font-size: 1.8rem;
-            margin-right: 1rem;
-            color: var(--primary-color);
-        }
+    .home-link:hover {
+      background: var(--primary-color);
+    }
 
-        .project-title {
-            color: #0366d6;
-            font-size: 1.2rem;
-            font-weight: 600;
-            text-decoration: none;
-        }
+    .logo {
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  gap: 0.6rem; /* 图标与文字间距 */
+	  font-size: 2.2rem;
+	  font-weight: 900;
+	  background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+	  -webkit-background-clip: text;
+	  color: transparent;
+	  animation: hueShift 5s infinite linear;
+	}
 
-        .project-desc {
-            color: #586069;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
+	.logo img {
+	  height: 40px;   /* 控制 logo 高度 */
+	  width: auto;
+	  border-radius: 8px; /* 可选，圆角更融合 */
+	}
 
-        .project-meta {
-            margin-top: 1rem;
-            padding-top: 0.8rem;
-            border-top: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9em;
-            color: #6a737d;
-        }
+    @keyframes hueShift {
+      from { filter: hue-rotate(0deg); }
+      to { filter: hue-rotate(360deg); }
+    }
 
-        h2 {
-            color: #2f363d;
-            border-bottom: 2px solid var(--primary-color);
-            padding-bottom: 0.3em;
-            margin: 2em 0 1.5em;
-        }
+    .project-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
 
-		.error {
-			color: #dc3545;
-			padding: 1rem;
-			border: 1px solid #f8d7da;
-			border-radius: 4px;
-			background: #f8d7da;
-		}
-    </style>
+    .search-box {
+      margin: 1rem auto 2rem;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+
+    h2 {
+      color: #fff;
+      border-left: 6px solid var(--primary-color);
+      padding-left: 0.6em;
+      margin: 2em 0 1.5em;
+      font-size: 1.4rem;
+    }
+
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      padding: 1.2rem;
+      background: var(--card-bg);
+      border-radius: 14px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      color: #333;
+      min-height: 160px;
+      border: 1px solid rgba(255,255,255,0.15);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .project-card:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.35);
+      border-color: var(--primary-color);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-icon {
+      font-size: 1.6rem;
+      margin-right: 0.8rem;
+      color: var(--primary-color);
+    }
+
+    .project-title {
+      color: #0366d6;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .project-title:hover {
+      text-decoration: underline;
+    }
+
+    .project-desc {
+      color: #444;
+      line-height: 1.4;
+      flex-grow: 1;
+      font-size: 0.9rem;
+    }
+
+    .project-meta {
+      margin-top: 0.6rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8em;
+      color: #555;
+    }
+
+    footer {
+      margin-top: 3rem;
+      padding: 2rem 1rem;
+      background: rgba(0,0,0,0.7);
+      text-align: center;
+      color: #ccc;
+    }
+
+    footer img {
+      max-height: 150px;
+      margin: 0 10px;
+      vertical-align: middle;
+      transition: transform 0.3s;
+      border-radius: 8px;
+    }
+
+    footer img:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    footer .slogan {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #eee;
+    }
+
+    .error {
+      color: #dc3545;
+      padding: 1rem;
+      border-radius: 4px;
+      background: #f8d7da;
+    }
+  </style>
 </head>
 <body>
-    <div class="project-container">
-        <h1>开源项目</h1>
-        
-        <h2>核心项目</h2>
-        <div class="project-grid" id="core-projects"></div>
+  <header>
+    <a href="https://houbb.github.io/" class="home-link"><i class="fa fa-home"></i> 首页</a>
+    <div class="logo"><img src="lmxxf_logo.png" alt="Logo">老马啸西风</div>
+  </header>
 
-        <h2>其他项目</h2>
-        <div class="project-grid" id="incubating-projects"></div>
+  <div class="project-container">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="🔍 搜索项目（名称 / 描述 / 元信息）...">
     </div>
+    
+    <h2>核心项目</h2>
+    <div class="project-grid" id="core-projects"></div>
 
-    <script>
-        // 图标匹配规则
-        const ICON_MAP = {
-            // 根据仓库名称关键词匹配图标
-            'validator': 'fa-shield-halved',
-            'check': 'fa-check-double',
-            'ml': 'fa-robot',
-            'ai': 'fa-brain',
-            'csv': 'fa-table',
-            'core': 'fa-cube',
-            'cache': 'fa-database',
-            'json': 'fa-file-code',
-            'sync': 'fa-rotate',
-            'async': 'fa-bolt',
-            'common': 'fa-layer-group',
-            'rate': 'fa-chart-line',
-            'leetcode': 'fa-code',
-            'test': 'fa-flask',
-            'doc': 'fa-book',
-            'admin': 'fa-terminal',
-            'db': 'fa-database',
-            'default': 'fa-box-open'
-        };
+    <h2>其他项目</h2>
+    <div class="project-grid" id="incubating-projects"></div>
+  </div>
 
-        // 获取图标类名
-        function getProjectIcon(repoName) {
-            const key = Object.keys(ICON_MAP).find(k => repoName.toLowerCase().includes(k));
-            return ICON_MAP[key] || ICON_MAP.default;
-        }
+  <footer>
+    <div class="slogan" style="margin-bottom: 10px;">💡 技术改变世界 | 思考引领未来</div>
+    <div>
+      <img src="https://houbb.github.io/tools/lmxxf_logo.png" alt="Logo">
+      <img src="https://houbb.github.io/tools/lmxxf_reword.png" alt="Reward">
+    </div>
+  </footer>
 
-        // 渲染项目卡片
-        function renderProject(repo) {
-            return `
-                <div class="project-card">
-                    <div class="card-header">
-                        <i class="fas ${getProjectIcon(repo.name)} project-icon"></i>
-                        <a href="${repo.html_url}" class="project-title" target="_blank">
-                            ${repo.name}
-                        </a>
-                    </div>
-                    <p class="project-desc">${repo.description || 'No description provided'}</p>
-                    <div class="project-meta">
-                        <span title="Stars">⭐ ${repo.stargazers_count}</span>
-                        <span title="Forks">⑂ ${repo.forks_count}</span>
-                        <span>Updated: ${new Date(repo.updated_at).toLocaleDateString()}</span>
-                    </div>
-                </div>
-            `;
-        }
+  <script>
+    const ICON_MAP = {
+      'validator': 'fa-shield-halved','check': 'fa-check-double','ml': 'fa-robot',
+      'ai': 'fa-brain','csv': 'fa-table','core': 'fa-cube','cache': 'fa-database',
+      'json': 'fa-file-code','sync': 'fa-rotate','async': 'fa-bolt',
+      'common': 'fa-layer-group','rate': 'fa-chart-line','leetcode': 'fa-code',
+      'test': 'fa-flask','doc': 'fa-book','admin': 'fa-terminal','db': 'fa-database',
+      'default': 'fa-box-open'
+    };
 
-        // GitHub API请求
-        // 通用数据处理函数
-		function processRepositories(repos) {
-			const coreProjects = document.getElementById('core-projects');
-			const incubatingProjects = document.getElementById('incubating-projects');
-			
-			// 清空现有内容
-			coreProjects.innerHTML = '';
-			incubatingProjects.innerHTML = '';
+    function getProjectIcon(repoName) {
+      const key = Object.keys(ICON_MAP).find(k => repoName.toLowerCase().includes(k));
+      return ICON_MAP[key] || ICON_MAP.default;
+    }
 
-			repos.filter(repo => !repo.fork).forEach(repo => {
-				const card = renderProject(repo);
-				(repo.stargazers_count > 30 ? coreProjects : incubatingProjects)
-					.insertAdjacentHTML('beforeend', card);
-			});
-		}
+    function renderProject(repo) {
+      return `
+        <div class="project-card" data-search="${(repo.name + ' ' + (repo.description || '') + ' ' + repo.stargazers_count + ' ' + repo.forks_count).toLowerCase()}">
+          <div class="card-header">
+            <i class="fas ${getProjectIcon(repo.name)} project-icon"></i>
+            <a href="${repo.html_url}" class="project-title" target="_blank">${repo.name}</a>
+          </div>
+          <p class="project-desc">${repo.description || 'No description provided'}</p>
+          <div class="project-meta">
+            <span>⭐ ${repo.stargazers_count}</span>
+            <span>⑂ ${repo.forks_count}</span>
+            <span>${new Date(repo.updated_at).toLocaleDateString()}</span>
+          </div>
+        </div>`;
+    }
 
-		// 增强版数据加载函数
-		function loadRepositoryData() {
-			// 优先尝试GitHub API
-			fetch('https://api.github.com/users/houbb/repos?sort=updated&per_page=100')
-				.then(response => {
-					if (!response.ok) {
-						throw new Error(`GitHub API请求失败 (HTTP ${response.status})`);
-					}
-					return response.json();
-				})
-				.then(repos => {
-					processRepositories(repos);
-					// 可选：保存最新数据到本地备用
-					localStorage.setItem('cachedRepos', JSON.stringify(repos));
-				})
-				.catch(error => {
-					console.warn('主数据源加载失败:', error);
-					// 尝试读取本地备用文件
-					fetch('./opensource-default.json')
-						.then(response => {
-							if (!response.ok) {
-								throw new Error('备用文件加载失败');
-							}
-							return response.json();
-						})
-						.then(localRepos => {
-							processRepositories(localRepos);
-							console.info('已使用本地备用数据');
-						})
-						.catch(localError => {
-							console.error('备用数据加载失败:', localError);
-							// 尝试读取本地缓存
-							const cached = localStorage.getItem('cachedRepos');
-							if (cached) {
-								processRepositories(JSON.parse(cached));
-								console.info('已使用本地缓存数据');
-							} else {
-								// 最终错误处理
-								document.getElementById('core-projects').innerHTML = 
-									'<p class="error">数据加载失败，请检查网络连接</p>';
-							}
-						});
-				});
-		}
+    function processRepositories(repos) {
+      const coreProjects = document.getElementById('core-projects');
+      const incubatingProjects = document.getElementById('incubating-projects');
+      coreProjects.innerHTML = '';
+      incubatingProjects.innerHTML = '';
+      repos.filter(repo => !repo.fork).forEach(repo => {
+        const card = renderProject(repo);
+        (repo.stargazers_count > 30 ? coreProjects : incubatingProjects)
+          .insertAdjacentHTML('beforeend', card);
+      });
+    }
 
-		// 初始化加载
-		loadRepositoryData();
-    </script>
+    function loadRepositoryData() {
+      fetch('https://api.github.com/users/houbb/repos?sort=updated&per_page=100')
+        .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+        .then(repos => { processRepositories(repos); localStorage.setItem('cachedRepos', JSON.stringify(repos)); })
+        .catch(() => {
+          const cached = localStorage.getItem('cachedRepos');
+          if (cached) processRepositories(JSON.parse(cached));
+          else document.getElementById('core-projects').innerHTML = '<p class="error">加载失败</p>';
+        });
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const query = this.value.toLowerCase();
+      document.querySelectorAll('.project-card').forEach(card => {
+        card.style.display = card.getAttribute('data-search').includes(query) ? 'flex' : 'none';
+      });
+    });
+
+    loadRepositoryData();
+  </script>
 </body>
 </html>
