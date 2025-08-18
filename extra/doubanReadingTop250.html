@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>豆瓣TOP250书单</title>
+  <meta name="description" content="豆瓣书单 · 支持多维检索、筛选、排序、分页、导入导出" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b1020;            /* 深色背景 */
+      --panel: #0f162d;         /* 面板色 */
+      --card: #131b36;          /* 卡片色 */
+      --muted: #9fb0d1;         /* 次级文字 */
+      --primary: #7aa2ff;       /* 主色 */
+      --accent: #24e0a9;        /* 强调 */
+      --border: #233055;        /* 边框 */
+      --ring: 0 0 0 3px rgba(36, 224, 169, .25);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", Arial, sans-serif;
+      background: radial-gradient(80vw 80vh at 10% 10%, #121a34 0%, #0b1020 60%),
+                  radial-gradient(60vw 60vh at 90% 0%, #0d1530 0%, transparent 60%),
+                  radial-gradient(60vw 60vh at 0% 100%, rgba(36,224,169,0.08) 0%, transparent 60%),
+                  linear-gradient(180deg, #0b1020, #0b1020);
+      color: #e8eeff;
+    }
+    header {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: saturate(1.1) blur(10px);
+      background: linear-gradient(180deg, rgba(15,22,45,.9), rgba(15,22,45,.65));
+      border-bottom: 1px solid var(--border);
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 16px; }
+
+    /* 顶部栏 */
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .logo {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: conic-gradient(from 180deg at 50% 50%, #ff3d81, #f5d300, #24e0a9, #7aa2ff, #b57cff, #ff3d81);
+      box-shadow: 0 0 24px rgba(122,162,255,.35), inset 0 0 20px rgba(255,255,255,.25);
+    }
+    .title { font-weight: 800; letter-spacing: .3px; font-size: 20px; }
+    .sub { color: var(--muted); font-size: 12px; }
+
+    /* 控件区 */
+    .controls { display: grid; grid-template-columns: 1fr 220px 160px 160px; gap: 12px; margin-top: 14px; }
+    .search { position: relative; }
+    .search input {
+      width: 100%; padding: 12px 40px 12px 40px; border-radius: 14px; border: 1px solid var(--border);
+      background: var(--panel); color: #e8eeff; outline: none; font-size: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.2), inset 0 0 0 1px rgba(255,255,255,.02);
+    }
+    .search input:focus { box-shadow: var(--ring); border-color: #2a3d74; }
+    .search .icon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); opacity: .7; }
+    .kbd { position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+      font-size: 11px; color: var(--muted); border: 1px solid var(--border); padding: 2px 6px; border-radius: 6px; }
+
+    .select, .button, .file {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--panel); border: 1px solid var(--border); color: #e8eeff;
+      padding: 10px 12px; border-radius: 14px; font-size: 14px; cursor: pointer;
+    }
+    select, option { background: var(--panel); color: #e8eeff; }
+    .button { justify-content: center; }
+    .button.primary { background: linear-gradient(90deg, #7aa2ff, #24e0a9); color: #0b1020; font-weight: 700; border: none; }
+
+    .chips { display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+    .chip { font-size:12px; color:#b9c8ec; background:#0f1a36; border:1px solid var(--border); padding:6px 10px; border-radius:999px; cursor:pointer; }
+    .chip.active { color:#0b1020; background: linear-gradient(90deg, #7aa2ff, #24e0a9); border:none; font-weight:700; }
+
+    /* 结果与工具条 */
+    .toolbar { display:flex; align-items:center; justify-content:space-between; margin:16px 0 8px; color:var(--muted); font-size:13px; }
+    .toolbar .right { display:flex; gap:8px; }
+
+    /* 卡片网格 */
+    .grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+    @media (max-width: 1200px) { .grid { grid-template-columns: repeat(5, 1fr);} }
+    @media (max-width: 980px) { .controls { grid-template-columns: 1fr 1fr; } .grid { grid-template-columns: repeat(3, 1fr);} }
+    @media (max-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr);} }
+
+    .card { background: linear-gradient(180deg, rgba(19,27,54,.9), rgba(16,23,45,.9)); border: 1px solid var(--border);
+            border-radius: 18px; overflow: hidden; position: relative; transition: transform .25s ease, box-shadow .25s ease; }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 18px 40px rgba(10, 20, 50, .6); }
+    .cover { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #0d1330; display:block; }
+    .meta { padding: 10px 12px 12px; }
+    .name { font-weight: 700; font-size: 14px; line-height: 1.35; }
+    .author { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .cat { display:inline-flex; align-items:center; gap:6px; font-size:11px; color:#b9c8ec; background:#0e1733; border:1px solid var(--border); padding:4px 8px; border-radius:999px; margin-top:8px; }
+    .desc { font-size: 12px; color: #c9d6ff; opacity: .9; margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; min-height: 48px; }
+
+    /* 高亮 */
+    mark { background: rgba(36,224,169,.25); color: #e8fffb; padding: 0 .15em; border-radius: 3px; }
+
+    /* 分页 */
+    .pagination { display:flex; justify-content:center; gap:8px; margin:20px 0 60px; }
+    .page-btn { min-width:36px; padding:8px 10px; border-radius:10px; border:1px solid var(--border); background:var(--panel); color:#e8eeff; cursor:pointer; }
+    .page-btn.active { background: linear-gradient(90deg, #7aa2ff, #24e0a9); color:#0b1020; border:none; font-weight:800; }
+
+    /* 模态: 导入JSON */
+    dialog { border:1px solid var(--border); background:var(--panel); color:#e8eeff; border-radius:16px; width:min(820px, 92vw); }
+    dialog::backdrop { background: rgba(0,0,0,.5); backdrop-filter: blur(4px); }
+    .modal-header { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid var(--border); }
+    .modal-body { padding:12px 16px; }
+    textarea { width:100%; min-height: 200px; background:#0e1733; color:#e8eeff; border:1px solid var(--border); border-radius:12px; padding:10px; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+
+    .ghost { position: fixed; inset: 0; pointer-events: none; background: radial-gradient(600px 200px at var(--x, 50%) var(--y, 0%), rgba(36,224,169,.09), transparent 60%); z-index: 0; }
+    footer { color: var(--muted); text-align:center; padding: 24px 0 60px; }
+    a { color: #9fd9ff; text-decoration: none; }
+	
+	footer {
+      margin-top: 3rem;
+      padding: 2rem 1rem;
+      background: rgba(0,0,0,0.7);
+      text-align: center;
+      color: #ccc;
+    }
+    footer img {
+      max-height: 150px;
+      margin: 0 10px;
+      vertical-align: middle;
+      transition: transform 0.3s;
+      border-radius: 8px;
+    }
+    footer img:hover {
+      transform: scale(1.1) rotate(5deg);
+    }
+    footer .slogan {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="ghost" aria-hidden="true"></div>
+  <header>
+    <div class="container">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <div class="title">豆瓣书单 | <a href="https://houbb.github.io">返回首页</a></div>
+          <div class="sub">支持名称 / 作者 / 分类 / 简介 / 出版社 / 关键词 等任意字段检索</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="search">
+          <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 21l-4.3-4.3" stroke="#9fb0d1" stroke-width="2" stroke-linecap="round"/><circle cx="11" cy="11" r="7" stroke="#9fb0d1" stroke-width="2"/></svg>
+          <input id="q" placeholder="搜索书名、作者、分类、简介、出版社、标签… 支持字段筛选：title: 三体, author: 刘慈欣, cat: 科幻" />
+          <span class="kbd">/</span>
+        </div>
+        <select id="catSelect" class="select">
+          <option value="">所有分类</option>
+        </select>
+        <select id="sortSelect" class="select" title="排序">
+          <option value="relevance">相关度</option>
+          <option value="title">书名 A→Z</option>
+          <option value="author">作者 A→Z</option>
+          <option value="yearDesc">年份 新→旧</option>
+          <option value="yearAsc">年份 旧→新</option>
+          <option value="rating">评分 高→低</option>
+        </select>
+        <div class="button" id="importBtn" title="导入/粘贴 JSON">导入 JSON</div>
+        
+        <div class="chips" id="chips"></div>
+      </div>
+
+      <div class="toolbar">
+        <div id="stats">共 0 本 · 已过滤 0 本</div>
+        <div class="right">
+          <div class="button" id="exportJson">导出 JSON</div>
+          <div class="button" id="exportCsv">导出 CSV</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="grid" id="grid"></section>
+    <nav class="pagination" id="pager"></nav>
+  </main>
+
+  <!-- 导入 JSON 模态框 -->
+  <dialog id="importModal">
+    <div class="modal-header">
+      <strong>导入书籍 JSON（数组）</strong>
+      <button class="button" onclick="importModal.close()">关闭</button>
+    </div>
+    <div class="modal-body">
+      <p style="color:var(--muted);margin-top:0">格式示例：[{"title":"三体","author":"刘慈欣","category":"科幻","year":2008,"rating":9.6,"publisher":"重庆出版社","desc":"黑暗森林法则…","cover":"https://example.com/santi.jpg","tags":["宇宙","硬科幻"]}, …]</p>
+      <textarea id="jsonInput" placeholder='在此粘贴 JSON 数组，或点击下方“选择文件”导入'></textarea>
+      <div style="display:flex; gap:8px; margin-top:10px; align-items:center;">
+        <input class="file" type="file" id="fileInput" accept="application/json" />
+        <div class="button primary" id="applyImport">应用导入</div>
+      </div>
+    </div>
+  </dialog>
+
+  <template id="cardTpl">
+    <article class="card">
+      <img class="cover" loading="lazy" alt="封面" />
+      <div class="meta">
+        <div class="name"></div>
+        <div class="author"></div>
+        <div class="cat"></div>
+        <div class="desc"></div>
+      </div>
+    </article>
+  </template>
+
+
+  <footer>
+    <div class="slogan" style="margin-bottom: 10px;">💡 技术改变世界 | 思考引领未来</div>
+    <div>
+      <img src="https://houbb.github.io/tools/lmxxf_logo.png" alt="Logo">
+      <img src="https://houbb.github.io/tools/lmxxf_reword.png" alt="Reward">
+    </div>
+  </footer>	
+
+  <script src="books-json.js"></script>
+  <script>
+  // ----------------------
+  // 数据区：示例数据（请替换为你的 TOP200）
+  // ----------------------
+
+  let state = {
+    books: [...SAMPLE], // 数据池
+    filtered: [],
+    query: '',
+    category: '',
+    sort: 'relevance',
+    page: 1,
+    perPage: 24,
+    chips: new Map(), // 动态分类 chips
+  };
+
+  const el = (id) => document.getElementById(id);
+  const grid = el('grid');
+  const pager = el('pager');
+  const q = el('q');
+  const catSelect = el('catSelect');
+  const sortSelect = el('sortSelect');
+  const stats = el('stats');
+  const chipsWrap = el('chips');
+  const importBtn = el('importBtn');
+  const exportJson = el('exportJson');
+  const exportCsv = el('exportCsv');
+  const importModal = el('importModal');
+  const jsonInput = el('jsonInput');
+  const fileInput = el('fileInput');
+  const applyImport = el('applyImport');
+
+  // ---------- 工具函数 ----------
+  const debounce = (fn, ms=200) => { let t; return (...args) => { clearTimeout(t); t=setTimeout(()=>fn(...args), ms); } };
+
+  // 高亮匹配文本
+  function highlight(text, terms) {
+    if (!terms.length || !text) return escapeHtml(text||'');
+    let html = escapeHtml(text);
+    for (const t of terms) {
+      try {
+        const re = new RegExp(`(${escapeReg(t)})`, 'ig');
+        html = html.replace(re, '<mark>$1</mark>');
+      } catch {}
+    }
+    return html;
+  }
+  const escapeHtml = (s) => (s||'').replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+  const escapeReg = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  // 解析查询：支持 field:value
+  function parseQuery(input) {
+    const tokens = [];
+    const fields = {};
+    const re = /(title|author|cat|category|publisher|tag|year|rating):([^\s]+)|([^\s]+)/ig;
+    let m; while ((m = re.exec(input))) {
+      if (m[1]) { fields[m[1].toLowerCase()] = (fields[m[1].toLowerCase()]||[]).concat(m[2]); }
+      else if (m[3]) tokens.push(m[3]);
+    }
+    return { tokens, fields };
+  }
+
+  // 根据查询匹配一本书
+  function matchBook(book, qObj) {
+    const hay = (book.title + ' ' + (book.author||'') + ' ' + (book.category||'') + ' ' + (book.publisher||'') + ' ' + (book.desc||'') + ' ' + (book.tags||[]).join(' ')).toLowerCase();
+    const tokensOk = qObj.tokens.every(t => hay.includes(t.toLowerCase()));
+    if (!tokensOk) return false;
+    // 字段匹配（包含匹配）
+    for (const [k, arr] of Object.entries(qObj.fields)) {
+      for (const v of arr) {
+        const lc = (v+'').toLowerCase();
+        if (k==='title' && !String(book.title||'').toLowerCase().includes(lc)) return false;
+        if ((k==='cat'||k==='category') && !String(book.category||'').toLowerCase().includes(lc)) return false;
+        if (k==='author' && !String(book.author||'').toLowerCase().includes(lc)) return false;
+        if (k==='publisher' && !String(book.publisher||'').toLowerCase().includes(lc)) return false;
+        if (k==='tag' && !(book.tags||[]).join(' ').toLowerCase().includes(lc)) return false;
+        if (k==='year' && String(book.year||'').toLowerCase() !== lc) return false; // 年份精确
+        if (k==='rating' && String(book.rating||'').toLowerCase().startsWith(lc)===false) return false;
+      }
+    }
+    return true;
+  }
+
+  // 排序器
+  function sortBooks(list, sort) {
+    const collator = new Intl.Collator('zh-Hans-CN');
+    const byText = (a,b,field) => collator.compare((a[field]||'').toString(), (b[field]||'').toString());
+    switch (sort) {
+      case 'title': return [...list].sort((a,b)=> byText(a,b,'title'));
+      case 'author': return [...list].sort((a,b)=> byText(a,b,'author'));
+      case 'yearAsc': return [...list].sort((a,b)=> (a.year||0)-(b.year||0));
+      case 'yearDesc': return [...list].sort((a,b)=> (b.year||0)-(a.year||0));
+      case 'rating': return [...list].sort((a,b)=> (b.rating||0)-(a.rating||0));
+      default: return list; // relevance 暂以原序为相关度
+    }
+  }
+
+  // 生成分类 chips
+  function buildChips(books) {
+    const counts = new Map();
+    for (const b of books) {
+      const c = (b.category||'未分类').split(/[\s·/|,;]+/).filter(Boolean);
+      c.forEach(cc => counts.set(cc, (counts.get(cc)||0) + 1));
+    }
+    chipsWrap.innerHTML='';
+    [...counts.entries()].sort((a,b)=> b[1]-a[1]).slice(0, 20).forEach(([name, n])=>{
+      const div = document.createElement('div');
+      div.className = 'chip' + (state.category===name? ' active':'');
+      div.textContent = name + ' · ' + n;
+      div.onclick = ()=>{ state.category = (state.category===name? '' : name); catSelect.value = state.category; state.page=1; render(); };
+      chipsWrap.appendChild(div);
+    });
+  }
+
+  // 渲染下拉分类
+  function buildCatSelect(books) {
+    const set = new Set();
+    books.forEach(b => (b.category||'').split(/[\s·/|,;]+/).forEach(x=>x && set.add(x)));
+    const cur = state.category;
+    catSelect.innerHTML = '<option value="">所有分类</option>' + [...set].sort().map(c=>`<option ${c===cur? 'selected':''} value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+  }
+
+  // 渲染卡片
+  function renderGrid(list, terms) {
+    const tpl = document.getElementById('cardTpl');
+    grid.innerHTML='';
+    list.forEach(b => {
+      const node = tpl.content.cloneNode(true);
+      const img = node.querySelector('.cover');
+      img.src = b.cover || 'data:image/svg+xml;utf8,' + encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400"><rect width="100%" height="100%" fill="#0e1733"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#7aa2ff" font-family="Inter,Arial" font-size="18">NO COVER</text></svg>`);
+      img.alt = b.title ? `${b.title} 封面` : '封面';
+
+      const name = node.querySelector('.name');
+      name.innerHTML = highlight(b.title||'', terms);
+
+      const author = node.querySelector('.author');
+      const extra = [b.author, b.publisher, b.year? `· ${b.year}`:'', b.rating? `· ★${b.rating}`:''].filter(Boolean).join(' ');
+      author.innerHTML = escapeHtml(extra);
+
+      const cat = node.querySelector('.cat');
+      cat.textContent = b.category || '未分类';
+
+      const desc = node.querySelector('.desc');
+      desc.innerHTML = highlight(b.desc||'', terms);
+
+      grid.appendChild(node);
+    });
+  }
+
+  // 分页渲染
+  function renderPager(total) {
+    const pages = Math.max(1, Math.ceil(total / state.perPage));
+    state.page = Math.min(state.page, pages);
+    pager.innerHTML='';
+    const mk = (i, label=i) => {
+      const btn = document.createElement('button');
+      btn.className = 'page-btn' + (i===state.page? ' active':'');
+      btn.textContent = label;
+      btn.onclick = () => { state.page = i; render(false/*noScroll*/); };
+      return btn;
+    };
+    if (pages>1) {
+      pager.appendChild(mk(Math.max(1,state.page-1),'‹'));
+      const range = [...new Set([1,2,state.page-1,state.page,state.page+1,pages-1,pages].filter(n=>n>=1&&n<=pages))].sort((a,b)=>a-b);
+      let prev = 0;
+      for (const p of range) {
+        if (prev && p - prev > 1) { const span=document.createElement('span'); span.style.color='var(--muted)'; span.textContent='…'; pager.appendChild(span); }
+        pager.appendChild(mk(p)); prev = p;
+      }
+      pager.appendChild(mk(Math.min(pages,state.page+1),'›'));
+    }
+  }
+
+  // 统计及状态
+  function renderStats(total, shown) {
+    stats.textContent = `共 ${total} 本 · 已过滤 ${shown} 本`;
+  }
+
+  // 主渲染
+  function render(scrollTop=true) {
+    const qObj = parseQuery(state.query.trim());
+    let list = state.books.filter(b => matchBook(b, qObj));
+    if (state.category) list = list.filter(b => (b.category||'').split(/[\s·/|,;]+/).includes(state.category));
+    const sorted = sortBooks(list, state.sort);
+    state.filtered = sorted;
+
+    // 构建分类控件与 chips（基于全部 books，而非过滤后，以便提示全面）
+    buildCatSelect(state.books);
+    buildChips(state.books);
+
+    // 分页切片
+    renderPager(sorted.length);
+    const start = (state.page - 1) * state.perPage;
+    const pageItems = sorted.slice(start, start + state.perPage);
+
+    // 渲染网格 + 统计
+    const terms = [ ...qObj.tokens, ...Object.values(qObj.fields).flat() ];
+    renderGrid(pageItems, terms);
+    renderStats(state.books.length, sorted.length);
+
+    // URL hash 状态
+    location.hash = encodeURIComponent(JSON.stringify({ q: state.query, c: state.category, s: state.sort, p: state.page }));
+
+    if (scrollTop) window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // ---------- 事件绑定 ----------
+  q.addEventListener('input', debounce(() => { state.query = q.value; state.page=1; render(); }, 200));
+  sortSelect.onchange = () => { state.sort = sortSelect.value; state.page=1; render(); };
+  catSelect.onchange = () => { state.category = catSelect.value; state.page=1; render(); };
+
+  // 快捷键：/ 聚焦搜索；Esc 清空
+  window.addEventListener('keydown', (e)=>{
+    if (e.key === '/') { e.preventDefault(); q.focus(); }
+    if (e.key === 'Escape' && document.activeElement === q) { q.value=''; state.query=''; render(); }
+  });
+
+  // 导入弹窗
+  importBtn.onclick = () => { jsonInput.value=''; importModal.showModal(); };
+  fileInput.onchange = async () => {
+    const f = fileInput.files?.[0]; if (!f) return;
+    const text = await f.text(); jsonInput.value = text;
+  };
+  applyImport.onclick = () => {
+    try {
+      const arr = JSON.parse(jsonInput.value);
+      if (!Array.isArray(arr)) throw new Error('JSON 需为数组');
+      // 规范化字段
+      const norm = arr.map((b, idx) => ({
+        id: b.id ?? idx + 1,
+        title: b.title ?? b.name ?? '',
+        author: b.author ?? b.writer ?? '',
+        category: b.category ?? b.cat ?? b.genre ?? '',
+        year: b.year ?? b.publishYear ?? '',
+        rating: b.rating ?? b.score ?? '',
+        publisher: b.publisher ?? b.press ?? '',
+        desc: b.desc ?? b.description ?? '',
+        cover: b.cover ?? b.image ?? b.coverUrl ?? '',
+        tags: Array.isArray(b.tags) ? b.tags : (typeof b.tags === 'string' ? b.tags.split(/[\s,;]+/) : []),
+      }));
+      state.books = norm;
+      state.page = 1; state.category=''; state.query=''; sortSelect.value='relevance'; state.sort='relevance';
+      importModal.close();
+      render();
+    } catch (e) {
+      alert('导入失败：' + e.message);
+    }
+  };
+
+  // 导出 JSON / CSV
+  exportJson.onclick = () => {
+    const data = JSON.stringify(state.filtered, null, 2);
+    download('weread-top200.json', data, 'application/json');
+  };
+  exportCsv.onclick = () => {
+    const csv = toCSV(state.filtered);
+    download('weread-top200.csv', csv, 'text/csv');
+  };
+
+  function toCSV(list) {
+    const cols = ['title','author','category','year','rating','publisher','desc','cover','tags'];
+    const lines = [cols.join(',')];
+    for (const b of list) {
+      const row = cols.map(k => {
+        const v = Array.isArray(b[k]) ? b[k].join('|') : (b[k]??'');
+        return '"' + String(v).replace(/"/g,'""') + '"';
+      }).join(',');
+      lines.push(row);
+    }
+    return lines.join('\n');
+  }
+  function download(name, content, type) {
+    const blob = new Blob([content], { type });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = name; a.click();
+    setTimeout(()=> URL.revokeObjectURL(a.href), 1000);
+  }
+
+  // 从 URL 恢复状态
+  function restoreFromHash() {
+    if (!location.hash) return; 
+    try { const st = JSON.parse(decodeURIComponent(location.hash.slice(1))); 
+      if (st.q!=null) { state.query = st.q; q.value = st.q; }
+      if (st.c!=null) { state.category = st.c; }
+      if (st.s!=null) { state.sort = st.s; sortSelect.value = st.s; }
+      if (st.p!=null) { state.page = st.p; }
+    } catch {}
+  }
+
+  // 光标炫彩背景跟随
+  window.addEventListener('mousemove', (e)=>{
+    const g = document.querySelector('.ghost');
+    g.style.setProperty('--x', e.clientX + 'px');
+    g.style.setProperty('--y', e.clientY + 'px');
+  });
+
+  // 初始化
+  restoreFromHash();
+  render();
+
+  </script>
+</body>
+</html>
