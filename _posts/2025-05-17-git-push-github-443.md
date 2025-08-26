@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 如何解决 git push 
+title: Failed to connect to github.com port 443 Timed out 如何解决 git push 
 date: 2025-5-13 20:16:25 +0800
 categories: [Github]
 tags: [github, problem, sh]
