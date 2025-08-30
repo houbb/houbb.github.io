@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>系统能力提升梯度 · 交互式</title>
+  <style>
+    :root{
+      --bg:#0b1020;/* 深夜蓝 */
+      --card:#121833;/* 卡片底色 */
+      --muted:#8ea0ffcc;/* 次要文字 */
+      --text:#f5f7ff;/* 主文字 */
+      --accent1:#7c3aed;/* 紫 */
+      --accent2:#06b6d4;/* 青 */
+      --accent3:#22c55e;/* 绿 */
+      --ring: 0 0 0 2px #ffffff22 inset, 0 0 0 1px #ffffff11 inset, 0 10px 30px #0003;
+      --radius: 18px;
+    }
+
+    html,body{height:100%;}
+    body{
+      margin:0; background: radial-gradient(1200px 600px at 15% -10%, #1d2a68, transparent),
+                               radial-gradient(900px 500px at 85% 10%, #0a4d61, transparent),
+                               linear-gradient(180deg, #0b1020 0%, #0b0f1b 100%);
+      color:var(--text); font: 15px/1.6 system-ui, -apple-system, Segoe UI, Roboto, PingFang SC, Noto Sans SC, sans-serif;
+      letter-spacing:.2px;
+    }
+
+    /* 顶部栏 */
+    .nav{
+      position:sticky; top:0; z-index:40; backdrop-filter: blur(10px);
+      background:linear-gradient(180deg,#0b1020e6,#0b1020a0 60%,transparent);
+      border-bottom:1px solid #ffffff10;
+    }
+    .nav-inner{max-width:1100px; margin:auto; padding:14px 20px; display:flex; align-items:center; gap:14px;}
+    .brand{font-weight:700; letter-spacing:.6px; font-size:16px}
+    .progress{margin-left:auto; display:flex; align-items:center; gap:10px;}
+    .bar{width:200px; height:8px; border-radius:999px; background:#ffffff18; position:relative; overflow:hidden; box-shadow: var(--ring);}
+    .bar>span{position:absolute; inset:0 auto 0 0; width:0%; border-radius:inherit; background:linear-gradient(90deg,var(--accent2),var(--accent1)); box-shadow:0 0 20px #06b6d4aa inset}
+    .pct{font-variant-numeric:tabular-nums; color:var(--muted)}
+
+    /* 容器 */
+    .wrap{max-width:1100px; margin:24px auto 80px; padding:0 18px;}
+    .hero{display:grid; grid-template-columns: 1fr; gap:14px; align-items:center; margin: 18px 0 22px}
+    .title{font-size: clamp(26px, 3.6vw, 40px); font-weight:800; letter-spacing:.6px; line-height:1.15;}
+    .subtitle{color:var(--muted)}
+
+    /* 梯度列表 */
+    .ladder{position:relative; margin-top:12px}
+    /* 竖向渐变主线 */
+    .ladder::before{
+      content:""; position:absolute; left:24px; top:0; bottom:0; width:3px; border-radius:2px;
+      background: linear-gradient(180deg, var(--accent2), var(--accent1) 40%, var(--accent3));
+      filter: drop-shadow(0 0 6px #06b6d4cc);
+    }
+
+    .step{position:relative; margin:16px 0 20px;}
+
+    .token{
+      position:absolute; left:-1px; top:22px; transform:translate(-50%,-50%);
+      width:34px; height:34px; border-radius:999px;
+      display:grid; place-items:center; font-weight:800;
+      background: radial-gradient(circle at 30% 30%, #fff, #ddd);
+      color:#0b1020; box-shadow: 0 10px 20px #0007, 0 0 0 6px #0b1020;
+      outline: 6px solid #0b1020; /* 与背景线隔开 */
+    }
+
+    /* 卡片 */
+    details.card{
+      margin-left:60px; list-style:none; border-radius: var(--radius);
+      background: linear-gradient(180deg, #121833f2, #0f1430f2);
+      border:1px solid #ffffff15; box-shadow: var(--ring);
+      overflow:hidden; transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    details.card[open]{
+      transform: translateY(-2px);
+      border-color:#ffffff25;
+      box-shadow: 0 0 0 1px #ffffff08 inset, 0 20px 40px #0008;
+    }
+
+    /* 折叠头 */
+    summary.head{list-style:none; cursor:pointer; padding:18px 18px 18px 18px; display:grid; grid-template-columns: auto 1fr auto; gap:14px; align-items:center}
+    summary::-webkit-details-marker{display:none}
+
+    .badge{padding:4px 10px; border-radius:999px; background:#ffffff14; border:1px solid #ffffff22; font-weight:700; font-size:12px; letter-spacing:.4px}
+
+    .head h3{margin:0; font-size:18px}
+    .meta{font-size:12px; color:var(--muted)}
+
+    .chev{width:18px; height:18px; transition: transform .25s ease; opacity:.9}
+    details[open] .chev{transform:rotate(180deg)}
+
+    .content{padding:0 18px 18px 18px; color:#dfe6ff;}
+    .content p{margin:8px 0 12px}
+    .content ul{margin:6px 0 8px 1.2em}
+    .content li{margin:6px 0}
+
+    /* 浮动操作条 */
+    .dock{position:fixed; right:18px; bottom:18px; z-index:50; display:flex; flex-direction:column; gap:10px}
+    .btn{
+      border:none; padding:12px 14px; border-radius:14px; color:#0b1020; font-weight:800; cursor:pointer;
+      background:linear-gradient(135deg,var(--accent2),var(--accent1)); box-shadow: 0 12px 26px #0007;
+    }
+    .btn.secondary{background:#ffffff10; color:#fff; border:1px solid #ffffff22}
+
+    .k{display:inline-block; padding:2px 8px; border-radius:6px; background:#ffffff14; border:1px solid #ffffff22; font-size:12px}
+
+    /* 响应式 */
+    @media (max-width:640px){
+      .ladder::before{left:18px}
+      .token{left:-8px}
+      details.card{margin-left:52px}
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-inner">
+      <div class="brand">系统能力提升梯度</div>
+      <div class="progress" aria-label="已展开进度">
+        <div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><span></span></div>
+        <div class="pct">0%</div>
+      </div>
+    </div>
+  </nav>
+
+  <main class="wrap">
+    <section class="hero">
+      <h1 class="title">从输入到长期主义的 11 级能力飞梯 </div> </h1>
+      <a href="https://houbb.github.io">返回首页</a>
+    </section>
+
+    <section class="ladder" id="ladder">
+      <!-- 01 输入（阅读/获取信息） -->
+      <div class="step">
+        <div class="token">01</div>
+        <details class="card" open>
+          <summary class="head">
+            <span class="badge">INPUT</span>
+            <div>
+              <h3>输入（阅读 / 获取信息）</h3>
+              <div class="meta">原料的质量决定后续一切可能</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="content">
+            <p><strong>关键做法：</strong></p>
+            <ul>
+              <li>高质量来源清单：书/论文/一线从业者/数据报告。</li>
+              <li>问题先行阅读：带着 3 个问题进入文本。</li>
+              <li>多通道输入：读书 + 听播客 + 观察真实场景。</li>
+            </ul>
+            <p><strong>小练习：</strong> 每周产出 1 页「读写联动」卡，记录观点→证据→反例。</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- 02 信息处理（笔记/知识管理） -->
+      <div class="step">
+        <div class="token">02</div>
+        <details class="card">
+          <summary class="head">
+            <span class="badge">NOTE</span>
+            <div>
+              <h3>信息处理（笔记 / 管理）</h3>
+              <div class="meta">让信息结构化、可复用、可检索</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="content">
+            <ul>
+              <li>卡片笔记：一个事实/观点/问题一张卡，原子化。</li>
+              <li>连接与标签：主题 / 场景 / 方法 三向标签。</li>
+              <li>知识库：每周重构目录，沉淀「索引页」。</li>
+            </ul>
+            <p><strong>工具提示：</strong> Obsidian/Notion + 双向链接；每条笔记必须可被引用。</p>
+          </div>
+        </details>
+      </div>
+
+      <!-- 03 学习（技巧/方法） -->
+      <div class="step">
+        <div class="token">03</div>
+        <details class="card">
+          <summary class="head">
+            <span class="badge">LEARN</span>
+            <div>
+              <h3>学习（技巧 / 方法）</h3>
+              <div class="meta">从“知道”到“会用”的系统通道</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="content">
+            <ul>
+              <li>刻意练习：瞄准薄弱环，设计高频反馈回路。</li>
+              <li>检索练习：闭卷回忆→对答案→修正笔记。</li>
+              <li>跨学科迁移：为每个概念找 2 个跨域类比。</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- 04 记忆与专注（保持） -->
+      <div class="step">
+        <div class="token">04</div>
+        <details class="card">
+          <summary class="head">
+            <span class="badge">MEMORY</span>
+            <div>
+              <h3>记忆与专注（保持）</h3>
+              <div class="meta">把短时信息固化为可调用的长期记忆</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="content">
+            <ul>
+              <li>间隔重复（SRS/Anki）：概念卡、题目卡、反例卡。</li>
+              <li>记忆宫殿/联想法：为抽象概念绑定生动线索。</li>
+              <li>专注系统：番茄钟 + 深度工作时段 + 干扰黑名单。</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- 05 输出（写作/表达） -->
+      <div class="step">
+        <div class="token">05</div>
+        <details class="card">
+          <summary class="head">
+            <span class="badge">OUTPUT</span>
+            <div>
+              <h3>输出（写作 / 表达）</h3>
+              <div class="meta">输出倒逼输入，形成可验证的观点</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="content">
+            <ul>
+              <li>结构先行：金字塔大纲→段落主题句→证据链。</li>
+              <li>可视化表达：图表/流程/框架图辅助叙述。</li>
+              <li>发布节奏：周更长文 + 日更微输出。</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- 06 教育（教学相长） -->
+      <div class="step">
+        <div class="token">06</div>
+        <details class="card">
+          <summary class="head">
+            <span class="badge">TEACH</span>
+            <div>
+              <h3>教育（教学相长）</h3>
+              <div class="meta">把理解转化为能教清楚的能力</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="content">
+            <ul>
+              <li>费曼法：用中学生也懂的语言解释。</li>
+              <li>启发式提问：由浅入深的 5 个阶梯问题。</li>
+              <li>快速反馈：课后 3 问卷 + 即时纠错清单。</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- 07 创造（创新思维） -->
+      <div class="step">
+        <div class="token">07</div>
+        <details class="card">
+          <summary class="head">
+            <span class="badge">CREATE</span>
+            <div>
+              <h3>创造（创新思维）</h3>
+              <div class="meta">从复述到重构与原创</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="content">
+            <ul>
+              <li>逆向思考：从边界条件/反例切入。</li>
+              <li>组合创新：跨域拼接形成新解法。</li>
+              <li>问题重构：重新定义问题以发现更优目标。</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- 08 实践（应用） -->
+      <div class="step">
+        <div class="token">08</div>
+        <details class="card">
+          <summary class="head">
+            <span class="badge">APPLY</span>
+            <div>
+              <h3>实践（应用 / 项目驱动）</h3>
+              <div class="meta">用真实问题检验有效性</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="content">
+            <ul>
+              <li>项目化：以交付物为导向推进学习。</li>
+              <li>最小可行：先做能跑通的最小版本。</li>
+              <li>场景迁移：同一方法迁到两个不同行业。</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- 09 反馈与反思（迭代） -->
+      <div class="step">
+        <div class="token">09</div>
+        <details class="card">
+          <summary class="head">
+            <span class="badge">FEEDBACK</span>
+            <div>
+              <h3>反馈与反思（迭代）</h3>
+              <div class="meta">每一次循环都要更好一点</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="content">
+            <ul>
+              <li>事后复盘：事实→原因→对策→复盘清单。</li>
+              <li>外部反馈：同伴评审/导师点评/用户数据。</li>
+              <li>元认知：识别自己的偏见与盲点。</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- 10 环境（社群/导师） -->
+      <div class="step">
+        <div class="token">10</div>
+        <details class="card">
+          <summary class="head">
+            <span class="badge">ENV</span>
+            <div>
+              <h3>环境（社群 / 导师）</h3>
+              <div class="meta">让好环境抬高「平均水平」</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="content">
+            <ul>
+              <li>同伴效应：加入高密度学习圈子。</li>
+              <li>导师制度：定期一对一校准方向。</li>
+              <li>工具与环境：降噪、快捷键、自动化工作流。</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+
+      <!-- 11 心智（情绪/习惯/长期主义） -->
+      <div class="step">
+        <div class="token">11</div>
+        <details class="card">
+          <summary class="head">
+            <span class="badge">MIND</span>
+            <div>
+              <h3>心智（情绪 / 习惯 / 长期主义）</h3>
+              <div class="meta">决定你能走多远的底层驱动</div>
+            </div>
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="content">
+            <ul>
+              <li>习惯叠加：小步快跑 + 复利增量。</li>
+              <li>情绪能量：睡眠/运动/冥想的能量管理。</li>
+              <li>长期主义：10 年视角设定方向与边界。</li>
+            </ul>
+          </div>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <div class="dock">
+    <button class="btn" id="toggleAll">全部展开</button>
+    <button class="btn secondary" id="collapseAll">全部折叠</button>
+  </div>
+
+  <script>
+    const detailsList = Array.from(document.querySelectorAll('details.card'));
+    const progressBar = document.querySelector('.bar>span');
+    const pctText = document.querySelector('.pct');
+    const bar = document.querySelector('.bar');
+
+    function updateProgress(){
+      const opened = detailsList.filter(d => d.open).length;
+      const pct = Math.round(opened / detailsList.length * 100);
+      progressBar.style.width = pct + '%';
+      pctText.textContent = pct + '%';
+      bar.setAttribute('aria-valuenow', pct);
+    }
+
+    // 初始 & 事件绑定
+    updateProgress();
+    detailsList.forEach(d => d.addEventListener('toggle', updateProgress));
+
+    // 快捷按钮
+    document.getElementById('toggleAll').addEventListener('click', () => {
+      detailsList.forEach(d => d.open = true);
+      updateProgress();
+    });
+    document.getElementById('collapseAll').addEventListener('click', () => {
+      detailsList.forEach(d => d.open = false);
+      updateProgress();
+    });
+
+    // Alt + 点击 summary => 全部开/关
+    document.querySelectorAll('summary.head').forEach(s => {
+      s.addEventListener('click', (e) => {
+        if(e.altKey){
+          const targetOpen = !s.parentElement.open; // 取当前相反态
+          detailsList.forEach(d => d.open = targetOpen);
+          e.preventDefault();
+          updateProgress();
+        }
+      })
+    })
+  </script>
+</body>
+</html>

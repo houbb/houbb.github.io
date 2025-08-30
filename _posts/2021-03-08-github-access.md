@@ -39,7 +39,7 @@ git config --global --unset http.proxy
 
 在 [http://ping.chinaz.com/github.com](http://ping.chinaz.com/github.com) 查询对应的耗时情况。
 
-可以通过github的IP地址查询网站https://www.ipaddress.com查看github相关IP
+可以通过github的IP地址查询网站 https://www.ipaddress.com 查看github相关IP
 
 ## 修改 hosts 文件
 
