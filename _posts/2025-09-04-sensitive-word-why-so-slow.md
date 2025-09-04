@@ -1,6 +1,6 @@
 ---
 layout: post
-title: java 本地方法调用为何这么慢，如何排查？
+title: 敏感词性能优化值本地方法调用为何这么慢?
 date: 2025-8-29 20:40:12 +0800
 categories: [Java]
 tags: [java, sh]
