@@ -1,11 +1,21 @@
 ---
 layout: post
-title: 敏感词性能优化-v0.29.2 基本类型拆箱、装箱的进一步优化的尝试
+title: v0.29.2 敏感词性能优化之基本类型拆箱、装箱的进一步优化的尝试
 date: 2025-9-05 20:40:12 +0800
 categories: [Java]
 tags: [java, nlp, sensitive-word, sh]
 published: true
 ---
+
+# 敏感词性能调优系列
+
+[v0.29.0 敏感词性能优化提升 14 倍全过程](https://houbb.github.io/2025/08/29/sensitive-word-why-so-slow)
+
+[v0.29.1 敏感词性能优化之内部类+迭代器内部类](https://houbb.github.io/2025/09/05/sensitive-word-v0.29.1-opt-init-iter)
+
+[v0.29.2 敏感词性能优化之基本类型拆箱、装箱的进一步优化的尝试](https://houbb.github.io/2025/09/05/sensitive-word-v0.29.2-basic-type-opt)
+
+[v0.29.3 敏感词性能优化之繁简体转换 opencc4j 优化](https://houbb.github.io/2025/08/29/sensitive-word-v0.29.3-opencc4j-opt)
 
 # 背景
 
@@ -267,6 +277,10 @@ public final class Char2CharMap {
 本次主要是一次尝试，对于底层的理解反而有一些助益。
 
 实际上这种装箱、拆箱也会被 JVM 优化。
+
+# 开源地址
+
+> [https://github.com/houbb/sensitive-word](https://github.com/houbb/sensitive-word)
 
 * any list
 {:toc}
