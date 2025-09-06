@@ -25,6 +25,8 @@ published: true
 
 # 近期准备做的事情
 
+D:\github\blog-plateform-design\src\posts
+
 [x] 日志处理 log 平台
 
 [x] 测试平台
