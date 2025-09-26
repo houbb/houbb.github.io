@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AI 大模型 MCP 介绍与 MCP 从零实现案例实战
+title: AI 大模型 MCP 介绍与从零实现实战
 date: 2025-9-16 20:40:12 +0800
 categories: [AI]
 tags: [ai, deepseek, sh]
