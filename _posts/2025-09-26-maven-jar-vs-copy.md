@@ -374,6 +374,42 @@ mvn clean install -P moduleConfig
 可以看到这个除了主 pom 信息，只有我们指定的模块。
 
 
+
+# 主 pom 依赖问题
+
+## 说明
+
+这个还有另一个隐患，我们依赖的一个模块，可能会收到原始父亲 pom.xml 的影响
+
+## 解决方法
+
+在使用依赖的时候，将其所有依赖包全部排除掉。
+
+手动维护依赖的其他包。
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>org.example</groupId>
+        <artifactId>maven-module-one</artifactId>
+        <exclusions>
+            <exclusion>
+                <groupId>*</groupId>
+                <artifactId>*</artifactId>
+            </exclusion>
+        </exclusions>
+    </dependency>
+</dependencies>
+```
+
+## 反思
+
+这个一定要注意。
+
+本地 `mvn clean install` 可以判断出代码是否缺失 class
+
+但是一些 dubbo 服务，可能是 springBean 会导致缺失无法直接感知到。
+
 # 小结
 
 感觉这种拆分方式，其实还是比较麻烦的。
