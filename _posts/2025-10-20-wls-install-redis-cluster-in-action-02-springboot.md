@@ -445,6 +445,29 @@ future.get() 本来就是最慢的来决定，总体还好说。
 
 看到没，这里竟然沉睡了 10ms，为什么？！
 
+## 轮训简化
+
+方便大家看清楚
+
+```java
+while (!done) {
+    for (Future f : futures) {
+        if (f.isDone()) {
+            collect(f.get());
+        } else {
+            done = false;
+        }
+    }
+    Thread.sleep(10); // 这里是关键
+}
+```
+
+如果所有 Future 都立即完成，循环只会执行一次，sleep(10) 也只会睡一次或者不睡（取决于循环条件）
+
+如果有 Future 还没完成，线程会 sleep 10ms，然后继续轮询。
+
+为什么这么做？
+
 ## 避免忙等
 
 sleep 10ms 的作用
