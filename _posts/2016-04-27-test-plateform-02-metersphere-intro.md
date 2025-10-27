@@ -1,7 +1,7 @@
 ---
 layout: post
 title: test framework-02-MeterSphere  一站式开源持续测试平台，为软件质量保驾护航
-date:  2016-4-26 12:53:12 +0800
+date:  2016-04-27 14:10:52 +0800
 categories: [Test]
 tags: [junit, framework, open-source, plateform, test]
 published: true

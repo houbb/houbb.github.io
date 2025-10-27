@@ -1,7 +1,7 @@
 ---
 layout: post
 title: test framework-16-测试平台聊一聊不同的用户视角
-date:  2016-4-26 12:53:12 +0800
+date:  2016-04-27 14:10:52 +0800
 categories: [Test]
 tags: [junit, framework, open-source, plateform, test]
 published: true
