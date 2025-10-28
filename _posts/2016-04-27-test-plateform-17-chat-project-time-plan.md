@@ -1,6 +1,6 @@
 ---
 layout: post
-title: test framework-16-测试平台聊一聊项目的排期规划
+title: test framework-17-测试平台聊一聊项目的排期规划
 date:  2016-04-27 14:10:52 +0800
 categories: [Test]
 tags: [junit, framework, open-source, plateform, test]
