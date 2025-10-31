@@ -27,7 +27,6 @@ QDM行情是: 17663端口。
 
 3.本币新平台交易接口开发指南获取途径如下；
 IMIX网站开发包下载地址：http://imix.chinamoney.com.cn/logonAction!toLogon.html
-本币会员用户名/密码：FI_2018 / FI_download_2018
 
 如需准备联调测试，请咨询外汇交易中心业务二部边宇卒 （[bianyuzu@chinamoney.com.cn](mailto:bianyuzu@chinamoney.com.cn)）申请验收测试。
 
