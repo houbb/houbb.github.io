@@ -2,8 +2,8 @@
 layout: post
 title: 文本差异对比与增量存储的一点思考
 date: 2025-10-31 20:40:12 +0800
-categories: [Think]
-tags: [design, system, life]
+categories: [Tool]
+tags: [tool, compare]
 published: true
 ---
 
