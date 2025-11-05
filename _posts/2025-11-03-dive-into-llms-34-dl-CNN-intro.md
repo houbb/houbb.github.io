@@ -1,6 +1,6 @@
 ---
 layout: post
-title: dive-into-llms-33-CNN（Convolutional Neural Network，卷积神经网络）介绍 
+title: dive-into-llms-34-CNN（Convolutional Neural Network，卷积神经网络）介绍 
 date: 2025-11-03 20:40:12 +0800
 categories: [AI]
 tags: [ai, learn-note]
