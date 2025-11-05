@@ -629,5 +629,203 @@ python mnist_draw_predict.py
 
 但是实际发现预测的效果一般。
 
+
+## 为什么不那么准确呢？
+
+真正的原因在于：**你的手写图片分布和 MNIST 的训练数据分布不一样**。
+
+## 🧠 一、为什么你的手写模型识别不准？
+
+我们来拆解一下差异：
+
+### 1️⃣ 背景不同
+
+* MNIST 训练集的图片是 **纯黑背景 + 白色数字**。
+* 你在画布上是 **白背景 + 黑色数字**。
+* 虽然你做了 `Normalize((0.5,), (0.5,))`，但颜色方向反了。
+
+> ✅ 解决方法：在预测前反转图像颜色：
+>
+> ```python
+> pil = ImageOps.invert(pil)
+> ```
+>
+> 放在你 `preprocess_image_for_mnist()` 函数里。
+
+---
+
+### 2️⃣ 数字太靠边 or 不居中
+
+MNIST 的数字是居中在 28x28 图像中，而你画的数字可能偏上、偏左或太大。
+CNN 对“空间位置”是相对敏感的，所以：
+
+* 偏移一点，特征图分布就变了；
+* 模型认为这是另一个“类”。
+
+> ✅ 解决方法：
+>
+> * 在预处理时做一个 **自动居中**：
+>
+>   * 把手写图像二值化；
+>   * 找出数字的边界框；
+>   * 把它裁剪出来并居中放回 28x28。
+>
+> 我可以帮你写这个增强版预处理。
+
+---
+
+### 3️⃣ 线条粗细、风格不同
+
+* MNIST 的笔迹是扫描过的，非常平滑、线条较粗；
+* 你用鼠标画的线可能：
+
+  * 过细；
+  * 锯齿明显；
+  * 不连续。
+
+> ✅ 解决方法：
+>
+> * 把线条画粗一点（比如 `cv2.line(..., thickness=20)`）；
+> * 或在预处理时模糊一下（`cv2.GaussianBlur`）；
+> * 甚至可以训练时加上“风格噪声增强”来提升泛化。
+
+---
+
+### 4️⃣ 模型是“在 MNIST 上训练的”
+
+MNIST 虽然经典，但太老、太干净。
+
+你的手写数据其实是一个「新的分布」，
+
+模型没见过这种风格，就会误判。
+
+> ✅ 根本性解决方案：
+>
+> * 自己 **收集手写数据**（比如你画 100 张数字图）；
+> * 用这些数据再 **微调（fine-tune）模型**；
+> * 模型立刻会对你的笔迹风格更敏感。
+
+
+## 优化版本
+
+```python
+import cv2
+import numpy as np
+import torch
+import torch.nn as nn
+from PIL import Image
+import torchvision.transforms as transforms
+
+# ======================
+# ✅ 1. 定义 CNN 模型结构（与训练时一致）
+# ======================
+class CNN(nn.Module):
+    def __init__(self):
+        super(CNN, self).__init__()
+        self.conv1 = nn.Conv2d(1, 32, kernel_size=3, padding=1)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=3, padding=1)
+        self.pool = nn.MaxPool2d(2, 2)
+        self.dropout = nn.Dropout(0.25)
+        self.fc1 = nn.Linear(64 * 14 * 14, 128)
+        self.fc2 = nn.Linear(128, 10)
+
+    def forward(self, x):
+        x = torch.relu(self.conv1(x))
+        x = torch.relu(self.conv2(x))
+        x = self.pool(x)
+        x = self.dropout(x)
+        x = x.view(-1, 64 * 14 * 14)
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
+# ======================
+# ✅ 2. 加载模型
+# ======================
+model = CNN()
+model.load_state_dict(torch.load("model/mnist_cnn.pth", map_location="cpu"))
+model.eval()
+
+# ======================
+# ✅ 3. 图像预处理函数
+# ======================
+def preprocess_image_for_mnist(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    gray = cv2.bitwise_not(gray)
+    pil = Image.fromarray(gray)
+    try:
+        resample = Image.Resampling.LANCZOS
+    except AttributeError:
+        resample = Image.ANTIALIAS
+    pil = pil.resize((28, 28), resample)
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize((0.5,), (0.5,))
+    ])
+    tensor = transform(pil).unsqueeze(0)
+    return tensor
+
+# ======================
+# ✅ 4. 绘图窗口设置
+# ======================
+canvas = np.ones((280, 280, 3), dtype=np.uint8) * 255
+drawing = False
+last_point = None
+prediction_text = None  # 保存预测结果以便显示
+
+def draw(event, x, y, flags, param):
+    global drawing, last_point
+    if event == cv2.EVENT_LBUTTONDOWN:
+        drawing = True
+        last_point = (x, y)
+    elif event == cv2.EVENT_MOUSEMOVE and drawing:
+        cv2.line(canvas, last_point, (x, y), (0, 0, 0), 12)
+        last_point = (x, y)
+    elif event == cv2.EVENT_LBUTTONUP:
+        drawing = False
+        last_point = None
+
+cv2.namedWindow("🖌 MNIST Draw Board", cv2.WINDOW_NORMAL)
+cv2.setMouseCallback("🖌 MNIST Draw Board", draw)
+
+print("🎨 用鼠标左键画数字")
+print("✅ 按 's' 识别数字")
+print("🧹 按 'c' 清空画布")
+print("❌ 按 'q' 退出")
+
+# ======================
+# ✅ 5. 主循环
+# ======================
+while True:
+    # 如果有预测结果，则叠加显示在画布上
+    display = canvas.copy()
+    if prediction_text is not None:
+        cv2.putText(display, f"RES: {prediction_text}", (10, 60),
+                    cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 3)
+
+    cv2.imshow("🖌 MNIST Draw Board", display)
+    key = cv2.waitKey(10) & 0xFF
+
+    if key == ord('q'):
+        break
+
+    elif key == ord('c'):
+        canvas[:] = 255
+        prediction_text = None
+
+    elif key == ord('s'):
+        img_for_pred = canvas.copy()
+        tensor = preprocess_image_for_mnist(img_for_pred)
+        with torch.no_grad():
+            outputs = model(tensor)
+            _, predicted = torch.max(outputs, 1)
+            prediction_text = str(predicted.item())
+            print(f"🧠 Predicted digit: {prediction_text}")
+
+cv2.destroyAllWindows()
+```
+
+效果还行
+
 * any list
 {:toc}
