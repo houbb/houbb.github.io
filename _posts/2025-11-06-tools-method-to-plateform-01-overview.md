@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 从工具方法到平台服务的发展之路思考
+title: NLP平台-01-从工具方法到平台服务的发展之路思考
 date: 2025-11-06 14:12:33 +0800
 categories: [Think]
 tags: [think, sh]
