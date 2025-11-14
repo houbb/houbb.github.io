@@ -18,6 +18,48 @@ published: true
 达到一个企业完整的服务支撑为止。MVP 可用。
 
 
+# 拓展系统
+
+- [] cmdb
+- [] 分布式文件管理平台
+- [] 分布式调度平台
+- [] 文档协作平台
+
+- [] ums+sso+passport 认证平台
+- [] bpm BPM（Business Process Management） 流程的管理
+- [] 沟通中心：im/sms/email/phone 等
+- [] 配置中心
+- [] api 网关
+
+- [] 测试平台
+- [] 作业平台
+- [] 问题反馈/事件处理平台（用户反馈）
+- [] 设计中心（需求+原型+UI）
+- [] gitlab 代码仓库+语雀文档平台
+- [] nexus 仓库
+- [] 项目管理平台（需求+任务+迭代）
+- [] 代码质量平台（代码检查+代码质量分析）
+- [] 持续集成/持续交付平台（CI/CD）
+- [] 运维监控平台
+- [] 容器化平台（Kubernetes）
+- [] 微服务平台（Spring Cloud） / dubbo-admin
+- [] 消息队列平台（Kafka、RabbitMQ）
+- [] 数据库平台（MySQL、PostgreSQL、MongoDB）
+- [] 缓存平台（Redis、Memcached）
+- [] 消息队列平台（Kafka、RabbitMQ）
+
+- [] TRACE+日志+METRICS 平台
+- [] 变更事件平台
+- [] 日志平台
+- [] SQL平台
+- [] CAT
+- [] 监控平台（Prometheus、Grafana、夜莺）
+
+- [] 风控中心（交易+用户行为）
+- [] 安全平台（审计、脱敏、day0）
+- [] 跳板机服务（杀毒、审计、度量）
+
+
 # 有价值的平台
 
 ## 定时调度系列
