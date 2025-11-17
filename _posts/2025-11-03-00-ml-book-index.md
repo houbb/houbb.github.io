@@ -1,12 +1,58 @@
 ---
 layout: post
-title: 《深入理解机器学习：从原理到实践》
+title: 一文看懂深度学习与人工智能（已完结）
 date: 2025-11-03 20:40:12 +0800
 categories: [AI]
 tags: [ai, learn-note]
 published: true
 ---
 
+
+# 机器学习系列
+
+[第0张 深入理解机器学习](https://houbb.github.io/2025/11/03/00-ml-book-index)
+
+[第1章 机器学习的诞生与演化](https://houbb.github.io/2025/11/03/01-ml-book-history)
+
+[第2章 机器学习的核心思想](https://houbb.github.io/2025/11/03/02-ml-book-core-thought)
+
+[第3章 概率与统计](https://houbb.github.io/2025/11/03/03-ml-book-rate-and-stat)
+
+[第4章　线性代数与矩阵运算](https://houbb.github.io/2025/11/03/04-ml-book-matrix)
+
+[第5章　优化与数值计算](https://houbb.github.io/2025/11/03/05-ml-book-loss-and-val)
+
+[第6章　线性模型家族](https://houbb.github.io/2025/11/03/06-ml-book-line-model)
+
+[第7章　基于距离与相似度的方法](https://houbb.github.io/2025/11/03/07-ml-book-knn)
+
+[第8章　决策树与集成学习](https://houbb.github.io/2025/11/03/08-ml-book-decision-tree)
+
+[第9章　概率模型与统计学习](https://houbb.github.io/2025/11/03/09-ml-book-rate-model-stat-learn)
+
+[第10章 无监督学习与聚类（Unsupervised Learning & Clustering）](https://houbb.github.io/2025/11/03/10-ml-book-k-means)
+
+[第11章　特征工程与数据处理](https://houbb.github.io/2025/11/03/11-ml-book-feature)
+
+[第12章　模型评估与调优](https://houbb.github.io/2025/11/03/12-ml-book-model-eval-and-opt)
+
+[第13章　NLP 领域的机器学习实践](https://houbb.github.io/2025/11/03/13-ml-book-nlp-inaction)
+
+[第14章　计算机视觉与传统机器学习 Computer Vision, CV](https://houbb.github.io/2025/11/03/14-ml-book-cv)
+
+[第15章　时序数据与预测](https://houbb.github.io/2025/11/03/15-ml-book-time-series)
+
+[第16章　深度学习的兴起](https://houbb.github.io/2025/11/03/16-ml-book-deeplearning)
+
+[第17章　卷积与序列模型 卷积神经网络（Convolutional Neural Network, CNN）](https://houbb.github.io/2025/11/03/17-ml-book-CNN)
+
+[第18章　大模型与预训练范式](https://houbb.github.io/2025/11/03/18-ml-book-LLM)
+
+[第19章　可解释性与可信AI](https://houbb.github.io/2025/11/03/19-ml-book-believe)
+
+[第20章　机器学习的思维方式](https://houbb.github.io/2025/11/03/20-ml-book-think-model)
+
+[第21章　机器学习的未来](https://houbb.github.io/2025/11/03/21-ml-book-future)
 
 # 写作目的
 
@@ -185,14 +231,6 @@ published: true
 * 21.2 AI 模型与知识融合
 * 21.3 从学习到推理的统一
 * 21.4 人机共生的智能演化
-
----
-
-## 附录
-
-* A. 常用机器学习库与框架（scikit-learn、XGBoost、LightGBM）
-* B. 实战环境配置与调试技巧
-* C. 常见面试题与思考题
 
 
 
