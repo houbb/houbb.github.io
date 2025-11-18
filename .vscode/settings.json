@@ -5,5 +5,6 @@
     "picgo.picBed.github.repo": "houbb/resource",
     "picgo.picBed.github.path": "images",
     "editor.inlineSuggest.showToolbar": "always",
-    "bitoAI.codeCompletion.enableAutoCompletion": false
+    "bitoAI.codeCompletion.enableAutoCompletion": false,
+    "explorer.autoReveal": false
 }
