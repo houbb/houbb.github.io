@@ -362,6 +362,63 @@ RETURN DISTINCT nodes(path) AS nodes, relationships(path) AS rels;
 
 实际上这个还是不够完美，因为 i_alarm->i_vm->i_phy 是最短路径上返回的。
 
+这个在大图的时候，会直接超时。
+
+## v2-性能优化（这个不太对）
+
+希望这里把 dijkstra 改为从 i_app 开始，因为 alarm 到 app 本身就是有关系的。结束节点，排除掉 alarm 和 app
+
+Step 1：找到所有与 alarm 直接关联的节点
+
+Step 2：从 alarm 出发，最多5步，只经过 Step1 找到的节点
+
+```
+MATCH (alarm:i_alarm)
+CALL {
+    WITH alarm
+    // Step 1: 找到 alarm 直接关联节点
+    CALL apoc.path.expandConfig(alarm, {
+        relationshipFilter: '>',               // 只沿单向关系
+        labelFilter: '/i_phy|/i_vm|/i_app',   // 只保留相关节点
+        minLevel: 1,
+        maxLevel: 1,
+        uniqueness: 'NODE_GLOBAL'
+    }) YIELD path
+    UNWIND nodes(path) AS node
+    RETURN collect(DISTINCT node) AS directNodes
+}
+CALL apoc.path.expandConfig(alarm, {
+    relationshipFilter: '>',
+    minLevel: 1,
+    maxLevel: 5,                                     // 最多5步
+    filterNodes: 'n -> n IN $directNodes OR n = $alarm',  // 只经过与 alarm 相关节点
+    uniqueness: 'NODE_GLOBAL'
+}) YIELD path
+WHERE last(nodes(path)) IN directNodes            // 只保留路径终点在 directNodes 中的路径
+RETURN DISTINCT nodes(path) AS nodes,
+                relationships(path) AS rels;
+```
+
+
+
+# 方法列表
+
+## 方法
+
+不同版本可能不同
+
+```
+CALL gds.list()
+YIELD name
+WHERE name CONTAINS 'ortest'
+RETURN name
+ORDER BY name;
+```
+
+
+
+
+
 
 
 # 图效果
