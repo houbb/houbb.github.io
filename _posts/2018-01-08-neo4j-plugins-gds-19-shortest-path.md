@@ -197,6 +197,20 @@ MERGE (a5)-[:ALARM_OF_APP]->(app5);
 
 ---
 
+## 查询所有 
+
+```cypher
+MATCH (start:i_alarm)
+CALL apoc.path.expandConfig(start, {
+    relationshipFilter: '>',            // 只沿单向关系
+    labelFilter: '/i_phy|/i_vm|/i_app', // 终止节点类型，可按需修改
+    minLevel: 1,                        // 最小深度
+    maxLevel: 1,                        // 最大深度，可控制遍历深度
+    uniqueness: 'NODE_GLOBAL'           // 节点全局去重
+}) YIELD path
+UNWIND nodes(path) AS node RETURN DISTINCT nodes(path) AS nodes, relationships(path) AS rels;
+```
+
 ## 1️⃣ 创建 GDS 图（基于 APOC 查询结果）
 
 ```cypher
