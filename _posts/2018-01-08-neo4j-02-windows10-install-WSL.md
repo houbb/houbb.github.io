@@ -226,6 +226,48 @@ bin/neo4j stop
 登录后需要修改密码，我们改成 12345678 测试，实际使用需要使用安全复杂的密码。
 
 
+## 为什么 windows 无法访问
+
+### 现象
+
+logs/neo4j.log 看日志是成功的
+
+```
+2025-03-19 09:40:57.850+0000 INFO  Remote interface available at http://localhost:17474/
+2025-03-19 09:40:57.853+0000 INFO  id: C31F3F0FE630CBB06C07D2760C158D853B7281528766E1D6760A8322BBFFBC36
+```
+
+WSL 命令行中直接 curl `http://localhost:17474/browser/` 也有响应
+
+但是 windows 浏览器直接访问 http://localhost:17474/browser/ 会失败
+
+### 原因 
+
+需要访问 WSL 对应的 ip 信息
+
+### 解决方案
+
+1）获取 wsl ip
+
+在 WSL 中执行
+
+```
+$ ip addr show eth0
+
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc mq state UP group default qlen 1000
+    link/ether 00:15:5d:cf:87:62 brd ff:ff:ff:ff:ff:ff
+    inet 172.24.20.97/20 brd 172.24.31.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet6 fe80::215:5dff:fecf:8762/64 scope link
+       valid_lft forever preferred_lft forever
+```
+
+2) windows 指定 ip 访问
+
+http://172.24.20.97:17474/browser/
+
+此时就可以正常访问了
+
 
 ## windows wsl 的安装路径问题
 
