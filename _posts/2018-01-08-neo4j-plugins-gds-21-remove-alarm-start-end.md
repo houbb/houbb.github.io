@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Neo4j GDS-20-neo4j GDS 从告警出发反向查询
+title:  Neo4j GDS-21-neo4j GDS 从告警出发+剔除告警+指定开始结束节点
 date:  2018-1-8 14:18:33 +0800
 categories: [SQL]
 tags: [nosql, neo4j]
@@ -47,18 +47,14 @@ published: true
 [Neo4j GDS-17-neo4j GDS 库创建 graph 图投影更复杂的场景](https://houbb.github.io/2018/01/08/neo4j-plugins-gds-17-chat-create-graph-more)
 
 
-
 # 背景介绍
 
 我们从问题的最开始重新思考一下这个问题。场景是期望实现根因分析，找到根因节点。
 
-但是图节点比较多，所以只关心和 alarm 相关的节点。问题是如果只关心和 alarm 相关的节点，会导致一些节点的关系丢失。
+发现前面几种方式，全部超时。
 
-比如 alarm5->app5，但是实际上 app5->i_vm->i_phy 就丢失了。
+下面记录一种可行的方案。
 
-可以借用 neo4j 图数据库的 apoc+gds 库。
-
-深度一步步思考，这个应该如何实现才最好？
 
 ## 数据初始化
 
@@ -188,75 +184,67 @@ MATCH (app5:i_app {name: 'app5'})
 MERGE (a5)-[:ALARM_OF_APP]->(app5);
 ```
 
-
-
-
-
 # 思路
 
-我们来换一种思路：
+从告警出发，查询到所有的 app/phy/vm
 
-1、
+然后再次查询的时候，只需要关注对应的 startNode/endNode 都在这个集合中。
 
-```
-MATCH (start:i_alarm)
+## 查询子图
+
+```cypher
+// 步骤1：查询符合条件的告警并找到直接关联基础节点
+MATCH (start:rca_raw_alarm)
+WHERE start.createTime > 100 
+  AND start.startTime < 200 
+  AND start.level IN ['A1','A2']
 CALL apoc.path.expandConfig(start, {
-    relationshipFilter: '>',            // 只沿单向关系
-    labelFilter: '/i_phy|/i_vm|/i_app', // 终止节点类型，可按需修改
-    minLevel: 1,                        // 最小深度
-    maxLevel: 1,                        // 最大深度，可控制遍历深度
-    uniqueness: 'NODE_GLOBAL'           // 节点全局去重
-}) YIELD path
-UNWIND nodes(path) AS node RETURN DISTINCT nodes(path) AS nodes, relationships(path) AS rels;   
-```
-
-查询和告警直接关联的节点。      
-
-2. 根据第一步的 i_phy/i_vm/i_app 节点出发，反向查询到 alarm（终点必须是 i_alarm），最大步不超过 
-
-3. 给出完整的句子
-
-## 语句
-
-```
-// 步骤1：查询和告警直接关联的基础节点
-MATCH (start:i_alarm)
-CALL apoc.path.expandConfig(start, {
-    relationshipFilter: '>',            // 沿关系正向遍历
+    relationshipFilter: '>',             // 沿关系正向遍历
     labelFilter: '/i_phy|/i_vm|/i_app', // 终止节点类型
-    minLevel: 1,                        // 最小深度
-    maxLevel: 1,                        // 最大深度
-    uniqueness: 'NODE_GLOBAL'           // 节点全局去重
+    minLevel: 1,                         // 最小深度
+    maxLevel: 1,                         // 最大深度
+    uniqueness: 'NODE_GLOBAL'            // 节点全局去重
 }) YIELD path
 UNWIND nodes(path) AS node
-WITH DISTINCT node
+WITH DISTINCT node, start AS originAlarm
 WHERE any(lbl IN labels(node) WHERE lbl IN ['i_phy','i_vm','i_app'])
-WITH collect(node) AS baseNodes
+WITH collect(node) AS baseNodes, collect(originAlarm) AS originAlarms
 
-// 步骤2：从基础节点反向查询告警节点（i_alarm）
+// 步骤2：从基础节点出发，沿单向关系只在 baseNodes 内搜索
 UNWIND baseNodes AS bNode
 CALL apoc.path.expandConfig(bNode, {
-    relationshipFilter: '<',  // 只沿反向关系
-    labelFilter: '/i_alarm',  // 终点必须是告警节点
+    relationshipFilter: '>',             // 沿关系正向遍历
+    labelFilter: '/i_phy|/i_vm|/i_app', // 限制节点类型
     minLevel: 1,
     maxLevel: 3,
     uniqueness: 'NODE_GLOBAL'
 }) YIELD path
-RETURN DISTINCT nodes(path) AS nodes, relationships(path) AS rels;
+WITH path, nodes(path) AS ns, relationships(path) AS rs, baseNodes
+WHERE ns[0] IN baseNodes AND ns[size(ns)-1] IN baseNodes
+RETURN DISTINCT ns AS nodes, rs AS rels
+LIMIT 100;
 ```
 
-## 创建 graph+pageRank
 
-```
+
+## 投影
+
+这里有的版本需要用 `CALL gds.graph.create.cypher`
+
+```cypher
 CALL gds.graph.project.cypher(
-    'alarm_bidirectional_graph',
+    'rca_alarm_graph',
 
-    // 节点投影
+    // 节点查询
     '
-    MATCH (start:i_alarm)
+    // 步骤1：查询符合条件的告警并找到直接关联基础节点
+    MATCH (start:rca_raw_alarm)
+    WHERE start.createTime > 100 
+      AND start.startTime < 200 
+      AND start.level IN ["A1","A2"]
     CALL apoc.path.expandConfig(start, {
-        relationshipFilter: ">", 
-        labelFilter: "/i_phy|/i_vm|/i_app", 
+        relationshipFilter: ">",
+        labelFilter: "/i_phy|/i_vm|/i_app",
         minLevel: 1,
         maxLevel: 1,
         uniqueness: "NODE_GLOBAL"
@@ -265,26 +253,32 @@ CALL gds.graph.project.cypher(
     WITH DISTINCT node, start AS originAlarm
     WHERE any(lbl IN labels(node) WHERE lbl IN ["i_phy","i_vm","i_app"])
     WITH collect(node) AS baseNodes, collect(originAlarm) AS originAlarms
+
+    // 步骤2：从基础节点出发，只在 baseNodes 内扩展路径
     UNWIND baseNodes AS bNode
     CALL apoc.path.expandConfig(bNode, {
-        relationshipFilter: "<", 
-        labelFilter: "/i_alarm",
+        relationshipFilter: ">",
+        labelFilter: "/i_phy|/i_vm|/i_app",
         minLevel: 1,
         maxLevel: 3,
         uniqueness: "NODE_GLOBAL"
-    }) YIELD path AS revPath
-    UNWIND nodes(revPath) AS n
-    WITH DISTINCT n, originAlarms
-    WHERE n IN originAlarms
+    }) YIELD path
+    WITH path, nodes(path) AS ns, baseNodes
+    WHERE ns[0] IN baseNodes AND ns[size(ns)-1] IN baseNodes
+    UNWIND ns AS n
     RETURN DISTINCT id(n) AS id, labels(n) AS labels
     ',
 
-    // 关系投影
+    // 关系查询
     '
-    MATCH (start:i_alarm)
+    // 步骤1：查询符合条件的告警并找到直接关联基础节点
+    MATCH (start:rca_raw_alarm)
+    WHERE start.createTime > 100 
+      AND start.startTime < 200 
+      AND start.level IN ["A1","A2"]
     CALL apoc.path.expandConfig(start, {
-        relationshipFilter: ">", 
-        labelFilter: "/i_phy|/i_vm|/i_app", 
+        relationshipFilter: ">",
+        labelFilter: "/i_phy|/i_vm|/i_app",
         minLevel: 1,
         maxLevel: 1,
         uniqueness: "NODE_GLOBAL"
@@ -293,27 +287,32 @@ CALL gds.graph.project.cypher(
     WITH DISTINCT node, start AS originAlarm
     WHERE any(lbl IN labels(node) WHERE lbl IN ["i_phy","i_vm","i_app"])
     WITH collect(node) AS baseNodes, collect(originAlarm) AS originAlarms
+
+    // 步骤2：从基础节点出发，只在 baseNodes 内扩展路径
     UNWIND baseNodes AS bNode
     CALL apoc.path.expandConfig(bNode, {
-        relationshipFilter: "<", 
-        labelFilter: "/i_alarm",
+        relationshipFilter: ">",
+        labelFilter: "/i_phy|/i_vm|/i_app",
         minLevel: 1,
         maxLevel: 3,
         uniqueness: "NODE_GLOBAL"
-    }) YIELD path AS revPath
-    UNWIND relationships(revPath) AS r
-    WITH DISTINCT r, originAlarms
-    WHERE startNode(r) IN originAlarms OR endNode(r) IN originAlarms
+    }) YIELD path
+    WITH path, nodes(path) AS ns, relationships(path) AS rs, baseNodes
+    WHERE ns[0] IN baseNodes AND ns[size(ns)-1] IN baseNodes
+    UNWIND rs AS r
     RETURN DISTINCT id(startNode(r)) AS source, id(endNode(r)) AS target, type(r) AS type
     ',
 
-    { validateRelationships: false }  // 忽略关系两端节点不在投影的情况
-);
+    { validateRelationships: false }
+)
+YIELD graphName, nodeCount, relationshipCount;
 ```
+
+## pageRank
 
 ```
 // 2️⃣ PageRank 根因分析
-CALL gds.pageRank.stream('alarm_bidirectional_graph')
+CALL gds.pageRank.stream('rca_alarm_graph')
 YIELD nodeId, score
 RETURN 
     gds.util.asNode(nodeId).labels AS labels,
@@ -324,9 +323,9 @@ RETURN
 ORDER BY score DESC;
 ```
 
+经过测试，这种符合预期。
 
-
-
+性能也不错。
 
 # 参考资料
 
