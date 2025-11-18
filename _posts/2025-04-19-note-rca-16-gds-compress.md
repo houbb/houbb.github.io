@@ -18,7 +18,9 @@ published: true
 ## 也不需要 java 去做。这些步骤都是 neo4j +apoc+gds 实现也行。java 只是调用触发。重新给出实现
 
 下面给你一套 **完全“图数据库内完成”、Java 只负责触发** 的做法：
+
 **报警 → 找关联节点 → 压缩图 → 在临时子图上跑 GDS 算法 → 得到根因节点**
+
 整个 pipeline 全在 Neo4j + APOC + GDS 完成。
 
 我会先给你整体架构，再给你每个步骤的 Cypher + APOC + GDS 示例，最后给你 Java 调用方式。
