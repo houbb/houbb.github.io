@@ -319,13 +319,71 @@ RETURN
     gds.util.asNode(nodeId).eventId AS eventId,
     gds.util.asNode(nodeId).name AS name,
     gds.util.asNode(nodeId).ip AS ip,
-    score
-ORDER BY score DESC;
+    score, nodeId
+ORDER BY score DESC limit 10;
+```
+
+效果
+
+```
+╒══════╤═══════╤══════╤═════════════╤═══════════════════╤══════╕
+│labels│eventId│name  │ip           │score              │nodeId│
+╞══════╪═══════╪══════╪═════════════╪═══════════════════╪══════╡
+│null  │null   │null  │"192.168.1.1"│0.62175            │10    │
+├──────┼───────┼──────┼─────────────┼───────────────────┼──────┤
+│null  │null   │null  │"10.0.0.1"   │0.2775             │12    │
+├──────┼───────┼──────┼─────────────┼───────────────────┼──────┤
+│null  │null   │null  │"10.0.0.2"   │0.2775             │13    │
+├──────┼───────┼──────┼─────────────┼───────────────────┼──────┤
+│null  │null   │null  │"10.0.0.3"   │0.2775             │14    │
+├──────┼───────┼──────┼─────────────┼───────────────────┼──────┤
 ```
 
 经过测试，这种符合预期。
 
 性能也不错。
+
+## 反查关联关系
+
+
+```
+// 步骤1：查询符合条件的告警并找到直接关联基础节点
+MATCH (start:rca_raw_alarm)
+WHERE start.createTime > 100 
+  AND start.startTime < 200 
+  AND start.level IN ['A1','A2']
+CALL apoc.path.expandConfig(start, {
+    relationshipFilter: '>',             // 沿关系正向遍历
+    labelFilter: '/i_phy|/i_vm|/i_app', // 终止节点类型
+    minLevel: 1,                         // 最小深度
+    maxLevel: 1,                         // 最大深度
+    uniqueness: 'NODE_GLOBAL'            // 节点全局去重
+}) YIELD path
+UNWIND nodes(path) AS node
+WITH DISTINCT node, start AS originAlarm
+WHERE any(lbl IN labels(node) WHERE lbl IN ['i_phy','i_vm','i_app'])
+WITH collect(node) AS baseNodes, collect(originAlarm) AS originAlarms
+
+// 步骤2：从基础节点出发，沿单向关系只在 baseNodes 内搜索
+UNWIND baseNodes AS bNode
+CALL apoc.path.expandConfig(bNode, {
+    relationshipFilter: '>',             // 沿关系正向遍历
+    labelFilter: '/i_phy|/i_vm|/i_app', // 限制节点类型
+    minLevel: 1,
+    maxLevel: 3,
+    uniqueness: 'NODE_GLOBAL'
+}) YIELD path
+WITH path, nodes(path) AS all_nodes, relationships(path) AS all_relationships
+UNWIND all_nodes as node
+WITH path, all_nodes, all_relationships, node
+WHERE id(node) in [10]
+WITH DISTINCT path, all_nodes, all_relationships
+RETURN all_nodes, all_relationships
+```
+
+### 效果
+
+<svg xmlns="http://www.w3.org/2000/svg" width="193.80123901367188" height="176.56500244140625" viewBox="-65.62777709960938 -124.13970184326172 193.80123901367188 176.56500244140625"><title>Neo4j Graph Visualization</title><desc>Created using Neo4j (http://www.neo4j.com/)</desc><g class="layer relationships"><g class="relationship" transform="translate(-22.970793886448423 23.42529389696844) rotate(329.9744638766086)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 38.52508406971022 0.5 L 38.52508406971022 -0.5 L 25 -0.5 Z M 95.5512528929524 0.5 L 109.07633696266262 0.5 L 109.07633696266262 3.5 L 116.07633696266262 0 L 109.07633696266262 -3.5 L 109.07633696266262 -0.5 L 95.5512528929524 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="67.03816848133131" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">BELONGS_TO</text></g><g class="relationship" transform="translate(-36.62777685010352 -95.13969518994041) rotate(379.45598992070995)"><path class="b-outline" fill="#A5ABB6" stroke="none" d="M 25 0.5 L 39.99962510866136 0.5 L 39.99962510866136 -0.5 L 25 -0.5 Z M 97.02579393190355 0.5 L 112.02541904056491 0.5 L 112.02541904056491 3.5 L 119.02541904056491 0 L 112.02541904056491 -3.5 L 112.02541904056491 -0.5 L 97.02579393190355 -0.5 Z"/><text text-anchor="middle" pointer-events="none" font-size="8px" fill="#000000" x="68.51270952028246" y="3" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">BELONGS_TO</text></g></g><g class="layer nodes"><g class="node" aria-label="graph-node12" transform="translate(-22.970793886448423,23.42529389696844)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#57C7E3" stroke="#23b3d7" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 10.0.0.1</text></g><g class="node" aria-label="graph-node10" transform="translate(99.17344754647844,-47.1673199912961)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#F79767" stroke="#f36924" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#FFFFFF" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 192.168.…</text></g><g class="node" aria-label="graph-node13" transform="translate(-36.62777685010352,-95.13969518994041)"><circle class="b-outline" cx="0" cy="0" r="25" fill="#57C7E3" stroke="#23b3d7" stroke-width="2px"/><text class="caption" text-anchor="middle" pointer-events="none" x="0" y="5" font-size="10px" fill="#2A2C34" font-family="Helvetica Neue, Helvetica, Arial, sans-serif"> 10.0.0.2</text></g></g></svg>
 
 # 参考资料
 
