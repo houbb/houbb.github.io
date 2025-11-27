@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业级平台架构拓扑图 - 强闭环与依赖可视化</title>
+    <style>
+        :root {
+            --bg-color: #0d1117; /* 深色背景 */
+            --text-main: #e6edf3; /* 主文本 */
+            --text-sub: #7d8590; /* 副文本 */
+            --line-color: rgba(68, 180, 255, 0.4); /* 连接线颜色 */
+            --line-highlight: #00f2ff; /* 连接线高亮 */
+            --card-bg: rgba(22, 27, 34, 0.8); /* 卡片背景 */
+            --card-border: #30363d; /* 卡片边框 */
+
+            --stage1-color: #ff9800; /* 橙色 - 生存基础 */
+            --stage2-color: #00bcd4; /* 青色 - 增长加速 */
+            --stage3-color: #9c27b0; /* 紫色 - 壁垒构建 */
+            --user-color: #555555; /* 用户 */
+
+            --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 25%, rgba(0, 242, 255, 0.08) 0%, transparent 25%),
+                radial-gradient(circle at 85% 75%, rgba(191, 0, 255, 0.08) 0%, transparent 25%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--line-highlight), var(--stage3-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 32px;
+        }
+
+        /* 主容器 */
+        .architecture-container {
+            position: relative;
+            width: 1400px; /* 调整为更宽的画布 */
+            height: 1200px; /* 调整高度以容纳层次 */
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr); /* 更多网格列方便定位 */
+            grid-template-rows: 100px 200px 300px 200px 200px 100px; /* 划分行高 */
+            gap: 20px 20px;
+        }
+
+        /* 模块通用样式 */
+        .module-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            padding: 15px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+            transition: all 0.2s ease-in-out;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            z-index: 2; /* 确保卡片在连接线上方 */
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+            border-color: var(--line-highlight);
+            z-index: 3;
+        }
+
+        .module-card:hover .module-title {
+            color: var(--line-highlight);
+        }
+
+        .module-title {
+            font-weight: 700;
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: var(--text-main);
+            transition: color 0.2s ease;
+        }
+
+        .module-subtitle {
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-bottom: 10px;
+        }
+
+        .module-details {
+            font-size: 11px;
+            color: var(--text-sub);
+            line-height: 1.6;
+            display: none; /* 默认隐藏，悬停显示 */
+            width: 100%;
+        }
+
+        .module-card:hover .module-details {
+            display: block;
+        }
+        
+        .module-details strong {
+            color: var(--text-main);
+            font-weight: 600;
+            margin-top: 8px;
+            display: block;
+        }
+        .module-details span {
+            display: block;
+            margin-left: 10px;
+            font-family: var(--font-mono);
+            color: #b0c4de;
+        }
+
+        /* 模块定位 */
+        /* 第一阶段：生存基础 (核心) */
+        .mod-1 { grid-column: 1 / span 3; grid-row: 3; background-color: rgba(255,152,0,0.2); border-left: 4px solid var(--stage1-color); }
+        .mod-2 { grid-column: 4 / span 3; grid-row: 3; background-color: rgba(255,152,0,0.2); border-left: 4px solid var(--stage1-color); }
+        .mod-3 { grid-column: 7 / span 3; grid-row: 3; background-color: rgba(255,152,0,0.2); border-left: 4px solid var(--stage1-color); }
+        .mod-4 { grid-column: 10 / span 3; grid-row: 3; background-color: rgba(255,152,0,0.2); border-left: 4px solid var(--stage1-color); }
+
+        /* 第二阶段：增长加速 */
+        .mod-5 { grid-column: 1 / span 4; grid-row: 2; background-color: rgba(0,188,212,0.2); border-left: 4px solid var(--stage2-color); } /* 智能引擎 */
+        .mod-6 { grid-column: 9 / span 4; grid-row: 2; background-color: rgba(0,188,212,0.2); border-left: 4px solid var(--stage2-color); } /* 增长飞轮 */
+        .mod-7 { grid-column: 3 / span 3; grid-row: 4; background-color: rgba(0,188,212,0.2); border-left: 4px solid var(--stage2-color); } /* 信任治理 */
+        .mod-8 { grid-column: 7 / span 3; grid-row: 4; background-color: rgba(0,188,212,0.2); border-left: 4px solid var(--stage2-color); } /* 创作者赋能 */
+
+        /* 第三阶段：壁垒构建 */
+        .mod-9 { grid-column: 1 / span 6; grid-row: 5; background-color: rgba(156,39,176,0.2); border-left: 4px solid var(--stage3-color); }
+        .mod-10 { grid-column: 7 / span 6; grid-row: 5; background-color: rgba(156,39,176,0.2); border-left: 4px solid var(--stage3-color); }
+
+
+        /* SVG 连接线 */
+        .connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* 在卡片下方 */
+            pointer-events: none; /* 不阻止鼠标事件 */
+        }
+
+        .arch-path {
+            fill: none;
+            stroke: var(--line-color);
+            stroke-width: 2;
+            transition: stroke 0.3s ease, stroke-width 0.3s ease;
+            marker-end: url(#arrowhead); /* 箭头 */
+            stroke-dasharray: 5 5; /* 虚线 */
+            animation: flow-animation 30s linear infinite; /* 流动动画 */
+        }
+
+        /* 动画定义 */
+        @keyframes flow-animation {
+            to {
+                stroke-dashoffset: -1000;
+            }
+        }
+
+        /* 阶段标签 */
+        .stage-label {
+            position: absolute;
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 8px 15px;
+            border-radius: 4px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid;
+            color: var(--text-main);
+            transform: translateX(-50%);
+            left: 50%;
+            z-index: 1;
+        }
+        .stage-label.s1 { border-color: var(--stage1-color); top: 300px; }
+        .stage-label.s2 { border-color: var(--stage2-color); top: 200px; }
+        .stage-label.s3 { border-color: var(--stage3-color); top: 850px; }
+
+        /* 用户/外部系统节点 */
+        .user-panel {
+            grid-column: 1 / span 12;
+            grid-row: 1;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .user-node {
+            background-color: rgba(50, 50, 50, 0.7);
+            border: 1px dashed var(--user-color);
+            color: var(--text-sub);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 200px;
+            text-align: center;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+
+        .external-system {
+            grid-column: 1 / span 12;
+            grid-row: 6;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 20px;
+        }
+        .external-node {
+            background-color: rgba(50, 50, 50, 0.7);
+            border: 1px dashed var(--user-color);
+            color: var(--text-sub);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            width: 250px;
+            text-align: center;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 2;
+        }
+    </style>
+</head>
+<body>
+
+<h1>“自我循环、用户高粘性”平台架构拓扑图</h1>
+
+<div class="architecture-container" id="archContainer">
+    
+    <div class="user-panel">
+        <div class="user-node" id="userC">C端用户</div>
+        <div class="user-node" id="userB">B端创作者/商家</div>
+    </div>
+    
+    <div class="stage-label s2" style="top: 200px;">第二阶段：增长加速 (重要引擎)</div>
+
+    <div class="module-card mod-5" id="mod-5">
+        <div class="module-title">5. 智能引擎 (大脑)</div>
+        <div class="module-subtitle">搜索、推荐与数据分析</div>
+        <div class="module-details">
+            <strong>子系统:</strong> <span>统一搜索平台, 推荐算法中台, 数据埋点与分析</span>
+            <strong>核心技术:</strong> <span>Spark/Hadoop, Deep Learning (TF/PyTorch), Real-time Compute</span>
+            <strong>输入/依赖:</strong> <span>全域用户行为数据(Mod-1, Mod-2, Mod-3, Mod-4), AI底座能力(Mod-10)</span>
+            <strong>输出/赋能:</strong> <span>个性化内容分发(Mod-2), 精准营销策略(Mod-6), 风控决策辅助(Mod-7)</span>
+        </div>
+    </div>
+    <div class="module-card mod-6" id="mod-6">
+        <div class="module-title">6. 增长飞轮 (油门)</div>
+        <div class="module-subtitle">运营激励与消息推送</div>
+        <div class="module-details">
+            <strong>子系统:</strong> <span>营销活动中心, 积分/会员体系, 全渠道消息推送</span>
+            <strong>核心技术:</strong> <span>Rule Engine (Drools), Redis (Rankings), WebSocket Push</span>
+            <strong>输入/依赖:</strong> <span>用户画像(Mod-5), 交易数据(Mod-4), 互动行为(Mod-3)</span>
+            <strong>输出/赋能:</strong> <span>提高用户LTV, 增加用户活跃度, 精准用户召回</span>
+        </div>
+    </div>
+
+    <div class="stage-label s1" style="top: 400px;">第一阶段：生存基础 (核心闭环)</div>
+
+    <div class="module-card mod-1" id="mod-1">
+        <div class="module-title">1. 身份基石 (血液)</div>
+        <div class="module-subtitle">注册、登录、身份体系</div>
+        <div class="module-details">
+            <strong>子系统:</strong> <span>统一认证(IAM), 用户档案(Profile), 权限控制(RBAC)</span>
+            <strong>核心技术:</strong> <span>OAuth2.0 / JWT, Graph DB (关系型), LDAP / SSO</span>
+            <strong>输入/依赖:</strong> <span>用户注册信息, 外部认证服务</span>
+            <strong>输出/赋能:</strong> <span>用户ID与身份凭证, 其他模块鉴权基础</span>
+        </div>
+    </div>
+    <div class="module-card mod-2" id="mod-2">
+        <div class="module-title">2. 价值核心 (诱饵)</div>
+        <div class="module-subtitle">UGC/PGC内容、商品、服务</div>
+        <div class="module-details">
+            <strong>子系统:</strong> <span>商品中心(PIM), 媒资管理(DAM), 库存/服务中心</span>
+            <strong>核心技术:</strong> <span>MongoDB (Doc), Object Storage (OSS), Elasticsearch</span>
+            <strong>输入/依赖:</strong> <span>创作者/商家内容(Mod-8), 外部商品信息</span>
+            <strong>输出/赋能:</strong> <span>用户消费标的, 平台核心吸引力</span>
+        </div>
+    </div>
+    <div class="module-card mod-3" id="mod-3">
+        <div class="module-title">3. 关系网络 (粘合剂)</div>
+        <div class="module-subtitle">评论、点赞、关注、分发算法</div>
+        <div class="module-details">
+            <strong>子系统:</strong> <span>社交图谱服务, 互动(评论/点赞), Feed流分发</span>
+            <strong>核心技术:</strong> <span>Neo4j (Graph), HBase (BigTable), Feed Architecture</span>
+            <strong>输入/依赖:</strong> <span>用户行为(Mod-1), 内容数据(Mod-2), 推荐策略(Mod-5)</span>
+            <strong>输出/赋能:</strong> <span>网络效应, 用户沉没成本, 社区氛围</span>
+        </div>
+    </div>
+    <div class="module-card mod-4" id="mod-4">
+        <div class="module-title">4. 变现驱动 (心脏)</div>
+        <div class="module-subtitle">支付、订单、广告、抽成</div>
+        <div class="module-details">
+            <strong>子系统:</strong> <span>聚合支付网关, 订单交易中心, 广告投放引擎</span>
+            <strong>核心技术:</strong> <span>Distributed Tx (TCC), Ledger DB, High Concurrency</span>
+            <strong>输入/依赖:</strong> <span>内容/商品信息(Mod-2), 用户支付请求(Mod-1)</span>
+            <strong>输出/赋能:</strong> <span>平台收入流, 支撑平台运营和迭代, 创作者/商家结算</span>
+        </div>
+    </div>
+
+    <div class="module-card mod-7" id="mod-7">
+        <div class="module-title">7. 信任治理 (护栏)</div>
+        <div class="module-subtitle">审核、风控、客服、信用分</div>
+        <div class="module-details">
+            <strong>子系统:</strong> <span>实时风控大脑, 内容审核(机审+人审), 信用评分中心</span>
+            <strong>核心技术:</strong> <span>Flink (Real-time), Graph Neural Networks, NLP/OCR Models</span>
+            <strong>输入/依赖:</strong> <span>用户行为数据(Mod-1, Mod-3, Mod-4), AI底座(Mod-10)</span>
+            <strong>输出/赋能:</strong> <span>交易安全保障, 社区环境维护, 降低用户风险感知</span>
+        </div>
+    </div>
+    <div class="module-card mod-8" id="mod-8">
+        <div class="module-title">8. 创作者/商家赋能工具</div>
+        <div class="module-subtitle">创作后台、结算系统、供应链</div>
+        <div class="module-details">
+            <strong>子系统:</strong> <span>创作者工作台(CMS), 数据分析看板, 供应链ERP接入</span>
+            <strong>核心技术:</strong> <span>React/Vue Editors, OLAP (ClickHouse), Open API Gateway</span>
+            <strong>输入/依赖:</strong> <span>创作者/商家数据(userB), 内容/商品数据(Mod-2), 结算信息(Mod-4)</span>
+            <strong>输出/赋能:</strong> <span>专业化、可持续的价值供给, 提升供给侧效率与质量</span>
+        </div>
+    </div>
+
+    <div class="stage-label s3" style="top: 850px;">第三阶段：壁垒构建 (锦上添花)</div>
+
+    <div class="module-card mod-9" id="mod-9">
+        <div class="module-title">9. 专属基础设施 (专业化)</div>
+        <div class="module-subtitle">物流/履约、IM/实时通讯、直播/音视频</div>
+        <div class="module-details">
+            <strong>子系统:</strong> <span>自建物流/履约系统, 实时通讯(IM)服务, 直播/点播平台</span>
+            <strong>核心技术:</strong> <span>WebRTC / Live Stream, Edge Computing, Serverless Mesh</span>
+            <strong>输入/依赖:</strong> <span>交易订单(Mod-4), 互动消息(Mod-3)</span>
+            <strong>输出/赋能:</strong> <span>定制级用户体验, 平台核心竞争力, 提升服务质量</span>
+        </div>
+    </div>
+    <div class="module-card mod-10" id="mod-10">
+        <div class="module-title">10. AI能力底座 (未来竞争力)</div>
+        <div class="module-subtitle">智能生成、客服机器人、AIGC</div>
+        <div class="module-details">
+            <strong>子系统:</strong> <span>大模型服务(LLM), AIGC生成工坊, 智能体(Agent)平台</span>
+            <strong>核心技术:</strong> <span>Transformer Models, Vector DB (Milvus), GPU Cluster Scheduling</span>
+            <strong>输入/依赖:</strong> <span>全平台数据, 外部大数据, 领域知识库</span>
+            <strong>输出/赋能:</strong> <span>赋能所有上层模块, 提升效率和体验天花板, 未来竞争护城河</span>
+        </div>
+    </div>
+
+    <div class="external-system">
+        <div class="external-node" id="externalPayments">第三方支付/物流伙伴</div>
+        <div class="external-node" id="externalData">外部大数据/风控平台</div>
+    </div>
+
+    <svg class="connections" id="svgConnections">
+        <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="var(--line-color)" />
+            </marker>
+            <marker id="arrowhead-hover" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="var(--line-highlight)" />
+            </marker>
+        </defs>
+    </svg>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modules = document.querySelectorAll('.module-card, .user-node, .external-node');
+        const svg = document.getElementById('svgConnections');
+
+        const connections = [
+            // 用户 -> 第一阶段
+            { from: 'userC', to: 'mod-1', type: '认证' },
+            { from: 'userB', to: 'mod-8', type: '创作/供给' },
+
+            // 第一阶段核心闭环 (自循环)
+            { from: 'mod-1', to: 'mod-2', type: '身份使能' },
+            { from: 'mod-2', to: 'mod-3', type: '价值载体' },
+            { from: 'mod-3', to: 'mod-4', type: '沉淀变现' },
+            { from: 'mod-4', to: 'mod-2', type: '收入反哺' }, 
+            { from: 'mod-4', to: 'mod-1', type: '账户结算' }, 
+
+            // 智能引擎 (Mod-5) -> 驱动
+            { from: 'mod-5', to: 'mod-2', type: '内容推荐' },
+            { from: 'mod-5', to: 'mod-3', type: '关系分发' },
+            { from: 'mod-5', to: 'mod-6', type: '策略输入' },
+            { from: 'mod-5', to: 'mod-7', type: '风险预警' },
+            { from: 'mod-5', to: 'mod-8', type: '创作洞察' },
+            
+            // 增长飞轮 (Mod-6) -> 召回/激励
+            { from: 'mod-6', to: 'userC', type: '推送/激励' }, 
+            { from: 'mod-6', to: 'userB', type: '激励政策' }, 
+
+            // 信任治理 (Mod-7) -> 保障
+            { from: 'mod-7', to: 'mod-2', type: '内容审核' },
+            { from: 'mod-7', to: 'mod-4', type: '交易风控' },
+            { from: 'mod-7', to: 'mod-3', type: '社区治理' },
+            { from: 'mod-7', to: 'userC', type: '客服/仲裁' },
+
+            // 创作者赋能 (Mod-8) -> 供给
+            { from: 'mod-8', to: 'mod-2', type: '内容/商品入库' },
+            { from: 'mod-8', to: 'mod-4', type: '结算信息' },
+
+            // 专属基础设施 (Mod-9) -> 支撑
+            { from: 'mod-9', to: 'mod-2', type: '媒资存储/传输' },
+            { from: 'mod-9', to: 'mod-3', type: '实时互动支撑' },
+            { from: 'mod-9', to: 'mod-4', type: '物流履约支撑' },
+            { from: 'mod-9', to: 'mod-7', type: '通讯保障' },
+
+            // AI能力底座 (Mod-10) -> 赋能
+            { from: 'mod-10', to: 'mod-5', type: 'AI算法能力' },
+            { from: 'mod-10', to: 'mod-7', type: '智能审核/风控' },
+            { from: 'mod-10', to: 'mod-8', type: 'AIGC创作' },
+            { from: 'mod-10', to: 'mod-3', type: '情感识别/推荐' },
+
+            // 外部系统
+            { from: 'mod-4', to: 'externalPayments', type: '支付接口' },
+            { from: 'mod-7', to: 'externalData', type: '数据协同' },
+            { from: 'mod-9', to: 'externalPayments', type: '物流对接' } 
+        ];
+
+        function getElementCenter(element) {
+            const rect = element.getBoundingClientRect();
+            const containerRect = svg.getBoundingClientRect();
+            return {
+                x: rect.left + rect.width / 2 - containerRect.left,
+                y: rect.top + rect.height / 2 - containerRect.top
+            };
+        }
+
+        function getClosestEdgePoint(fromRect, toRect, containerRect) {
+            const startX = fromRect.left + fromRect.width / 2 - containerRect.left;
+            const startY = fromRect.top + fromRect.height / 2 - containerRect.top;
+            const endX = toRect.left + toRect.width / 2 - containerRect.left;
+            const endY = toRect.top + toRect.height / 2 - containerRect.top;
+
+            // 默认连接点 (中心)
+            let p1 = { x: startX, y: startY };
+            let p2 = { x: endX, y: endY };
+            const padding = 10; 
+
+            // 优化连接点，使其从最近的边发出/接收
+            // 垂直关系 (Start在上或下)
+            if (startY < endY) { 
+                p1.y = fromRect.bottom - containerRect.top + padding; // Start: bottom
+                p2.y = toRect.top - containerRect.top - padding;     // End: top
+            } else if (startY > endY) {
+                p1.y = fromRect.top - containerRect.top - padding;    // Start: top
+                p2.y = toRect.bottom - containerRect.top + padding;  // End: bottom
+            }
+
+            // 水平关系 (Start在左或右)
+            if (startX < endX && Math.abs(startY - endY) < 50) { // 稍微水平一点
+                p1.x = fromRect.right - containerRect.left + padding; // Start: right
+                p2.x = toRect.left - containerRect.left - padding;   // End: left
+            } else if (startX > endX && Math.abs(startY - endY) < 50) {
+                p1.x = fromRect.left - containerRect.left - padding;  // Start: left
+                p2.x = toRect.right - containerRect.left + padding;  // End: right
+            }
+
+            return { start: p1, end: p2 };
+        }
+
+        function drawConnections() {
+            svg.innerHTML = `
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="var(--line-color)" />
+                    </marker>
+                    <marker id="arrowhead-hover" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="var(--line-highlight)" />
+                    </marker>
+                </defs>
+            `; 
+
+            connections.forEach(conn => {
+                const fromEl = document.getElementById(conn.from);
+                const toEl = document.getElementById(conn.to);
+
+                if (!fromEl || !toEl) return;
+
+                const fromRect = fromEl.getBoundingClientRect();
+                const toRect = toEl.getBoundingClientRect();
+                const containerRect = svg.getBoundingClientRect();
+
+                const { start, end } = getClosestEdgePoint(fromRect, toRect, containerRect);
+
+                let pathData = `M ${start.x} ${start.y}`;
+                
+                // 使用二次贝塞尔曲线 (Q) 或简单的 L 来平滑连接
+                const midX = (start.x + end.x) / 2;
+                const midY = (start.y + end.y) / 2;
+                
+                if (Math.abs(start.x - end.x) > 100 || Math.abs(start.y - end.y) > 100) {
+                    // CUBIC BEZIER CURVE
+                    const cp1x = start.x + (end.x - start.x) * 0.2;
+                    const cp1y = start.y;
+                    const cp2x = start.x + (end.x - start.x) * 0.8;
+                    const cp2y = end.y;
+                    pathData += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${end.x} ${end.y}`;
+                } else {
+                    // STRAIGHT LINE
+                    pathData += ` L ${end.x} ${end.y}`;
+                }
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', pathData);
+                path.classList.add('arch-path');
+                path.setAttribute('data-from', conn.from);
+                path.setAttribute('data-to', conn.to);
+                path.setAttribute('marker-end', 'url(#arrowhead)');
+                path.setAttribute('data-type', conn.type); 
+
+                svg.appendChild(path);
+            });
+        }
+
+        drawConnections();
+        window.addEventListener('resize', drawConnections);
+
+        // 悬停高亮逻辑
+        modules.forEach(module => {
+            module.addEventListener('mouseenter', () => {
+                const moduleId = module.id;
+                const paths = svg.querySelectorAll('.arch-path');
+                paths.forEach(path => {
+                    const fromId = path.getAttribute('data-from');
+                    const toId = path.getAttribute('data-to');
+                    const isRelevant = fromId === moduleId || toId === moduleId;
+
+                    if (isRelevant) {
+                        path.style.stroke = 'var(--line-highlight)';
+                        path.style.strokeWidth = '3px';
+                        path.style.strokeDasharray = '0';
+                        path.style.animation = 'none';
+                        path.style.opacity = '1';
+                        path.setAttribute('marker-end', 'url(#arrowhead-hover)');
+                    } else {
+                        path.style.opacity = '0.1'; 
+                    }
+                });
+                
+                // 恢复模块边框颜色 (防止悬停效果被覆盖)
+                module.style.borderColor = 'var(--line-highlight)';
+            });
+
+            module.addEventListener('mouseleave', () => {
+                const paths = svg.querySelectorAll('.arch-path');
+                paths.forEach(path => {
+                    path.style.stroke = 'var(--line-color)';
+                    path.style.strokeWidth = '2px';
+                    path.style.strokeDasharray = '5 5';
+                    path.style.animation = 'flow-animation 30s linear infinite';
+                    path.style.opacity = '0.4';
+                    path.setAttribute('marker-end', 'url(#arrowhead)');
+                });
+
+                // 恢复模块边框颜色
+                const moduleId = module.id;
+                const moduleEl = document.getElementById(moduleId);
+                const classList = moduleEl.classList;
+                if (classList.contains('mod-1') || classList.contains('mod-2') || classList.contains('mod-3') || classList.contains('mod-4')) {
+                    moduleEl.style.borderColor = 'var(--stage1-color)';
+                } else if (classList.contains('mod-5') || classList.contains('mod-6') || classList.contains('mod-7') || classList.contains('mod-8')) {
+                    moduleEl.style.borderColor = 'var(--stage2-color)';
+                } else if (classList.contains('mod-9') || classList.contains('mod-10')) {
+                    moduleEl.style.borderColor = 'var(--stage3-color)';
+                } else {
+                     moduleEl.style.borderColor = 'var(--card-border)';
+                }
+            });
+        });
+
+        // 首次加载时设置模块的初始边框颜色
+        modules.forEach(module => {
+            const classList = module.classList;
+            if (classList.contains('mod-1') || classList.contains('mod-2') || classList.contains('mod-3') || classList.contains('mod-4')) {
+                module.style.borderColor = 'var(--stage1-color)';
+            } else if (classList.contains('mod-5') || classList.contains('mod-6') || classList.contains('mod-7') || classList.contains('mod-8')) {
+                module.style.borderColor = 'var(--stage2-color)';
+            } else if (classList.contains('mod-9') || classList.contains('mod-10')) {
+                module.style.borderColor = 'var(--stage3-color)';
+            }
+        });
+        
+    });
+</script>
+</body>
+</html>

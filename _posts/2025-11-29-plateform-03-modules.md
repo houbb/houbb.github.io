@@ -1,13 +1,20 @@
 ---
 layout: post
 title: 近期计划之平台的核心模块
-date: 2030-08-31 21:01:55 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+date: 2025-11-29 21:01:55 +0800
+categories: [Plateform]
+tags: [plateform, sh]
 published: true
 ---
 
 
+# 模块
+
+![核心模块](https://houbb.github.io/static/views/plateform-modules.html)
+
+# 关系
+
+![模块关系](https://houbb.github.io/static/views/plateform-modules-relationship.html)
 
 # chat
 
