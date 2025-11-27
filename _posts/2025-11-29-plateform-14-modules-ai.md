@@ -1,6 +1,6 @@
 ---
 layout: post
-title: AI 能力底座：需要哪些子系统？
+title: 13-AI 能力底座：需要哪些子系统？
 date: 2025-11-29 21:01:55 +0800
 categories: [Plateform]
 tags: [plateform, sh]

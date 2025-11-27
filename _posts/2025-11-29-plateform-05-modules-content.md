@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 核心模块之内容/商品模块需要哪些系统？
+title: 03-内容/商品模块需要哪些系统？
 date: 2025-11-29 21:01:55 +0800
 categories: [Plateform]
 tags: [plateform, sh]

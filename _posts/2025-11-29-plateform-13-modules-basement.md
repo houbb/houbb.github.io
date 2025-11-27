@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 专属基础设施：需要哪些子系统？
+title: 12-专属基础设施：需要哪些子系统？
 date: 2025-11-29 21:01:55 +0800
 categories: [Plateform]
 tags: [plateform, sh]

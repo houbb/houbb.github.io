@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 核心模块之智能引擎（搜索/推荐 + 数据分析）模块需要哪些系统？
+title: 07-智能引擎（搜索/推荐 + 数据分析）模块需要哪些系统？
 date: 2025-11-29 21:01:55 +0800
 categories: [Plateform]
 tags: [plateform, sh]
