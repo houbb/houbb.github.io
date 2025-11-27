@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业级应用架构拓扑图 - 闭环生态系统</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(20, 30, 48, 0.7);
+            --border-color: #2a3b55;
+            --text-main: #e0e6ed;
+            --text-sub: #94a3b8;
+            --accent-core: #00f2ff; /* 核心蓝 */
+            --accent-growth: #00ff9d; /* 增长绿 */
+            --accent-infra: #bf00ff; /* 基建紫 */
+            --accent-risk: #ffaa00; /* 风控橙 */
+            --line-color: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 242, 255, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(191, 0, 255, 0.05) 0%, transparent 20%);
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, var(--accent-core), var(--accent-infra));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* 布局容器 */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-rows: auto auto auto auto;
+            gap: 40px;
+            position: relative;
+        }
+
+        /* 层级标签 */
+        .layer-label {
+            position: absolute;
+            left: -60px;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            font-size: 12px;
+            color: var(--text-sub);
+            letter-spacing: 2px;
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 4px;
+            background: var(--bg-color);
+        }
+
+        /* 区域定义 */
+        .layer {
+            display: grid;
+            gap: 20px;
+            padding: 20px;
+            border: 1px dashed var(--border-color);
+            border-radius: 12px;
+            position: relative;
+            background: rgba(255,255,255,0.01);
+        }
+
+        /* 顶部：增长与治理 (Stage 2) */
+        .layer-top {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        /* 中部：核心闭环 (Stage 1) */
+        .layer-core {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            border: 1px solid var(--accent-core);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.05);
+        }
+
+        /* 底部：基建与智能 (Stage 3 & 2) */
+        .layer-bottom {
+            grid-template-columns: 1.5fr 1fr 1.5fr;
+        }
+
+        /* 卡片样式 */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            min-height: 220px;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-color: var(--hover-color);
+            z-index: 10;
+        }
+
+        /* 颜色定义 */
+        .c-core { --hover-color: var(--accent-core); border-top: 3px solid var(--accent-core); }
+        .c-growth { --hover-color: var(--accent-growth); border-top: 3px solid var(--accent-growth); }
+        .c-infra { --hover-color: var(--accent-infra); border-top: 3px solid var(--accent-infra); }
+        .c-risk { --hover-color: var(--accent-risk); border-top: 3px solid var(--accent-risk); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .card-id {
+            font-family: monospace;
+            font-size: 12px;
+            color: var(--text-sub);
+            opacity: 0.7;
+        }
+
+        .section-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-sub);
+            margin-top: 10px;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .tag {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-sub);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tech-stack {
+            font-family: monospace;
+            font-size: 10px;
+            color: var(--accent-core);
+        }
+
+        .relation-arrow {
+            position: absolute;
+            color: var(--text-sub);
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            opacity: 0.5;
+        }
+
+        /* 动态背景网格 */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* SVG 连接线层 */
+        svg.connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        path {
+            fill: none;
+            stroke: var(--line-color);
+            stroke-width: 1.5;
+        }
+        
+        .flow-anim {
+            stroke-dasharray: 10;
+            animation: flow 20s linear infinite;
+        }
+
+        @keyframes flow {
+            from { stroke-dashoffset: 1000; }
+            to { stroke-dashoffset: 0; }
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<h1>生态闭环应用架构拓扑图</h1>
+
+<div class="container">
+    
+    <svg class="connections">
+        <path class="flow-anim" d="M 200 650 L 200 450 L 300 300" stroke="rgba(0,242,255,0.2)"></path>
+        <path class="flow-anim" d="M 800 650 L 800 300" stroke="rgba(0,242,255,0.2)"></path>
+        <path class="flow-anim" d="M 1400 650 L 1400 450 L 1300 300" stroke="rgba(0,242,255,0.2)"></path>
+        
+        <path d="M 300 400 L 1300 400" stroke="rgba(255,170,0,0.2)" stroke-dasharray="5,5"></path>
+    </svg>
+
+    <div class="layer layer-top">
+        <div class="layer-label">增长与治理</div>
+        
+        <div class="card c-growth">
+            <div class="card-header">
+                <span class="card-title">6. 增长飞轮 (油门)</span>
+                <span class="card-id">SYS-06</span>
+            </div>
+            <span class="section-title">子系统 Sub-systems</span>
+            <div class="tag-container">
+                <span class="tag">营销活动中心</span>
+                <span class="tag">积分/会员体系</span>
+                <span class="tag">全渠道消息推送</span>
+            </div>
+            <span class="section-title">核心技术 Tech Stack</span>
+            <div class="tech-stack">> Rule Engine (Drools)<br>> Redis (Rankings)<br>> WebSocket Push</div>
+            <span class="section-title">依赖关系</span>
+            <div class="tag-container">
+                <span class="tag">依赖: 用户画像(05)</span>
+                <span class="tag">输出: 召回率</span>
+            </div>
+        </div>
+
+        <div class="card c-risk">
+            <div class="card-header">
+                <span class="card-title">7. 信任治理 (护栏)</span>
+                <span class="card-id">SYS-07</span>
+            </div>
+            <span class="section-title">子系统 Sub-systems</span>
+            <div class="tag-container">
+                <span class="tag">实时风控大脑</span>
+                <span class="tag">内容审核(机审+人审)</span>
+                <span class="tag">信用评分中心</span>
+            </div>
+            <span class="section-title">核心技术 Tech Stack</span>
+            <div class="tech-stack">> Flink (Real-time)<br>> Graph Neural Networks<br>> NLP/OCR Models</div>
+            <span class="section-title">依赖关系</span>
+            <div class="tag-container">
+                <span class="tag">保障: 交易/内容安全</span>
+                <span class="tag">调用: AI底座(10)</span>
+            </div>
+        </div>
+
+        <div class="card c-growth">
+            <div class="card-header">
+                <span class="card-title">8. 供给侧赋能 (专业化)</span>
+                <span class="card-id">SYS-08</span>
+            </div>
+            <span class="section-title">子系统 Sub-systems</span>
+            <div class="tag-container">
+                <span class="tag">创作者工作台(CMS)</span>
+                <span class="tag">数据分析看板</span>
+                <span class="tag">供应链ERP接入</span>
+            </div>
+            <span class="section-title">核心技术 Tech Stack</span>
+            <div class="tech-stack">> React/Vue Editors<br>> OLAP (ClickHouse)<br>> Open API Gateway</div>
+            <span class="section-title">依赖关系</span>
+            <div class="tag-container">
+                <span class="tag">输入: 创作者素材</span>
+                <span class="tag">输出: 优质内容/SKU</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="layer layer-core">
+        <div class="layer-label">核心闭环</div>
+
+        <div class="card c-core">
+            <div class="card-header">
+                <span class="card-title">1. 身份基石 (血液)</span>
+                <span class="card-id">SYS-01</span>
+            </div>
+            <span class="section-title">子系统</span>
+            <div class="tag-container">
+                <span class="tag">统一认证(IAM)</span>
+                <span class="tag">用户档案(Profile)</span>
+                <span class="tag">权限控制(RBAC)</span>
+            </div>
+            <span class="section-title">核心技术</span>
+            <div class="tech-stack">> OAuth2.0 / JWT<br>> Graph DB (关系)<br>> LDAP / SSO</div>
+            <div style="margin-top:auto; font-size:10px; color:var(--accent-core);">➔ 启动所有模块</div>
+        </div>
+
+        <div class="card c-core">
+            <div class="card-header">
+                <span class="card-title">2. 价值核心 (诱饵)</span>
+                <span class="card-id">SYS-02</span>
+            </div>
+            <span class="section-title">子系统</span>
+            <div class="tag-container">
+                <span class="tag">商品中心(PIM)</span>
+                <span class="tag">媒资管理(DAM)</span>
+                <span class="tag">库存/服务中心</span>
+            </div>
+            <span class="section-title">核心技术</span>
+            <div class="tech-stack">> MongoDB (Doc)<br>> Object Storage (OSS)<br>> Elasticsearch</div>
+            <div style="margin-top:auto; font-size:10px; color:var(--accent-core);">➔ 供给 -> 关系</div>
+        </div>
+
+        <div class="card c-core">
+            <div class="card-header">
+                <span class="card-title">3. 关系网络 (粘合剂)</span>
+                <span class="card-id">SYS-03</span>
+            </div>
+            <span class="section-title">子系统</span>
+            <div class="tag-container">
+                <span class="tag">社交图谱服务</span>
+                <span class="tag">互动(评论/点赞)</span>
+                <span class="tag">Feed流分发</span>
+            </div>
+            <span class="section-title">核心技术</span>
+            <div class="tech-stack">> Neo4j (Graph)<br>> HBase (BigTable)<br>> Feed Architecture</div>
+            <div style="margin-top:auto; font-size:10px; color:var(--accent-core);">➔ 沉淀 -> 变现</div>
+        </div>
+
+        <div class="card c-core">
+            <div class="card-header">
+                <span class="card-title">4. 变现驱动 (心脏)</span>
+                <span class="card-id">SYS-04</span>
+            </div>
+            <span class="section-title">子系统</span>
+            <div class="tag-container">
+                <span class="tag">聚合支付网关</span>
+                <span class="tag">订单交易中心</span>
+                <span class="tag">广告投放引擎</span>
+            </div>
+            <span class="section-title">核心技术</span>
+            <div class="tech-stack">> Distributed Tx (TCC)<br>> Ledger DB<br>> High Concurrency</div>
+            <div style="margin-top:auto; font-size:10px; color:var(--accent-core);">➔ 收入 -> 反哺生态</div>
+        </div>
+    </div>
+
+    <div class="layer layer-bottom">
+        <div class="layer-label">底座与大脑</div>
+
+        <div class="card c-infra">
+            <div class="card-header">
+                <span class="card-title">10. AI能力底座 (未来)</span>
+                <span class="card-id">SYS-10</span>
+            </div>
+            <span class="section-title">子系统 Sub-systems</span>
+            <div class="tag-container">
+                <span class="tag">大模型服务(LLM)</span>
+                <span class="tag">AIGC生成工坊</span>
+                <span class="tag">智能体(Agent)平台</span>
+            </div>
+            <span class="section-title">核心技术 Tech Stack</span>
+            <div class="tech-stack">> Transformer Models<br>> Vector DB (Milvus)<br>> GPU Cluster Scheduling</div>
+            <span class="section-title">资源流动</span>
+            <div class="tag-container">
+                <span class="tag">赋能: 智能引擎(05)</span>
+                <span class="tag">赋能: 创作工具(08)</span>
+            </div>
+        </div>
+
+        <div class="card c-growth" style="border-color: var(--accent-core);">
+            <div class="card-header">
+                <span class="card-title">5. 智能引擎 (大脑)</span>
+                <span class="card-id">SYS-05</span>
+            </div>
+            <span class="section-title">子系统 Sub-systems</span>
+            <div class="tag-container">
+                <span class="tag">统一搜索平台</span>
+                <span class="tag">推荐算法中台</span>
+                <span class="tag">数据埋点与分析</span>
+            </div>
+            <span class="section-title">核心技术 Tech Stack</span>
+            <div class="tech-stack">> Spark/Hadoop<br>> Deep Learning (TF/PyTorch)<br>> Real-time Compute</div>
+            <span class="section-title">资源流动</span>
+            <div class="tag-container">
+                <span class="tag">输入: 全域数据</span>
+                <span class="tag">输出: 精准匹配策略</span>
+            </div>
+        </div>
+
+        <div class="card c-infra">
+            <div class="card-header">
+                <span class="card-title">9. 专属基础设施 (地基)</span>
+                <span class="card-id">SYS-09</span>
+            </div>
+            <span class="section-title">子系统 Sub-systems</span>
+            <div class="tag-container">
+                <span class="tag">实时音视频(RTC)</span>
+                <span class="tag">全球加速(CDN)</span>
+                <span class="tag">云原生底座(K8s)</span>
+            </div>
+            <span class="section-title">核心技术 Tech Stack</span>
+            <div class="tech-stack">> WebRTC / Live Stream<br>> Edge Computing<br>> Serverless Mesh</div>
+            <span class="section-title">资源流动</span>
+            <div class="tag-container">
+                <span class="tag">支撑: 所有上层业务</span>
+                <span class="tag">保障: 低延迟/高可用</span>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+</body>
+</html>
