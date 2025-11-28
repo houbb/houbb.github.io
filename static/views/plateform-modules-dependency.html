@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>企业全景核心依赖树 - 10大模块深度拆解</title>
+    <style>
+        :root {
+            --bg-color: #0c0f13;
+            --text-main: #e6edf3;
+            --text-sub: #7d8590;
+            --line-color: rgba(68, 180, 255, 0.4);
+            --line-highlight: #00f2ff;
+            --card-bg: rgba(22, 27, 34, 0.8);
+            
+            /* 层次颜色定义 */
+            --L1-color: #ffc107; /* 接入层 */
+            --L2-color: #ff5722; /* 业务核心层 */
+            --L3-color: #2196f3; /* 策略/决策层 */
+            --L4-color: #4caf50; /* 共享服务层 */
+            --L5-color: #9c27b0; /* 通用组件层 */
+            --L6-color: #e91e63; /* 基础数据层 */
+            --L7-color: #607d8b; /* 基础设施层 */
+
+            --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: 600;
+            background: linear-gradient(90deg, var(--L1-color), var(--L6-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 30px;
+            margin-bottom: 20px;
+        }
+
+        /* 布局容器：增加宽度和高度以容纳更多节点 */
+        .architecture-container {
+            position: relative;
+            width: 1800px; 
+            height: 2500px; 
+            margin: 40px auto;
+            display: grid;
+            grid-template-columns: repeat(16, 1fr); /* 增加列数 */
+            grid-template-rows: repeat(16, 1fr); 
+            gap: 10px 10px;
+            padding-top: 50px;
+        }
+
+        /* 模块通用样式 */
+        .node-card {
+            background-color: var(--card-bg);
+            border-radius: 6px;
+            padding: 10px 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            z-index: 2;
+            min-height: 60px;
+        }
+
+        .node-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.6);
+            border-width: 2px !important;
+        }
+
+        .node-title {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 3px;
+            color: var(--text-main);
+        }
+
+        .node-subtitle {
+            font-size: 11px;
+            color: var(--text-sub);
+        }
+
+        /* 层次样式 */
+        .L1 { grid-row: 1; border: 2px solid var(--L1-color); }
+        .L2 { grid-row: 3; border: 2px solid var(--L2-color); }
+        .L3 { grid-row: 5; border: 2px solid var(--L3-color); }
+        .L4 { grid-row: 7; border: 2px solid var(--L4-color); }
+        .L5 { grid-row: 9; border: 2px solid var(--L5-color); }
+        .L6 { grid-row: 11; border: 2px solid var(--L6-color); }
+        .L7 { grid-row: 13; border: 2px solid var(--L7-color); }
+        
+        /* 关键链路颜色强调 */
+        .security-link { border-color: var(--L6-color); } 
+        .content-link { border-color: var(--L3-color); } 
+        .trade-link { border-color: var(--L2-color); }
+
+        /* ----------------------------------- */
+        /* 定位 V3 (16列布局) */
+        /* ----------------------------------- */
+        /* L1 */
+        .L1-user { grid-column: 1 / span 3; }
+        .L1-admin { grid-column: 7 / span 3; }
+        .L1-api { grid-column: 14 / span 3; }
+
+        /* L2 核心业务 (Mod-2, 3, 4, 6) */
+        .L2-content { grid-column: 1 / span 3; } /* Mod-2 价值核心 */
+        .L2-social { grid-column: 4 / span 3; } /* Mod-3 关系网络 */
+        .L2-trade { grid-column: 7 / span 3; } /* Mod-4 变现驱动 */
+        .L2-growth { grid-column: 10 / span 3; } /* Mod-6 增长飞轮 */
+
+        /* L3 策略/决策/赋能 (Mod-5, 7, 8) */
+        .L3-recom { grid-column: 1 / span 4; } /* Mod-5 智能引擎 */
+        .L3-wind { grid-column: 6 / span 4; } /* Mod-7 信任治理 */
+        .L3-creator { grid-column: 11 / span 4; } /* Mod-8 创作者赋能 */
+
+        /* L4 共享服务/基石 (Mod-1) */
+        .L4-ums { grid-column: 1 / span 4; } /* Mod-1 身份基石 */
+        .L4-infra { grid-column: 6 / span 4; } /* Mod-9 专属基础设施 (服务入口) */
+        .L4-ai { grid-column: 11 / span 4; } /* Mod-10 AI能力底座 (服务入口) */
+
+        /* L5 通用组件/网关 */
+        .L5-encrypt { grid-column: 3 / span 4; } 
+        .L5-com { grid-column: 9 / span 4; }
+
+        /* L6 基础数据层 */
+        .L6-db { grid-column: 1 / span 4; }
+        .L6-cache { grid-column: 5 / span 4; }
+        .L6-stream { grid-column: 9 / span 4; }
+        .L6-llm { grid-column: 13 / span 4; }
+
+        /* L7 基础设施 */
+        .L7-k8s { grid-column: 5 / span 4; } 
+        .L7-gpu { grid-column: 9 / span 4; }
+
+        /* ----------------------------------- */
+        /* SVG */
+        /* ----------------------------------- */
+        .connections { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .arch-path { fill: none; stroke: var(--line-color); stroke-width: 2; transition: stroke 0.3s ease, stroke-width 0.3s ease; marker-end: url(#arrowhead); }
+
+        .path-highlighted { 
+            stroke: var(--line-highlight) !important; 
+            stroke-width: 3 !important;
+            animation: pulse-flow 5s linear infinite; 
+            stroke-dasharray: 10 5;
+        }
+
+        @keyframes pulse-flow {
+            from { stroke-dashoffset: 0; }
+            to { stroke-dashoffset: -100; }
+        }
+        
+    </style>
+</head>
+<body>
+
+<h1>企业全景核心依赖树：10大业务模块与7层深度依赖拆解</h1>
+
+<div class="architecture-container" id="archContainer">
+    
+    <div class="node-card L1 L1-user" id="L1-user">
+        <div class="node-title">L1: C端用户请求</div>
+        <div class="node-subtitle">App/Web 访问</div>
+    </div>
+    <div class="node-card L1 L1-admin" id="L1-admin">
+        <div class="node-title">L1: 运营/管理后台</div>
+        <div class="node-subtitle">内部员工/审核人员访问</div>
+    </div>
+    <div class="node-card L1 L1-api" id="L1-api">
+        <div class="node-title">L1: 开放 API 网关</div>
+        <div class="node-subtitle">B端/外部系统接入</div>
+    </div>
+    <div class="stage-label" style="position: absolute; left: 10px; top: 80px; font-size: 12px; color: var(--L1-color);">--- L1: 接入层 (Engagement) ---</div>
+
+    <div class="node-card L2 L2-content" id="L2-content">
+        <div class="node-title">L2: 价值核心 (Mod-2)</div>
+        <div class="node-subtitle">内容/商品 API</div>
+    </div>
+    <div class="node-card L2 L2-social" id="L2-social">
+        <div class="node-title">L2: 关系网络 (Mod-3)</div>
+        <div class="node-subtitle">Feed流/互动服务</div>
+    </div>
+    <div class="node-card L2 L2-trade" id="L2-trade">
+        <div class="node-title">L2: 变现驱动 (Mod-4)</div>
+        <div class="node-subtitle">订单/交易服务</div>
+    </div>
+    <div class="node-card L2 L2-growth" id="L2-growth">
+        <div class="node-title">L2: 增长飞轮 (Mod-6)</div>
+        <div class="node-subtitle">任务/激励服务</div>
+    </div>
+    <div class="stage-label" style="position: absolute; left: 10px; top: 250px; font-size: 12px; color: var(--L2-color);">--- L2: 核心业务层 (Core Logic) ---</div>
+
+
+    <div class="node-card L3 L3-recom" id="L3-recom">
+        <div class="node-title">L3: 智能引擎 (Mod-5)</div>
+        <div class="node-subtitle">推荐/搜索策略</div>
+    </div>
+    <div class="node-card L3 L3-wind" id="L3-wind">
+        <div class="node-title">L3: 信任治理策略 (Mod-7)</div>
+        <div class="node-subtitle">实时风控/审核决策</div>
+    </div>
+    <div class="node-card L3 L3-creator" id="L3-creator">
+        <div class="node-title">L3: 创作者赋能 (Mod-8)</div>
+        <div class="node-subtitle">内容创作/结算策略</div>
+    </div>
+    <div class="stage-label" style="position: absolute; left: 10px; top: 460px; font-size: 12px; color: var(--L3-color);">--- L3: 策略/决策/赋能层 ---</div>
+
+
+    <div class="node-card L4 L4-ums" id="L4-ums">
+        <div class="node-title">L4: 身份基石 (Mod-1)</div>
+        <div class="node-subtitle">UMS/SSO/权限认证</div>
+    </div>
+    <div class="node-card L4 L4-infra" id="L4-infra">
+        <div class="node-title">L4: 专属基础设施服务 (Mod-9)</div>
+        <div class="node-subtitle">IM/RTC/CDN 服务网关</div>
+    </div>
+    <div class="node-card L4 L4-ai" id="L4-ai">
+        <div class="node-title">L4: AI能力底座服务 (Mod-10)</div>
+        <div class="node-subtitle">LLM/AIGC API 接口</div>
+    </div>
+    <div class="stage-label" style="position: absolute; left: 10px; top: 670px; font-size: 12px; color: var(--L4-color);">--- L4: 共享服务层 (Platform Services) ---</div>
+
+
+    <div class="node-card L5 L5-encrypt" id="L5-encrypt">
+        <div class="node-title">L5: 加密/密钥管理服务 (KMS)</div>
+        <div class="node-subtitle">敏感数据加解密</div>
+    </div>
+    <div class="node-card L5 L5-com" id="L5-com">
+        <div class="node-title">L5: 统一通信组件</div>
+        <div class="node-subtitle">短信、邮件、Push API</div>
+    </div>
+    <div class="stage-label" style="position: absolute; left: 10px; top: 870px; font-size: 12px; color: var(--L5-color);">--- L5: 跨领域通用组件 ---</div>
+
+
+    <div class="node-card L6 L6-db" id="L6-db">
+        <div class="node-title">L6: 数据库集群</div>
+        <div class="node-subtitle">MySQL/Postgres/MongoDB (数据持久化)</div>
+    </div>
+    <div class="node-card L6 L6-cache" id="L6-cache">
+        <div class="node-title">L6: 缓存/时序数据库</div>
+        <div class="node-subtitle">Redis/Memcached/TSDB (高并发读写)</div>
+    </div>
+    <div class="node-card L6 L6-stream" id="L6-stream">
+        <div class="node-title">L6: 消息/流计算平台</div>
+        <div class="node-subtitle">Kafka/Flink (实时行为流)</div>
+    </div>
+    <div class="node-card L6 L6-llm" id="L6-llm">
+        <div class="node-title">L6: Vector DB/特征存储</div>
+        <div class="node-subtitle">向量搜索、特征平台</div>
+    </div>
+    <div class="stage-label" style="position: absolute; left: 10px; top: 1100px; font-size: 12px; color: var(--L6-color);">--- L6: 基础数据层 (Data & Compute) ---</div>
+
+
+    <div class="node-card L7 L7-k8s" id="L7-k8s">
+        <div class="node-title">L7: 云原生平台/网络</div>
+        <div class="node-subtitle">Kubernetes/Service Mesh/CDN</div>
+    </div>
+    <div class="node-card L7 L7-gpu" id="L7-gpu">
+        <div class="node-title">L7: GPU/AI 算力集群</div>
+        <div class="node-subtitle">高性能计算资源</div>
+    </div>
+    <div class="stage-label" style="position: absolute; left: 10px; top: 1350px; font-size: 12px; color: var(--L7-color);">--- L7: 基础设施层 (IaaS/PaaS) ---</div>
+
+
+    <svg class="connections" id="svgConnections">
+        <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="var(--line-color)" />
+            </marker>
+            <marker id="arrowhead-highlighted" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="var(--line-highlight)" />
+            </marker>
+        </defs>
+    </svg>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const modules = document.querySelectorAll('.node-card');
+        const svg = document.getElementById('svgConnections');
+
+        // 核心依赖关系配置
+        const connections = [
+            /* --- L1 -> L2 业务发起 --- */
+            { from: 'L1-user', to: 'L2-content', type: 'content-link' },
+            { from: 'L1-user', to: 'L2-social', type: 'content-link' },
+            { from: 'L1-api', to: 'L2-trade', type: 'trade-link' },
+            { from: 'L1-admin', to: 'L3-creator', type: 'content-link' },
+
+            /* --- L2 核心业务依赖 L3 策略/赋能 --- */
+            // 内容/互动依赖推荐和风控
+            { from: 'L2-content', to: 'L3-recom', type: 'content-link' },
+            { from: 'L2-content', to: 'L3-wind', type: 'security-link' },
+            { from: 'L2-social', to: 'L3-recom', type: 'content-link' },
+            { from: 'L2-social', to: 'L3-wind', type: 'security-link' },
+            // 交易依赖风控
+            { from: 'L2-trade', to: 'L3-wind', type: 'security-link' },
+            // 增长依赖推荐
+            { from: 'L2-growth', to: 'L3-recom', type: 'content-link' },
+
+            /* --- L3 策略/赋能依赖 L4 共享服务 --- */
+            // 策略依赖身份和AI
+            { from: 'L3-recom', to: 'L4-ums', type: 'content-link' },
+            { from: 'L3-recom', to: 'L4-ai', type: 'content-link' },
+            { from: 'L3-wind', to: 'L4-ums', type: 'security-link' },
+            { from: 'L3-wind', to: 'L4-ai', type: 'security-link' },
+            // 创作者赋能依赖交易和基础设施
+            { from: 'L3-creator', to: 'L2-trade', type: 'trade-link' }, // 结算依赖交易
+            { from: 'L3-creator', to: 'L4-infra', type: 'content-link' },
+
+            /* --- L4 共享服务依赖 L5 通用组件 --- */
+            // 身份和安全依赖加密
+            { from: 'L4-ums', to: 'L5-encrypt', type: 'security-link' },
+            { from: 'L4-ums', to: 'L5-com', type: 'content-link' },
+            { from: 'L4-ai', to: 'L5-encrypt', type: 'security-link' }, // 模型数据加密
+            { from: 'L4-infra', to: 'L5-com', type: 'content-link' }, // IM/RTC 的消息传递
+
+            /* --- L2/L4 服务直接依赖 L6 基础数据 --- */
+            { from: 'L2-content', to: 'L6-db', type: 'content-link' }, 
+            { from: 'L4-ums', to: 'L6-cache', type: 'content-link' }, // UMS 读写 Token
+            { from: 'L3-wind', to: 'L6-stream', type: 'security-link' }, // 风控依赖实时流
+            { from: 'L3-recom', to: 'L6-llm', type: 'content-link' }, // 推荐依赖向量/特征
+
+            /* --- L5/L6 基础数据/组件依赖 L7 基础设施 --- */
+            { from: 'L6-db', to: 'L7-k8s', type: 'L7-color' },
+            { from: 'L6-cache', to: 'L7-k8s', type: 'L7-color' },
+            { from: 'L6-stream', to: 'L7-k8s', type: 'L7-color' },
+            { from: 'L6-llm', to: 'L7-gpu', type: 'L7-color' },
+            { from: 'L4-ai', to: 'L7-gpu', type: 'L7-color' }, // AI服务直接依赖GPU
+            { from: 'L4-infra', to: 'L7-k8s', type: 'L7-color' }, // 专属基建部署在 K8s
+            { from: 'L5-encrypt', to: 'L7-k8s', type: 'L7-color' }, // KMS 部署
+
+            /* --- L2 核心业务的横向自循环/交叉依赖 --- */
+            { from: 'L2-trade', to: 'L2-content', type: 'trade-link' }, // 交易完成，更新内容状态
+            { from: 'L2-social', to: 'L2-growth', type: 'content-link' }, // 互动行为触发增长激励
+        ];
+
+        function getElementCenter(element) {
+            const rect = element.getBoundingClientRect();
+            const containerRect = svg.getBoundingClientRect();
+            return {
+                x: rect.left + rect.width / 2 - containerRect.left,
+                y: rect.top + rect.height / 2 - containerRect.top
+            };
+        }
+
+        function drawConnections() {
+            svg.innerHTML = `
+                <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="var(--line-color)" />
+                    </marker>
+                    <marker id="arrowhead-highlighted" markerWidth="10" markerHeight="7" refX="8" refY="3.5" orient="auto">
+                        <polygon points="0 0, 10 3.5, 0 7" fill="var(--line-highlight)" />
+                    </marker>
+                </defs>
+            `; 
+
+            connections.forEach(conn => {
+                const fromEl = document.getElementById(conn.from);
+                const toEl = document.getElementById(conn.to);
+
+                if (!fromEl || !toEl) return;
+
+                const fromRect = fromEl.getBoundingClientRect();
+                const toRect = toEl.getBoundingClientRect();
+                const containerRect = svg.getBoundingClientRect();
+
+                const start = getElementCenter(fromEl);
+                const end = getElementCenter(toEl);
+
+                // 强制从下侧中心点连接到上侧中心点，确保垂直流
+                const p1 = { x: start.x, y: fromRect.bottom - containerRect.top };
+                const p2 = { x: end.x, y: toRect.top - containerRect.top };
+
+                let pathData = `M ${p1.x} ${p1.y}`;
+                
+                const controlY_up = (p1.y + p2.y) / 2 - 20; // 稍微向上弯曲，提供视觉空间
+                const controlY_down = (p1.y + p2.y) / 2 + 20;
+
+                // 使用三次贝塞尔曲线 (C) 制造流畅且可控的路径
+                if (p1.y < p2.y) { // 正常向下依赖
+                     pathData = `M ${p1.x} ${p1.y} C ${p1.x} ${controlY_down}, ${p2.x} ${controlY_down}, ${p2.x} ${p2.y}`;
+                } else if (p1.y > p2.y) { // 向上反馈/反向调用
+                    pathData = `M ${p1.x} ${p1.y} C ${p1.x} ${controlY_up}, ${p2.x} ${controlY_up}, ${p2.x} ${p2.y}`;
+                } else {
+                    // 水平或同层连接（使用更平坦的曲线）
+                    const midX = (p1.x + p2.x) / 2;
+                    pathData = `M ${p1.x} ${p1.y} C ${midX} ${p1.y + 30}, ${midX} ${p2.y + 30}, ${p2.x} ${p2.y}`;
+                }
+
+
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', pathData);
+                path.classList.add('arch-path');
+                path.setAttribute('data-from', conn.from);
+                path.setAttribute('data-to', conn.to);
+                path.setAttribute('marker-end', 'url(#arrowhead)');
+                path.setAttribute('data-type', conn.type); 
+                
+                // 设置依赖类型颜色
+                if (conn.type === 'security-link') {
+                    path.style.stroke = 'var(--L6-color)';
+                } else if (conn.type === 'content-link') {
+                    path.style.stroke = 'var(--L3-color)';
+                } else if (conn.type === 'trade-link') {
+                    path.style.stroke = 'var(--L2-color)';
+                } else if (conn.type === 'L7-color') {
+                     path.style.stroke = 'var(--L7-color)';
+                } else {
+                    path.style.stroke = 'var(--line-color)';
+                }
+
+                svg.appendChild(path);
+            });
+        }
+
+        drawConnections();
+        window.addEventListener('resize', drawConnections);
+
+        // 悬停高亮逻辑
+        modules.forEach(module => {
+            module.addEventListener('mouseenter', () => {
+                const moduleId = module.id;
+                const paths = svg.querySelectorAll('.arch-path');
+                
+                paths.forEach(path => {
+                    const fromId = path.getAttribute('data-from');
+                    const toId = path.getAttribute('data-to');
+                    const isRelevant = fromId === moduleId || toId === moduleId;
+
+                    if (isRelevant) {
+                        path.classList.add('path-highlighted');
+                        path.setAttribute('marker-end', 'url(#arrowhead-highlighted)');
+                    } else {
+                        path.style.opacity = '0.1';
+                    }
+                });
+            });
+
+            module.addEventListener('mouseleave', () => {
+                const paths = svg.querySelectorAll('.arch-path');
+                paths.forEach(path => {
+                    path.classList.remove('path-highlighted');
+                    path.style.opacity = '1';
+                    path.setAttribute('marker-end', 'url(#arrowhead)');
+
+                    // 恢复路径颜色
+                    const connType = path.getAttribute('data-type');
+                    if (connType === 'security-link') {
+                        path.style.stroke = 'var(--L6-color)';
+                    } else if (connType === 'content-link') {
+                        path.style.stroke = 'var(--L3-color)';
+                    } else if (connType === 'trade-link') {
+                        path.style.stroke = 'var(--L2-color)';
+                    } else if (connType === 'L7-color') {
+                        path.style.stroke = 'var(--L7-color)';
+                    } else {
+                        path.style.stroke = 'var(--line-color)';
+                    }
+                });
+            });
+        });
+        
+    });
+</script>
+</body>
+</html>

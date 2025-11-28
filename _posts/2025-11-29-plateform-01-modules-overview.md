@@ -16,6 +16,10 @@ published: true
 
 [模块关系](https://houbb.github.io/static/views/plateform-modules-relationship.html)
 
+# 依赖
+
+[依赖](https://houbb.github.io/static/views/plateform-modules-dependency.html)
+
 # chat
 
 ## 都说一个平台如果想闭环，需要至少几个模块。用户模块，内容模块，交易模块，通知模块。你认为呢？按照重要程度补充一些
