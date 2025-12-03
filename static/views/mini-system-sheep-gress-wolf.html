@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>羊-草-狼 — 更逼真 + 更华丽 的生态模拟</title>
+  <style>
+    :root{--bg:#071021;--panel:#081522;--muted:#9fb0c8;--accent:#6dd3ff}
+    html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Helvetica,Arial;color:#e6eef6;background:linear-gradient(180deg,#031021,#071421)}
+    .wrap{display:flex;gap:12px;padding:12px;height:100%;box-sizing:border-box}
+    .left{flex:1;display:flex;flex-direction:column}
+    canvas#world{flex:1;border-radius:10px;background:#02131a;box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+    .controls{width:380px;min-width:300px;background:linear-gradient(180deg,var(--panel),#051528);border-radius:10px;padding:12px;box-shadow:0 8px 30px rgba(0,0,0,0.6);overflow:auto}
+    h2{margin:0 0 8px 0}
+    .row{display:flex;align-items:center;gap:8px;margin:8px 0}
+    label{width:140px;color:var(--muted);font-size:13px}
+    input[type=range]{flex:1}
+    .btn{padding:8px 12px;border-radius:8px;border:none;background:var(--accent);color:#04243a;font-weight:700;cursor:pointer}
+    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+    .stat{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .stat .item{background:rgba(255,255,255,0.02);padding:8px;border-radius:6px;min-width:80px;text-align:center}
+    .small{font-size:12px;color:var(--muted)}
+    footer{font-size:12px;color:var(--muted);margin-top:10px}
+    .toggle{display:flex;gap:8px;align-items:center}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="left">
+      <canvas id="world" width="1100" height="700"></canvas>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+        <div class="small">按住空格键可慢速播放；点击画布可放置食物 / 右键移除。已加入生态上限防爆发。</div>
+        <div style="display:flex;gap:8px">
+          <button id="start" class="btn">开始</button>
+          <button id="pause" class="btn ghost">暂停</button>
+          <button id="reset" class="btn ghost">重置</button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="controls">
+      <h2>模拟参数 · 更逼真 + 更华丽</h2>
+      <div class="row"><label>网格格子大小 (px)</label><input id="cellSize" type="range" min="6" max="28" value="14"><div class="small" id="cellSizeVal">14</div></div>
+      <div class="row"><label>初始草覆盖率 (%)</label><input id="initGrass" type="range" min="5" max="100" value="75"><div class="small" id="initGrassVal">75</div></div>
+      <div class="row"><label>草再生 (帧)</label><input id="grassRegrow" type="range" min="20" max="1200" value="180"><div class="small" id="grassRegrowVal">180</div></div>
+
+      <hr style="opacity:0.06;border:none;height:1px;margin:8px 0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent)">
+
+      <h3 style="margin:6px 0">羊群参数（Boids 风格）</h3>
+      <div class="row"><label>羊数 (初始)</label><input id="initSheep" type="range" min="0" max="300" value="120"><div class="small" id="initSheepVal">120</div></div>
+      <div class="row"><label>速度</label><input id="sheepSpeed" type="range" min="0.3" max="4" step="0.1" value="1.6"><div class="small" id="sheepSpeedVal">1.6</div></div>
+      <div class="row"><label>凝聚力（群体）</label><input id="cohesion" type="range" min="0" max="2" step="0.05" value="0.4"><div class="small" id="cohesionVal">0.40</div></div>
+      <div class="row"><label>分离（避免拥挤）</label><input id="separation" type="range" min="0" max="3" step="0.05" value="0.9"><div class="small" id="separationVal">0.90</div></div>
+      <div class="row"><label>对齐（速度一致）</label><input id="alignment" type="range" min="0" max="2" step="0.05" value="0.35"><div class="small" id="alignmentVal">0.35</div></div>
+
+      <hr style="opacity:0.06;border:none;height:1px;margin:8px 0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent)">
+
+      <h3 style="margin:6px 0">狼群参数（狩猎策略）</h3>
+      <div class="row"><label>狼数 (初始)</label><input id="initWolves" type="range" min="0" max="80" value="18"><div class="small" id="initWolvesVal">18</div></div>
+      <div class="row"><label>狼速度</label><input id="wolfSpeed" type="range" min="0.4" max="5" step="0.1" value="2.8"><div class="small" id="wolfSpeedVal">2.8</div></div>
+      <div class="row"><label>捕食范围 (px)</label><input id="eatRange" type="range" min="4" max="80" value="12"><div class="small" id="eatRangeVal">12</div></div>
+      <div class="row"><label>合作狩猎强度</label><input id="packHunt" type="range" min="0" max="2" step="0.05" value="0.8"><div class="small" id="packHuntVal">0.80</div></div>
+
+      <hr style="opacity:0.06;border:none;height:1px;margin:8px 0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent)">
+
+      <h3 style="margin:6px 0">视觉与场景</h3>
+      <div class="row toggle"><label>轨迹模糊（视觉）</label><input id="trail" type="checkbox" checked></div>
+      <div class="row toggle"><label>显示能量条</label><input id="showEnergy" type="checkbox" checked></div>
+      <div class="row"><label>季节周期 (秒)</label><input id="seasonCycle" type="range" min="0" max="120" value="40"><div class="small" id="seasonCycleVal">40s</div></div>
+
+      <div class="stat">
+        <div class="item"><div class="small">草</div><div id="sGrass">0</div></div>
+        <div class="item"><div class="small">羊</div><div id="sSheep">0</div></div>
+        <div class="item"><div class="small">狼</div><div id="sWolves">0</div></div>
+      </div>
+
+      <footer>文件可直接保存为 <code>ecosim.html</code> 并在浏览器打开。需要我把当前版本导出为可下载文件或增加更多交互（例：托管、保存/加载参数）告诉我。</footer>
+    </aside>
+  </div>
+
+<script>
+// ---- utilities ----
+const canvas = document.getElementById('world');
+const ctx = canvas.getContext('2d');
+canvas.width = canvas.clientWidth;
+canvas.height = canvas.clientHeight;
+
+function rand(a,b){return Math.random()*(b-a)+a}
+function clamp(v,a,b){return Math.max(a,Math.min(b,v))}
+
+// ---- UI bindings ----
+const ui = {
+  cellSize: document.getElementById('cellSize'),
+  initGrass: document.getElementById('initGrass'),
+  grassRegrow: document.getElementById('grassRegrow'),
+  initSheep: document.getElementById('initSheep'),
+  sheepSpeed: document.getElementById('sheepSpeed'),
+  cohesion: document.getElementById('cohesion'),
+  separation: document.getElementById('separation'),
+  alignment: document.getElementById('alignment'),
+  initWolves: document.getElementById('initWolves'),
+  wolfSpeed: document.getElementById('wolfSpeed'),
+  eatRange: document.getElementById('eatRange'),
+  packHunt: document.getElementById('packHunt'),
+  trail: document.getElementById('trail'),
+  showEnergy: document.getElementById('showEnergy'),
+  seasonCycle: document.getElementById('seasonCycle')
+};
+
+// display immediate values
+function bindVal(id, input, suffix=''){
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.textContent = (input && input.value !== undefined) ? (input.value + (suffix||'')) : '';
+  if(input && typeof input.addEventListener === 'function'){
+    input.addEventListener('input', ()=> el.textContent = input.value + (suffix||''));
+  }
+}
+bindVal('cellSizeVal', ui.cellSize);
+bindVal('initGrassVal', ui.initGrass);
+bindVal('grassRegrowVal', ui.grassRegrow);
+bindVal('initSheepVal', ui.initSheep);
+bindVal('sheepSpeedVal', ui.sheepSpeed);
+bindVal('cohesionVal', ui.cohesion);
+bindVal('separationVal', ui.separation);
+bindVal('alignmentVal', ui.alignment);
+bindVal('initWolvesVal', ui.initWolves);
+bindVal('wolfSpeedVal', ui.wolfSpeed);
+bindVal('eatRangeVal', ui.eatRange);
+bindVal('packHuntVal', ui.packHunt);
+bindVal('seasonCycleVal', ui.seasonCycle, 's');
+
+// simple toggles
+const startBtn = document.getElementById('start');
+const pauseBtn = document.getElementById('pause');
+const resetBtn = document.getElementById('reset');
+
+// stats
+const sGrass = document.getElementById('sGrass');
+const sSheep = document.getElementById('sSheep');
+const sWolves = document.getElementById('sWolves');
+
+// ---- world / grid ----
+let gridCols=0, gridRows=0, cellSize=Number(ui.cellSize.value);
+let grassGrid = []; // {has:boolean, timer:int}
+
+// population caps (calculated from map size)
+let MAX_GRASS = 0, MAX_SHEEP = 0, MAX_WOLVES = 0;
+function computeCaps(){
+  const area = gridCols * gridRows;
+  // reasonable defaults: grass can occupy all cells, sheep ~12% of cells, wolves ~12% of sheep
+  MAX_GRASS = area; 
+  MAX_SHEEP = Math.max(12, Math.floor(area * 0.12));
+  MAX_WOLVES = Math.max(4, Math.floor(MAX_SHEEP * 0.12));
+}
+
+function buildGrid(){
+  cellSize = Number(ui.cellSize.value);
+  gridCols = Math.ceil(canvas.width / cellSize);
+  gridRows = Math.ceil(canvas.height / cellSize);
+  grassGrid = new Array(gridCols*gridRows);
+  const coverage = Number(ui.initGrass.value)/100;
+  const regrow = Number(ui.grassRegrow && ui.grassRegrow.value) || 220;
+  for(let y=0;y<gridRows;y++){
+    for(let x=0;x<gridCols;x++){
+      const idx = y*gridCols + x;
+      const has = Math.random() < coverage;
+      grassGrid[idx] = {has: has, timer: has?0:Math.floor(rand(0,regrow))};
+    }
+  }
+  computeCaps();
+}
+
+function posToIndex(x,y){
+  const gx = clamp(Math.floor(x / cellSize), 0, gridCols-1);
+  const gy = clamp(Math.floor(y / cellSize), 0, gridRows-1);
+  return gy*gridCols + gx;
+}
+
+// ---- agents ----
+class Sheep{
+  constructor(x,y){
+    this.x = x; this.y = y; this.vx=rand(-1,1); this.vy=rand(-1,1);
+    this.energy = rand(30,80); this.age=0;
+  }
+  update(sheepList, wolves){
+    // boids forces
+    const cohesionS = Number(ui.cohesion.value);
+    const separationS = Number(ui.separation.value);
+    const alignmentS = Number(ui.alignment.value);
+    const speed = Number(ui.sheepSpeed.value);
+
+    let cx=0, cy=0, count=0; let ax=0, ay=0; let sx=0, sy=0;
+    for(const other of sheepList){
+      if(other===this) continue;
+      const d = Math.hypot(other.x - this.x, other.y - this.y);
+      if(d < 60){ cx += other.x; cy += other.y; count++; }
+      if(d < 18){ sx -= (other.x - this.x); sy -= (other.y - this.y); }
+      if(d < 50){ ax += other.vx; ay += other.vy; }
+    }
+    if(count>0){ cx/=count; cy/=count; this.vx += (cx - this.x) * 0.001 * cohesionS; this.vy += (cy - this.y) * 0.001 * cohesionS; }
+    this.vx += sx * 0.01 * separationS; this.vy += sy * 0.01 * separationS;
+    this.vx += ax * 0.01 * alignmentS; this.vy += ay * 0.01 * alignmentS;
+
+    // escape wolves
+    for(const w of wolves){
+      const dx = this.x - w.x, dy = this.y - w.y; const d = Math.hypot(dx,dy);
+      if(d < 120 && d>0){ this.vx += (dx/d) * 0.6 * (120 - d)/120 * 2; this.vy += (dy/d) * 0.6 * (120 - d)/120 * 2; }
+    }
+
+    // limit
+    const vmax = speed * (0.8 + Math.random()*0.6);
+    const vm = Math.hypot(this.vx, this.vy) || 1; this.vx = (this.vx/vm)*vmax; this.vy = (this.vy/vm)*vmax;
+
+    this.x += this.vx; this.y += this.vy; this.age++;
+
+    // wrap
+    if(this.x < 0) this.x += canvas.width; if(this.x>canvas.width) this.x -= canvas.width;
+    if(this.y < 0) this.y += canvas.height; if(this.y>canvas.height) this.y -= canvas.height;
+
+    // energy cost
+    this.energy -= 0.02 + (0.002*vm);
+  }
+  draw(){
+    // glow body
+    ctx.save(); ctx.translate(this.x,this.y);
+    ctx.shadowColor = 'rgba(180,220,255,0.12)'; ctx.shadowBlur = 8;
+    ctx.fillStyle = 'rgba(245,245,245,0.95)'; ctx.beginPath(); ctx.arc(0,0,4,0,Math.PI*2); ctx.fill();
+    ctx.restore();
+    // energy bar
+    if(ui.showEnergy && ui.showEnergy.checked){ ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.fillRect(this.x-6,this.y-10,12,2); ctx.fillStyle='rgba(86,204,153,0.95)'; ctx.fillRect(this.x-6,this.y-10,12*Math.min(1,this.energy/100),2); }
+  }
+}
+
+class Wolf{
+  constructor(x,y){ this.x=x; this.y=y; this.vx=rand(-1,1); this.vy=rand(-1,1); this.energy=rand(60,160); this.age=0; }
+  update(wolves, sheeps){
+    const speed = Number(ui.wolfSpeed.value);
+    // cooperative targeting: each wolf biases toward nearest prey but also toward pack center when close
+    let nearest=null; let nd=Infinity;
+    for(const s of sheeps){ const d=Math.hypot(s.x-this.x,s.y-this.y); if(d<nd){ nd=d; nearest=s; } }
+
+    if(nearest && nd < 300){
+      // head toward target
+      const dx = nearest.x - this.x, dy = nearest.y - this.y; const len=Math.hypot(dx,dy)||1;
+      this.vx += (dx/len) * 0.12 * Number(ui.packHunt.value);
+      this.vy += (dy/len) * 0.12 * Number(ui.packHunt.value);
+    } else {
+      // wander
+      this.vx += rand(-0.03,0.03); this.vy += rand(-0.03,0.03);
+    }
+
+    // pack cohesion: stay near other wolves
+    let cx=0,cy=0,cnt=0;
+    for(const w of wolves){ if(w===this) continue; const d=Math.hypot(w.x-this.x,w.y-this.y); if(d<120){ cx+=w.x; cy+=w.y; cnt++; } }
+    if(cnt>0){ cx/=cnt; cy/=cnt; this.vx += (cx-this.x)*0.0008; this.vy += (cy-this.y)*0.0008; }
+
+    // limit
+    const vmax = speed*(0.9+Math.random()*0.5); const vm=Math.hypot(this.vx,this.vy)||1; this.vx=(this.vx/vm)*vmax; this.vy=(this.vy/vm)*vmax;
+    this.x+=this.vx; this.y+=this.vy; this.age++;
+    // wrap
+    if(this.x < 0) this.x += canvas.width; if(this.x>canvas.width) this.x -= canvas.width;
+    if(this.y < 0) this.y += canvas.height; if(this.y>canvas.height) this.y -= canvas.height;
+
+    this.energy -= 0.05 + (0.002*vmax);
+  }
+  draw(){
+    ctx.save(); ctx.translate(this.x,this.y); ctx.rotate(Math.atan2(this.vy,this.vx));
+    ctx.shadowColor='rgba(255,160,80,0.12)'; ctx.shadowBlur=12;
+    ctx.fillStyle='rgba(255,150,60,0.95)'; ctx.beginPath(); ctx.moveTo(8,0); ctx.lineTo(-6,5); ctx.lineTo(-6,-5); ctx.closePath(); ctx.fill();
+    ctx.restore();
+    if(ui.showEnergy && ui.showEnergy.checked){ ctx.fillStyle='rgba(255,255,255,0.12)'; ctx.fillRect(this.x-8,this.y-12,16,3); ctx.fillStyle='rgba(255,120,60,0.95)'; ctx.fillRect(this.x-8,this.y-12,16*Math.min(1,this.energy/200),3); }
+  }
+}
+
+// ---- particles for eating effect ----
+class Particle{ constructor(x,y,color){this.x=x;this.y=y;this.vx=rand(-1,1);this.vy=rand(-1,1);this.life=60;this.color=color;} update(){this.x+=this.vx;this.y+=this.vy;this.life--;} draw(){ctx.globalAlpha=Math.max(0,this.life/60);ctx.fillStyle=this.color;ctx.fillRect(this.x,this.y,2,2);ctx.globalAlpha=1;} }
+
+// ---- world lists ----
+let sheeps=[],wolves=[],particles=[];
+
+function populate(){ sheeps=[]; wolves=[]; particles=[]; buildGrid();
+  // clamp initial populations to reasonable caps
+  const desiredSheep = Math.min(Number(ui.initSheep.value), MAX_SHEEP);
+  const desiredWolves = Math.min(Number(ui.initWolves.value), MAX_WOLVES);
+  for(let i=0;i<desiredSheep;i++) sheeps.push(new Sheep(rand(0,canvas.width),rand(0,canvas.height)));
+  for(let i=0;i<desiredWolves;i++) wolves.push(new Wolf(rand(0,canvas.width),rand(0,canvas.height)));
+}
+
+populate();
+
+// ---- season modulates grass regrow rate ----
+let tStart = performance.now();
+
+// ---- main update loop ----
+let running=true; let frame=0;
+function update(){
+  frame++;
+  // season
+  const cycle = Number(ui.seasonCycle.value)||40; const s = (Math.sin((performance.now()-tStart)/1000*(2*Math.PI/cycle))+1)/2; // 0..1
+  const grassRegrowBase =  Number(document.getElementById('grassRegrowVal')?.textContent) || 180;
+  const regrow = Math.max(20, 20 + (1-s)*100 + grassRegrowBase*0.0);
+
+  // grass update
+  let grassCount=0;
+  for(let i=0;i<grassGrid.length;i++){
+    const cell = grassGrid[i];
+    if(cell.has){ grassCount++; continue; }
+    // only regrow if under max cap
+    if(grassCount >= MAX_GRASS) { continue; }
+    cell.timer -= 1;
+    if(cell.timer <= 0){ cell.has = true; cell.timer = 0; grassCount++; }
+  }
+
+  // sheeps update
+  for(let i=sheeps.length-1;i>=0;i--){ const sh=sheeps[i]; sh.update(sheeps,wolves);
+    // eat when on grass
+    const idx = posToIndex(sh.x,sh.y); if(grassGrid[idx] && grassGrid[idx].has){ grassGrid[idx].has=false; grassGrid[idx].timer = Math.floor(regrow); sh.energy += 30; // particle
+      for(let p=0;p<10;p++) particles.push(new Particle(sh.x,sh.y,'rgba(120,220,120,0.9)'));
+    }
+    // reproduce (only if under cap)
+    if(sh.energy > 120 && Math.random() < 0.02 && sheeps.length < MAX_SHEEP){ sh.energy *= 0.5; sheeps.push(new Sheep(sh.x+rand(-6,6),sh.y+rand(-6,6))); }
+    if(sh.energy <= 0 || sh.age > 18000) sheeps.splice(i,1);
+  }
+
+  // wolves update
+  const eatRange = Number(ui.eatRange.value);
+  for(let i=wolves.length-1;i>=0;i--){ const w=wolves[i]; w.update(wolves,sheeps);
+    // check eat
+    for(let j=sheeps.length-1;j>=0;j--){ const s=sheeps[j]; if(Math.hypot(w.x-s.x,w.y-s.y) <= eatRange){ sheeps.splice(j,1); w.energy += 80; // particles
+          for(let p=0;p<18;p++) particles.push(new Particle(w.x,w.y,'rgba(255,180,80,0.95)')); break; } }
+    if(w.energy > 260 && Math.random() < 0.01 && wolves.length < MAX_WOLVES){ w.energy *= 0.5; wolves.push(new Wolf(w.x+rand(-8,8),w.y+rand(-8,8))); }
+    if(w.energy <= 0 || w.age > 40000) wolves.splice(i,1);
+  }
+
+  // particles
+  for(let i=particles.length-1;i>=0;i--){ particles[i].update(); if(particles[i].life<=0) particles.splice(i,1); }
+
+  // stats
+  sGrass.textContent = grassCount; sSheep.textContent = sheeps.length; sWolves.textContent = wolves.length;
+}
+
+// ---- render ----
+function render(){
+  // trail effect
+  if(ui.trail && ui.trail.checked){ ctx.fillStyle='rgba(2,8,12,0.18)'; ctx.fillRect(0,0,canvas.width,canvas.height); }
+  else { ctx.clearRect(0,0,canvas.width,canvas.height); ctx.fillStyle='#021318'; ctx.fillRect(0,0,canvas.width,canvas.height); }
+
+  // draw grass as soft quads
+  for(let gy=0;gy<gridRows;gy++){
+    for(let gx=0;gx<gridCols;gx++){
+      const idx = gy*gridCols + gx; const cell = grassGrid[idx]; const x=gx*cellSize+cellSize*0.2; const y=gy*cellSize+cellSize*0.2;
+      if(cell.has){ ctx.fillStyle='rgba(80,200,100,0.85)'; ctx.fillRect(x,y,cellSize*0.6,cellSize*0.6); }
+    }
+  }
+
+  // draw particles
+  for(const p of particles) p.draw();
+
+  // draw sheeps and wolves
+  for(const s of sheeps) s.draw();
+  for(const w of wolves) w.draw();
+
+  // HUD: season tint
+  const cycle = Number(ui.seasonCycle.value)||40; const sSec = (Math.sin((performance.now()-tStart)/1000*(2*Math.PI/cycle))+1)/2;
+  ctx.fillStyle = `rgba(255,180,80,${(1-sSec)*0.02})`; ctx.fillRect(0,0,canvas.width,4);
+}
+
+// ---- main loop ----
+let raf=null; function tick(){ update(); render(); raf = requestAnimationFrame(tick); }
+
+// controls
+startBtn.addEventListener('click', ()=>{ if(!raf) { tick(); } });
+pauseBtn.addEventListener('click', ()=>{ if(raf){ cancelAnimationFrame(raf); raf=null; } else { tick(); } });
+resetBtn.addEventListener('click', ()=>{ if(raf){ cancelAnimationFrame(raf); raf=null; } populate(); });
+
+// canvas interaction
+canvas.addEventListener('click', (e)=>{ const rect=canvas.getBoundingClientRect(); const x = e.clientX-rect.left, y=e.clientY-rect.top; // place food (grass)
+  const idx = posToIndex(x,y); if(grassGrid[idx]){ grassGrid[idx].has = true; grassGrid[idx].timer = 0; }
+});
+canvas.addEventListener('contextmenu', (e)=>{ e.preventDefault(); const rect=canvas.getBoundingClientRect(); const x=e.clientX-rect.left, y=e.clientY-rect.top; const idx=posToIndex(x,y); if(grassGrid[idx]){ grassGrid[idx].has=false; grassGrid[idx].timer = Math.floor(Number(ui.grassRegrow?.value)||220); } });
+
+// responsive resize
+window.addEventListener('resize', ()=>{ canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; buildGrid(); });
+
+// initial draw & auto-start
+canvas.width = canvas.clientWidth; canvas.height = canvas.clientHeight; buildGrid(); tick();
+
+</script>
+</body>
+</html>
