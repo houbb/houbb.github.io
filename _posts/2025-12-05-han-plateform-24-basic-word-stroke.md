@@ -59,11 +59,5 @@ published: true
 | 官方笔顺规范标准 — GB 13000.1 Chinese Character Stroke Order Standard | 参考说明（维基百科页面）可通过“GB 13000.1 笔顺规范”关键词搜索查看。 ([维基百科][5])                                          |
 
 
-# 笔画
-
-https://hanyuapp.baidu.com/dictapp/word/detail_getworddetail?wd=%E5%A1%94&client=pc&lesson_from=xiaodu
-
-
-
 * any list
 {:toc}
