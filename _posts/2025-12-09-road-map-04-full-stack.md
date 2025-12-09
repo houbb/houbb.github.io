@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 企业级数字化平台 · 全景架构文档（100+ 模块）
-date: 2030-08-31 21:01:55 +0800
+date: 2025-12-09 21:01:55 +0800
 categories: [Awesome]
 tags: [awesome, java, sh]
 published: true
