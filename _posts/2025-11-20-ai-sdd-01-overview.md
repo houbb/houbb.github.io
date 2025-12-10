@@ -3,7 +3,7 @@ layout: post
 title: AI 规范驱动开发“三剑客”深度对比：Spec-Kit、Kiro 与 OpenSpec
 date: 2025-11-20 14:12:33 +0800
 categories: [AI]
-tags: [ai, sh]
+tags: [ai, sdd, sh]
 published: true
 ---
 

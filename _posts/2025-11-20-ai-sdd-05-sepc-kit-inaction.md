@@ -350,6 +350,7 @@ SDD 的目标不是让你更累，而是：
 
 https://zhuanlan.zhihu.com/p/81614784593
 
+[TRAE × Spec Kit 实战：五步构建流式 AI 对话 Web 应用](https://mp.weixin.qq.com/s?__biz=MzkxMTY4NTAyNQ==&mid=2247498905&idx=1&sn=11f105d458ed8012fb03244da9959a3b&chksm=c0583e3ff4d936a590b2811c4df6439aad9df9719bebf1e6d195c71cc0fcfd09fb8b3f613dd7&mpshare=1&scene=1&srcid=1210lHtrmhnyrqgKhgEh0hiM&sharer_shareinfo=beb50ba0819c7f29c9865cbb960a529e&sharer_shareinfo_first=beb50ba0819c7f29c9865cbb960a529e#rd)
 
 * any list
 {:toc}
