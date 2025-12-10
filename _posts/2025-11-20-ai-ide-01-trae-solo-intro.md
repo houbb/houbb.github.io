@@ -3,7 +3,7 @@ layout: post
 title: AI IDE TRAE solo 模式介绍
 date: 2025-11-20 14:12:33 +0800
 categories: [AI]
-tags: [ai, sh]
+tags: [ai, sdd, sh]
 published: true
 ---
 
