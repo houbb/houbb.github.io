@@ -53,8 +53,21 @@ specify --help
 specify init --here --ai cursor --force
 ```
 
+
+
+比如以 opencode 为例子，选择【opencode】。
+
+```
+specify init .
+```
+
 我这里是基于 vscode 的其他编辑器，比如 Trae 之类的
 
+目前 Spec Kit 还没有明确支持 TRAE，可以选择其他选项来下载关键脚本
+
+项目名称可以自定义，系统会在当前目录下创建对应的子目录
+
+初始化过程会下载必要的模板和配置文件
 
 # 8 大文件
 
