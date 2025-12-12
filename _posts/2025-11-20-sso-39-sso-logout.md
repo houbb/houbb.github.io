@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 权限体系之-39-sso 单点登出 极简 SLO 模式
-date: 2025-11-20 1412:33 +0800
+date: 2025-11-20 12:33 +0800
 categories: [plateform]
 tags: [plateform, sh]
 published: true
