@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 权限体系之-201-java 技术体系开源网关对比 最好是有成熟的限流等组件 可视化控台
+title: 权限体系之-301-java 技术体系开源网关对比 最好是有成熟的限流等组件 可视化控台
 date: 2025-11-20 14:12:33 +0800
 categories: [plateform]
 tags: [plateform, sh]

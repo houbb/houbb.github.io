@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 权限体系之-120-开放接口网关介绍
+title: 权限体系之-300-开放接口网关介绍
 date: 2025-11-20 14:12:33 +0800
 categories: [plateform]
 tags: [plateform, sh]
