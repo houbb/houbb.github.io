@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 权限体系之-401-代码生成平台落地页
+title: 权限体系之-402-代码生成平台 PDD（Product Definition Document）
 date: 2025-11-20 14:12:33 +0800
 categories: [plateform]
 tags: [plateform, sh]
