@@ -9,7 +9,7 @@ published: true
 
 ## 2. 研发体系（Dev）整体设计
 
-![alt text](20251212-01-dev-e2e-overview.png)
+![alt text](https://houbb.github.io/static/img/20251212-01-dev-e2e-overview.png)
 
 ### 2.1 核心目标
 

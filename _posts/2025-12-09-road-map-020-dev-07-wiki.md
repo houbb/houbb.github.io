@@ -9,7 +9,7 @@ published: true
 
 
 
-![alt text](20251212-07-dev-wiki.png)
+![alt text](https://houbb.github.io/static/img/20251212-07-dev-wiki.png)
 
 
 ## 研发知识库（语雀 / Wiki）详细介绍

@@ -11,7 +11,7 @@ published: true
 
 ## Swagger / Knife4j（API 文档平台）详细介绍
 
-![alt text](20251212-04-dev-api-plateform.png)
+![alt text](https://houbb.github.io/static/img/20251212-04-dev-api-plateform.png)
 
 ### 1. 定位
 

@@ -10,7 +10,7 @@ published: true
 
 ## Mock 平台（接口模拟平台）详细介绍
 
-![alt text](20251212-06-dev-mock.png)
+![alt text](https://houbb.github.io/static/img/20251212-06-dev-mock.png)
 
 ### 1. 定位
 

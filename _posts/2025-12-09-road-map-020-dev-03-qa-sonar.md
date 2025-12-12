@@ -11,7 +11,7 @@ published: true
 
 ## Sonar（代码质量管理）详细介绍
 
-![alt text](20251212-03-dev-sonar.png)
+![alt text](https://houbb.github.io/static/img/20251212-03-dev-sonar.png)
 
 ### 1. 定位
 

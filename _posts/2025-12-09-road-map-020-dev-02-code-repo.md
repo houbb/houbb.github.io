@@ -8,9 +8,9 @@ published: true
 ---
 
 
-## 🟧 GitLab / Gitea（代码库）详细介绍
+## GitLab / Gitea（代码库）详细介绍
 
-![alt text](20251212-02-dev-code-repo.png)
+![alt text](https://houbb.github.io/static/img/20251212-02-dev-code-repo.png)
 
 ### 1. 定位
 

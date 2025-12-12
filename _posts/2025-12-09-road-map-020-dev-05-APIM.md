@@ -10,7 +10,7 @@ published: true
 
 ## APIM（API 生命周期管理）详细介绍
 
-![alt text](20251212-05-dev-APIM.png)
+![alt text](https://houbb.github.io/static/img/20251212-05-dev-APIM.png)
 
 ### 1. 定位
 
