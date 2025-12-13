@@ -34,6 +34,12 @@ P3（质量工程）
 ├── 测试资产复用
 ```
 
+# 相关开源项目：
+
+数据工厂：https://github.com/houbb/data-factory
+
+性能压测：https://github.com/houbb/junitperf
+
 # chat
 
 下面我将 **测试左移（Shift-Left Testing）与右移（Shift-Right Testing）**作为 **现代质量工程的核心策略** 来详细展开。核心理念是：

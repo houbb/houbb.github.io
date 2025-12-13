@@ -34,6 +34,12 @@ P3（质量工程）
 ├── 测试资产复用
 ```
 
+# 相关开源项目：
+
+数据工厂：https://github.com/houbb/data-factory
+
+性能压测：https://github.com/houbb/junitperf
+
 # chat
 
 下面只聚焦 **P0（测试基础）**，以**“工程可落地 + 可平台化设计”**为原则，对 **测试平台 / 测试用例管理 / 测试环境管理**做一次彻底拆解。

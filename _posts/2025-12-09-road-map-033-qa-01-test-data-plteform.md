@@ -34,6 +34,12 @@ P3（质量工程）
 ├── 测试资产复用
 ```
 
+# 相关开源项目：
+
+数据工厂：https://github.com/houbb/data-factory
+
+性能压测：https://github.com/houbb/junitperf
+
 # chat
 
 

@@ -34,6 +34,12 @@ P3（质量工程）
 ├── 测试资产复用
 ```
 
+# 相关开源项目：
+
+数据工厂：https://github.com/houbb/data-factory
+
+性能压测：https://github.com/houbb/junitperf
+
 # chat
 
 下面从**体系目标 → 分层能力 → 平台化落地 → 与研发流水线的融合**四个层面，对这套 **测试体系（QA / Quality Engineering）**进行系统化、工程化的详细拆解。整体视角不是“测试部门在做什么”，而是**企业如何通过质量工程手段，把风险压缩在发布之前**。

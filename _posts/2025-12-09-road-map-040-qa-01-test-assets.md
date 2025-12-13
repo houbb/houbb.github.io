@@ -34,6 +34,12 @@ P3（质量工程）
 ├── 测试资产复用
 ```
 
+# 相关开源项目：
+
+数据工厂：https://github.com/houbb/data-factory
+
+性能压测：https://github.com/houbb/junitperf
+
 # chat
 
 下面我将 **测试资产复用（Test Asset Reuse / Quality Asset Reuse）** 作为 **质量工程中提升效率和质量的核心策略** 来详细展开。重点是：

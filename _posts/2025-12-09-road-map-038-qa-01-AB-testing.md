@@ -34,6 +34,12 @@ P3（质量工程）
 ├── 测试资产复用
 ```
 
+# 相关开源项目：
+
+数据工厂：https://github.com/houbb/data-factory
+
+性能压测：https://github.com/houbb/junitperf
+
 # chat
 
 下面我将 **灰度实验 / A/B 测试（Feature Flag & Experimentation）**作为 **质量工程与发布管理中的高级手段** 来详细展开。

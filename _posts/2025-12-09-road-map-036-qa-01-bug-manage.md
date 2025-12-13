@@ -34,6 +34,12 @@ P3（质量工程）
 ├── 测试资产复用
 ```
 
+# 相关开源项目：
+
+数据工厂：https://github.com/houbb/data-factory
+
+性能压测：https://github.com/houbb/junitperf
+
 # chat
 
 下面我将 **缺陷管理 & 质量分析（Defect Management & Quality Analytics）**作为一个**质量工程中枢系统**来完整展开。
