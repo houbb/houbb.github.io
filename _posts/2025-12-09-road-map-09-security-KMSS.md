@@ -7,6 +7,46 @@ tags: [awesome, java, sh]
 published: true
 ---
 
+# 概览
+
+[UMS 平台](https://houbb.github.io/2025/12/09/road-map-010-id-01-UMS)
+
+[PASSPORT 平台](https://houbb.github.io/2025/12/09/road-map-010-id-02-passport)
+
+[SSO 平台](https://houbb.github.io/2025/12/09/road-map-010-id-03-SSO)
+
+[PERMISSION 平台](https://houbb.github.io/2025/12/09/road-map-010-id-04-PERMISSION)
+
+[应用管理](https://houbb.github.io/2025/12/09/road-map-010-id-05-app-manage)
+
+[审计中心](https://houbb.github.io/2025/12/09/road-map-010-id-06-audit)
+
+[IGA（Identity Governance & Administration，身份治理与管理）平台](https://houbb.github.io/2025/12/09/road-map-010-id-07-IGA)
+
+[跳板机 / 堡垒机（Jump Server / Bastion Host）](https://houbb.github.io/2025/12/09/road-map-010-id-08-jump-server)
+
+---
+
+[统一的特权访问控制平台（Privileged Access Management / PAM）](https://houbb.github.io/2025/12/09/road-map-09-boastin-host-plateform)
+
+[KMSS（Key Management & Security Service）](https://houbb.github.io/2025/12/09/road-map-09-security-KMSS)
+
+[安全平台 security plateform](https://houbb.github.io/2025/12/09/road-map-09-security-plateform)
+
+[数据脱敏平台 Data Masking / Data Protection Platform](https://houbb.github.io/2025/12/09/road-map-09-sensitive-plateform)
+
+# 相关开源项目
+
+可以参考一下老马开源的项目：
+
+敏感词核心库: https://github.com/houbb/sensitive-word
+
+敏感词控台：https://github.com/houbb/sensitive-word-admin
+
+日志脱敏：https://github.com/houbb/sensitive
+
+加密工具：https://github.com/houbb/encryption-local
+
 # 加密机 / 密钥管理服务 KMSS（Key Management & Security Service）
 
 以下内容对“加密机 / 密钥管理服务 KMSS（Key Management & Security Service）”进行专业、系统、可落地的完整展开，涵盖平台定位、架构、核心能力、与 HSM 的关系、密钥生命周期、密钥模型、租户隔离、主要 API、合规体系、组件设计、实施路线等。可直接作为企业级密钥管理系统（KMSS）的蓝图文档。
