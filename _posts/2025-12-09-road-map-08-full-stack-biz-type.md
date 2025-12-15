@@ -2,8 +2,8 @@
 layout: post
 title: 成熟企业级技术平台（120+ 模块）的大型“商业化路径设计”方案
 date: 2025-12-09 21:01:55 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+categories: MVE]
+tags: [mve, sh]
 published: true
 ---
 

@@ -2,8 +2,8 @@
 layout: post
 title: 成熟企业级技术平台-38-灰度实验 / A/B 测试（Feature Flag & Experimentation）
 date: 2025-12-09 21:01:55 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+categories: MVE]
+tags: [mve, sh]
 published: true
 ---
 

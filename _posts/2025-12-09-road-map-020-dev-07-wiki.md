@@ -2,8 +2,8 @@
 layout: post
 title: 成熟企业级技术平台-2006-Mock 平台（接口模拟平台）详细介绍 
 date: 2025-12-09 21:01:55 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+categories: MVE]
+tags: [mve, sh]
 published: true
 ---
 

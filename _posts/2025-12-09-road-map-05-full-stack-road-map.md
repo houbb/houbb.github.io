@@ -2,8 +2,8 @@
 layout: post
 title: 《企业级平台 Roadmap（半年 / 一年 / 三年）》
 date: 2025-12-09 21:01:55 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+categories: MVE]
+tags: [mve, sh]
 published: true
 ---
 

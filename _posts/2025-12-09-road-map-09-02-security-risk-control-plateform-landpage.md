@@ -2,8 +2,8 @@
 layout: post
 title: 成熟企业级技术平台-09-安全平台之风控系统落地页
 date: 2025-12-09 21:01:55 +0800
-categories: [Awesome]
-tags: [awesome, java, sh]
+categories: MVE]
+tags: [mve, sh]
 published: true
 ---
 
