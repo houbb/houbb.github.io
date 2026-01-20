@@ -32,6 +32,12 @@ Build Cache     0         0         0B        0B
 
 但是还是发现 `docker_data.vhdx` 占用的空间还是很大。
 
+## 直接清空
+
+```
+docker system prune -a
+```
+
 ## 压缩
 
 1）关闭Docker Desktop和所有WSL2发行版
