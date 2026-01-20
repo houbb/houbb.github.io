@@ -15,8 +15,6 @@ https://milvus.io/docs/zh/install_standalone-docker.md
 ## 还是首先通过 standalone 模式
 
 
-
-
 # 参考资料
 
 https://milvus.io/docs/zh/install_standalone-docker.md
