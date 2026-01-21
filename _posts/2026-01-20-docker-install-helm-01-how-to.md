@@ -19,6 +19,57 @@ windows 正确安装了 docker desktop
 
 
 
+# 旧代码备份
+
+```java
+    /**
+     * 全量同步
+     *
+     * 扫描所有文件并上传
+     *
+     * @param rootPath 根目录
+     * @return 同步结果
+     */
+    public SyncResult fullSync(Path rootPath) {
+        log.info("╔════════════════════════════════════════════════════════════╗");
+        log.info("║                    Full Sync Started                        ║");
+        log.info("╚════════════════════════════════════════════════════════════╝");
+        log.info("  Project ID: {}", projectId);
+        log.info("  Root Path: {}", rootPath);
+        log.info("  Server URL: {}", uploadService.getServerUrl());
+        log.info("  Mock Mode: {}", uploadService.isMockMode());
+        log.info("────────────────────────────────────────────────────────────────");
+
+        long startTime = System.currentTimeMillis();
+
+        // 扫描所有文件
+        ScanResult scanResult = scanner.scan(rootPath);
+
+        if (scanResult.getList().isEmpty()) {
+            log.warn("No entities found during scan");
+            return new SyncResult(0, false, "No entities found");
+        }
+
+        // 上传数据
+        boolean uploadSuccess = uploadService.uploadScanResult(projectId, scanResult);
+
+        long duration = System.currentTimeMillis() - startTime;
+
+        log.info("────────────────────────────────────────────────────────────────");
+        log.info("  Full Sync Complete:");
+        log.info("    Files: {}", scanResult.getList().size());
+        log.info("    Duration: {} ms", duration);
+        log.info("    Status: {}", uploadSuccess ? "SUCCESS" : "FAILED");
+        log.info("────────────────────────────────────────────────────────────────");
+
+        return new SyncResult(
+                scanResult.getList().size(),
+                uploadSuccess,
+                uploadSuccess ? "Full sync completed" : "Upload failed"
+        );
+    }
+```
+
 # 参考资料
 
 https://milvus.io/docs/zh/install_standalone-docker.md
