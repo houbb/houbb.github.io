@@ -110,7 +110,11 @@ docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" mem
 172.17.0.2
 ```
 
-使用这个 ip 访问
+使用这个 ip 访问即可。
+
+# 初步验证
+
+给一个 memgraph 简单的插入验证语句
 
 
 
