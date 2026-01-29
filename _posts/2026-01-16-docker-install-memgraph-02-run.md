@@ -87,6 +87,13 @@ docker run -d -p 7687:7687 -p 7444:7444 --name memgraph memgraph/memgraph-mage:3
 docker run -d -p 3000:3000 --name lab memgraph/lab:3.7.1
 ```
 
+本次测试删除数据重启的脚本
+
+```sh
+docker rm -f memgraph
+docker run -d -p 7687:7687 -p 7444:7444 --name memgraph memgraph/memgraph-mage:3.7.1
+```
+
 # lab 打开空白
 
 chrome 浏览器版本太低问题，要升级到 100 以上才行。
