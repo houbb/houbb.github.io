@@ -7,10 +7,6 @@ tags: [ai, memgraph, sh]
 published: true
 ---
 
-# 参考资料
-
-https://memgraph.com/docs/getting-started/install-memgraph/docker
-
 # 直接启动
 
 ```sh
@@ -127,7 +123,7 @@ docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" mem
 
 # 参考资料
 
-https://github.com/tree-sitter/tree-sitter
+https://memgraph.com/docs/getting-started/install-memgraph/docker
 
 * any list
 {:toc}

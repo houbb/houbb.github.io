@@ -7,10 +7,6 @@ tags: [ai, memgraph, sh]
 published: true
 ---
 
-# 参考资料
-
-https://memgraph.com/docs/getting-started/install-memgraph/docker
-
 # 直接启动
 
 ```sh
@@ -89,7 +85,7 @@ docker run -d -p 3000:3000 --name lab memgraph/lab:3.7.1
 
 # 参考资料
 
-https://github.com/tree-sitter/tree-sitter
+https://memgraph.com/docs/getting-started/install-memgraph/docker
 
 * any list
 {:toc}
