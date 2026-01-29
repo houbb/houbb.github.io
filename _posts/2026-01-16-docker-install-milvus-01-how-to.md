@@ -59,6 +59,23 @@ time="2026-01-29T10:52:37+08:00" level=warning msg="D:\\_docker\\milvus\\docker-
  - minio [⠀⠀⠀⠀⠀⠀⠀⠀⠀] Pulling                                                                                                                         152.7s
 ```
 
+## 启动成功日志
+
+```
+docker compose up -d
+time="2026-01-29T10:52:37+08:00" level=warning msg="D:\\_docker\\milvus\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+
+[+] Running 4/4
+ ✔ Network milvus               Created                                                                                                                0.2s
+ ✔ Container milvus-etcd        Started                                                                                                                1.6s
+ ✔ Container milvus-minio       Started                                                                                                                1.6s
+ ✔ Container milvus-standalone  Started                                                                                                                1.8s
+```
+
+## 入门测试
+
+
+
 
 
 # docker-compose.yml
