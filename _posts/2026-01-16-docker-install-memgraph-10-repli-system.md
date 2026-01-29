@@ -9,7 +9,7 @@ published: true
 
 
 
-**注意：该页面内容仅适用于 Memgraph Enterprise 版**。 ([Memgraph][1])
+**注意：该页面内容仅适用于 Memgraph Enterprise 版**。 
 
 🔗 原文链接：
 [https://memgraph.com/docs/clustering/replication/system-replication](https://memgraph.com/docs/clustering/replication/system-replication)
@@ -26,14 +26,14 @@ published: true
 * **多租户配置（multi-tenant configuration）**
 * **数据库生命周期操作（database lifecycle operations）**
 
-这使得 REPLICA 可以作为 MAIN 的一致且完整可用的 **只读副本（fully usable read copies）**。 ([Memgraph][1])
+这使得 REPLICA 可以作为 MAIN 的一致且完整可用的 **只读副本（fully usable read copies）**。 
 
 ---
 
 ## **审计日志（Audit logs）**
 
 当前 **审计日志不会在 Memgraph 内部进行复制**。
-这意味着审计日志只存在于生成它们的实例上，不会自动传输到其他副本。 ([Memgraph][1])
+这意味着审计日志只存在于生成它们的实例上，不会自动传输到其他副本。 
 
 ---
 
@@ -41,14 +41,14 @@ published: true
 
 如果你正在使用 **Memgraph Enterprise 授权**，那么所有与身份验证和权限相关的数据（如用户、角色及其权限）**将会被复制**至 REPLICA 实例。
 
-💡 在 **Memgraph Community（社区版）** 中不会复制用户和角色。社区版只能复制图数据（节点、关系、索引、约束及其他图构造）。 ([Memgraph][1])
+💡 在 **Memgraph Community（社区版）** 中不会复制用户和角色。社区版只能复制图数据（节点、关系、索引、约束及其他图构造）。 
 
 ---
 
 ## **身份认证模块复制（Auth modules replication）**
 
 **身份认证模块（authentication modules）本身不会被复制**。
-这意味着管理员需要在每个实例上单独 **手动配置身份认证模块**，例如 SSO、LDAP 集成等。 ([Memgraph][1])
+这意味着管理员需要在每个实例上单独 **手动配置身份认证模块**，例如 SSO、LDAP 集成等。 
 
 ---
 
@@ -57,7 +57,7 @@ published: true
 在启用了多租户功能的 **Memgraph Enterprise** 中，以下行为会被复制：
 
 * 在 MAIN 上 **创建或删除数据库** 的操作会复制到所有 REPLICA 实例。
-* REPLICA 实例可以**使用这些数据库（只读）**，但只有 MAIN 可以对其进行写操作。 ([Memgraph][1])
+* REPLICA 实例可以**使用这些数据库（只读）**，但只有 MAIN 可以对其进行写操作。 
 
 ### **当删除数据库时（When a database is dropped）**
 
@@ -65,7 +65,7 @@ published: true
 2. 新的会话无法再使用该数据库。
 3. 一旦所有活动会话释放该数据库，它将在 REPLICA 上被**完全删除**。
 
-这种策略确保了跨集群安全且可预测的租户数据库移除流程。 ([Memgraph][1])
+这种策略确保了跨集群安全且可预测的租户数据库移除流程。 
 
 
 # 参考资料
