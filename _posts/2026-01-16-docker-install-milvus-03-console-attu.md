@@ -10,7 +10,7 @@ published: true
 # 安装
 
 ```
-docker run -d --name attu -p 13000:3000 -e MILVUS_URL=localhost:19530 zilliz/attu:latest
+docker run -d --name attu -p 3000:3000 -e MILVUS_URL=localhost:19530 zilliz/attu:v2.6.3
 ```
 
 因为我本地 3000 已经被 memgraph-lab 占用，所以这里调整一下端口号。
@@ -18,7 +18,8 @@ docker run -d --name attu -p 13000:3000 -e MILVUS_URL=localhost:19530 zilliz/att
 ## ip 查看
 
 ```
->docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" milvus-standalone
+docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" milvus-standalone
+
 172.18.0.4
 ```
 
@@ -39,11 +40,82 @@ http://localhost:13000/#/connect
 默认账密
 
 ```
-用户名：root
-密码：Milvus
+用户名：   root
+密码：     Milvus
 ```
 
 实际上默认配置应该是没启动的，参考 https://github.com/zilliztech/attu/issues/161
+
+
+## 登录失败
+
+报错：
+
+```
+Request URL http://localhost:3000/api/v1/milvus/connect 
+Request Method POST 
+Status Code 401 Unauthorized 
+
+请求信息：{"username":"","password":"","address":"172.18.0.4:19530","token":"","database":"default","checkHealth":true,"clientId":"dob42d","ssl":false,"webui_api_base":"","readonly_mode":false,"isManaged":false,"isServerless":false,"isDedicated":false} 
+
+响应信息：{"statusCode":401,"message":"Deadline exceeded"} 
+```
+
+### 日志
+
+可以发现二者不在一个网络
+
+```
+> docker logs attu
+
+POST 401 /api/v1/milvus/connect 15116.135 ms @ Fri, 30 Jan 2026 02:09:05 GMT ::ffff:172.17.0.1 from undefined Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36
+
+POST /api/v1/milvus/connect 401 Error: 4 DEADLINE_EXCEEDED: Deadline exceeded
+
+ POST 401 /api/v1/milvus/connect 15110.073 ms @ Fri, 30 Jan 2026 02:09:26 GMT ::ffff:172.17.0.1 from undefined Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36
+```
+
+### 跨网络问题
+
+attu 和 milvus 跨网络了。
+
+```
+networks:
+  default:
+    name: milvus
+```
+
+
+重新启动
+
+```
+# 删除旧的
+ docker rm -f attu  
+
+# 启动新的
+ docker run -d --name attu --network milvus -p 3000:3000 -e MILVUS_URL=localhost:19530 zilliz/attu:v2.6.3
+```
+
+配置信息
+
+```
+Address: milvus-standalone:19530
+Username: （留空）
+Password: （留空）
+Database: default
+```
+
+这里的 address 使用 milvus 的 image 名称，避免 ip 变化。
+
+可以了！主要还是网络的坑。
+
+
+# 测试
+
+
+
+
+# 配置文件
 
 
 ```yaml
@@ -124,7 +196,7 @@ networks:
 
 
 ```
-docker run -d --name attu -p 13000:3000 -e MILVUS_URL=localhost:19530 zilliz/attu:latest
+docker run -d --name attu -p 13000:3000 -e MILVUS_URL=172.18.0.4:19530 zilliz/attu:v2.6
 ```
 
 
