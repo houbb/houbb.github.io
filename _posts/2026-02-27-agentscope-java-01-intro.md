@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 如何用 java 构建 AI Agent（智能体）应用？AgentScope Java 入门介绍
-date: 2026-01-20 21:01:55 +0800
+date: 2026-02-27 21:01:55 +0800
 categories: [Agent]
 tags: [ai, agent, sh]
 published: true

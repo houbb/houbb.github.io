@@ -1,7 +1,7 @@
 ---
 layout: post
 title: BGE-Code-v1 最优开源代码语义向量模型（Code Embedding Model）
-date: 2026-01-20 21:01:55 +0800
+date: 2026-02-27 21:01:55 +0800
 categories: [Agent]
 tags: [ai, model, sh]
 published: true

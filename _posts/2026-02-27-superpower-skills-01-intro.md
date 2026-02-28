@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Superpowers 是一套完整的软件开发工作流，用于编码 Agent（Coding Agent）。
-date: 2026-01-20 21:01:55 +0800
+date: 2026-02-27 21:01:55 +0800
 categories: [Agent]
 tags: [ai, skills, sh]
 published: true
