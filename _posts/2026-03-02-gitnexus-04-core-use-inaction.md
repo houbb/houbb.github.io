@@ -157,6 +157,284 @@ Status: ✅ up-to-date
 
 发现虽然走到了  skills，但是 hook 失败。
 
+Thinking 中可以看到
+
+```
+用户想了解 OpenIM 项目中 WebSocket 的具体实现。根据 gitnexus-exploring skill 的工作流程，我需要：
+
+先读取 gitnexus://repo/openim-plateform/context 来检查代码库状态
+使用 gitnexus_query 查询 WebSocket 相关的执行流
+分析返回的结果
+让我开始执行这个工作流程。
+```
+
+```
+gitnexus:// 资源似乎不能直接用 Read 工具读取。让我尝试使用 Glob 查找 GitNexus 的索引文件，或者直接搜索 WebSocket 相关的代码。
+
+让我先尝试搜索项目中的 WebSocket 相关代码。
+```
+
+
+
+
+# 支持命令
+
+
+## 1. agument  增强搜索结果
+
+```
+npx gitnexus augment "ChatController"
+[GitNexus] 3 related symbols found:
+
+ChatController.java (openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java)
+
+ChatController (openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java)
+
+ChatController (openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java)
+PS D:\aicode\openim-plateform>
+PS D:\aicode\openim-plateform> 
+PS D:\aicode\openim-plateform> npx gitnexus augment "chat"   
+
+查不到任何结果
+```
+
+## 2. mcp query
+
+```
+npx gitnexus query "MessageService" -l 10 --repo openim-plateform
+```
+
+如下：
+
+```
+{
+  "processes": [
+    {
+      "id": "proc_269_sendsinglemessage",
+      "summary": "SendSingleMessage → GenerateConversationId",
+      "priority": 0.077,
+      "symbol_count": 2,
+      "process_type": "intra_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_270_sendsinglemessage",
+      "summary": "SendSingleMessage → GetMaxSeqId",
+      "priority": 0.077,
+      "symbol_count": 2,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_271_sendsinglemessage",
+      "summary": "SendSingleMessage → SetMessageId",
+      "priority": 0.077,
+      "symbol_count": 2,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_272_sendsinglemessage",
+      "summary": "SendSingleMessage → SetConversationId",
+      "priority": 0.077,
+      "symbol_count": 2,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_273_sendsinglemessage",
+      "summary": "SendSingleMessage → GetCode",
+      "priority": 0.062,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_274_sendsinglemessage",
+      "summary": "SendSingleMessage → GetMsg",
+      "priority": 0.062,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_142_shareluckydraw",
+      "summary": "ShareLuckyDraw → GenerateConversationId",
+      "priority": 0.06,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_143_shareluckydraw",
+      "summary": "ShareLuckyDraw → GetMaxSeqId",
+      "priority": 0.06,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_144_shareluckydraw",
+      "summary": "ShareLuckyDraw → SetMessageId",
+      "priority": 0.06,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    },
+    {
+      "id": "proc_145_shareluckydraw",
+      "summary": "ShareLuckyDraw → SetConversationId",
+      "priority": 0.06,
+      "symbol_count": 1,
+      "process_type": "cross_community",
+      "step_count": 3
+    }
+  ],
+  "process_symbols": [
+    {
+      "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/EnhancedMessageController.java:sendSingleMessage",
+      "name": "sendSingleMessage",
+      "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/EnhancedMessageController.java",
+      "startLine": 27,
+      "endLine": 27,
+      "module": "Service",
+      "process_id": "proc_269_sendsinglemessage",
+      "step_index": 1
+    },
+    {
+      "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java:saveMessage",
+      "name": "saveMessage",
+      "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java",
+      "startLine": 82,
+      "endLine": 82,
+      "module": "Service",
+      "process_id": "proc_269_sendsinglemessage",
+      "step_index": 2
+    }
+  ],
+  "definitions": [
+    {
+      "id": "File:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/EnhancedMessageController.java",
+      "name": "EnhancedMessageController.java",
+      "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/EnhancedMessageController.java"
+    },
+    {
+      "id": "Class:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/EnhancedMessageController.java:EnhancedMessageController",
+      "name": "EnhancedMessageController",
+      "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/EnhancedMessageController.java",
+      "startLine": 15,
+      "endLine": 15
+    },
+    {
+      "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageReadService.java:markMessageAsRead",
+      "name": "markMessageAsRead",
+      "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageReadService.java",
+      "startLine": 46,
+      "endLine": 46,
+      "module": "Service"
+    },
+    {
+      "id": "File:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageReadService.java",
+      "name": "MessageReadService.java",
+      "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageReadService.java"
+    },
+    ...
+  ]
+}
+```
+
+## 3. mcp context 符号 360 信息
+
+```
+npx gitnexus context "MessageService" --repo openim-plateform 2>&1
+```
+
+结果：
+
+```
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Class:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java:MessageService",
+    "name": "MessageService",
+    "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java",
+    "startLine": 38,
+    "endLine": 38
+  },
+  "incoming": {},
+  "outgoing": {},
+  "processes": []
+}
+```
+
+## 4. impact
+
+```
+npx gitnexus impact "MessageService" --repo openim-plateform
+```
+
+实际上：
+
+```
+{
+  "target": {
+    "id": "Class:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java:MessageService",
+    "name": "MessageService",
+    "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java"
+  },
+  "direction": "upstream",
+  "impactedCount": 0,
+  "risk": "LOW",
+  "summary": {
+    "direct": 0,
+    "processes_affected": 0,
+    "modules_affected": 0
+  },
+  "affected_processes": [],
+  "affected_modules": [],
+  "byDepth": {}
+}
+```
+
+感觉不太对，为什么影响范围是空呢？
+
+
+
+# 附录
+
+
+### CLI 命令
+
+```bash
+gitnexus setup                    # 为你的编辑器配置 MCP（一次性）
+gitnexus analyze [path]           # 索引一个仓库（或更新过时的索引）
+gitnexus analyze --force          # 强制完全重新索引
+gitnexus analyze --skip-embeddings  # 跳过嵌入生成（更快）
+gitnexus mcp                     # 启动 MCP 服务器（stdio）——服务于所有已索引的仓库
+gitnexus serve                   # 启动本地 HTTP 服务器（多仓库），供 Web UI 连接
+gitnexus list                    # 列出所有已索引的仓库
+gitnexus status                  # 显示当前仓库的索引状态
+gitnexus clean                   # 删除当前仓库的索引
+gitnexus clean --all --force     # 删除所有索引
+gitnexus wiki [path]             # 从知识图谱生成仓库维基
+gitnexus wiki --model <model>    # 使用自定义 LLM 模型生成维基（默认：gpt-4o-mini）
+gitnexus wiki --base-url <url>   # 使用自定义 LLM API 基础 URL 生成维基
+```
+
+### 你的 AI 智能体获得什么
+
+**通过 MCP 暴露的 7 个工具**：
+
+| 工具               | 功能                                                      | `repo` 参数 |
+| ------------------ | ----------------------------------------------------------------- | -------------- |
+| `list_repos`     | 发现所有已索引的仓库                                 | —             |
+| `query`          | 按流程分组的混合搜索（BM25 + 语义 + RRF）             | 可选       |
+| `context`        | 360 度符号视图——分类的引用、流程参与度 | 可选       |
+| `impact`         | 影响范围分析，按深度分组并带置信度          | 可选       |
+| `detect_changes` | Git diff 影响分析——将更改的行映射到受影响的流程       | 可选       |
+| `rename`         | 多文件协调重命名，结合图谱和文本搜索            | 可选       |
+| `cypher`         | 原始 Cypher 图谱查询                                          | 可选       |
+
 # 参考资料
 
 
