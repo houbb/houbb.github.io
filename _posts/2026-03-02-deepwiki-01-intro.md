@@ -1,7 +1,7 @@
 ---
 layout: post
 title: OpenClaw windows 安装实战笔记
-date: 2026-02-28 21:01:55 +0800
+date: 2026-03-02 21:01:55 +0800
 categories: [Agent]
 tags: [ai, skills, sh]
 published: true

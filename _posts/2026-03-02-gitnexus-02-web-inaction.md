@@ -1,7 +1,7 @@
 ---
 layout: post
-title: OpenClaw windows 安装实战笔记
-date: 2026-02-28 21:01:55 +0800
+title: GitNexus web 入门使用实战
+date: 2026-03-02 21:01:55 +0800
 categories: [Agent]
 tags: [ai, skills, sh]
 published: true
@@ -117,8 +117,9 @@ http://localhost:5173
 
 2）或者指定一个 github 的 url
 
-# 参考资料
+3) server
 
+# 参考资料
 
 [1]: https://github.com/abhigyanpatwari/GitNexus?utm_source=chatgpt.com "GitHub - abhigyanpatwari/GitNexus: The fastest way to chat with your code, 100% private - GitNexus is a client-side knowledge graph creator that runs entirely in your browser. Drop in a GitHub repo or ZIP file, and get an interactive knowledge graph with AI-powered chat interface. Perfect for code exploration"
 [2]: https://qiita.com/nogataka/items/846d8931b6f36dea5d6a?utm_source=chatgpt.com "〖2026年2月22日〗GitHub日次トレンドTop9──AIセキュリティから金融データ基盤まで #AIエージェント - Qiita"
