@@ -367,6 +367,383 @@ npx gitnexus context "MessageService" --repo openim-plateform 2>&1
 }
 ```
 
+
+### 方法
+
+```
+npx gitnexus context "saveMessage" --repo openim-plateform
+```
+
+```
+> npx gitnexus context "saveMessage" --repo openim-plateform
+{
+  "status": "found",
+  "symbol": {
+    "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java:saveMessage",
+    "name": "saveMessage",
+    "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java",
+    "startLine": 82,
+    "endLine": 82
+  },
+  "incoming": {
+    "calls": [
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/WebhookDispatcherService.java:sendBotMessage", 
+        "name": "sendBotMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/WebhookDispatcherService.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/WebhookDispatcherService.java:sendErrorMessage",
+        "name": "sendErrorMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/WebhookDispatcherService.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MomentForwardService.java:forwardMomentToChat",
+        "name": "forwardMomentToChat",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MomentForwardService.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MomentForwardService.java:forwardCommentToChat",
+        "name": "forwardCommentToChat",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MomentForwardService.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java:saveMessage",
+        "name": "saveMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/handler/WebSocketHandler.java:handleMessage",
+        "name": "handleMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/handler/WebSocketHandler.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/TodoController.java:createTodo",
+        "name": "createTodo",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/TodoController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ScheduleEventController.java:createEvent",  
+        "name": "createEvent",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ScheduleEventController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/RollCallController.java:createRollCall",    
+        "name": "createRollCall",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/RollCallController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ReminderController.java:createReminder",    
+        "name": "createReminder",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ReminderController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/GroupLotteryController.java:createLottery", 
+        "name": "createLottery",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/GroupLotteryController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/EnhancedMessageController.java:sendSingleMessage",
+        "name": "sendSingleMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/EnhancedMessageController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java:sendMessageByConversationId",
+        "name": "sendMessageByConversationId",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java:sendMessage",
+        "name": "sendMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java:createVote",
+        "name": "createVote",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java:createCheckin",
+        "name": "createCheckin",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/TodoPluginController.java:createTodo",
+        "name": "createTodo",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/TodoPluginController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/PollPluginController.java:createPoll",
+        "name": "createPoll",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/PollPluginController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/LuckyDrawController.java:createLuckyDraw",
+        "name": "createLuckyDraw",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/LuckyDrawController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/LuckyDrawController.java:shareLuckyDraw",
+        "name": "shareLuckyDraw",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/LuckyDrawController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/LotteryPluginController.java:shareLottery",
+        "name": "shareLottery",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/LotteryPluginController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/FortuneDrawController.java:shareFortune",
+        "name": "shareFortune",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/FortuneDrawController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/FormPluginController.java:createForm",
+        "name": "createForm",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/FormPluginController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/CalendarPluginController.java:createEvent",
+        "name": "createEvent",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/CalendarPluginController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/AIPluginController.java:createConversation",
+        "name": "createConversation",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/AIPluginController.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/message/StructuredMessageService.java:sendStructuredMessage",
+        "name": "sendStructuredMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/message/StructuredMessageService.java"
+      }
+    ]
+  },
+  "outgoing": {
+    "calls": [
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java:saveMessage",
+        "name": "saveMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java:saveGroupMessage",
+        "name": "saveGroupMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java:createOrUpdateConversation",
+        "name": "createOrUpdateConversation",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java:generateConversationId",   
+        "name": "generateConversationId",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java:handleLinkMessage",        
+        "name": "handleLinkMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageReadService.java:initializeMessageReadStat",
+        "name": "initializeMessageReadStat",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageReadService.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/handler/WebSocketHandler.java:sendMessageToUser",      
+        "name": "sendMessageToUser",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/handler/WebSocketHandler.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/mapper/IMMessageMapper.java:getMaxSeqId",
+        "name": "getMaxSeqId",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/mapper/IMMessageMapper.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java:setConversationId",      
+        "name": "setConversationId",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java:getMessageId",
+        "name": "getMessageId",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java:setMessageId",
+        "name": "setMessageId",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java:setStatus",
+        "name": "setStatus",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java:setCreateTime",
+        "name": "setCreateTime",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java:setUpdateTime",
+        "name": "setUpdateTime",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageUserDelete.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageAt.java:setSenderId",
+        "name": "setSenderId",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageAt.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageAt.java:setReceiverId",
+        "name": "setReceiverId",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageAt.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageAt.java:setMessageType",
+        "name": "setMessageType",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/MessageAt.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/IMMessage.java:setContent",
+        "name": "setContent",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/IMMessage.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/IMMessage.java:setQuoteMessageId",
+        "name": "setQuoteMessageId",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/IMMessage.java"
+      },
+      {
+        "uid": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/IMMessage.java:setSeqId",
+        "name": "setSeqId",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/entity/IMMessage.java"
+      }
+    ]
+  },
+  "processes": [
+    {
+      "id": "proc_142_shareluckydraw",
+      "name": "ShareLuckyDraw → GenerateConversationId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_143_shareluckydraw",
+      "name": "ShareLuckyDraw → GetMaxSeqId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_144_shareluckydraw",
+      "name": "ShareLuckyDraw → SetMessageId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_145_shareluckydraw",
+      "name": "ShareLuckyDraw → SetConversationId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_269_sendsinglemessage",
+      "name": "SendSingleMessage → GenerateConversationId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_270_sendsinglemessage",
+      "name": "SendSingleMessage → GetMaxSeqId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_271_sendsinglemessage",
+      "name": "SendSingleMessage → SetMessageId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_272_sendsinglemessage",
+      "name": "SendSingleMessage → SetConversationId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_286_sendmessagebyconvers",
+      "name": "SendMessageByConversationId → GenerateConversationId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_287_sendmessagebyconvers",
+      "name": "SendMessageByConversationId → GetMaxSeqId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_288_sendmessagebyconvers",
+      "name": "SendMessageByConversationId → SetMessageId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_289_sendmessagebyconvers",
+      "name": "SendMessageByConversationId → SetConversationId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_292_sendmessage",
+      "name": "SendMessage → GenerateConversationId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_293_sendmessage",
+      "name": "SendMessage → GetMaxSeqId",
+      "step_index": 2,
+      "name": "SendMessage → GenerateConversationId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_293_sendmessage",
+      "name": "SendMessage → GetMaxSeqId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_293_sendmessage",
+      "name": "SendMessage → GetMaxSeqId",
+      "step_index": 2,
+      "id": "proc_293_sendmessage",
+      "name": "SendMessage → GetMaxSeqId",
+      "step_index": 2,
+      "name": "SendMessage → GetMaxSeqId",
+      "step_index": 2,
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_294_sendmessage",
+      "name": "SendMessage → SetMessageId",
+      "step_index": 2,
+      "step_count": 3
+    },
+    {
+      "id": "proc_295_sendmessage",
+      "name": "SendMessage → SetConversationId",
+      "step_index": 2,
+      "step_count": 3
+    }
+  ]
+}
+```
+
 ## 4. impact
 
 ```
@@ -397,6 +774,304 @@ npx gitnexus impact "MessageService" --repo openim-plateform
 ```
 
 感觉不太对，为什么影响范围是空呢？
+
+### 方法
+
+测试了下方法是对的：
+
+```
+npx gitnexus impact "saveMessage" --repo openim-plateform   
+{
+  "target": {
+    "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java:saveMessage",
+    "name": "saveMessage",
+    "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MessageService.java"
+  },
+  "direction": "upstream",
+  "impactedCount": 36,
+  "risk": "CRITICAL",
+  "summary": {
+    "direct": 25,
+    "processes_affected": 20,
+    "modules_affected": 5
+  },
+  "affected_processes": [
+    {
+      "name": "ForwardMoment → GetTargetGroupId",
+      "hits": 2,
+      "step_count": 4
+    },
+    {
+      "name": "ForwardMoment → GetMomentId",
+      "hits": 2,
+      "step_count": 3
+    },
+    {
+      "name": "ForwardComment → GetCommentId",
+      "hits": 2,
+      "step_count": 3
+    },
+    {
+      "name": "ForwardMoment → GetConversationId",
+      "hits": 2,
+      "step_count": 4
+    },
+    {
+      "name": "ForwardMoment → GetTargetUserId",
+      "hits": 2,
+      "step_count": 4
+    },
+    {
+      "name": "SendMessage → SetConversationId",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "ForwardComment → SelectByCommentId",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "SendSingleMessage → GenerateConversationId",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "ForwardMoment → GetVisibilityType",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "ShareLuckyDraw → SetConversationId",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "SendMessageByConversationId → GetMsg",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "DispatchWebhook → GetConversationId",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "SendMessage → GetMaxSeqId",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "ShareLuckyDraw → SetMessageId",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "SendMessage → GetCode",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "ForwardMoment → GetAuthorId",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "SendSingleMessage → GetMsg",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "ForwardMoment → GetDeleteTime",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "SendSingleMessage → GetMaxSeqId",
+      "hits": 1,
+      "step_count": 3
+    },
+    {
+      "name": "ForwardComment → GetMomentId",
+      "hits": 1,
+      "step_count": 3
+    }
+  ],
+  "affected_modules": [
+    {
+      "name": "Entity",
+      "hits": 12,
+      "impact": "direct"
+    },
+    {
+      "name": "Controller",
+      "hits": 9,
+      "impact": "direct"
+    },
+    {
+      "name": "Service",
+      "hits": 9,
+      "impact": "direct"
+    },
+    {
+      "name": "Message",
+      "hits": 5,
+      "impact": "direct"
+    },
+    {
+      "name": "Model",
+      "hits": 1,
+      "impact": "direct"
+    }
+  ],
+  "byDepth": {
+    "1": [
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/WebhookDispatcherService.java:sendBotMessage",  
+        "name": "sendBotMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/WebhookDispatcherService.java",
+        "relationType": "CALLS",
+        "confidence": 0.3
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/WebhookDispatcherService.java:sendErrorMessage",
+        "name": "sendErrorMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/WebhookDispatcherService.java",
+        "relationType": "CALLS",
+        "confidence": 0.3
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MomentForwardService.java:forwardMomentToChat", 
+        "name": "forwardMomentToChat",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MomentForwardService.java",
+        "relationType": "CALLS",
+        "confidence": 0.3
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MomentForwardService.java:forwardCommentToChat",
+        "name": "forwardCommentToChat",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/service/MomentForwardService.java",
+        "relationType": "CALLS",
+        "confidence": 0.3
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/handler/WebSocketHandler.java:handleMessage",
+        "name": "handleMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/handler/WebSocketHandler.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/TodoController.java:createTodo",
+        "name": "createTodo",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/TodoController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ScheduleEventController.java:createEvent",   
+        "name": "createEvent",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ScheduleEventController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/RollCallController.java:createRollCall",     
+        "name": "createRollCall",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/RollCallController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ReminderController.java:createReminder",     
+        "name": "createReminder",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ReminderController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/GroupLotteryController.java:createLottery",  
+        "name": "createLottery",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/GroupLotteryController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/EnhancedMessageController.java:sendSingleMessage",
+        "name": "sendSingleMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/EnhancedMessageController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java:sendMessageByConversationId",
+        "name": "sendMessageByConversationId",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java:sendMessage",
+        "name": "sendMessage",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java:createVote",
+        "name": "createVote",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java:createCheckin",
+        "name": "createCheckin",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/controller/ChatController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/TodoPluginController.java:createTodo",
+        "name": "createTodo",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/TodoPluginController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/PollPluginController.java:createPoll",
+        "name": "createPoll",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/PollPluginController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      },
+      {
+        "depth": 1,
+        "id": "Method:openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/LuckyDrawController.java:createLuckyDraw",
+        "name": "createLuckyDraw",
+        "filePath": "openim-plateform-server/src/main/java/com/github/houbb/openim/plateform/server/plugin/controller/LuckyDrawController.java",
+        "relationType": "CALLS",
+        "confidence": 0.9
+      }
+...  
+```
 
 
 
