@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Superpowers 是一套完整的软件开发工作流，用于编码 Agent（Coding Agent）。
-date: 2026-02-27 21:01:55 +0800
+title: CoPaw 你的AI个人助理；安装极简、本地与云上均可部署；支持多端接入、能力轻松扩展。
+date: 2026-03-02 21:01:55 +0800
 categories: [Agent]
 tags: [ai, skills, sh]
 published: true
@@ -233,7 +233,9 @@ pip install -e .
 
 ## 为什么叫 CoPaw？
 
-CoPaw 既是「你的搭档小爪子」（co-paw），也寓意 **Co Personal Agent Workstation**（协同个人智能体工作台）。我们希望它不是冰冷的工具，而是一只随时准备帮忙的温暖「小爪子」，是你数字生活中最默契的伙伴。
+CoPaw 既是「你的搭档小爪子」（co-paw），也寓意 **Co Personal Agent Workstation**（协同个人智能体工作台）。
+
+我们希望它不是冰冷的工具，而是一只随时准备帮忙的温暖「小爪子」，是你数字生活中最默契的伙伴。
 
 ----
 
