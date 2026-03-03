@@ -81,6 +81,22 @@ docker run -d -p 3000:3000 --name lab memgraph/lab:3.7.1
 官方网站：https://memgraph.com/docs/getting-started/install-memgraph/docker
 
 
+## 测试
+
+插入
+
+```
+CREATE (a:User {name: "Alice", age: 25})
+CREATE (b:User {name: "Bob", age: 30})
+CREATE (a)-[:FRIEND]->(b)
+```
+
+查询
+
+```
+MATCH (n)
+RETURN n;
+```
 
 
 # 参考资料
