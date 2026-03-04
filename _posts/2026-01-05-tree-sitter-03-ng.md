@@ -69,9 +69,9 @@ tree-sitter-regex	  v1.0.0
 tree-sitter-ruby	v0.23.1
 tree-sitter-rust	v0.24.0
 tree-sitter-scala	v0.24.0
-tree-sitter-tsx	不存在！
 tree-sitter-typescript	v0.23.2
 tree-sitter-verilog	    v1.0.3
+tree-sitter-tsx	不存在！
 ```
 
 以 tree-sitter-java 为例子，maven 引入方式如下，把 v 去掉
