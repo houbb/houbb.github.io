@@ -99,6 +99,25 @@ RETURN n;
 ```
 
 
+# 本地 lab 无法访问
+
+场景：使用 windows docker 启动上述命令，但是 lab 直接访问配置 memgraph host=127.0.0.1 报错
+
+报错信息：
+
+```
+Unable to connect to Memgraph. 
+
+Please check whether host and port parameters are correct and make sure Memgraph is running.
+```
+
+解决方案：
+
+```
+docker inspect -f "{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" memgraph
+172.17.0.2
+```
+
 # 参考资料
 
 https://memgraph.com/docs/getting-started/install-memgraph/docker
