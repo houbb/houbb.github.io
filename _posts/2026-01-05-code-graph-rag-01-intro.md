@@ -3,7 +3,7 @@ layout: post
 title: Graph-Code A Graph-Based RAG System for Any Codebases
 date: 2026-01-05 21:01:55 +0800
 categories: [AI]
-tags: [ai, ai-coding, sh]
+tags: [ai, ai-coding, rag, sh]
 published: true
 ---
 
