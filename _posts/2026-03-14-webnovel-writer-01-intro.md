@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 
+title: Webnovel Writer 是基于 Claude Code 的长篇网文创作系统，目标是降低 AI 写作中的“遗忘”和“幻觉”，支持长周期连载创作。
 date: 2026-03-13 21:01:55 +0800
 categories: [AI]
 tags: [ai, sh]
