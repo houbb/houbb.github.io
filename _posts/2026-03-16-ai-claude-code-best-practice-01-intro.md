@@ -1,6 +1,6 @@
 ---
 layout: post
-title: claude-code-best-practice
+title: claude-code-best-practice 熟能生巧，Claude 才会更完美
 date: 2026-03-16 21:01:55 +0800
 categories: [AI]
 tags: [ai, sh]
