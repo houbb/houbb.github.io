@@ -42,6 +42,14 @@ npx uipro-cli init --ai claude
 ```
 
 
+# 运行报错
+
+```
+cd d:/aicode/openim-plateform/.claude/skills/ui-ux-pro-max && python3 skills/ui-ux-pro-max/scripts/search.py "sticker store emoji marketplace professional" --design-system -p "StickerStore" -f markdown
+```
+
+需要安装 python3
+
 # [UI UX Pro Max](https://uupm.cc)
 
 ## v2.0 新特性
