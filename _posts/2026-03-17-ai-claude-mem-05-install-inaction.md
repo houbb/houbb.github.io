@@ -14,6 +14,24 @@ claude plugin marketplace add thedotmack/claude-mem
 claude plugin install claude-mem
 ```
 
+## 成功日志
+
+```
+PS D:\aicode\openim-plateform> claude plugin marketplace add thedotmack/claude-mem
+Adding marketplace...
+SSH not configured, cloning via HTTPS: https://github.com/thedotmack/claude-mem.git
+Cloning repository: https://github.com/thedotmack/claude-mem.git
+Clone complete, validating marketplace…
+✔ Successfully added marketplace: thedotmack
+PS D:\aicode\openim-plateform> claude plugin install claude-mem
+Installing plugin "claude-mem"...
+✔ Successfully installed plugin: claude-mem@thedotmack (scope: user)
+```
+
+## 测试验证
+
+
+
 # 安装报错
 
 ```
