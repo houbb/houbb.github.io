@@ -194,7 +194,7 @@ Invoke-WebRequest https://raw.githubusercontent.com/milvus-io/milvus/refs/heads/
 运行启动
 
 ```
-standalone.bat start
+./standalone.bat start
 ```
 
 ## 配置说明
