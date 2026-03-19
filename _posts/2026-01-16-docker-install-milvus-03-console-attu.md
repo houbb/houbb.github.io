@@ -15,6 +15,10 @@ docker run -d --name attu -p 3000:3000 -e MILVUS_URL=localhost:19530 zilliz/attu
 
 因为我本地 3000 已经被 memgraph-lab 占用，所以这里调整一下端口号。
 
+```
+docker run -d --name attu -p 3000:13000 -e MILVUS_URL=localhost:19530 zilliz/attu:v2.6.3
+```
+
 ## ip 查看
 
 ```
