@@ -32,7 +32,11 @@ published: true
 
 ### 安装LightRAG服务器
 
-LightRAG服务器旨在提供Web UI和API支持。Web UI便于文档索引、知识图谱探索和简单的RAG查询界面。LightRAG服务器还提供兼容Ollama的接口，旨在将LightRAG模拟为Ollama聊天模型。这使得AI聊天机器人（如Open WebUI）可以轻松访问LightRAG。
+LightRAG服务器旨在提供Web UI和API支持。Web UI便于文档索引、知识图谱探索和简单的RAG查询界面。
+
+LightRAG服务器还提供兼容Ollama的接口，旨在将LightRAG模拟为Ollama聊天模型。
+
+这使得AI聊天机器人（如Open WebUI）可以轻松访问LightRAG。
 
 * 从PyPI安装
 
