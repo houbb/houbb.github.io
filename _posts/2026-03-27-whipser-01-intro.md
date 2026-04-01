@@ -3,7 +3,7 @@ layout: post
 title: Insanely Fast Whisper 用于在本地设备上使用 Whisper 转录音频文件
 date: 2026-03-27 21:01:55 +0800
 categories: [AI]
-tags: [ai, memory]
+tags: [ai, cli]
 published: true
 ---
 

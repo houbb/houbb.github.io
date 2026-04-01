@@ -7,6 +7,13 @@ tags: [ai, memory]
 published: true
 ---
 
+# 安装笔记
+
+```
+/plugin marketplace add letta-ai/claude-subconscious
+/plugin install claude-subconscious@claude-subconscious
+```
+
 # 🧠 Claude Subconscious
 
 ---

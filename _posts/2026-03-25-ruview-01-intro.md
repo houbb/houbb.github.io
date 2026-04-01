@@ -3,7 +3,7 @@ layout: post
 title: RuView 将普通 WiFi 信号转化为实时人体感知与空间感知能力
 date: 2026-03-25 21:01:55 +0800
 categories: [AI]
-tags: [ai, memory]
+tags: [ai, wifi]
 published: true
 ---
 
