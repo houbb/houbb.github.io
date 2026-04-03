@@ -174,10 +174,6 @@ System.out.println(json);
 如果需要更深入的信息，推荐查阅 [XStream 官方网站](https://x-stream.github.io/index.html) 或 [Baeldung 上的系列教程](https://www.baeldung.com/xstream-deserialize-xml-to-object)。
 
 
-# 如果我不知道具体的字段，只想解析 xml 的结构+基本属性、类似于 dom4j 那种，xstream 做的到吗？
-
-
-
 # 参考资料
 
 * any list
