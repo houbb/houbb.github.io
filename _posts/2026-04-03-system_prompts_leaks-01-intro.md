@@ -257,23 +257,6 @@ User Prompt（输入）
 
 > **大模型的“产品差异”，很大一部分来自 Prompt，而不是模型本身**
 
----
-
-# 👉 如果你要继续深入（建议）
-
-我可以帮你做这几件更有价值的事：
-
-1️⃣ 拆解 GPT / Claude 的 system prompt 设计模式
-2️⃣ 帮你设计一套你 IM 平台的 **Agent Prompt 架构（可商业化）**
-3️⃣ 做一套 **Prompt DSL（类似配置语言）**，让你平台可扩展
-
-直接说你想往哪一层深入，我帮你往“可落地架构”继续推。
-
-[1]: https://www.titanaiexplore.com/projects/system_prompts_leaks-976921297?utm_source=chatgpt.com "system_prompts_leaks - JavaScript | Titan AI Explore"
-[2]: https://deepwiki.com/asgeirtj/system_prompts_leaks/1-system-prompts-repository-overview?utm_source=chatgpt.com "asgeirtj/system_prompts_leaks | DeepWiki"
-[3]: https://arxiv.org/abs/2405.06823?utm_source=chatgpt.com "PLeak: Prompt Leaking Attacks against Large Language Model Applications"
-
-
 # 参考资料
 
 * any list
