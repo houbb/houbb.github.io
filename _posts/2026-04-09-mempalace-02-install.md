@@ -103,14 +103,36 @@ Configured marketplaces:
 
 安装成功。
 
-## 搭配 Claude、ChatGPT、Cursor、Gemini（兼容 MCP 的工具）
 
-```bash
-# 连接 MemPalace 一次
-claude mcp add mempalace -- python -m mempalace.mcp_server
+## 初始化
+
+重启 claude code 执行下面的命令初始化：
+
+```
+/mempalace:init
 ```
 
-执行失败了
+这里其实会触发安装：
+
+```sh
+pip install mempalace
+```
+
+## 常用命令
+
+```sh
+# 搜索记忆
+mempalace search "关键词"
+
+# 查看状态
+mempalace status
+
+# 挖掘更多文件
+mempalace mine "d:\aicode\openim-plateform" --mode projects
+
+# 查看唤醒上下文
+mempalace wake-up
+```
 
 
 # 参考资料
