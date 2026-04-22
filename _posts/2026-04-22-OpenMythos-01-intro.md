@@ -13,7 +13,9 @@ published: true
 
 OpenMythos 是对 Claude Mythos 模型的一个开源、理论性实现。
 
-它实现了一个**循环深度 Transformer（Recurrent-Depth Transformer, RDT）**，包含三个阶段：**前奏（Prelude）**（Transformer 块）、一个循环的**循环块（Recurrent Block）**（最多运行 `max_loop_iters` 次），以及最后的**尾声（Coda）**。
+它实现了一个**循环深度 Transformer（Recurrent-Depth Transformer, RDT）**，包含三个阶段：
+
+**前奏（Prelude）**（Transformer 块）、一个循环的**循环块（Recurrent Block）**（最多运行 `max_loop_iters` 次），以及最后的**尾声（Coda）**。
 
 注意力机制可在 MLA 和 GQA 之间切换，前馈网络使用稀疏 MoE（混合专家），包含路由专家和共享专家，非常适合探索计算自适应、深度可变的推理。
 
@@ -149,7 +151,9 @@ torchrun --nproc_per_node=$(python -c "import torch; print(torch.cuda.device_cou
 
 ## 核心假设
 
-Claude Mythos 被怀疑是一个**循环深度 Transformer（Recurrent-Depth Transformer, RDT）**——也称为循环 Transformer（Looped Transformer, LT）。它不是堆叠数百个独特的层，而是将一部分层循环使用，并在每次前向传播中多次运行它们。相同的权重。更多的循环。更深入的思考。
+Claude Mythos 被怀疑是一个**循环深度 Transformer（Recurrent-Depth Transformer, RDT）**——也称为循环 Transformer（Looped Transformer, LT）。
+
+它不是堆叠数百个独特的层，而是将一部分层循环使用，并在每次前向传播中多次运行它们。相同的权重。更多的循环。更深入的思考。
 
 这不是思维链（chain-of-thought）。中间没有 token 输出。所有这些推理都**静默地、在单次前向传播内部**，在连续的潜在空间中进行。
 
