@@ -1,7 +1,7 @@
 ---
 layout: post 
 title: skills 面向开放 Agent Skills 生态的 CLI 工具
-date: 2026-04-21 21:01:55 +0800
+date: 2026-04-23 21:01:55 +0800
 categories: [Ai]
 tags: [skills, ai]
 published: true
